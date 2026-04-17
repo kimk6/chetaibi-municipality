@@ -1,0 +1,12 @@
+name = "chetaibi-municipality"
+compatibility_date = "2024-12-01"
+pages_build_output_dir = "."
+
+[[d1_databases]]
+binding = "DB"
+database_name = "chetaibi-db"
+database_id = "YOUR_DATABASE_ID_HERE"
+
+[vars]
+ADMIN_USERNAME = "admin"
+JWT_SECRET = "change-this-to-a-long-random-string-32chars"

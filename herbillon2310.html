@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة الإدارة — بلدية شطايبي</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <style>
+        * { font-family: 'Cairo', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #059669; border-radius: 3px; }
+        .tab-btn.active { background: #059669; color: white; box-shadow: 0 4px 14px rgba(5,150,105,0.3); }
+        .tab-btn:not(.active) { background: white; color: #374151; border: 1px solid #e5e7eb; }
+        .side-btn.active { background: #ecfdf5; color: #059669; border-right: 4px solid #059669; }
+        .side-btn:not(.active) { border-right: 4px solid transparent; }
+        .fade-in { animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+<!-- ===== LOGIN SCREEN ===== -->
+<div id="login-screen" class="min-h-screen flex items-center justify-center bg-gradient-to-bl from-emerald-800 to-emerald-900 p-4">
+    <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
+        <div class="text-center mb-8">
+            <div class="w-20 h-20 rounded-full overflow-hidden border-4 border-emerald-500 mx-auto mb-4">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhsuqarYy0w18IFNzodUCI9s5mzSJ6lpMF7gaPC-_Z6oSkS0-OCkQVFukxyFLliwuTNa03h2Qs-ZnzPAJZOsKw1vfFQGGNSXdi370duVtU1oo2H6dJ69Nnx8XgcrFRX8NgZWmf5usi_AHDwCD4BW-Nz1BNnD2OPTCQAQRvqk_iGt3tjrig/s1600/1000085786.png" alt="شعار" class="w-full h-full object-cover">
+            </div>
+            <h1 class="text-2xl font-extrabold text-gray-800">لوحة الإدارة</h1>
+            <p class="text-sm text-gray-500">بلدية شطايبي — الدخول للمسؤولين</p>
+        </div>
+        <div id="login-error" class="hidden bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl p-3 mb-4 text-center"></div>
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">اسم المستخدم</label>
+                <input id="login-user" type="text" class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none" placeholder="admin">
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">كلمة المرور</label>
+                <input id="login-pass" type="password" class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none" placeholder="••••••••">
+            </div>
+            <button onclick="doLogin()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold transition-colors text-sm">
+                <span class="iconify inline-block ml-1" data-icon="lucide:log-in"></span>
+                تسجيل الدخول
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== DASHBOARD ===== -->
+<div id="dashboard" class="hidden min-h-screen">
+    <!-- Top Bar -->
+    <div class="bg-emerald-800 text-white px-4 md:px-6 py-3 flex items-center justify-between shadow-lg">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full overflow-hidden border-2 border-white/40">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhsuqarYy0w18IFNzodUCI9s5mzSJ6lpMF7gaPC-_Z6oSkS0-OCkQVFukxyFLliwuTNa03h2Qs-ZnzPAJZOsKw1vfFQGGNSXdi370duVtU1oo2H6dJ69Nnx8XgcrFRX8NgZWmf5usi_AHDwCD4BW-Nz1BNnD2OPTCQAQRvqk_iGt3tjrig/s1600/1000085786.png" alt="شعار" class="w-full h-full object-cover">
+            </div>
+            <span class="font-bold text-sm">لوحة إدارة بلدية شطايبي</span>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="/" target="_blank" class="text-white/70 hover:text-white text-xs flex items-center gap-1">
+                <span class="iconify" data-icon="lucide:external-link"></span> الموقع
+            </a>
+            <button onclick="doLogout()" class="bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors">
+                <span class="iconify inline-block ml-1" data-icon="lucide:log-out"></span> خروج
+            </button>
+        </div>
+    </div>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside class="hidden md:block w-56 bg-white min-h-[calc(100vh-52px)] border-l border-gray-200 py-4 flex-shrink-0">
+            <nav class="space-y-1 px-2">
+                <button onclick="showSection('overview')" class="side-btn active w-full text-right px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors hover:bg-gray-50 flex items-center gap-2" data-section="overview">
+                    <span class="iconify text-lg" data-icon="lucide:layout-dashboard"></span> نظرة عامة
+                </button>
+                <button onclick="showSection('news')" class="side-btn w-full text-right px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors hover:bg-gray-50 flex items-center gap-2" data-section="news">
+                    <span class="iconify text-lg" data-icon="lucide:newspaper"></span> الأخبار
+                </button>
+                <button onclick="showSection('services')" class="side-btn w-full text-right px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors hover:bg-gray-50 flex items-center gap-2" data-section="services">
+                    <span class="iconify text-lg" data-icon="lucide:file-text"></span> الخدمات
+                </button>
+                <button onclick="showSection('archives')" class="side-btn w-full text-right px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors hover:bg-gray-50 flex items-center gap-2" data-section="archives">
+                    <span class="iconify text-lg" data-icon="lucide:images"></span> الأرشيف
+                </button>
+                <button onclick="showSection('tourism')" class="side-btn w-full text-right px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors hover:bg-gray-50 flex items-center gap-2" data-section="tourism">
+                    <span class="iconify text-lg" data-icon="lucide:compass"></span> السياحة
+                </button>
+                <button onclick="showSection('mayors')" class="side-btn w-full text-right px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors hover:bg-gray-50 flex items-center gap-2" data-section="mayors">
+                    <span class="iconify text-lg" data-icon="lucide:users"></span> الرؤساء
+                </button>
+            </nav>
+        </aside>
+
+        <!-- Mobile Tab Bar -->
+        <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 flex overflow-x-auto">
+            <button onclick="showSection('overview')" class="flex-1 py-3 text-center text-xs font-semibold text-emerald-600" data-section="overview">
+                <span class="iconify text-lg mx-auto block" data-icon="lucide:layout-dashboard"></span>نظرة
+            </button>
+            <button onclick="showSection('news')" class="flex-1 py-3 text-center text-xs font-semibold text-gray-500" data-section="news">
+                <span class="iconify text-lg mx-auto block" data-icon="lucide:newspaper"></span>أخبار
+            </button>
+            <button onclick="showSection('services')" class="flex-1 py-3 text-center text-xs font-semibold text-gray-500" data-section="services">
+                <span class="iconify text-lg mx-auto block" data-icon="lucide:file-text"></span>خدمات
+            </button>
+            <button onclick="showSection('archives')" class="flex-1 py-3 text-center text-xs font-semibold text-gray-500" data-section="archives">
+                <span class="iconify text-lg mx-auto block" data-icon="lucide:images"></span>أرشيف
+            </button>
+            <button onclick="showSection('tourism')" class="flex-1 py-3 text-center text-xs font-semibold text-gray-500" data-section="tourism">
+                <span class="iconify text-lg mx-auto block" data-icon="lucide:compass"></span>سياحة
+            </button>
+            <button onclick="showSection('mayors')" class="flex-1 py-3 text-center text-xs font-semibold text-gray-500" data-section="mayors">
+                <span class="iconify text-lg mx-auto block" data-icon="lucide:users"></span>رؤساء
+            </button>
+        </div>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4 md:p-8 pb-24 md:pb-8">
+
+            <!-- ===== OVERVIEW ===== -->
+            <div id="sec-overview" class="section fade-in">
+                <h2 class="text-2xl font-extrabold text-gray-800 mb-6">نظرة عامة</h2>
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                        <p class="text-xs text-gray-500 font-semibold mb-1">الأخبار</p>
+                        <p id="stat-news" class="text-3xl font-extrabold text-emerald-600">--</p>
+                    </div>
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                        <p class="text-xs text-gray-500 font-semibold mb-1">الخدمات</p>
+                        <p id="stat-services" class="text-3xl font-extrabold text-blue-600">--</p>
+                    </div>
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                        <p class="text-xs text-gray-500 font-semibold mb-1">المعالم السياحية</p>
+                        <p id="stat-tourism" class="text-3xl font-extrabold text-amber-600">--</p>
+                    </div>
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                        <p class="text-xs text-gray-500 font-semibold mb-1">المقياس الداخلي</p>
+                        <p class="text-3xl font-extrabold text-purple-600">300921.36</p>
+                    </div>
+                </div>
+                <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-6">
+                    <h3 class="font-bold text-emerald-800 mb-2 flex items-center gap-2">
+                        <span class="iconify" data-icon="lucide:info"></span> مرحباً بك
+                    </h3>
+                    <p class="text-sm text-emerald-700 leading-relaxed">يمكنك إدارة جميع محتويات الموقع من هنا: الأخبار، الخدمات الإدارية، الأرشيف، المعالم السياحية، وقائمة الرؤساء السابقين.</p>
+                </div>
+            </div>
+
+            <!-- ===== NEWS MANAGEMENT ===== -->
+            <div id="sec-news" class="section hidden fade-in">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-extrabold text-gray-800">إدارة الأخبار</h2>
+                    <button onclick="showForm('news')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-bold transition-colors">
+                        <span class="iconify inline-block ml-1" data-icon="lucide:plus"></span> إضافة خبر
+                    </button>
+                </div>
+                <!-- News Form -->
+                <div id="form-news" class="hidden bg-white rounded-2xl p-6 shadow-sm border border-gray-200 mb-6">
+                    <h3 class="font-bold text-gray-700 mb-4" id="form-news-title">إضافة خبر جديد</h3>
+                    <input type="hidden" id="news-edit-id" value="">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 mb-1">العنوان</label>
+                            <input id="news-title" type="text" class="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 mb-1">التصنيف</label>
+                            <select id="news-category" class="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                                <option value="official">إعلان رسمي</option>
+                                <option value="activity">نشاط بلدي</option>
+                                <option value="social">ركن المجتمع</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-xs font-bold text-gray-600 mb-1">المحتوى</label>
+                        <textarea id="news-content" rows="4" class="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none"></textarea>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 mb-1">رابط الصورة (اختياري)</label>
+                            <input id="news-image" type="text" class="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="https://...">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 mb-1">التاريخ</label>
+                            <input id="news-date" type="date" class="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <button onclick="saveNews()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-colors">حفظ</button>
+                        <button onclick="hideForm('news')" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2.5 rounded-xl text-sm font-bold transition-colors">إلغاء</button>
+                    </div>
+                </div>
+                <!-- News List -->
+                <div id="news-list" class="space-y-3"></div>
+            </div>
+
+            <!-- ===== SERVICES MANAGEMENT ===== -->
+            <div id="sec-services" class="section hidden fade-in">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-extrabold text-gray-800">إدارة الخدمات</h2>
+                    <button onclick="showForm('services')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-bold transition-colors">
+                        <span class="iconify inline-block ml-1" data-icon="lucide:plus"></span> إضافة خدمة
+                    </button>
+                </div>
+                <div id="form-services" class="hidden bg-white rounded-2xl p-6 shadow-sm border border-gray-200 mb-6">
+                    <h3 class="font-bold text-gray-700 mb-4" id="form-services-title">إضافة خدمة جديدة</h3>
+                    <input type="hidden" id="services-edit-id" value="">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 mb-1">اسم الخدمة</label>
+                            <input id="svc-name" type="text" class="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 mb-1">الوثائق المطلوبة (كل وثيقة في سطر |)</label>
+                            <textarea id="svc-docs" rows="4" class="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="وثيقة 1|وثيقة 2|وثيقة 3"></textarea>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-600 mb-1">رابط PDF</label>
+                                <input id="svc-pdf" type="text" class="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-600 mb-1">اللون</label>
+                                <select id="svc-color" class="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                                    <option value="blue">أزرق</option>
+                                    <option value="emerald">أخضر</option>
+                                    <option value="amber">ذهبي</option>
+                                    <option value="purple">بنفسجي</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-600 mb-1">الأيقونة</label>
+                                <input id="svc-icon" type="text" class="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" value="file-text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 mt-4">
+                        <button onclick="saveService()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-colors">حفظ</button>
+                        <button onclick="hideForm('services')" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2.5 rounded-xl text-sm font-bold transition-colors">إلغاء</button>
+                    </div>
+                </div>
+                <div id="services-list" class="space-y-3"></div>
+            </div>
+
+            <!-- ===== ARCHIVES MANAGEMENT ===== -->
+            <div id="sec-archives" class="section hidden fade-in">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-extrabold text-gray-800">إدارة الأرشيف</h2>
+                    <button onclick="showForm('archives')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-bold transition-colors">
+                        <span class="iconify inline-block ml-1" data-icon="lucide:plus"></span> إضافة عنصر
+                    </button>
+                </div>
+                <div id="form-archives" class="hidden bg-white rounded-2xl p-6 shadow-sm border border-gray-200 mb-6">
+                    <h3 class="font-bold text-gray-700 mb-4" id="form-archives-title">إضافة عنصر أرشيف</h3>
+                    <input type="hidden" id="archives-edit-id" value="">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 mb-1">العنوان</label>
+                            <input id="arch-title" type="text" class="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 mb-1">الوصف</label>
+                            <textarea id="arch-desc" rows="2" class="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none"></textarea>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-600 mb-1">رابط صورة قديمة</label>
+                                <input id="arch-old" type="text" class="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-600 mb-1">رابط صورة حديثة</label>
+                                <input id="arch-new" type="text" class="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 mt-4">
+                        <button onclick="saveArchive()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-colors">حفظ</button>
+                        <button onclick="hideForm('archives')" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2.5 rounded-xl text-sm font-bold transition-colors">إلغاء</button>
+                    </div>
+                </div>
+                <div id="archives-list" class="space-y-3"></div>
+            </div>
+
+            <!-- ===== TOURISM MANAGEMENT ===== -->
+            <div id="sec-tourism" class="section hidden fade-in">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-extrabold text-gray-800">إدارة السياحة</h2>
+                    <button onclick="showForm('tourism')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-bold transition-colors">
+                        <span class="iconify inline-block ml-1" data-icon="lucide:plus"></span> إضافة معلم
+                    </button>
+                </div>
+                <div id="form-tourism" class="hidden bg-white rounded-2xl p-6 shadow-sm border border-gray-200 mb-6">
+                    <h3 class="font-bold text-gray-700 mb-4" id="form-tourism-title">إضافة معلم سياحي</h3>
+                    <input type="hidden" id="tourism-edit-id" value="">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 mb-1">الاسم</label>
+                            <input id="tour-name" type="text" class="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 mb-1">الاسم الفرعي</label>
+                            <input id="tour-sub" type="text" class="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-xs font-bold text-gray-600 mb-1">الوصف</label>
+                        <textarea id="tour-desc" rows="3" class="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none"></textarea>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 mb-1">رابط الصورة</label>
+                            <input id="tour-img" type="text" class="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 mb-1">التقييم</label>
+                            <input id="tour-rate" type="text" class="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" value="4.5">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 mb-1">المسافة</label>
+                            <input id="tour-dist" type="text" class="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 mb-1">لون الشارة</label>
+                            <select id="tour-badge-color" class="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                                <option value="emerald">أخضر</option>
+                                <option value="amber">ذهبي</option>
+                                <option value="purple">بنفسجي</option>
+                                <option value="teal">فيروزي</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-xs font-bold text-gray-600 mb-1">نص الشارة</label>
+                        <input id="tour-badge-text" type="text" class="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                    </div>
+                    <div class="flex gap-3">
+                        <button onclick="saveTourism()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-colors">حفظ</button>
+                        <button onclick="hideForm('tourism')" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2.5 rounded-xl text-sm font-bold transition-colors">إلغاء</button>
+                    </div>
+                </div>
+                <div id="tourism-list" class="space-y-3"></div>
+            </div>
+
+            <!-- ===== MAYORS MANAGEMENT ===== -->
+            <div id="sec-mayors" class="section hidden fade-in">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-extrabold text-gray-800">إدارة الرؤساء</h2>
+                    <button onclick="showForm('mayors')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-bold transition-colors">
+                        <span class="iconify inline-block ml-1" data-icon="lucide:plus"></span> إضافة رئيس
+                    </button>
+                </div>
+                <div id="form-mayors" class="hidden bg-white rounded-2xl p-6 shadow-sm border border-gray-200 mb-6">
+                    <h3 class="font-bold text-gray-700 mb-4" id="form-mayors-title">إضافة رئيس</h3>
+                    <input type="hidden" id="mayors-edit-id" value="">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 mb-1">الاسم الكامل</label>
+                            <input id="mayor-name" type="text" class="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 mb-1">الفترة</label>
+                            <input id="mayor-period" type="text" class="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="2021 — الآن">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-600 mb-1">رابط الصورة</label>
+                            <input id="mayor-img" type="text" class="w-full border rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                        </div>
+                    </div>
+                    <div class="flex gap-3 mt-4">
+                        <button onclick="saveMayor()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-colors">حفظ</button>
+                        <button onclick="hideForm('mayors')" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2.5 rounded-xl text-sm font-bold transition-colors">إلغاء</button>
+                    </div>
+                </div>
+                <div id="mayors-list" class="space-y-3"></div>
+            </div>
+
+        </main>
+    </div>
+</div>
+
+<script>
+// ===== AUTH =====
+let TOKEN = localStorage.getItem('chetaibi_token') || '';
+
+async function api(path, opts = {}) {
+    const headers = { 'Content-Type': 'application/json', ...(opts.headers || {}) };
+    if (TOKEN) headers['Authorization'] = 'Bearer ' + TOKEN;
+    const res = await fetch('/api/' + path, { ...opts, headers });
+    return res.json();
+}
+
+async function doLogin() {
+    const username = document.getElementById('login-user').value;
+    const password = document.getElementById('login-pass').value;
+    const errDiv = document.getElementById('login-error');
+    errDiv.classList.add('hidden');
+    try {
+        const res = await fetch('/api/auth', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password }),
+        });
+        const data = await res.json();
+        if (data.success) {
+            TOKEN = data.token;
+            localStorage.setItem('chetaibi_token', TOKEN);
+            showDashboard();
+        } else {
+            errDiv.textContent = data.error || 'بيانات غير صحيحة';
+            errDiv.classList.remove('hidden');
+        }
+    } catch {
+        errDiv.textContent = 'خطأ في الاتصال';
+        errDiv.classList.remove('hidden');
+    }
+}
+
+function doLogout() {
+    TOKEN = '';
+    localStorage.removeItem('chetaibi_token');
+    document.getElementById('dashboard').classList.add('hidden');
+    document.getElementById('login-screen').classList.remove('hidden');
+}
+
+async function checkAuth() {
+    if (!TOKEN) return false;
+    try {
+        const res = await api('auth');
+        return res.valid === true;
+    } catch { return false; }
+}
+
+// ===== NAVIGATION =====
+function showSection(name) {
+    document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+    document.getElementById('sec-' + name).classList.remove('hidden');
+    document.querySelectorAll('.side-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.section === name);
+    });
+    document.querySelectorAll('[data-section]').forEach(b => {
+        if (b.closest('.md\\:hidden')) {
+            b.classList.toggle('text-emerald-600', b.dataset.section === name);
+            b.classList.toggle('text-gray-500', b.dataset.section !== name);
+        }
+    });
+    loadSection(name);
+}
+
+function showForm(name) {
+    document.getElementById('form-' + name).classList.remove('hidden');
+    document.getElementById(name + '-edit-id').value = '';
+    document.getElementById('form-' + name + '-title').textContent = 'إضافة جديد';
+}
+function hideForm(name) {
+    document.getElementById('form-' + name).classList.add('hidden');
+}
+
+// ===== LOAD DATA =====
+const catLabels = { official: 'إعلان رسمي', activity: 'نشاط بلدي', social: 'ركن المجتمع' };
+const catColors = { official: 'red', activity: 'emerald', social: 'purple' };
+
+async function loadSection(name) {
+    if (name === 'overview') {
+        const [news, services, tourism] = await Promise.all([
+            api('news'), api('services'), api('tourism')
+        ]);
+        document.getElementById('stat-news').textContent = (news.data || []).length;
+        document.getElementById('stat-services').textContent = (services.data || []).length;
+        document.getElementById('stat-tourism').textContent = (tourism.data || []).length;
+        return;
+    }
+    if (name === 'news') {
+        const res = await api('news');
+        const list = document.getElementById('news-list');
+        if (!res.data || res.data.length === 0) { list.innerHTML = '<p class="text-gray-400 text-sm text-center py-8">لا توجد أخبار بعد</p>'; return; }
+        list.innerHTML = res.data.map(n => `
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-3">
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="inline-block bg-${catColors[n.category]}-100 text-${catColors[n.category]}-700 text-[10px] font-bold px-2 py-0.5 rounded-full">${catLabels[n.category]}</span>
+                        <span class="text-[10px] text-gray-400">${n.date}</span>
+                    </div>
+                    <p class="font-bold text-gray-800 text-sm">${n.title}</p>
+                    <p class="text-xs text-gray-500 mt-1 line-clamp-2">${n.content?.substring(0, 100)}...</p>
+                </div>
+                <div class="flex items-center gap-2 flex-shrink-0">
+                    <a href="/news/${n.id}" target="_blank" class="text-emerald-600 hover:text-emerald-700 text-xs font-bold flex items-center gap-1">
+                        <span class="iconify" data-icon="lucide:external-link"></span> عرض
+                    </a>
+                    <button onclick="editNews(${n.id})" class="text-blue-600 hover:text-blue-700 text-xs font-bold flex items-center gap-1">
+                        <span class="iconify" data-icon="lucide:pencil"></span> تعديل
+                    </button>
+                    <button onclick="deleteItem('news',${n.id})" class="text-red-600 hover:text-red-700 text-xs font-bold flex items-center gap-1">
+                        <span class="iconify" data-icon="lucide:trash-2"></span> حذف
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+    if (name === 'services') {
+        const res = await api('services');
+        const list = document.getElementById('services-list');
+        if (!res.data || res.data.length === 0) { list.innerHTML = '<p class="text-gray-400 text-sm text-center py-8">لا توجد خدمات</p>'; return; }
+        list.innerHTML = res.data.map(s => `
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-3">
+                <div class="flex-1">
+                    <p class="font-bold text-gray-800 text-sm">${s.service_name}</p>
+                    <p class="text-xs text-gray-500 mt-1">${s.required_docs?.split('|').length} وثيقة مطلوبة</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="editService(${s.id})" class="text-blue-600 text-xs font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:pencil"></span> تعديل</button>
+                    <button onclick="deleteItem('services',${s.id})" class="text-red-600 text-xs font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:trash-2"></span> حذف</button>
+                </div>
+            </div>
+        `).join('');
+    }
+    if (name === 'archives') {
+        const res = await api('archives');
+        const list = document.getElementById('archives-list');
+        if (!res.data || res.data.length === 0) { list.innerHTML = '<p class="text-gray-400 text-sm text-center py-8">لا توجد عناصر</p>'; return; }
+        list.innerHTML = res.data.map(a => `
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-3">
+                <div class="flex-1">
+                    <p class="font-bold text-gray-800 text-sm">${a.title}</p>
+                    <p class="text-xs text-gray-500 mt-1">${a.description}</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="editArchive(${a.id})" class="text-blue-600 text-xs font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:pencil"></span> تعديل</button>
+                    <button onclick="deleteItem('archives',${a.id})" class="text-red-600 text-xs font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:trash-2"></span> حذف</button>
+                </div>
+            </div>
+        `).join('');
+    }
+    if (name === 'tourism') {
+        const res = await api('tourism');
+        const list = document.getElementById('tourism-list');
+        if (!res.data || res.data.length === 0) { list.innerHTML = '<p class="text-gray-400 text-sm text-center py-8">لا توجد معالم</p>'; return; }
+        list.innerHTML = res.data.map(t => `
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-3">
+                <div class="flex-1">
+                    <p class="font-bold text-gray-800 text-sm">${t.name} <span class="text-gray-400 font-normal">— ${t.subtitle}</span></p>
+                    <p class="text-xs text-gray-500 mt-1">${t.rating}/5 — ${t.distance_info}</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="editTourism(${t.id})" class="text-blue-600 text-xs font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:pencil"></span> تعديل</button>
+                    <button onclick="deleteItem('tourism',${t.id})" class="text-red-600 text-xs font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:trash-2"></span> حذف</button>
+                </div>
+            </div>
+        `).join('');
+    }
+    if (name === 'mayors') {
+        const res = await api('mayors');
+        const list = document.getElementById('mayors-list');
+        if (!res.data || res.data.length === 0) { list.innerHTML = '<p class="text-gray-400 text-sm text-center py-8">لا توجد بيانات</p>'; return; }
+        list.innerHTML = res.data.map(m => `
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-3">
+                <div class="flex-1">
+                    <p class="font-bold text-gray-800 text-sm">${m.name}</p>
+                    <p class="text-xs text-gray-500 mt-1">${m.period}</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="editMayor(${m.id})" class="text-blue-600 text-xs font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:pencil"></span> تعديل</button>
+                    <button onclick="deleteItem('mayors',${m.id})" class="text-red-600 text-xs font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:trash-2"></span> حذف</button>
+                </div>
+            </div>
+        `).join('');
+    }
+}
+
+// ===== SAVE FUNCTIONS =====
+async function saveNews() {
+    const id = document.getElementById('news-edit-id').value;
+    const body = {
+        title: document.getElementById('news-title').value,
+        category: document.getElementById('news-category').value,
+        content: document.getElementById('news-content').value,
+        image_url: document.getElementById('news-image').value,
+        date: document.getElementById('news-date').value || new Date().toISOString().split('T')[0],
+    };
+    if (id) {
+        await api('news/' + id, { method: 'PUT', body: JSON.stringify(body) });
+    } else {
+        await api('news', { method: 'POST', body: JSON.stringify(body) });
+    }
+    hideForm('news');
+    loadSection('news');
+}
+
+async function saveService() {
+    const id = document.getElementById('services-edit-id').value;
+    const body = {
+        service_name: document.getElementById('svc-name').value,
+        required_docs: document.getElementById('svc-docs').value,
+        pdf_link: document.getElementById('svc-pdf').value,
+        color: document.getElementById('svc-color').value,
+        icon: document.getElementById('svc-icon').value,
+    };
+    if (id) {
+        await api('services?id=' + id, { method: 'PUT', body: JSON.stringify(body) });
+    } else {
+        await api('services', { method: 'POST', body: JSON.stringify(body) });
+    }
+    hideForm('services');
+    loadSection('services');
+}
+
+async function saveArchive() {
+    const id = document.getElementById('archives-edit-id').value;
+    const body = {
+        title: document.getElementById('arch-title').value,
+        description: document.getElementById('arch-desc').value,
+        image_old_url: document.getElementById('arch-old').value,
+        image_new_url: document.getElementById('arch-new').value,
+    };
+    if (id) {
+        await api('archives?id=' + id, { method: 'PUT', body: JSON.stringify(body) });
+    } else {
+        await api('archives', { method: 'POST', body: JSON.stringify(body) });
+    }
+    hideForm('archives');
+    loadSection('archives');
+}
+
+async function saveTourism() {
+    const id = document.getElementById('tourism-edit-id').value;
+    const body = {
+        name: document.getElementById('tour-name').value,
+        subtitle: document.getElementById('tour-sub').value,
+        description: document.getElementById('tour-desc').value,
+        image_url: document.getElementById('tour-img').value,
+        rating: document.getElementById('tour-rate').value,
+        distance_info: document.getElementById('tour-dist').value,
+        badge_text: document.getElementById('tour-badge-text').value,
+        badge_color: document.getElementById('tour-badge-color').value,
+    };
+    if (id) {
+        await api('tourism?id=' + id, { method: 'PUT', body: JSON.stringify(body) });
+    } else {
+        await api('tourism', { method: 'POST', body: JSON.stringify(body) });
+    }
+    hideForm('tourism');
+    loadSection('tourism');
+}
+
+async function saveMayor() {
+    const id = document.getElementById('mayors-edit-id').value;
+    const body = {
+        name: document.getElementById('mayor-name').value,
+        period: document.getElementById('mayor-period').value,
+        image_url: document.getElementById('mayor-img').value,
+    };
+    if (id) {
+        await api('mayors?id=' + id, { method: 'PUT', body: JSON.stringify(body) });
+    } else {
+        await api('mayors', { method: 'POST', body: JSON.stringify(body) });
+    }
+    hideForm('mayors');
+    loadSection('mayors');
+}
+
+// ===== EDIT FUNCTIONS =====
+async function editNews(id) {
+    const res = await api('news/' + id);
+    if (!res.data) return;
+    const n = res.data;
+    document.getElementById('news-edit-id').value = n.id;
+    document.getElementById('news-title').value = n.title;
+    document.getElementById('news-category').value = n.category;
+    document.getElementById('news-content').value = n.content;
+    document.getElementById('news-image').value = n.image_url || '';
+    document.getElementById('news-date').value = n.date;
+    document.getElementById('form-news-title').textContent = 'تعديل الخبر';
+    showForm('news');
+}
+
+async function editService(id) {
+    const res = await api('services');
+    const s = (res.data || []).find(x => x.id === id);
+    if (!s) return;
+    document.getElementById('services-edit-id').value = s.id;
+    document.getElementById('svc-name').value = s.service_name;
+    document.getElementById('svc-docs').value = s.required_docs;
+    document.getElementById('svc-pdf').value = s.pdf_link || '';
+    document.getElementById('svc-color').value = s.color || 'blue';
+    document.getElementById('svc-icon').value = s.icon || 'file-text';
+    document.getElementById('form-services-title').textContent = 'تعديل الخدمة';
+    showForm('services');
+}
+
+async function editArchive(id) {
+    const res = await api('archives');
+    const a = (res.data || []).find(x => x.id === id);
+    if (!a) return;
+    document.getElementById('archives-edit-id').value = a.id;
+    document.getElementById('arch-title').value = a.title;
+    document.getElementById('arch-desc').value = a.description || '';
+    document.getElementById('arch-old').value = a.image_old_url || '';
+    document.getElementById('arch-new').value = a.image_new_url || '';
+    document.getElementById('form-archives-title').textContent = 'تعديل العنصر';
+    showForm('archives');
+}
+
+async function editTourism(id) {
+    const res = await api('tourism');
+    const t = (res.data || []).find(x => x.id === id);
+    if (!t) return;
+    document.getElementById('tourism-edit-id').value = t.id;
+    document.getElementById('tour-name').value = t.name;
+    document.getElementById('tour-sub').value = t.subtitle || '';
+    document.getElementById('tour-desc').value = t.description;
+    document.getElementById('tour-img').value = t.image_url || '';
+    document.getElementById('tour-rate').value = t.rating || '4.5';
+    document.getElementById('tour-dist').value = t.distance_info || '';
+    document.getElementById('tour-badge-text').value = t.badge_text || '';
+    document.getElementById('tour-badge-color').value = t.badge_color || 'emerald';
+    document.getElementById('form-tourism-title').textContent = 'تعديل المعلم';
+    showForm('tourism');
+}
+
+async function editMayor(id) {
+    const res = await api('mayors');
+    const m = (res.data || []).find(x => x.id === id);
+    if (!m) return;
+    document.getElementById('mayors-edit-id').value = m.id;
+    document.getElementById('mayor-name').value = m.name;
+    document.getElementById('mayor-period').value = m.period;
+    document.getElementById('mayor-img').value = m.image_url || '';
+    document.getElementById('form-mayors-title').textContent = 'تعديل الرئيس';
+    showForm('mayors');
+}
+
+// ===== DELETE =====
+async function deleteItem(type, id) {
+    if (!confirm('هل أنت متأكد من الحذف؟')) return;
+    if (type === 'news') {
+        await api('news/' + id, { method: 'DELETE' });
+    } else {
+        await api(type + '?id=' + id, { method: 'DELETE' });
+    }
+    loadSection(type);
+}
+
+// ===== INIT =====
+async function showDashboard() {
+    document.getElementById('login-screen').classList.add('hidden');
+    document.getElementById('dashboard').classList.remove('hidden');
+    showSection('overview');
+}
+
+(async () => {
+    const valid = await checkAuth();
+    if (valid) showDashboard();
+})();
+</script>
+</body>
+</html>
