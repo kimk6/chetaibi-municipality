@@ -1,4 +1,4 @@
-name = "chetaibi"
+name = "chetaibi-municipality"
 compatibility_date = "2024-12-01"
 pages_build_output_dir = "."
 
@@ -9,4 +9,4 @@ database_id = "88deecc8-4c2f-4bdb-8b1f-dba6dcaef585"
 
 [vars]
 ADMIN_USERNAME = "admin"
-JWT_SECRET = "change-this-to-a-long-random-string-32chars"
+JWT_SECRET = "xK9mP2vR7nB4wQ8jL5sT1yF6hN3cA0dE"
