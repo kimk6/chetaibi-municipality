@@ -110,13 +110,18 @@
             .timeline-line { right: 50%; transform: translateX(50%); }
         }
 
-        /* ===== شريط الموبايل: مخفي افتراضياً، يظهر عند التمرير ===== */
+        /* ===== شريط الموبايل: ثابت ومخفي افتراضياً ===== */
         @media (max-width: 767px) {
             #main-nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
                 transform: translateY(-100%);
                 opacity: 0;
                 transition: transform 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease;
                 pointer-events: none;
+                z-index: 50;
             }
             #main-nav.nav-visible {
                 transform: translateY(0);
@@ -142,15 +147,15 @@
         </div>
         <div class="max-w-7xl mx-auto px-4 flex items-center justify-center gap-4 relative z-10">
             <span class="text-2xl">🇩🇿</span>
-            <h1 class="text-sm md:text-lg font-bold tracking-wide text-center">الجمهورية الجزائرية الديمقراطية الشعبية</h1>
+            <h1 class="text-sm md:text-lg font-bold tracking-wide text-center whitespace-nowrap">الجمهورية الجزائرية الديمقراطية الشعبية</h1>
             <span class="text-2xl">🇩🇿</span>
         </div>
     </header>
 
     <!-- ============ LOGO BAR ============ -->
     <div class="bg-white border-b border-emerald-100 py-4 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 flex items-center justify-center gap-4">
-            <div class="w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-4 border-emerald-600 shadow-lg flex-shrink-0">
+        <div class="max-w-7xl mx-auto px-4 flex items-center justify-center gap-3">
+            <div class="w-[72px] h-[72px] md:w-[88px] md:h-[88px] rounded-full overflow-hidden border-2 border-emerald-600 shadow-lg flex-shrink-0 p-0">
                 <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhsuqarYy0w18IFNzodUCI9s5mzSJ6lpMF7gaPC-_Z6oSkS0-OCkQVFukxyFLliwuTNa03h2Qs-ZnzPAJZOsKw1vfFQGGNSXdi370duVtU1oo2H6dJ69Nnx8XgcrFRX8NgZWmf5usi_AHDwCD4BW-Nz1BNnD2OPTCQAQRvqk_iGt3tjrig/s1600/1000085786.png" alt="شعار البلدية" class="w-full h-full object-cover">
             </div>
             <div class="text-center">
@@ -164,7 +169,7 @@
     <nav id="main-nav" class="bg-emerald-700 sticky top-0 z-50 shadow-lg">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex items-center justify-between h-14">
-                <div class="hidden md:flex items-center gap-1">
+                <div class="hidden md:flex items-center justify-center flex-1 gap-1">
                     <a href="#home" class="nav-link active-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">الرئيسية</a>
                     <a href="#news" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">الأخبار</a>
                     <a href="#admin" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">الإدارة</a>
@@ -207,8 +212,11 @@
                 مرحباً بكم في<br>
                 <span class="text-emerald-300">شطايبي</span>
             </h2>
-            <p class="text-lg md:text-2xl font-light mb-10 max-w-2xl mx-auto text-white/85 animate-fadeInUp anim-delay-2">
-                درة الساحل الشرقي الجزائري — حيث تمتزج الطبيعة بالتاريخ
+            <p class="text-lg md:text-2xl font-light mb-4 max-w-2xl mx-auto text-white/85 animate-fadeInUp anim-delay-2">
+                جوهرة الساحل الشرقي الجزائري
+            </p>
+            <p class="text-base md:text-xl font-light mb-10 max-w-xl mx-auto text-white/70 animate-fadeInUp anim-delay-2">
+                حيث تمتزج الطبيعة بالتاريخ
             </p>
             <div class="flex flex-wrap justify-center gap-4 animate-fadeInUp anim-delay-3">
                 <a href="#admin" class="bg-white text-emerald-800 px-8 py-3.5 rounded-xl font-bold hover:bg-emerald-50 transition-colors shadow-xl text-sm md:text-base">
@@ -218,6 +226,10 @@
                 <a href="#tourism" class="bg-emerald-500/40 backdrop-blur-sm text-white border-2 border-white/40 px-8 py-3.5 rounded-xl font-bold hover:bg-emerald-500/60 transition-colors text-sm md:text-base">
                     <span class="iconify inline-block ml-2" data-icon="lucide:compass"></span>
                     اكتشف السياحة
+                </a>
+                <a href="#news" class="bg-white/15 backdrop-blur-sm text-white border-2 border-white/30 px-8 py-3.5 rounded-xl font-bold hover:bg-white/25 transition-colors text-sm md:text-base">
+                    <span class="iconify inline-block ml-2" data-icon="lucide:newspaper"></span>
+                    آخر المستجدات
                 </a>
             </div>
         </div>
@@ -229,6 +241,32 @@
 
     <!-- ============ WIDGETS & STATS ============ -->
     <section class="relative -mt-16 z-20 max-w-7xl mx-auto px-4 mb-16">
+
+        <!-- Vital Stats -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-6">
+            <div class="stat-card bg-white rounded-2xl p-6 shadow-lg border border-emerald-100 text-center hover:shadow-xl">
+                <div class="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <span class="iconify text-emerald-600 text-3xl" data-icon="lucide:maximize-2"></span>
+                </div>
+                <p class="text-3xl font-extrabold text-emerald-700">134</p>
+                <p class="text-sm text-gray-500 font-semibold mt-1">كم² — المساحة الإجمالية</p>
+            </div>
+            <div class="stat-card bg-white rounded-2xl p-6 shadow-lg border border-blue-100 text-center hover:shadow-xl">
+                <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <span class="iconify text-blue-600 text-3xl" data-icon="lucide:users"></span>
+                </div>
+                <p class="text-3xl font-extrabold text-blue-700">~8,035</p>
+                <p class="text-sm text-gray-500 font-semibold mt-1">نسمة — عدد السكان</p>
+            </div>
+            <div class="stat-card bg-white rounded-2xl p-6 shadow-lg border border-amber-100 text-center hover:shadow-xl">
+                <div class="w-16 h-16 bg-amber-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <span class="iconify text-amber-600 text-3xl" data-icon="lucide:mail"></span>
+                </div>
+                <p class="text-3xl font-extrabold text-amber-700">23014</p>
+                <p class="text-sm text-gray-500 font-semibold mt-1">الرمز البريدي</p>
+            </div>
+        </div>
+
         <!-- Weather & Sea Widgets -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
             <!-- Weather Widget -->
@@ -304,31 +342,6 @@
             </div>
         </div>
 
-        <!-- Vital Stats -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-6">
-            <div class="stat-card bg-white rounded-2xl p-6 shadow-lg border border-emerald-100 text-center hover:shadow-xl">
-                <div class="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <span class="iconify text-emerald-600 text-3xl" data-icon="lucide:maximize-2"></span>
-                </div>
-                <p class="text-3xl font-extrabold text-emerald-700">134</p>
-                <p class="text-sm text-gray-500 font-semibold mt-1">كم² — المساحة الإجمالية</p>
-            </div>
-            <div class="stat-card bg-white rounded-2xl p-6 shadow-lg border border-blue-100 text-center hover:shadow-xl">
-                <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <span class="iconify text-blue-600 text-3xl" data-icon="lucide:users"></span>
-                </div>
-                <p class="text-3xl font-extrabold text-blue-700">~8,035</p>
-                <p class="text-sm text-gray-500 font-semibold mt-1">نسمة — عدد السكان</p>
-            </div>
-            <div class="stat-card bg-white rounded-2xl p-6 shadow-lg border border-amber-100 text-center hover:shadow-xl">
-                <div class="w-16 h-16 bg-amber-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <span class="iconify text-amber-600 text-3xl" data-icon="lucide:mail"></span>
-                </div>
-                <p class="text-3xl font-extrabold text-amber-700">23014</p>
-                <p class="text-sm text-gray-500 font-semibold mt-1">الرمز البريدي</p>
-            </div>
-        </div>
-
         <!-- Executive Summary -->
         <div class="bg-gradient-to-l from-emerald-700 to-emerald-800 rounded-2xl p-6 md:p-8 shadow-xl text-white flex flex-col md:flex-row items-center gap-6">
             <div class="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0 border-3 border-white/30">
@@ -340,14 +353,6 @@
                 <p class="text-white/75 text-sm leading-relaxed max-w-xl">يتولى السيد عثماني سليمان رئاسة المجلس الشعبي البلدي لشطايبي، حيث يعمل على تطوير البلدية وتحسين الخدمات المقدمة للمواطنين ضمن رؤية تنموية شاملة.</p>
             </div>
             <div class="flex gap-3 flex-wrap justify-center md:justify-start">
-                <a href="#admin" class="bg-white/15 hover:bg-white/25 backdrop-blur-sm px-5 py-2.5 rounded-xl text-sm font-bold transition-colors border border-white/20">
-                    <span class="iconify inline-block ml-1" data-icon="lucide:building-2"></span>
-                    الخدمات
-                </a>
-                <a href="#news" class="bg-white text-emerald-800 px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-emerald-50 transition-colors">
-                    <span class="iconify inline-block ml-1" data-icon="lucide:newspaper"></span>
-                    الأخبار
-                </a>
                 <a href="/mayors" class="bg-white/15 hover:bg-white/25 backdrop-blur-sm px-5 py-2.5 rounded-xl text-sm font-bold transition-colors border border-white/20">
                     <span class="iconify inline-block ml-1" data-icon="lucide:users"></span>
                     الرؤساء السابقون
@@ -401,7 +406,7 @@
             </div>
 
             <div id="services-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Service 1: Biometric Passport/ID -->
+                <!-- Service 1 -->
                 <div class="service-card bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-md">
                     <div class="bg-gradient-to-l from-blue-600 to-blue-800 p-6 text-white text-center">
                         <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3">
@@ -451,7 +456,7 @@
                     </div>
                 </div>
 
-                <!-- Service 2: Civil Status -->
+                <!-- Service 2 -->
                 <div class="service-card bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-md">
                     <div class="bg-gradient-to-l from-emerald-600 to-emerald-800 p-6 text-white text-center">
                         <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3">
@@ -501,7 +506,7 @@
                     </div>
                 </div>
 
-                <!-- Service 3: Urban Planning -->
+                <!-- Service 3 -->
                 <div class="service-card bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-md">
                     <div class="bg-gradient-to-l from-amber-600 to-amber-800 p-6 text-white text-center">
                         <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3">
@@ -964,15 +969,12 @@
                 <p class="text-xs text-gray-500 text-center md:text-right">
                     © 2025 بلدية شطايبي — جميع الحقوق محفوظة 🇩🇿
                 </p>
-                <p class="text-xs text-gray-600 text-center md:text-left">
-                    الموقع الرسمي لبلدية شطايبي — ولاية عنابة — الجمهورية الجزائرية الديمقراطية الشعبية
-                </p>
             </div>
         </div>
     </footer>
 
     <!-- ============ BACK TO TOP ============ -->
-    <button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 left-6 z-50 w-12 h-12 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full shadow-xl flex items-center justify-center transition-all opacity-0 translate-y-4 pointer-events-none">
+    <button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 left-6 z-50 w-12 h-12 bg-emerald-600/70 hover:bg-emerald-700/80 text-white rounded-full shadow-xl flex items-center justify-center transition-all opacity-0 translate-y-4 pointer-events-none backdrop-blur-sm">
         <span class="iconify text-xl" data-icon="lucide:arrow-up"></span>
     </button>
 
@@ -1055,7 +1057,7 @@
             });
         });
 
-        // ---- Weather Widget (Open-Meteo API) ----
+        // ---- Weather Widget ----
         async function fetchWeather() {
             try {
                 const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=36.78&longitude=7.35&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&daily=temperature_2m_max,temperature_2m_min&timezone=Africa/Algiers&forecast_days=1');
@@ -1091,7 +1093,7 @@
             }
         }
 
-        // ---- Sea State Widget (Open-Meteo Marine API) ----
+        // ---- Sea State Widget ----
         async function fetchSeaState() {
             try {
                 const res = await fetch('https://marine-api.open-meteo.com/v1/marine?latitude=36.78&longitude=7.35&current=wave_height,wind_wave_height,swell_wave_height,wind_wave_direction');
@@ -1119,7 +1121,7 @@
             }
         }
 
-        // ---- Dynamic News Loading from D1 ----
+        // ---- Dynamic News Loading ----
         const categoryMap = { official: 'announcements', activity: 'activities', social: 'community' };
         const catStyles = {
             official: { label: 'إعلان عاجل', grad: 'from-red-500 to-red-700', badge: 'bg-red-100 text-red-700', icon: 'lucide:megaphone' },
@@ -1176,7 +1178,6 @@
                     }).join('');
                 });
 
-                // Show first tab with content
                 const firstActive = grouped.announcements.length > 0 ? 'announcements'
                     : grouped.activities.length > 0 ? 'activities' : 'community';
                 document.getElementById('content-' + firstActive).classList.remove('hidden');
@@ -1194,7 +1195,7 @@
             }
         }
 
-        // ---- Init Everything ----
+        // ---- Init ----
         fetchWeather();
         fetchSeaState();
         loadNews();
