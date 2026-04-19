@@ -263,7 +263,7 @@
                 <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
                     <span class="iconify text-blue-600 text-3xl" data-icon="lucide:users"></span>
                 </div>
-                <p class="text-3xl font-extrabold text-blue-700">~8,767</p>
+                <p class="text-3xl font-extrabold text-blue-700">8,767</p>
                 <p class="text-sm text-gray-500 font-semibold mt-1">نسمة — عدد السكان</p>
             </div>
             <div class="stat-card bg-white rounded-2xl p-6 shadow-lg border border-amber-100 text-center hover:shadow-xl">
@@ -691,6 +691,8 @@
                     <ul class="space-y-4">
                         <li class="flex items-start gap-3"><span class="iconify text-emerald-400 text-lg mt-0.5 flex-shrink-0" data-icon="lucide:mail"></span><div><p class="text-xs text-gray-500 mb-0.5">البريد الإلكتروني</p><a href="mailto:apc.chetaibi.officiel@gmail.com" class="text-sm text-gray-300 hover:text-emerald-400 transition-colors break-all">apc.chetaibi.officiel@gmail.com</a></div></li>
                         <li class="flex items-start gap-3"><span class="iconify text-emerald-400 text-lg mt-0.5 flex-shrink-0" data-icon="lucide:map-pin"></span><div><p class="text-xs text-gray-500 mb-0.5">العنوان</p><p class="text-sm text-gray-300">بلدية شطايبي، ولاية عنابة، الجزائر</p></div></li>
+                        <li class="flex items-start gap-3"><span class="iconify text-emerald-400 text-lg mt-0.5 flex-shrink-0" data-icon="lucide:phone"></span><div><p class="text-xs text-gray-500 mb-0.5">الهاتف</p><p class="text-sm text-gray-300" dir="ltr">038 87 07 16</p></div></li>
+                        <li class="flex items-start gap-3"><span class="iconify text-emerald-400 text-lg mt-0.5 flex-shrink-0" data-icon="lucide:printer"></span><div><p class="text-xs text-gray-500 mb-0.5">الفاكس</p><p class="text-sm text-gray-300" dir="ltr">038 87 07 15</p></div></li>
                         <li class="flex items-start gap-3"><span class="iconify text-emerald-400 text-lg mt-0.5 flex-shrink-0" data-icon="lucide:facebook"></span><div><p class="text-xs text-gray-500 mb-0.5">صفحة فيسبوك</p><a href="https://facebook.com/apc.chetaibi.page.officielle" target="_blank" class="text-sm text-gray-300 hover:text-emerald-400 transition-colors">الصفحة الرسمية</a></div></li>
                     </ul>
                 </div>
@@ -706,7 +708,7 @@
         </div>
         <div class="border-t border-gray-800">
             <div class="max-w-7xl mx-auto px-4 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
-                <p class="text-xs text-gray-500 text-center md:text-right">© 2025 بلدية شطايبي — جميع الحقوق محفوظة</p>
+                <p class="text-xs text-gray-500 text-center md:text-right">© 2025 بلدية شطايبي — جميع الحقوق محفوظة 🇩🇿</p>
             </div>
         </div>
     </footer>
@@ -813,13 +815,16 @@
                     c.innerHTML=items.map(n=>{
                         const s=catStyles[n.category]||catStyles.official;
                         const img=n.image_url||'';
-                        const pin=n.is_pinned?'<div class="pin-badge"><span class="iconify text-sm" data-icon="lucide:pin"></span></div>':'';
-                        return `<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100 relative">
-                            ${img?`<div class="h-48 overflow-hidden relative">${pin}<img src="${img}" alt="${n.title}" class="w-full h-full object-cover"></div>`:`<div class="h-48 bg-gradient-to-bl ${s.grad} flex items-center justify-center relative">${pin}<span class="iconify text-white text-6xl" data-icon="${s.icon}"></span></div>`}
+                        const isPinned=n.is_pinned==1;
+                        const pinBadge=isPinned?'<div class="pin-badge"><span class="iconify text-sm" data-icon="lucide:pin"></span></div>':'';
+                        const pinLabel=isPinned?'<span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-600 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-200"><span class="iconify" data-icon="lucide:pin"></span>مثبت</span>':'';
+                        const pinBorder=isPinned?'border-emerald-300 ring-1 ring-emerald-200':'border-gray-100';
+                        return `<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border ${pinBorder} relative">
+                            ${img?`<div class="h-48 overflow-hidden relative">${pinBadge}<img src="${img}" alt="${n.title}" class="w-full h-full object-cover"></div>`:`<div class="h-48 bg-gradient-to-bl ${s.grad} flex items-center justify-center relative">${pinBadge}<span class="iconify text-white text-6xl" data-icon="${s.icon}"></span></div>`}
                             <div class="p-5">
-                                <div class="flex items-center gap-2 mb-3">
+                                <div class="flex items-center gap-2 mb-3 flex-wrap">
                                     <span class="inline-block ${s.badge} text-xs font-bold px-3 py-1 rounded-full">${s.label}</span>
-                                    ${n.is_pinned?'<span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-600 text-[10px] font-bold px-2 py-0.5 rounded-full"><span class="iconify" data-icon="lucide:pin"></span>مثبت</span>':''}
+                                    ${pinLabel}
                                 </div>
                                 <h4 class="font-bold text-gray-800 mb-2 leading-snug">${n.title}</h4>
                                 <p class="text-sm text-gray-500 mb-4 leading-relaxed">${(n.content||'').substring(0,120)}...</p>
