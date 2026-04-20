@@ -207,47 +207,44 @@
     </nav>
 
     <!-- ============ HERO SECTION ============ -->
-    <section id="home" class="relative min-h-[75vh] md:min-h-[85vh] flex items-center overflow-hidden">
+    <section id="home" class="relative min-h-[65vh] md:min-h-[70vh] flex items-end overflow-hidden">
         <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/APC-Chetaibi.webp" alt="بلدية شطايبي" class="absolute inset-0 w-full h-full object-cover">
         <div class="hero-overlay absolute inset-0"></div>
-        <div class="relative z-10 max-w-7xl mx-auto px-4 py-20 text-white text-center w-full">
+        <div class="relative z-10 max-w-7xl mx-auto px-4 pt-16 pb-10 text-white text-center w-full">
             <div class="animate-fadeInUp">
-                <span class="inline-block bg-white/15 backdrop-blur-sm text-sm md:text-base px-5 py-2 rounded-full mb-6 border border-white/20">
+                <span class="inline-block bg-white/15 backdrop-blur-sm text-sm md:text-base px-5 py-2 rounded-full mb-5 border border-white/20">
                     <span class="iconify inline-block ml-1" data-icon="lucide:map-pin"></span>
                     ولاية عنابة - الجزائر
                 </span>
             </div>
-            <h2 class="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight animate-fadeInUp anim-delay-1">
+            <h2 class="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-4 leading-tight animate-fadeInUp anim-delay-1">
                 مرحباً بكم في<br>
                 <span class="text-amber-300 drop-shadow-lg">شطايبي</span>
             </h2>
-            <p class="text-xl md:text-3xl font-bold mb-3 max-w-2xl mx-auto text-white/95 animate-fadeInUp anim-delay-2">
+            <p class="text-xl md:text-3xl font-bold mb-2 max-w-2xl mx-auto text-white/95 animate-fadeInUp anim-delay-2">
                 جوهرة الساحل الشرقي الجزائري
             </p>
-            <p class="text-lg md:text-xl font-bold mb-10 max-w-xl mx-auto text-white/85 animate-fadeInUp anim-delay-2">
+            <p class="text-lg md:text-xl font-bold mb-8 max-w-xl mx-auto text-white/85 animate-fadeInUp anim-delay-2">
                 حيث تمتزج الطبيعة بالتاريخ
             </p>
-            <div class="flex flex-wrap justify-center gap-4 animate-fadeInUp anim-delay-3">
-                <a href="#admin" class="bg-white text-emerald-800 px-8 py-3.5 rounded-xl font-bold hover:bg-gray-100 transition-colors text-sm md:text-base shadow-lg">
-                    <span class="iconify inline-block ml-2" data-icon="lucide:file-text"></span>
+            <div class="grid grid-cols-2 md:flex md:flex-wrap justify-center gap-3 md:gap-4 animate-fadeInUp anim-delay-3 max-w-2xl mx-auto">
+                <a href="#admin" class="bg-white/75 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white/85 transition-colors text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-md">
+                    <span class="iconify text-base md:text-lg" data-icon="lucide:file-text"></span>
                     الخدمات الإدارية
                 </a>
-                <a href="#tourism" class="bg-white text-emerald-800 px-8 py-3.5 rounded-xl font-bold hover:bg-gray-100 transition-colors text-sm md:text-base shadow-lg">
-                    <span class="iconify inline-block ml-2" data-icon="lucide:compass"></span>
+                <a href="#tourism" class="bg-white/75 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white/85 transition-colors text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-md">
+                    <span class="iconify text-base md:text-lg" data-icon="lucide:compass"></span>
                     اكتشف السياحة
                 </a>
-                <a href="#news" class="bg-white text-emerald-800 px-8 py-3.5 rounded-xl font-bold hover:bg-gray-100 transition-colors text-sm md:text-base shadow-lg">
-                    <span class="iconify inline-block ml-2" data-icon="lucide:newspaper"></span>
+                <a href="#news" class="bg-white/75 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white/85 transition-colors text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-md">
+                    <span class="iconify text-base md:text-lg" data-icon="lucide:newspaper"></span>
                     آخر المستجدات
                 </a>
-                <a href="#guide" class="bg-white text-emerald-800 px-8 py-3.5 rounded-xl font-bold hover:bg-gray-100 transition-colors text-sm md:text-base shadow-lg">
-                    <span class="iconify inline-block ml-2" data-icon="lucide:map"></span>
+                <a href="#guide" class="bg-white/75 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white/85 transition-colors text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-md">
+                    <span class="iconify text-base md:text-lg" data-icon="lucide:map"></span>
                     دليل البلدية
                 </a>
             </div>
-        </div>
-        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/60 animate-bounce">
-            <span class="iconify text-3xl" data-icon="lucide:chevrons-down"></span>
         </div>
     </section>
 
@@ -773,11 +770,18 @@
 
         async function fetchWeather() {
             try {
-                const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=36.7833&longitude=7.35&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&daily=temperature_2m_max,temperature_2m_min&timezone=Africa/Algiers&forecast_days=1');
+                const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=36.7808&longitude=7.3497&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&hourly=temperature_2m&daily=temperature_2m_max,temperature_2m_min&timezone=Africa/Algiers&forecast_days=1');
                 const d = await r.json(), cu = d.current, dl = d.daily;
-                const wm = {0:{i:'☀️',d:'صافٍ'},1:{i:'🌤️',d:'غائم خفيف'},2:{i:'⛅',d:'غائم جزئياً'},3:{i:'☁️',d:'غائم'},45:{i:'🌫️',d:'ضبابي'},48:{i:'🌫️',d:'ضبابي'},51:{i:'🌦️',d:'رذاذ'},53:{i:'🌦️',d:'رذاذ'},55:{i:'🌧️',d:'رذاذ كثيف'},61:{i:'🌧️',d:'ممطر'},63:{i:'🌧️',d:'مطر متوسط'},65:{i:'🌧️',d:'مطر غزير'},71:{i:'❄️',d:'ثلج'},73:{i:'❄️',d:'ثلج'},75:{i:'❄️',d:'ثلج كثيف'},80:{i:'🌦️',d:'زخات'},81:{i:'🌧️',d:'زخات'},82:{i:'⛈️',d:'عنيفة'},95:{i:'⛈️',d:'عاصفة'},96:{i:'⛈️',d:'برد'},99:{i:'⛈️',d:'شديدة'}};
+                const wm = {0:{i:'☀️',d:'صافٍ'},1:{i:'🌤️',d:'غائم خفيف'},2:{i:'⛅',d:'غائم جزئياً'},3:{i:'☁️',d:'غائم'},45:{i:'🌫️',d:'ضبابي'},48:{i:'🌫️',d:'ضبابي كثيف'},51:{i:'🌦️',d:'رذاذ خفيف'},53:{i:'🌦️',d:'رذاذ'},55:{i:'🌧️',d:'رذاذ كثيف'},56:{i:'🌧️',d:'رذاذ متجمد'},57:{i:'🌧️',d:'رذاذ متجمد كثيف'},61:{i:'🌧️',d:'ممطر'},63:{i:'🌧️',d:'مطر متوسط'},65:{i:'🌧️',d:'مطر غزير'},66:{i:'🌧️',d:'مطر متجمد'},67:{i:'🌧️',d:'مطر متجمد غزير'},71:{i:'❄️',d:'ثلج خفيف'},73:{i:'❄️',d:'ثلج'},75:{i:'❄️',d:'ثلج كثيف'},77:{i:'🌨️',d:'حبيبات ثلج'},80:{i:'🌦️',d:'زخات خفيفة'},81:{i:'🌧️',d:'زخات'},82:{i:'⛈️',d:'زخات عنيفة'},85:{i:'❄️',d:'زخات ثلج'},86:{i:'❄️',d:'زخات ثلج كثيف'},95:{i:'⛈️',d:'عاصفة رعدية'},96:{i:'⛈️',d:'عاصفة مع برد'},99:{i:'⛈️',d:'عاصفة شديدة'}};
                 const w = wm[cu.weather_code] || {i:'🌡️',d:'متغير'};
-                document.getElementById('weather-temp').textContent = Math.round(cu.temperature_2m) + '°';
+                let temp = cu.temperature_2m;
+                if (d.hourly && d.hourly.temperature_2m) {
+                    const now = new Date();
+                    const hIdx = d.hourly.time.findIndex(t => new Date(t) >= now);
+                    if (hIdx > 0) temp = d.hourly.temperature_2m[hIdx - 1];
+                    else if (hIdx === 0) temp = d.hourly.temperature_2m[0];
+                }
+                document.getElementById('weather-temp').textContent = Math.round(temp) + '°';
                 document.getElementById('weather-icon').textContent = w.i;
                 document.getElementById('weather-desc').textContent = w.d;
                 document.getElementById('weather-humidity').textContent = cu.relative_humidity_2m + '%';
@@ -789,25 +793,40 @@
 
         async function fetchSeaState() {
             try {
-                const r = await fetch('https://marine-api.open-meteo.com/v1/marine?latitude=36.7833&longitude=7.35&current=wave_height,wind_wave_height,wind_wave_direction');
+                const r = await fetch('https://marine-api.open-meteo.com/v1/marine?latitude=36.7808&longitude=7.3497&current=wave_height,wind_wave_height,wind_wave_direction,swell_wave_height,swell_wave_direction');
                 const d = await r.json(), cu = d.current;
-                if (!cu || !cu.wave_height) { document.getElementById('sea-state').textContent='--'; document.getElementById('sea-desc').textContent='البيانات غير متاحة حالياً'; return; }
+                if (!cu || cu.wave_height === null || cu.wave_height === undefined) {
+                    document.getElementById('sea-state').textContent = '--';
+                    document.getElementById('sea-desc').textContent = 'البيانات غير متاحة حالياً';
+                    return;
+                }
                 const wh = cu.wave_height.toFixed(1);
-                const ww = cu.wind_wave_height ? cu.wind_wave_height.toFixed(1) : '--';
-                const dir = cu.wind_wave_direction || '--';
-                let st,si,sd; const v = parseFloat(wh);
-                if(v<0.5){st='هادئ';si='🌊';sd='البحر هادئ — مناسب للسباحة';}else if(v<1.2){st='معتدل';si='🌅';sd='البحر معتدل — حذر للصيادين';}else if(v<2){st='مضطرب';si='⚠️';sd='البحر مضطرب — يُنصح بالحذر';}else{st='عاصف';si='🔴';sd='البحر عاصف — يُمنع الخروج';}
-                const dm={'N':'شمال','NE':'شمال شرقي','E':'شرق','SE':'جنوب شرقي','S':'جنوب','SW':'جنوب غربي','W':'غرب','NW':'شمال غربي'};
-                document.getElementById('sea-state').textContent=st;document.getElementById('sea-icon').textContent=si;document.getElementById('sea-desc').textContent=sd;
-                document.getElementById('sea-wave').textContent=wh;document.getElementById('sea-wind-wave').textContent=ww;document.getElementById('sea-dir').textContent=dm[dir]||dir;
-            } catch { document.getElementById('sea-state').textContent='--'; document.getElementById('sea-desc').textContent='تعذر التحميل'; }
+                const ww = cu.wind_wave_height != null ? cu.wind_wave_height.toFixed(1) : '--';
+                const dir = cu.wind_wave_direction != null ? cu.wind_wave_direction : '--';
+                let st, si, sd; const v = parseFloat(wh);
+                if (v < 0.5) { st = 'هادئ'; si = '🌊'; sd = 'البحر هادئ — مناسب للسباحة'; }
+                else if (v < 1.0) { st = 'هادئ نسبياً'; si = '🌅'; sd = 'البحر هادئ نسبياً — مناسب'; }
+                else if (v < 1.5) { st = 'معتدل'; si = '🌊'; sd = 'البحر معتدل — حذر للصيادين'; }
+                else if (v < 2.5) { st = 'مضطرب'; si = '⚠️'; sd = 'البحر مضطرب — يُنصح بالحذر'; }
+                else { st = 'عاصف'; si = '🔴'; sd = 'البحر عاصف — يُمنع الخروج'; }
+                const dm = { 'N': 'شمال', 'NNE': 'شمال شمال شرقي', 'NE': 'شمال شرقي', 'ENE': 'شرق شمال شرقي', 'E': 'شرق', 'ESE': 'شرق جنوب شرقي', 'SE': 'جنوب شرقي', 'SSE': 'جنوب جنوب شرقي', 'S': 'جنوب', 'SSW': 'جنوب جنوب غربي', 'SW': 'جنوب غربي', 'WSW': 'غرب جنوب غربي', 'W': 'غرب', 'WNW': 'غرب شمال غربي', 'NW': 'شمال غربي', 'NNW': 'شمال شمال غربي' };
+                document.getElementById('sea-state').textContent = st;
+                document.getElementById('sea-icon').textContent = si;
+                document.getElementById('sea-desc').textContent = sd;
+                document.getElementById('sea-wave').textContent = wh;
+                document.getElementById('sea-wind-wave').textContent = ww;
+                document.getElementById('sea-dir').textContent = dm[dir] || dir;
+            } catch (e) {
+                document.getElementById('sea-state').textContent = '--';
+                document.getElementById('sea-desc').textContent = 'تعذر التحميل';
+            }
         }
 
-        const categoryMap = { official:'announcements', activity:'activities', social:'community' };
+        const categoryMap = { official: 'announcements', activity: 'activities', social: 'community' };
         const catStyles = {
-            official:{label:'إعلان عاجل',grad:'from-red-500 to-red-700',badge:'bg-red-100 text-red-700',icon:'lucide:megaphone'},
-            activity:{label:'نشاط',grad:'from-emerald-500 to-emerald-700',badge:'bg-emerald-100 text-emerald-700',icon:'lucide:clipboard-list'},
-            social:{label:'مجتمع',grad:'from-purple-500 to-purple-700',badge:'bg-purple-100 text-purple-700',icon:'lucide:heart-handshake'}
+            official: { label: 'إعلان عاجل', grad: 'from-red-500 to-red-700', badge: 'bg-red-100 text-red-700', icon: 'lucide:megaphone' },
+            activity: { label: 'نشاط', grad: 'from-emerald-500 to-emerald-700', badge: 'bg-emerald-100 text-emerald-700', icon: 'lucide:clipboard-list' },
+            social: { label: 'مجتمع', grad: 'from-purple-500 to-purple-700', badge: 'bg-purple-100 text-purple-700', icon: 'lucide:heart-handshake' }
         };
 
         async function loadNews() {
@@ -816,31 +835,31 @@
                 const r = await fetch('/api/news');
                 const d = await r.json();
                 loading.classList.add('hidden');
-                if(!d.success||!d.data||d.data.length===0){
-                    ['announcements','activities','community'].forEach(t=>{document.getElementById('content-'+t).innerHTML='<p class="text-gray-400 text-sm text-center py-8 col-span-full">لا توجد أخبار حالياً</p>';});
-                    document.getElementById('content-announcements').classList.remove('hidden');return;
+                if (!d.success || !d.data || d.data.length === 0) {
+                    ['announcements', 'activities', 'community'].forEach(t => { document.getElementById('content-' + t).innerHTML = '<p class="text-gray-400 text-sm text-center py-8 col-span-full">لا توجد أخبار حالياً</p>'; });
+                    document.getElementById('content-announcements').classList.remove('hidden'); return;
                 }
-                const grouped={announcements:[],activities:[],community:[]};
-                d.data.forEach(n=>{const t=categoryMap[n.category]||'announcements';grouped[t].push(n);});
-                Object.entries(grouped).forEach(([tab,items])=>{
-                    const c=document.getElementById('content-'+tab);
-                    if(items.length===0){c.innerHTML='<p class="text-gray-400 text-sm text-center py-8 col-span-full">لا توجد أخبار في هذا القسم</p>';return;}
-                    c.innerHTML=items.map(n=>{
-                        const s=catStyles[n.category]||catStyles.official;
-                        const img=n.image_url||'';
-                        const isPinned=n.is_pinned==1;
-                        const pinBadge=isPinned?'<div class="pin-badge"><span class="iconify text-sm" data-icon="lucide:pin"></span></div>':'';
-                        const pinLabel=isPinned?'<span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-600 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-200"><span class="iconify" data-icon="lucide:pin"></span>مثبت</span>':'';
-                        const pinBorder=isPinned?'border-emerald-300 ring-1 ring-emerald-200':'border-gray-100';
+                const grouped = { announcements: [], activities: [], community: [] };
+                d.data.forEach(n => { const t = categoryMap[n.category] || 'announcements'; grouped[t].push(n); });
+                Object.entries(grouped).forEach(([tab, items]) => {
+                    const c = document.getElementById('content-' + tab);
+                    if (items.length === 0) { c.innerHTML = '<p class="text-gray-400 text-sm text-center py-8 col-span-full">لا توجد أخبار في هذا القسم</p>'; return; }
+                    c.innerHTML = items.map(n => {
+                        const s = catStyles[n.category] || catStyles.official;
+                        const img = n.image_url || '';
+                        const isPinned = n.is_pinned == 1;
+                        const pinBadge = isPinned ? '<div class="pin-badge"><span class="iconify text-sm" data-icon="lucide:pin"></span></div>' : '';
+                        const pinLabel = isPinned ? '<span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-600 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-200"><span class="iconify" data-icon="lucide:pin"></span>مثبت</span>' : '';
+                        const pinBorder = isPinned ? 'border-emerald-300 ring-1 ring-emerald-200' : 'border-gray-100';
                         return `<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border ${pinBorder} relative">
-                            ${img?`<div class="h-48 overflow-hidden relative">${pinBadge}<img src="${img}" alt="${n.title}" class="w-full h-full object-cover"></div>`:`<div class="h-48 bg-gradient-to-bl ${s.grad} flex items-center justify-center relative">${pinBadge}<span class="iconify text-white text-6xl" data-icon="${s.icon}"></span></div>`}
+                            ${img ? `<div class="h-48 overflow-hidden relative">${pinBadge}<img src="${img}" alt="${n.title}" class="w-full h-full object-cover"></div>` : `<div class="h-48 bg-gradient-to-bl ${s.grad} flex items-center justify-center relative">${pinBadge}<span class="iconify text-white text-6xl" data-icon="${s.icon}"></span></div>`}
                             <div class="p-5">
                                 <div class="flex items-center gap-2 mb-3 flex-wrap">
                                     <span class="inline-block ${s.badge} text-xs font-bold px-3 py-1 rounded-full">${s.label}</span>
                                     ${pinLabel}
                                 </div>
                                 <h4 class="font-bold text-gray-800 mb-2 leading-snug">${n.title}</h4>
-                                <p class="text-sm text-gray-500 mb-4 leading-relaxed">${(n.content||'').substring(0,120)}...</p>
+                                <p class="text-sm text-gray-500 mb-4 leading-relaxed">${(n.content || '').substring(0, 120)}...</p>
                                 <div class="flex items-center justify-between">
                                     <span class="text-xs text-gray-400 flex items-center gap-1"><span class="iconify" data-icon="lucide:calendar"></span>${n.date}</span>
                                     <a href="/news/${n.id}" class="text-emerald-600 text-sm font-bold hover:text-emerald-700">اقرأ المزيد ←</a>
@@ -849,19 +868,19 @@
                         </article>`;
                     }).join('');
                 });
-                const fa=grouped.announcements.length>0?'announcements':grouped.activities.length>0?'activities':'community';
-                document.getElementById('content-'+fa).classList.remove('hidden');
-                document.querySelectorAll('.news-tab').forEach(t=>t.classList.remove('active'));
-                document.getElementById('tab-'+fa).classList.add('active');
-            } catch(e){
+                const fa = grouped.announcements.length > 0 ? 'announcements' : grouped.activities.length > 0 ? 'activities' : 'community';
+                document.getElementById('content-' + fa).classList.remove('hidden');
+                document.querySelectorAll('.news-tab').forEach(t => t.classList.remove('active'));
+                document.getElementById('tab-' + fa).classList.add('active');
+            } catch (e) {
                 loading.classList.add('hidden');
-                ['announcements','activities','community'].forEach(t=>{document.getElementById('content-'+t).innerHTML='<p class="text-red-400 text-sm text-center py-8 col-span-full">تعذر تحميل الأخبار</p>';});
+                ['announcements', 'activities', 'community'].forEach(t => { document.getElementById('content-' + t).innerHTML = '<p class="text-red-400 text-sm text-center py-8 col-span-full">تعذر تحميل الأخبار</p>'; });
                 document.getElementById('content-announcements').classList.remove('hidden');
             }
         }
 
-        fetchWeather();fetchSeaState();loadNews();
-        setInterval(()=>{fetchWeather();fetchSeaState();},600000);
+        fetchWeather(); fetchSeaState(); loadNews();
+        setInterval(() => { fetchWeather(); fetchSeaState(); }, 600000);
     </script>
 </body>
 </html>
