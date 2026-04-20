@@ -1,4 +1,4 @@
-import { withAuth, createResponse, handleOptions } from '../api/_utils.js';
+import { withAuth, createResponse, handleOptions } from './_utils.js';
 
 export async function onRequestGet(context) {
     const { env } = context;
