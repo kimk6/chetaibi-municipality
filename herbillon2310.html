@@ -30,6 +30,22 @@
         textarea { resize: vertical; min-height: 100px; }
         .item-card { background: white; border: 1px solid #f3f4f6; border-radius: 16px; padding: 16px; transition: all 0.2s; }
         .item-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+
+        /* ── Media Manager ── */
+        .repo-bar-track { width:100%; height:14px; background:#f1f5f9; border-radius:99px; overflow:hidden; }
+        .repo-bar-fill { height:100%; border-radius:99px; transition: width 0.7s cubic-bezier(.4,0,.2,1), background-color 0.4s; background: linear-gradient(90deg,#059669,#34d399); }
+        .repo-bar-fill.warn   { background: linear-gradient(90deg,#d97706,#fbbf24); }
+        .repo-bar-fill.danger { background: linear-gradient(90deg,#dc2626,#f87171); }
+        .drop-zone { border:2px dashed #d1d5db; border-radius:16px; padding:28px 16px; text-align:center; cursor:pointer; transition:all 0.25s; background:#f9fafb; }
+        .drop-zone:hover, .drop-zone.drag-over { border-color:#059669; background:#ecfdf5; }
+        .drop-zone.drag-over { transform:scale(1.01); }
+        .media-card { background:white; border:1px solid #f3f4f6; border-radius:14px; overflow:hidden; transition:box-shadow 0.2s, transform 0.2s; position:relative; }
+        .media-card:hover { box-shadow:0 8px 24px rgba(0,0,0,0.09); transform:translateY(-2px); }
+        .media-overlay { position:absolute; inset:0; background:rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center; gap:8px; opacity:0; transition:opacity 0.2s; border-radius:14px; }
+        .media-card:hover .media-overlay { opacity:1; }
+        .upload-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.55); backdrop-filter:blur(4px); z-index:200; display:flex; align-items:center; justify-content:center; }
+        @keyframes spin { to { transform:rotate(360deg); } }
+        .spin { animation:spin 1s linear infinite; }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
@@ -40,7 +56,7 @@
         <span id="admin-toast-msg">تم بنجاح</span>
     </div>
 
-    <!-- ============ LOGIN SCREEN ============ -->
+    <!-- ============ LOGIN ============ -->
     <div id="login-screen" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-bl from-emerald-800 via-emerald-700 to-emerald-900">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 text-center">
             <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-emerald-600 shadow-lg mx-auto mb-5">
@@ -59,8 +75,7 @@
                 </div>
                 <div id="login-error" class="text-red-500 text-xs font-bold hidden">اسم المستخدم أو كلمة المرور غير صحيحة</div>
                 <button onclick="login()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm transition-colors shadow-md">
-                    <span class="iconify inline-block ml-2" data-icon="lucide:log-in"></span>
-                    تسجيل الدخول
+                    <span class="iconify inline-block ml-2" data-icon="lucide:log-in"></span>تسجيل الدخول
                 </button>
             </div>
             <p class="text-[10px] text-gray-400 mt-6">الوصول مخصص للموظفين المصرح لهم فقط</p>
@@ -70,7 +85,7 @@
     <!-- ============ DASHBOARD ============ -->
     <div id="dashboard" class="hidden">
 
-        <!-- Dashboard Header -->
+        <!-- Header -->
         <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
             <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
                 <div class="flex items-center gap-3">
@@ -83,15 +98,14 @@
                     </div>
                 </div>
                 <button onclick="logout()" class="text-xs bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded-xl font-bold transition-colors flex items-center gap-1">
-                    <span class="iconify" data-icon="lucide:log-out"></span>
-                    خروج
+                    <span class="iconify" data-icon="lucide:log-out"></span> خروج
                 </button>
             </div>
         </header>
 
         <div class="max-w-7xl mx-auto px-4 py-6">
 
-            <!-- Metric Card -->
+            <!-- Metric -->
             <div class="bg-gradient-to-l from-emerald-700 to-emerald-800 rounded-2xl p-6 mb-8 text-white shadow-xl">
                 <div class="flex items-center justify-between">
                     <div>
@@ -121,13 +135,13 @@
                 <button onclick="switchTab('mayors')" id="tab-mayors" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1">
                     <span class="iconify" data-icon="lucide:users"></span> الرؤساء
                 </button>
-                <button onclick="switchTab('media')" id="tab-media"
-        class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1">
-    <span class="iconify" data-icon="lucide:image-plus"></span> وسائط
+                <!-- ✅ زر الوسائط -->
+                <button onclick="switchTab('media')" id="tab-media" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1">
+                    <span class="iconify" data-icon="lucide:image-plus"></span> وسائط
                 </button>
             </div>
 
-            <!-- ===== NEWS SECTION ===== -->
+            <!-- ===== NEWS ===== -->
             <div id="section-news" class="content-section fade-in">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24">
@@ -137,52 +151,35 @@
                         </h3>
                         <input type="hidden" id="news-edit-id" value="">
                         <div class="space-y-3">
-                            <div>
-                                <label class="text-xs font-bold text-gray-500 mb-1 block">العنوان</label>
-                                <input id="news-title" type="text" placeholder="عنوان الخبر...">
-                            </div>
-                            <div>
-                                <label class="text-xs font-bold text-gray-500 mb-1 block">التصنيف</label>
+                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">العنوان</label><input id="news-title" type="text" placeholder="عنوان الخبر..."></div>
+                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">التصنيف</label>
                                 <select id="news-category">
                                     <option value="official">📢 إعلان رسمي</option>
                                     <option value="activity">🏗️ نشاط بلدي</option>
                                     <option value="social">🤝 ركن المجتمع</option>
                                 </select>
                             </div>
-                            <div>
-                                <label class="text-xs font-bold text-gray-500 mb-1 block">المحتوى</label>
-                                <textarea id="news-content" placeholder="نص الخبر الكامل..." rows="4"></textarea>
-                            </div>
-                            <div>
-                                <label class="text-xs font-bold text-gray-500 mb-1 block">رابط الصورة (اختياري)</label>
-                                <input id="news-image" type="url" placeholder="https://...">
-                            </div>
-                            <div>
-                                <label class="text-xs font-bold text-gray-500 mb-1 block">التاريخ</label>
-                                <input id="news-date" type="date">
-                            </div>
+                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">المحتوى</label><textarea id="news-content" placeholder="نص الخبر الكامل..." rows="4"></textarea></div>
+                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">رابط الصورة (اختياري)</label><input id="news-image" type="url" placeholder="https://..."></div>
+                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">التاريخ</label><input id="news-date" type="date"></div>
                             <div class="flex items-center gap-2 bg-emerald-50 rounded-xl px-4 py-3 border border-emerald-200">
-                                <input id="news-pinned" type="checkbox" class="w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500 accent-emerald-600">
-                                <label for="news-pinned" class="text-xs font-bold text-emerald-700 cursor-pointer">📌 تثبيت المنشور (يظهر أولاً في الواجهة)</label>
+                                <input id="news-pinned" type="checkbox" class="w-4 h-4 accent-emerald-600">
+                                <label for="news-pinned" class="text-xs font-bold text-emerald-700 cursor-pointer">📌 تثبيت المنشور</label>
                             </div>
                             <div class="flex gap-2">
                                 <button onclick="saveNews()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm transition-colors">
                                     <span class="iconify inline-block ml-1" data-icon="lucide:save"></span>
                                     <span id="news-save-btn">حفظ</span>
                                 </button>
-                                <button onclick="cancelNewsEdit()" id="news-cancel-btn" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-600 py-3 px-4 rounded-xl font-bold text-sm transition-colors">
-                                    إلغاء
-                                </button>
+                                <button onclick="cancelNewsEdit()" id="news-cancel-btn" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-600 py-3 px-4 rounded-xl font-bold text-sm transition-colors">إلغاء</button>
                             </div>
                         </div>
                     </div>
-                    <div class="lg:col-span-2">
-                        <div id="news-list" class="space-y-3"></div>
-                    </div>
+                    <div class="lg:col-span-2"><div id="news-list" class="space-y-3"></div></div>
                 </div>
             </div>
 
-            <!-- ===== SERVICES SECTION ===== -->
+            <!-- ===== SERVICES ===== -->
             <div id="section-services" class="content-section hidden fade-in">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24">
@@ -195,7 +192,9 @@
                             <div><label class="text-xs font-bold text-gray-500 mb-1 block">اسم الخدمة</label><input id="services-name" type="text" placeholder="مثال: جواز السفر"></div>
                             <div><label class="text-xs font-bold text-gray-500 mb-1 block">الوثائق المطلوبة (يفصلها |)</label><textarea id="services-docs" placeholder="وثيقة 1|وثيقة 2|وثيقة 3" rows="3"></textarea></div>
                             <div><label class="text-xs font-bold text-gray-500 mb-1 block">رابط PDF (اختياري)</label><input id="services-pdf" type="url" placeholder="https://..."></div>
-                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">اللون</label><select id="services-color"><option value="blue">أزرق</option><option value="emerald">أخضر</option><option value="amber">ذهبي</option><option value="purple">بنفسجي</option></select></div>
+                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">اللون</label>
+                                <select id="services-color"><option value="blue">أزرق</option><option value="emerald">أخضر</option><option value="amber">ذهبي</option><option value="purple">بنفسجي</option></select>
+                            </div>
                             <div><label class="text-xs font-bold text-gray-500 mb-1 block">الأيقونة</label><input id="services-icon" type="text" placeholder="fingerprint" value="file-text"></div>
                             <div class="flex gap-2">
                                 <button onclick="saveService()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm transition-colors">💾 حفظ</button>
@@ -207,7 +206,7 @@
                 </div>
             </div>
 
-            <!-- ===== ARCHIVES SECTION ===== -->
+            <!-- ===== ARCHIVES ===== -->
             <div id="section-archives" class="content-section hidden fade-in">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24">
@@ -231,7 +230,7 @@
                 </div>
             </div>
 
-            <!-- ===== TOURISM SECTION ===== -->
+            <!-- ===== TOURISM ===== -->
             <div id="section-tourism" class="content-section hidden fade-in">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24">
@@ -248,7 +247,9 @@
                             <div><label class="text-xs font-bold text-gray-500 mb-1 block">التقييم</label><input id="tourism-rating" type="text" placeholder="4.8" value="4.5"></div>
                             <div><label class="text-xs font-bold text-gray-500 mb-1 block">معلومات المسافة</label><input id="tourism-distance" type="text" placeholder="10 دقائق"></div>
                             <div><label class="text-xs font-bold text-gray-500 mb-1 block">نص الشارة</label><input id="tourism-badge" type="text" placeholder="الأكثر زيارة"></div>
-                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">لون الشارة</label><select id="tourism-badge-color"><option value="emerald">أخضر</option><option value="amber">ذهبي</option><option value="purple">بنفسجي</option><option value="teal">تركوازي</option></select></div>
+                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">لون الشارة</label>
+                                <select id="tourism-badge-color"><option value="emerald">أخضر</option><option value="amber">ذهبي</option><option value="purple">بنفسجي</option><option value="teal">تركوازي</option></select>
+                            </div>
                             <div class="flex gap-2">
                                 <button onclick="saveTourism()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm transition-colors">💾 حفظ</button>
                                 <button onclick="cancelTourismEdit()" id="tourism-cancel-btn" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-600 py-3 px-4 rounded-xl font-bold text-sm transition-colors">إلغاء</button>
@@ -259,7 +260,7 @@
                 </div>
             </div>
 
-            <!-- ===== MAYORS SECTION ===== -->
+            <!-- ===== MAYORS ===== -->
             <div id="section-mayors" class="content-section hidden fade-in">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24">
@@ -282,6 +283,137 @@
                 </div>
             </div>
 
+            <!-- ===== ✅ MEDIA MANAGER ===== -->
+            <div id="section-media" class="content-section hidden fade-in">
+
+                <!-- شريط سعة المستودع -->
+                <div class="bg-white rounded-2xl p-5 shadow-md border border-gray-100 mb-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="iconify text-emerald-500" data-icon="lucide:hard-drive"></span>
+                            <span class="font-extrabold text-gray-800 text-sm">سعة مستودع الوسائط</span>
+                            <span id="repo-name-badge" class="text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full font-mono">جاري التحميل...</span>
+                        </div>
+                        <button onclick="loadRepoSize()" id="refresh-repo-btn"
+                                class="text-xs text-emerald-600 hover:text-emerald-700 flex items-center gap-1 font-bold flex-shrink-0">
+                            <span class="iconify" data-icon="lucide:refresh-cw"></span> تحديث
+                        </button>
+                    </div>
+                    <div class="repo-bar-track mb-2">
+                        <div id="repo-bar-fill" class="repo-bar-fill" style="width:0%"></div>
+                    </div>
+                    <div class="flex items-center justify-between text-xs">
+                        <span id="repo-size-text" class="text-gray-500 font-semibold">--</span>
+                        <span class="text-gray-400">الحد الأقصى: 1 GB</span>
+                    </div>
+                    <div id="repo-warning" class="hidden mt-3 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 flex items-start gap-3">
+                        <span class="iconify text-amber-500 text-xl flex-shrink-0" data-icon="lucide:alert-triangle"></span>
+                        <div>
+                            <p id="repo-warning-msg" class="text-xs font-bold text-amber-800"></p>
+                            <p class="text-[11px] text-amber-600 mt-0.5">عند الوصول لـ 95% أنشئ مستودعاً جديداً في GitHub وحدّث <code class="bg-amber-100 px-1 rounded">CURRENT_REPO</code> في wrangler.toml.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- الرفع + الاستعراض -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                    <!-- عمود الرفع -->
+                    <div class="lg:col-span-1 space-y-4">
+                        <div class="bg-white rounded-2xl p-5 shadow-md border border-gray-100">
+                            <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2 text-sm">
+                                <span class="iconify text-emerald-500" data-icon="lucide:upload-cloud"></span>
+                                رفع صورة جديدة
+                            </h3>
+                            <div class="space-y-3">
+
+                                <!-- اختيار المجلد -->
+                                <div>
+                                    <label class="text-xs font-bold text-gray-500 mb-1 block">المجلد المستهدف</label>
+                                    <select id="upload-folder" onchange="onFolderChange()">
+                                        <option value="news">📰 news — صور الأخبار</option>
+                                        <option value="ui">🎨 ui — صور القالب</option>
+                                        <option value="mayors">👤 mayors — صور الرؤساء</option>
+                                        <option value="tourism">🏖️ tourism — صور السياحة</option>
+                                        <option value="archives">📜 archives — أرشيف</option>
+                                        <option value="custom">✏️ مجلد مخصص...</option>
+                                    </select>
+                                </div>
+                                <div id="custom-folder-wrap" class="hidden">
+                                    <label class="text-xs font-bold text-gray-500 mb-1 block">اسم المجلد المخصص</label>
+                                    <input id="custom-folder-input" type="text" placeholder="مثال: events/2025">
+                                </div>
+
+                                <!-- منطقة الإفلات -->
+                                <div id="drop-zone" class="drop-zone" onclick="document.getElementById('file-input').click()">
+                                    <div id="drop-zone-content">
+                                        <span class="iconify text-4xl text-gray-300 mb-2 block" data-icon="lucide:image-plus"></span>
+                                        <p class="text-sm font-bold text-gray-500">اسحب الصورة أو انقر للاختيار</p>
+                                        <p class="text-xs text-gray-400 mt-1">JPG, PNG, WEBP — حجم أقصى 25 MB</p>
+                                    </div>
+                                    <div id="drop-zone-preview" class="hidden">
+                                        <img id="preview-img" src="" alt="معاينة" class="w-full h-32 object-contain rounded-lg mb-2">
+                                        <p id="preview-name" class="text-xs font-bold text-gray-700 truncate"></p>
+                                        <p id="preview-size" class="text-xs text-gray-400"></p>
+                                    </div>
+                                </div>
+                                <input type="file" id="file-input" accept="image/*" class="hidden" onchange="onFileSelected(this.files[0])">
+
+                                <!-- زر الرفع -->
+                                <button id="upload-btn" onclick="uploadMedia()" disabled
+                                        class="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white py-3 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2">
+                                    <span class="iconify text-lg" data-icon="lucide:upload-cloud"></span> رفع الصورة
+                                </button>
+
+                                <!-- نتيجة الرفع -->
+                                <div id="upload-result" class="hidden bg-emerald-50 border border-emerald-200 rounded-xl p-4">
+                                    <p class="text-xs font-bold text-emerald-700 mb-2 flex items-center gap-1">
+                                        <span class="iconify" data-icon="lucide:check-circle"></span> تم الرفع — رابط CDN:
+                                    </p>
+                                    <div class="flex items-center gap-2">
+                                        <input id="cdn-url-output" type="text" readonly
+                                               class="flex-1 text-xs bg-white border border-emerald-200 rounded-lg px-3 py-2 font-mono text-gray-700 focus:outline-none">
+                                        <button onclick="copyCdnUrl()"
+                                                class="flex-shrink-0 w-8 h-8 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg flex items-center justify-center">
+                                            <span class="iconify text-sm" data-icon="lucide:copy"></span>
+                                        </button>
+                                    </div>
+                                    <a id="cdn-url-open" href="#" target="_blank"
+                                       class="mt-2 text-xs text-emerald-600 hover:underline flex items-center gap-1 font-semibold">
+                                        <span class="iconify" data-icon="lucide:external-link"></span> فتح الصورة
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- عمود الاستعراض -->
+                    <div class="lg:col-span-2">
+                        <div class="bg-white rounded-2xl p-5 shadow-md border border-gray-100 h-full">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-extrabold text-gray-800 text-sm flex items-center gap-2">
+                                    <span class="iconify text-emerald-500" data-icon="lucide:images"></span>
+                                    محتوى المجلد: <span id="browse-folder-label" class="text-emerald-600 font-mono">news</span>
+                                </h3>
+                                <button onclick="loadMediaList()"
+                                        class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-1.5 rounded-lg font-bold flex items-center gap-1">
+                                    <span class="iconify text-sm" data-icon="lucide:refresh-cw"></span> تحديث
+                                </button>
+                            </div>
+                            <div id="media-grid"
+                                 class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 max-h-[500px] overflow-y-auto">
+                                <div class="col-span-full text-center py-12 text-gray-300">
+                                    <span class="iconify text-4xl" data-icon="lucide:image-off"></span>
+                                    <p class="text-sm mt-2">اضغط تحديث لعرض الصور</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ===== END MEDIA ===== -->
+
         </div>
     </div>
 
@@ -289,7 +421,6 @@
         let token = localStorage.getItem('admin_token') || '';
         let activeTab = 'news';
 
-        // ---- Init ----
         if (token) { showDashboard(); } else { showLogin(); }
 
         function showLogin() {
@@ -302,7 +433,6 @@
             loadTab(activeTab);
         }
 
-        // ---- Toast ----
         function adminToast(msg) {
             const t = document.getElementById('admin-toast');
             document.getElementById('admin-toast-msg').textContent = msg;
@@ -310,39 +440,20 @@
             setTimeout(() => t.classList.remove('show'), 3000);
         }
 
-        // ---- Auth ----
         async function login() {
             const username = document.getElementById('login-username').value;
             const password = document.getElementById('login-password').value;
             document.getElementById('login-error').classList.add('hidden');
             try {
-                const res = await fetch('/api/auth', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password })
-                });
+                const res = await fetch('/api/auth', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, password }) });
                 const data = await res.json();
-                if (data.success && data.token) {
-                    token = data.token;
-                    localStorage.setItem('admin_token', token);
-                    showDashboard();
-                } else {
-                    document.getElementById('login-error').classList.remove('hidden');
-                }
-            } catch {
-                document.getElementById('login-error').classList.remove('hidden');
-            }
+                if (data.success && data.token) { token = data.token; localStorage.setItem('admin_token', token); showDashboard(); }
+                else document.getElementById('login-error').classList.remove('hidden');
+            } catch { document.getElementById('login-error').classList.remove('hidden'); }
         }
 
-        function logout() {
-            token = '';
-            localStorage.removeItem('admin_token');
-            showLogin();
-        }
-
-        function authHeaders() {
-            return { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token };
-        }
+        function logout() { token = ''; localStorage.removeItem('admin_token'); showLogin(); }
+        function authHeaders() { return { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }; }
 
         // ---- Tabs ----
         function switchTab(tab) {
@@ -357,11 +468,20 @@
         }
 
         function loadTab(tab) {
-            const loaders = { news: loadNews, services: loadServices, archives: loadArchives, tourism: loadTourism, mayors: loadMayors };
+            const loaders = {
+                news: loadNews,
+                services: loadServices,
+                archives: loadArchives,
+                tourism: loadTourism,
+                mayors: loadMayors,
+                media: () => { loadRepoSize(); loadMediaList(); }  // ✅
+            };
             if (loaders[tab]) loaders[tab]();
         }
 
-        // ---- NEWS CRUD ----
+        // ════════════════════════════════
+        //  NEWS CRUD
+        // ════════════════════════════════
         const catLabels = { official: '📢 إعلان رسمي', activity: '🏗️ نشاط بلدي', social: '🤝 ركن المجتمع' };
         const catColors = { official: 'red', activity: 'emerald', social: 'purple' };
 
@@ -370,54 +490,37 @@
                 const res = await fetch('/api/news', { headers: authHeaders() });
                 const data = await res.json();
                 const list = document.getElementById('news-list');
-                if (!data.success || !data.data || data.data.length === 0) {
-                    list.innerHTML = '<p class="text-gray-400 text-sm text-center py-8">لا توجد أخبار بعد</p>';
-                    return;
-                }
+                if (!data.success || !data.data || data.data.length === 0) { list.innerHTML = '<p class="text-gray-400 text-sm text-center py-8">لا توجد أخبار بعد</p>'; return; }
                 list.innerHTML = data.data.map(n => `
                     <div class="item-card">
                         <div class="flex items-start justify-between gap-3">
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center gap-2 mb-1 flex-wrap">
-                                    <span class="inline-block bg-${catColors[n.category] || 'gray'}-100 text-${catColors[n.category] || 'gray'}-700 text-[10px] font-bold px-2 py-0.5 rounded-full">${catLabels[n.category] || n.category}</span>
-                                    ${n.is_pinned == 1 ? '<span class="inline-flex items-center gap-0.5 bg-emerald-50 text-emerald-600 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-200"><span class="iconify" data-icon="lucide:pin"></span>مثبت</span>' : ''}
+                                    <span class="inline-block bg-${catColors[n.category]||'gray'}-100 text-${catColors[n.category]||'gray'}-700 text-[10px] font-bold px-2 py-0.5 rounded-full">${catLabels[n.category]||n.category}</span>
+                                    ${n.is_pinned==1?'<span class="inline-flex items-center gap-0.5 bg-emerald-50 text-emerald-600 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-200"><span class="iconify" data-icon="lucide:pin"></span>مثبت</span>':''}
                                     <span class="text-[10px] text-gray-400">${n.date}</span>
                                 </div>
                                 <h4 class="font-bold text-gray-800 text-sm leading-snug mb-1 truncate">${n.title}</h4>
-                                <p class="text-xs text-gray-500 line-clamp-2">${(n.content || '').substring(0, 100)}...</p>
+                                <p class="text-xs text-gray-500 line-clamp-2">${(n.content||'').substring(0,100)}...</p>
                             </div>
                             <div class="flex items-center gap-1 flex-shrink-0">
-                                <button onclick="editNews(${n.id})" class="w-8 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center transition-colors" title="تعديل">
-                                    <span class="iconify text-sm" data-icon="lucide:pencil"></span>
-                                </button>
-                                <button onclick="deleteNews(${n.id})" class="w-8 h-8 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg flex items-center justify-center transition-colors" title="حذف">
-                                    <span class="iconify text-sm" data-icon="lucide:trash-2"></span>
-                                </button>
+                                <button onclick="editNews(${n.id})" class="w-8 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:pencil"></span></button>
+                                <button onclick="deleteNews(${n.id})" class="w-8 h-8 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:trash-2"></span></button>
                             </div>
                         </div>
-                    </div>
-                `).join('');
+                    </div>`).join('');
             } catch { document.getElementById('news-list').innerHTML = '<p class="text-red-400 text-sm text-center py-8">تعذر التحميل</p>'; }
         }
 
         async function saveNews() {
             const editId = document.getElementById('news-edit-id').value;
-            const body = {
-                title: document.getElementById('news-title').value,
-                category: document.getElementById('news-category').value,
-                content: document.getElementById('news-content').value,
-                image_url: document.getElementById('news-image').value,
-                date: document.getElementById('news-date').value || new Date().toISOString().split('T')[0],
-                is_pinned: document.getElementById('news-pinned').checked ? 1 : 0,
-            };
+            const body = { title: document.getElementById('news-title').value, category: document.getElementById('news-category').value, content: document.getElementById('news-content').value, image_url: document.getElementById('news-image').value, date: document.getElementById('news-date').value || new Date().toISOString().split('T')[0], is_pinned: document.getElementById('news-pinned').checked ? 1 : 0 };
             if (!body.title || !body.content) { adminToast('العنوان والمحتوى مطلوبان'); return; }
             try {
-                const url = editId ? '/api/news/' + editId : '/api/news';
-                const method = editId ? 'PUT' : 'POST';
-                const res = await fetch(url, { method, headers: authHeaders(), body: JSON.stringify(body) });
+                const res = await fetch(editId ? '/api/news/'+editId : '/api/news', { method: editId?'PUT':'POST', headers: authHeaders(), body: JSON.stringify(body) });
                 const data = await res.json();
-                if (data.success) { adminToast(editId ? 'تم تعديل الخبر' : 'تم إضافة الخبر'); cancelNewsEdit(); loadNews(); }
-                else adminToast('خطأ: ' + (data.error || ''));
+                if (data.success) { adminToast(editId?'تم تعديل الخبر':'تم إضافة الخبر'); cancelNewsEdit(); loadNews(); }
+                else adminToast('خطأ: '+(data.error||''));
             } catch { adminToast('تعذر الحفظ'); }
         }
 
@@ -425,8 +528,7 @@
             try {
                 const res = await fetch('/api/news', { headers: authHeaders() });
                 const data = await res.json();
-                const n = data.data.find(x => x.id == id);
-                if (!n) return;
+                const n = data.data.find(x => x.id == id); if (!n) return;
                 document.getElementById('news-edit-id').value = n.id;
                 document.getElementById('news-title').value = n.title;
                 document.getElementById('news-category').value = n.category;
@@ -455,14 +557,13 @@
 
         async function deleteNews(id) {
             if (!confirm('هل تريد حذف هذا الخبر؟')) return;
-            try {
-                await fetch('/api/news/' + id, { method: 'DELETE', headers: authHeaders() });
-                adminToast('تم حذف الخبر');
-                loadNews();
-            } catch { adminToast('تعذر الحذف'); }
+            try { await fetch('/api/news/'+id, { method:'DELETE', headers:authHeaders() }); adminToast('تم حذف الخبر'); loadNews(); }
+            catch { adminToast('تعذر الحذف'); }
         }
 
-        // ---- SERVICES CRUD ----
+        // ════════════════════════════════
+        //  SERVICES CRUD
+        // ════════════════════════════════
         async function loadServices() {
             try {
                 const res = await fetch('/api/services', { headers: authHeaders() });
@@ -473,17 +574,16 @@
                     <div class="item-card">
                         <div class="flex items-start justify-between gap-3">
                             <div class="flex-1 min-w-0">
-                                <div class="flex items-center gap-2 mb-1"><span class="inline-block bg-${s.color || 'blue'}-100 text-${s.color || 'blue'}-700 text-[10px] font-bold px-2 py-0.5 rounded-full">${s.icon || 'file-text'}</span></div>
+                                <div class="flex items-center gap-2 mb-1"><span class="inline-block bg-${s.color||'blue'}-100 text-${s.color||'blue'}-700 text-[10px] font-bold px-2 py-0.5 rounded-full">${s.icon||'file-text'}</span></div>
                                 <h4 class="font-bold text-gray-800 text-sm mb-1">${s.service_name}</h4>
-                                <p class="text-xs text-gray-500 line-clamp-2">${(s.required_docs || '').replace(/\|/g, ' • ')}</p>
+                                <p class="text-xs text-gray-500 line-clamp-2">${(s.required_docs||'').replace(/\|/g,' • ')}</p>
                             </div>
                             <div class="flex items-center gap-1 flex-shrink-0">
-                                <button onclick="editService(${s.id})" class="w-8 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center transition-colors"><span class="iconify text-sm" data-icon="lucide:pencil"></span></button>
-                                <button onclick="deleteService(${s.id})" class="w-8 h-8 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg flex items-center justify-center transition-colors"><span class="iconify text-sm" data-icon="lucide:trash-2"></span></button>
+                                <button onclick="editService(${s.id})" class="w-8 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:pencil"></span></button>
+                                <button onclick="deleteService(${s.id})" class="w-8 h-8 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:trash-2"></span></button>
                             </div>
                         </div>
-                    </div>
-                `).join('');
+                    </div>`).join('');
             } catch { document.getElementById('services-list').innerHTML = '<p class="text-red-400 text-sm text-center py-8">تعذر التحميل</p>'; }
         }
 
@@ -492,11 +592,9 @@
             const body = { service_name: document.getElementById('services-name').value, required_docs: document.getElementById('services-docs').value, pdf_link: document.getElementById('services-pdf').value, color: document.getElementById('services-color').value, icon: document.getElementById('services-icon').value };
             if (!body.service_name) { adminToast('اسم الخدمة مطلوب'); return; }
             try {
-                const url = editId ? '/api/services/' + editId : '/api/services';
-                const method = editId ? 'PUT' : 'POST';
-                const res = await fetch(url, { method, headers: authHeaders(), body: JSON.stringify(body) });
+                const res = await fetch(editId?'/api/services/'+editId:'/api/services', { method:editId?'PUT':'POST', headers:authHeaders(), body:JSON.stringify(body) });
                 const data = await res.json();
-                if (data.success) { adminToast(editId ? 'تم التعديل' : 'تمت الإضافة'); cancelServiceEdit(); loadServices(); }
+                if (data.success) { adminToast(editId?'تم التعديل':'تمت الإضافة'); cancelServiceEdit(); loadServices(); }
                 else adminToast('خطأ');
             } catch { adminToast('تعذر الحفظ'); }
         }
@@ -529,11 +627,13 @@
 
         async function deleteService(id) {
             if (!confirm('حذف هذه الخدمة؟')) return;
-            await fetch('/api/services/' + id, { method: 'DELETE', headers: authHeaders() });
+            await fetch('/api/services/'+id, { method:'DELETE', headers:authHeaders() });
             adminToast('تم الحذف'); loadServices();
         }
 
-        // ---- ARCHIVES CRUD ----
+        // ════════════════════════════════
+        //  ARCHIVES CRUD
+        // ════════════════════════════════
         async function loadArchives() {
             try {
                 const res = await fetch('/api/archives', { headers: authHeaders() });
@@ -545,19 +645,18 @@
                         <div class="flex items-start justify-between gap-3">
                             <div class="flex-1 min-w-0">
                                 <h4 class="font-bold text-gray-800 text-sm mb-1">${a.title}</h4>
-                                <p class="text-xs text-gray-500">${a.description || ''}</p>
+                                <p class="text-xs text-gray-500">${a.description||''}</p>
                                 <div class="flex gap-2 mt-2">
-                                    ${a.image_old_url ? `<img src="${a.image_old_url}" class="w-16 h-12 object-cover rounded-lg vintage-filter" alt="قديم">` : '<div class="w-16 h-12 bg-gray-200 rounded-lg flex items-center justify-center text-[8px] text-gray-400">قديم</div>'}
-                                    ${a.image_new_url ? `<img src="${a.image_new_url}" class="w-16 h-12 object-cover rounded-lg" alt="حديث">` : '<div class="w-16 h-12 bg-gray-200 rounded-lg flex items-center justify-center text-[8px] text-gray-400">حديث</div>'}
+                                    ${a.image_old_url?`<img src="${a.image_old_url}" class="w-16 h-12 object-cover rounded-lg" alt="قديم">`:'<div class="w-16 h-12 bg-gray-200 rounded-lg flex items-center justify-center text-[8px] text-gray-400">قديم</div>'}
+                                    ${a.image_new_url?`<img src="${a.image_new_url}" class="w-16 h-12 object-cover rounded-lg" alt="حديث">`:'<div class="w-16 h-12 bg-gray-200 rounded-lg flex items-center justify-center text-[8px] text-gray-400">حديث</div>'}
                                 </div>
                             </div>
                             <div class="flex items-center gap-1 flex-shrink-0">
-                                <button onclick="editArchive(${a.id})" class="w-8 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center transition-colors"><span class="iconify text-sm" data-icon="lucide:pencil"></span></button>
-                                <button onclick="deleteArchive(${a.id})" class="w-8 h-8 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg flex items-center justify-center transition-colors"><span class="iconify text-sm" data-icon="lucide:trash-2"></span></button>
+                                <button onclick="editArchive(${a.id})" class="w-8 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:pencil"></span></button>
+                                <button onclick="deleteArchive(${a.id})" class="w-8 h-8 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:trash-2"></span></button>
                             </div>
                         </div>
-                    </div>
-                `).join('');
+                    </div>`).join('');
             } catch { document.getElementById('archives-list').innerHTML = '<p class="text-red-400 text-sm text-center py-8">تعذر التحميل</p>'; }
         }
 
@@ -566,11 +665,9 @@
             const body = { title: document.getElementById('archives-title').value, description: document.getElementById('archives-desc').value, image_old_url: document.getElementById('archives-old').value, image_new_url: document.getElementById('archives-new').value };
             if (!body.title) { adminToast('العنوان مطلوب'); return; }
             try {
-                const url = editId ? '/api/archives/' + editId : '/api/archives';
-                const method = editId ? 'PUT' : 'POST';
-                const res = await fetch(url, { method, headers: authHeaders(), body: JSON.stringify(body) });
+                const res = await fetch(editId?'/api/archives/'+editId:'/api/archives', { method:editId?'PUT':'POST', headers:authHeaders(), body:JSON.stringify(body) });
                 const data = await res.json();
-                if (data.success) { adminToast(editId ? 'تم التعديل' : 'تمت الإضافة'); cancelArchiveEdit(); loadArchives(); }
+                if (data.success) { adminToast(editId?'تم التعديل':'تمت الإضافة'); cancelArchiveEdit(); loadArchives(); }
             } catch { adminToast('تعذر الحفظ'); }
         }
 
@@ -600,11 +697,13 @@
 
         async function deleteArchive(id) {
             if (!confirm('حذف؟')) return;
-            await fetch('/api/archives/' + id, { method: 'DELETE', headers: authHeaders() });
+            await fetch('/api/archives/'+id, { method:'DELETE', headers:authHeaders() });
             adminToast('تم الحذف'); loadArchives();
         }
 
-        // ---- TOURISM CRUD ----
+        // ════════════════════════════════
+        //  TOURISM CRUD
+        // ════════════════════════════════
         async function loadTourism() {
             try {
                 const res = await fetch('/api/tourism', { headers: authHeaders() });
@@ -616,20 +715,19 @@
                         <div class="flex items-start justify-between gap-3">
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center gap-2 mb-1">
-                                    <span class="inline-block bg-${t.badge_color || 'emerald'}-100 text-${t.badge_color || 'emerald'}-700 text-[10px] font-bold px-2 py-0.5 rounded-full">${t.badge_text || ''}</span>
-                                    <span class="text-[10px] text-gray-400">⭐ ${t.rating || ''}</span>
+                                    <span class="inline-block bg-${t.badge_color||'emerald'}-100 text-${t.badge_color||'emerald'}-700 text-[10px] font-bold px-2 py-0.5 rounded-full">${t.badge_text||''}</span>
+                                    <span class="text-[10px] text-gray-400">⭐ ${t.rating||''}</span>
                                 </div>
                                 <h4 class="font-bold text-gray-800 text-sm mb-0.5">${t.name}</h4>
-                                <p class="text-[10px] text-gray-400 mb-1">${t.subtitle || ''}</p>
-                                <p class="text-xs text-gray-500 line-clamp-2">${(t.description || '').substring(0, 80)}...</p>
+                                <p class="text-[10px] text-gray-400 mb-1">${t.subtitle||''}</p>
+                                <p class="text-xs text-gray-500 line-clamp-2">${(t.description||'').substring(0,80)}...</p>
                             </div>
                             <div class="flex items-center gap-1 flex-shrink-0">
-                                <button onclick="editTourism(${t.id})" class="w-8 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center transition-colors"><span class="iconify text-sm" data-icon="lucide:pencil"></span></button>
-                                <button onclick="deleteTourism(${t.id})" class="w-8 h-8 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg flex items-center justify-center transition-colors"><span class="iconify text-sm" data-icon="lucide:trash-2"></span></button>
+                                <button onclick="editTourism(${t.id})" class="w-8 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:pencil"></span></button>
+                                <button onclick="deleteTourism(${t.id})" class="w-8 h-8 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:trash-2"></span></button>
                             </div>
                         </div>
-                    </div>
-                `).join('');
+                    </div>`).join('');
             } catch { document.getElementById('tourism-list').innerHTML = '<p class="text-red-400 text-sm text-center py-8">تعذر التحميل</p>'; }
         }
 
@@ -638,11 +736,9 @@
             const body = { name: document.getElementById('tourism-name').value, subtitle: document.getElementById('tourism-subtitle').value, description: document.getElementById('tourism-desc').value, image_url: document.getElementById('tourism-image').value, rating: document.getElementById('tourism-rating').value, distance_info: document.getElementById('tourism-distance').value, badge_text: document.getElementById('tourism-badge').value, badge_color: document.getElementById('tourism-badge-color').value };
             if (!body.name) { adminToast('الاسم مطلوب'); return; }
             try {
-                const url = editId ? '/api/tourism/' + editId : '/api/tourism';
-                const method = editId ? 'PUT' : 'POST';
-                const res = await fetch(url, { method, headers: authHeaders(), body: JSON.stringify(body) });
+                const res = await fetch(editId?'/api/tourism/'+editId:'/api/tourism', { method:editId?'PUT':'POST', headers:authHeaders(), body:JSON.stringify(body) });
                 const data = await res.json();
-                if (data.success) { adminToast(editId ? 'تم التعديل' : 'تمت الإضافة'); cancelTourismEdit(); loadTourism(); }
+                if (data.success) { adminToast(editId?'تم التعديل':'تمت الإضافة'); cancelTourismEdit(); loadTourism(); }
             } catch { adminToast('تعذر الحفظ'); }
         }
 
@@ -680,11 +776,13 @@
 
         async function deleteTourism(id) {
             if (!confirm('حذف؟')) return;
-            await fetch('/api/tourism/' + id, { method: 'DELETE', headers: authHeaders() });
+            await fetch('/api/tourism/'+id, { method:'DELETE', headers:authHeaders() });
             adminToast('تم الحذف'); loadTourism();
         }
 
-        // ---- MAYORS CRUD ----
+        // ════════════════════════════════
+        //  MAYORS CRUD
+        // ════════════════════════════════
         async function loadMayors() {
             try {
                 const res = await fetch('/api/mayors', { headers: authHeaders() });
@@ -695,19 +793,18 @@
                     <div class="item-card">
                         <div class="flex items-center justify-between gap-3">
                             <div class="flex items-center gap-3 flex-1 min-w-0">
-                                ${m.image_url ? `<img src="${m.image_url}" class="w-12 h-12 rounded-full object-cover border-2 border-emerald-200 flex-shrink-0">` : `<div class="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0"><span class="iconify text-emerald-500 text-xl" data-icon="lucide:user"></span></div>`}
+                                ${m.image_url?`<img src="${m.image_url}" class="w-12 h-12 rounded-full object-cover border-2 border-emerald-200 flex-shrink-0">`:'<div class="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0"><span class="iconify text-emerald-500 text-xl" data-icon="lucide:user"></span></div>'}
                                 <div class="min-w-0">
                                     <h4 class="font-bold text-gray-800 text-sm truncate">${m.name}</h4>
                                     <p class="text-xs text-gray-500">${m.period}</p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-1 flex-shrink-0">
-                                <button onclick="editMayor(${m.id})" class="w-8 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center transition-colors"><span class="iconify text-sm" data-icon="lucide:pencil"></span></button>
-                                <button onclick="deleteMayor(${m.id})" class="w-8 h-8 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg flex items-center justify-center transition-colors"><span class="iconify text-sm" data-icon="lucide:trash-2"></span></button>
+                                <button onclick="editMayor(${m.id})" class="w-8 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:pencil"></span></button>
+                                <button onclick="deleteMayor(${m.id})" class="w-8 h-8 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:trash-2"></span></button>
                             </div>
                         </div>
-                    </div>
-                `).join('');
+                    </div>`).join('');
             } catch { document.getElementById('mayors-list').innerHTML = '<p class="text-red-400 text-sm text-center py-8">تعذر التحميل</p>'; }
         }
 
@@ -716,11 +813,9 @@
             const body = { name: document.getElementById('mayors-name').value, period: document.getElementById('mayors-period').value, image_url: document.getElementById('mayors-image').value };
             if (!body.name || !body.period) { adminToast('الاسم والفترة مطلوبان'); return; }
             try {
-                const url = editId ? '/api/mayors/' + editId : '/api/mayors';
-                const method = editId ? 'PUT' : 'POST';
-                const res = await fetch(url, { method, headers: authHeaders(), body: JSON.stringify(body) });
+                const res = await fetch(editId?'/api/mayors/'+editId:'/api/mayors', { method:editId?'PUT':'POST', headers:authHeaders(), body:JSON.stringify(body) });
                 const data = await res.json();
-                if (data.success) { adminToast(editId ? 'تم التعديل' : 'تمت الإضافة'); cancelMayorEdit(); loadMayors(); }
+                if (data.success) { adminToast(editId?'تم التعديل':'تمت الإضافة'); cancelMayorEdit(); loadMayors(); }
             } catch { adminToast('تعذر الحفظ'); }
         }
 
@@ -748,9 +843,173 @@
 
         async function deleteMayor(id) {
             if (!confirm('حذف؟')) return;
-            await fetch('/api/mayors/' + id, { method: 'DELETE', headers: authHeaders() });
+            await fetch('/api/mayors/'+id, { method:'DELETE', headers:authHeaders() });
             adminToast('تم الحذف'); loadMayors();
         }
+
+        // ════════════════════════════════
+        //  ✅ MEDIA MANAGER
+        // ════════════════════════════════
+        let selectedFile = null;
+
+        // حجم المستودع
+        async function loadRepoSize() {
+            const btn   = document.getElementById('refresh-repo-btn');
+            const fill  = document.getElementById('repo-bar-fill');
+            const text  = document.getElementById('repo-size-text');
+            const warn  = document.getElementById('repo-warning');
+            const msg   = document.getElementById('repo-warning-msg');
+            const badge = document.getElementById('repo-name-badge');
+            const icon  = btn.querySelector('.iconify');
+            icon.classList.add('spin');
+            text.textContent = 'جاري الجلب...';
+            try {
+                const res  = await fetch('/api/media?action=repo-size', { headers: authHeaders() });
+                const data = await res.json();
+                icon.classList.remove('spin');
+                if (!data.success) { text.textContent = 'خطأ: ' + data.error; return; }
+                const { size_mb, percentage, repo, warning, critical, message } = data.data;
+                badge.textContent = repo;
+                text.textContent  = `${size_mb} MB من ${data.data.max_mb} MB (${percentage}%)`;
+                fill.style.width  = Math.min(percentage, 100) + '%';
+                fill.classList.remove('warn', 'danger');
+                if (critical) fill.classList.add('danger');
+                else if (warning) fill.classList.add('warn');
+                if (warning || critical) { warn.classList.remove('hidden'); msg.textContent = message; }
+                else warn.classList.add('hidden');
+            } catch (e) { btn.querySelector('.iconify').classList.remove('spin'); text.textContent = 'خطأ: ' + e.message; }
+        }
+
+        // تغيير المجلد
+        function onFolderChange() {
+            const sel = document.getElementById('upload-folder').value;
+            document.getElementById('custom-folder-wrap').classList.toggle('hidden', sel !== 'custom');
+            document.getElementById('browse-folder-label').textContent = sel === 'custom' ? '(مخصص)' : sel;
+            if (sel !== 'custom') loadMediaList();
+        }
+
+        function getTargetFolder() {
+            const sel = document.getElementById('upload-folder').value;
+            return sel === 'custom' ? document.getElementById('custom-folder-input').value.trim() : sel;
+        }
+
+        // اختيار ملف
+        function onFileSelected(file) {
+            if (!file) return;
+            if (file.size > 25 * 1024 * 1024) { adminToast('حجم الملف يتجاوز 25 MB'); return; }
+            selectedFile = file;
+            const reader = new FileReader();
+            reader.onload = e => {
+                document.getElementById('preview-img').src = e.target.result;
+                document.getElementById('preview-name').textContent = file.name;
+                document.getElementById('preview-size').textContent = (file.size/1024).toFixed(1) + ' KB';
+                document.getElementById('drop-zone-content').classList.add('hidden');
+                document.getElementById('drop-zone-preview').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+            document.getElementById('upload-btn').disabled = false;
+            document.getElementById('upload-result').classList.add('hidden');
+        }
+
+        // Drag & Drop
+        const dropZone = document.getElementById('drop-zone');
+        dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+        dropZone.addEventListener('drop', e => {
+            e.preventDefault(); dropZone.classList.remove('drag-over');
+            const f = e.dataTransfer.files[0];
+            if (f && f.type.startsWith('image/')) { document.getElementById('file-input').files = e.dataTransfer.files; onFileSelected(f); }
+        });
+
+        // رفع الصورة
+        async function uploadMedia() {
+            if (!selectedFile) return;
+            const folder = getTargetFolder();
+            if (!folder) { adminToast('حدد اسم المجلد'); return; }
+            // overlay التحميل
+            const ov = document.createElement('div');
+            ov.className = 'upload-overlay';
+            ov.innerHTML = `<div class="bg-white rounded-2xl p-8 text-center shadow-2xl max-w-xs w-full mx-4"><span class="iconify text-5xl text-emerald-500 spin block mb-4" data-icon="lucide:loader-2"></span><p class="font-extrabold text-gray-800 mb-1">جاري الرفع...</p><p class="text-xs text-gray-500">${selectedFile.name}</p></div>`;
+            document.body.appendChild(ov);
+            try {
+                const base64 = await new Promise((res, rej) => { const r = new FileReader(); r.onload = e => res(e.target.result.split(',')[1]); r.onerror = rej; r.readAsDataURL(selectedFile); });
+                const resp = await fetch('/api/media', { method:'POST', headers:authHeaders(), body:JSON.stringify({ filename:selectedFile.name, folder, data:base64, mime:selectedFile.type }) });
+                const data = await resp.json();
+                document.body.removeChild(ov);
+                if (data.success) {
+                    const url = data.data.cdn_url;
+                    document.getElementById('cdn-url-output').value = url;
+                    document.getElementById('cdn-url-open').href = url;
+                    document.getElementById('upload-result').classList.remove('hidden');
+                    adminToast('✅ تم الرفع بنجاح!');
+                    resetUploadForm(); loadMediaList(); loadRepoSize();
+                } else { adminToast('❌ ' + (data.error || 'فشل الرفع')); }
+            } catch (e) { if(document.body.contains(ov)) document.body.removeChild(ov); adminToast('❌ خطأ: ' + e.message); }
+        }
+
+        // نسخ الرابط
+        async function copyCdnUrl() {
+            const url = document.getElementById('cdn-url-output').value;
+            try { await navigator.clipboard.writeText(url); adminToast('✅ تم نسخ الرابط'); }
+            catch { document.getElementById('cdn-url-output').select(); document.execCommand('copy'); adminToast('✅ تم نسخ الرابط'); }
+        }
+
+        async function copyCdnDirect(url) {
+            try { await navigator.clipboard.writeText(url); adminToast('✅ تم نسخ الرابط'); }
+            catch { adminToast('الرابط: ' + url); }
+        }
+
+        // قائمة الملفات
+        async function loadMediaList() {
+            const folder = getTargetFolder();
+            if (!folder) return;
+            const grid  = document.getElementById('media-grid');
+            const label = document.getElementById('browse-folder-label');
+            label.textContent = folder;
+            grid.innerHTML = `<div class="col-span-full text-center py-12 text-gray-300"><span class="iconify text-4xl spin" data-icon="lucide:loader-2"></span><p class="text-sm mt-2">جاري التحميل...</p></div>`;
+            try {
+                const res  = await fetch(`/api/media?action=list&folder=${encodeURIComponent(folder)}`, { headers: authHeaders() });
+                const data = await res.json();
+                if (!data.success) { grid.innerHTML = `<div class="col-span-full text-center py-12 text-red-400 text-sm">${data.error}</div>`; return; }
+                if (!data.data.length) { grid.innerHTML = `<div class="col-span-full text-center py-12 text-gray-300"><span class="iconify text-4xl" data-icon="lucide:image-off"></span><p class="text-sm mt-2">المجلد فارغ</p></div>`; return; }
+                grid.innerHTML = data.data.map(f => `
+                    <div class="media-card" title="${f.name}">
+                        <img src="${f.cdn_url}" alt="${f.name}" class="w-full h-24 object-cover bg-gray-50" loading="lazy" onerror="this.src='https://placehold.co/200x96/f3f4f6/9ca3af?text=!'">
+                        <div class="media-overlay">
+                            <button onclick="copyCdnDirect('${f.cdn_url}')" class="w-8 h-8 bg-white/20 hover:bg-white/40 text-white rounded-lg flex items-center justify-center" title="نسخ"><span class="iconify text-sm" data-icon="lucide:copy"></span></button>
+                            <a href="${f.cdn_url}" target="_blank" class="w-8 h-8 bg-white/20 hover:bg-white/40 text-white rounded-lg flex items-center justify-center" title="فتح"><span class="iconify text-sm" data-icon="lucide:external-link"></span></a>
+                            <button onclick="deleteMedia('${f.path}','${f.sha}')" class="w-8 h-8 bg-red-500/70 hover:bg-red-600 text-white rounded-lg flex items-center justify-center" title="حذف"><span class="iconify text-sm" data-icon="lucide:trash-2"></span></button>
+                        </div>
+                        <div class="p-2">
+                            <p class="text-[10px] text-gray-600 font-semibold truncate">${f.name}</p>
+                            <p class="text-[9px] text-gray-400">${(f.size/1024).toFixed(1)} KB</p>
+                        </div>
+                    </div>`).join('');
+                if (window.Iconify) Iconify.scan(grid);
+            } catch (e) { grid.innerHTML = `<div class="col-span-full text-center py-12 text-red-400 text-sm">خطأ: ${e.message}</div>`; }
+        }
+
+        // حذف ملف
+        async function deleteMedia(path, sha) {
+            if (!confirm(`حذف الملف:\n${path}\n\nلا يمكن التراجع عن هذا الإجراء.`)) return;
+            try {
+                const res  = await fetch(`/api/media?path=${encodeURIComponent(path)}&sha=${encodeURIComponent(sha)}`, { method:'DELETE', headers:authHeaders() });
+                const data = await res.json();
+                if (data.success) { adminToast('✅ تم الحذف'); loadMediaList(); loadRepoSize(); }
+                else adminToast('❌ ' + data.error);
+            } catch (e) { adminToast('❌ خطأ: ' + e.message); }
+        }
+
+        // إعادة ضبط نموذج الرفع
+        function resetUploadForm() {
+            selectedFile = null;
+            document.getElementById('file-input').value = '';
+            document.getElementById('upload-btn').disabled = true;
+            document.getElementById('drop-zone-content').classList.remove('hidden');
+            document.getElementById('drop-zone-preview').classList.add('hidden');
+            document.getElementById('preview-img').src = '';
+        }
+
     </script>
 </body>
 </html>
