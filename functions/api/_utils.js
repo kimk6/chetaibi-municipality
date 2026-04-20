@@ -1,3 +1,5 @@
+// ======== Authentication ========
+
 export async function withAuth(context) {
     const authHeader = context.request.headers.get('Authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -22,6 +24,23 @@ export async function withAuth(context) {
     }
 }
 
+// Alias for backward compatibility
+export const verifyAuth = withAuth;
+
+// ======== Token Creation ========
+
+export function createToken(username, secret) {
+    const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
+    const payload = btoa(JSON.stringify({
+        username,
+        exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60)
+    }));
+    const signature = btoa(secret + '.' + payload);
+    return `${header}.${payload}.${signature}`;
+}
+
+// ======== Response Helpers ========
+
 export function createResponse(data, status = 200) {
     return new Response(JSON.stringify(data), {
         status,
@@ -33,6 +52,11 @@ export function createResponse(data, status = 200) {
         },
     });
 }
+
+// Alias for backward compatibility
+export const json = createResponse;
+
+// ======== CORS ========
 
 export function handleOptions() {
     return new Response(null, {
