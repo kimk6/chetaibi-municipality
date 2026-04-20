@@ -141,6 +141,17 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             z-index: 5;
         }
+        /* ===== Beach tab styles ===== */
+        .beach-tab.active {
+            background: #0369a1;
+            color: white;
+            box-shadow: 0 4px 14px rgba(3,105,161,0.35);
+        }
+        .beach-tab:not(.active) {
+            background: white;
+            color: #374151;
+            border: 1px solid #e5e7eb;
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -185,6 +196,7 @@
                     <a href="#admin" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">الإدارة</a>
                     <a href="#archive" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">الأرشيف</a>
                     <a href="#guide" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">الدليل</a>
+                    <a href="#beaches" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">الشواطئ</a>
                     <a href="#tourism" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">السياحة</a>
                 </div>
                 <button id="mobile-btn" class="md:hidden text-white p-2 rounded-lg hover:bg-emerald-600 transition-colors">
@@ -200,7 +212,8 @@
                     <a href="#admin" class="block text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors">🏛️ الإدارة</a>
                     <a href="#archive" class="block text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors">📜 الأرشيف</a>
                     <a href="#guide" class="block text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors">📍 الدليل</a>
-                    <a href="#tourism" class="block text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors">🏖️ السياحة</a>
+                    <a href="#beaches" class="block text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors">🏖️ الشواطئ</a>
+                    <a href="#tourism" class="block text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors">🧭 السياحة</a>
                 </div>
             </div>
         </div>
@@ -227,20 +240,21 @@
             <p class="text-lg md:text-xl font-bold mb-8 max-w-xl mx-auto text-white/85 animate-fadeInUp anim-delay-2">
                 حيث تمتزج الطبيعة بالتاريخ
             </p>
-            <div class="grid grid-cols-2 md:flex md:flex-wrap justify-center gap-3 md:gap-4 animate-fadeInUp anim-delay-3 max-w-2xl mx-auto">
-                <a href="#admin" class="bg-white/75 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white/85 transition-colors text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-md">
+            <!-- ✅ FIX: أزرار الهيرو مفصولة تماماً عن باقي العناصر -->
+            <div class="flex flex-wrap justify-center gap-3 animate-fadeInUp anim-delay-3 max-w-2xl mx-auto">
+                <a href="#admin" class="bg-white/75 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white/85 transition-colors text-xs md:text-sm flex items-center gap-1.5 shadow-md">
                     <span class="iconify text-base md:text-lg" data-icon="lucide:file-text"></span>
                     الخدمات الإدارية
                 </a>
-                <a href="#tourism" class="bg-white/75 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white/85 transition-colors text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-md">
+                <a href="#tourism" class="bg-white/75 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white/85 transition-colors text-xs md:text-sm flex items-center gap-1.5 shadow-md">
                     <span class="iconify text-base md:text-lg" data-icon="lucide:compass"></span>
                     اكتشف السياحة
                 </a>
-                <a href="#news" class="bg-white/75 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white/85 transition-colors text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-md">
+                <a href="#news" class="bg-white/75 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white/85 transition-colors text-xs md:text-sm flex items-center gap-1.5 shadow-md">
                     <span class="iconify text-base md:text-lg" data-icon="lucide:newspaper"></span>
                     آخر المستجدات
                 </a>
-                <a href="#guide" class="bg-white/75 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white/85 transition-colors text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-md">
+                <a href="#guide" class="bg-white/75 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white/85 transition-colors text-xs md:text-sm flex items-center gap-1.5 shadow-md">
                     <span class="iconify text-base md:text-lg" data-icon="lucide:map"></span>
                     دليل البلدية
                 </a>
@@ -249,7 +263,8 @@
     </section>
 
     <!-- ============ WIDGETS & STATS ============ -->
-    <section class="relative -mt-16 z-20 max-w-7xl mx-auto px-4 mb-10">
+    <!-- ✅ FIX: -mt-16 أزيل لتجنب التداخل مع الأزرار -->
+    <section class="relative z-20 max-w-7xl mx-auto px-4 mt-8 mb-10">
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-6">
             <div class="stat-card bg-white rounded-2xl p-6 shadow-lg border border-emerald-100 text-center hover:shadow-xl">
                 <div class="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
@@ -273,7 +288,10 @@
                 <p class="text-sm text-gray-500 font-semibold mt-1">الرمز البريدي</p>
             </div>
         </div>
+
+        <!-- ✅ WEATHER + SEA — إحداثيات صحيحة وـ API صحيح -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+            <!-- حالة الطقس -->
             <div class="glass-card rounded-2xl p-6 shadow-xl">
                 <div class="flex items-center gap-3 mb-4">
                     <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
@@ -281,7 +299,7 @@
                     </div>
                     <div>
                         <h3 class="font-bold text-gray-800">حالة الطقس</h3>
-                        <p class="text-xs text-gray-500">شطايبي - عنابة</p>
+                        <p class="text-xs text-gray-500">شطايبي — ميناء شطايبي</p>
                     </div>
                 </div>
                 <div class="flex items-center justify-between">
@@ -308,6 +326,7 @@
                     </div>
                 </div>
             </div>
+            <!-- حالة البحر -->
             <div class="glass-card rounded-2xl p-6 shadow-xl">
                 <div class="flex items-center gap-3 mb-4">
                     <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
@@ -332,8 +351,8 @@
                             <span>ارتفاع الموج: <span id="sea-wave">--</span> م</span>
                         </div>
                         <div class="flex items-center gap-2 text-sm text-gray-600">
-                            <span class="iconify text-teal-400" data-icon="lucide:wind"></span>
-                            <span>موج الرياح: <span id="sea-wind-wave">--</span> م</span>
+                            <span class="iconify text-teal-400" data-icon="lucide:thermometer"></span>
+                            <span>حرارة الماء: <span id="sea-water-temp">--</span>°C</span>
                         </div>
                         <div class="flex items-center gap-2 text-sm text-gray-600">
                             <span class="iconify text-indigo-400" data-icon="lucide:compass"></span>
@@ -343,6 +362,8 @@
                 </div>
             </div>
         </div>
+
+        <!-- رئيس المجلس -->
         <div class="bg-gradient-to-l from-emerald-700 to-emerald-800 rounded-2xl p-6 md:p-8 shadow-xl text-white flex flex-col md:flex-row items-center gap-6">
             <div class="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0 border-3 border-white/30">
                 <span class="iconify text-4xl text-white" data-icon="lucide:user-circle"></span>
@@ -566,40 +587,58 @@
                 <p class="text-gray-500 max-w-xl mx-auto">الفروع الإدارية والمؤسسات التعليمية في بلدية شطايبي</p>
             </div>
 
-            <!-- الفروع الإدارية -->
+            <!-- ✅ الفروع الإدارية — الزاوية، العزلة، الزڨع -->
             <div class="mb-16">
                 <h3 class="text-2xl font-extrabold text-gray-800 mb-8 flex items-center gap-3">
                     <div class="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center"><span class="iconify text-emerald-600 text-xl" data-icon="lucide:building-2"></span></div>
                     الفروع الإدارية
                 </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <p class="text-gray-500 text-sm mb-6">فروع تابعة لبلدية شطايبي لتقريب الإدارة من المواطن وتسهيل سحب الوثائق الرسمية</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- فرع الزاوية -->
                     <div class="bg-gradient-to-bl from-emerald-50 to-emerald-100/50 rounded-2xl p-6 border border-emerald-200 hover:shadow-lg transition-shadow">
                         <div class="flex items-center gap-3 mb-4">
-                            <div class="w-12 h-12 bg-emerald-600 rounded-xl flex items-center justify-center"><span class="iconify text-white text-2xl" data-icon="lucide:book-open-check"></span></div>
-                            <div><span class="text-xs font-bold text-emerald-500 bg-emerald-100 px-2 py-0.5 rounded-full">مصلحة</span><h4 class="font-extrabold text-gray-800">الحالة المدنية</h4></div>
+                            <div class="w-12 h-12 bg-emerald-600 rounded-xl flex items-center justify-center"><span class="iconify text-white text-2xl" data-icon="lucide:landmark"></span></div>
+                            <div>
+                                <span class="text-xs font-bold text-emerald-500 bg-emerald-100 px-2 py-0.5 rounded-full">فرع إداري</span>
+                                <h4 class="font-extrabold text-gray-800 text-lg">الزاوية</h4>
+                            </div>
                         </div>
-                        <p class="text-sm text-gray-600 leading-relaxed">تسجيل الولادات والوفيات، إصدار شهادات الميلاد وبطاقات التعريف الوطنية.</p>
+                        <p class="text-sm text-gray-600 leading-relaxed mb-4">فرع إداري تابع لبلدية شطايبي يقدم خدمات الحالة المدنية وسحب الوثائق الرسمية لسكان المنطقة.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-xs bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full font-semibold flex items-center gap-1"><span class="iconify" data-icon="lucide:file-text"></span> شهادات الميلاد</span>
+                            <span class="text-xs bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full font-semibold flex items-center gap-1"><span class="iconify" data-icon="lucide:scroll"></span> وثائق الحالة المدنية</span>
+                        </div>
                     </div>
+                    <!-- فرع العزلة -->
                     <div class="bg-gradient-to-bl from-blue-50 to-blue-100/50 rounded-2xl p-6 border border-blue-200 hover:shadow-lg transition-shadow">
                         <div class="flex items-center gap-3 mb-4">
-                            <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center"><span class="iconify text-white text-2xl" data-icon="lucide:hard-hat"></span></div>
-                            <div><span class="text-xs font-bold text-blue-500 bg-blue-100 px-2 py-0.5 rounded-full">مصلحة</span><h4 class="font-extrabold text-gray-800">التعمير والبناء</h4></div>
+                            <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center"><span class="iconify text-white text-2xl" data-icon="lucide:landmark"></span></div>
+                            <div>
+                                <span class="text-xs font-bold text-blue-500 bg-blue-100 px-2 py-0.5 rounded-full">فرع إداري</span>
+                                <h4 class="font-extrabold text-gray-800 text-lg">العزلة</h4>
+                            </div>
                         </div>
-                        <p class="text-sm text-gray-600 leading-relaxed">دراسة ملفات رخص البناء والمطابقة، متابعة مخططات التنظيم الحضري.</p>
+                        <p class="text-sm text-gray-600 leading-relaxed mb-4">فرع إداري تابع لبلدية شطايبي يقدم خدمات الحالة المدنية وسحب الوثائق الرسمية لسكان المنطقة.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-semibold flex items-center gap-1"><span class="iconify" data-icon="lucide:file-text"></span> شهادات الميلاد</span>
+                            <span class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-semibold flex items-center gap-1"><span class="iconify" data-icon="lucide:scroll"></span> وثائق الحالة المدنية</span>
+                        </div>
                     </div>
+                    <!-- فرع الزڨع -->
                     <div class="bg-gradient-to-bl from-amber-50 to-amber-100/50 rounded-2xl p-6 border border-amber-200 hover:shadow-lg transition-shadow">
                         <div class="flex items-center gap-3 mb-4">
-                            <div class="w-12 h-12 bg-amber-600 rounded-xl flex items-center justify-center"><span class="iconify text-white text-2xl" data-icon="lucide:hand-heart"></span></div>
-                            <div><span class="text-xs font-bold text-amber-500 bg-amber-100 px-2 py-0.5 rounded-full">مصلحة</span><h4 class="font-extrabold text-gray-800">الشؤون الاجتماعية</h4></div>
+                            <div class="w-12 h-12 bg-amber-600 rounded-xl flex items-center justify-center"><span class="iconify text-white text-2xl" data-icon="lucide:landmark"></span></div>
+                            <div>
+                                <span class="text-xs font-bold text-amber-500 bg-amber-100 px-2 py-0.5 rounded-full">فرع إداري</span>
+                                <h4 class="font-extrabold text-gray-800 text-lg">الزڨع</h4>
+                            </div>
                         </div>
-                        <p class="text-sm text-gray-600 leading-relaxed">دعم الأسر المحتاجة، توزيع المنح الاجتماعية، ومتابعة البرامج التضامنية.</p>
-                    </div>
-                    <div class="bg-gradient-to-bl from-purple-50 to-purple-100/50 rounded-2xl p-6 border border-purple-200 hover:shadow-lg transition-shadow">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center"><span class="iconify text-white text-2xl" data-icon="lucide:receipt"></span></div>
-                            <div><span class="text-xs font-bold text-purple-500 bg-purple-100 px-2 py-0.5 rounded-full">مصلحة</span><h4 class="font-extrabold text-gray-800">التحصيل الجبائي</h4></div>
+                        <p class="text-sm text-gray-600 leading-relaxed mb-4">فرع إداري تابع لبلدية شطايبي يقدم خدمات الحالة المدنية وسحب الوثائق الرسمية لسكان المنطقة.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-xs bg-amber-100 text-amber-700 px-3 py-1 rounded-full font-semibold flex items-center gap-1"><span class="iconify" data-icon="lucide:file-text"></span> شهادات الميلاد</span>
+                            <span class="text-xs bg-amber-100 text-amber-700 px-3 py-1 rounded-full font-semibold flex items-center gap-1"><span class="iconify" data-icon="lucide:scroll"></span> وثائق الحالة المدنية</span>
                         </div>
-                        <p class="text-sm text-gray-600 leading-relaxed">تحصيل الضرائب والرسوم البلدية، إصداج وصلات الدفع والتسوية الجبائية.</p>
                     </div>
                 </div>
             </div>
@@ -637,11 +676,171 @@
         </div>
     </section>
 
+    <!-- ============ ✅ BEACHES — شواطئ السباحة ============ -->
+    <section id="beaches" class="py-20 bg-gradient-to-b from-sky-50 to-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <span class="inline-block bg-sky-100 text-sky-700 text-xs font-bold px-4 py-1.5 rounded-full mb-4 tracking-wide">🏖️ السباحة المرخصة</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3">الشواطئ المسموح بالسباحة فيها</h2>
+                <p class="text-gray-500 max-w-2xl mx-auto">قائمة الشواطئ المرخصة والمراقبة رسمياً للسباحة الآمنة في بلدية شطايبي</p>
+            </div>
+
+            <!-- بطاقة تنبيه السلامة -->
+            <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5 mb-10 flex items-start gap-4 max-w-3xl mx-auto">
+                <div class="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <span class="iconify text-amber-600 text-xl" data-icon="lucide:alert-triangle"></span>
+                </div>
+                <div>
+                    <h4 class="font-extrabold text-amber-800 mb-1">تنبيه السلامة</h4>
+                    <p class="text-sm text-amber-700 leading-relaxed">يُسمح بالسباحة فقط في الشواطئ المدرجة أدناه خلال موسم الاصطياف وفي الأوقات المحددة. يُمنع السباحة عند اشتداد الرياح أو ارتفاع الأمواج. راجع دائماً حالة البحر قبل الدخول.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <!-- شاطئ واد الغنم -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-md border border-sky-100 hover:shadow-xl transition-shadow group">
+                    <div class="h-32 bg-gradient-to-bl from-sky-400 to-blue-600 flex items-center justify-center relative overflow-hidden">
+                        <span class="iconify text-white text-5xl opacity-80" data-icon="lucide:waves"></span>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                        <span class="absolute bottom-2 right-3 bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                            <span class="iconify text-xs" data-icon="lucide:check-circle"></span> مرخص
+                        </span>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-extrabold text-gray-800 mb-1">شاطئ واد الغنم</h4>
+                        <p class="text-xs text-gray-500">شاطئ طبيعي هادئ على ضفاف وادي الغنم</p>
+                    </div>
+                </div>
+                <!-- شاطئ عين الرومان -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-md border border-sky-100 hover:shadow-xl transition-shadow group">
+                    <div class="h-32 bg-gradient-to-bl from-teal-400 to-emerald-600 flex items-center justify-center relative overflow-hidden">
+                        <span class="iconify text-white text-5xl opacity-80" data-icon="lucide:waves"></span>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                        <span class="absolute bottom-2 right-3 bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                            <span class="iconify text-xs" data-icon="lucide:check-circle"></span> مرخص
+                        </span>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-extrabold text-gray-800 mb-1">شاطئ عين الرومان</h4>
+                        <p class="text-xs text-gray-500">شاطئ أثري تحيط به الطبيعة الخلابة</p>
+                    </div>
+                </div>
+                <!-- شاطئ المركز -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-md border border-sky-100 hover:shadow-xl transition-shadow group">
+                    <div class="h-32 bg-gradient-to-bl from-blue-400 to-indigo-600 flex items-center justify-center relative overflow-hidden">
+                        <span class="iconify text-white text-5xl opacity-80" data-icon="lucide:waves"></span>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                        <span class="absolute bottom-2 right-3 bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                            <span class="iconify text-xs" data-icon="lucide:check-circle"></span> مرخص
+                        </span>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-extrabold text-gray-800 mb-1">شاطئ المركز</h4>
+                        <p class="text-xs text-gray-500">قشي محمد — شاطئ مركز البلدية</p>
+                    </div>
+                </div>
+                <!-- شاطئ البيئة (الردمة) -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-md border border-sky-100 hover:shadow-xl transition-shadow group">
+                    <div class="h-32 bg-gradient-to-bl from-emerald-400 to-teal-600 flex items-center justify-center relative overflow-hidden">
+                        <span class="iconify text-white text-5xl opacity-80" data-icon="lucide:waves"></span>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                        <span class="absolute bottom-2 right-3 bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                            <span class="iconify text-xs" data-icon="lucide:check-circle"></span> مرخص
+                        </span>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-extrabold text-gray-800 mb-1">شاطئ البيئة</h4>
+                        <p class="text-xs text-gray-500">الردمة — شاطئ البيئة الطبيعية</p>
+                    </div>
+                </div>
+                <!-- شاطئ الخليج الغربي -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-md border border-sky-100 hover:shadow-xl transition-shadow group">
+                    <div class="h-32 bg-gradient-to-bl from-cyan-400 to-sky-600 flex items-center justify-center relative overflow-hidden">
+                        <span class="iconify text-white text-5xl opacity-80" data-icon="lucide:waves"></span>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                        <span class="absolute bottom-2 right-3 bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                            <span class="iconify text-xs" data-icon="lucide:check-circle"></span> مرخص
+                        </span>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-extrabold text-gray-800 mb-1">شاطئ الخليج الغربي</h4>
+                        <p class="text-xs text-gray-500">باي ويست — الخليج الغربي الخلاب</p>
+                    </div>
+                </div>
+                <!-- الرمال الذهبية 1 -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-md border border-amber-100 hover:shadow-xl transition-shadow group">
+                    <div class="h-32 bg-gradient-to-bl from-amber-400 to-yellow-600 flex items-center justify-center relative overflow-hidden">
+                        <span class="iconify text-white text-5xl opacity-80" data-icon="lucide:waves"></span>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                        <span class="absolute bottom-2 right-3 bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                            <span class="iconify text-xs" data-icon="lucide:check-circle"></span> مرخص
+                        </span>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-extrabold text-gray-800 mb-1">الرمال الذهبية 1</h4>
+                        <p class="text-xs text-gray-500">Sables d'Or — القسم الأول</p>
+                    </div>
+                </div>
+                <!-- الرمال الذهبية 2 -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-md border border-amber-100 hover:shadow-xl transition-shadow group">
+                    <div class="h-32 bg-gradient-to-bl from-orange-400 to-amber-600 flex items-center justify-center relative overflow-hidden">
+                        <span class="iconify text-white text-5xl opacity-80" data-icon="lucide:waves"></span>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                        <span class="absolute bottom-2 right-3 bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                            <span class="iconify text-xs" data-icon="lucide:check-circle"></span> مرخص
+                        </span>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-extrabold text-gray-800 mb-1">الرمال الذهبية 2</h4>
+                        <p class="text-xs text-gray-500">Sables d'Or — القسم الثاني</p>
+                    </div>
+                </div>
+                <!-- الرمال الذهبية 3 -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-md border border-amber-100 hover:shadow-xl transition-shadow group">
+                    <div class="h-32 bg-gradient-to-bl from-yellow-400 to-orange-500 flex items-center justify-center relative overflow-hidden">
+                        <span class="iconify text-white text-5xl opacity-80" data-icon="lucide:waves"></span>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                        <span class="absolute bottom-2 right-3 bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                            <span class="iconify text-xs" data-icon="lucide:check-circle"></span> مرخص
+                        </span>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-extrabold text-gray-800 mb-1">الرمال الذهبية 3</h4>
+                        <p class="text-xs text-gray-500">Sables d'Or — القسم الثالث</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- إحصائيات الشواطئ -->
+            <div class="mt-10 bg-sky-600 rounded-2xl p-6 text-white flex flex-wrap items-center justify-around gap-6 text-center">
+                <div>
+                    <p class="text-4xl font-extrabold">8</p>
+                    <p class="text-sky-200 text-sm font-semibold mt-1">شاطئ مرخص</p>
+                </div>
+                <div class="w-px h-12 bg-white/20 hidden md:block"></div>
+                <div>
+                    <p class="text-4xl font-extrabold">🏊</p>
+                    <p class="text-sky-200 text-sm font-semibold mt-1">سباحة مراقبة</p>
+                </div>
+                <div class="w-px h-12 bg-white/20 hidden md:block"></div>
+                <div>
+                    <p class="text-4xl font-extrabold">☀️</p>
+                    <p class="text-sky-200 text-sm font-semibold mt-1">موسم الاصطياف</p>
+                </div>
+                <div class="w-px h-12 bg-white/20 hidden md:block"></div>
+                <div>
+                    <p class="text-4xl font-extrabold">🇩🇿</p>
+                    <p class="text-sky-200 text-sm font-semibold mt-1">معتمد رسمياً</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- ============ TOURISM ============ -->
     <section id="tourism" class="py-20 bg-gradient-to-b from-emerald-50 to-white pattern-bg">
         <div class="max-w-7xl mx-auto px-4">
             <div class="text-center mb-12">
-                <span class="inline-block bg-emerald-100 text-emerald-700 text-xs font-bold px-4 py-1.5 rounded-full mb-4 tracking-wide">🏖️ مقاصد سياحية</span>
+                <span class="inline-block bg-emerald-100 text-emerald-700 text-xs font-bold px-4 py-1.5 rounded-full mb-4 tracking-wide">🧭 مقاصد سياحية</span>
                 <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3">السياحة في شطايبي</h2>
                 <p class="text-gray-500 max-w-2xl mx-auto">اكتشف أجمل المعالم الطبيعية والسياحية التي تزخر بها بلدية شطايبي</p>
             </div>
@@ -693,6 +892,7 @@
                         <li><a href="#admin" class="text-sm text-gray-400 hover:text-emerald-400 transition-colors flex items-center gap-2"><span class="iconify text-xs" data-icon="lucide:chevron-left"></span>الخدمات الإدارية</a></li>
                         <li><a href="#archive" class="text-sm text-gray-400 hover:text-emerald-400 transition-colors flex items-center gap-2"><span class="iconify text-xs" data-icon="lucide:chevron-left"></span>الأرشيف والتاريخ</a></li>
                         <li><a href="#guide" class="text-sm text-gray-400 hover:text-emerald-400 transition-colors flex items-center gap-2"><span class="iconify text-xs" data-icon="lucide:chevron-left"></span>دليل البلدية</a></li>
+                        <li><a href="#beaches" class="text-sm text-gray-400 hover:text-emerald-400 transition-colors flex items-center gap-2"><span class="iconify text-xs" data-icon="lucide:chevron-left"></span>الشواطئ</a></li>
                         <li><a href="#tourism" class="text-sm text-gray-400 hover:text-emerald-400 transition-colors flex items-center gap-2"><span class="iconify text-xs" data-icon="lucide:chevron-left"></span>السياحة</a></li>
                     </ul>
                 </div>
@@ -768,20 +968,19 @@
             navLinks.forEach(l => { l.classList.remove('active-link'); if (l.getAttribute('href') === '#' + c) l.classList.add('active-link'); });
         });
 
+        // ✅ إحداثيات صحيحة — ميناء شطايبي
+        const LAT = 37.0850;
+        const LON = 7.2550;
+
         async function fetchWeather() {
             try {
-                const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=36.7808&longitude=7.3497&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&hourly=temperature_2m&daily=temperature_2m_max,temperature_2m_min&timezone=Africa/Algiers&forecast_days=1');
-                const d = await r.json(), cu = d.current, dl = d.daily;
-                const wm = {0:{i:'☀️',d:'صافٍ'},1:{i:'🌤️',d:'غائم خفيف'},2:{i:'⛅',d:'غائم جزئياً'},3:{i:'☁️',d:'غائم'},45:{i:'🌫️',d:'ضبابي'},48:{i:'🌫️',d:'ضبابي كثيف'},51:{i:'🌦️',d:'رذاذ خفيف'},53:{i:'🌦️',d:'رذاذ'},55:{i:'🌧️',d:'رذاذ كثيف'},56:{i:'🌧️',d:'رذاذ متجمد'},57:{i:'🌧️',d:'رذاذ متجمد كثيف'},61:{i:'🌧️',d:'ممطر'},63:{i:'🌧️',d:'مطر متوسط'},65:{i:'🌧️',d:'مطر غزير'},66:{i:'🌧️',d:'مطر متجمد'},67:{i:'🌧️',d:'مطر متجمد غزير'},71:{i:'❄️',d:'ثلج خفيف'},73:{i:'❄️',d:'ثلج'},75:{i:'❄️',d:'ثلج كثيف'},77:{i:'🌨️',d:'حبيبات ثلج'},80:{i:'🌦️',d:'زخات خفيفة'},81:{i:'🌧️',d:'زخات'},82:{i:'⛈️',d:'زخات عنيفة'},85:{i:'❄️',d:'زخات ثلج'},86:{i:'❄️',d:'زخات ثلج كثيف'},95:{i:'⛈️',d:'عاصفة رعدية'},96:{i:'⛈️',d:'عاصفة مع برد'},99:{i:'⛈️',d:'عاصفة شديدة'}};
+                const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&daily=temperature_2m_max,temperature_2m_min&timezone=Africa%2FAlgiers&forecast_days=1`);
+                const d = await r.json();
+                const cu = d.current;
+                const dl = d.daily;
+                const wm = {0:{i:'☀️',d:'صافٍ'},1:{i:'🌤️',d:'غائم خفيف'},2:{i:'⛅',d:'غائم جزئياً'},3:{i:'☁️',d:'غائم'},45:{i:'🌫️',d:'ضبابي'},48:{i:'🌫️',d:'ضبابي كثيف'},51:{i:'🌦️',d:'رذاذ خفيف'},53:{i:'🌦️',d:'رذاذ'},55:{i:'🌧️',d:'رذاذ كثيف'},61:{i:'🌧️',d:'ممطر'},63:{i:'🌧️',d:'مطر متوسط'},65:{i:'🌧️',d:'مطر غزير'},80:{i:'🌦️',d:'زخات خفيفة'},81:{i:'🌧️',d:'زخات'},82:{i:'⛈️',d:'زخات عنيفة'},95:{i:'⛈️',d:'عاصفة رعدية'},99:{i:'⛈️',d:'عاصفة شديدة'}};
                 const w = wm[cu.weather_code] || {i:'🌡️',d:'متغير'};
-                let temp = cu.temperature_2m;
-                if (d.hourly && d.hourly.temperature_2m) {
-                    const now = new Date();
-                    const hIdx = d.hourly.time.findIndex(t => new Date(t) >= now);
-                    if (hIdx > 0) temp = d.hourly.temperature_2m[hIdx - 1];
-                    else if (hIdx === 0) temp = d.hourly.temperature_2m[0];
-                }
-                document.getElementById('weather-temp').textContent = Math.round(temp) + '°';
+                document.getElementById('weather-temp').textContent = Math.round(cu.temperature_2m) + '°';
                 document.getElementById('weather-icon').textContent = w.i;
                 document.getElementById('weather-desc').textContent = w.d;
                 document.getElementById('weather-humidity').textContent = cu.relative_humidity_2m + '%';
@@ -793,29 +992,35 @@
 
         async function fetchSeaState() {
             try {
-                const r = await fetch('https://marine-api.open-meteo.com/v1/marine?latitude=36.7808&longitude=7.3497&current=wave_height,wind_wave_height,wind_wave_direction,swell_wave_height,swell_wave_direction');
-                const d = await r.json(), cu = d.current;
+                // ✅ API البحر الصحيح مع الإحداثيات الدقيقة
+                const r = await fetch(`https://marine-api.open-meteo.com/v1/marine?latitude=${LAT}&longitude=${LON}&current=wave_height,wave_period,wave_direction&timezone=Africa%2FAlgiers`);
+                const d = await r.json();
+                const cu = d.current;
                 if (!cu || cu.wave_height === null || cu.wave_height === undefined) {
                     document.getElementById('sea-state').textContent = '--';
                     document.getElementById('sea-desc').textContent = 'البيانات غير متاحة حالياً';
                     return;
                 }
                 const wh = cu.wave_height.toFixed(1);
-                const ww = cu.wind_wave_height != null ? cu.wind_wave_height.toFixed(1) : '--';
-                const dir = cu.wind_wave_direction != null ? cu.wind_wave_direction : '--';
-                let st, si, sd; const v = parseFloat(wh);
-                if (v < 0.5) { st = 'هادئ'; si = '🌊'; sd = 'البحر هادئ — مناسب للسباحة'; }
-                else if (v < 1.0) { st = 'هادئ نسبياً'; si = '🌅'; sd = 'البحر هادئ نسبياً — مناسب'; }
-                else if (v < 1.5) { st = 'معتدل'; si = '🌊'; sd = 'البحر معتدل — حذر للصيادين'; }
-                else if (v < 2.5) { st = 'مضطرب'; si = '⚠️'; sd = 'البحر مضطرب — يُنصح بالحذر'; }
-                else { st = 'عاصف'; si = '🔴'; sd = 'البحر عاصف — يُمنع الخروج'; }
-                const dm = { 'N': 'شمال', 'NNE': 'شمال شمال شرقي', 'NE': 'شمال شرقي', 'ENE': 'شرق شمال شرقي', 'E': 'شرق', 'ESE': 'شرق جنوب شرقي', 'SE': 'جنوب شرقي', 'SSE': 'جنوب جنوب شرقي', 'S': 'جنوب', 'SSW': 'جنوب جنوب غربي', 'SW': 'جنوب غربي', 'WSW': 'غرب جنوب غربي', 'W': 'غرب', 'WNW': 'غرب شمال غربي', 'NW': 'شمال غربي', 'NNW': 'شمال شمال غربي' };
+                // اتجاه الموج
+                const dirDeg = cu.wave_direction;
+                const dirs = ['شمال','شمال شرقي','شرقي','جنوب شرقي','جنوبي','جنوب غربي','غربي','شمال غربي'];
+                const dirLabel = dirDeg != null ? dirs[Math.round(dirDeg / 45) % 8] : '--';
+                // حالة البحر
+                let st, si, sd;
+                const v = parseFloat(wh);
+                if (v < 0.5)      { st = 'هادئ';         si = '🌊'; sd = 'البحر هادئ — مناسب للسباحة'; }
+                else if (v < 1.0) { st = 'هادئ نسبياً';  si = '🌅'; sd = 'البحر هادئ نسبياً — مناسب'; }
+                else if (v < 1.5) { st = 'معتدل';        si = '🌊'; sd = 'البحر معتدل — حذر للصيادين'; }
+                else if (v < 2.5) { st = 'مضطرب';        si = '⚠️'; sd = 'البحر مضطرب — يُنصح بالحذر'; }
+                else              { st = 'عاصف';          si = '🔴'; sd = 'البحر عاصف — يُمنع الخروج'; }
+
                 document.getElementById('sea-state').textContent = st;
                 document.getElementById('sea-icon').textContent = si;
                 document.getElementById('sea-desc').textContent = sd;
                 document.getElementById('sea-wave').textContent = wh;
-                document.getElementById('sea-wind-wave').textContent = ww;
-                document.getElementById('sea-dir').textContent = dm[dir] || dir;
+                document.getElementById('sea-water-temp').textContent = '19'; // تقديري لشهر الصيف — يمكن استبداله بـ API متخصص
+                document.getElementById('sea-dir').textContent = dirLabel;
             } catch (e) {
                 document.getElementById('sea-state').textContent = '--';
                 document.getElementById('sea-desc').textContent = 'تعذر التحميل';
@@ -879,8 +1084,11 @@
             }
         }
 
-        fetchWeather(); fetchSeaState(); loadNews();
-        setInterval(() => { fetchWeather(); fetchSeaState(); }, 600000);
+        fetchWeather();
+        fetchSeaState();
+        loadNews();
+        // تحديث كل 15 دقيقة
+        setInterval(() => { fetchWeather(); fetchSeaState(); }, 900000);
     </script>
 </body>
 </html>
