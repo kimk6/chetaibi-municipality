@@ -16,10 +16,7 @@
         .tab-btn:not(.active) { background: white; color: #374151; border: 1px solid #e5e7eb; }
         .fade-in { animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .toast-admin {
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            transform: translateY(-20px); opacity: 0; pointer-events: none;
-        }
+        .toast-admin { transition: all 0.4s cubic-bezier(0.16,1,0.3,1); transform: translateY(-20px); opacity: 0; pointer-events: none; }
         .toast-admin.show { transform: translateY(0); opacity: 1; pointer-events: auto; }
         input[type="text"], input[type="url"], input[type="date"], input[type="number"], select, textarea {
             width: 100%; padding: 10px 14px; border: 1px solid #e5e7eb; border-radius: 12px;
@@ -30,986 +27,706 @@
         textarea { resize: vertical; min-height: 100px; }
         .item-card { background: white; border: 1px solid #f3f4f6; border-radius: 16px; padding: 16px; transition: all 0.2s; }
         .item-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
-
-        /* ── Media Manager ── */
-        .repo-bar-track { width:100%; height:14px; background:#f1f5f9; border-radius:99px; overflow:hidden; }
-        .repo-bar-fill { height:100%; border-radius:99px; transition: width 0.7s cubic-bezier(.4,0,.2,1), background-color 0.4s; background: linear-gradient(90deg,#059669,#34d399); }
-        .repo-bar-fill.warn   { background: linear-gradient(90deg,#d97706,#fbbf24); }
-        .repo-bar-fill.danger { background: linear-gradient(90deg,#dc2626,#f87171); }
-        .drop-zone { border:2px dashed #d1d5db; border-radius:16px; padding:28px 16px; text-align:center; cursor:pointer; transition:all 0.25s; background:#f9fafb; }
-        .drop-zone:hover, .drop-zone.drag-over { border-color:#059669; background:#ecfdf5; }
-        .drop-zone.drag-over { transform:scale(1.01); }
-        .media-card { background:white; border:1px solid #f3f4f6; border-radius:14px; overflow:hidden; transition:box-shadow 0.2s, transform 0.2s; position:relative; }
-        .media-card:hover { box-shadow:0 8px 24px rgba(0,0,0,0.09); transform:translateY(-2px); }
-        .media-overlay { position:absolute; inset:0; background:rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center; gap:8px; opacity:0; transition:opacity 0.2s; border-radius:14px; }
-        .media-card:hover .media-overlay { opacity:1; }
-        .upload-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.55); backdrop-filter:blur(4px); z-index:200; display:flex; align-items:center; justify-content:center; }
-        @keyframes spin { to { transform:rotate(360deg); } }
-        .spin { animation:spin 1s linear infinite; }
+        /* Upload Widget */
+        .upload-widget { border: 2px dashed #d1d5db; border-radius: 12px; background: #f9fafb; transition: all 0.2s; }
+        .upload-widget:hover { border-color: #059669; background: #f0fdf4; }
+        .upload-widget.has-image { border-color: #059669; border-style: solid; background: white; }
+        .upload-widget.uploading { border-color: #6366f1; background: #eef2ff; pointer-events: none; }
+        .album-thumb { position: relative; border-radius: 8px; overflow: hidden; }
+        .album-thumb img { width: 100%; height: 64px; object-fit: cover; display: block; }
+        .album-thumb .rm { position: absolute; top: 2px; right: 2px; width: 18px; height: 18px; background: rgba(220,38,38,0.9); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 9px; line-height: 1; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .spin { animation: spin 0.8s linear infinite; display: inline-block; }
+        /* Repo bar */
+        .repo-bar-track { width:100%; height:8px; background:#f1f5f9; border-radius:99px; overflow:hidden; }
+        .repo-bar-fill { height:100%; border-radius:99px; transition:width 0.7s; background:linear-gradient(90deg,#059669,#34d399); }
+        .repo-bar-fill.warn { background:linear-gradient(90deg,#d97706,#fbbf24); }
+        .repo-bar-fill.danger { background:linear-gradient(90deg,#dc2626,#f87171); }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
 
-    <!-- Toast -->
-    <div id="admin-toast" class="toast-admin fixed top-6 left-1/2 -translate-x-1/2 z-[100] bg-emerald-600 text-white px-6 py-3 rounded-xl shadow-2xl flex items-center gap-3 text-sm font-bold">
-        <span class="iconify text-lg" data-icon="lucide:check-circle"></span>
-        <span id="admin-toast-msg">تم بنجاح</span>
-    </div>
+<div id="admin-toast" class="toast-admin fixed top-6 left-1/2 -translate-x-1/2 z-[100] bg-emerald-600 text-white px-6 py-3 rounded-xl shadow-2xl flex items-center gap-3 text-sm font-bold">
+    <span class="iconify text-lg" data-icon="lucide:check-circle"></span>
+    <span id="admin-toast-msg">تم بنجاح</span>
+</div>
 
-    <!-- ============ LOGIN ============ -->
-    <div id="login-screen" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-bl from-emerald-800 via-emerald-700 to-emerald-900">
-        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 text-center">
-            <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-emerald-600 shadow-lg mx-auto mb-5">
-                <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo.webp" alt="شعار" class="w-full h-full object-cover">
-            </div>
-            <h1 class="text-2xl font-extrabold text-gray-800 mb-1">لوحة تحكم البلدية</h1>
-            <p class="text-sm text-gray-500 mb-8">بلدية شطايبي — ولاية عنابة</p>
-            <div class="space-y-4">
-                <div class="text-right">
-                    <label class="text-xs font-bold text-gray-500 mb-1 block">اسم المستخدم</label>
-                    <input id="login-username" type="text" value="admin" placeholder="admin" class="text-center">
-                </div>
-                <div class="text-right">
-                    <label class="text-xs font-bold text-gray-500 mb-1 block">كلمة المرور</label>
-                    <input id="login-password" type="password" placeholder="••••••••" class="text-center" onkeydown="if(event.key==='Enter')login()">
-                </div>
-                <div id="login-error" class="text-red-500 text-xs font-bold hidden">اسم المستخدم أو كلمة المرور غير صحيحة</div>
-                <button onclick="login()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm transition-colors shadow-md">
-                    <span class="iconify inline-block ml-2" data-icon="lucide:log-in"></span>تسجيل الدخول
-                </button>
-            </div>
-            <p class="text-[10px] text-gray-400 mt-6">الوصول مخصص للموظفين المصرح لهم فقط</p>
+<!-- LOGIN -->
+<div id="login-screen" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-bl from-emerald-800 via-emerald-700 to-emerald-900">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 text-center">
+        <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-emerald-600 shadow-lg mx-auto mb-5">
+            <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo.webp" class="w-full h-full object-cover">
         </div>
+        <h1 class="text-2xl font-extrabold text-gray-800 mb-1">لوحة تحكم البلدية</h1>
+        <p class="text-sm text-gray-500 mb-8">بلدية شطايبي — ولاية عنابة</p>
+        <div class="space-y-4">
+            <div class="text-right"><label class="text-xs font-bold text-gray-500 mb-1 block">اسم المستخدم</label><input id="login-username" type="text" value="admin" class="text-center"></div>
+            <div class="text-right"><label class="text-xs font-bold text-gray-500 mb-1 block">كلمة المرور</label><input id="login-password" type="password" placeholder="••••••••" class="text-center" onkeydown="if(event.key==='Enter')login()"></div>
+            <div id="login-error" class="text-red-500 text-xs font-bold hidden">اسم المستخدم أو كلمة المرور غير صحيحة</div>
+            <button onclick="login()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm transition-colors shadow-md">
+                <span class="iconify inline-block ml-2" data-icon="lucide:log-in"></span>تسجيل الدخول
+            </button>
+        </div>
+        <p class="text-[10px] text-gray-400 mt-6">الوصول مخصص للموظفين المصرح لهم فقط</p>
     </div>
+</div>
 
-    <!-- ============ DASHBOARD ============ -->
-    <div id="dashboard" class="hidden">
+<!-- DASHBOARD -->
+<div id="dashboard" class="hidden">
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-emerald-600 flex-shrink-0">
+                    <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo.webp" class="w-full h-full object-cover">
+                </div>
+                <div><h2 class="text-sm font-extrabold text-gray-800">لوحة التحكم</h2><p class="text-[10px] text-gray-500">بلدية شطايبي</p></div>
+            </div>
+            <button onclick="logout()" class="text-xs bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded-xl font-bold transition-colors flex items-center gap-1">
+                <span class="iconify" data-icon="lucide:log-out"></span> خروج
+            </button>
+        </div>
+    </header>
 
-        <!-- Header -->
-        <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
-            <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-emerald-600 flex-shrink-0">
-                        <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo.webp" alt="شعار" class="w-full h-full object-cover">
+    <div class="max-w-7xl mx-auto px-4 py-6">
+
+        <!-- Repo size bar -->
+        <div class="bg-white rounded-2xl px-5 py-3 mb-5 shadow-sm border border-gray-100 flex items-center gap-4">
+            <span class="iconify text-emerald-500 flex-shrink-0" data-icon="lucide:hard-drive"></span>
+            <div class="flex-1">
+                <div class="flex items-center justify-between mb-1">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold text-gray-600">مستودع الصور</span>
+                        <span id="repo-name-badge" class="text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full font-mono">--</span>
                     </div>
-                    <div>
-                        <h2 class="text-sm font-extrabold text-gray-800">لوحة التحكم</h2>
-                        <p class="text-[10px] text-gray-500">بلدية شطايبي</p>
+                    <div class="flex items-center gap-2">
+                        <span id="repo-size-text" class="text-xs text-gray-400">--</span>
+                        <button onclick="loadRepoSize()" class="text-emerald-600 hover:text-emerald-700"><span id="repo-refresh-icon" class="iconify text-sm" data-icon="lucide:refresh-cw"></span></button>
                     </div>
                 </div>
-                <button onclick="logout()" class="text-xs bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded-xl font-bold transition-colors flex items-center gap-1">
-                    <span class="iconify" data-icon="lucide:log-out"></span> خروج
-                </button>
-            </div>
-        </header>
-
-        <div class="max-w-7xl mx-auto px-4 py-6">
-
-            <!-- Metric -->
-            <div class="bg-gradient-to-l from-emerald-700 to-emerald-800 rounded-2xl p-6 mb-8 text-white shadow-xl">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-emerald-200 text-xs font-bold mb-1">المقياس الداخلي</p>
-                        <p class="text-3xl md:text-4xl font-extrabold tracking-wide">300921.36</p>
-                    </div>
-                    <div class="w-16 h-16 bg-white/15 rounded-2xl flex items-center justify-center">
-                        <span class="iconify text-3xl text-white" data-icon="lucide:gauge"></span>
-                    </div>
+                <div class="repo-bar-track"><div id="repo-bar-fill" class="repo-bar-fill" style="width:0%"></div></div>
+                <div id="repo-warning" class="hidden mt-1 text-[11px] text-amber-600 font-bold flex items-center gap-1">
+                    <span class="iconify text-xs" data-icon="lucide:alert-triangle"></span><span id="repo-warning-msg"></span>
                 </div>
             </div>
+        </div>
 
-            <!-- Tabs -->
-            <div class="flex flex-wrap gap-2 mb-8">
-                <button onclick="switchTab('news')" id="tab-news" class="tab-btn active px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1">
-                    <span class="iconify" data-icon="lucide:newspaper"></span> الأخبار
-                </button>
-                <button onclick="switchTab('services')" id="tab-services" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1">
-                    <span class="iconify" data-icon="lucide:file-text"></span> الخدمات
-                </button>
-                <button onclick="switchTab('archives')" id="tab-archives" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1">
-                    <span class="iconify" data-icon="lucide:images"></span> الأرشيف
-                </button>
-                <button onclick="switchTab('tourism')" id="tab-tourism" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1">
-                    <span class="iconify" data-icon="lucide:compass"></span> السياحة
-                </button>
-                <button onclick="switchTab('mayors')" id="tab-mayors" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1">
-                    <span class="iconify" data-icon="lucide:users"></span> الرؤساء
-                </button>
-                <!-- ✅ زر الوسائط -->
-                <button onclick="switchTab('media')" id="tab-media" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1">
-                    <span class="iconify" data-icon="lucide:image-plus"></span> وسائط
-                </button>
+        <!-- Metric -->
+        <div class="bg-gradient-to-l from-emerald-700 to-emerald-800 rounded-2xl p-6 mb-8 text-white shadow-xl">
+            <div class="flex items-center justify-between">
+                <div><p class="text-emerald-200 text-xs font-bold mb-1">المقياس الداخلي</p><p class="text-3xl md:text-4xl font-extrabold tracking-wide">300921.36</p></div>
+                <div class="w-16 h-16 bg-white/15 rounded-2xl flex items-center justify-center"><span class="iconify text-3xl text-white" data-icon="lucide:gauge"></span></div>
             </div>
+        </div>
 
-            <!-- ===== NEWS ===== -->
-            <div id="section-news" class="content-section fade-in">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24">
-                        <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2">
-                            <span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span>
-                            <span id="news-form-title">إضافة خبر جديد</span>
-                        </h3>
-                        <input type="hidden" id="news-edit-id" value="">
-                        <div class="space-y-3">
-                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">العنوان</label><input id="news-title" type="text" placeholder="عنوان الخبر..."></div>
-                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">التصنيف</label>
-                                <select id="news-category">
-                                    <option value="official">📢 إعلان رسمي</option>
-                                    <option value="activity">🏗️ نشاط بلدي</option>
-                                    <option value="social">🤝 ركن المجتمع</option>
-                                </select>
-                            </div>
-                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">المحتوى</label><textarea id="news-content" placeholder="نص الخبر الكامل..." rows="4"></textarea></div>
-                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">رابط الصورة (اختياري)</label><input id="news-image" type="url" placeholder="https://..."></div>
-                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">التاريخ</label><input id="news-date" type="date"></div>
-                            <div class="flex items-center gap-2 bg-emerald-50 rounded-xl px-4 py-3 border border-emerald-200">
-                                <input id="news-pinned" type="checkbox" class="w-4 h-4 accent-emerald-600">
-                                <label for="news-pinned" class="text-xs font-bold text-emerald-700 cursor-pointer">📌 تثبيت المنشور</label>
-                            </div>
-                            <div class="flex gap-2">
-                                <button onclick="saveNews()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm transition-colors">
-                                    <span class="iconify inline-block ml-1" data-icon="lucide:save"></span>
-                                    <span id="news-save-btn">حفظ</span>
-                                </button>
-                                <button onclick="cancelNewsEdit()" id="news-cancel-btn" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-600 py-3 px-4 rounded-xl font-bold text-sm transition-colors">إلغاء</button>
-                            </div>
+        <!-- Tabs -->
+        <div class="flex flex-wrap gap-2 mb-8">
+            <button onclick="switchTab('news')" id="tab-news" class="tab-btn active px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1"><span class="iconify" data-icon="lucide:newspaper"></span> الأخبار</button>
+            <button onclick="switchTab('services')" id="tab-services" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1"><span class="iconify" data-icon="lucide:file-text"></span> الخدمات</button>
+            <button onclick="switchTab('archives')" id="tab-archives" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1"><span class="iconify" data-icon="lucide:images"></span> الأرشيف</button>
+            <button onclick="switchTab('tourism')" id="tab-tourism" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1"><span class="iconify" data-icon="lucide:compass"></span> السياحة</button>
+            <button onclick="switchTab('mayors')" id="tab-mayors" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1"><span class="iconify" data-icon="lucide:users"></span> الرؤساء</button>
+        </div>
+
+        <!-- NEWS -->
+        <div id="section-news" class="content-section fade-in">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24">
+                    <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span>
+                        <span id="news-form-title">إضافة خبر جديد</span>
+                    </h3>
+                    <input type="hidden" id="news-edit-id" value="">
+                    <div class="space-y-3">
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">العنوان</label><input id="news-title" type="text" placeholder="عنوان الخبر..."></div>
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">التصنيف</label>
+                            <select id="news-category">
+                                <option value="official">📢 إعلان رسمي</option>
+                                <option value="activity">🏗️ نشاط بلدي</option>
+                                <option value="social">🤝 ركن المجتمع</option>
+                            </select>
                         </div>
-                    </div>
-                    <div class="lg:col-span-2"><div id="news-list" class="space-y-3"></div></div>
-                </div>
-            </div>
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">المحتوى</label><textarea id="news-content" placeholder="نص الخبر الكامل..." rows="4"></textarea></div>
 
-            <!-- ===== SERVICES ===== -->
-            <div id="section-services" class="content-section hidden fade-in">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24">
-                        <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2">
-                            <span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span>
-                            <span id="services-form-title">إضافة خدمة</span>
-                        </h3>
-                        <input type="hidden" id="services-edit-id" value="">
-                        <div class="space-y-3">
-                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">اسم الخدمة</label><input id="services-name" type="text" placeholder="مثال: جواز السفر"></div>
-                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">الوثائق المطلوبة (يفصلها |)</label><textarea id="services-docs" placeholder="وثيقة 1|وثيقة 2|وثيقة 3" rows="3"></textarea></div>
-                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">رابط PDF (اختياري)</label><input id="services-pdf" type="url" placeholder="https://..."></div>
-                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">اللون</label>
-                                <select id="services-color"><option value="blue">أزرق</option><option value="emerald">أخضر</option><option value="amber">ذهبي</option><option value="purple">بنفسجي</option></select>
-                            </div>
-                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">الأيقونة</label><input id="services-icon" type="text" placeholder="fingerprint" value="file-text"></div>
-                            <div class="flex gap-2">
-                                <button onclick="saveService()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm transition-colors">💾 حفظ</button>
-                                <button onclick="cancelServiceEdit()" id="services-cancel-btn" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-600 py-3 px-4 rounded-xl font-bold text-sm transition-colors">إلغاء</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="lg:col-span-2"><div id="services-list" class="space-y-3"></div></div>
-                </div>
-            </div>
-
-            <!-- ===== ARCHIVES ===== -->
-            <div id="section-archives" class="content-section hidden fade-in">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24">
-                        <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2">
-                            <span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span>
-                            <span id="archives-form-title">إضافة صورة أرشيفية</span>
-                        </h3>
-                        <input type="hidden" id="archives-edit-id" value="">
-                        <div class="space-y-3">
-                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">العنوان</label><input id="archives-title" type="text" placeholder="مثال: المدخل الرئيسي"></div>
-                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">الوصف</label><textarea id="archives-desc" placeholder="وصف مختصر..." rows="2"></textarea></div>
-                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">رابط الصورة القديمة</label><input id="archives-old" type="url" placeholder="https://..."></div>
-                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">رابط الصورة الحديثة</label><input id="archives-new" type="url" placeholder="https://..."></div>
-                            <div class="flex gap-2">
-                                <button onclick="saveArchive()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm transition-colors">💾 حفظ</button>
-                                <button onclick="cancelArchiveEdit()" id="archives-cancel-btn" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-600 py-3 px-4 rounded-xl font-bold text-sm transition-colors">إلغاء</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="lg:col-span-2"><div id="archives-list" class="space-y-3"></div></div>
-                </div>
-            </div>
-
-            <!-- ===== TOURISM ===== -->
-            <div id="section-tourism" class="content-section hidden fade-in">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24">
-                        <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2">
-                            <span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span>
-                            <span id="tourism-form-title">إضافة معلم سياحي</span>
-                        </h3>
-                        <input type="hidden" id="tourism-edit-id" value="">
-                        <div class="space-y-3">
-                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">الاسم</label><input id="tourism-name" type="text" placeholder="مثال: باي ويست"></div>
-                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">العنوان الفرعي</label><input id="tourism-subtitle" type="text" placeholder="Baie Ouest"></div>
-                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">الوصف</label><textarea id="tourism-desc" placeholder="وصف المعلم..." rows="3"></textarea></div>
-                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">رابط الصورة</label><input id="tourism-image" type="url" placeholder="https://..."></div>
-                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">التقييم</label><input id="tourism-rating" type="text" placeholder="4.8" value="4.5"></div>
-                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">معلومات المسافة</label><input id="tourism-distance" type="text" placeholder="10 دقائق"></div>
-                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">نص الشارة</label><input id="tourism-badge" type="text" placeholder="الأكثر زيارة"></div>
-                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">لون الشارة</label>
-                                <select id="tourism-badge-color"><option value="emerald">أخضر</option><option value="amber">ذهبي</option><option value="purple">بنفسجي</option><option value="teal">تركوازي</option></select>
-                            </div>
-                            <div class="flex gap-2">
-                                <button onclick="saveTourism()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm transition-colors">💾 حفظ</button>
-                                <button onclick="cancelTourismEdit()" id="tourism-cancel-btn" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-600 py-3 px-4 rounded-xl font-bold text-sm transition-colors">إلغاء</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="lg:col-span-2"><div id="tourism-list" class="space-y-3"></div></div>
-                </div>
-            </div>
-
-            <!-- ===== MAYORS ===== -->
-            <div id="section-mayors" class="content-section hidden fade-in">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24">
-                        <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2">
-                            <span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span>
-                            <span id="mayors-form-title">إضافة رئيس</span>
-                        </h3>
-                        <input type="hidden" id="mayors-edit-id" value="">
-                        <div class="space-y-3">
-                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">الاسم الكامل</label><input id="mayors-name" type="text" placeholder="السيد ..."></div>
-                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">فترة الولاية</label><input id="mayors-period" type="text" placeholder="2021 — الآن"></div>
-                            <div><label class="text-xs font-bold text-gray-500 mb-1 block">رابط الصورة (اختياري)</label><input id="mayors-image" type="url" placeholder="https://..."></div>
-                            <div class="flex gap-2">
-                                <button onclick="saveMayor()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm transition-colors">💾 حفظ</button>
-                                <button onclick="cancelMayorEdit()" id="mayors-cancel-btn" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-600 py-3 px-4 rounded-xl font-bold text-sm transition-colors">إلغاء</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="lg:col-span-2"><div id="mayors-list" class="space-y-3"></div></div>
-                </div>
-            </div>
-
-            <!-- ===== ✅ MEDIA MANAGER ===== -->
-            <div id="section-media" class="content-section hidden fade-in">
-
-                <!-- شريط سعة المستودع -->
-                <div class="bg-white rounded-2xl p-5 shadow-md border border-gray-100 mb-6">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center gap-2 flex-wrap">
-                            <span class="iconify text-emerald-500" data-icon="lucide:hard-drive"></span>
-                            <span class="font-extrabold text-gray-800 text-sm">سعة مستودع الوسائط</span>
-                            <span id="repo-name-badge" class="text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full font-mono">جاري التحميل...</span>
-                        </div>
-                        <button onclick="loadRepoSize()" id="refresh-repo-btn"
-                                class="text-xs text-emerald-600 hover:text-emerald-700 flex items-center gap-1 font-bold flex-shrink-0">
-                            <span class="iconify" data-icon="lucide:refresh-cw"></span> تحديث
-                        </button>
-                    </div>
-                    <div class="repo-bar-track mb-2">
-                        <div id="repo-bar-fill" class="repo-bar-fill" style="width:0%"></div>
-                    </div>
-                    <div class="flex items-center justify-between text-xs">
-                        <span id="repo-size-text" class="text-gray-500 font-semibold">--</span>
-                        <span class="text-gray-400">الحد الأقصى: 1 GB</span>
-                    </div>
-                    <div id="repo-warning" class="hidden mt-3 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 flex items-start gap-3">
-                        <span class="iconify text-amber-500 text-xl flex-shrink-0" data-icon="lucide:alert-triangle"></span>
+                        <!-- صورة مميزة -->
                         <div>
-                            <p id="repo-warning-msg" class="text-xs font-bold text-amber-800"></p>
-                            <p class="text-[11px] text-amber-600 mt-0.5">عند الوصول لـ 95% أنشئ مستودعاً جديداً في GitHub وحدّث <code class="bg-amber-100 px-1 rounded">CURRENT_REPO</code> في wrangler.toml.</p>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">🖼️ الصورة المميزة</label>
+                            <div id="news-featured-widget" class="upload-widget p-3 cursor-pointer" onclick="triggerUpload('news-featured-input')">
+                                <div id="news-featured-placeholder" class="flex flex-col items-center gap-1 py-3">
+                                    <span class="iconify text-3xl text-gray-200" data-icon="lucide:image-plus"></span>
+                                    <span class="text-xs text-gray-400 font-semibold">اضغط لرفع صورة</span>
+                                    <span class="text-[10px] text-gray-300">JPG, PNG, WEBP — max 25MB</span>
+                                </div>
+                                <div id="news-featured-preview" class="hidden">
+                                    <img id="news-featured-img" src="" class="w-full h-28 object-cover rounded-lg mb-2">
+                                    <div class="flex items-center justify-between">
+                                        <span id="news-featured-name" class="text-[10px] text-gray-500 truncate flex-1 ml-1"></span>
+                                        <button onclick="event.stopPropagation();clearWidget('news-featured','news-image','news-image-url-manual')" class="text-[10px] text-red-500 font-bold flex-shrink-0">✕ حذف</button>
+                                    </div>
+                                </div>
+                                <div id="news-featured-uploading" class="hidden flex flex-col items-center gap-1 py-3">
+                                    <span class="iconify text-3xl text-indigo-400 spin" data-icon="lucide:loader-2"></span>
+                                    <span class="text-xs text-indigo-500 font-semibold">جاري الرفع...</span>
+                                </div>
+                            </div>
+                            <input type="file" id="news-featured-input" accept="image/*" class="hidden" onchange="handleFeatured(this,'news-featured','news-image','news')">
+                            <input type="hidden" id="news-image" value="">
+                            <input id="news-image-url-manual" type="url" placeholder="أو الصق رابطاً مباشرةً..." class="mt-2 text-xs" oninput="document.getElementById('news-image').value=this.value">
+                        </div>
+
+                        <!-- ألبوم صور -->
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-2 block flex items-center gap-1">
+                                <span class="iconify text-emerald-400" data-icon="lucide:layout-grid"></span>
+                                ألبوم صور المقال <span class="text-gray-400 font-normal">(اختياري)</span>
+                            </label>
+                            <div id="news-album-grid" class="grid grid-cols-3 gap-2 mb-2 empty:hidden"></div>
+                            <button type="button" onclick="triggerUpload('news-album-input')" id="news-album-btn"
+                                    class="w-full py-2 border border-dashed border-gray-300 rounded-xl text-xs text-gray-500 hover:border-emerald-400 hover:text-emerald-600 hover:bg-emerald-50 transition-all flex items-center justify-center gap-1 font-bold">
+                                <span class="iconify" data-icon="lucide:plus-circle"></span> إضافة صورة للألبوم
+                            </button>
+                            <input type="file" id="news-album-input" accept="image/*" class="hidden" onchange="handleAlbum(this,'news')">
+                            <input type="hidden" id="news-album-urls" value="[]">
+                        </div>
+
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">التاريخ</label><input id="news-date" type="date"></div>
+                        <div class="flex items-center gap-2 bg-emerald-50 rounded-xl px-4 py-3 border border-emerald-200">
+                            <input id="news-pinned" type="checkbox" class="w-4 h-4 accent-emerald-600">
+                            <label for="news-pinned" class="text-xs font-bold text-emerald-700 cursor-pointer">📌 تثبيت المنشور</label>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="saveNews()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm transition-colors">
+                                <span class="iconify inline-block ml-1" data-icon="lucide:save"></span><span id="news-save-btn">حفظ</span>
+                            </button>
+                            <button onclick="cancelNewsEdit()" id="news-cancel-btn" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-600 py-3 px-4 rounded-xl font-bold text-sm transition-colors">إلغاء</button>
                         </div>
                     </div>
                 </div>
-
-                <!-- الرفع + الاستعراض -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-                    <!-- عمود الرفع -->
-                    <div class="lg:col-span-1 space-y-4">
-                        <div class="bg-white rounded-2xl p-5 shadow-md border border-gray-100">
-                            <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2 text-sm">
-                                <span class="iconify text-emerald-500" data-icon="lucide:upload-cloud"></span>
-                                رفع صورة جديدة
-                            </h3>
-                            <div class="space-y-3">
-
-                                <!-- اختيار المجلد -->
-                                <div>
-                                    <label class="text-xs font-bold text-gray-500 mb-1 block">المجلد المستهدف</label>
-                                    <select id="upload-folder" onchange="onFolderChange()">
-                                        <option value="news">📰 news — صور الأخبار</option>
-                                        <option value="ui">🎨 ui — صور القالب</option>
-                                        <option value="mayors">👤 mayors — صور الرؤساء</option>
-                                        <option value="tourism">🏖️ tourism — صور السياحة</option>
-                                        <option value="archives">📜 archives — أرشيف</option>
-                                        <option value="custom">✏️ مجلد مخصص...</option>
-                                    </select>
-                                </div>
-                                <div id="custom-folder-wrap" class="hidden">
-                                    <label class="text-xs font-bold text-gray-500 mb-1 block">اسم المجلد المخصص</label>
-                                    <input id="custom-folder-input" type="text" placeholder="مثال: events/2025">
-                                </div>
-
-                                <!-- منطقة الإفلات -->
-                                <div id="drop-zone" class="drop-zone" onclick="document.getElementById('file-input').click()">
-                                    <div id="drop-zone-content">
-                                        <span class="iconify text-4xl text-gray-300 mb-2 block" data-icon="lucide:image-plus"></span>
-                                        <p class="text-sm font-bold text-gray-500">اسحب الصورة أو انقر للاختيار</p>
-                                        <p class="text-xs text-gray-400 mt-1">JPG, PNG, WEBP — حجم أقصى 25 MB</p>
-                                    </div>
-                                    <div id="drop-zone-preview" class="hidden">
-                                        <img id="preview-img" src="" alt="معاينة" class="w-full h-32 object-contain rounded-lg mb-2">
-                                        <p id="preview-name" class="text-xs font-bold text-gray-700 truncate"></p>
-                                        <p id="preview-size" class="text-xs text-gray-400"></p>
-                                    </div>
-                                </div>
-                                <input type="file" id="file-input" accept="image/*" class="hidden" onchange="onFileSelected(this.files[0])">
-
-                                <!-- زر الرفع -->
-                                <button id="upload-btn" onclick="uploadMedia()" disabled
-                                        class="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white py-3 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2">
-                                    <span class="iconify text-lg" data-icon="lucide:upload-cloud"></span> رفع الصورة
-                                </button>
-
-                                <!-- نتيجة الرفع -->
-                                <div id="upload-result" class="hidden bg-emerald-50 border border-emerald-200 rounded-xl p-4">
-                                    <p class="text-xs font-bold text-emerald-700 mb-2 flex items-center gap-1">
-                                        <span class="iconify" data-icon="lucide:check-circle"></span> تم الرفع — رابط CDN:
-                                    </p>
-                                    <div class="flex items-center gap-2">
-                                        <input id="cdn-url-output" type="text" readonly
-                                               class="flex-1 text-xs bg-white border border-emerald-200 rounded-lg px-3 py-2 font-mono text-gray-700 focus:outline-none">
-                                        <button onclick="copyCdnUrl()"
-                                                class="flex-shrink-0 w-8 h-8 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg flex items-center justify-center">
-                                            <span class="iconify text-sm" data-icon="lucide:copy"></span>
-                                        </button>
-                                    </div>
-                                    <a id="cdn-url-open" href="#" target="_blank"
-                                       class="mt-2 text-xs text-emerald-600 hover:underline flex items-center gap-1 font-semibold">
-                                        <span class="iconify" data-icon="lucide:external-link"></span> فتح الصورة
-                                    </a>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- عمود الاستعراض -->
-                    <div class="lg:col-span-2">
-                        <div class="bg-white rounded-2xl p-5 shadow-md border border-gray-100 h-full">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="font-extrabold text-gray-800 text-sm flex items-center gap-2">
-                                    <span class="iconify text-emerald-500" data-icon="lucide:images"></span>
-                                    محتوى المجلد: <span id="browse-folder-label" class="text-emerald-600 font-mono">news</span>
-                                </h3>
-                                <button onclick="loadMediaList()"
-                                        class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-1.5 rounded-lg font-bold flex items-center gap-1">
-                                    <span class="iconify text-sm" data-icon="lucide:refresh-cw"></span> تحديث
-                                </button>
-                            </div>
-                            <div id="media-grid"
-                                 class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 max-h-[500px] overflow-y-auto">
-                                <div class="col-span-full text-center py-12 text-gray-300">
-                                    <span class="iconify text-4xl" data-icon="lucide:image-off"></span>
-                                    <p class="text-sm mt-2">اضغط تحديث لعرض الصور</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="lg:col-span-2"><div id="news-list" class="space-y-3"></div></div>
             </div>
-            <!-- ===== END MEDIA ===== -->
-
         </div>
+
+        <!-- SERVICES -->
+        <div id="section-services" class="content-section hidden fade-in">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24">
+                    <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span><span id="services-form-title">إضافة خدمة</span></h3>
+                    <input type="hidden" id="services-edit-id" value="">
+                    <div class="space-y-3">
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">اسم الخدمة</label><input id="services-name" type="text" placeholder="مثال: جواز السفر"></div>
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">الوثائق المطلوبة (يفصلها |)</label><textarea id="services-docs" placeholder="وثيقة 1|وثيقة 2" rows="3"></textarea></div>
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">رابط PDF</label><input id="services-pdf" type="url" placeholder="https://..."></div>
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">اللون</label><select id="services-color"><option value="blue">أزرق</option><option value="emerald">أخضر</option><option value="amber">ذهبي</option><option value="purple">بنفسجي</option></select></div>
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">الأيقونة</label><input id="services-icon" type="text" value="file-text"></div>
+                        <div class="flex gap-2">
+                            <button onclick="saveService()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm transition-colors">💾 حفظ</button>
+                            <button onclick="cancelServiceEdit()" id="services-cancel-btn" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-600 py-3 px-4 rounded-xl font-bold text-sm transition-colors">إلغاء</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:col-span-2"><div id="services-list" class="space-y-3"></div></div>
+            </div>
+        </div>
+
+        <!-- ARCHIVES -->
+        <div id="section-archives" class="content-section hidden fade-in">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24">
+                    <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span><span id="archives-form-title">إضافة صورة أرشيفية</span></h3>
+                    <input type="hidden" id="archives-edit-id" value="">
+                    <div class="space-y-3">
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">العنوان</label><input id="archives-title" type="text" placeholder="مثال: المدخل الرئيسي"></div>
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">الوصف</label><textarea id="archives-desc" placeholder="وصف مختصر..." rows="2"></textarea></div>
+                        <!-- صورة قديمة -->
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">📷 الصورة القديمة</label>
+                            <div id="archives-old-widget" class="upload-widget p-3 cursor-pointer" onclick="triggerUpload('archives-old-input')">
+                                <div id="archives-old-placeholder" class="flex flex-col items-center gap-1 py-2"><span class="iconify text-2xl text-gray-200" data-icon="lucide:image"></span><span class="text-xs text-gray-400">رفع صورة قديمة</span></div>
+                                <div id="archives-old-preview" class="hidden"><img id="archives-old-img" src="" class="w-full h-20 object-cover rounded-lg mb-1"><button onclick="event.stopPropagation();clearWidget('archives-old','archives-old','archives-old-url-manual')" class="text-[10px] text-red-500 font-bold">✕ حذف</button></div>
+                                <div id="archives-old-uploading" class="hidden flex flex-col items-center gap-1 py-2"><span class="iconify text-2xl text-indigo-400 spin" data-icon="lucide:loader-2"></span><span class="text-xs text-indigo-500">جاري الرفع...</span></div>
+                            </div>
+                            <input type="file" id="archives-old-input" accept="image/*" class="hidden" onchange="handleFeatured(this,'archives-old','archives-old','archives')">
+                            <input type="hidden" id="archives-old" value="">
+                            <input id="archives-old-url-manual" type="url" placeholder="أو الصق رابطاً..." class="mt-1 text-xs" oninput="document.getElementById('archives-old').value=this.value">
+                        </div>
+                        <!-- صورة حديثة -->
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">🆕 الصورة الحديثة</label>
+                            <div id="archives-new-widget" class="upload-widget p-3 cursor-pointer" onclick="triggerUpload('archives-new-input')">
+                                <div id="archives-new-placeholder" class="flex flex-col items-center gap-1 py-2"><span class="iconify text-2xl text-gray-200" data-icon="lucide:image"></span><span class="text-xs text-gray-400">رفع صورة حديثة</span></div>
+                                <div id="archives-new-preview" class="hidden"><img id="archives-new-img" src="" class="w-full h-20 object-cover rounded-lg mb-1"><button onclick="event.stopPropagation();clearWidget('archives-new','archives-new','archives-new-url-manual')" class="text-[10px] text-red-500 font-bold">✕ حذف</button></div>
+                                <div id="archives-new-uploading" class="hidden flex flex-col items-center gap-1 py-2"><span class="iconify text-2xl text-indigo-400 spin" data-icon="lucide:loader-2"></span><span class="text-xs text-indigo-500">جاري الرفع...</span></div>
+                            </div>
+                            <input type="file" id="archives-new-input" accept="image/*" class="hidden" onchange="handleFeatured(this,'archives-new','archives-new','archives')">
+                            <input type="hidden" id="archives-new" value="">
+                            <input id="archives-new-url-manual" type="url" placeholder="أو الصق رابطاً..." class="mt-1 text-xs" oninput="document.getElementById('archives-new').value=this.value">
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="saveArchive()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm transition-colors">💾 حفظ</button>
+                            <button onclick="cancelArchiveEdit()" id="archives-cancel-btn" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-600 py-3 px-4 rounded-xl font-bold text-sm transition-colors">إلغاء</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:col-span-2"><div id="archives-list" class="space-y-3"></div></div>
+            </div>
+        </div>
+
+        <!-- TOURISM -->
+        <div id="section-tourism" class="content-section hidden fade-in">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24">
+                    <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span><span id="tourism-form-title">إضافة معلم سياحي</span></h3>
+                    <input type="hidden" id="tourism-edit-id" value="">
+                    <div class="space-y-3">
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">الاسم</label><input id="tourism-name" type="text" placeholder="باي ويست"></div>
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">العنوان الفرعي</label><input id="tourism-subtitle" type="text" placeholder="Baie Ouest"></div>
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">الوصف</label><textarea id="tourism-desc" rows="3" placeholder="وصف المعلم..."></textarea></div>
+                        <!-- صورة المعلم -->
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">🏖️ صورة المعلم</label>
+                            <div id="tourism-img-widget" class="upload-widget p-3 cursor-pointer" onclick="triggerUpload('tourism-img-input')">
+                                <div id="tourism-img-placeholder" class="flex flex-col items-center gap-1 py-3"><span class="iconify text-3xl text-gray-200" data-icon="lucide:image-plus"></span><span class="text-xs text-gray-400 font-semibold">رفع صورة المعلم</span></div>
+                                <div id="tourism-img-preview" class="hidden"><img id="tourism-img-img" src="" class="w-full h-28 object-cover rounded-lg mb-1"><button onclick="event.stopPropagation();clearWidget('tourism-img','tourism-image','tourism-image-manual')" class="text-[10px] text-red-500 font-bold">✕ حذف</button></div>
+                                <div id="tourism-img-uploading" class="hidden flex flex-col items-center gap-1 py-3"><span class="iconify text-3xl text-indigo-400 spin" data-icon="lucide:loader-2"></span><span class="text-xs text-indigo-500">جاري الرفع...</span></div>
+                            </div>
+                            <input type="file" id="tourism-img-input" accept="image/*" class="hidden" onchange="handleFeatured(this,'tourism-img','tourism-image','tourism')">
+                            <input type="hidden" id="tourism-image" value="">
+                            <input id="tourism-image-manual" type="url" placeholder="أو الصق رابطاً..." class="mt-2 text-xs" oninput="document.getElementById('tourism-image').value=this.value">
+                        </div>
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">التقييم</label><input id="tourism-rating" type="text" value="4.5"></div>
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">معلومات المسافة</label><input id="tourism-distance" type="text" placeholder="10 دقائق"></div>
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">نص الشارة</label><input id="tourism-badge" type="text" placeholder="الأكثر زيارة"></div>
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">لون الشارة</label><select id="tourism-badge-color"><option value="emerald">أخضر</option><option value="amber">ذهبي</option><option value="purple">بنفسجي</option><option value="teal">تركوازي</option></select></div>
+                        <div class="flex gap-2">
+                            <button onclick="saveTourism()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm transition-colors">💾 حفظ</button>
+                            <button onclick="cancelTourismEdit()" id="tourism-cancel-btn" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-600 py-3 px-4 rounded-xl font-bold text-sm transition-colors">إلغاء</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:col-span-2"><div id="tourism-list" class="space-y-3"></div></div>
+            </div>
+        </div>
+
+        <!-- MAYORS -->
+        <div id="section-mayors" class="content-section hidden fade-in">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24">
+                    <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span><span id="mayors-form-title">إضافة رئيس</span></h3>
+                    <input type="hidden" id="mayors-edit-id" value="">
+                    <div class="space-y-3">
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">الاسم الكامل</label><input id="mayors-name" type="text" placeholder="السيد ..."></div>
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">فترة الولاية</label><input id="mayors-period" type="text" placeholder="2021 — الآن"></div>
+                        <!-- صورة الرئيس -->
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">👤 صورة الرئيس</label>
+                            <div id="mayors-img-widget" class="upload-widget p-3 cursor-pointer" onclick="triggerUpload('mayors-img-input')">
+                                <div id="mayors-img-placeholder" class="flex flex-col items-center gap-1 py-3"><span class="iconify text-3xl text-gray-200" data-icon="lucide:user-circle"></span><span class="text-xs text-gray-400 font-semibold">رفع صورة الرئيس</span></div>
+                                <div id="mayors-img-preview" class="hidden"><img id="mayors-img-img" src="" class="w-full h-28 object-cover rounded-lg mb-1"><button onclick="event.stopPropagation();clearWidget('mayors-img','mayors-image','mayors-image-manual')" class="text-[10px] text-red-500 font-bold">✕ حذف</button></div>
+                                <div id="mayors-img-uploading" class="hidden flex flex-col items-center gap-1 py-3"><span class="iconify text-3xl text-indigo-400 spin" data-icon="lucide:loader-2"></span><span class="text-xs text-indigo-500">جاري الرفع...</span></div>
+                            </div>
+                            <input type="file" id="mayors-img-input" accept="image/*" class="hidden" onchange="handleFeatured(this,'mayors-img','mayors-image','mayors')">
+                            <input type="hidden" id="mayors-image" value="">
+                            <input id="mayors-image-manual" type="url" placeholder="أو الصق رابطاً..." class="mt-2 text-xs" oninput="document.getElementById('mayors-image').value=this.value">
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="saveMayor()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm transition-colors">💾 حفظ</button>
+                            <button onclick="cancelMayorEdit()" id="mayors-cancel-btn" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-600 py-3 px-4 rounded-xl font-bold text-sm transition-colors">إلغاء</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:col-span-2"><div id="mayors-list" class="space-y-3"></div></div>
+            </div>
+        </div>
+
     </div>
+</div>
 
-    <script>
-        let token = localStorage.getItem('admin_token') || '';
-        let activeTab = 'news';
+<script>
+let token = localStorage.getItem('admin_token') || '';
+let activeTab = 'news';
+let newsAlbumUrls = [];
 
-        if (token) { showDashboard(); } else { showLogin(); }
+if (token) showDashboard(); else showLogin();
 
-        function showLogin() {
-            document.getElementById('login-screen').classList.remove('hidden');
-            document.getElementById('dashboard').classList.add('hidden');
-        }
-        function showDashboard() {
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('dashboard').classList.remove('hidden');
-            loadTab(activeTab);
-        }
+function showLogin() { document.getElementById('login-screen').classList.remove('hidden'); document.getElementById('dashboard').classList.add('hidden'); }
+function showDashboard() { document.getElementById('login-screen').classList.add('hidden'); document.getElementById('dashboard').classList.remove('hidden'); loadTab(activeTab); loadRepoSize(); }
+function adminToast(msg) { const t=document.getElementById('admin-toast'); document.getElementById('admin-toast-msg').textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3500); }
+async function login() {
+    const u=document.getElementById('login-username').value, p=document.getElementById('login-password').value;
+    document.getElementById('login-error').classList.add('hidden');
+    try {
+        const res=await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p})});
+        const d=await res.json();
+        if(d.success&&d.token){token=d.token;localStorage.setItem('admin_token',token);showDashboard();}
+        else document.getElementById('login-error').classList.remove('hidden');
+    } catch { document.getElementById('login-error').classList.remove('hidden'); }
+}
+function logout(){token='';localStorage.removeItem('admin_token');showLogin();}
+function authHeaders(){return{'Content-Type':'application/json','Authorization':'Bearer '+token};}
+function switchTab(tab){
+    activeTab=tab;
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('tab-'+tab).classList.add('active');
+    document.querySelectorAll('.content-section').forEach(s=>s.classList.add('hidden'));
+    const sec=document.getElementById('section-'+tab);
+    sec.classList.remove('hidden'); sec.classList.add('fade-in');
+    loadTab(tab);
+}
+function loadTab(tab){
+    const m={news:loadNews,services:loadServices,archives:loadArchives,tourism:loadTourism,mayors:loadMayors};
+    if(m[tab]) m[tab]();
+}
 
-        function adminToast(msg) {
-            const t = document.getElementById('admin-toast');
-            document.getElementById('admin-toast-msg').textContent = msg;
-            t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 3000);
-        }
+// ═══════════════════════════════
+// UPLOAD HELPERS
+// ═══════════════════════════════
+function triggerUpload(id){document.getElementById(id).click();}
+function readBase64(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(e.target.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(file);});}
 
-        async function login() {
-            const username = document.getElementById('login-username').value;
-            const password = document.getElementById('login-password').value;
-            document.getElementById('login-error').classList.add('hidden');
-            try {
-                const res = await fetch('/api/auth', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, password }) });
-                const data = await res.json();
-                if (data.success && data.token) { token = data.token; localStorage.setItem('admin_token', token); showDashboard(); }
-                else document.getElementById('login-error').classList.remove('hidden');
-            } catch { document.getElementById('login-error').classList.remove('hidden'); }
-        }
+async function uploadFile(file, folder){
+    if(file.size>25*1024*1024) throw new Error('حجم الملف يتجاوز 25 MB');
+    const base64=await readBase64(file);
+    const resp=await fetch('/api/media',{method:'POST',headers:authHeaders(),body:JSON.stringify({filename:file.name,folder,data:base64,mime:file.type})});
+    const d=await resp.json();
+    if(!d.success) throw new Error(d.error||'فشل الرفع');
+    return d.data.cdn_url;
+}
 
-        function logout() { token = ''; localStorage.removeItem('admin_token'); showLogin(); }
-        function authHeaders() { return { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }; }
+// صورة واحدة مميزة
+// widgetId: معرف div.upload-widget
+// hiddenId: معرف input[type=hidden] للرابط النهائي
+// folder: مجلد GitHub
+async function handleFeatured(input, widgetId, hiddenId, folder){
+    const file=input.files[0]; if(!file) return; input.value='';
+    const ph=document.getElementById(widgetId+'-placeholder');
+    const pre=document.getElementById(widgetId+'-preview');
+    const upl=document.getElementById(widgetId+'-uploading');
+    const w=document.getElementById(widgetId+'-widget')||document.getElementById(widgetId.replace('-img','')+'-img-widget');
+    const widget = document.getElementById(widgetId+'-widget');
+    ph.classList.add('hidden'); pre.classList.add('hidden'); upl.classList.remove('hidden');
+    if(widget) widget.classList.add('uploading');
+    try {
+        const url=await uploadFile(file,folder);
+        document.getElementById(hiddenId).value=url;
+        const imgEl=document.getElementById(widgetId+'-img');
+        const nameEl=document.getElementById(widgetId+'-name');
+        if(imgEl) imgEl.src=url;
+        if(nameEl) nameEl.textContent=file.name;
+        upl.classList.add('hidden'); pre.classList.remove('hidden');
+        if(widget){widget.classList.remove('uploading');widget.classList.add('has-image');}
+        adminToast('✅ تم رفع الصورة');
+        loadRepoSize();
+    } catch(e){
+        upl.classList.add('hidden'); ph.classList.remove('hidden');
+        if(widget) widget.classList.remove('uploading');
+        adminToast('❌ '+e.message);
+    }
+}
 
-        // ---- Tabs ----
-        function switchTab(tab) {
-            activeTab = tab;
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('tab-' + tab).classList.add('active');
-            document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
-            const sec = document.getElementById('section-' + tab);
-            sec.classList.remove('hidden');
-            sec.classList.add('fade-in');
-            loadTab(tab);
-        }
+function clearWidget(widgetId, hiddenId, manualId){
+    const ph=document.getElementById(widgetId+'-placeholder');
+    const pre=document.getElementById(widgetId+'-preview');
+    const widget=document.getElementById(widgetId+'-widget');
+    if(ph) ph.classList.remove('hidden');
+    if(pre) pre.classList.add('hidden');
+    if(widget){widget.classList.remove('has-image','uploading');}
+    document.getElementById(hiddenId).value='';
+    if(manualId) document.getElementById(manualId).value='';
+}
 
-        function loadTab(tab) {
-            const loaders = {
-                news: loadNews,
-                services: loadServices,
-                archives: loadArchives,
-                tourism: loadTourism,
-                mayors: loadMayors,
-                media: () => { loadRepoSize(); loadMediaList(); }  // ✅
-            };
-            if (loaders[tab]) loaders[tab]();
-        }
+// ألبوم صور متعددة
+async function handleAlbum(input, section){
+    const file=input.files[0]; if(!file) return; input.value='';
+    const btn=document.getElementById(section+'-album-btn');
+    const orig=btn.innerHTML;
+    btn.innerHTML='<span class="iconify spin" data-icon="lucide:loader-2"></span> جاري الرفع...';
+    btn.disabled=true;
+    try {
+        const url=await uploadFile(file,section);
+        newsAlbumUrls.push(url);
+        document.getElementById('news-album-urls').value=JSON.stringify(newsAlbumUrls);
+        renderAlbum();
+        adminToast('✅ تمت إضافة الصورة للألبوم');
+        loadRepoSize();
+    } catch(e){ adminToast('❌ '+e.message); }
+    finally{ btn.innerHTML=orig; btn.disabled=false; }
+}
 
-        // ════════════════════════════════
-        //  NEWS CRUD
-        // ════════════════════════════════
-        const catLabels = { official: '📢 إعلان رسمي', activity: '🏗️ نشاط بلدي', social: '🤝 ركن المجتمع' };
-        const catColors = { official: 'red', activity: 'emerald', social: 'purple' };
+function renderAlbum(){
+    const grid=document.getElementById('news-album-grid');
+    grid.innerHTML=newsAlbumUrls.map((u,i)=>`
+        <div class="album-thumb">
+            <img src="${u}" loading="lazy" onerror="this.src='https://placehold.co/100x64/f3f4f6/ccc?text=!'">
+            <div class="rm" onclick="removeAlbum(${i})">✕</div>
+        </div>`).join('');
+}
+function removeAlbum(i){ newsAlbumUrls.splice(i,1); document.getElementById('news-album-urls').value=JSON.stringify(newsAlbumUrls); renderAlbum(); }
 
-        async function loadNews() {
-            try {
-                const res = await fetch('/api/news', { headers: authHeaders() });
-                const data = await res.json();
-                const list = document.getElementById('news-list');
-                if (!data.success || !data.data || data.data.length === 0) { list.innerHTML = '<p class="text-gray-400 text-sm text-center py-8">لا توجد أخبار بعد</p>'; return; }
-                list.innerHTML = data.data.map(n => `
-                    <div class="item-card">
-                        <div class="flex items-start justify-between gap-3">
-                            <div class="flex-1 min-w-0">
-                                <div class="flex items-center gap-2 mb-1 flex-wrap">
-                                    <span class="inline-block bg-${catColors[n.category]||'gray'}-100 text-${catColors[n.category]||'gray'}-700 text-[10px] font-bold px-2 py-0.5 rounded-full">${catLabels[n.category]||n.category}</span>
-                                    ${n.is_pinned==1?'<span class="inline-flex items-center gap-0.5 bg-emerald-50 text-emerald-600 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-200"><span class="iconify" data-icon="lucide:pin"></span>مثبت</span>':''}
-                                    <span class="text-[10px] text-gray-400">${n.date}</span>
-                                </div>
-                                <h4 class="font-bold text-gray-800 text-sm leading-snug mb-1 truncate">${n.title}</h4>
-                                <p class="text-xs text-gray-500 line-clamp-2">${(n.content||'').substring(0,100)}...</p>
-                            </div>
-                            <div class="flex items-center gap-1 flex-shrink-0">
-                                <button onclick="editNews(${n.id})" class="w-8 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:pencil"></span></button>
-                                <button onclick="deleteNews(${n.id})" class="w-8 h-8 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:trash-2"></span></button>
-                            </div>
+// ═══════════════════════════════
+// REPO SIZE
+// ═══════════════════════════════
+async function loadRepoSize(){
+    const icon=document.getElementById('repo-refresh-icon');
+    icon.classList.add('spin');
+    try {
+        const res=await fetch('/api/media?action=repo-size',{headers:authHeaders()});
+        const d=await res.json(); icon.classList.remove('spin');
+        if(!d.success) return;
+        const{size_mb,percentage,repo,warning,critical,message}=d.data;
+        document.getElementById('repo-name-badge').textContent=repo;
+        document.getElementById('repo-size-text').textContent=size_mb+' MB / '+d.data.max_mb+' MB';
+        const fill=document.getElementById('repo-bar-fill');
+        fill.style.width=Math.min(percentage,100)+'%';
+        fill.classList.remove('warn','danger');
+        if(critical) fill.classList.add('danger'); else if(warning) fill.classList.add('warn');
+        const warn=document.getElementById('repo-warning');
+        if(warning||critical){ warn.classList.remove('hidden'); document.getElementById('repo-warning-msg').textContent=message; }
+        else warn.classList.add('hidden');
+    } catch{ icon.classList.remove('spin'); }
+}
+
+// ═══════════════════════════════
+// NEWS
+// ═══════════════════════════════
+const catLabels={official:'📢 إعلان رسمي',activity:'🏗️ نشاط بلدي',social:'🤝 ركن المجتمع'};
+const catColors={official:'red',activity:'emerald',social:'purple'};
+
+async function loadNews(){
+    try {
+        const res=await fetch('/api/news',{headers:authHeaders()});
+        const d=await res.json(); const list=document.getElementById('news-list');
+        if(!d.success||!d.data?.length){list.innerHTML='<p class="text-gray-400 text-sm text-center py-8">لا توجد أخبار بعد</p>';return;}
+        list.innerHTML=d.data.map(n=>`
+            <div class="item-card">
+                <div class="flex items-start gap-3">
+                    ${n.image_url?`<img src="${n.image_url}" class="w-16 h-14 object-cover rounded-xl flex-shrink-0">`:'<div class="w-16 h-14 bg-gray-100 rounded-xl flex items-center justify-center flex-shrink-0"><span class="iconify text-gray-300 text-xl" data-icon="lucide:image-off"></span></div>'}
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-1 flex-wrap">
+                            <span class="inline-block bg-${catColors[n.category]||'gray'}-100 text-${catColors[n.category]||'gray'}-700 text-[10px] font-bold px-2 py-0.5 rounded-full">${catLabels[n.category]||n.category}</span>
+                            ${n.is_pinned==1?'<span class="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full border border-emerald-200 font-bold">📌</span>':''}
+                            <span class="text-[10px] text-gray-400">${n.date}</span>
                         </div>
-                    </div>`).join('');
-            } catch { document.getElementById('news-list').innerHTML = '<p class="text-red-400 text-sm text-center py-8">تعذر التحميل</p>'; }
+                        <h4 class="font-bold text-gray-800 text-sm truncate mb-1">${n.title}</h4>
+                        <p class="text-xs text-gray-500 line-clamp-2">${(n.content||'').substring(0,90)}...</p>
+                    </div>
+                    <div class="flex flex-col gap-1 flex-shrink-0">
+                        <button onclick="editNews(${n.id})" class="w-8 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:pencil"></span></button>
+                        <button onclick="deleteNews(${n.id})" class="w-8 h-8 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:trash-2"></span></button>
+                    </div>
+                </div>
+            </div>`).join('');
+    } catch { document.getElementById('news-list').innerHTML='<p class="text-red-400 text-sm text-center py-8">تعذر التحميل</p>'; }
+}
+async function saveNews(){
+    const editId=document.getElementById('news-edit-id').value;
+    const body={title:document.getElementById('news-title').value,category:document.getElementById('news-category').value,content:document.getElementById('news-content').value,image_url:document.getElementById('news-image').value,date:document.getElementById('news-date').value||new Date().toISOString().split('T')[0],is_pinned:document.getElementById('news-pinned').checked?1:0};
+    if(!body.title||!body.content){adminToast('العنوان والمحتوى مطلوبان');return;}
+    try {
+        const res=await fetch(editId?'/api/news/'+editId:'/api/news',{method:editId?'PUT':'POST',headers:authHeaders(),body:JSON.stringify(body)});
+        const d=await res.json();
+        if(d.success){adminToast(editId?'تم تعديل الخبر':'تم إضافة الخبر');cancelNewsEdit();loadNews();}
+        else adminToast('خطأ: '+(d.error||''));
+    } catch { adminToast('تعذر الحفظ'); }
+}
+async function editNews(id){
+    try {
+        const res=await fetch('/api/news',{headers:authHeaders()});
+        const d=await res.json(); const n=d.data.find(x=>x.id==id); if(!n) return;
+        document.getElementById('news-edit-id').value=n.id;
+        document.getElementById('news-title').value=n.title;
+        document.getElementById('news-category').value=n.category;
+        document.getElementById('news-content').value=n.content;
+        document.getElementById('news-date').value=n.date;
+        document.getElementById('news-pinned').checked=n.is_pinned==1;
+        document.getElementById('news-image').value=n.image_url||'';
+        document.getElementById('news-image-url-manual').value=n.image_url||'';
+        if(n.image_url){
+            document.getElementById('news-featured-placeholder').classList.add('hidden');
+            document.getElementById('news-featured-img').src=n.image_url;
+            document.getElementById('news-featured-name').textContent='صورة موجودة';
+            document.getElementById('news-featured-preview').classList.remove('hidden');
+            document.getElementById('news-featured-widget').classList.add('has-image');
         }
+        document.getElementById('news-form-title').textContent='تعديل الخبر';
+        document.getElementById('news-save-btn').textContent='تحديث';
+        document.getElementById('news-cancel-btn').classList.remove('hidden');
+        window.scrollTo({top:0,behavior:'smooth'});
+    } catch {}
+}
+function cancelNewsEdit(){
+    document.getElementById('news-edit-id').value='';
+    document.getElementById('news-title').value='';
+    document.getElementById('news-content').value='';
+    document.getElementById('news-date').value='';
+    document.getElementById('news-pinned').checked=false;
+    clearWidget('news-featured','news-image','news-image-url-manual');
+    newsAlbumUrls=[]; document.getElementById('news-album-urls').value='[]'; renderAlbum();
+    document.getElementById('news-form-title').textContent='إضافة خبر جديد';
+    document.getElementById('news-save-btn').textContent='حفظ';
+    document.getElementById('news-cancel-btn').classList.add('hidden');
+}
+async function deleteNews(id){
+    if(!confirm('حذف هذا الخبر؟')) return;
+    await fetch('/api/news/'+id,{method:'DELETE',headers:authHeaders()});
+    adminToast('تم الحذف'); loadNews();
+}
 
-        async function saveNews() {
-            const editId = document.getElementById('news-edit-id').value;
-            const body = { title: document.getElementById('news-title').value, category: document.getElementById('news-category').value, content: document.getElementById('news-content').value, image_url: document.getElementById('news-image').value, date: document.getElementById('news-date').value || new Date().toISOString().split('T')[0], is_pinned: document.getElementById('news-pinned').checked ? 1 : 0 };
-            if (!body.title || !body.content) { adminToast('العنوان والمحتوى مطلوبان'); return; }
-            try {
-                const res = await fetch(editId ? '/api/news/'+editId : '/api/news', { method: editId?'PUT':'POST', headers: authHeaders(), body: JSON.stringify(body) });
-                const data = await res.json();
-                if (data.success) { adminToast(editId?'تم تعديل الخبر':'تم إضافة الخبر'); cancelNewsEdit(); loadNews(); }
-                else adminToast('خطأ: '+(data.error||''));
-            } catch { adminToast('تعذر الحفظ'); }
-        }
+// ═══════════════════════════════
+// SERVICES
+// ═══════════════════════════════
+async function loadServices(){
+    try{
+        const res=await fetch('/api/services',{headers:authHeaders()});
+        const d=await res.json(); const list=document.getElementById('services-list');
+        if(!d.success||!d.data?.length){list.innerHTML='<p class="text-gray-400 text-sm text-center py-8">لا توجد خدمات بعد</p>';return;}
+        list.innerHTML=d.data.map(s=>`
+            <div class="item-card"><div class="flex items-start justify-between gap-3">
+                <div class="flex-1 min-w-0"><h4 class="font-bold text-gray-800 text-sm mb-1">${s.service_name}</h4><p class="text-xs text-gray-500 line-clamp-2">${(s.required_docs||'').replace(/\|/g,' • ')}</p></div>
+                <div class="flex items-center gap-1 flex-shrink-0">
+                    <button onclick="editService(${s.id})" class="w-8 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:pencil"></span></button>
+                    <button onclick="deleteService(${s.id})" class="w-8 h-8 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:trash-2"></span></button>
+                </div>
+            </div></div>`).join('');
+    } catch { document.getElementById('services-list').innerHTML='<p class="text-red-400 text-sm text-center py-8">تعذر التحميل</p>'; }
+}
+async function saveService(){
+    const editId=document.getElementById('services-edit-id').value;
+    const body={service_name:document.getElementById('services-name').value,required_docs:document.getElementById('services-docs').value,pdf_link:document.getElementById('services-pdf').value,color:document.getElementById('services-color').value,icon:document.getElementById('services-icon').value};
+    if(!body.service_name){adminToast('اسم الخدمة مطلوب');return;}
+    try{const res=await fetch(editId?'/api/services/'+editId:'/api/services',{method:editId?'PUT':'POST',headers:authHeaders(),body:JSON.stringify(body)});const d=await res.json();if(d.success){adminToast(editId?'تم التعديل':'تمت الإضافة');cancelServiceEdit();loadServices();}}catch{adminToast('تعذر الحفظ');}
+}
+async function editService(id){
+    const res=await fetch('/api/services',{headers:authHeaders()});const d=await res.json();const s=d.data.find(x=>x.id==id);if(!s)return;
+    document.getElementById('services-edit-id').value=s.id;document.getElementById('services-name').value=s.service_name;document.getElementById('services-docs').value=s.required_docs;document.getElementById('services-pdf').value=s.pdf_link||'';document.getElementById('services-color').value=s.color||'blue';document.getElementById('services-icon').value=s.icon||'file-text';
+    document.getElementById('services-form-title').textContent='تعديل الخدمة';document.getElementById('services-cancel-btn').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'});
+}
+function cancelServiceEdit(){['services-edit-id','services-name','services-docs','services-pdf'].forEach(id=>document.getElementById(id).value='');document.getElementById('services-color').value='blue';document.getElementById('services-icon').value='file-text';document.getElementById('services-form-title').textContent='إضافة خدمة';document.getElementById('services-cancel-btn').classList.add('hidden');}
+async function deleteService(id){if(!confirm('حذف؟'))return;await fetch('/api/services/'+id,{method:'DELETE',headers:authHeaders()});adminToast('تم الحذف');loadServices();}
 
-        async function editNews(id) {
-            try {
-                const res = await fetch('/api/news', { headers: authHeaders() });
-                const data = await res.json();
-                const n = data.data.find(x => x.id == id); if (!n) return;
-                document.getElementById('news-edit-id').value = n.id;
-                document.getElementById('news-title').value = n.title;
-                document.getElementById('news-category').value = n.category;
-                document.getElementById('news-content').value = n.content;
-                document.getElementById('news-image').value = n.image_url || '';
-                document.getElementById('news-date').value = n.date;
-                document.getElementById('news-pinned').checked = n.is_pinned == 1;
-                document.getElementById('news-form-title').textContent = 'تعديل الخبر';
-                document.getElementById('news-save-btn').textContent = 'تحديث';
-                document.getElementById('news-cancel-btn').classList.remove('hidden');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            } catch {}
-        }
+// ═══════════════════════════════
+// ARCHIVES
+// ═══════════════════════════════
+async function loadArchives(){
+    try{
+        const res=await fetch('/api/archives',{headers:authHeaders()});const d=await res.json();const list=document.getElementById('archives-list');
+        if(!d.success||!d.data?.length){list.innerHTML='<p class="text-gray-400 text-sm text-center py-8">لا توجد صور أرشيفية بعد</p>';return;}
+        list.innerHTML=d.data.map(a=>`
+            <div class="item-card"><div class="flex items-start justify-between gap-3">
+                <div class="flex-1 min-w-0">
+                    <h4 class="font-bold text-gray-800 text-sm mb-1">${a.title}</h4>
+                    <p class="text-xs text-gray-500 mb-2">${a.description||''}</p>
+                    <div class="flex gap-2">
+                        ${a.image_old_url?`<img src="${a.image_old_url}" class="w-20 h-14 object-cover rounded-lg border border-gray-200">`:'<div class="w-20 h-14 bg-gray-100 rounded-lg flex items-center justify-center text-[9px] text-gray-400">قديم</div>'}
+                        ${a.image_new_url?`<img src="${a.image_new_url}" class="w-20 h-14 object-cover rounded-lg border border-gray-200">`:'<div class="w-20 h-14 bg-gray-100 rounded-lg flex items-center justify-center text-[9px] text-gray-400">حديث</div>'}
+                    </div>
+                </div>
+                <div class="flex flex-col gap-1 flex-shrink-0">
+                    <button onclick="editArchive(${a.id})" class="w-8 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:pencil"></span></button>
+                    <button onclick="deleteArchive(${a.id})" class="w-8 h-8 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:trash-2"></span></button>
+                </div>
+            </div></div>`).join('');
+    } catch { document.getElementById('archives-list').innerHTML='<p class="text-red-400 text-sm text-center py-8">تعذر التحميل</p>'; }
+}
+async function saveArchive(){
+    const editId=document.getElementById('archives-edit-id').value;
+    const body={title:document.getElementById('archives-title').value,description:document.getElementById('archives-desc').value,image_old_url:document.getElementById('archives-old').value,image_new_url:document.getElementById('archives-new').value};
+    if(!body.title){adminToast('العنوان مطلوب');return;}
+    try{const res=await fetch(editId?'/api/archives/'+editId:'/api/archives',{method:editId?'PUT':'POST',headers:authHeaders(),body:JSON.stringify(body)});const d=await res.json();if(d.success){adminToast(editId?'تم التعديل':'تمت الإضافة');cancelArchiveEdit();loadArchives();}}catch{adminToast('تعذر الحفظ');}
+}
+async function editArchive(id){
+    const res=await fetch('/api/archives',{headers:authHeaders()});const d=await res.json();const a=d.data.find(x=>x.id==id);if(!a)return;
+    document.getElementById('archives-edit-id').value=a.id;document.getElementById('archives-title').value=a.title;document.getElementById('archives-desc').value=a.description||'';
+    document.getElementById('archives-old').value=a.image_old_url||'';document.getElementById('archives-new').value=a.image_new_url||'';
+    document.getElementById('archives-old-url-manual').value=a.image_old_url||'';document.getElementById('archives-new-url-manual').value=a.image_new_url||'';
+    ['old','new'].forEach(s=>{const url=s==='old'?a.image_old_url:a.image_new_url;if(url){document.getElementById('archives-'+s+'-placeholder').classList.add('hidden');document.getElementById('archives-'+s+'-img').src=url;document.getElementById('archives-'+s+'-preview').classList.remove('hidden');document.getElementById('archives-'+s+'-widget').classList.add('has-image');}});
+    document.getElementById('archives-form-title').textContent='تعديل الصورة الأرشيفية';document.getElementById('archives-cancel-btn').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'});
+}
+function cancelArchiveEdit(){
+    ['archives-edit-id','archives-title','archives-desc'].forEach(id=>document.getElementById(id).value='');
+    clearWidget('archives-old','archives-old','archives-old-url-manual');clearWidget('archives-new','archives-new','archives-new-url-manual');
+    document.getElementById('archives-form-title').textContent='إضافة صورة أرشيفية';document.getElementById('archives-cancel-btn').classList.add('hidden');
+}
+async function deleteArchive(id){if(!confirm('حذف؟'))return;await fetch('/api/archives/'+id,{method:'DELETE',headers:authHeaders()});adminToast('تم الحذف');loadArchives();}
 
-        function cancelNewsEdit() {
-            document.getElementById('news-edit-id').value = '';
-            document.getElementById('news-title').value = '';
-            document.getElementById('news-content').value = '';
-            document.getElementById('news-image').value = '';
-            document.getElementById('news-date').value = '';
-            document.getElementById('news-pinned').checked = false;
-            document.getElementById('news-form-title').textContent = 'إضافة خبر جديد';
-            document.getElementById('news-save-btn').textContent = 'حفظ';
-            document.getElementById('news-cancel-btn').classList.add('hidden');
-        }
+// ═══════════════════════════════
+// TOURISM
+// ═══════════════════════════════
+async function loadTourism(){
+    try{
+        const res=await fetch('/api/tourism',{headers:authHeaders()});const d=await res.json();const list=document.getElementById('tourism-list');
+        if(!d.success||!d.data?.length){list.innerHTML='<p class="text-gray-400 text-sm text-center py-8">لا توجد معالم بعد</p>';return;}
+        list.innerHTML=d.data.map(t=>`
+            <div class="item-card"><div class="flex items-start gap-3">
+                ${t.image_url?`<img src="${t.image_url}" class="w-16 h-14 object-cover rounded-xl flex-shrink-0">`:'<div class="w-16 h-14 bg-gray-100 rounded-xl flex items-center justify-center flex-shrink-0"><span class="iconify text-gray-300 text-xl" data-icon="lucide:image-off"></span></div>'}
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-1"><span class="inline-block bg-${t.badge_color||'emerald'}-100 text-${t.badge_color||'emerald'}-700 text-[10px] font-bold px-2 py-0.5 rounded-full">${t.badge_text||''}</span><span class="text-[10px] text-gray-400">⭐ ${t.rating||''}</span></div>
+                    <h4 class="font-bold text-gray-800 text-sm truncate mb-0.5">${t.name}</h4>
+                    <p class="text-xs text-gray-500 line-clamp-2">${(t.description||'').substring(0,80)}...</p>
+                </div>
+                <div class="flex flex-col gap-1 flex-shrink-0">
+                    <button onclick="editTourism(${t.id})" class="w-8 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:pencil"></span></button>
+                    <button onclick="deleteTourism(${t.id})" class="w-8 h-8 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:trash-2"></span></button>
+                </div>
+            </div></div>`).join('');
+    } catch { document.getElementById('tourism-list').innerHTML='<p class="text-red-400 text-sm text-center py-8">تعذر التحميل</p>'; }
+}
+async function saveTourism(){
+    const editId=document.getElementById('tourism-edit-id').value;
+    const body={name:document.getElementById('tourism-name').value,subtitle:document.getElementById('tourism-subtitle').value,description:document.getElementById('tourism-desc').value,image_url:document.getElementById('tourism-image').value,rating:document.getElementById('tourism-rating').value,distance_info:document.getElementById('tourism-distance').value,badge_text:document.getElementById('tourism-badge').value,badge_color:document.getElementById('tourism-badge-color').value};
+    if(!body.name){adminToast('الاسم مطلوب');return;}
+    try{const res=await fetch(editId?'/api/tourism/'+editId:'/api/tourism',{method:editId?'PUT':'POST',headers:authHeaders(),body:JSON.stringify(body)});const d=await res.json();if(d.success){adminToast(editId?'تم التعديل':'تمت الإضافة');cancelTourismEdit();loadTourism();}}catch{adminToast('تعذر الحفظ');}
+}
+async function editTourism(id){
+    const res=await fetch('/api/tourism',{headers:authHeaders()});const d=await res.json();const t=d.data.find(x=>x.id==id);if(!t)return;
+    document.getElementById('tourism-edit-id').value=t.id;document.getElementById('tourism-name').value=t.name;document.getElementById('tourism-subtitle').value=t.subtitle||'';document.getElementById('tourism-desc').value=t.description||'';document.getElementById('tourism-image').value=t.image_url||'';document.getElementById('tourism-rating').value=t.rating||'4.5';document.getElementById('tourism-distance').value=t.distance_info||'';document.getElementById('tourism-badge').value=t.badge_text||'';document.getElementById('tourism-badge-color').value=t.badge_color||'emerald';document.getElementById('tourism-image-manual').value=t.image_url||'';
+    if(t.image_url){document.getElementById('tourism-img-placeholder').classList.add('hidden');document.getElementById('tourism-img-img').src=t.image_url;document.getElementById('tourism-img-preview').classList.remove('hidden');document.getElementById('tourism-img-widget').classList.add('has-image');}
+    document.getElementById('tourism-form-title').textContent='تعديل المعلم';document.getElementById('tourism-cancel-btn').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'});
+}
+function cancelTourismEdit(){
+    ['tourism-edit-id','tourism-name','tourism-subtitle','tourism-desc','tourism-image','tourism-image-manual','tourism-distance','tourism-badge'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('tourism-rating').value='4.5';document.getElementById('tourism-badge-color').value='emerald';
+    clearWidget('tourism-img','tourism-image','tourism-image-manual');
+    document.getElementById('tourism-form-title').textContent='إضافة معلم سياحي';document.getElementById('tourism-cancel-btn').classList.add('hidden');
+}
+async function deleteTourism(id){if(!confirm('حذف؟'))return;await fetch('/api/tourism/'+id,{method:'DELETE',headers:authHeaders()});adminToast('تم الحذف');loadTourism();}
 
-        async function deleteNews(id) {
-            if (!confirm('هل تريد حذف هذا الخبر؟')) return;
-            try { await fetch('/api/news/'+id, { method:'DELETE', headers:authHeaders() }); adminToast('تم حذف الخبر'); loadNews(); }
-            catch { adminToast('تعذر الحذف'); }
-        }
-
-        // ════════════════════════════════
-        //  SERVICES CRUD
-        // ════════════════════════════════
-        async function loadServices() {
-            try {
-                const res = await fetch('/api/services', { headers: authHeaders() });
-                const data = await res.json();
-                const list = document.getElementById('services-list');
-                if (!data.success || !data.data || data.data.length === 0) { list.innerHTML = '<p class="text-gray-400 text-sm text-center py-8">لا توجد خدمات بعد</p>'; return; }
-                list.innerHTML = data.data.map(s => `
-                    <div class="item-card">
-                        <div class="flex items-start justify-between gap-3">
-                            <div class="flex-1 min-w-0">
-                                <div class="flex items-center gap-2 mb-1"><span class="inline-block bg-${s.color||'blue'}-100 text-${s.color||'blue'}-700 text-[10px] font-bold px-2 py-0.5 rounded-full">${s.icon||'file-text'}</span></div>
-                                <h4 class="font-bold text-gray-800 text-sm mb-1">${s.service_name}</h4>
-                                <p class="text-xs text-gray-500 line-clamp-2">${(s.required_docs||'').replace(/\|/g,' • ')}</p>
-                            </div>
-                            <div class="flex items-center gap-1 flex-shrink-0">
-                                <button onclick="editService(${s.id})" class="w-8 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:pencil"></span></button>
-                                <button onclick="deleteService(${s.id})" class="w-8 h-8 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:trash-2"></span></button>
-                            </div>
-                        </div>
-                    </div>`).join('');
-            } catch { document.getElementById('services-list').innerHTML = '<p class="text-red-400 text-sm text-center py-8">تعذر التحميل</p>'; }
-        }
-
-        async function saveService() {
-            const editId = document.getElementById('services-edit-id').value;
-            const body = { service_name: document.getElementById('services-name').value, required_docs: document.getElementById('services-docs').value, pdf_link: document.getElementById('services-pdf').value, color: document.getElementById('services-color').value, icon: document.getElementById('services-icon').value };
-            if (!body.service_name) { adminToast('اسم الخدمة مطلوب'); return; }
-            try {
-                const res = await fetch(editId?'/api/services/'+editId:'/api/services', { method:editId?'PUT':'POST', headers:authHeaders(), body:JSON.stringify(body) });
-                const data = await res.json();
-                if (data.success) { adminToast(editId?'تم التعديل':'تمت الإضافة'); cancelServiceEdit(); loadServices(); }
-                else adminToast('خطأ');
-            } catch { adminToast('تعذر الحفظ'); }
-        }
-
-        async function editService(id) {
-            const res = await fetch('/api/services', { headers: authHeaders() });
-            const data = await res.json();
-            const s = data.data.find(x => x.id == id); if (!s) return;
-            document.getElementById('services-edit-id').value = s.id;
-            document.getElementById('services-name').value = s.service_name;
-            document.getElementById('services-docs').value = s.required_docs;
-            document.getElementById('services-pdf').value = s.pdf_link || '';
-            document.getElementById('services-color').value = s.color || 'blue';
-            document.getElementById('services-icon').value = s.icon || 'file-text';
-            document.getElementById('services-form-title').textContent = 'تعديل الخدمة';
-            document.getElementById('services-cancel-btn').classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function cancelServiceEdit() {
-            document.getElementById('services-edit-id').value = '';
-            document.getElementById('services-name').value = '';
-            document.getElementById('services-docs').value = '';
-            document.getElementById('services-pdf').value = '';
-            document.getElementById('services-color').value = 'blue';
-            document.getElementById('services-icon').value = 'file-text';
-            document.getElementById('services-form-title').textContent = 'إضافة خدمة';
-            document.getElementById('services-cancel-btn').classList.add('hidden');
-        }
-
-        async function deleteService(id) {
-            if (!confirm('حذف هذه الخدمة؟')) return;
-            await fetch('/api/services/'+id, { method:'DELETE', headers:authHeaders() });
-            adminToast('تم الحذف'); loadServices();
-        }
-
-        // ════════════════════════════════
-        //  ARCHIVES CRUD
-        // ════════════════════════════════
-        async function loadArchives() {
-            try {
-                const res = await fetch('/api/archives', { headers: authHeaders() });
-                const data = await res.json();
-                const list = document.getElementById('archives-list');
-                if (!data.success || !data.data || data.data.length === 0) { list.innerHTML = '<p class="text-gray-400 text-sm text-center py-8">لا توجد صور أرشيفية بعد</p>'; return; }
-                list.innerHTML = data.data.map(a => `
-                    <div class="item-card">
-                        <div class="flex items-start justify-between gap-3">
-                            <div class="flex-1 min-w-0">
-                                <h4 class="font-bold text-gray-800 text-sm mb-1">${a.title}</h4>
-                                <p class="text-xs text-gray-500">${a.description||''}</p>
-                                <div class="flex gap-2 mt-2">
-                                    ${a.image_old_url?`<img src="${a.image_old_url}" class="w-16 h-12 object-cover rounded-lg" alt="قديم">`:'<div class="w-16 h-12 bg-gray-200 rounded-lg flex items-center justify-center text-[8px] text-gray-400">قديم</div>'}
-                                    ${a.image_new_url?`<img src="${a.image_new_url}" class="w-16 h-12 object-cover rounded-lg" alt="حديث">`:'<div class="w-16 h-12 bg-gray-200 rounded-lg flex items-center justify-center text-[8px] text-gray-400">حديث</div>'}
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-1 flex-shrink-0">
-                                <button onclick="editArchive(${a.id})" class="w-8 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:pencil"></span></button>
-                                <button onclick="deleteArchive(${a.id})" class="w-8 h-8 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:trash-2"></span></button>
-                            </div>
-                        </div>
-                    </div>`).join('');
-            } catch { document.getElementById('archives-list').innerHTML = '<p class="text-red-400 text-sm text-center py-8">تعذر التحميل</p>'; }
-        }
-
-        async function saveArchive() {
-            const editId = document.getElementById('archives-edit-id').value;
-            const body = { title: document.getElementById('archives-title').value, description: document.getElementById('archives-desc').value, image_old_url: document.getElementById('archives-old').value, image_new_url: document.getElementById('archives-new').value };
-            if (!body.title) { adminToast('العنوان مطلوب'); return; }
-            try {
-                const res = await fetch(editId?'/api/archives/'+editId:'/api/archives', { method:editId?'PUT':'POST', headers:authHeaders(), body:JSON.stringify(body) });
-                const data = await res.json();
-                if (data.success) { adminToast(editId?'تم التعديل':'تمت الإضافة'); cancelArchiveEdit(); loadArchives(); }
-            } catch { adminToast('تعذر الحفظ'); }
-        }
-
-        async function editArchive(id) {
-            const res = await fetch('/api/archives', { headers: authHeaders() });
-            const data = await res.json();
-            const a = data.data.find(x => x.id == id); if (!a) return;
-            document.getElementById('archives-edit-id').value = a.id;
-            document.getElementById('archives-title').value = a.title;
-            document.getElementById('archives-desc').value = a.description || '';
-            document.getElementById('archives-old').value = a.image_old_url || '';
-            document.getElementById('archives-new').value = a.image_new_url || '';
-            document.getElementById('archives-form-title').textContent = 'تعديل الصورة الأرشيفية';
-            document.getElementById('archives-cancel-btn').classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function cancelArchiveEdit() {
-            document.getElementById('archives-edit-id').value = '';
-            document.getElementById('archives-title').value = '';
-            document.getElementById('archives-desc').value = '';
-            document.getElementById('archives-old').value = '';
-            document.getElementById('archives-new').value = '';
-            document.getElementById('archives-form-title').textContent = 'إضافة صورة أرشيفية';
-            document.getElementById('archives-cancel-btn').classList.add('hidden');
-        }
-
-        async function deleteArchive(id) {
-            if (!confirm('حذف؟')) return;
-            await fetch('/api/archives/'+id, { method:'DELETE', headers:authHeaders() });
-            adminToast('تم الحذف'); loadArchives();
-        }
-
-        // ════════════════════════════════
-        //  TOURISM CRUD
-        // ════════════════════════════════
-        async function loadTourism() {
-            try {
-                const res = await fetch('/api/tourism', { headers: authHeaders() });
-                const data = await res.json();
-                const list = document.getElementById('tourism-list');
-                if (!data.success || !data.data || data.data.length === 0) { list.innerHTML = '<p class="text-gray-400 text-sm text-center py-8">لا توجد معالم بعد</p>'; return; }
-                list.innerHTML = data.data.map(t => `
-                    <div class="item-card">
-                        <div class="flex items-start justify-between gap-3">
-                            <div class="flex-1 min-w-0">
-                                <div class="flex items-center gap-2 mb-1">
-                                    <span class="inline-block bg-${t.badge_color||'emerald'}-100 text-${t.badge_color||'emerald'}-700 text-[10px] font-bold px-2 py-0.5 rounded-full">${t.badge_text||''}</span>
-                                    <span class="text-[10px] text-gray-400">⭐ ${t.rating||''}</span>
-                                </div>
-                                <h4 class="font-bold text-gray-800 text-sm mb-0.5">${t.name}</h4>
-                                <p class="text-[10px] text-gray-400 mb-1">${t.subtitle||''}</p>
-                                <p class="text-xs text-gray-500 line-clamp-2">${(t.description||'').substring(0,80)}...</p>
-                            </div>
-                            <div class="flex items-center gap-1 flex-shrink-0">
-                                <button onclick="editTourism(${t.id})" class="w-8 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:pencil"></span></button>
-                                <button onclick="deleteTourism(${t.id})" class="w-8 h-8 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:trash-2"></span></button>
-                            </div>
-                        </div>
-                    </div>`).join('');
-            } catch { document.getElementById('tourism-list').innerHTML = '<p class="text-red-400 text-sm text-center py-8">تعذر التحميل</p>'; }
-        }
-
-        async function saveTourism() {
-            const editId = document.getElementById('tourism-edit-id').value;
-            const body = { name: document.getElementById('tourism-name').value, subtitle: document.getElementById('tourism-subtitle').value, description: document.getElementById('tourism-desc').value, image_url: document.getElementById('tourism-image').value, rating: document.getElementById('tourism-rating').value, distance_info: document.getElementById('tourism-distance').value, badge_text: document.getElementById('tourism-badge').value, badge_color: document.getElementById('tourism-badge-color').value };
-            if (!body.name) { adminToast('الاسم مطلوب'); return; }
-            try {
-                const res = await fetch(editId?'/api/tourism/'+editId:'/api/tourism', { method:editId?'PUT':'POST', headers:authHeaders(), body:JSON.stringify(body) });
-                const data = await res.json();
-                if (data.success) { adminToast(editId?'تم التعديل':'تمت الإضافة'); cancelTourismEdit(); loadTourism(); }
-            } catch { adminToast('تعذر الحفظ'); }
-        }
-
-        async function editTourism(id) {
-            const res = await fetch('/api/tourism', { headers: authHeaders() });
-            const data = await res.json();
-            const t = data.data.find(x => x.id == id); if (!t) return;
-            document.getElementById('tourism-edit-id').value = t.id;
-            document.getElementById('tourism-name').value = t.name;
-            document.getElementById('tourism-subtitle').value = t.subtitle || '';
-            document.getElementById('tourism-desc').value = t.description || '';
-            document.getElementById('tourism-image').value = t.image_url || '';
-            document.getElementById('tourism-rating').value = t.rating || '4.5';
-            document.getElementById('tourism-distance').value = t.distance_info || '';
-            document.getElementById('tourism-badge').value = t.badge_text || '';
-            document.getElementById('tourism-badge-color').value = t.badge_color || 'emerald';
-            document.getElementById('tourism-form-title').textContent = 'تعديل المعلم';
-            document.getElementById('tourism-cancel-btn').classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function cancelTourismEdit() {
-            document.getElementById('tourism-edit-id').value = '';
-            document.getElementById('tourism-name').value = '';
-            document.getElementById('tourism-subtitle').value = '';
-            document.getElementById('tourism-desc').value = '';
-            document.getElementById('tourism-image').value = '';
-            document.getElementById('tourism-rating').value = '4.5';
-            document.getElementById('tourism-distance').value = '';
-            document.getElementById('tourism-badge').value = '';
-            document.getElementById('tourism-badge-color').value = 'emerald';
-            document.getElementById('tourism-form-title').textContent = 'إضافة معلم سياحي';
-            document.getElementById('tourism-cancel-btn').classList.add('hidden');
-        }
-
-        async function deleteTourism(id) {
-            if (!confirm('حذف؟')) return;
-            await fetch('/api/tourism/'+id, { method:'DELETE', headers:authHeaders() });
-            adminToast('تم الحذف'); loadTourism();
-        }
-
-        // ════════════════════════════════
-        //  MAYORS CRUD
-        // ════════════════════════════════
-        async function loadMayors() {
-            try {
-                const res = await fetch('/api/mayors', { headers: authHeaders() });
-                const data = await res.json();
-                const list = document.getElementById('mayors-list');
-                if (!data.success || !data.data || data.data.length === 0) { list.innerHTML = '<p class="text-gray-400 text-sm text-center py-8">لا توجد بيانات بعد</p>'; return; }
-                list.innerHTML = data.data.map(m => `
-                    <div class="item-card">
-                        <div class="flex items-center justify-between gap-3">
-                            <div class="flex items-center gap-3 flex-1 min-w-0">
-                                ${m.image_url?`<img src="${m.image_url}" class="w-12 h-12 rounded-full object-cover border-2 border-emerald-200 flex-shrink-0">`:'<div class="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0"><span class="iconify text-emerald-500 text-xl" data-icon="lucide:user"></span></div>'}
-                                <div class="min-w-0">
-                                    <h4 class="font-bold text-gray-800 text-sm truncate">${m.name}</h4>
-                                    <p class="text-xs text-gray-500">${m.period}</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-1 flex-shrink-0">
-                                <button onclick="editMayor(${m.id})" class="w-8 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:pencil"></span></button>
-                                <button onclick="deleteMayor(${m.id})" class="w-8 h-8 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:trash-2"></span></button>
-                            </div>
-                        </div>
-                    </div>`).join('');
-            } catch { document.getElementById('mayors-list').innerHTML = '<p class="text-red-400 text-sm text-center py-8">تعذر التحميل</p>'; }
-        }
-
-        async function saveMayor() {
-            const editId = document.getElementById('mayors-edit-id').value;
-            const body = { name: document.getElementById('mayors-name').value, period: document.getElementById('mayors-period').value, image_url: document.getElementById('mayors-image').value };
-            if (!body.name || !body.period) { adminToast('الاسم والفترة مطلوبان'); return; }
-            try {
-                const res = await fetch(editId?'/api/mayors/'+editId:'/api/mayors', { method:editId?'PUT':'POST', headers:authHeaders(), body:JSON.stringify(body) });
-                const data = await res.json();
-                if (data.success) { adminToast(editId?'تم التعديل':'تمت الإضافة'); cancelMayorEdit(); loadMayors(); }
-            } catch { adminToast('تعذر الحفظ'); }
-        }
-
-        async function editMayor(id) {
-            const res = await fetch('/api/mayors', { headers: authHeaders() });
-            const data = await res.json();
-            const m = data.data.find(x => x.id == id); if (!m) return;
-            document.getElementById('mayors-edit-id').value = m.id;
-            document.getElementById('mayors-name').value = m.name;
-            document.getElementById('mayors-period').value = m.period;
-            document.getElementById('mayors-image').value = m.image_url || '';
-            document.getElementById('mayors-form-title').textContent = 'تعديل الرئيس';
-            document.getElementById('mayors-cancel-btn').classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function cancelMayorEdit() {
-            document.getElementById('mayors-edit-id').value = '';
-            document.getElementById('mayors-name').value = '';
-            document.getElementById('mayors-period').value = '';
-            document.getElementById('mayors-image').value = '';
-            document.getElementById('mayors-form-title').textContent = 'إضافة رئيس';
-            document.getElementById('mayors-cancel-btn').classList.add('hidden');
-        }
-
-        async function deleteMayor(id) {
-            if (!confirm('حذف؟')) return;
-            await fetch('/api/mayors/'+id, { method:'DELETE', headers:authHeaders() });
-            adminToast('تم الحذف'); loadMayors();
-        }
-
-        // ════════════════════════════════
-        //  ✅ MEDIA MANAGER
-        // ════════════════════════════════
-        let selectedFile = null;
-
-        // حجم المستودع
-        async function loadRepoSize() {
-            const btn   = document.getElementById('refresh-repo-btn');
-            const fill  = document.getElementById('repo-bar-fill');
-            const text  = document.getElementById('repo-size-text');
-            const warn  = document.getElementById('repo-warning');
-            const msg   = document.getElementById('repo-warning-msg');
-            const badge = document.getElementById('repo-name-badge');
-            const icon  = btn.querySelector('.iconify');
-            icon.classList.add('spin');
-            text.textContent = 'جاري الجلب...';
-            try {
-                const res  = await fetch('/api/media?action=repo-size', { headers: authHeaders() });
-                const data = await res.json();
-                icon.classList.remove('spin');
-                if (!data.success) { text.textContent = 'خطأ: ' + data.error; return; }
-                const { size_mb, percentage, repo, warning, critical, message } = data.data;
-                badge.textContent = repo;
-                text.textContent  = `${size_mb} MB من ${data.data.max_mb} MB (${percentage}%)`;
-                fill.style.width  = Math.min(percentage, 100) + '%';
-                fill.classList.remove('warn', 'danger');
-                if (critical) fill.classList.add('danger');
-                else if (warning) fill.classList.add('warn');
-                if (warning || critical) { warn.classList.remove('hidden'); msg.textContent = message; }
-                else warn.classList.add('hidden');
-            } catch (e) { btn.querySelector('.iconify').classList.remove('spin'); text.textContent = 'خطأ: ' + e.message; }
-        }
-
-        // تغيير المجلد
-        function onFolderChange() {
-            const sel = document.getElementById('upload-folder').value;
-            document.getElementById('custom-folder-wrap').classList.toggle('hidden', sel !== 'custom');
-            document.getElementById('browse-folder-label').textContent = sel === 'custom' ? '(مخصص)' : sel;
-            if (sel !== 'custom') loadMediaList();
-        }
-
-        function getTargetFolder() {
-            const sel = document.getElementById('upload-folder').value;
-            return sel === 'custom' ? document.getElementById('custom-folder-input').value.trim() : sel;
-        }
-
-        // اختيار ملف
-        function onFileSelected(file) {
-            if (!file) return;
-            if (file.size > 25 * 1024 * 1024) { adminToast('حجم الملف يتجاوز 25 MB'); return; }
-            selectedFile = file;
-            const reader = new FileReader();
-            reader.onload = e => {
-                document.getElementById('preview-img').src = e.target.result;
-                document.getElementById('preview-name').textContent = file.name;
-                document.getElementById('preview-size').textContent = (file.size/1024).toFixed(1) + ' KB';
-                document.getElementById('drop-zone-content').classList.add('hidden');
-                document.getElementById('drop-zone-preview').classList.remove('hidden');
-            };
-            reader.readAsDataURL(file);
-            document.getElementById('upload-btn').disabled = false;
-            document.getElementById('upload-result').classList.add('hidden');
-        }
-
-        // Drag & Drop
-        const dropZone = document.getElementById('drop-zone');
-        dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
-        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
-        dropZone.addEventListener('drop', e => {
-            e.preventDefault(); dropZone.classList.remove('drag-over');
-            const f = e.dataTransfer.files[0];
-            if (f && f.type.startsWith('image/')) { document.getElementById('file-input').files = e.dataTransfer.files; onFileSelected(f); }
-        });
-
-        // رفع الصورة
-        async function uploadMedia() {
-            if (!selectedFile) return;
-            const folder = getTargetFolder();
-            if (!folder) { adminToast('حدد اسم المجلد'); return; }
-            // overlay التحميل
-            const ov = document.createElement('div');
-            ov.className = 'upload-overlay';
-            ov.innerHTML = `<div class="bg-white rounded-2xl p-8 text-center shadow-2xl max-w-xs w-full mx-4"><span class="iconify text-5xl text-emerald-500 spin block mb-4" data-icon="lucide:loader-2"></span><p class="font-extrabold text-gray-800 mb-1">جاري الرفع...</p><p class="text-xs text-gray-500">${selectedFile.name}</p></div>`;
-            document.body.appendChild(ov);
-            try {
-                const base64 = await new Promise((res, rej) => { const r = new FileReader(); r.onload = e => res(e.target.result.split(',')[1]); r.onerror = rej; r.readAsDataURL(selectedFile); });
-                const resp = await fetch('/api/media', { method:'POST', headers:authHeaders(), body:JSON.stringify({ filename:selectedFile.name, folder, data:base64, mime:selectedFile.type }) });
-                const data = await resp.json();
-                document.body.removeChild(ov);
-                if (data.success) {
-                    const url = data.data.cdn_url;
-                    document.getElementById('cdn-url-output').value = url;
-                    document.getElementById('cdn-url-open').href = url;
-                    document.getElementById('upload-result').classList.remove('hidden');
-                    adminToast('✅ تم الرفع بنجاح!');
-                    resetUploadForm(); loadMediaList(); loadRepoSize();
-                } else { adminToast('❌ ' + (data.error || 'فشل الرفع')); }
-            } catch (e) { if(document.body.contains(ov)) document.body.removeChild(ov); adminToast('❌ خطأ: ' + e.message); }
-        }
-
-        // نسخ الرابط
-        async function copyCdnUrl() {
-            const url = document.getElementById('cdn-url-output').value;
-            try { await navigator.clipboard.writeText(url); adminToast('✅ تم نسخ الرابط'); }
-            catch { document.getElementById('cdn-url-output').select(); document.execCommand('copy'); adminToast('✅ تم نسخ الرابط'); }
-        }
-
-        async function copyCdnDirect(url) {
-            try { await navigator.clipboard.writeText(url); adminToast('✅ تم نسخ الرابط'); }
-            catch { adminToast('الرابط: ' + url); }
-        }
-
-        // قائمة الملفات
-        async function loadMediaList() {
-            const folder = getTargetFolder();
-            if (!folder) return;
-            const grid  = document.getElementById('media-grid');
-            const label = document.getElementById('browse-folder-label');
-            label.textContent = folder;
-            grid.innerHTML = `<div class="col-span-full text-center py-12 text-gray-300"><span class="iconify text-4xl spin" data-icon="lucide:loader-2"></span><p class="text-sm mt-2">جاري التحميل...</p></div>`;
-            try {
-                const res  = await fetch(`/api/media?action=list&folder=${encodeURIComponent(folder)}`, { headers: authHeaders() });
-                const data = await res.json();
-                if (!data.success) { grid.innerHTML = `<div class="col-span-full text-center py-12 text-red-400 text-sm">${data.error}</div>`; return; }
-                if (!data.data.length) { grid.innerHTML = `<div class="col-span-full text-center py-12 text-gray-300"><span class="iconify text-4xl" data-icon="lucide:image-off"></span><p class="text-sm mt-2">المجلد فارغ</p></div>`; return; }
-                grid.innerHTML = data.data.map(f => `
-                    <div class="media-card" title="${f.name}">
-                        <img src="${f.cdn_url}" alt="${f.name}" class="w-full h-24 object-cover bg-gray-50" loading="lazy" onerror="this.src='https://placehold.co/200x96/f3f4f6/9ca3af?text=!'">
-                        <div class="media-overlay">
-                            <button onclick="copyCdnDirect('${f.cdn_url}')" class="w-8 h-8 bg-white/20 hover:bg-white/40 text-white rounded-lg flex items-center justify-center" title="نسخ"><span class="iconify text-sm" data-icon="lucide:copy"></span></button>
-                            <a href="${f.cdn_url}" target="_blank" class="w-8 h-8 bg-white/20 hover:bg-white/40 text-white rounded-lg flex items-center justify-center" title="فتح"><span class="iconify text-sm" data-icon="lucide:external-link"></span></a>
-                            <button onclick="deleteMedia('${f.path}','${f.sha}')" class="w-8 h-8 bg-red-500/70 hover:bg-red-600 text-white rounded-lg flex items-center justify-center" title="حذف"><span class="iconify text-sm" data-icon="lucide:trash-2"></span></button>
-                        </div>
-                        <div class="p-2">
-                            <p class="text-[10px] text-gray-600 font-semibold truncate">${f.name}</p>
-                            <p class="text-[9px] text-gray-400">${(f.size/1024).toFixed(1)} KB</p>
-                        </div>
-                    </div>`).join('');
-                if (window.Iconify) Iconify.scan(grid);
-            } catch (e) { grid.innerHTML = `<div class="col-span-full text-center py-12 text-red-400 text-sm">خطأ: ${e.message}</div>`; }
-        }
-
-        // حذف ملف
-        async function deleteMedia(path, sha) {
-            if (!confirm(`حذف الملف:\n${path}\n\nلا يمكن التراجع عن هذا الإجراء.`)) return;
-            try {
-                const res  = await fetch(`/api/media?path=${encodeURIComponent(path)}&sha=${encodeURIComponent(sha)}`, { method:'DELETE', headers:authHeaders() });
-                const data = await res.json();
-                if (data.success) { adminToast('✅ تم الحذف'); loadMediaList(); loadRepoSize(); }
-                else adminToast('❌ ' + data.error);
-            } catch (e) { adminToast('❌ خطأ: ' + e.message); }
-        }
-
-        // إعادة ضبط نموذج الرفع
-        function resetUploadForm() {
-            selectedFile = null;
-            document.getElementById('file-input').value = '';
-            document.getElementById('upload-btn').disabled = true;
-            document.getElementById('drop-zone-content').classList.remove('hidden');
-            document.getElementById('drop-zone-preview').classList.add('hidden');
-            document.getElementById('preview-img').src = '';
-        }
-
-    </script>
+// ═══════════════════════════════
+// MAYORS
+// ═══════════════════════════════
+async function loadMayors(){
+    try{
+        const res=await fetch('/api/mayors',{headers:authHeaders()});const d=await res.json();const list=document.getElementById('mayors-list');
+        if(!d.success||!d.data?.length){list.innerHTML='<p class="text-gray-400 text-sm text-center py-8">لا توجد بيانات بعد</p>';return;}
+        list.innerHTML=d.data.map(m=>`
+            <div class="item-card"><div class="flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3 flex-1 min-w-0">
+                    ${m.image_url?`<img src="${m.image_url}" class="w-12 h-12 rounded-full object-cover border-2 border-emerald-200 flex-shrink-0">`:'<div class="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0"><span class="iconify text-emerald-500 text-xl" data-icon="lucide:user"></span></div>'}
+                    <div class="min-w-0"><h4 class="font-bold text-gray-800 text-sm truncate">${m.name}</h4><p class="text-xs text-gray-500">${m.period}</p></div>
+                </div>
+                <div class="flex items-center gap-1 flex-shrink-0">
+                    <button onclick="editMayor(${m.id})" class="w-8 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:pencil"></span></button>
+                    <button onclick="deleteMayor(${m.id})" class="w-8 h-8 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:trash-2"></span></button>
+                </div>
+            </div></div>`).join('');
+    } catch { document.getElementById('mayors-list').innerHTML='<p class="text-red-400 text-sm text-center py-8">تعذر التحميل</p>'; }
+}
+async function saveMayor(){
+    const editId=document.getElementById('mayors-edit-id').value;
+    const body={name:document.getElementById('mayors-name').value,period:document.getElementById('mayors-period').value,image_url:document.getElementById('mayors-image').value};
+    if(!body.name||!body.period){adminToast('الاسم والفترة مطلوبان');return;}
+    try{const res=await fetch(editId?'/api/mayors/'+editId:'/api/mayors',{method:editId?'PUT':'POST',headers:authHeaders(),body:JSON.stringify(body)});const d=await res.json();if(d.success){adminToast(editId?'تم التعديل':'تمت الإضافة');cancelMayorEdit();loadMayors();}}catch{adminToast('تعذر الحفظ');}
+}
+async function editMayor(id){
+    const res=await fetch('/api/mayors',{headers:authHeaders()});const d=await res.json();const m=d.data.find(x=>x.id==id);if(!m)return;
+    document.getElementById('mayors-edit-id').value=m.id;document.getElementById('mayors-name').value=m.name;document.getElementById('mayors-period').value=m.period;document.getElementById('mayors-image').value=m.image_url||'';document.getElementById('mayors-image-manual').value=m.image_url||'';
+    if(m.image_url){document.getElementById('mayors-img-placeholder').classList.add('hidden');document.getElementById('mayors-img-img').src=m.image_url;document.getElementById('mayors-img-preview').classList.remove('hidden');document.getElementById('mayors-img-widget').classList.add('has-image');}
+    document.getElementById('mayors-form-title').textContent='تعديل الرئيس';document.getElementById('mayors-cancel-btn').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'});
+}
+function cancelMayorEdit(){
+    ['mayors-edit-id','mayors-name','mayors-period','mayors-image','mayors-image-manual'].forEach(id=>document.getElementById(id).value='');
+    clearWidget('mayors-img','mayors-image','mayors-image-manual');
+    document.getElementById('mayors-form-title').textContent='إضافة رئيس';document.getElementById('mayors-cancel-btn').classList.add('hidden');
+}
+async function deleteMayor(id){if(!confirm('حذف؟'))return;await fetch('/api/mayors/'+id,{method:'DELETE',headers:authHeaders()});adminToast('تم الحذف');loadMayors();}
+</script>
 </body>
 </html>
