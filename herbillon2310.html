@@ -27,6 +27,15 @@
         textarea { resize: vertical; min-height: 100px; }
         .item-card { background: white; border: 1px solid #f3f4f6; border-radius: 16px; padding: 16px; transition: all 0.2s; }
         .item-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+        /* ✅ 4/5: Mobile collapsible form */
+        @media (max-width: 1023px) {
+            .form-panel { display: none; }
+            .form-panel.mobile-open { display: block; }
+        }
+        @media (min-width: 1024px) {
+            .mobile-add-btn { display: none; }
+            .form-panel { display: block !important; }
+        }
         /* Upload Widget */
         .upload-widget { border: 2px dashed #d1d5db; border-radius: 12px; background: #f9fafb; transition: all 0.2s; }
         .upload-widget:hover { border-color: #059669; background: #f0fdf4; }
@@ -146,6 +155,16 @@
                             </select>
                         </div>
                         <div><label class="text-xs font-bold text-gray-500 mb-1 block">المحتوى</label><textarea id="news-content" placeholder="نص الخبر الكامل..." rows="4"></textarea></div>
+
+                        <!-- ✅ 2: تصنيف حر اختياري -->
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block flex items-center gap-1">
+                                <span class="iconify text-emerald-400" data-icon="lucide:tag"></span>
+                                التصنيف المعروض <span class="text-gray-400 font-normal">(اختياري — يظهر تحت الصورة)</span>
+                            </label>
+                            <input id="news-custom-label" type="text" placeholder="مثال: حملة نظافة، نظافة المحيط، فعالية رياضية...">
+                            <p class="text-[10px] text-gray-400 mt-1">اتركه فارغاً لعدم إظهار أي تصنيف</p>
+                        </div>
 
                         <!-- صورة مميزة -->
                         <div>
@@ -376,6 +395,16 @@ function loadTab(tab){
     if(m[tab]) m[tab]();
 }
 
+// ✅ 4/5: Mobile form toggle
+function toggleNewsForm(btn){
+    const panel=document.querySelector('#section-news .form-panel');
+    panel.classList.toggle('mobile-open');
+    const isOpen=panel.classList.contains('mobile-open');
+    btn.innerHTML=isOpen
+        ?'<span class="iconify text-lg" data-icon="lucide:x"></span><span>إغلاق</span>'
+        :'<span class="iconify text-lg" data-icon="lucide:plus-circle"></span><span>إضافة خبر جديد</span>';
+}
+
 // ═══════════════════════════════
 // UPLOAD HELPERS
 // ═══════════════════════════════
@@ -559,6 +588,7 @@ function cancelNewsEdit(){
     document.getElementById('news-date').value='';
     document.getElementById('news-pinned').checked=false;
     clearWidget('news-featured','news-image','news-image-url-manual');
+    document.getElementById('news-custom-label').value='';
     newsAlbumUrls=[]; document.getElementById('news-album-urls').value='[]'; renderAlbum();
     document.getElementById('news-form-title').textContent='إضافة خبر جديد';
     document.getElementById('news-save-btn').textContent='حفظ';
