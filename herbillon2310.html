@@ -547,7 +547,8 @@ async function loadNews(){
 }
 async function saveNews(){
     const editId=document.getElementById('news-edit-id').value;
-    const body={title:document.getElementById('news-title').value,category:document.getElementById('news-category').value,content:document.getElementById('news-content').value,image_url:document.getElementById('news-image').value,date:document.getElementById('news-date').value||new Date().toISOString().split('T')[0],is_pinned:document.getElementById('news-pinned').checked?1:0};
+    const clEl=document.getElementById('news-custom-label');
+    const body={title:document.getElementById('news-title').value,category:document.getElementById('news-category').value,content:document.getElementById('news-content').value,image_url:document.getElementById('news-image').value,date:document.getElementById('news-date').value||new Date().toISOString().split('T')[0],is_pinned:document.getElementById('news-pinned').checked?1:0,custom_label:clEl?clEl.value:''};
     if(!body.title||!body.content){adminToast('العنوان والمحتوى مطلوبان');return;}
     try {
         const res=await fetch(editId?'/api/news/'+editId:'/api/news',{method:editId?'PUT':'POST',headers:authHeaders(),body:JSON.stringify(body)});
@@ -568,6 +569,7 @@ async function editNews(id){
         document.getElementById('news-pinned').checked=n.is_pinned==1;
         document.getElementById('news-image').value=n.image_url||'';
         document.getElementById('news-image-url-manual').value=n.image_url||'';
+        const clEl2=document.getElementById('news-custom-label'); if(clEl2) clEl2.value=n.custom_label||'';
         if(n.image_url){
             document.getElementById('news-featured-placeholder').classList.add('hidden');
             document.getElementById('news-featured-img').src=n.image_url;
@@ -588,7 +590,8 @@ function cancelNewsEdit(){
     document.getElementById('news-date').value='';
     document.getElementById('news-pinned').checked=false;
     clearWidget('news-featured','news-image','news-image-url-manual');
-    document.getElementById('news-custom-label').value='';
+    const clEl3=document.getElementById('news-custom-label');
+    if(clEl3) clEl3.value='';
     newsAlbumUrls=[]; document.getElementById('news-album-urls').value='[]'; renderAlbum();
     document.getElementById('news-form-title').textContent='إضافة خبر جديد';
     document.getElementById('news-save-btn').textContent='حفظ';
@@ -622,7 +625,7 @@ async function saveService(){
     const editId=document.getElementById('services-edit-id').value;
     const body={service_name:document.getElementById('services-name').value,required_docs:document.getElementById('services-docs').value,pdf_link:document.getElementById('services-pdf').value,color:document.getElementById('services-color').value,icon:document.getElementById('services-icon').value};
     if(!body.service_name){adminToast('اسم الخدمة مطلوب');return;}
-    try{const res=await fetch(editId?'/api/services/'+editId:'/api/services',{method:editId?'PUT':'POST',headers:authHeaders(),body:JSON.stringify(body)});const d=await res.json();if(d.success){adminToast(editId?'تم التعديل':'تمت الإضافة');cancelServiceEdit();loadServices();}}catch{adminToast('تعذر الحفظ');}
+    try{const res=await fetch(editId?'/api/services?id='+editId:'/api/services',{method:editId?'PUT':'POST',headers:authHeaders(),body:JSON.stringify(body)});const d=await res.json();if(d.success){adminToast(editId?'تم التعديل':'تمت الإضافة');cancelServiceEdit();loadServices();}}catch{adminToast('تعذر الحفظ');}
 }
 async function editService(id){
     const res=await fetch('/api/services',{headers:authHeaders()});const d=await res.json();const s=d.data.find(x=>x.id==id);if(!s)return;
@@ -630,7 +633,7 @@ async function editService(id){
     document.getElementById('services-form-title').textContent='تعديل الخدمة';document.getElementById('services-cancel-btn').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'});
 }
 function cancelServiceEdit(){['services-edit-id','services-name','services-docs','services-pdf'].forEach(id=>document.getElementById(id).value='');document.getElementById('services-color').value='blue';document.getElementById('services-icon').value='file-text';document.getElementById('services-form-title').textContent='إضافة خدمة';document.getElementById('services-cancel-btn').classList.add('hidden');}
-async function deleteService(id){if(!confirm('حذف؟'))return;await fetch('/api/services/'+id,{method:'DELETE',headers:authHeaders()});adminToast('تم الحذف');loadServices();}
+async function deleteService(id){if(!confirm('حذف؟'))return;try{await fetch('/api/services?id='+id,{method:'DELETE',headers:authHeaders()});adminToast('تم الحذف');loadServices();}catch{adminToast('تعذر الحذف');}}
 
 // ═══════════════════════════════
 // ARCHIVES
@@ -660,7 +663,14 @@ async function saveArchive(){
     const editId=document.getElementById('archives-edit-id').value;
     const body={title:document.getElementById('archives-title').value,description:document.getElementById('archives-desc').value,image_old_url:document.getElementById('archives-old').value,image_new_url:document.getElementById('archives-new').value};
     if(!body.title){adminToast('العنوان مطلوب');return;}
-    try{const res=await fetch(editId?'/api/archives/'+editId:'/api/archives',{method:editId?'PUT':'POST',headers:authHeaders(),body:JSON.stringify(body)});const d=await res.json();if(d.success){adminToast(editId?'تم التعديل':'تمت الإضافة');cancelArchiveEdit();loadArchives();}}catch{adminToast('تعذر الحفظ');}
+    try{
+        // archives.js يقرأ id من querystring في PUT
+        const url=editId?'/api/archives?id='+editId:'/api/archives';
+        const res=await fetch(url,{method:editId?'PUT':'POST',headers:authHeaders(),body:JSON.stringify(body)});
+        const d=await res.json();
+        if(d.success){adminToast(editId?'تم التعديل':'تمت الإضافة');cancelArchiveEdit();loadArchives();}
+        else adminToast('خطأ: '+(d.error||'فشل الحفظ'));
+    }catch(e){adminToast('تعذر الحفظ: '+e.message);}
 }
 async function editArchive(id){
     const res=await fetch('/api/archives',{headers:authHeaders()});const d=await res.json();const a=d.data.find(x=>x.id==id);if(!a)return;
@@ -675,7 +685,7 @@ function cancelArchiveEdit(){
     clearWidget('archives-old','archives-old','archives-old-url-manual');clearWidget('archives-new','archives-new','archives-new-url-manual');
     document.getElementById('archives-form-title').textContent='إضافة صورة أرشيفية';document.getElementById('archives-cancel-btn').classList.add('hidden');
 }
-async function deleteArchive(id){if(!confirm('حذف؟'))return;await fetch('/api/archives/'+id,{method:'DELETE',headers:authHeaders()});adminToast('تم الحذف');loadArchives();}
+async function deleteArchive(id){if(!confirm('حذف؟'))return;try{await fetch('/api/archives?id='+id,{method:'DELETE',headers:authHeaders()});adminToast('تم الحذف');loadArchives();}catch{adminToast('تعذر الحذف');}}
 
 // ═══════════════════════════════
 // TOURISM
@@ -703,7 +713,7 @@ async function saveTourism(){
     const editId=document.getElementById('tourism-edit-id').value;
     const body={name:document.getElementById('tourism-name').value,subtitle:document.getElementById('tourism-subtitle').value,description:document.getElementById('tourism-desc').value,image_url:document.getElementById('tourism-image').value,rating:document.getElementById('tourism-rating').value,distance_info:document.getElementById('tourism-distance').value,badge_text:document.getElementById('tourism-badge').value,badge_color:document.getElementById('tourism-badge-color').value};
     if(!body.name){adminToast('الاسم مطلوب');return;}
-    try{const res=await fetch(editId?'/api/tourism/'+editId:'/api/tourism',{method:editId?'PUT':'POST',headers:authHeaders(),body:JSON.stringify(body)});const d=await res.json();if(d.success){adminToast(editId?'تم التعديل':'تمت الإضافة');cancelTourismEdit();loadTourism();}}catch{adminToast('تعذر الحفظ');}
+    try{const res=await fetch(editId?'/api/tourism?id='+editId:'/api/tourism',{method:editId?'PUT':'POST',headers:authHeaders(),body:JSON.stringify(body)});const d=await res.json();if(d.success){adminToast(editId?'تم التعديل':'تمت الإضافة');cancelTourismEdit();loadTourism();}else adminToast('خطأ: '+(d.error||''));}catch(e){adminToast('تعذر الحفظ: '+e.message);}
 }
 async function editTourism(id){
     const res=await fetch('/api/tourism',{headers:authHeaders()});const d=await res.json();const t=d.data.find(x=>x.id==id);if(!t)return;
@@ -717,7 +727,7 @@ function cancelTourismEdit(){
     clearWidget('tourism-img','tourism-image','tourism-image-manual');
     document.getElementById('tourism-form-title').textContent='إضافة معلم سياحي';document.getElementById('tourism-cancel-btn').classList.add('hidden');
 }
-async function deleteTourism(id){if(!confirm('حذف؟'))return;await fetch('/api/tourism/'+id,{method:'DELETE',headers:authHeaders()});adminToast('تم الحذف');loadTourism();}
+async function deleteTourism(id){if(!confirm('حذف؟'))return;try{await fetch('/api/tourism?id='+id,{method:'DELETE',headers:authHeaders()});adminToast('تم الحذف');loadTourism();}catch{adminToast('تعذر الحذف');}}
 
 // ═══════════════════════════════
 // MAYORS
@@ -743,7 +753,7 @@ async function saveMayor(){
     const editId=document.getElementById('mayors-edit-id').value;
     const body={name:document.getElementById('mayors-name').value,period:document.getElementById('mayors-period').value,image_url:document.getElementById('mayors-image').value};
     if(!body.name||!body.period){adminToast('الاسم والفترة مطلوبان');return;}
-    try{const res=await fetch(editId?'/api/mayors/'+editId:'/api/mayors',{method:editId?'PUT':'POST',headers:authHeaders(),body:JSON.stringify(body)});const d=await res.json();if(d.success){adminToast(editId?'تم التعديل':'تمت الإضافة');cancelMayorEdit();loadMayors();}}catch{adminToast('تعذر الحفظ');}
+    try{const res=await fetch(editId?'/api/mayors?id='+editId:'/api/mayors',{method:editId?'PUT':'POST',headers:authHeaders(),body:JSON.stringify(body)});const d=await res.json();if(d.success){adminToast(editId?'تم التعديل':'تمت الإضافة');cancelMayorEdit();loadMayors();}else adminToast('خطأ: '+(d.error||''));}catch(e){adminToast('تعذر الحفظ: '+e.message);}
 }
 async function editMayor(id){
     const res=await fetch('/api/mayors',{headers:authHeaders()});const d=await res.json();const m=d.data.find(x=>x.id==id);if(!m)return;
@@ -756,7 +766,7 @@ function cancelMayorEdit(){
     clearWidget('mayors-img','mayors-image','mayors-image-manual');
     document.getElementById('mayors-form-title').textContent='إضافة رئيس';document.getElementById('mayors-cancel-btn').classList.add('hidden');
 }
-async function deleteMayor(id){if(!confirm('حذف؟'))return;await fetch('/api/mayors/'+id,{method:'DELETE',headers:authHeaders()});adminToast('تم الحذف');loadMayors();}
+async function deleteMayor(id){if(!confirm('حذف؟'))return;try{await fetch('/api/mayors?id='+id,{method:'DELETE',headers:authHeaders()});adminToast('تم الحذف');loadMayors();}catch{adminToast('تعذر الحذف');}}
 </script>
 </body>
 </html>
