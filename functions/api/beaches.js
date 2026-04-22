@@ -1,12 +1,8 @@
-/**
- * functions/api/beaches.js
- * CRUD كامل لجدول الشواطئ المرخصة
- */
+// functions/api/beaches.js
 import { withAuth, createResponse, handleOptions } from './_utils.js';
 
 export async function onRequestOptions() { return handleOptions(); }
 
-// GET /api/beaches — جلب كل الشواطئ (عام، بدون مصادقة)
 export async function onRequestGet(context) {
     try {
         const { results } = await context.env.DB
@@ -18,16 +14,15 @@ export async function onRequestGet(context) {
     }
 }
 
-// POST /api/beaches — إضافة شاطئ جديد (يتطلب مصادقة)
 export async function onRequestPost(context) {
     const auth = await withAuth(context);
     if (auth) return auth;
     try {
-        const { name, description, image_url, is_supervised, season } = await context.request.json();
+        const { name, description, image_url, album_urls, is_supervised, season } = await context.request.json();
         if (!name) return createResponse({ success: false, error: 'اسم الشاطئ مطلوب' }, 400);
         const result = await context.env.DB
-            .prepare('INSERT INTO beaches (name, description, image_url, is_supervised, season) VALUES (?,?,?,?,?)')
-            .bind(name, description || '', image_url || '', is_supervised ?? 1, season || 'صيف')
+            .prepare('INSERT INTO beaches (name, description, image_url, album_urls, is_supervised, season) VALUES (?,?,?,?,?,?)')
+            .bind(name, description || '', image_url || '', album_urls || '[]', is_supervised ?? 1, season || 'صيف')
             .run();
         return createResponse({ success: true, data: { id: result.meta.last_row_id } }, 201);
     } catch (e) {
