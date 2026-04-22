@@ -1,4 +1,4 @@
-// functions/mayors.js
+// 
 export async function onRequestGet(context) {
     const { env } = context;
     try {
