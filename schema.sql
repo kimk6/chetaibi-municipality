@@ -1,104 +1,74 @@
--- ============================================
--- قاعدة بيانات بلدية شطايبي - D1 Schema
--- ============================================
+-- schema.sql — بلدية شطايبي
+-- Run ALTER TABLE statements on existing DB to add new columns
 
--- أخبار ونشاطات
+-- جدول الأخبار (إضافة album_urls)
 CREATE TABLE IF NOT EXISTS news (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
-    category TEXT NOT NULL CHECK(category IN ('official', 'activity', 'social')),
+    category TEXT NOT NULL DEFAULT 'official',
     content TEXT NOT NULL,
     image_url TEXT DEFAULT '',
+    album_urls TEXT DEFAULT '[]',
     date TEXT NOT NULL,
-    created_at TEXT DEFAULT (datetime('now'))
+    is_pinned INTEGER DEFAULT 0,
+    custom_label TEXT DEFAULT '',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- الخدمات الإدارية
+-- جدول الخدمات
 CREATE TABLE IF NOT EXISTS services (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     service_name TEXT NOT NULL,
-    required_docs TEXT NOT NULL,
+    required_docs TEXT DEFAULT '',
     pdf_link TEXT DEFAULT '',
     color TEXT DEFAULT 'blue',
-    icon TEXT DEFAULT 'file-text',
-    created_at TEXT DEFAULT (datetime('now'))
+    icon TEXT DEFAULT 'file-text'
 );
 
--- أرشيف الصور
+-- جدول الأرشيف
 CREATE TABLE IF NOT EXISTS archives (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
     description TEXT DEFAULT '',
     image_old_url TEXT DEFAULT '',
-    image_new_url TEXT DEFAULT '',
-    created_at TEXT DEFAULT (datetime('now'))
+    image_new_url TEXT DEFAULT ''
 );
 
--- المعالم السياحية
+-- جدول السياحة (إضافة album_urls و details)
 CREATE TABLE IF NOT EXISTS tourism (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     subtitle TEXT DEFAULT '',
-    description TEXT NOT NULL,
+    description TEXT DEFAULT '',
     image_url TEXT DEFAULT '',
+    album_urls TEXT DEFAULT '[]',
     rating TEXT DEFAULT '4.5',
     distance_info TEXT DEFAULT '',
     badge_text TEXT DEFAULT '',
-    badge_color TEXT DEFAULT 'emerald',
-    created_at TEXT DEFAULT (datetime('now'))
+    badge_color TEXT DEFAULT 'emerald'
 );
 
--- الرؤساء السابقين
+-- جدول الشواطئ (إضافة album_urls)
+CREATE TABLE IF NOT EXISTS beaches (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    description TEXT DEFAULT '',
+    image_url TEXT DEFAULT '',
+    album_urls TEXT DEFAULT '[]',
+    is_supervised INTEGER DEFAULT 1,
+    season TEXT DEFAULT 'صيف'
+);
+
+-- جدول الرؤساء
 CREATE TABLE IF NOT EXISTS mayors (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     period TEXT NOT NULL,
-    image_url TEXT DEFAULT '',
-    created_at TEXT DEFAULT (datetime('now'))
+    image_url TEXT DEFAULT ''
 );
 
--- جلسات الإدارة
-CREATE TABLE IF NOT EXISTS sessions (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    token TEXT NOT NULL UNIQUE,
-    username TEXT NOT NULL,
-    expires_at TEXT NOT NULL,
-    created_at TEXT DEFAULT (datetime('now'))
-);
-
--- ============================================
--- بيانات أولية (Seed Data)
--- ============================================
-
-INSERT INTO news (title, category, content, image_url, date) VALUES
-('إعلان عن مناقصة لتوريد معدات لصالح البلدية', 'official', 'تعلن بلدية شطايبي عن فتح باب المنافسة لتوريد معدات ومواد لصالح المصلحة التقنية. آخر أجل لتقديم الملفات: 15 يوليو 2025. للمزيد من المعلومات يرجى التواصل مع المصلحة المختصة.', '', '2025-06-01'),
-('دعوة لتسجيل الطلبات الخاصة ببطاقات السكن', 'official', 'يدعو مكتب الحالة المدنية المواطنين لتقديم طلباتهم المتعلقة ببطاقات السكن قبل انتهاء المهلة المحددة نهاية شهر يونيو 2025. يرجى إحضار الوثائق المطلوبة.', '', '2025-05-28'),
-('إعلان حول انتخابات أعضاء المجلس البلدي', 'official', 'تنشر بلدية شطايبي الشروط والإجراءات المتعلقة بالمشاركة في الجلسات العامة للمجلس الشعبي البلدي لدورة 2025.', '', '2025-05-15'),
-('عمال البلدية يقومون بصيانة الإنارة العمومية', 'activity', 'شرعت فرق المصلحة التقنية للبلدية في عملية صيانة شاملة لأعمدة الإنارة العمومية عبر الطرقات الرئيسية للبلدية. الأشغال تشمل استبدال المصابيح التالفة وتقوية البنية التحتية.', '', '2025-06-02'),
-('نشاطات رئيس المجلس — زيارة ميدانية للمشاريع', 'activity', 'قام السيد رئيس المجلس الشعبي البلدي بزيارة ميدانية لمتابعة سير الأشغال الجارية في مشروع تهيئة الطرقات وتحسين الشبكة. وقد أكد على ضرورة احترام الآجال.', '', '2025-05-29'),
-('حملة تشجير وتنظيف بحضور الكشافة', 'activity', 'نظمت البلدية بالتنسيق مع الكشافة الإسلامية حملة تشجير وتنظيف شاملة لعدة أحياء، بمشاركة أكثر من 100 متطوع من شباب البلدية.', '', '2025-05-22'),
-('تعزية بلدية شطايبي في وفاة أحد أبنائها', 'social', 'تتقدم بلدية شطايبي بخالص التعازي وصادق المواساة لعائلة المرحوم داعين المولى عز وجل أن يتغمده بواسع رحمته ويسكنه فسيح جناته. إنا لله وإنا إليه راجعون.', '', '2025-05-30'),
-('احتفال البلدية بيوم العلم الوطني', 'social', 'نظمت بلدية شطايبي احتفالاً رسمياً بمناسبة يوم العلم الوطني، بحضور السلطات المحلية والجمعيات الفاعلة وشباب المنطقة. تضمن الاحتفال عروضاً وطنية وأنشطة ثقافية متنوعة.', '', '2025-04-16'),
-('بطولة كرة القدم القروية — نتائج مميزة', 'social', 'حقق فريق شباب شطايبي نتائج مميزة في البطولة الولائية لكرة القدم القروية، حيث تأهل للدور نصف النهائي بعد فوز كاسح في الدور ربع النهائي.', '', '2025-04-10');
-
-INSERT INTO services (service_name, required_docs, pdf_link, color, icon) VALUES
-('جواز السفر البيومتري / بطاقة التعريف', 'شهادة ميلاد رقم 12 (أصل + نسخة)|نسخة من بطاقة التعريف الوطنية|شهادة سكن أو كشف حساب بنكي|صورتان شمسيتان (أبيض)|الطابع الجباري|استمارة معبأة', '', 'blue', 'fingerprint'),
-('الحالة المدنية', 'طلب كتابي موجه إلى ضابط الحالة المدنية|شهادة ميلاد المعني بالأمر|نسخة من بطاقة التعريف الوطنية|شهادة سكن سارية المفعول|الطابع الجباري|استمارة الطلب', '', 'emerald', 'book-open'),
-('التعمير — رخصة البناء', 'طلب كتابي موجه إلى رئيس المجلس|نسخة من عقد الملكية أو محضر الحيازة|مخططات البناء (4 نسخ) معتمدة من مهندس|شهادة التوجيه العقاري|رخصة الحفر أو شهادة المطابقة|استمارة رخصة البناء', '', 'amber', 'building');
-
-INSERT INTO archives (title, description, image_old_url, image_new_url) VALUES
-('المدخل الرئيسي للبلدية', 'منظر تاريخي للمدخل الرئيسي لبلدية شطايبي عبر العصور', '', ''),
-('الشارع المحاذي للبحر', 'تطور الشارع الساحلي من العهد الاستعماري إلى اليوم', '', ''),
-('الحي السكني المركزي', 'الحي المركزي — مقارنة بين الأمس واليوم', '', '');
-
-INSERT INTO tourism (name, subtitle, description, image_url, rating, distance_info, badge_text, badge_color) VALUES
-('باي ويست', 'Baie Ouest', 'تُعد باي ويست من أجمل الخلجان الطبيعية على الساحل الجزائري. تمتاز بمياهها الصافية الزرقاء ورمالها الذهبية الناعمة، محاطة بتلال خضراء تمنحها سحراً فريداً. مثالية للسباحة والاسترخاء ورياضات الشاطئ.', '', '4.8', '10 دقائق من المركز', 'الأكثر زيارة', 'emerald'),
-('سابل دور', 'Sables d''Or', 'شاطئ الرمال الذهبية — وجهة مثالية لمحبي الشمس والبحر. يتميز برماله اللامعة تحت أشعة الشمس ومياهه الفيروزية الهادئة. يوفر مرافق استقبال ومطاعم شاطئية تجعل التجربة متكاملة.', '', '4.7', '5 دقائق من المركز', 'متميز', 'amber'),
-('النافورة الرومانية', 'Fontaine Romaine', 'معلم تاريخي يعود للعصر الروماني، تُعد النافورة شاهداً على المرور الحضاري القديم بالمنطقة. لا تزال المياه تتدفق من ينابيعها الطبيعية حتى اليوم، محاطة بمناظر طبيعية ساحرة تسر الناظرين.', '', '4.6', 'مشي في الطبيعة', 'أثري', 'purple'),
-('جزيرة كاف عمار', 'Kef Ammar Island', 'جزيرة صخرية خلابة قبالة ساحل شطايبي، تُعد ملاذاً للطيور البحرية ومحبي الغوص. تتميز بكهوفها البحرية ومياهها الصافية التي تكشف عن عالم بحري مذهل. تجربة لا تُنسى لمحبي المغامرات.', '', '4.9', 'الوصول بالقارب', 'طبيعة برية', 'teal');
-
-INSERT INTO mayors (name, period, image_url) VALUES
-('السيد عثماني سليمان', '2021 — الآن', ''),
-('السيد بن علي محمد', '2017 — 2021', ''),
-('السيد حداد أحمد', '2012 — 2017', ''),
-('السيد بوزيد عبدالله', '2007 — 2012', '');
+-- ======== ALTER TABLE للقواعد الموجودة ========
+-- تشغّل هذه فقط إذا كانت القاعدة موجودة مسبقاً
+-- ALTER TABLE news ADD COLUMN album_urls TEXT DEFAULT '[]';
+-- ALTER TABLE tourism ADD COLUMN album_urls TEXT DEFAULT '[]';
+-- ALTER TABLE beaches ADD COLUMN album_urls TEXT DEFAULT '[]';
