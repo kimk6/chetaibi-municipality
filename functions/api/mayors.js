@@ -1,48 +1,80 @@
-// functions/api/mayors.js
-import { withAuth, createResponse, handleOptions } from './_utils.js';
-
-export async function onRequestOptions() { return handleOptions(); }
-
+// functions/mayors.js
 export async function onRequestGet(context) {
+    const { env } = context;
     try {
-        const { results } = await context.env.DB.prepare('SELECT * FROM mayors ORDER BY id DESC').all();
-        return createResponse({ success: true, data: results });
-    } catch (e) { return createResponse({ success: false, error: e.message }, 500); }
-}
+        const { results: mayors } = await env.DB.prepare('SELECT * FROM mayors ORDER BY id DESC').all();
 
-export async function onRequestPost(context) {
-    const auth = await withAuth(context); if (auth) return auth;
-    try {
-        const { name, period, image_url } = await context.request.json();
-        if (!name || !period) return createResponse({ success: false, error: 'الاسم والفترة مطلوبان' }, 400);
-        const result = await context.env.DB
-            .prepare('INSERT INTO mayors (name,period,image_url) VALUES (?,?,?)')
-            .bind(name, period, image_url || '')
-            .run();
-        return createResponse({ success: true, id: result.meta.last_row_id }, 201);
-    } catch (e) { return createResponse({ success: false, error: e.message }, 500); }
-}
+        const cardsHtml = mayors.map(m => `
+            <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 text-center hover:shadow-xl transition-shadow">
+                <div class="w-24 h-24 ${m.image_url ? '' : 'bg-emerald-100'} rounded-full mx-auto mb-4 overflow-hidden flex items-center justify-center border-4 border-emerald-200">
+                    ${m.image_url
+                        ? `<img src="${m.image_url}" alt="${m.name}" class="w-full h-full object-cover">`
+                        : `<span class="iconify text-emerald-600 text-4xl" data-icon="lucide:user"></span>`}
+                </div>
+                <h4 class="text-lg font-extrabold text-gray-800 mb-1">${m.name}</h4>
+                <span class="inline-block bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full">${m.period}</span>
+            </div>`).join('');
 
-export async function onRequestPut(context) {
-    const auth = await withAuth(context); if (auth) return auth;
-    try {
-        const id = new URL(context.request.url).searchParams.get('id');
-        if (!id) return createResponse({ success: false, error: 'id مطلوب' }, 400);
-        const { name, period, image_url } = await context.request.json();
-        await context.env.DB
-            .prepare('UPDATE mayors SET name=?,period=?,image_url=? WHERE id=?')
-            .bind(name, period, image_url || '', id)
-            .run();
-        return createResponse({ success: true });
-    } catch (e) { return createResponse({ success: false, error: e.message }, 500); }
-}
-
-export async function onRequestDelete(context) {
-    const auth = await withAuth(context); if (auth) return auth;
-    try {
-        const id = new URL(context.request.url).searchParams.get('id');
-        if (!id) return createResponse({ success: false, error: 'id مطلوب' }, 400);
-        await context.env.DB.prepare('DELETE FROM mayors WHERE id=?').bind(id).run();
-        return createResponse({ success: true });
-    } catch (e) { return createResponse({ success: false, error: e.message }, 500); }
+        const html = `<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الرؤساء السابقون — بلدية شطايبي</title>
+    <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/favicon.png">
+    <script src="https://cdn.tailwindcss.com"><\/script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"><\/script>
+    <style>
+        *{font-family:'Cairo',sans-serif;}
+        ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-thumb{background:#059669;border-radius:4px}
+        .pattern-bg{background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23059669' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 pattern-bg">
+    <header class="bg-gradient-to-l from-emerald-800 via-emerald-700 to-emerald-900 text-white py-2 text-center">
+        <h1 class="text-sm font-bold">الجمهورية الجزائرية الديمقراطية الشعبية</h1>
+        <p class="text-[11px] text-emerald-200 mt-0.5">وزارة الداخلية والجماعات المحلية والتهيئة العمرانية</p>
+    </header>
+    <div class="bg-white border-b border-emerald-100 py-4 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 flex items-center justify-center gap-4">
+            <div class="w-16 h-16 rounded-full overflow-hidden shadow-lg flex-shrink-0">
+                <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo.webp" alt="شعار" class="w-full h-full object-cover">
+            </div>
+            <div class="text-center">
+                <h2 class="text-xl font-extrabold text-emerald-800">بلدية شطايبي</h2>
+                <p class="text-xs text-emerald-600 font-medium">ولاية عنابة - الجزائر</p>
+            </div>
+        </div>
+    </div>
+    <nav class="bg-emerald-700 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 h-12 flex items-center">
+            <a href="/" class="text-white/90 hover:text-white text-sm font-semibold flex items-center gap-1">
+                <span class="iconify" data-icon="lucide:arrow-right"></span> العودة للرئيسية
+            </a>
+        </div>
+    </nav>
+    <main class="max-w-5xl mx-auto px-4 py-16">
+        <div class="text-center mb-12">
+            <span class="inline-block bg-emerald-100 text-emerald-700 text-xs font-bold px-4 py-1.5 rounded-full mb-4">🏛️ تاريخ القيادة</span>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3">رؤساء المجلس الشعبي البلدي</h2>
+            <p class="text-gray-500 max-w-xl mx-auto">قائمة الرؤساء الذين تعاقبوا على رئاسة المجلس الشعبي البلدي لشطايبي</p>
+        </div>
+        ${mayors.length
+            ? `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">${cardsHtml}</div>`
+            : '<div class="text-center py-16 text-gray-400"><span class="iconify text-6xl block mb-4" data-icon="lucide:users"></span><p>لا توجد بيانات بعد</p></div>'
+        }
+    </main>
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-xs text-gray-500">© <span id="yr"></span> بلدية شطايبي — جميع الحقوق محفوظة 🇩🇿</p>
+        </div>
+    </footer>
+    <script>document.getElementById('yr').textContent=new Date().getFullYear()<\/script>
+</body>
+</html>`;
+        return new Response(html, { headers: { 'Content-Type': 'text/html; charset=utf-8' } });
+    } catch (e) {
+        return new Response('حدث خطأ: ' + e.message, { status: 500 });
+    }
 }
