@@ -1,23 +1,23 @@
-import { createToken, verifyAuth, json, handleOptions } from './_utils.js';
+// functions/api/auth.js
+import { createToken, withAuth, createResponse, handleOptions } from './_utils.js';
 
-export async function onRequestOptions(context) { return handleOptions(); }
+export async function onRequestOptions() { return handleOptions(); }
 
 export async function onRequestPost(context) {
-    const { request, env } = context;
     try {
-        const { username, password } = await request.json();
-        if (username === env.ADMIN_USERNAME && password === 'herbillon2310') {
-            const token = await createToken(username, env.JWT_SECRET);
-            return json({ success: true, token });
+        const { username, password } = await context.request.json();
+        if (username === (context.env.ADMIN_USERNAME || 'admin') && password === (context.env.ADMIN_PASSWORD || 'herbillon2310')) {
+            const token = createToken(username, context.env.JWT_SECRET || 'xK9mP2vR7nB4wQ8jL5sT1yF6hN3cA0dE');
+            return createResponse({ success: true, token });
         }
-        return json({ success: false, error: 'بيانات غير صحيحة' }, 401);
+        return createResponse({ success: false, error: 'بيانات غير صحيحة' }, 401);
     } catch {
-        return json({ success: false, error: 'خطأ في الطلب' }, 400);
+        return createResponse({ success: false, error: 'خطأ في الطلب' }, 400);
     }
 }
 
 export async function onRequestGet(context) {
-    const user = await verifyAuth(context.request, context.env);
-    if (user) return json({ valid: true, user });
-    return json({ valid: false }, 401);
+    const auth = await withAuth(context);
+    if (auth) return createResponse({ valid: false }, 401);
+    return createResponse({ valid: true });
 }
