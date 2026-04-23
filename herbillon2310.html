@@ -586,7 +586,7 @@ async function loadNews(){
 async function saveNews(){
     const editId=document.getElementById('news-edit-id').value;
     const clEl=document.getElementById('news-custom-label');
-    const body={title:document.getElementById('news-title').value,category:document.getElementById('news-category').value,content:document.getElementById('news-content').value,image_url:document.getElementById('news-image').value,date:document.getElementById('news-date').value||new Date().toISOString().split('T')[0],is_pinned:document.getElementById('news-pinned').checked?1:0,custom_label:clEl?clEl.value:''};
+    const body={title:document.getElementById('news-title').value,category:document.getElementById('news-category').value,content:document.getElementById('news-content').value,image_url:document.getElementById('news-image').value,album_urls:document.getElementById('news-album-urls').value||'[]',date:document.getElementById('news-date').value||new Date().toISOString().split('T')[0],is_pinned:document.getElementById('news-pinned').checked?1:0,custom_label:clEl?clEl.value:''};
     if(!body.title||!body.content){adminToast('العنوان والمحتوى مطلوبان');return;}
     try {
         const res=await fetch(editId?'/api/news/'+editId:'/api/news',{method:editId?'PUT':'POST',headers:authHeaders(),body:JSON.stringify(body)});
@@ -608,6 +608,9 @@ async function editNews(id){
         document.getElementById('news-image').value=n.image_url||'';
         document.getElementById('news-image-url-manual').value=n.image_url||'';
         const clEl2=document.getElementById('news-custom-label'); if(clEl2) clEl2.value=n.custom_label||'';
+        // تحميل ألبوم الصور الموجود
+        try{ newsAlbumUrls=JSON.parse(n.album_urls||'[]'); }catch{ newsAlbumUrls=[]; }
+        document.getElementById('news-album-urls').value=JSON.stringify(newsAlbumUrls); renderAlbum();
         if(n.image_url){
             document.getElementById('news-featured-placeholder').classList.add('hidden');
             document.getElementById('news-featured-img').src=n.image_url;
