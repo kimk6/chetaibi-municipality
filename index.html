@@ -45,7 +45,10 @@
         /* services expand */
         #extra-services{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.4,0,.2,1)}
         #extra-services.open{max-height:2000px}
-    </style>
+    .guide-tab{background:#f1f5f9;color:#475569;}
+.guide-tab.active{background:#059669;color:#fff;box-shadow:0 4px 14px rgba(5,150,105,.35);}
+.guide-tab:hover:not(.active){background:#e2e8f0;}
+</style>
 </head>
 <body class="bg-gray-50 text-gray-800">
 
@@ -239,9 +242,7 @@
                     <span class="iconify" data-icon="lucide:chevrons-down" id="more-icon-announcements"></span>
                     <span id="more-text-announcements">عرض المزيد</span>
                 </button>
-                <a href="/news-page?cat=official" class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-600 border border-gray-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all">
-                    <span class="iconify" data-icon="lucide:layout-list"></span> جميع الإعلانات
-                </a>
+                <button onclick="openNewsPage('official')" class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-600 border border-gray-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all"><span class="iconify" data-icon="lucide:layout-list"></span> جميع الإعلانات</button>
             </div>
         </div>
         <div id="tab-panel-activities" class="news-panel hidden">
@@ -253,9 +254,7 @@
                     <span class="iconify" data-icon="lucide:chevrons-down" id="more-icon-activities"></span>
                     <span id="more-text-activities">عرض المزيد</span>
                 </button>
-                <a href="/news-page?cat=activity" class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-600 border border-gray-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all">
-                    <span class="iconify" data-icon="lucide:layout-list"></span> جميع النشاطات
-                </a>
+                <button onclick="openNewsPage('activity')" class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-600 border border-gray-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all"><span class="iconify" data-icon="lucide:layout-list"></span> جميع النشاطات</button>
             </div>
         </div>
         <div id="tab-panel-community" class="news-panel hidden">
@@ -267,9 +266,7 @@
                     <span class="iconify" data-icon="lucide:chevrons-down" id="more-icon-community"></span>
                     <span id="more-text-community">عرض المزيد</span>
                 </button>
-                <a href="/news-page?cat=social" class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-600 border border-gray-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all">
-                    <span class="iconify" data-icon="lucide:layout-list"></span> جميع المنشورات
-                </a>
+                <button onclick="openNewsPage('social')" class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-600 border border-gray-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all"><span class="iconify" data-icon="lucide:layout-list"></span> جميع المنشورات</button>
             </div>
         </div>
     </div>
@@ -362,119 +359,262 @@
 </section>
 
 <!-- GUIDE -->
-<section id="guide" class="py-20 bg-slate-50">
+<section id="guide" class="py-14 bg-slate-50">
     <div class="max-w-7xl mx-auto px-4">
-        <div class="text-center mb-12">
+        <div class="text-center mb-10">
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 flex items-center justify-center gap-3"><span class="iconify text-emerald-600" data-icon="lucide:map-pin"></span>دليل شطايبي</h2>
             <p class="text-gray-500 max-w-2xl mx-auto">دليل شامل يضم الفروع الإدارية والمؤسسات التعليمية والصحية والخدماتية، إلى جانب مختلف المرافق الاجتماعية في شطايبي</p>
         </div>
-        <div class="mb-16">
-            <h3 class="text-2xl font-extrabold text-gray-800 mb-8 flex items-center gap-3"><div class="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center"><span class="iconify text-emerald-600 text-xl" data-icon="lucide:building-2"></span></div>الفروع الإدارية</h3>
-            <p class="text-gray-500 text-sm mb-6">فروع تابعة لبلدية شطايبي لتقريب الإدارة من المواطن وتسهيل سحب الوثائق الرسمية</p>
+        <!-- تبويبات الدليل -->
+        <div class="flex flex-wrap justify-center gap-3 mb-10">
+            <button onclick="switchGuideTab('admin-branches')" id="gtab-admin-branches" class="guide-tab active px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2">
+                <span class="iconify" data-icon="lucide:landmark"></span>
+                <span class="inline-block bg-emerald-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">3</span>
+                الفروع الإدارية
+            </button>
+            <button onclick="switchGuideTab('education')" id="gtab-education" class="guide-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2">
+                <span class="iconify" data-icon="lucide:graduation-cap"></span>
+                <span class="inline-block bg-blue-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">4</span>
+                المؤسسات التعليمية
+            </button>
+            <button onclick="switchGuideTab('health')" id="gtab-health" class="guide-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2">
+                <span class="iconify" data-icon="lucide:heart-pulse"></span>
+                <span class="inline-block bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">2</span>
+                المرافق الصحية
+            </button>
+        </div>
+        <!-- لوحة: الفروع الإدارية -->
+        <div id="gpanel-admin-branches" class="guide-panel">
+            <p class="text-gray-500 text-sm mb-6 text-center">فروع تابعة لبلدية شطايبي لتقريب الإدارة من المواطن وتسهيل سحب الوثائق الرسمية</p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-gradient-to-bl from-emerald-100 to-emerald-200/50 rounded-2xl p-6 border border-emerald-300 hover:shadow-lg transition-shadow"><div class="flex items-center gap-3 mb-4"><div class="w-12 h-12 bg-emerald-600 rounded-xl flex items-center justify-center"><span class="iconify text-white text-2xl" data-icon="lucide:landmark"></span></div><div><span class="text-xs font-bold text-emerald-500 bg-emerald-100 px-2 py-0.5 rounded-full">فرع إداري</span><h4 class="font-extrabold text-gray-800 text-lg">الزاوية</h4></div></div><p class="text-sm text-gray-600 leading-relaxed mb-4">فرع إداري تابع لبلدية شطايبي يقدم خدمات الحالة المدنية وسحب الوثائق الرسمية لسكان المنطقة.</p><div class="flex flex-wrap gap-2"><span class="text-xs bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full font-semibold flex items-center gap-1"><span class="iconify" data-icon="lucide:file-text"></span>شهادات الميلاد</span><span class="text-xs bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full font-semibold flex items-center gap-1"><span class="iconify" data-icon="lucide:scroll"></span>وثائق الحالة المدنية</span></div></div>
-                <div class="bg-gradient-to-bl from-blue-100 to-blue-200/50 rounded-2xl p-6 border border-blue-300 hover:shadow-lg transition-shadow"><div class="flex items-center gap-3 mb-4"><div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center"><span class="iconify text-white text-2xl" data-icon="lucide:landmark"></span></div><div><span class="text-xs font-bold text-blue-500 bg-blue-100 px-2 py-0.5 rounded-full">فرع إداري</span><h4 class="font-extrabold text-gray-800 text-lg">العزلة</h4></div></div><p class="text-sm text-gray-600 leading-relaxed mb-4">فرع إداري تابع لبلدية شطايبي يقدم خدمات الحالة المدنية وسحب الوثائق الرسمية لسكان المنطقة.</p><div class="flex flex-wrap gap-2"><span class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-semibold flex items-center gap-1"><span class="iconify" data-icon="lucide:file-text"></span>شهادات الميلاد</span><span class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-semibold flex items-center gap-1"><span class="iconify" data-icon="lucide:scroll"></span>وثائق الحالة المدنية</span></div></div>
-                <div class="bg-gradient-to-bl from-amber-100 to-amber-200/50 rounded-2xl p-6 border border-amber-300 hover:shadow-lg transition-shadow"><div class="flex items-center gap-3 mb-4"><div class="w-12 h-12 bg-amber-600 rounded-xl flex items-center justify-center"><span class="iconify text-white text-2xl" data-icon="lucide:landmark"></span></div><div><span class="text-xs font-bold text-amber-500 bg-amber-100 px-2 py-0.5 rounded-full">فرع إداري</span><h4 class="font-extrabold text-gray-800 text-lg">الزقع</h4></div></div><p class="text-sm text-gray-600 leading-relaxed mb-4">فرع إداري تابع لبلدية شطايبي يقدم خدمات الحالة المدنية وسحب الوثائق الرسمية لسكان المنطقة.</p><div class="flex flex-wrap gap-2"><span class="text-xs bg-amber-100 text-amber-700 px-3 py-1 rounded-full font-semibold flex items-center gap-1"><span class="iconify" data-icon="lucide:file-text"></span>شهادات الميلاد</span><span class="text-xs bg-amber-100 text-amber-700 px-3 py-1 rounded-full font-semibold flex items-center gap-1"><span class="iconify" data-icon="lucide:scroll"></span>وثائق الحالة المدنية</span></div></div>
+                <div class="bg-white rounded-2xl p-6 border border-emerald-200 hover:shadow-lg transition-shadow shadow-sm">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0"><span class="iconify text-white text-2xl" data-icon="lucide:landmark"></span></div>
+                        <div><span class="inline-flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded-full"><span class="iconify text-xs" data-icon="lucide:building-2"></span>فرع إداري</span><h4 class="font-extrabold text-gray-800 text-lg mt-0.5">الزاوية</h4></div>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-4">فرع إداري تابع لبلدية شطايبي يقدم خدمات الحالة المدنية وسحب الوثائق الرسمية لسكان منطقة الزاوية.</p>
+                    <div class="flex flex-wrap gap-2"><span class="text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full font-semibold flex items-center gap-1"><span class="iconify" data-icon="lucide:file-text"></span>شهادات الميلاد</span><span class="text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full font-semibold flex items-center gap-1"><span class="iconify" data-icon="lucide:scroll"></span>وثائق الحالة المدنية</span></div>
+                </div>
+                <div class="bg-white rounded-2xl p-6 border border-blue-200 hover:shadow-lg transition-shadow shadow-sm">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center flex-shrink-0"><span class="iconify text-white text-2xl" data-icon="lucide:landmark"></span></div>
+                        <div><span class="inline-flex items-center gap-1 text-xs font-bold text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full"><span class="iconify text-xs" data-icon="lucide:building-2"></span>فرع إداري</span><h4 class="font-extrabold text-gray-800 text-lg mt-0.5">العزلة</h4></div>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-4">فرع إداري تابع لبلدية شطايبي يقدم خدمات الحالة المدنية وسحب الوثائق الرسمية لسكان منطقة العزلة.</p>
+                    <div class="flex flex-wrap gap-2"><span class="text-xs bg-blue-50 text-blue-700 border border-blue-200 px-3 py-1 rounded-full font-semibold flex items-center gap-1"><span class="iconify" data-icon="lucide:file-text"></span>شهادات الميلاد</span><span class="text-xs bg-blue-50 text-blue-700 border border-blue-200 px-3 py-1 rounded-full font-semibold flex items-center gap-1"><span class="iconify" data-icon="lucide:scroll"></span>وثائق الحالة المدنية</span></div>
+                </div>
+                <div class="bg-white rounded-2xl p-6 border border-amber-200 hover:shadow-lg transition-shadow shadow-sm">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-amber-600 rounded-xl flex items-center justify-center flex-shrink-0"><span class="iconify text-white text-2xl" data-icon="lucide:landmark"></span></div>
+                        <div><span class="inline-flex items-center gap-1 text-xs font-bold text-amber-600 bg-amber-100 px-2 py-0.5 rounded-full"><span class="iconify text-xs" data-icon="lucide:building-2"></span>فرع إداري</span><h4 class="font-extrabold text-gray-800 text-lg mt-0.5">الزقع</h4></div>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-4">فرع إداري تابع لبلدية شطايبي يقدم خدمات الحالة المدنية وسحب الوثائق الرسمية لسكان منطقة الزقع.</p>
+                    <div class="flex flex-wrap gap-2"><span class="text-xs bg-amber-50 text-amber-700 border border-amber-200 px-3 py-1 rounded-full font-semibold flex items-center gap-1"><span class="iconify" data-icon="lucide:file-text"></span>شهادات الميلاد</span><span class="text-xs bg-amber-50 text-amber-700 border border-amber-200 px-3 py-1 rounded-full font-semibold flex items-center gap-1"><span class="iconify" data-icon="lucide:scroll"></span>وثائق الحالة المدنية</span></div>
+                </div>
             </div>
         </div>
+        <!-- لوحة: المؤسسات التعليمية -->
+        <div id="gpanel-education" class="guide-panel hidden">
+            <p class="text-gray-500 text-sm mb-6 text-center">مؤسسات التعليم العام في بلدية شطايبي من الابتدائي إلى الثانوي</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-2xl p-6 border border-indigo-200 hover:shadow-lg transition-shadow shadow-sm">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center flex-shrink-0"><span class="iconify text-white text-2xl" data-icon="lucide:school"></span></div>
+                        <div><span class="inline-flex items-center gap-1 text-xs font-bold text-indigo-600 bg-indigo-100 px-2 py-0.5 rounded-full"><span class="iconify text-xs" data-icon="lucide:graduation-cap"></span>ثانوية</span><h4 class="font-extrabold text-gray-800 mt-0.5">ثانوية شطايبي عمار</h4></div>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed">ثانوية تعليمية تضم جميع الشعب (علوم، رياضيات، آداب)، تخدم تلاميذ البلدية والمناطق المجاورة.</p>
+                </div>
+                <div class="bg-white rounded-2xl p-6 border border-teal-200 hover:shadow-lg transition-shadow shadow-sm">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-teal-600 rounded-xl flex items-center justify-center flex-shrink-0"><span class="iconify text-white text-2xl" data-icon="lucide:book-marked"></span></div>
+                        <div><span class="inline-flex items-center gap-1 text-xs font-bold text-teal-600 bg-teal-100 px-2 py-0.5 rounded-full"><span class="iconify text-xs" data-icon="lucide:book-open"></span>متوسطة</span><h4 class="font-extrabold text-gray-800 mt-0.5">متوسطة شطايبي عمار</h4></div>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed">متوسطة تعليمية تستقبل تلاميذ الطور المتوسط بمستوى تعليمي متميز وإطار بيداغوجي متخصص.</p>
+                </div>
+                <div class="bg-white rounded-2xl p-6 border border-amber-200 hover:shadow-lg transition-shadow shadow-sm col-span-1 md:col-span-1">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center flex-shrink-0"><span class="iconify text-white text-2xl" data-icon="lucide:pencil-ruler"></span></div>
+                        <div><span class="inline-flex items-center gap-1 text-xs font-bold text-amber-600 bg-amber-100 px-2 py-0.5 rounded-full"><span class="iconify text-xs" data-icon="lucide:pencil"></span>ابتدائية</span><h4 class="font-extrabold text-gray-800 mt-0.5">ابتدائية أول نوفمبر</h4></div>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed">مدرسة ابتدائية توفر تعليماً أساسياً جيداً لأطفال البلدية في مرحلة التعليم الابتدائي.</p>
+                </div>
+                <div class="bg-white rounded-2xl p-6 border border-orange-200 hover:shadow-lg transition-shadow shadow-sm">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center flex-shrink-0"><span class="iconify text-white text-2xl" data-icon="lucide:pencil-ruler"></span></div>
+                        <div><span class="inline-flex items-center gap-1 text-xs font-bold text-orange-600 bg-orange-100 px-2 py-0.5 rounded-full"><span class="iconify text-xs" data-icon="lucide:pencil"></span>ابتدائية</span><h4 class="font-extrabold text-gray-800 mt-0.5">ابتدائية ابن باديس</h4></div>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed">مدرسة ابتدائية تحمل اسم العلامة ابن باديس، تضمن تعليماً أساسياً راسخاً للأجيال الناشئة.</p>
+                </div>
+            </div>
+        </div>
+        <!-- لوحة: المرافق الصحية -->
+        <div id="gpanel-health" class="guide-panel hidden">
+            <p class="text-gray-500 text-sm mb-6 text-center">المؤسسات الصحية العمومية التي تخدم سكان بلدية شطايبي والمناطق المجاورة</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-2xl p-6 border border-red-200 hover:shadow-lg transition-shadow shadow-sm">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center flex-shrink-0"><span class="iconify text-white text-2xl" data-icon="lucide:hospital"></span></div>
+                        <div>
+                            <span class="inline-flex items-center gap-1 text-xs font-bold text-red-600 bg-red-100 px-2 py-0.5 rounded-full"><span class="iconify text-xs" data-icon="lucide:heart-pulse"></span>مستشفى</span>
+                            <h4 class="font-extrabold text-gray-800 mt-0.5">مستشفى شطايبي</h4>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-400 font-semibold mb-3">المؤسسة العمومية الاستشفائية "أحمد قواسمي" — شطايبي</p>
+                    <p class="text-sm text-gray-600 leading-relaxed">مستشفى عمومي يقدم خدمات الرعاية الصحية الاستشفائية والطارئة لسكان بلدية شطايبي والبلديات المجاورة، ويضم أقساماً طبية متعددة لضمان تغطية صحية شاملة.</p>
+                    <div class="flex flex-wrap gap-2 mt-4">
+                        <span class="text-xs bg-red-50 text-red-700 border border-red-200 px-3 py-1 rounded-full font-semibold flex items-center gap-1"><span class="iconify" data-icon="lucide:stethoscope"></span>طوارئ 24/7</span>
+                        <span class="text-xs bg-red-50 text-red-700 border border-red-200 px-3 py-1 rounded-full font-semibold flex items-center gap-1"><span class="iconify" data-icon="lucide:bed"></span>إقامة مستشفوية</span>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl p-6 border border-rose-200 hover:shadow-lg transition-shadow shadow-sm">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-rose-500 rounded-xl flex items-center justify-center flex-shrink-0"><span class="iconify text-white text-2xl" data-icon="lucide:cross"></span></div>
+                        <div>
+                            <span class="inline-flex items-center gap-1 text-xs font-bold text-rose-600 bg-rose-100 px-2 py-0.5 rounded-full"><span class="iconify text-xs" data-icon="lucide:activity"></span>عيادة</span>
+                            <h4 class="font-extrabold text-gray-800 mt-0.5">العيادة متعددة الخدمات — برحال</h4>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-400 font-semibold mb-3">المؤسسة الجوارية للصحة العمومية "عفيفي النخلة" — برحال</p>
+                    <p class="text-sm text-gray-600 leading-relaxed">عيادة متعددة الخدمات تتبع نظام الصحة الجوارية، تقدم خدمات الرعاية الصحية الأولية والوقائية لسكان منطقة برحال والمناطق القريبة منها.</p>
+                    <div class="flex flex-wrap gap-2 mt-4">
+                        <span class="text-xs bg-rose-50 text-rose-700 border border-rose-200 px-3 py-1 rounded-full font-semibold flex items-center gap-1"><span class="iconify" data-icon="lucide:syringe"></span>رعاية أولية</span>
+                        <span class="text-xs bg-rose-50 text-rose-700 border border-rose-200 px-3 py-1 rounded-full font-semibold flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-plus"></span>صحة وقائية</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TOURISM & BEACHES COMBINED -->
+<section id="beaches" class="py-14 bg-gradient-to-b from-sky-900 via-emerald-900 to-teal-900 relative overflow-hidden">
+    <!-- خلفية زخرفية -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-10 right-10 w-64 h-64 border border-white/30 rounded-full"></div>
+        <div class="absolute bottom-10 left-10 w-48 h-48 border border-white/20 rounded-full"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 border border-white/10 rounded-full"></div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 relative z-10">
+        <!-- العنوان الكبير -->
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-3 flex items-center justify-center gap-3">
+                <span class="iconify text-amber-300" data-icon="lucide:sun"></span>
+                السياحة في شطايبي
+            </h2>
+            <p class="text-white/70 max-w-2xl mx-auto">اكتشف جمال الطبيعة الخلابة بين شواطئ ذهبية ومعالم تاريخية أصيلة</p>
+        </div>
+
+        <!-- ── الشواطئ ── -->
+        <div class="mb-14">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="h-px flex-1 bg-white/20"></div>
+                <h3 class="text-xl font-extrabold text-white flex items-center gap-2">
+                    <span class="iconify text-sky-300" data-icon="lucide:waves"></span>شواطئ شطايبي
+                </h3>
+                <div class="h-px flex-1 bg-white/20"></div>
+            </div>
+            <p id="beaches-intro-text" class="text-white/65 text-sm text-center mb-8 max-w-2xl mx-auto">تتميز شطايبي بشواطئها الرائعة ذات المياه الصافية والرمال الذهبية، وتضم مجموعة من الشواطئ المرخصة والمراقبة رسمياً التي توفر بيئة آمنة ومريحة لجميع الزوار والعائلات طوال موسم الاصطياف.</p>
+            <div id="beaches-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-5">
+                <div class="col-span-full text-center py-12 text-white/40">
+                    <span class="iconify text-4xl animate-spin inline-block" data-icon="lucide:loader-2"></span>
+                </div>
+            </div>
+            <div id="beaches-extra" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-5 hidden"></div>
+            <div id="beaches-more-wrap" class="text-center mb-4 hidden">
+                <button id="beaches-more-btn" onclick="toggleMoreBeaches()"
+                        class="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 text-white border border-white/30 px-8 py-3 rounded-2xl font-bold text-sm transition-all backdrop-blur-sm">
+                    <span class="iconify text-lg" data-icon="lucide:chevrons-down" id="beaches-more-icon"></span>
+                    <span id="beaches-more-text">عرض بقية الشواطئ</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- فاصل -->
+        <div class="border-t border-white/20 mb-14"></div>
+
+        <!-- ── المعالم السياحية ── -->
         <div>
-            <h3 class="text-2xl font-extrabold text-gray-800 mb-8 flex items-center gap-3"><div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center"><span class="iconify text-blue-600 text-xl" data-icon="lucide:graduation-cap"></span></div>المؤسسات التعليمية</h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-gradient-to-bl from-blue-100 to-blue-200/50 rounded-2xl p-6 border border-blue-300 hover:shadow-lg transition-shadow"><div class="flex items-center gap-3 mb-4"><div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center"><span class="iconify text-white text-2xl" data-icon="lucide:school"></span></div><div><span class="text-xs font-bold text-blue-500 bg-blue-100 px-2 py-0.5 rounded-full">ثانوية</span><h4 class="font-extrabold text-gray-800">ثانوية شطايبي عمار</h4></div></div><p class="text-sm text-gray-600 leading-relaxed">ثانوية تعليمية تضم جميع الشعب (علوم، رياضيات، آداب)، تخدم تلاميذ البلدية والمناطق المجاورة.</p></div>
-                <div class="bg-gradient-to-bl from-teal-100 to-teal-200/50 rounded-2xl p-6 border border-teal-300 hover:shadow-lg transition-shadow"><div class="flex items-center gap-3 mb-4"><div class="w-12 h-12 bg-teal-600 rounded-xl flex items-center justify-center"><span class="iconify text-white text-2xl" data-icon="lucide:book-marked"></span></div><div><span class="text-xs font-bold text-teal-500 bg-teal-100 px-2 py-0.5 rounded-full">متوسطة</span><h4 class="font-extrabold text-gray-800">متوسطة شطايبي عمار</h4></div></div><p class="text-sm text-gray-600 leading-relaxed">متوسطة تعليمية تستقبل تلاميذ الطور المتوسط بمستوى تعليمي متميز.</p></div>
-                <div class="bg-gradient-to-bl from-amber-100 to-amber-200/50 rounded-2xl p-6 border border-amber-300 hover:shadow-lg transition-shadow"><div class="flex items-center gap-3 mb-4"><div class="w-12 h-12 bg-amber-600 rounded-xl flex items-center justify-center"><span class="iconify text-white text-2xl" data-icon="lucide:pencil-ruler"></span></div><div><span class="text-xs font-bold text-amber-500 bg-amber-100 px-2 py-0.5 rounded-full">ابتدائية</span><h4 class="font-extrabold text-gray-800">ابتدائية أول نوفبر & ابن باديس</h4></div></div><p class="text-sm text-gray-600 leading-relaxed">مدرستان ابتدائيتان تضمنان تعليماً أساسياً لأطفال البلدية.</p></div>
+            <div class="flex items-center gap-3 mb-4">
+                <div class="h-px flex-1 bg-white/20"></div>
+                <h3 class="text-xl font-extrabold text-white flex items-center gap-2">
+                    <span class="iconify text-amber-300" data-icon="lucide:compass"></span>معالم سياحية
+                </h3>
+                <div class="h-px flex-1 bg-white/20"></div>
+            </div>
+            <p class="text-white/65 text-sm text-center mb-8 max-w-2xl mx-auto">اكتشف أجمل المعالم الطبيعية والسياحية التي تزخر بها بلدية شطايبي</p>
+            <div id="tourism-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-5">
+                <div class="col-span-full text-center py-12 text-white/40"><span class="iconify text-4xl animate-spin inline-block" data-icon="lucide:loader-2"></span></div>
+            </div>
+            <div id="tourism-extra" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-5 hidden"></div>
+            <div id="tourism-more-wrap" class="text-center mb-4 hidden">
+                <button id="tourism-more-btn" onclick="toggleMoreTourism()"
+                        class="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 text-white border border-white/30 px-8 py-3 rounded-2xl font-bold text-sm transition-all backdrop-blur-sm">
+                    <span class="iconify text-lg" data-icon="lucide:chevrons-down" id="tourism-more-icon"></span>
+                    <span id="tourism-more-text">عرض المزيد من المعالم</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- modals (مخفية) -->
+    <div id="beach-modal" class="hidden fixed inset-0 z-[200] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" onclick="closeBeachModal(event)">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+            <div class="relative">
+                <img id="bm-img" src="" alt="" class="w-full h-52 object-cover rounded-t-2xl">
+                <button onclick="document.getElementById('beach-modal').classList.add('hidden')" class="absolute top-3 left-3 w-9 h-9 bg-black/50 text-white rounded-full flex items-center justify-center hover:bg-black/70"><span class="iconify" data-icon="lucide:x"></span></button>
+                <div class="absolute bottom-3 right-4 text-white"><h3 id="bm-name" class="text-2xl font-extrabold drop-shadow"></h3></div>
+            </div>
+            <div class="p-6">
+                <div class="flex flex-wrap gap-2 mb-4" id="bm-badges"></div>
+                <p id="bm-desc" class="text-sm text-gray-600 leading-relaxed mb-6"></p>
+                <div id="bm-album" class="grid grid-cols-3 gap-3"></div>
+            </div>
+        </div>
+    </div>
+    <div id="tourism-modal" class="hidden fixed inset-0 z-[200] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" onclick="closeTourismModal(event)">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+            <div class="relative">
+                <img id="tm-img" src="" alt="" class="w-full h-52 object-cover rounded-t-2xl">
+                <button onclick="document.getElementById('tourism-modal').classList.add('hidden')" class="absolute top-3 left-3 w-9 h-9 bg-black/50 text-white rounded-full flex items-center justify-center hover:bg-black/70"><span class="iconify" data-icon="lucide:x"></span></button>
+                <div class="absolute bottom-3 right-4 text-white"><h3 id="tm-name" class="text-2xl font-extrabold drop-shadow"></h3><p id="tm-subtitle" class="text-sm text-white/80"></p></div>
+            </div>
+            <div class="p-6">
+                <div class="flex flex-wrap gap-2 mb-4" id="tm-badges"></div>
+                <p id="tm-desc" class="text-sm text-gray-600 leading-relaxed mb-6"></p>
+                <div id="tm-album" class="grid grid-cols-3 gap-3"></div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ✅ BEACHES — ديناميكي من API مع ألبومات -->
-<section id="beaches" class="py-10 bg-gradient-to-b from-sky-50 to-white">
-    <div class="max-w-7xl mx-auto px-4">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 flex items-center justify-center gap-3"><span class="iconify text-sky-500" data-icon="lucide:waves"></span>شواطئ شطايبي</h2>
-            <p id="beaches-intro-text" class="text-gray-500 max-w-2xl mx-auto">تتميز شطايبي بشواطئها الرائعة ذات المياه الصافية والرمال الذهبية، وتضم مجموعة من الشواطئ المرخصة والمراقبة رسمياً التي توفر بيئة آمنة ومريحة لجميع الزوار والعائلات طوال موسم الاصطياف.</p>
-        </div>
-        <!-- أول 4 شواطئ ظاهرة دائماً -->
-        <div id="beaches-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-            <div class="col-span-full text-center py-12 text-gray-300">
-                <span class="iconify text-4xl animate-spin inline-block" data-icon="lucide:loader-2"></span>
-            </div>
-        </div>
-        <!-- باقي الشواطئ (مخفي) -->
-        <div id="beaches-extra" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6 hidden"></div>
-        <!-- زر المزيد -->
-        <div id="beaches-more-wrap" class="text-center mb-10 hidden">
-            <button id="beaches-more-btn" onclick="toggleMoreBeaches()"
-                    class="inline-flex items-center gap-2 bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 px-8 py-3 rounded-2xl font-bold text-sm transition-all">
-                <span class="iconify text-lg" data-icon="lucide:chevrons-down" id="beaches-more-icon"></span>
-                <span id="beaches-more-text">عرض بقية الشواطئ</span>
-            </button>
-        </div>
-        <!-- modal تفاصيل شاطئ -->
-        <div id="beach-modal" class="hidden fixed inset-0 z-[200] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" onclick="closeBeachModal(event)">
-            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
-                <div class="relative">
-                    <img id="bm-img" src="" alt="" class="w-full h-52 object-cover rounded-t-2xl">
-                    <button onclick="document.getElementById('beach-modal').classList.add('hidden')"
-                            class="absolute top-3 left-3 w-9 h-9 bg-black/50 text-white rounded-full flex items-center justify-center hover:bg-black/70">
-                        <span class="iconify" data-icon="lucide:x"></span>
-                    </button>
-                    <div class="absolute bottom-3 right-4 text-white">
-                        <h3 id="bm-name" class="text-2xl font-extrabold drop-shadow"></h3>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <div class="flex flex-wrap gap-2 mb-4" id="bm-badges"></div>
-                    <p id="bm-desc" class="text-sm text-gray-600 leading-relaxed mb-6"></p>
-                    <div id="bm-album" class="grid grid-cols-3 gap-3"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
-<!-- TOURISM — ديناميكي مع modal ألبوم -->
-<section id="tourism" class="py-10 bg-gradient-to-b from-emerald-50 to-white pattern-bg">
-    <div class="max-w-7xl mx-auto px-4">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 flex items-center justify-center gap-3"><span class="iconify text-emerald-600" data-icon="lucide:compass"></span>السياحة في شطايبي</h2>
-            <p class="text-gray-500 max-w-2xl mx-auto">اكتشف أجمل المعالم الطبيعية والسياحية التي تزخر بها بلدية شطايبي</p>
+<!-- ── NEWS FULL PAGE OVERLAY ── -->
+<div id="news-overlay" class="fixed inset-0 z-[300] bg-white hidden flex-col">
+    <!-- header الـ overlay -->
+    <div class="bg-emerald-700 text-white px-4 py-4 flex items-center gap-4 flex-shrink-0 shadow-lg">
+        <button onclick="closeNewsPage()" class="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-xl flex items-center justify-center transition-colors flex-shrink-0">
+            <span class="iconify text-xl" data-icon="lucide:x"></span>
+        </button>
+        <div class="flex-1">
+            <h2 id="news-overlay-title" class="text-lg font-extrabold">جميع الأخبار</h2>
+            <p id="news-overlay-count" class="text-emerald-200 text-xs"></p>
         </div>
-        <div id="tourism-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-            <div class="col-span-full text-center py-12 text-gray-300"><span class="iconify text-4xl animate-spin inline-block" data-icon="lucide:loader-2"></span></div>
-        </div>
-        <div id="tourism-extra" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6 hidden"></div>
-        <div id="tourism-more-wrap" class="text-center mb-10 hidden">
-            <button id="tourism-more-btn" onclick="toggleMoreTourism()"
-                    class="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 px-8 py-3 rounded-2xl font-bold text-sm transition-all">
-                <span class="iconify text-lg" data-icon="lucide:chevrons-down" id="tourism-more-icon"></span>
-                <span id="tourism-more-text">عرض المزيد من المعالم</span>
-            </button>
-        </div>
-        <!-- modal تفاصيل معلم سياحي -->
-        <div id="tourism-modal" class="hidden fixed inset-0 z-[200] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" onclick="closeTourismModal(event)">
-            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
-                <div class="relative">
-                    <img id="tm-img" src="" alt="" class="w-full h-52 object-cover rounded-t-2xl">
-                    <button onclick="document.getElementById('tourism-modal').classList.add('hidden')"
-                            class="absolute top-3 left-3 w-9 h-9 bg-black/50 text-white rounded-full flex items-center justify-center hover:bg-black/70">
-                        <span class="iconify" data-icon="lucide:x"></span>
-                    </button>
-                    <div class="absolute bottom-3 right-4 text-white">
-                        <h3 id="tm-name" class="text-2xl font-extrabold drop-shadow"></h3>
-                        <p id="tm-subtitle" class="text-sm text-white/80"></p>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <div class="flex flex-wrap gap-2 mb-4" id="tm-badges"></div>
-                    <p id="tm-desc" class="text-sm text-gray-600 leading-relaxed mb-6"></p>
-                    <div id="tm-album" class="grid grid-cols-3 gap-3"></div>
-                </div>
-            </div>
+        <!-- تصفية الصنف داخل الـ overlay -->
+        <div class="flex gap-2 flex-shrink-0">
+            <button onclick="overlaySetCat('official')" id="ocat-official" class="ocat-btn text-xs px-3 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white">📢 إعلانات</button>
+            <button onclick="overlaySetCat('activity')" id="ocat-activity" class="ocat-btn text-xs px-3 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white">📋 نشاطات</button>
+            <button onclick="overlaySetCat('social')"   id="ocat-social"   class="ocat-btn text-xs px-3 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white">🤝 مجتمع</button>
         </div>
     </div>
-</section>
+    <!-- محتوى قابل للتمرير -->
+    <div class="flex-1 overflow-y-auto bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <div id="overlay-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"></div>
+            <!-- ترقيم صفحات -->
+            <div id="overlay-pagination" class="flex flex-wrap justify-center gap-2 mt-6"></div>
+        </div>
+    </div>
+</div>
 
 <!-- FOOTER -->
 <footer class="bg-gray-900 text-white">
@@ -820,18 +960,18 @@ async function loadBeaches(){
 }
 
 function beachCard(b){
-    return `<div class="bg-white rounded-2xl overflow-hidden shadow-md border border-sky-100 hover:shadow-xl transition-all group cursor-pointer" onclick="openBeachModal(${b.id})">
+    return `<div class="bg-white/10 backdrop-blur-sm rounded-2xl overflow-hidden shadow-md border border-white/20 hover:bg-white/15 hover:shadow-xl transition-all group cursor-pointer" onclick="openBeachModal(${b.id})">
         <div class="relative h-40 overflow-hidden">
             ${b.image_url
                 ?`<img src="${b.image_url}" alt="${b.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">`
-                :`<div class="w-full h-full bg-gradient-to-bl from-sky-400 to-blue-600 flex items-center justify-center"><span class="iconify text-white text-5xl opacity-70" data-icon="lucide:waves"></span></div>`}
+                :`<div class="w-full h-full bg-gradient-to-bl from-sky-500/60 to-blue-700/60 flex items-center justify-center"><span class="iconify text-white text-5xl opacity-70" data-icon="lucide:waves"></span></div>`}
             <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
             <div class="absolute bottom-3 right-3 text-white"><h4 class="font-extrabold text-base drop-shadow">${b.name}</h4></div>
-            ${b.is_supervised?'<span class="absolute top-2 left-2 bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">مراقب</span>':''}
+            ${b.is_supervised?'<span class="absolute top-2 left-2 bg-green-400 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">مراقب</span>':''}
         </div>
         <div class="p-4">
-            <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed">${b.description||'اضغط لعرض التفاصيل والصور'}</p>
-            <span class="mt-2 inline-flex items-center gap-1 text-sky-600 text-xs font-bold">
+            <p class="text-xs text-white/70 line-clamp-2 leading-relaxed">${b.description||'اضغط لعرض التفاصيل والصور'}</p>
+            <span class="mt-2 inline-flex items-center gap-1 text-sky-300 text-xs font-bold">
                 <span class="iconify text-xs" data-icon="lucide:info"></span> عرض التفاصيل
             </span>
         </div>
@@ -893,7 +1033,7 @@ async function loadTourism(){
         const rest   = allTourism.slice(4);
         const bcColors={emerald:'bg-emerald-500',amber:'bg-amber-500',purple:'bg-purple-500',teal:'bg-teal-500',blue:'bg-blue-500'};
         const tourCard = t => `
-            <div class="tourism-card bg-white rounded-2xl overflow-hidden shadow-md border border-gray-100 hover:shadow-xl transition-all group cursor-pointer" onclick="openTourismModal(${t.id})">
+            <div class="tourism-card bg-white/10 backdrop-blur-sm rounded-2xl overflow-hidden shadow-md border border-white/20 hover:shadow-xl hover:bg-white/15 transition-all group cursor-pointer" onclick="openTourismModal(${t.id})">
                 <div class="relative h-40 overflow-hidden">
                     ${t.image_url
                         ?`<img src="${t.image_url}" alt="${t.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">`
@@ -906,7 +1046,7 @@ async function loadTourism(){
                     <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed">${(t.description||'اضغط لعرض التفاصيل والصور').substring(0,100)}</p>
                     <div class="mt-2 flex items-center justify-between">
                         ${t.rating?`<span class="text-xs text-amber-500 font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:star"></span>${t.rating}/5</span>`:'<span></span>'}
-                        <span class="inline-flex items-center gap-1 text-emerald-600 text-xs font-bold"><span class="iconify text-xs" data-icon="lucide:images"></span> عرض التفاصيل</span>
+                        <span class="inline-flex items-center gap-1 text-emerald-300 text-xs font-bold"><span class="iconify text-xs" data-icon="lucide:images"></span> عرض التفاصيل</span>
                     </div>
                 </div>
             </div>`;
@@ -980,6 +1120,93 @@ async function loadCurrentMayor(){
         }
     }catch(e){ /* نبقى على المحتوى الافتراضي في حال الخطأ */ }
 }
+
+// ── دليل شطايبي tabs ──
+function switchGuideTab(tab){
+    document.querySelectorAll('.guide-tab').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.guide-panel').forEach(p=>p.classList.add('hidden'));
+    document.getElementById('gtab-'+tab).classList.add('active');
+    document.getElementById('gpanel-'+tab).classList.remove('hidden');
+}
+
+// ── NEWS OVERLAY ──
+const CAT_META = {
+    official: { label: 'إعلانات رسمية',  badge: 'bg-red-100 text-red-700',      grad: 'from-red-500 to-red-700'        },
+    activity: { label: 'نشاطات البلدية', badge: 'bg-emerald-100 text-emerald-700', grad: 'from-emerald-500 to-emerald-700' },
+    social:   { label: 'ركن المجتمع',    badge: 'bg-purple-100 text-purple-700', grad: 'from-purple-500 to-purple-700'   },
+};
+let overlayAllNews = [], overlayCat = 'official', overlayPage = 1;
+const OVERLAY_PER = 12;
+
+function openNewsPage(cat) {
+    overlayCat = cat; overlayPage = 1;
+    document.getElementById('news-overlay').classList.remove('hidden');
+    document.getElementById('news-overlay').classList.add('flex');
+    document.body.style.overflow = 'hidden';
+    renderOverlay();
+}
+function closeNewsPage() {
+    document.getElementById('news-overlay').classList.add('hidden');
+    document.getElementById('news-overlay').classList.remove('flex');
+    document.body.style.overflow = '';
+}
+function overlaySetCat(cat) {
+    overlayCat = cat; overlayPage = 1;
+    document.querySelectorAll('.ocat-btn').forEach(b => b.classList.remove('bg-white', 'text-emerald-800'));
+    document.getElementById('ocat-'+cat).classList.add('bg-white', 'text-emerald-800');
+    renderOverlay();
+}
+async function renderOverlay() {
+    const grid = document.getElementById('overlay-grid');
+    const pag  = document.getElementById('overlay-pagination');
+    grid.innerHTML = '<div class="col-span-full text-center py-16 text-gray-300"><span class="iconify text-5xl animate-spin inline-block" data-icon="lucide:loader-2"></span></div>';
+    pag.innerHTML = '';
+    // تحديث زر الصنف النشط
+    document.querySelectorAll('.ocat-btn').forEach(b => { b.classList.remove('bg-white','text-emerald-800'); b.classList.add('bg-white/20','text-white'); });
+    const activeBtn = document.getElementById('ocat-'+overlayCat);
+    if(activeBtn){ activeBtn.classList.remove('bg-white/20','text-white'); activeBtn.classList.add('bg-white','text-emerald-800'); }
+    try {
+        const res  = await fetch('/api/news');
+        const data = await res.json();
+        let all = (data.data || []).filter(n => n.category === overlayCat || (overlayCat === 'official' && n.category === 'official'));
+        if(overlayCat === 'official') all = (data.data||[]).filter(n=>n.category==='official');
+        else if(overlayCat==='activity') all = (data.data||[]).filter(n=>n.category==='activity');
+        else all = (data.data||[]).filter(n=>n.category==='social');
+        const total = all.length;
+        const totalPages = Math.ceil(total/OVERLAY_PER)||1;
+        overlayPage = Math.min(overlayPage, totalPages);
+        const items = all.slice((overlayPage-1)*OVERLAY_PER, overlayPage*OVERLAY_PER);
+        document.getElementById('news-overlay-title').textContent = CAT_META[overlayCat]?.label || 'الأخبار';
+        document.getElementById('news-overlay-count').textContent = total + ' خبر';
+        const m = CAT_META[overlayCat] || CAT_META.official;
+        if(!items.length){ grid.innerHTML='<p class="col-span-full text-center text-gray-400 py-16">لا توجد أخبار في هذا الصنف</p>'; return; }
+        grid.innerHTML = items.map(n => {
+            const label = (n.custom_label&&n.custom_label.trim()) ? n.custom_label : m.label;
+            const pin = n.is_pinned ? '<span class="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full border border-emerald-200 font-bold">📌 مثبت</span>' : '';
+            const img = n.image_url
+                ? `<div class="h-44 overflow-hidden"><img src="${n.image_url}" alt="${n.title}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"></div>`
+                : `<div class="h-44 bg-gradient-to-bl ${m.grad} flex items-center justify-center"><span style="font-size:2.5rem">📰</span></div>`;
+            return `<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100 cursor-pointer" onclick="window.location='/news/${n.id}'">
+                ${img}
+                <div class="p-4">
+                    <div class="flex items-center gap-2 mb-2 flex-wrap"><span class="inline-block ${m.badge} text-xs font-bold px-3 py-1 rounded-full">${label}</span>${pin}</div>
+                    <h3 class="font-extrabold text-gray-800 text-sm leading-snug mb-2 line-clamp-2">${n.title}</h3>
+                    <p class="text-xs text-gray-400">${n.date||''}</p>
+                </div>
+            </article>`;
+        }).join('');
+        // ترقيم الصفحات
+        if(totalPages > 1) {
+            let html = '';
+            for(let p=1;p<=totalPages;p++) {
+                const active = p===overlayPage ? 'bg-emerald-600 text-white' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50';
+                html += `<button onclick="overlayGoPage(${p})" class="${active} w-10 h-10 rounded-xl font-bold text-sm transition-all">${p}</button>`;
+            }
+            pag.innerHTML = html;
+        }
+    } catch(e) { grid.innerHTML='<p class="col-span-full text-red-400 text-center py-12">تعذر تحميل الأخبار</p>'; }
+}
+function overlayGoPage(p) { overlayPage=p; renderOverlay(); document.getElementById('news-overlay').scrollTo(0,0); }
 
 fetchWeather(); fetchSeaState(); loadNews(); loadTourism(); loadBeaches(); loadCurrentMayor();
 setInterval(()=>{fetchWeather();fetchSeaState();},900000);
