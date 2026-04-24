@@ -212,7 +212,7 @@
             <p id="mayor-bio" class="text-white/75 text-sm leading-relaxed max-w-xl">يتولى السيد <span id="mayor-name-inline">عثماني سليمان</span> رئاسة المجلس الشعبي البلدي لشطايبي، حيث يعمل على تطوير البلدية وتحسين الخدمات المقدمة للمواطنين ضمن رؤية تنموية شاملة.</p>
         </div>
         <div class="flex gap-3 flex-wrap justify-center md:justify-start">
-            <a href="/mayors" class="bg-white/15 hover:bg-white/25 backdrop-blur-sm px-5 py-2.5 rounded-xl text-sm font-bold transition-colors border border-white/20"><span class="iconify inline-block ml-1" data-icon="lucide:users"></span>الرؤساء السابقون</a>
+            <button onclick="openMayorsOverlay()" class="bg-white/15 hover:bg-white/25 backdrop-blur-sm px-5 py-2.5 rounded-xl text-sm font-bold transition-colors border border-white/20"><span class="iconify inline-block ml-1" data-icon="lucide:users"></span>الرؤساء السابقون</button>
         </div>
     </div>
 </section>
@@ -602,6 +602,48 @@
     </div>
 </section>
 
+
+<!-- ── MODAL LIGHTBOX ── -->
+<div id="modal-lightbox" class="fixed inset-0 z-[500] bg-black/95 hidden items-center justify-center p-4" onclick="closeModalLightbox()">
+    <div class="relative max-w-4xl w-full" onclick="event.stopPropagation()">
+        <button onclick="closeModalLightbox()" class="absolute -top-10 left-0 text-white/70 hover:text-white flex items-center gap-2 text-sm font-bold">
+            <span class="iconify" data-icon="lucide:x"></span> إغلاق
+        </button>
+        <img id="modal-lightbox-img" src="" class="w-full max-h-[80vh] object-contain rounded-xl shadow-2xl">
+        <p id="modal-lightbox-caption" class="text-white/70 text-sm text-center mt-3"></p>
+    </div>
+</div>
+
+<!-- ── MAYORS OVERLAY ── -->
+<div id="mayors-overlay" class="fixed inset-0 z-[300] bg-white hidden flex-col">
+    <div class="bg-emerald-800 flex-shrink-0 shadow-lg">
+        <div class="px-4 py-3 flex items-center gap-3 text-white">
+            <button onclick="closeMayorsOverlay()" class="w-9 h-9 bg-white/20 hover:bg-white/30 rounded-xl flex items-center justify-center transition-colors flex-shrink-0">
+                <span class="iconify text-lg" data-icon="lucide:x"></span>
+            </button>
+            <h2 class="text-base font-extrabold flex-1 text-center">رؤساء المجلس الشعبي البلدي</h2>
+            <div class="w-9"></div>
+        </div>
+    </div>
+    <div class="flex-1 overflow-y-auto bg-gradient-to-b from-emerald-50 to-white">
+        <div class="max-w-5xl mx-auto px-4 py-10">
+            <!-- عنوان ووصف -->
+            <div class="text-center mb-10">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-emerald-100 rounded-full mb-4">
+                    <span class="iconify text-emerald-700 text-3xl" data-icon="lucide:landmark"></span>
+                </div>
+                <h3 class="text-2xl font-extrabold text-gray-900 mb-2">قائمة رؤساء المجلس الشعبي البلدي لشطايبي</h3>
+                <p class="text-gray-500 text-sm max-w-xl mx-auto leading-relaxed">سجل تاريخي بأسماء الرؤساء الذين تولوا قيادة المجلس الشعبي البلدي لبلدية شطايبي منذ تأسيسه، وأسهموا في خدمة المواطن وتطوير البلدية.</p>
+            </div>
+            <!-- قائمة الرؤساء -->
+            <div id="mayors-overlay-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <div class="col-span-full text-center py-16 text-gray-300">
+                    <span class="iconify text-5xl animate-spin inline-block" data-icon="lucide:loader-2"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- ── EXPLORE OVERLAY (شواطئ + معالم) ── -->
 <div id="explore-overlay" class="fixed inset-0 z-[300] bg-white hidden flex-col">
@@ -1080,8 +1122,9 @@ async function openBeachModal(id){
             (b.season?`<span class="text-xs bg-sky-100 text-sky-700 px-3 py-1 rounded-full font-bold">${b.season}</span>`:'');
         if(b.albums?.length){
             document.getElementById('bm-album').innerHTML =
-                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-2">معرض الصور</h4>'+
-                b.albums.map(a=>`<div><img src="${a.image_url}" alt="${a.caption||''}" class="w-full h-24 object-cover rounded-xl">${a.caption?`<p class="text-[10px] text-gray-500 mt-1 text-center truncate">${a.caption}</p>`:''}</div>`).join('');
+                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class=\"iconify text-sky-500\" data-icon=\"lucide:images\"></span>معرض الصور ('+b.albums.length+')</h4>'+
+                b.albums.map(a=>`<div class="cursor-pointer group relative overflow-hidden rounded-xl" onclick="openModalLightbox('${a.image_url}','${(a.caption||'').replace(/'/g,"\\'")}')" ><img src="${a.image_url}" alt="${a.caption||''}" class="w-full h-24 object-cover group-hover:scale-110 transition-transform duration-300"><div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center"><span class="iconify text-white opacity-0 group-hover:opacity-100 text-2xl transition-opacity" data-icon="lucide:zoom-in"></span></div>${a.caption?`<p class="text-[10px] text-gray-500 mt-1 text-center truncate">${a.caption}</p>`:''}</div>`).join('');
+            if(window.Iconify) Iconify.scan();
         }
     } catch{}
 }
@@ -1163,8 +1206,9 @@ async function openTourismModal(id){
             (t.distance_info?`<span class="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-bold">${t.distance_info}</span>`:'');
         if(t.albums?.length){
             document.getElementById('tm-album').innerHTML=
-                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-2">معرض الصور</h4>'+
-                t.albums.map(a=>`<div><img src="${a.image_url}" alt="${a.caption||''}" class="w-full h-24 object-cover rounded-xl">${a.caption?`<p class="text-[10px] text-gray-500 mt-1 text-center truncate">${a.caption}</p>`:''}</div>`).join('');
+                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class=\"iconify text-emerald-500\" data-icon=\"lucide:images\"></span>معرض الصور ('+t.albums.length+')</h4>'+
+                t.albums.map(a=>`<div class="cursor-pointer group relative overflow-hidden rounded-xl" onclick="openModalLightbox('${a.image_url}','${(a.caption||'').replace(/'/g,"\\'")}')" ><img src="${a.image_url}" alt="${a.caption||''}" class="w-full h-24 object-cover group-hover:scale-110 transition-transform duration-300"><div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center"><span class="iconify text-white opacity-0 group-hover:opacity-100 text-2xl transition-opacity" data-icon="lucide:zoom-in"></span></div>${a.caption?`<p class="text-[10px] text-gray-500 mt-1 text-center truncate">${a.caption}</p>`:''}</div>`).join('');
+            if(window.Iconify) Iconify.scan();
         }
     } catch{}
 }
@@ -1357,6 +1401,83 @@ function facSetCat(cat) {
             <div class="flex flex-wrap gap-2">${item.tags.map(t=>`<span class="text-xs bg-${col}-50 text-${col}-700 border border-${col}-200 px-3 py-1 rounded-full font-semibold">${t}</span>`).join('')}</div>
         </div>`).join('');
     if(window.Iconify) Iconify.scan();
+}
+
+// ── MODAL LIGHTBOX ──
+function openModalLightbox(src, caption) {
+    const lb = document.getElementById('modal-lightbox');
+    document.getElementById('modal-lightbox-img').src = src;
+    document.getElementById('modal-lightbox-caption').textContent = caption || '';
+    lb.classList.remove('hidden');
+    lb.classList.add('flex');
+}
+function closeModalLightbox() {
+    const lb = document.getElementById('modal-lightbox');
+    lb.classList.add('hidden');
+    lb.classList.remove('flex');
+}
+
+// ── MAYORS OVERLAY ──
+async function openMayorsOverlay() {
+    const overlay = document.getElementById('mayors-overlay');
+    const list    = document.getElementById('mayors-overlay-list');
+    overlay.classList.remove('hidden');
+    overlay.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+    list.innerHTML = '<div class="col-span-full text-center py-16 text-gray-300"><span class="iconify text-5xl animate-spin inline-block" data-icon="lucide:loader-2"></span></div>';
+    try {
+        const res  = await fetch('/api/mayors');
+        const data = await res.json();
+        const mayors = (data.data || []);
+        if (!mayors.length) {
+            list.innerHTML = '<p class="col-span-full text-center text-gray-400 py-16">لا توجد بيانات بعد</p>';
+            return;
+        }
+        // أول عنصر = الرئيس الحالي، الباقون = سابقون
+        const current  = mayors[0];
+        const previous = mayors.slice(1);
+        let html = '';
+        // الرئيس الحالي — بطاقة بارزة
+        html += `<div class="col-span-full sm:col-span-2 md:col-span-3">
+            <div class="bg-gradient-to-l from-emerald-700 to-emerald-900 rounded-2xl p-6 text-white flex flex-col sm:flex-row items-center gap-6 shadow-xl mb-2">
+                <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-white/30 flex-shrink-0 bg-white/20 flex items-center justify-center">
+                    ${current.image_url
+                        ? `<img src="${current.image_url}" alt="${current.name}" class="w-full h-full object-cover">`
+                        : `<span class="iconify text-white text-4xl" data-icon="lucide:user-circle"></span>`}
+                </div>
+                <div class="text-center sm:text-right">
+                    <span class="inline-block bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full mb-2">الرئيس الحالي</span>
+                    <h4 class="text-2xl font-extrabold mb-1">${current.name}</h4>
+                    <p class="text-emerald-200 text-sm flex items-center justify-center sm:justify-start gap-1"><span class="iconify" data-icon="lucide:calendar"></span>${current.period}</p>
+                </div>
+            </div>
+        </div>`;
+        if (previous.length) {
+            html += `<div class="col-span-full mt-4 mb-2"><h4 class="text-lg font-extrabold text-gray-700 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:history"></span>الرؤساء السابقون</h4></div>`;
+            html += previous.map((m, i) => `
+                <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-md hover:shadow-xl transition-shadow flex flex-col items-center text-center gap-4">
+                    <div class="w-20 h-20 rounded-full overflow-hidden border-4 border-emerald-100 bg-emerald-50 flex items-center justify-center flex-shrink-0">
+                        ${m.image_url
+                            ? `<img src="${m.image_url}" alt="${m.name}" class="w-full h-full object-cover">`
+                            : `<span class="iconify text-emerald-300 text-3xl" data-icon="lucide:user-circle"></span>`}
+                    </div>
+                    <div>
+                        <span class="inline-block bg-gray-100 text-gray-500 text-[10px] font-bold px-2 py-0.5 rounded-full mb-2">${mayors.length - 1 - i}#</span>
+                        <h4 class="font-extrabold text-gray-800 text-base leading-snug mb-1">${m.name}</h4>
+                        <p class="text-gray-400 text-xs flex items-center justify-center gap-1"><span class="iconify" data-icon="lucide:calendar"></span>${m.period}</p>
+                    </div>
+                </div>`).join('');
+        }
+        list.innerHTML = html;
+        if (window.Iconify) Iconify.scan();
+    } catch(e) {
+        list.innerHTML = '<p class="col-span-full text-red-400 text-center py-12">تعذر تحميل البيانات</p>';
+    }
+}
+function closeMayorsOverlay() {
+    document.getElementById('mayors-overlay').classList.add('hidden');
+    document.getElementById('mayors-overlay').classList.remove('flex');
+    document.body.style.overflow = '';
 }
 
 // ── EXPLORE ──
