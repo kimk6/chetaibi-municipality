@@ -90,6 +90,7 @@
                 <a href="#archive" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">الأرشيف</a>
                 <a href="#guide" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">الدليل</a>
                 <a href="#beaches" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">السياحة</a>
+                <a href="#contact-footer" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">اتصل بنا</a>
             </div>
             <button id="mobile-btn" class="md:hidden text-white p-2 rounded-lg hover:bg-emerald-600 transition-colors">
                 <span class="iconify text-2xl" data-icon="lucide:menu"></span>
@@ -111,6 +112,7 @@
                 <a href="#archive" class="block text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors">📜 الأرشيف</a>
                 <a href="#guide" class="block text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors">📍 الدليل</a>
                 <a href="#beaches" class="block text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors">☀️ السياحة</a>
+                <a href="#contact-footer" class="block text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors">📞 اتصل بنا</a>
             </div>
         </div>
     </div>
@@ -240,7 +242,7 @@
                     <span class="iconify" data-icon="lucide:chevrons-down" id="more-icon-announcements"></span>
                     <span id="more-text-announcements">عرض المزيد</span>
                 </button>
-                <button onclick="openNewsPage('official')" class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-600 border border-gray-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all"><span class="iconify" data-icon="lucide:layout-list"></span> جميع الإعلانات</button>
+                <button id="all-btn-announcements" onclick="openNewsPage('official')" class="hidden inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-600 border border-gray-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all"><span class="iconify" data-icon="lucide:layout-list"></span> جميع الإعلانات</button>
             </div>
         </div>
         <div id="tab-panel-activities" class="news-panel hidden">
@@ -252,7 +254,7 @@
                     <span class="iconify" data-icon="lucide:chevrons-down" id="more-icon-activities"></span>
                     <span id="more-text-activities">عرض المزيد</span>
                 </button>
-                <button onclick="openNewsPage('activity')" class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-600 border border-gray-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all"><span class="iconify" data-icon="lucide:layout-list"></span> جميع النشاطات</button>
+                <button id="all-btn-activities" onclick="openNewsPage('activity')" class="hidden inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-600 border border-gray-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all"><span class="iconify" data-icon="lucide:layout-list"></span> جميع النشاطات</button>
             </div>
         </div>
         <div id="tab-panel-community" class="news-panel hidden">
@@ -264,7 +266,7 @@
                     <span class="iconify" data-icon="lucide:chevrons-down" id="more-icon-community"></span>
                     <span id="more-text-community">عرض المزيد</span>
                 </button>
-                <button onclick="openNewsPage('social')" class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-600 border border-gray-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all"><span class="iconify" data-icon="lucide:layout-list"></span> جميع المنشورات</button>
+                <button id="all-btn-community" onclick="openNewsPage('social')" class="hidden inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-600 border border-gray-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all"><span class="iconify" data-icon="lucide:layout-list"></span> جميع المنشورات</button>
             </div>
         </div>
     </div>
@@ -367,17 +369,14 @@
         <div class="flex flex-wrap justify-center gap-3 mb-10">
             <button onclick="switchGuideTab('admin-branches')" id="gtab-admin-branches" class="guide-tab active px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2">
                 <span class="iconify" data-icon="lucide:landmark"></span>
-                <span class="inline-block bg-emerald-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">3</span>
                 الفروع الإدارية
             </button>
             <button onclick="switchGuideTab('education')" id="gtab-education" class="guide-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2">
                 <span class="iconify" data-icon="lucide:graduation-cap"></span>
-                <span class="inline-block bg-blue-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">4</span>
                 المؤسسات التعليمية
             </button>
             <button onclick="switchGuideTab('health')" id="gtab-health" class="guide-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2">
                 <span class="iconify" data-icon="lucide:heart-pulse"></span>
-                <span class="inline-block bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">2</span>
                 المرافق الصحية
             </button>
         </div>
@@ -533,7 +532,7 @@
                     <span id="beaches-more-text">عرض بقية الشواطئ</span>
                 </button>
             </div>
-            <div class="text-center mt-2 mb-2">
+            <div id="all-beaches-wrap" class="text-center mt-2 mb-2 hidden" data-show-after-more="true">
                 <button onclick="openExploreOverlay('beaches')"
                         class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white/80 hover:text-white border border-white/20 px-6 py-2 rounded-2xl font-semibold text-xs transition-all backdrop-blur-sm">
                     <span class="iconify" data-icon="lucide:layout-list"></span> جميع الشواطئ
@@ -562,7 +561,7 @@
                     <span id="tourism-more-text">عرض المزيد من المعالم</span>
                 </button>
             </div>
-            <div class="text-center mt-2 mb-2">
+            <div id="all-tourism-wrap" class="text-center mt-2 mb-2 hidden">
                 <button onclick="openExploreOverlay('tourism')"
                         class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white/80 hover:text-white border border-white/20 px-6 py-2 rounded-2xl font-semibold text-xs transition-all backdrop-blur-sm">
                     <span class="iconify" data-icon="lucide:layout-list"></span> جميع المعالم
@@ -731,7 +730,7 @@
 </div>
 
 <!-- FOOTER -->
-<footer class="bg-gray-900 text-white">
+<footer class="bg-gray-900 text-white" id="contact-footer">
     <div class="max-w-7xl mx-auto px-4 py-16">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
             <div>
@@ -814,6 +813,9 @@ function toggleMoreNews(tab){
     ex.classList.toggle('hidden',!newsExpanded[tab]);
     ic.setAttribute('data-icon',newsExpanded[tab]?'lucide:chevrons-up':'lucide:chevrons-down');
     tx.textContent=newsExpanded[tab]?'إخفاء':'عرض المزيد';
+    // إظهار زر "جميع..." بعد أول ضغط
+    const allBtn=document.getElementById('all-btn-'+tab);
+    if(allBtn) allBtn.classList.remove('hidden');
     if(window.Iconify) Iconify.scan();
 }
 
@@ -1099,6 +1101,7 @@ function toggleMoreBeaches(){
     extra.classList.toggle('hidden', !beachesExpanded);
     icon.setAttribute('data-icon', beachesExpanded?'lucide:chevrons-up':'lucide:chevrons-down');
     text.textContent = beachesExpanded?'إخفاء':'عرض بقية الشواطئ';
+    const w=document.getElementById('all-beaches-wrap'); if(w) w.classList.remove('hidden');
 }
 
 async function openBeachModal(id){
@@ -1129,7 +1132,6 @@ async function openBeachModal(id){
     } catch{}
 }
 
-function closeBeachModal(e){ if(e.target===document.getElementById('beach-modal')) document.getElementById('beach-modal').classList.add('hidden'); }
 
 // ── TOURISM ──
 let allTourism = [], tourismExpanded = false;
@@ -1180,6 +1182,7 @@ function toggleMoreTourism(){
     extra.classList.toggle('hidden', !tourismExpanded);
     icon.setAttribute('data-icon', tourismExpanded?'lucide:chevrons-up':'lucide:chevrons-down');
     text.textContent = tourismExpanded?'إخفاء':'عرض المزيد من المعالم';
+    const w=document.getElementById('all-tourism-wrap'); if(w) w.classList.remove('hidden');
 }
 
 async function openTourismModal(id){
@@ -1212,7 +1215,6 @@ async function openTourismModal(id){
         }
     } catch{}
 }
-function closeTourismModal(e){ if(e.target===document.getElementById('tourism-modal')) document.getElementById('tourism-modal').classList.add('hidden'); }
 
 async function loadCurrentMayor(){
     try{
@@ -1280,7 +1282,7 @@ async function renderExploreOverlay() {
         explorePage = Math.min(explorePage,totalPages);
         const items = all.slice((explorePage-1)*EXPLORE_PER, explorePage*EXPLORE_PER);
         if(!items.length){ grid.innerHTML='<p class="col-span-full text-center text-gray-400 py-16">لا توجد شواطئ</p>'; return; }
-        grid.innerHTML = items.map(b => `<div class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100 cursor-pointer" onclick="closeExploreOverlay();setTimeout(()=>openBeachModal(${b.id}),200)">
+        grid.innerHTML = items.map(b => `<div class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100 cursor-pointer" onclick="openBeachInExplore(${b.id})">
             ${b.image_url?`<img src="${b.image_url}" class="w-full h-40 object-cover">`:`<div class="h-40 bg-gradient-to-bl from-sky-400 to-blue-600 flex items-center justify-center"><span class="iconify text-white text-5xl" data-icon="lucide:waves"></span></div>`}
             <div class="p-4"><h3 class="font-extrabold text-gray-800 text-sm mb-1">${b.name}</h3>
             <p class="text-xs text-gray-400 line-clamp-2">${b.description||''}</p>
@@ -1296,7 +1298,7 @@ async function renderExploreOverlay() {
         const items = all.slice((explorePage-1)*EXPLORE_PER, explorePage*EXPLORE_PER);
         if(!items.length){ grid.innerHTML='<p class="col-span-full text-center text-gray-400 py-16">لا توجد معالم</p>'; return; }
         const bcColors={emerald:'bg-emerald-500',amber:'bg-amber-500',purple:'bg-purple-500',teal:'bg-teal-500',blue:'bg-blue-500'};
-        grid.innerHTML = items.map(t => `<div class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100 cursor-pointer" onclick="closeExploreOverlay();setTimeout(()=>openTourismModal(${t.id}),200)">
+        grid.innerHTML = items.map(t => `<div class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100 cursor-pointer" onclick="openTourismInExplore(${t.id})">
             <div class="relative h-40 overflow-hidden">
             ${t.image_url?`<img src="${t.image_url}" class="w-full h-full object-cover">`:`<div class="w-full h-full bg-gradient-to-bl from-emerald-400 to-emerald-700 flex items-center justify-center"><span class="iconify text-white text-5xl" data-icon="lucide:compass"></span></div>`}
             <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
@@ -1403,6 +1405,98 @@ function facSetCat(cat) {
     if(window.Iconify) Iconify.scan();
 }
 
+// ── فتح modal من داخل explore overlay (يبقى الـ overlay مفتوحاً) ──
+async function openBeachModalFromExplore(id) {
+    const modal = document.getElementById('beach-modal');
+    document.getElementById('bm-img').src='';
+    document.getElementById('bm-name').textContent='جاري التحميل...';
+    document.getElementById('bm-desc').textContent='';
+    document.getElementById('bm-badges').innerHTML='';
+    document.getElementById('bm-album').innerHTML='';
+    modal.classList.remove('hidden');
+    try {
+        const res = await fetch('/api/beaches?id='+id);
+        const d   = await res.json();
+        if(!d.success) return;
+        const b = d.data;
+        document.getElementById('bm-img').src  = b.image_url||'https://placehold.co/800x300/0ea5e9/fff?text='+encodeURIComponent(b.name);
+        document.getElementById('bm-name').textContent = b.name;
+        document.getElementById('bm-desc').textContent = b.description||'';
+        document.getElementById('bm-badges').innerHTML =
+            (b.is_supervised?'<span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-check"></span>مراقب</span>':'')+
+            (b.season?`<span class="text-xs bg-sky-100 text-sky-700 px-3 py-1 rounded-full font-bold">${b.season}</span>`:'');
+        if(b.albums?.length){
+            document.getElementById('bm-album').innerHTML =
+                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-sky-500" data-icon="lucide:images"></span>معرض الصور ('+b.albums.length+')</h4>'+
+                b.albums.map(a=>`<div class="cursor-pointer group relative overflow-hidden rounded-xl" onclick="openModalLightbox('${a.image_url}','${(a.caption||'').replace(/'/g,"\\'")}')"><img src="${a.image_url}" alt="${a.caption||''}" class="w-full h-24 object-cover group-hover:scale-110 transition-transform duration-300"><div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center"><span class="iconify text-white opacity-0 group-hover:opacity-100 text-2xl transition-opacity" data-icon="lucide:zoom-in"></span></div>${a.caption?`<p class="text-[10px] text-gray-500 mt-1 text-center truncate">${a.caption}</p>`:''}</div>`).join('');
+            if(window.Iconify) Iconify.scan();
+        }
+    } catch{}
+}
+async function openTourismModalFromExplore(id) {
+    const modal=document.getElementById('tourism-modal');
+    document.getElementById('tm-img').src='';
+    document.getElementById('tm-name').textContent='جاري التحميل...';
+    document.getElementById('tm-subtitle').textContent='';
+    document.getElementById('tm-desc').textContent='';
+    document.getElementById('tm-badges').innerHTML='';
+    document.getElementById('tm-album').innerHTML='';
+    modal.classList.remove('hidden');
+    try{
+        const res=await fetch('/api/tourism?id='+id);
+        const d=await res.json();
+        if(!d.success) return;
+        const t=d.data;
+        document.getElementById('tm-img').src=t.image_url||'https://placehold.co/800x300/059669/fff?text='+encodeURIComponent(t.name);
+        document.getElementById('tm-name').textContent=t.name;
+        document.getElementById('tm-subtitle').textContent=t.subtitle||'';
+        document.getElementById('tm-desc').textContent=t.description||'';
+        document.getElementById('tm-badges').innerHTML=
+            (t.badge_text?`<span class="text-xs bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full font-bold">${t.badge_text}</span>`:'')+
+            (t.rating?`<span class="text-xs bg-amber-100 text-amber-700 px-3 py-1 rounded-full font-bold">⭐ ${t.rating}/5</span>`:'')+
+            (t.distance_info?`<span class="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-bold">${t.distance_info}</span>`:'');
+        if(t.albums?.length){
+            document.getElementById('tm-album').innerHTML=
+                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:images"></span>معرض الصور ('+t.albums.length+')</h4>'+
+                t.albums.map(a=>`<div class="cursor-pointer group relative overflow-hidden rounded-xl" onclick="openModalLightbox('${a.image_url}','${(a.caption||'').replace(/'/g,"\\'")}')"><img src="${a.image_url}" alt="${a.caption||''}" class="w-full h-24 object-cover group-hover:scale-110 transition-transform duration-300"><div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center"><span class="iconify text-white opacity-0 group-hover:opacity-100 text-2xl transition-opacity" data-icon="lucide:zoom-in"></span></div>${a.caption?`<p class="text-[10px] text-gray-500 mt-1 text-center truncate">${a.caption}</p>`:''}</div>`).join('');
+            if(window.Iconify) Iconify.scan();
+        }
+    } catch{}
+}
+
+// ── فتح modal الشاطئ/المعلم من داخل explore overlay دون إغلاقه ──
+function openBeachInExplore(id) {
+    // رفع z-index المودال فوق الـ explore overlay (z-300)
+    const modal = document.getElementById('beach-modal');
+    modal.style.zIndex = '400';
+    openBeachModal(id);
+    // عند إغلاق المودال نعيد z-index الأصلي ونبقى في explore
+    const origClose = modal.getAttribute('onclick');
+    modal.setAttribute('data-from-explore', '1');
+}
+function openTourismInExplore(id) {
+    const modal = document.getElementById('tourism-modal');
+    modal.style.zIndex = '400';
+    openTourismModal(id);
+    modal.setAttribute('data-from-explore', '1');
+}
+
+// تعديل دوال الإغلاق لمراعاة العودة لـ explore
+function closeBeachModal(e) {
+    const modal = document.getElementById('beach-modal');
+    if (e && e.target !== modal) return;
+    modal.classList.add('hidden');
+    modal.style.zIndex = '';
+    modal.removeAttribute('data-from-explore');
+}
+function closeTourismModal(e) {
+    const modal = document.getElementById('tourism-modal');
+    if (e && e.target !== modal) return;
+    modal.classList.add('hidden');
+    modal.style.zIndex = '';
+    modal.removeAttribute('data-from-explore');
+}
+
 // ── MODAL LIGHTBOX ──
 function openModalLightbox(src, caption) {
     const lb = document.getElementById('modal-lightbox');
@@ -1462,7 +1556,7 @@ async function openMayorsOverlay() {
                             : `<span class="iconify text-emerald-300 text-3xl" data-icon="lucide:user-circle"></span>`}
                     </div>
                     <div>
-                        <span class="inline-block bg-gray-100 text-gray-500 text-[10px] font-bold px-2 py-0.5 rounded-full mb-2">${mayors.length - 1 - i}#</span>
+    
                         <h4 class="font-extrabold text-gray-800 text-base leading-snug mb-1">${m.name}</h4>
                         <p class="text-gray-400 text-xs flex items-center justify-center gap-1"><span class="iconify" data-icon="lucide:calendar"></span>${m.period}</p>
                     </div>
@@ -1478,6 +1572,29 @@ function closeMayorsOverlay() {
     document.getElementById('mayors-overlay').classList.add('hidden');
     document.getElementById('mayors-overlay').classList.remove('flex');
     document.body.style.overflow = '';
+}
+
+// ── EXPLORE OVERLAY MODAL (يفتح modal فوق explore بدون إغلاقه) ──
+async function openBeachModalInExplore(id){
+    // نرفع z-index الـ modal لفوق explore overlay
+    const modal = document.getElementById('beach-modal');
+    modal.style.zIndex = '400';
+    await openBeachModal(id);
+    // عند إغلاق الـ modal نعيد z-index
+    const origClose = modal.onclick;
+    modal.onclick = function(e){
+        if(e.target===modal){ modal.classList.add('hidden'); modal.style.zIndex=''; }
+    };
+    modal.querySelector('button').onclick = function(){ modal.classList.add('hidden'); modal.style.zIndex=''; };
+}
+async function openTourismModalInExplore(id){
+    const modal = document.getElementById('tourism-modal');
+    modal.style.zIndex = '400';
+    await openTourismModal(id);
+    modal.onclick = function(e){
+        if(e.target===modal){ modal.classList.add('hidden'); modal.style.zIndex=''; }
+    };
+    modal.querySelector('button').onclick = function(){ modal.classList.add('hidden'); modal.style.zIndex=''; };
 }
 
 // ── EXPLORE ──
