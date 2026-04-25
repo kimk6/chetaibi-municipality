@@ -149,24 +149,6 @@
     </div>
 
 
-    <!-- رئيس المجلس -->
-    <div class="bg-gradient-to-l from-emerald-700 to-emerald-800 rounded-2xl p-6 md:p-8 shadow-xl text-white flex flex-col md:flex-row items-center gap-6">
-        <div id="mayor-photo-wrap" class="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border-4 border-white/30">
-            <span id="mayor-photo-placeholder" class="iconify text-4xl text-white" data-icon="lucide:user-circle"></span>
-            <img id="mayor-photo" src="" alt="" class="hidden w-full h-full object-cover">
-        </div>
-        <div class="text-center md:text-right flex-1">
-            <p class="text-emerald-200 text-sm font-semibold mb-1">رئيس المجلس الشعبي البلدي</p>
-            <h3 id="mayor-name" class="text-2xl md:text-3xl font-extrabold mb-2">السيد عثماني سليمان</h3>
-            <p id="mayor-bio" class="text-white/75 text-sm leading-relaxed max-w-xl">يتولى السيد <span id="mayor-name-inline">عثماني سليمان</span> رئاسة المجلس الشعبي البلدي لشطايبي، حيث يعمل على تطوير البلدية وتحسين الخدمات المقدمة للمواطنين ضمن رؤية تنموية شاملة.</p>
-        </div>
-        <div class="flex gap-3 flex-wrap justify-center md:justify-start">
-            <button onclick="openMayorsOverlay()" class="bg-white/15 hover:bg-white/25 backdrop-blur-sm px-5 py-2.5 rounded-xl text-sm font-bold transition-colors border border-white/20"><span class="iconify inline-block ml-1" data-icon="lucide:users"></span>الرؤساء السابقون</button>
-        </div>
-    </div>
-</section>
-
-
     <!-- حالة الطقس والبحر -->
     <!-- ✅ 1: WEATHER — ذكي نهار/ليل -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
@@ -262,6 +244,25 @@
         </div>
     </div>
 </section>
+
+
+    <!-- رئيس المجلس -->
+    <div class="bg-gradient-to-l from-emerald-700 to-emerald-800 rounded-2xl p-6 md:p-8 shadow-xl text-white flex flex-col md:flex-row items-center gap-6">
+        <div id="mayor-photo-wrap" class="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border-4 border-white/30">
+            <span id="mayor-photo-placeholder" class="iconify text-4xl text-white" data-icon="lucide:user-circle"></span>
+            <img id="mayor-photo" src="" alt="" class="hidden w-full h-full object-cover">
+        </div>
+        <div class="text-center md:text-right flex-1">
+            <p class="text-emerald-200 text-sm font-semibold mb-1">رئيس المجلس الشعبي البلدي</p>
+            <h3 id="mayor-name" class="text-2xl md:text-3xl font-extrabold mb-2">السيد عثماني سليمان</h3>
+            <p id="mayor-bio" class="text-white/75 text-sm leading-relaxed max-w-xl">يتولى السيد <span id="mayor-name-inline">عثماني سليمان</span> رئاسة المجلس الشعبي البلدي لشطايبي، حيث يعمل على تطوير البلدية وتحسين الخدمات المقدمة للمواطنين ضمن رؤية تنموية شاملة.</p>
+        </div>
+        <div class="flex gap-3 flex-wrap justify-center md:justify-start">
+            <button onclick="openMayorsOverlay()" class="bg-white/15 hover:bg-white/25 backdrop-blur-sm px-5 py-2.5 rounded-xl text-sm font-bold transition-colors border border-white/20"><span class="iconify inline-block ml-1" data-icon="lucide:users"></span>الرؤساء السابقون</button>
+        </div>
+    </div>
+</section>
+
 
 <!-- NEWS -->
 <section id="news" class="py-14 pattern-bg">
