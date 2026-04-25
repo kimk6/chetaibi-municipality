@@ -602,6 +602,51 @@
 </section>
 
 
+<!-- ── NEWS MODAL ── -->
+<div id="news-modal" class="fixed inset-0 z-[400] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-2 md:p-6" onclick="if(event.target===this)closeNewsModal()">
+    <div class="bg-white w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden max-h-[95vh] flex flex-col">
+        <!-- هيدر -->
+        <div id="nm-header" class="flex-shrink-0 px-5 py-3 flex items-center justify-between border-b border-gray-100">
+            <div class="flex items-center gap-2">
+                <span id="nm-badge" class="text-xs font-bold px-3 py-1 rounded-full"></span>
+                <span id="nm-pin" class="hidden text-xs bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full border border-emerald-200 font-bold">📌 مثبت</span>
+            </div>
+            <button onclick="closeNewsModal()" class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors flex-shrink-0">
+                <span class="iconify" data-icon="lucide:x"></span>
+            </button>
+        </div>
+        <!-- محتوى قابل للتمرير -->
+        <div class="overflow-y-auto flex-1">
+            <!-- صورة رئيسية -->
+            <div id="nm-img-wrap" class="hidden h-56 md:h-72 overflow-hidden">
+                <img id="nm-img" src="" alt="" class="w-full h-full object-cover">
+            </div>
+            <div id="nm-img-placeholder" class="h-32 bg-gradient-to-bl from-emerald-500 to-emerald-700 hidden items-center justify-center">
+                <span class="iconify text-white text-6xl" data-icon="lucide:newspaper"></span>
+            </div>
+            <!-- النص -->
+            <div class="p-5 md:p-8">
+                <div class="flex items-center gap-2 mb-1 text-xs text-gray-400">
+                    <span class="iconify" data-icon="lucide:calendar"></span>
+                    <span id="nm-date"></span>
+                </div>
+                <h2 id="nm-title" class="text-xl md:text-2xl font-extrabold text-gray-900 mb-5 leading-tight"></h2>
+                <div id="nm-content" class="text-gray-600 leading-loose text-sm md:text-base whitespace-pre-wrap"></div>
+                <!-- ── إعلانات رسمية: صور متتالية بعرض كامل ── -->
+                <div id="nm-official-imgs" class="hidden mt-6 space-y-4"></div>
+                <!-- ── غير رسمية: معرض مصغر + lightbox ── -->
+                <div id="nm-album-wrap" class="hidden mt-8 pt-6 border-t border-gray-100">
+                    <h4 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2 text-sm">
+                        <span class="iconify text-emerald-500" data-icon="lucide:images"></span>
+                        معرض الصور <span id="nm-album-count" class="text-gray-400 font-normal"></span>
+                    </h4>
+                    <div id="nm-album-grid" class="grid grid-cols-2 md:grid-cols-3 gap-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- ── MODAL LIGHTBOX ── -->
 <div id="modal-lightbox" class="fixed inset-0 z-[500] bg-black/95 hidden items-center justify-center p-4" onclick="closeModalLightbox()">
     <div class="relative max-w-4xl w-full" onclick="event.stopPropagation()">
@@ -775,7 +820,7 @@
             </div>
         </div>
     </div>
-    <div class="border-t border-gray-800"><div class="max-w-7xl mx-auto px-4 py-5 text-center"><p class="text-xs text-gray-500">© <span id="footer-year"></span> بلدية شطايبي — جميع الحقوق محفوظة</p></div></div>
+    <div class="border-t border-gray-800"><div class="max-w-7xl mx-auto px-4 py-5"><div class="flex flex-col md:flex-row items-center justify-between gap-1"><p class="text-xs text-gray-500">© <span id="footer-year"></span> بلدية شطايبي — جميع الحقوق محفوظة</p><p class="text-xs text-gray-600 italic">تم التطوير بجهود الكفاءات الداخلية لبلدية شطايبي</p></div></div></div>
 </footer>
 
 <button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 left-6 z-50 w-12 h-12 bg-emerald-600/70 hover:bg-emerald-700/80 text-white rounded-full shadow-xl flex items-center justify-center transition-all opacity-0 translate-y-4 pointer-events-none backdrop-blur-sm">
@@ -994,7 +1039,7 @@ async function loadNews(){
                 const pinBorder=isPinned?'border-emerald-300 ring-1 ring-emerald-200':'border-gray-100';
                 const labelHtml=n.custom_label&&n.custom_label.trim()
                     ?`<span class="inline-block ${s.badge} text-xs font-bold px-3 py-1 rounded-full">${n.custom_label}</span>`:'';
-                return `<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border ${pinBorder} relative">
+                return `<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border ${pinBorder} relative cursor-pointer" onclick="openNewsModal(${n.id})">
                     ${img?`<div class="h-44 overflow-hidden relative">${pinBadge}<img src="${img}" alt="${n.title}" class="w-full h-full object-cover"></div>`:`<div class="h-44 bg-gradient-to-bl ${s.grad} flex items-center justify-center relative">${pinBadge}<span class="iconify text-white text-6xl" data-icon="${s.icon}"></span></div>`}
                     <div class="p-4">
                         <div class="flex items-center gap-2 mb-2 flex-wrap">${labelHtml}${pinLabel}</div>
@@ -1002,7 +1047,7 @@ async function loadNews(){
                         <p class="text-xs text-gray-500 mb-3 leading-relaxed">${(n.content||'').substring(0,90)}...</p>
                         <div class="flex items-center justify-between">
                             <span class="text-xs text-gray-400 flex items-center gap-1"><span class="iconify" data-icon="lucide:calendar"></span>${n.date}</span>
-                            <a href="/news/${n.id}" class="text-emerald-600 text-xs font-bold hover:text-emerald-700">اقرأ المزيد ←</a>
+                            <button onclick="openNewsModal(${n.id})" class="text-emerald-600 text-xs font-bold hover:text-emerald-700">اقرأ المزيد ←</button>
                         </div>
                     </div>
                 </article>`;
@@ -1246,6 +1291,13 @@ function switchGuideTab(tab){
     document.getElementById('gpanel-'+tab).classList.remove('hidden');
 }
 
+// ── NEWS MODAL ──
+const NM_CAT = {
+    official: { label: 'إعلان رسمي',  bg: 'bg-red-100 text-red-700'        },
+    activity: { label: 'نشاط بلدي',   bg: 'bg-emerald-100 text-emerald-700' },
+    social:   { label: 'ركن المجتمع', bg: 'bg-purple-100 text-purple-700'   },
+};
+
 // ── EXPLORE OVERLAY (شواطئ + معالم) ──
 let exploreType = 'beaches', explorePage = 1;
 const EXPLORE_PER = 12;
@@ -1403,6 +1455,83 @@ function facSetCat(cat) {
             <div class="flex flex-wrap gap-2">${item.tags.map(t=>`<span class="text-xs bg-${col}-50 text-${col}-700 border border-${col}-200 px-3 py-1 rounded-full font-semibold">${t}</span>`).join('')}</div>
         </div>`).join('');
     if(window.Iconify) Iconify.scan();
+}
+
+// ── NEWS MODAL ──
+const NM_STYLES = {
+    official: { badge: 'bg-red-100 text-red-700',        grad: 'from-red-500 to-red-700'           },
+    activity: { badge: 'bg-emerald-100 text-emerald-700', grad: 'from-emerald-500 to-emerald-700'  },
+    social:   { badge: 'bg-purple-100 text-purple-700',   grad: 'from-purple-500 to-purple-700'    },
+};
+const NM_LABELS = { official:'إعلان رسمي', activity:'نشاط بلدي', social:'ركن المجتمع' };
+
+async function openNewsModal(id) {
+    const modal = document.getElementById('news-modal');
+    document.getElementById('nm-title').textContent   = '';
+    document.getElementById('nm-content').textContent = '';
+    document.getElementById('nm-date').textContent    = '';
+    document.getElementById('nm-img-wrap').classList.add('hidden');
+    document.getElementById('nm-img-placeholder').classList.remove('hidden');
+    document.getElementById('nm-img-placeholder').classList.add('flex');
+    document.getElementById('nm-official-imgs').classList.add('hidden');
+    document.getElementById('nm-official-imgs').innerHTML = '';
+    document.getElementById('nm-album-wrap').classList.add('hidden');
+    document.getElementById('nm-album-grid').innerHTML = '';
+    document.getElementById('nm-pin').classList.add('hidden');
+    modal.classList.remove('hidden'); modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+    try {
+        const res  = await fetch('/api/news');
+        const data = await res.json();
+        const n    = (data.data || []).find(x => x.id == id);
+        if (!n) return;
+        const s     = NM_STYLES[n.category] || NM_STYLES.official;
+        const label = (n.custom_label && n.custom_label.trim()) ? n.custom_label : (NM_LABELS[n.category] || '');
+        document.getElementById('nm-badge').textContent = label;
+        document.getElementById('nm-badge').className   = `text-xs font-bold px-3 py-1 rounded-full ${s.badge}`;
+        if (n.is_pinned) document.getElementById('nm-pin').classList.remove('hidden');
+        document.getElementById('nm-date').textContent    = n.date || '';
+        document.getElementById('nm-title').textContent   = n.title;
+        document.getElementById('nm-content').textContent = n.content || '';
+        if (n.image_url) {
+            document.getElementById('nm-img').src = n.image_url;
+            document.getElementById('nm-img-wrap').classList.remove('hidden');
+            document.getElementById('nm-img-placeholder').classList.add('hidden');
+            document.getElementById('nm-img-placeholder').classList.remove('flex');
+        }
+        let albums = [];
+        try { albums = JSON.parse(n.album_urls || '[]'); } catch {}
+        if (albums.length) {
+            if (n.category === 'official') {
+                // إعلانات رسمية: صور متتالية بعرض كامل تحت النص
+                const wrap = document.getElementById('nm-official-imgs');
+                wrap.classList.remove('hidden');
+                wrap.innerHTML = albums.map(u =>
+                    `<div class="w-full rounded-xl overflow-hidden shadow-md cursor-zoom-in" onclick="openModalLightbox('${u}','')">
+                        <img src="${u}" class="w-full object-contain max-h-[70vh]">
+                    </div>`
+                ).join('');
+            } else {
+                // نشاطات / مجتمع: grid مصغر + lightbox
+                document.getElementById('nm-album-wrap').classList.remove('hidden');
+                document.getElementById('nm-album-count').textContent = `(${albums.length})`;
+                document.getElementById('nm-album-grid').innerHTML = albums.map(u =>
+                    `<div class="rounded-xl overflow-hidden shadow cursor-pointer group relative" onclick="openModalLightbox('${u}','')">
+                        <img src="${u}" class="w-full h-36 object-cover group-hover:scale-110 transition-transform duration-300">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                            <span class="iconify text-white opacity-0 group-hover:opacity-100 text-2xl" data-icon="lucide:zoom-in"></span>
+                        </div>
+                    </div>`
+                ).join('');
+                if (window.Iconify) Iconify.scan();
+            }
+        }
+    } catch { document.getElementById('nm-title').textContent = 'تعذر تحميل الخبر'; }
+}
+function closeNewsModal() {
+    document.getElementById('news-modal').classList.add('hidden');
+    document.getElementById('news-modal').classList.remove('flex');
+    document.body.style.overflow = '';
 }
 
 // ── فتح modal من داخل explore overlay (يبقى الـ overlay مفتوحاً) ──
@@ -1655,7 +1784,7 @@ async function renderOverlay() {
             const img = n.image_url
                 ? `<div class="h-44 overflow-hidden"><img src="${n.image_url}" alt="${n.title}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"></div>`
                 : `<div class="h-44 bg-gradient-to-bl ${m.grad} flex items-center justify-center"><span style="font-size:2.5rem">📰</span></div>`;
-            return `<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100 cursor-pointer" onclick="window.location='/news/${n.id}'">
+            return `<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100 cursor-pointer" onclick="openNewsModal(${n.id})">
                 ${img}
                 <div class="p-4">
                     <div class="flex items-center gap-2 mb-2 flex-wrap"><span class="inline-block ${m.badge} text-xs font-bold px-3 py-1 rounded-full">${label}</span>${pin}</div>
