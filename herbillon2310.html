@@ -132,8 +132,16 @@
 
         <!-- NEWS -->
         <div id="section-news" class="content-section fade-in">
+            <!-- زر فتح المحرر -->
+            <div class="mb-4 flex justify-end">
+                <button onclick="toggleFormPanel('news')" id="btn-open-news"
+                        class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-md">
+                    <span class="iconify text-lg" data-icon="lucide:plus-circle"></span>
+                    إضافة خبر جديد
+                </button>
+            </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24">
+                <div id="form-panel-news" class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24 hidden">
                     <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2">
                         <span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span>
                         <span id="news-form-title">إضافة خبر جديد</span>
@@ -220,8 +228,16 @@
 
         <!-- SERVICES -->
         <div id="section-services" class="content-section hidden fade-in">
+            <!-- زر فتح المحرر -->
+            <div class="mb-4 flex justify-end">
+                <button onclick="toggleFormPanel('services')" id="btn-open-services"
+                        class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-md">
+                    <span class="iconify text-lg" data-icon="lucide:plus-circle"></span>
+                    إضافة خدمة
+                </button>
+            </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24">
+                <div id="form-panel-services" class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24 hidden">
                     <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span><span id="services-form-title">إضافة خدمة</span></h3>
                     <input type="hidden" id="services-edit-id" value="">
                     <div class="space-y-3">
@@ -242,8 +258,16 @@
 
         <!-- ARCHIVES -->
         <div id="section-archives" class="content-section hidden fade-in">
+            <!-- زر فتح المحرر -->
+            <div class="mb-4 flex justify-end">
+                <button onclick="toggleFormPanel('archives')" id="btn-open-archives"
+                        class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-md">
+                    <span class="iconify text-lg" data-icon="lucide:plus-circle"></span>
+                    إضافة صورة أرشيفية
+                </button>
+            </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24">
+                <div id="form-panel-archives" class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24 hidden">
                     <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span><span id="archives-form-title">إضافة صورة أرشيفية</span></h3>
                     <input type="hidden" id="archives-edit-id" value="">
                     <div class="space-y-3">
@@ -285,8 +309,16 @@
 
         <!-- TOURISM -->
         <div id="section-tourism" class="content-section hidden fade-in">
+            <!-- زر فتح المحرر -->
+            <div class="mb-4 flex justify-end">
+                <button onclick="toggleFormPanel('tourism')" id="btn-open-tourism"
+                        class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-md">
+                    <span class="iconify text-lg" data-icon="lucide:plus-circle"></span>
+                    إضافة معلم سياحي
+                </button>
+            </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24">
+                <div id="form-panel-tourism" class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24 hidden">
                     <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span><span id="tourism-form-title">إضافة معلم سياحي</span></h3>
                     <input type="hidden" id="tourism-edit-id" value="">
                     <div class="space-y-3">
@@ -321,8 +353,16 @@
 
         <!-- MAYORS -->
         <div id="section-mayors" class="content-section hidden fade-in">
+            <!-- زر فتح المحرر -->
+            <div class="mb-4 flex justify-end">
+                <button onclick="toggleFormPanel('mayors')" id="btn-open-mayors"
+                        class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-md">
+                    <span class="iconify text-lg" data-icon="lucide:plus-circle"></span>
+                    إضافة رئيس
+                </button>
+            </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24">
+                <div id="form-panel-mayors" class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24 hidden">
                     <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span><span id="mayors-form-title">إضافة رئيس</span></h3>
                     <input type="hidden" id="mayors-edit-id" value="">
                     <div class="space-y-3">
@@ -352,9 +392,17 @@
 
         <!-- ===== BEACHES ===== -->
         <div id="section-beaches" class="content-section hidden fade-in">
+            <!-- زر فتح المحرر -->
+            <div class="mb-4 flex justify-end">
+                <button onclick="toggleFormPanel('beaches')" id="btn-open-beaches"
+                        class="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-md">
+                    <span class="iconify text-lg" data-icon="lucide:plus-circle"></span>
+                    إضافة شاطئ
+                </button>
+            </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- نموذج إضافة -->
-                <div class="lg:col-span-1 bg-white rounded-2xl p-5 shadow-md border border-gray-100 h-fit sticky top-24">
+                <div id="form-panel-beaches" class="lg:col-span-1 bg-white rounded-2xl p-5 shadow-md border border-gray-100 h-fit sticky top-24 hidden">
                     <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2">
                         <span class="iconify text-sky-500" data-icon="lucide:plus-circle"></span>
                         <span id="beaches-form-title">إضافة شاطئ</span>
@@ -432,14 +480,22 @@ function loadTab(tab){
 }
 
 // ✅ 4/5: Mobile form toggle
-function toggleNewsForm(btn){
-    const panel=document.querySelector('#section-news .form-panel');
-    panel.classList.toggle('mobile-open');
-    const isOpen=panel.classList.contains('mobile-open');
-    btn.innerHTML=isOpen
-        ?'<span class="iconify text-lg" data-icon="lucide:x"></span><span>إغلاق</span>'
-        :'<span class="iconify text-lg" data-icon="lucide:plus-circle"></span><span>إضافة خبر جديد</span>';
+// دالة موحدة لفتح/إغلاق المحرر
+function toggleFormPanel(sec, forceOpen) {
+    const panel = document.getElementById('form-panel-' + sec);
+    const btn   = document.getElementById('btn-open-' + sec);
+    if (!panel) return;
+    const willOpen = forceOpen !== undefined ? forceOpen : panel.classList.contains('hidden');
+    panel.classList.toggle('hidden', !willOpen);
+    if (btn) {
+        btn.innerHTML = willOpen
+            ? '<span class="iconify text-lg" data-icon="lucide:x"></span> إغلاق'
+            : `<span class="iconify text-lg" data-icon="lucide:plus-circle"></span> ${btn.dataset.label || 'إضافة'}`;
+    }
+    if (willOpen) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+// للتوافق مع الكود القديم
+function toggleNewsForm(btn){ toggleFormPanel('news'); }
 
 // ═══════════════════════════════
 // UPLOAD HELPERS
@@ -619,7 +675,8 @@ async function editNews(id){
             document.getElementById('news-featured-widget').classList.add('has-image');
         }
         document.getElementById('news-form-title').textContent='تعديل الخبر';
-        document.getElementById('news-save-btn').textContent='تحديث';
+
+    toggleFormPanel('news', true);        document.getElementById('news-save-btn').textContent='تحديث';
         document.getElementById('news-cancel-btn').classList.remove('hidden');
         window.scrollTo({top:0,behavior:'smooth'});
     } catch {}
@@ -634,7 +691,7 @@ function cancelNewsEdit(){
     const clEl3=document.getElementById('news-custom-label');
     if(clEl3) clEl3.value='';
     newsAlbumUrls=[]; document.getElementById('news-album-urls').value='[]'; renderAlbum();
-    document.getElementById('news-form-title').textContent='إضافة خبر جديد';
+    document.getElementById('news-form-title').textContent='إضافة خبر جديد'; toggleFormPanel('news', false);
     document.getElementById('news-save-btn').textContent='حفظ';
     document.getElementById('news-cancel-btn').classList.add('hidden');
 }
@@ -671,9 +728,10 @@ async function saveService(){
 async function editService(id){
     const res=await fetch('/api/services',{headers:authHeaders()});const d=await res.json();const s=d.data.find(x=>x.id==id);if(!s)return;
     document.getElementById('services-edit-id').value=s.id;document.getElementById('services-name').value=s.service_name;document.getElementById('services-docs').value=s.required_docs;document.getElementById('services-pdf').value=s.pdf_link||'';document.getElementById('services-color').value=s.color||'blue';document.getElementById('services-icon').value=s.icon||'file-text';
-    document.getElementById('services-form-title').textContent='تعديل الخدمة';document.getElementById('services-cancel-btn').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'});
-}
-function cancelServiceEdit(){['services-edit-id','services-name','services-docs','services-pdf'].forEach(id=>document.getElementById(id).value='');document.getElementById('services-color').value='blue';document.getElementById('services-icon').value='file-text';document.getElementById('services-form-title').textContent='إضافة خدمة';document.getElementById('services-cancel-btn').classList.add('hidden');}
+    document.getElementById('services-form-title').textContent='تعديل الخدمة';document.getElementById('services-cancel-btn').classList.remove('hidden');
+
+    toggleFormPanel('services', true);}
+function cancelServiceEdit(){['services-edit-id','services-name','services-docs','services-pdf'].forEach(id=>document.getElementById(id).value='');document.getElementById('services-color').value='blue';document.getElementById('services-icon').value='file-text';document.getElementById('services-form-title').textContent='إضافة خدمة'; toggleFormPanel('services', false);document.getElementById('services-cancel-btn').classList.add('hidden');}
 async function deleteService(id){if(!confirm('حذف؟'))return;try{await fetch('/api/services?id='+id,{method:'DELETE',headers:authHeaders()});adminToast('تم الحذف');loadServices();}catch{adminToast('تعذر الحذف');}}
 
 // ═══════════════════════════════
@@ -719,12 +777,13 @@ async function editArchive(id){
     document.getElementById('archives-old').value=a.image_old_url||'';document.getElementById('archives-new').value=a.image_new_url||'';
     document.getElementById('archives-old-url-manual').value=a.image_old_url||'';document.getElementById('archives-new-url-manual').value=a.image_new_url||'';
     ['old','new'].forEach(s=>{const url=s==='old'?a.image_old_url:a.image_new_url;if(url){document.getElementById('archives-'+s+'-placeholder').classList.add('hidden');document.getElementById('archives-'+s+'-img').src=url;document.getElementById('archives-'+s+'-preview').classList.remove('hidden');document.getElementById('archives-'+s+'-widget').classList.add('has-image');}});
-    document.getElementById('archives-form-title').textContent='تعديل الصورة الأرشيفية';document.getElementById('archives-cancel-btn').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'});
-}
+    document.getElementById('archives-form-title').textContent='تعديل الصورة الأرشيفية';document.getElementById('archives-cancel-btn').classList.remove('hidden');
+
+    toggleFormPanel('archives', true);}
 function cancelArchiveEdit(){
     ['archives-edit-id','archives-title','archives-desc'].forEach(id=>document.getElementById(id).value='');
     clearWidget('archives-old','archives-old','archives-old-url-manual');clearWidget('archives-new','archives-new','archives-new-url-manual');
-    document.getElementById('archives-form-title').textContent='إضافة صورة أرشيفية';document.getElementById('archives-cancel-btn').classList.add('hidden');
+    document.getElementById('archives-form-title').textContent='إضافة صورة أرشيفية'; toggleFormPanel('archives', false);document.getElementById('archives-cancel-btn').classList.add('hidden');
 }
 async function deleteArchive(id){if(!confirm('حذف؟'))return;try{await fetch('/api/archives?id='+id,{method:'DELETE',headers:authHeaders()});adminToast('تم الحذف');loadArchives();}catch{adminToast('تعذر الحذف');}}
 
@@ -774,13 +833,14 @@ async function editTourism(id){
     const res=await fetch('/api/tourism',{headers:authHeaders()});const d=await res.json();const t=d.data.find(x=>x.id==id);if(!t)return;
     document.getElementById('tourism-edit-id').value=t.id;document.getElementById('tourism-name').value=t.name;document.getElementById('tourism-subtitle').value=t.subtitle||'';document.getElementById('tourism-desc').value=t.description||'';document.getElementById('tourism-image').value=t.image_url||'';document.getElementById('tourism-rating').value=t.rating||'4.5';document.getElementById('tourism-distance').value=t.distance_info||'';document.getElementById('tourism-badge').value=t.badge_text||'';document.getElementById('tourism-badge-color').value=t.badge_color||'emerald';document.getElementById('tourism-image-manual').value=t.image_url||'';
     if(t.image_url){document.getElementById('tourism-img-placeholder').classList.add('hidden');document.getElementById('tourism-img-img').src=t.image_url;document.getElementById('tourism-img-preview').classList.remove('hidden');document.getElementById('tourism-img-widget').classList.add('has-image');}
-    document.getElementById('tourism-form-title').textContent='تعديل المعلم';document.getElementById('tourism-cancel-btn').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'});
-}
+    document.getElementById('tourism-form-title').textContent='تعديل المعلم';document.getElementById('tourism-cancel-btn').classList.remove('hidden');
+
+    toggleFormPanel('tourism', true);}
 function cancelTourismEdit(){
     ['tourism-edit-id','tourism-name','tourism-subtitle','tourism-desc','tourism-image','tourism-image-manual','tourism-distance','tourism-badge'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('tourism-rating').value='4.5';document.getElementById('tourism-badge-color').value='emerald';
     clearWidget('tourism-img','tourism-image','tourism-image-manual');
-    document.getElementById('tourism-form-title').textContent='إضافة معلم سياحي';document.getElementById('tourism-cancel-btn').classList.add('hidden');
+    document.getElementById('tourism-form-title').textContent='إضافة معلم سياحي'; toggleFormPanel('tourism', false);document.getElementById('tourism-cancel-btn').classList.add('hidden');
 }
 async function deleteTourism(id){if(!confirm('حذف؟'))return;try{await fetch('/api/tourism?id='+id,{method:'DELETE',headers:authHeaders()});adminToast('تم الحذف');loadTourism();}catch{adminToast('تعذر الحذف');}}
 
@@ -814,12 +874,13 @@ async function editMayor(id){
     const res=await fetch('/api/mayors',{headers:authHeaders()});const d=await res.json();const m=d.data.find(x=>x.id==id);if(!m)return;
     document.getElementById('mayors-edit-id').value=m.id;document.getElementById('mayors-name').value=m.name;document.getElementById('mayors-period').value=m.period;document.getElementById('mayors-image').value=m.image_url||'';document.getElementById('mayors-image-manual').value=m.image_url||'';
     if(m.image_url){document.getElementById('mayors-img-placeholder').classList.add('hidden');document.getElementById('mayors-img-img').src=m.image_url;document.getElementById('mayors-img-preview').classList.remove('hidden');document.getElementById('mayors-img-widget').classList.add('has-image');}
-    document.getElementById('mayors-form-title').textContent='تعديل الرئيس';document.getElementById('mayors-cancel-btn').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'});
-}
+    document.getElementById('mayors-form-title').textContent='تعديل الرئيس';document.getElementById('mayors-cancel-btn').classList.remove('hidden');
+
+    toggleFormPanel('mayors', true);}
 function cancelMayorEdit(){
     ['mayors-edit-id','mayors-name','mayors-period','mayors-image','mayors-image-manual'].forEach(id=>document.getElementById(id).value='');
     clearWidget('mayors-img','mayors-image','mayors-image-manual');
-    document.getElementById('mayors-form-title').textContent='إضافة رئيس';document.getElementById('mayors-cancel-btn').classList.add('hidden');
+    document.getElementById('mayors-form-title').textContent='إضافة رئيس'; toggleFormPanel('mayors', false);document.getElementById('mayors-cancel-btn').classList.add('hidden');
 }
 async function deleteMayor(id){if(!confirm('حذف؟'))return;try{await fetch('/api/mayors?id='+id,{method:'DELETE',headers:authHeaders()});adminToast('تم الحذف');loadMayors();}catch{adminToast('تعذر الحذف');}}
 
@@ -888,7 +949,8 @@ async function editBeach(id){
     document.getElementById('beaches-season').value=b.season||'صيف';
     if(b.image_url){document.getElementById('beaches-img-placeholder').classList.add('hidden');document.getElementById('beaches-img-img').src=b.image_url;document.getElementById('beaches-img-preview').classList.remove('hidden');document.getElementById('beaches-img-widget').classList.add('has-image');}
     document.getElementById('beaches-form-title').textContent='تعديل الشاطئ';
-    document.getElementById('beaches-cancel-btn').classList.remove('hidden');
+
+    toggleFormPanel('beaches', true);    document.getElementById('beaches-cancel-btn').classList.remove('hidden');
     window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -897,7 +959,7 @@ function cancelBeachEdit(){
     document.getElementById('beaches-season').value='صيف';
     document.getElementById('beaches-supervised').checked=true;
     clearWidget('beaches-img','beaches-image','beaches-image-manual');
-    document.getElementById('beaches-form-title').textContent='إضافة شاطئ';
+    document.getElementById('beaches-form-title').textContent='إضافة شاطئ'; toggleFormPanel('beaches', false);
     document.getElementById('beaches-cancel-btn').classList.add('hidden');
 }
 
