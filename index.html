@@ -297,11 +297,11 @@
         </div>
         <div>
             <h3 class="text-2xl font-extrabold text-gray-900 text-center mb-10"><span class="iconify inline-block ml-2 text-emerald-500" data-icon="lucide:images"></span>أرشيف الصور<span class="block text-base font-semibold text-gray-500 mt-1">شطايبي بين الأمس واليوم</span></h3>
-            <!-- 3 صور ثابتة في الواجهة -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-                <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100"><div class="grid grid-cols-2"><div class="relative"><img src="https://picsum.photos/seed/herbillon-old1/400/300.jpg" alt="قديماً" class="w-full h-48 object-cover vintage-filter"><span class="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded-lg">قديماً</span></div><div class="relative"><img src="https://picsum.photos/seed/chetaibi-new1/400/300.jpg" alt="حديثاً" class="w-full h-48 object-cover"><span class="absolute bottom-2 right-2 bg-emerald-600/80 text-white text-xs px-2 py-1 rounded-lg">اليوم</span></div></div><div class="p-4 text-center"><p class="font-bold text-gray-700 text-sm">المدخل الرئيسي للبلدية</p></div></div>
-                <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100"><div class="grid grid-cols-2"><div class="relative"><img src="https://picsum.photos/seed/herbillon-old2/400/300.jpg" alt="قديماً" class="w-full h-48 object-cover vintage-filter"><span class="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded-lg">قديماً</span></div><div class="relative"><img src="https://picsum.photos/seed/chetaibi-new2/400/300.jpg" alt="حديثاً" class="w-full h-48 object-cover"><span class="absolute bottom-2 right-2 bg-emerald-600/80 text-white text-xs px-2 py-1 rounded-lg">اليوم</span></div></div><div class="p-4 text-center"><p class="font-bold text-gray-700 text-sm">الشارع المحاذي للبحر</p></div></div>
-                <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100"><div class="grid grid-cols-2"><div class="relative"><img src="https://picsum.photos/seed/herbillon-old3/400/300.jpg" alt="قديماً" class="w-full h-48 object-cover vintage-filter"><span class="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded-lg">قديماً</span></div><div class="relative"><img src="https://picsum.photos/seed/chetaibi-new3/400/300.jpg" alt="حديثاً" class="w-full h-48 object-cover"><span class="absolute bottom-2 right-2 bg-emerald-600/80 text-white text-xs px-2 py-1 rounded-lg">اليوم</span></div></div><div class="p-4 text-center"><p class="font-bold text-gray-700 text-sm">الحي السكني المركزي</p></div></div>
+            <!-- بطاقات ديناميكية من DB -->
+            <div id="archive-preview-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+                <div class="col-span-full text-center py-10 text-gray-300">
+                    <span class="iconify text-4xl animate-spin inline-block" data-icon="lucide:loader-2"></span>
+                </div>
             </div>
             <!-- ✅ 6: زر صفحة الأرشيف الكاملة -->
             <div class="text-center">
@@ -1753,7 +1753,7 @@ async function renderArchives() {
         // تصنيف: compare = category 'compare' أو بدون category، historic = category 'historic'
         const filteredItems = all_imgs.filter(a => archCat === 'historic'
             ? (!a.image_old_url || a.image_old_url === '')
-            : (a.image_old_url && a.image_old_url !== ''));
+            : (a.image_old_url && a.image_old_url !== '' && a.image_new_url && a.image_new_url !== ''));
         const total = filteredItems.length;
         const totalPages = Math.ceil(total/ARCH_PER)||1;
         archPage = Math.min(archPage, totalPages);
@@ -1893,7 +1893,44 @@ async function renderOverlay() {
 }
 function overlayGoPage(p) { overlayPage=p; renderOverlay(); document.getElementById('news-overlay').scrollTo(0,0); }
 
-fetchWeather(); fetchSeaState(); loadNews(); loadTourism(); loadBeaches(); loadCurrentMayor();
+// ── ARCHIVE PREVIEW (واجهة: آخر 3 مقارنات من DB) ──
+async function loadArchivePreview() {
+    const grid = document.getElementById('archive-preview-grid');
+    if (!grid) return;
+    try {
+        const res  = await fetch('/api/archives');
+        const data = await res.json();
+        const all  = Array.isArray(data.data) ? data.data : [];
+        const compares = all
+            .filter(a => a.image_old_url && a.image_old_url !== '' && a.image_new_url && a.image_new_url !== '')
+            .slice(-3).reverse();
+        if (!compares.length) {
+            grid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-10">لا توجد صور مقارنة بعد</p>';
+            return;
+        }
+        grid.innerHTML = compares.map(a => `
+            <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+                <div class="grid grid-cols-2">
+                    <div class="relative cursor-pointer" onclick="openModalLightbox('${a.image_old_url}','الأمس — ${(a.title||'').replace(/'/g,"\\'")}')">
+                        <img src="${a.image_old_url}" alt="قديماً" class="w-full h-48 object-cover vintage-filter">
+                        <span class="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded-lg">الأمس</span>
+                    </div>
+                    <div class="relative cursor-pointer" onclick="openModalLightbox('${a.image_new_url}','اليوم — ${(a.title||'').replace(/'/g,"\\'")}')">
+                        <img src="${a.image_new_url}" alt="حديثاً" class="w-full h-48 object-cover">
+                        <span class="absolute bottom-2 right-2 bg-emerald-600/80 text-white text-xs px-2 py-1 rounded-lg">اليوم</span>
+                    </div>
+                </div>
+                <div class="p-4 text-center">
+                    <p class="font-bold text-gray-700 text-sm">${a.title||''}</p>
+                    ${a.description ? `<p class="text-xs text-gray-400 mt-1">${a.description}</p>` : ''}
+                </div>
+            </div>`).join('');
+    } catch(e) {
+        grid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-10">تعذر تحميل الصور</p>';
+    }
+}
+
+fetchWeather(); fetchSeaState(); loadNews(); loadTourism(); loadBeaches(); loadCurrentMayor(); loadArchivePreview();
 setInterval(()=>{fetchWeather();fetchSeaState();},900000);
 // ✅ سنة تلقائية
 document.getElementById('footer-year').textContent = new Date().getFullYear();
