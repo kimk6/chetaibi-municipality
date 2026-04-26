@@ -7,7 +7,7 @@ export async function onRequestGet(context) {
     try {
         const { results } = await context.env.DB.prepare('SELECT * FROM mayors').all();
 
-        // ترتيب حسب سنة الفترة: الرئيس الحالي أولاً (فترته تحتوي "الآن" أو أحدث سنة)
+        // ترتيب حسب سنة الفترة: من يملك "الآن" أو أحدث سنة = أول
         function extractYears(period) {
             const str = period || '';
             const isCurrent = /الآن|الحالي/i.test(str);
