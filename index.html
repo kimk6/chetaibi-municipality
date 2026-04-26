@@ -1245,20 +1245,9 @@ async function loadCurrentMayor(){
         const res=await fetch('/api/mayors');
         const data=await res.json();
         if(!data.success||!data.data||!data.data.length) return;
-        // ترتيب حسب التاريخ: الرئيس الحالي = صاحب أحدث فترة
-        function extractYears(period){
-            const str=period||'';
-            const isCurrent=/الآن|الحالي|présent|present|current/i.test(str);
-            const years=[...str.matchAll(/(\d{4})/g)].map(m=>parseInt(m[1],10));
-            const startYear=years.length>0?years[0]:0;
-            const endYear=isCurrent?9999:(years.length>1?years[years.length-1]:startYear);
-            return{startYear,endYear};
-        }
-        const sorted=[...data.data].sort((a,b)=>{
-            const ya=extractYears(a.period),yb=extractYears(b.period);
-            if(yb.endYear!==ya.endYear) return yb.endYear-ya.endYear;
-            return yb.startYear-ya.startYear;
-        });
+        // ترتيب حسب التاريخ لتحديد الرئيس الحالي بدقة
+        function _ey(p){const s=p||'';const c=/الآن|الحالي/i.test(s);const y=[...s.matchAll(/(\d{4})/g)].map(x=>+x[1]);return{s:y[0]||0,e:c?9999:(y[y.length-1]||y[0]||0)};}
+        const sorted=[...data.data].sort((a,b)=>{const ya=_ey(a.period),yb=_ey(b.period);return yb.e!==ya.e?yb.e-ya.e:yb.s-ya.s;});
         const m=sorted[0];
         // تحديث الاسم
         document.getElementById('mayor-name').textContent='السيد '+m.name;
@@ -1655,25 +1644,15 @@ async function openMayorsOverlay() {
     try {
         const res  = await fetch('/api/mayors');
         const data = await res.json();
-        const rawMayors = (data.data || []);
-        if (!rawMayors.length) {
+        const mayors = (data.data || []);
+        if (!mayors.length) {
             list.innerHTML = '<p class="col-span-full text-center text-gray-400 py-16">لا توجد بيانات بعد</p>';
             return;
         }
-        // ترتيب حسب التاريخ: الرئيس الحالي = صاحب أحدث فترة
-        function extractYears(period){
-            const str=period||'';
-            const isCurrent=/الآن|الحالي|présent|present|current/i.test(str);
-            const years=[...str.matchAll(/(\d{4})/g)].map(m=>parseInt(m[1],10));
-            const startYear=years.length>0?years[0]:0;
-            const endYear=isCurrent?9999:(years.length>1?years[years.length-1]:startYear);
-            return{startYear,endYear};
-        }
-        const mayors=[...rawMayors].sort((a,b)=>{
-            const ya=extractYears(a.period),yb=extractYears(b.period);
-            if(yb.endYear!==ya.endYear) return yb.endYear-ya.endYear;
-            return yb.startYear-ya.startYear;
-        });
+        // ترتيب حسب التاريخ لتحديد الرئيس الحالي بدقة
+        function _ey(p){const s=p||'';const c=/الآن|الحالي/i.test(s);const y=[...s.matchAll(/(\d{4})/g)].map(x=>+x[1]);return{s:y[0]||0,e:c?9999:(y[y.length-1]||y[0]||0)};}
+        mayors.sort((a,b)=>{const ya=_ey(a.period),yb=_ey(b.period);return yb.e!==ya.e?yb.e-ya.e:yb.s-ya.s;});
+        // أول عنصر بعد الترتيب = الرئيس الحالي، الباقون = سابقون
         const current  = mayors[0];
         const previous = mayors.slice(1);
         let html = '';
