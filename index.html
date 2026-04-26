@@ -100,7 +100,7 @@
                 <div class="w-10 h-10 rounded-full overflow-hidden shadow flex-shrink-0">
                     <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo.webp" alt="شعار" class="w-full h-full object-cover">
                 </div>
-                <span class="text-white font-bold text-base">بلدية شطايبي</span>
+                <span class="text-white font-extrabold text-lg">بلدية شطايبي</span>
             </div>
             <div class="md:hidden w-10"></div>
         </div>
@@ -1742,7 +1742,6 @@ async function openTourismModalInExplore(id){
 }
 
 // ── EXPLORE ──
-fetchWeather(); fetchSeaState(); loadNews(); loadTourism(); loadBeaches(); loadCurrentMayor();
 const CAT_META = {
     official: { label: 'إعلانات رسمية',  badge: 'bg-red-100 text-red-700',      grad: 'from-red-500 to-red-700'        },
     activity: { label: 'نشاطات البلدية', badge: 'bg-emerald-100 text-emerald-700', grad: 'from-emerald-500 to-emerald-700' },
@@ -1801,7 +1800,10 @@ async function renderOverlay() {
             const img = n.image_url
                 ? `<div class="h-44 overflow-hidden"><img src="${n.image_url}" alt="${n.title}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"></div>`
                 : `<div class="h-44 bg-gradient-to-bl ${m.grad} flex items-center justify-center"><span style="font-size:2.5rem">📰</span></div>`;
-            return `<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100 cursor-pointer" onclick="openNewsModal(${n.id})">
+            const clickAction = overlayCat === 'official'
+                ? `window.location='/news/${n.id}'`
+                : `openNewsModal(${n.id})`;
+            return `<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100 cursor-pointer" onclick="${clickAction}">
                 ${img}
                 <div class="p-4">
                     <div class="flex items-center gap-2 mb-2 flex-wrap"><span class="inline-block ${m.badge} text-xs font-bold px-3 py-1 rounded-full">${label}</span>${pin}</div>
@@ -1830,5 +1832,4 @@ document.getElementById('footer-year').textContent = new Date().getFullYear();
 </script>
 </body>
 </html>
-</section>
 
