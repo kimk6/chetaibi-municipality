@@ -5,8 +5,26 @@ export async function onRequestOptions() { return handleOptions(); }
 
 export async function onRequestGet(context) {
     try {
-        const { results } = await context.env.DB.prepare('SELECT * FROM mayors ORDER BY id DESC').all();
-        return createResponse({ success: true, data: results });
+        const { results } = await context.env.DB.prepare('SELECT * FROM mayors').all();
+
+        // ترتيب حسب سنة الفترة: الرئيس الحالي أولاً (فترته تحتوي "الآن" أو أحدث سنة)
+        function extractYears(period) {
+            const str = period || '';
+            const isCurrent = /الآن|الحالي/i.test(str);
+            const years = [...str.matchAll(/(\d{4})/g)].map(m => parseInt(m[1], 10));
+            const startYear = years[0] || 0;
+            const endYear = isCurrent ? 9999 : (years[years.length - 1] || startYear);
+            return { startYear, endYear };
+        }
+
+        const sorted = [...results].sort((a, b) => {
+            const ya = extractYears(a.period);
+            const yb = extractYears(b.period);
+            if (yb.endYear !== ya.endYear) return yb.endYear - ya.endYear;
+            return yb.startYear - ya.startYear;
+        });
+
+        return createResponse({ success: true, data: sorted });
     } catch (e) { return createResponse({ success: false, error: e.message }, 500); }
 }
 
