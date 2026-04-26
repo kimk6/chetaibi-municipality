@@ -106,13 +106,13 @@
         </div>
         <div id="mobile-menu" class="mobile-menu md:hidden">
             <div class="pb-4 space-y-1">
-                <a href="#home" class="block text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors"><span class="iconify text-white text-base" data-icon="lucide:home"></span> <span class="text-base">الرئيسية</span></a>
-                <a href="#news" class="block text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors"><span class="iconify text-white text-base" data-icon="lucide:newspaper"></span> <span class="text-base">المستجدات</span></a>
-                <a href="#admin" class="block text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors"><span class="iconify text-white text-base" data-icon="lucide:landmark"></span> <span class="text-base">الخدمات</span></a>
-                <a href="#archive" class="block text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors"><span class="iconify text-white text-base" data-icon="lucide:scroll-text"></span> <span class="text-base">الأرشيف</span></a>
-                <a href="#guide" class="block text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors"><span class="iconify text-white text-base" data-icon="lucide:map-pin"></span> <span class="text-base">الدليل</span></a>
-                <a href="#beaches" class="block text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors"><span class="iconify text-white text-base" data-icon="lucide:sun"></span> <span class="text-base">السياحة</span></a>
-                <a href="#contact-footer" class="block text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors"><span class="iconify text-white text-base" data-icon="lucide:phone"></span> <span class="text-base">اتصل بنا</span></a>
+                <a href="#home" class="flex items-center gap-3 text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg font-semibold transition-colors"><span class="iconify text-white text-lg" data-icon="lucide:home"></span><span class="text-base">الرئيسية</span></a>
+                <a href="#news" class="flex items-center gap-3 text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg font-semibold transition-colors"><span class="iconify text-white text-lg" data-icon="lucide:newspaper"></span><span class="text-base">المستجدات</span></a>
+                <a href="#admin" class="flex items-center gap-3 text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg font-semibold transition-colors"><span class="iconify text-white text-lg" data-icon="lucide:landmark"></span><span class="text-base">الخدمات</span></a>
+                <a href="#archive" class="flex items-center gap-3 text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg font-semibold transition-colors"><span class="iconify text-white text-lg" data-icon="lucide:scroll-text"></span><span class="text-base">الأرشيف</span></a>
+                <a href="#guide" class="flex items-center gap-3 text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg font-semibold transition-colors"><span class="iconify text-white text-lg" data-icon="lucide:map-pin"></span><span class="text-base">الدليل</span></a>
+                <a href="#beaches" class="flex items-center gap-3 text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg font-semibold transition-colors"><span class="iconify text-white text-lg" data-icon="lucide:sun"></span><span class="text-base">السياحة</span></a>
+                <a href="#contact-footer" class="flex items-center gap-3 text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg font-semibold transition-colors"><span class="iconify text-white text-lg" data-icon="lucide:phone"></span><span class="text-base">اتصل بنا</span></a>
             </div>
         </div>
     </div>
@@ -305,11 +305,11 @@
             </div>
             <!-- ✅ 6: زر صفحة الأرشيف الكاملة -->
             <div class="text-center">
-                <a href="/archives" class="inline-flex items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-8 py-4 rounded-2xl font-bold text-sm transition-all shadow-lg hover:shadow-xl">
+                <button onclick="openArchivesOverlay()" class="inline-flex items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-8 py-4 rounded-2xl font-bold text-sm transition-all shadow-lg hover:shadow-xl">
                     <span class="iconify text-xl" data-icon="lucide:images"></span>
                     استعراض الأرشيف الكامل
                     <span class="iconify text-sm" data-icon="lucide:arrow-left"></span>
-                </a>
+                </button>
             </div>
         </div>
     </div>
@@ -604,6 +604,28 @@
     </div>
 </div>
 
+<!-- ── ARCHIVES OVERLAY ── -->
+<div id="archives-overlay" class="fixed inset-0 z-[300] bg-white hidden flex-col">
+    <div class="bg-gray-900 flex-shrink-0 shadow-lg">
+        <div class="px-4 py-3 flex items-center gap-3 text-white">
+            <button onclick="closeArchivesOverlay()" class="w-9 h-9 bg-white/20 hover:bg-white/30 rounded-xl flex items-center justify-center transition-colors flex-shrink-0">
+                <span class="iconify text-lg" data-icon="lucide:x"></span>
+            </button>
+            <h2 id="arch-overlay-title" class="text-base font-extrabold flex-1 text-center">أرشيف الصور</h2>
+            <div class="w-9"></div>
+        </div>
+        <div class="flex justify-center gap-3 px-4 pb-3">
+            <button onclick="archSetCat('compare')"  id="acat-compare"  class="acat-btn text-xs px-4 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white">🔄 مقارنة الأمس بالحاضر</button>
+            <button onclick="archSetCat('historic')" id="acat-historic" class="acat-btn text-xs px-4 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white">📜 صور تاريخية</button>
+        </div>
+    </div>
+    <div class="flex-1 overflow-y-auto bg-gray-950">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <div id="arch-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"></div>
+            <div id="arch-pagination" class="flex flex-wrap justify-center gap-2 mt-4"></div>
+        </div>
+    </div>
+</div>
 <!-- ── MODAL LIGHTBOX ── -->
 <div id="modal-lightbox" class="fixed inset-0 z-[500] bg-black/95 hidden items-center justify-center p-4" onclick="closeModalLightbox()">
     <div class="relative max-w-4xl w-full" onclick="event.stopPropagation()">
@@ -1695,6 +1717,67 @@ async function openTourismModalInExplore(id){
     modal.querySelector('button').onclick = function(){ modal.classList.add('hidden'); modal.style.zIndex=''; };
 }
 
+// ── ARCHIVES OVERLAY ──
+let archCat = 'compare', archPage = 1;
+const ARCH_PER = 12;
+
+async function openArchivesOverlay() {
+    document.getElementById('archives-overlay').classList.remove('hidden');
+    document.getElementById('archives-overlay').classList.add('flex');
+    document.body.style.overflow = 'hidden';
+    archSetCat('compare');
+}
+function closeArchivesOverlay() {
+    document.getElementById('archives-overlay').classList.add('hidden');
+    document.getElementById('archives-overlay').classList.remove('flex');
+    document.body.style.overflow = '';
+}
+function archSetCat(cat) {
+    archCat = cat; archPage = 1;
+    document.querySelectorAll('.acat-btn').forEach(b => { b.classList.remove('bg-white','text-gray-900'); b.classList.add('bg-white/20','text-white'); });
+    const ab = document.getElementById('acat-'+cat);
+    if(ab) { ab.classList.remove('bg-white/20','text-white'); ab.classList.add('bg-white','text-gray-900'); }
+    document.getElementById('arch-overlay-title').textContent = cat === 'compare' ? 'مقارنة الأمس بالحاضر' : 'الصور التاريخية';
+    renderArchives();
+}
+async function renderArchives() {
+    const grid = document.getElementById('arch-grid');
+    const pag  = document.getElementById('arch-pagination');
+    grid.innerHTML = '<div class="col-span-full text-center py-16 text-gray-500"><span class="iconify text-5xl animate-spin inline-block" data-icon="lucide:loader-2"></span></div>';
+    pag.innerHTML = '';
+    try {
+        const res  = await fetch('/api/archives');
+        if(!res.ok) throw new Error('HTTP '+res.status);
+        const data = await res.json();
+        const all_imgs = Array.isArray(data.data) ? data.data : (Array.isArray(data) ? data : []);
+        // تصنيف: compare = category 'compare' أو بدون category، historic = category 'historic'
+        const all = all_imgs.filter(a => archCat === 'historic' ? a.category === 'historic' : (a.category === 'compare' || !a.category || a.category === 'before_after'));
+        const total = all.length;
+        const totalPages = Math.ceil(total/ARCH_PER)||1;
+        archPage = Math.min(archPage, totalPages);
+        const items = all.slice((archPage-1)*ARCH_PER, archPage*ARCH_PER);
+        if(!items.length) { grid.innerHTML='<p class="col-span-full text-center text-gray-500 py-16">لا توجد صور في هذا التصنيف</p>'; return; }
+        grid.innerHTML = items.map(a => `
+            <div class="cursor-pointer group relative overflow-hidden rounded-xl bg-gray-800 shadow-lg" onclick="openModalLightbox('${a.image_url}','${(a.title||a.caption||'').replace(/'/g,"\\'")}')">
+                <img src="${a.image_url}" alt="${a.title||''}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                ${a.title ? `<div class="absolute bottom-3 right-3 left-3"><p class="text-white text-xs font-bold line-clamp-2 drop-shadow">${a.title}</p>${a.year?`<p class="text-white/60 text-[10px] mt-0.5">${a.year}</p>`:''}</div>` : ''}
+                <div class="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span class="iconify text-white text-xl bg-black/30 rounded-lg p-1" data-icon="lucide:zoom-in"></span>
+                </div>
+            </div>`).join('');
+        if(totalPages > 1) {
+            let h = '';
+            for(let p=1;p<=totalPages;p++) {
+                const a = p===archPage ? 'bg-white text-gray-900' : 'bg-white/10 text-white hover:bg-white/20';
+                h += `<button onclick="archPage=${p};renderArchives()" class="${a} w-10 h-10 rounded-xl font-bold text-sm transition-all">${p}</button>`;
+            }
+            pag.innerHTML = h;
+        }
+        if(window.Iconify) Iconify.scan();
+    } catch(e) { grid.innerHTML='<p class="col-span-full text-red-400 text-center py-12">تعذر تحميل الصور</p>'; }
+}
+
 // ── EXPLORE ──
 fetchWeather(); fetchSeaState(); loadNews(); loadTourism(); loadBeaches(); loadCurrentMayor();
 const CAT_META = {
@@ -1752,15 +1835,22 @@ async function renderOverlay() {
         grid.innerHTML = items.map(n => {
             const label = (n.custom_label&&n.custom_label.trim()) ? n.custom_label : m.label;
             const pin = n.is_pinned ? '<span class="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full border border-emerald-200 font-bold">📌 مثبت</span>' : '';
+            const snippet = (n.content||'').replace(/\n/g,' ').substring(0,90) + ((n.content||'').length>90?'...':'');
             const img = n.image_url
-                ? `<div class="h-44 overflow-hidden"><img src="${n.image_url}" alt="${n.title}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"></div>`
+                ? `<div class="h-44 overflow-hidden"><img src="${n.image_url}" alt="${n.title||''}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"></div>`
                 : `<div class="h-44 bg-gradient-to-bl ${m.grad} flex items-center justify-center"><span style="font-size:2.5rem">📰</span></div>`;
             return `<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100 cursor-pointer" onclick="openNewsModal(${n.id})">
                 ${img}
                 <div class="p-4">
-                    <div class="flex items-center gap-2 mb-2 flex-wrap"><span class="inline-block ${m.badge} text-xs font-bold px-3 py-1 rounded-full">${label}</span>${pin}</div>
-                    <h3 class="font-extrabold text-gray-800 text-sm leading-snug mb-2 line-clamp-2">${n.title}</h3>
-                    <p class="text-xs text-gray-400">${n.date||''}</p>
+                    <p class="text-xs text-gray-500 leading-relaxed line-clamp-2 mb-3">${snippet}</p>
+                    <div class="flex items-center justify-between">
+                        <span class="flex items-center gap-1 text-[11px] text-gray-400"><span class="iconify" data-icon="lucide:calendar-days"></span>${n.date||''}</span>
+                        ${pin}
+                    </div>
+                    <div class="mt-2 pt-2 border-t border-gray-50 flex items-center justify-between">
+                        <h3 class="font-extrabold text-gray-800 text-sm leading-snug line-clamp-1">${n.title||''}</h3>
+                        <span class="text-emerald-600 text-xs font-bold flex-shrink-0 mr-2">اقرأ المزيد ←</span>
+                    </div>
                 </div>
             </article>`;
         }).join('');
