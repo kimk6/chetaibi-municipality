@@ -270,6 +270,12 @@
                 <div id="form-panel-archives" class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24 hidden">
                     <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span><span id="archives-form-title">إضافة صورة أرشيفية</span></h3>
                     <input type="hidden" id="archives-edit-id" value="">
+                    <!-- تلميح التصنيف -->
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 mb-4 text-xs text-amber-700 leading-relaxed">
+                        <span class="font-extrabold">📌 طريقة التصنيف:</span><br>
+                        • <strong>مقارنة الأمس بالحاضر:</strong> ارفع صورة قديمة + صورة حديثة<br>
+                        • <strong>صور تاريخية:</strong> ارفع الصورة في حقل "صورة حديثة" فقط واترك "صورة قديمة" فارغاً
+                    </div>
                     <div class="space-y-3">
                         <div><label class="text-xs font-bold text-gray-500 mb-1 block">العنوان</label><input id="archives-title" type="text" placeholder="مثال: المدخل الرئيسي"></div>
                         <div><label class="text-xs font-bold text-gray-500 mb-1 block">الوصف</label><textarea id="archives-desc" placeholder="وصف مختصر..." rows="2"></textarea></div>
