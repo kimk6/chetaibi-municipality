@@ -1,15 +1,15 @@
 export async function onRequestGet(context) {
     const { env } = context;
     try {
-        // جلب كل الرؤساء
+        // جلب كل الرؤساء بدون ترتيب مسبق (سنرتبهم في JavaScript)
         const { results: rawMayors } = await env.DB
             .prepare('SELECT * FROM mayors').all();
 
-        // ── ترتيب حسب سنة بداية الفترة (الأحدث أولاً) ──
+        // ── دالة استخراج السنوات من حقل period ──
         // المنطق:
-        //   1) إذا كان النص يحتوي على "الآن" أو "الحالي" أو "présent" → سنة نهاية = 9999 (الأعلى دائماً)
-        //   2) وإلا نستخرج آخر 4 أرقام كسنة نهاية للمقارنة
-        //   3) عند التساوي في سنة النهاية نقارن سنة البداية
+        //   • إذا كان النص يحتوي على "الآن" أو "الحالي" → سنة النهاية = 9999 (الأعلى دائماً = الرئيس الحالي)
+        //   • وإلا نستخرج آخر 4 أرقام كسنة نهاية
+        //   • عند التساوي في سنة النهاية نقارن سنة البداية
         function extractYears(period) {
             const str = period || '';
             const isCurrentPeriod = /الآن|الحالي|présent|present|current/i.test(str);
@@ -19,27 +19,26 @@ export async function onRequestGet(context) {
             return { startYear, endYear };
         }
 
+        // ترتيب: الأحدث (الرئيس الحالي) أولاً، ثم السابقون من الأحدث للأقدم
         const mayors = [...rawMayors].sort((a, b) => {
             const ya = extractYears(a.period);
             const yb = extractYears(b.period);
-            // أولاً نقارن سنة النهاية (الأكبر أولاً)
             if (yb.endYear !== ya.endYear) return yb.endYear - ya.endYear;
-            // عند التساوي نقارن سنة البداية (الأكبر أولاً)
             return yb.startYear - ya.startYear;
         });
 
-        // الرئيس الحالي = أول عنصر بعد الترتيب (الأحدث)
+        // الرئيس الحالي = أول عنصر بعد الترتيب
         const current = mayors[0] || null;
+        const pastMayors = mayors.slice(1);
 
         // ── بطاقة الرئيس الحالي (كبيرة ومميزة) ──
         const currentCardHtml = current ? `
         <div class="bg-gradient-to-l from-emerald-700 to-emerald-800 rounded-2xl p-8 shadow-2xl text-white mb-14 flex flex-col md:flex-row items-center gap-8">
             <div class="flex-shrink-0">
-                <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-white/30 shadow-xl flex items-center justify-center
-                    ${current.image_url ? '' : 'bg-white/20'}">
+                <div class="w-36 h-36 rounded-full overflow-hidden border-4 border-white/30 shadow-xl flex items-center justify-center ${current.image_url ? '' : 'bg-white/20'}">
                     ${current.image_url
                         ? `<img src="${current.image_url}" alt="${current.name}" class="w-full h-full object-cover">`
-                        : `<span class="iconify text-white text-6xl" data-icon="lucide:user-circle"></span>`}
+                        : `<span class="iconify text-white text-7xl" data-icon="lucide:user-circle"></span>`}
                 </div>
             </div>
             <div class="text-center md:text-right flex-1">
@@ -54,8 +53,7 @@ export async function onRequestGet(context) {
             </div>
         </div>` : '';
 
-        // ── بطاقات الرؤساء السابقين (بدون الأول) ──
-        const pastMayors = mayors.slice(1);
+        // ── بطاقات الرؤساء السابقين ──
         const pastCardsHtml = pastMayors.map(m => `
             <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 text-center hover:shadow-xl transition-shadow">
                 <div class="w-24 h-24 ${m.image_url ? '' : 'bg-emerald-100'} rounded-full mx-auto mb-4 overflow-hidden flex items-center justify-center border-4 border-emerald-200">
@@ -84,10 +82,12 @@ export async function onRequestGet(context) {
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 pattern-bg">
+
     <header class="bg-gradient-to-l from-emerald-800 via-emerald-700 to-emerald-900 text-white py-2 text-center">
         <h1 class="text-sm font-bold">الجمهورية الجزائرية الديمقراطية الشعبية</h1>
         <p class="text-[11px] text-emerald-200 mt-0.5">وزارة الداخلية والجماعات المحلية والتهيئة العمرانية</p>
     </header>
+
     <div class="bg-white border-b border-emerald-100 py-4 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 flex items-center justify-center gap-4">
             <div class="w-16 h-16 rounded-full overflow-hidden shadow-lg flex-shrink-0">
@@ -99,6 +99,7 @@ export async function onRequestGet(context) {
             </div>
         </div>
     </div>
+
     <nav class="bg-emerald-700 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 h-12 flex items-center">
             <a href="/" class="text-white/90 hover:text-white text-sm font-semibold flex items-center gap-1">
@@ -106,7 +107,9 @@ export async function onRequestGet(context) {
             </a>
         </div>
     </nav>
+
     <main class="max-w-5xl mx-auto px-4 py-16">
+
         <div class="text-center mb-12">
             <span class="inline-block bg-emerald-100 text-emerald-700 text-xs font-bold px-4 py-1.5 rounded-full mb-4">🏛️ تاريخ القيادة</span>
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3">رؤساء المجلس الشعبي البلدي</h2>
@@ -114,30 +117,40 @@ export async function onRequestGet(context) {
         </div>
 
         ${mayors.length === 0
-            ? '<div class="text-center py-16 text-gray-400"><span class="iconify text-6xl block mb-4" data-icon="lucide:users"></span><p>لا توجد بيانات بعد</p></div>'
-            : `
-            ${currentCardHtml}
-            ${pastMayors.length > 0 ? `
+            ? \`<div class="text-center py-16 text-gray-400">
+                <span class="iconify text-6xl block mb-4" data-icon="lucide:users"></span>
+                <p>لا توجد بيانات بعد</p>
+               </div>\`
+            : \`
+            \${currentCardHtml}
+
+            \${pastMayors.length > 0 ? \`
             <div class="mb-8">
                 <h3 class="text-xl font-extrabold text-gray-700 mb-6 flex items-center gap-2">
-                    <span class="iconify text-emerald-500" data-icon="lucide:history"></span>
+                    <span class="iconify text-emerald-500 text-2xl" data-icon="lucide:history"></span>
                     الرؤساء السابقون
                 </h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">${pastCardsHtml}</div>
-            </div>` : ''}
-            `
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    \${pastCardsHtml}
+                </div>
+            </div>\` : ''}
+            \`
         }
+
     </main>
+
     <footer class="bg-gray-900 text-white py-8">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-xs text-gray-500">© <span id="yr"></span> بلدية شطايبي — جميع الحقوق محفوظة</p>
+            <p class="text-xs text-gray-500">© <span id="yr"></span> بلدية شطايبي — جميع الحقوق محفوظة 🇩🇿</p>
         </div>
     </footer>
+
     <script>document.getElementById('yr').textContent=new Date().getFullYear()<\/script>
 </body>
 </html>`;
 
         return new Response(html, { headers: { 'Content-Type': 'text/html; charset=utf-8' } });
+
     } catch (e) {
         return new Response('حدث خطأ: ' + e.message, { status: 500 });
     }
