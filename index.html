@@ -777,7 +777,7 @@
                     <li><a href="#admin" class="text-sm text-gray-400 hover:text-emerald-400 transition-colors flex items-center gap-2"><span class="iconify text-xs" data-icon="lucide:chevron-left"></span>الخدمات الإدارية</a></li>
                     <li><a href="/archives" class="text-sm text-gray-400 hover:text-emerald-400 transition-colors flex items-center gap-2"><span class="iconify text-xs" data-icon="lucide:chevron-left"></span>الأرشيف والتاريخ</a></li>
                     <li><a href="#guide" class="text-sm text-gray-400 hover:text-emerald-400 transition-colors flex items-center gap-2"><span class="iconify text-xs" data-icon="lucide:chevron-left"></span>دليل شطايبي</a></li>
-                    <li><a href="#beaches" class="text-sm text-gray-400 hover:text-emerald-400 transition-colors flex items-center gap-2"><span class="iconify text-xs" data-icon="lucide:chevron-left"></span>السياحة والشواطئ</a></li>
+                    <li><a href="#beaches" class="text-sm text-gray-400 hover:text-emerald-400 transition-colors flex items-center gap-2"><span class="iconify text-xs" data-icon="lucide:chevron-left"></span>اكتشف السياحة</a></li>
                 </ul>
             </div>
             <div>
@@ -1751,16 +1751,20 @@ async function renderArchives() {
         const data = await res.json();
         const all_imgs = Array.isArray(data.data) ? data.data : (Array.isArray(data) ? data : []);
         // تصنيف: compare = category 'compare' أو بدون category، historic = category 'historic'
-        const filteredItems = all_imgs.filter(a => archCat === 'historic'
-            ? (!a.image_old_url || a.image_old_url === '')
-            : (a.image_old_url && a.image_old_url !== '' && a.image_new_url && a.image_new_url !== ''));
+        // مقارنة = له image_old_url | تاريخية = ليس له image_old_url (يضع الصورة في image_new_url)
+        const filteredItems = all_imgs.filter(a => {
+            const hasOld = a.image_old_url && a.image_old_url.trim() !== '';
+            return archCat === 'historic' ? !hasOld : hasOld;
+        });
         const total = filteredItems.length;
         const totalPages = Math.ceil(total/ARCH_PER)||1;
         archPage = Math.min(archPage, totalPages);
         const items = filteredItems.slice((archPage-1)*ARCH_PER, archPage*ARCH_PER);
         if(!items.length) { grid.innerHTML='<p class="col-span-full text-center text-gray-500 py-16">لا توجد صور في هذا التصنيف</p>'; return; }
         grid.innerHTML = items.map(a => {
-            if(archCat === 'compare' && a.image_old_url && a.image_new_url) {
+            const hasOld = a.image_old_url && a.image_old_url.trim() !== '';
+            const hasNew = a.image_new_url && a.image_new_url.trim() !== '';
+            if(archCat === 'compare' && hasOld && hasNew) {
                 return `<div class="bg-gray-800 rounded-xl overflow-hidden shadow-lg">
                     <div class="grid grid-cols-2 gap-0.5">
                         <div class="relative cursor-pointer group" onclick="openModalLightbox('${a.image_old_url}','الأمس — ${(a.title||'').replace(/'/g,"\'")}')">
