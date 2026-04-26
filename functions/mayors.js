@@ -6,16 +6,27 @@ export async function onRequestGet(context) {
             .prepare('SELECT * FROM mayors').all();
 
         // ── ترتيب حسب سنة بداية الفترة (الأحدث أولاً) ──
-        // نستخرج أول 4 أرقام من حقل period كسنة للترتيب
-        // مثال: "2021 — الآن" → 2021 | "2019 - 2021" → 2019
-        function extractStartYear(period) {
-            const match = (period || '').match(/(\d{4})/);
-            return match ? parseInt(match[1], 10) : 0;
+        // المنطق:
+        //   1) إذا كان النص يحتوي على "الآن" أو "الحالي" أو "présent" → سنة نهاية = 9999 (الأعلى دائماً)
+        //   2) وإلا نستخرج آخر 4 أرقام كسنة نهاية للمقارنة
+        //   3) عند التساوي في سنة النهاية نقارن سنة البداية
+        function extractYears(period) {
+            const str = period || '';
+            const isCurrentPeriod = /الآن|الحالي|présent|present|current/i.test(str);
+            const allYears = [...str.matchAll(/(\d{4})/g)].map(m => parseInt(m[1], 10));
+            const startYear = allYears.length > 0 ? allYears[0] : 0;
+            const endYear   = isCurrentPeriod ? 9999 : (allYears.length > 1 ? allYears[allYears.length - 1] : startYear);
+            return { startYear, endYear };
         }
 
-        const mayors = [...rawMayors].sort(
-            (a, b) => extractStartYear(b.period) - extractStartYear(a.period)
-        );
+        const mayors = [...rawMayors].sort((a, b) => {
+            const ya = extractYears(a.period);
+            const yb = extractYears(b.period);
+            // أولاً نقارن سنة النهاية (الأكبر أولاً)
+            if (yb.endYear !== ya.endYear) return yb.endYear - ya.endYear;
+            // عند التساوي نقارن سنة البداية (الأكبر أولاً)
+            return yb.startYear - ya.startYear;
+        });
 
         // الرئيس الحالي = أول عنصر بعد الترتيب (الأحدث)
         const current = mayors[0] || null;
