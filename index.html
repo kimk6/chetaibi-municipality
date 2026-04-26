@@ -1751,21 +1751,47 @@ async function renderArchives() {
         const data = await res.json();
         const all_imgs = Array.isArray(data.data) ? data.data : (Array.isArray(data) ? data : []);
         // تصنيف: compare = category 'compare' أو بدون category، historic = category 'historic'
-        const all = all_imgs.filter(a => archCat === 'historic' ? a.category === 'historic' : (a.category === 'compare' || !a.category || a.category === 'before_after'));
-        const total = all.length;
+        const filteredItems = all_imgs.filter(a => archCat === 'historic'
+            ? (!a.image_old_url || a.image_old_url === '')
+            : (a.image_old_url && a.image_old_url !== ''));
+        const total = filteredItems.length;
         const totalPages = Math.ceil(total/ARCH_PER)||1;
         archPage = Math.min(archPage, totalPages);
-        const items = all.slice((archPage-1)*ARCH_PER, archPage*ARCH_PER);
+        const items = filteredItems.slice((archPage-1)*ARCH_PER, archPage*ARCH_PER);
         if(!items.length) { grid.innerHTML='<p class="col-span-full text-center text-gray-500 py-16">لا توجد صور في هذا التصنيف</p>'; return; }
-        grid.innerHTML = items.map(a => `
-            <div class="cursor-pointer group relative overflow-hidden rounded-xl bg-gray-800 shadow-lg" onclick="openModalLightbox('${a.image_url}','${(a.title||a.caption||'').replace(/'/g,"\\'")}')">
-                <img src="${a.image_url}" alt="${a.title||''}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                ${a.title ? `<div class="absolute bottom-3 right-3 left-3"><p class="text-white text-xs font-bold line-clamp-2 drop-shadow">${a.title}</p>${a.year?`<p class="text-white/60 text-[10px] mt-0.5">${a.year}</p>`:''}</div>` : ''}
-                <div class="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <span class="iconify text-white text-xl bg-black/30 rounded-lg p-1" data-icon="lucide:zoom-in"></span>
-                </div>
-            </div>`).join('');
+        grid.innerHTML = items.map(a => {
+            if(archCat === 'compare' && a.image_old_url && a.image_new_url) {
+                return `<div class="bg-gray-800 rounded-xl overflow-hidden shadow-lg">
+                    <div class="grid grid-cols-2 gap-0.5">
+                        <div class="relative cursor-pointer group" onclick="openModalLightbox('${a.image_old_url}','الأمس — ${(a.title||'').replace(/'/g,"\'")}')">
+                            <img src="${a.image_old_url}" class="w-full h-36 object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-black/30 flex items-end p-2"><span class="text-white text-[10px] font-bold bg-black/50 px-2 py-0.5 rounded-full">الأمس</span></div>
+                        </div>
+                        <div class="relative cursor-pointer group" onclick="openModalLightbox('${a.image_new_url}','اليوم — ${(a.title||'').replace(/'/g,"\'")}')">
+                            <img src="${a.image_new_url}" class="w-full h-36 object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-black/30 flex items-end p-2"><span class="text-white text-[10px] font-bold bg-black/50 px-2 py-0.5 rounded-full">اليوم</span></div>
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <p class="text-white text-xs font-bold line-clamp-1">${a.title||''}</p>
+                        ${a.description ? `<p class="text-gray-400 text-[11px] mt-1 line-clamp-2">${a.description}</p>` : ''}
+                    </div>
+                </div>`;
+            } else {
+                const src = a.image_new_url || a.image_old_url || '';
+                return `<div class="cursor-pointer group relative overflow-hidden rounded-xl bg-gray-800 shadow-lg" onclick="openModalLightbox('${src}','${(a.title||'').replace(/'/g,"\'")}')">
+                    <img src="${src}" alt="${a.title||''}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                    <div class="absolute bottom-3 right-3 left-3">
+                        <p class="text-white text-xs font-bold line-clamp-2 drop-shadow">${a.title||''}</p>
+                        ${a.description ? `<p class="text-white/60 text-[10px] mt-0.5 line-clamp-1">${a.description}</p>` : ''}
+                    </div>
+                    <div class="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <span class="iconify text-white text-xl bg-black/30 rounded-lg p-1" data-icon="lucide:zoom-in"></span>
+                    </div>
+                </div>`;
+            }
+        }).join('');
         if(totalPages > 1) {
             let h = '';
             for(let p=1;p<=totalPages;p++) {

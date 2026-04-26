@@ -643,9 +643,11 @@ async function saveNews(){
     const editId=document.getElementById('news-edit-id').value;
     const clEl=document.getElementById('news-custom-label');
     const body={title:document.getElementById('news-title').value,category:document.getElementById('news-category').value,content:document.getElementById('news-content').value,image_url:document.getElementById('news-image').value,album_urls:document.getElementById('news-album-urls').value||'[]',date:document.getElementById('news-date').value||new Date().toISOString().split('T')[0],is_pinned:document.getElementById('news-pinned').checked?1:0,custom_label:clEl?clEl.value:''};
-    if(!body.title||!body.content){adminToast('العنوان والمحتوى مطلوبان');return;}
+    const isOfficial = body.category === 'official';
+    if(!body.content){adminToast('المحتوى مطلوب');return;}
+    if(!isOfficial && !body.title){adminToast('العنوان مطلوب');return;}
     try {
-        const res=await fetch(editId?'/api/news/'+editId:'/api/news',{method:editId?'PUT':'POST',headers:authHeaders(),body:JSON.stringify(body)});
+        const res=await fetch(editId?'/api/news?id='+editId:'/api/news',{method:editId?'PUT':'POST',headers:{...authHeaders(),'Content-Type':'application/json'},body:JSON.stringify(body)});
         const d=await res.json();
         if(d.success){adminToast(editId?'تم تعديل الخبر':'تم إضافة الخبر');cancelNewsEdit();loadNews();}
         else adminToast('خطأ: '+(d.error||''));
@@ -681,6 +683,24 @@ async function editNews(id){
         window.scrollTo({top:0,behavior:'smooth'});
     } catch {}
 }
+// عنوان الإعلانات الرسمية اختياري
+document.addEventListener('DOMContentLoaded', function(){
+    const catSel = document.getElementById('news-category');
+    const titleInp = document.getElementById('news-title');
+    const titleLabel = titleInp ? titleInp.closest('div')?.querySelector('label') : null;
+    function updateTitleRequired(){
+        if(!titleInp) return;
+        if(catSel && catSel.value === 'official'){
+            titleInp.placeholder = 'اختياري للإعلانات الرسمية...';
+            titleInp.removeAttribute('required');
+            if(titleLabel) titleLabel.textContent = 'العنوان (اختياري)';
+        } else {
+            titleInp.placeholder = 'عنوان الخبر...';
+            if(titleLabel) titleLabel.textContent = 'العنوان';
+        }
+    }
+    if(catSel){ catSel.addEventListener('change', updateTitleRequired); updateTitleRequired(); }
+});
 function cancelNewsEdit(){
     document.getElementById('news-edit-id').value='';
     document.getElementById('news-title').value='';
@@ -697,7 +717,7 @@ function cancelNewsEdit(){
 }
 async function deleteNews(id){
     if(!confirm('حذف هذا الخبر؟')) return;
-    await fetch('/api/news/'+id,{method:'DELETE',headers:authHeaders()});
+    await fetch('/api/news?id='+id,{method:'DELETE',headers:authHeaders()});
     adminToast('تم الحذف'); loadNews();
 }
 
