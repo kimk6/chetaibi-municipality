@@ -869,7 +869,7 @@ async function switchGuideTab(tab) {
     document.querySelectorAll('.guide-tab').forEach(b=>b.classList.remove('active'));
     document.getElementById('gpanel-'+tab).classList.remove('hidden');
     document.getElementById('gtab-'+tab).classList.add('active');
-    if (!guideLoaded[tab]) { await loadGuidePanel(tab); guideLoaded[tab]=true; }
+    await loadGuidePanel(tab);
 }
 
 async function loadGuidePanel(tab) {
@@ -1346,13 +1346,7 @@ async function loadCurrentMayor(){
     }catch(e){ /* نبقى على المحتوى الافتراضي في حال الخطأ */ }
 }
 
-// ── دليل شطايبي tabs ──
-function switchGuideTab(tab){
-    document.querySelectorAll('.guide-tab').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('.guide-panel').forEach(p=>p.classList.add('hidden'));
-    document.getElementById('gtab-'+tab).classList.add('active');
-    document.getElementById('gpanel-'+tab).classList.remove('hidden');
-}
+// ── دليل شطايبي tabs — switchGuideTab معرّفة أعلاه ──
 
 // ── NEWS MODAL ──
 const NM_CAT = {
@@ -1873,6 +1867,8 @@ async function renderArchives() {
 
 // ── EXPLORE ──
 fetchWeather(); fetchSeaState(); loadNews(); loadTourism(); loadBeaches(); loadCurrentMayor();
+// تحميل التاب الافتراضي للدليل من قاعدة البيانات
+switchGuideTab('admin-branches');
 const CAT_META = {
     official: { label: 'إعلانات رسمية',  badge: 'bg-red-100 text-red-700',      grad: 'from-red-500 to-red-700'        },
     activity: { label: 'نشاطات البلدية', badge: 'bg-emerald-100 text-emerald-700', grad: 'from-emerald-500 to-emerald-700' },
