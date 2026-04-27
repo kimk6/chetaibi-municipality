@@ -133,7 +133,7 @@
         <p class="text-lg md:text-xl font-bold mb-8 max-w-xl mx-auto text-white/85 animate-fadeInUp anim-delay-2">حيث تمتزج الطبيعة بالتاريخ</p>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3 animate-fadeInUp anim-delay-3 max-w-2xl mx-auto w-full">
             <a href="#admin" class="bg-white/75 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white/85 transition-colors text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-md text-center"><span class="iconify text-base md:text-lg" data-icon="lucide:file-text"></span>الخدمات الإدارية</a>
-            <a href="#beaches" class="bg-white/75 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white/85 transition-colors text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-md text-center"><span class="iconify text-base md:text-lg" data-icon="lucide:compass"></span>اكتشف السياحة</a>
+            <a href="#tourism" class="bg-white/75 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white/85 transition-colors text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-md text-center"><span class="iconify text-base md:text-lg" data-icon="lucide:compass"></span>اكتشف السياحة</a>
             <a href="#news" class="bg-white/75 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white/85 transition-colors text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-md text-center"><span class="iconify text-base md:text-lg" data-icon="lucide:newspaper"></span>آخر المستجدات</a>
             <a href="#guide" class="bg-white/75 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white/85 transition-colors text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-md text-center"><span class="iconify text-base md:text-lg" data-icon="lucide:map"></span>دليل شطايبي</a>
         </div>
@@ -270,32 +270,109 @@
     </div>
 </section>
 
-<!-- ADMIN -->
+
+<!-- ADMIN / SERVICES -->
 <section id="admin" class="py-14 bg-white">
     <div class="max-w-7xl mx-auto px-4">
         <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 flex items-center justify-center gap-3"><span class="iconify text-emerald-600" data-icon="lucide:landmark"></span>الخدمات الإدارية</h2>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 flex items-center justify-center gap-3">
+                <span class="iconify text-emerald-600" data-icon="lucide:landmark"></span>الخدمات الإدارية
+            </h2>
             <p class="text-gray-500 max-w-xl mx-auto">جميع الخدمات الإدارية مع الوثائق المطلوبة واستمارات التحميل</p>
         </div>
+        <!-- 3 خدمات ثابتة -->
         <div id="services-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- جواز السفر -->
             <div class="service-card bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-md">
-                <div class="bg-gradient-to-l from-blue-600 to-blue-800 p-6 text-white text-center"><div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3"><span class="iconify text-3xl" data-icon="lucide:fingerprint"></span></div><h3 class="text-xl font-extrabold">جواز السفر البيومتري / بطاقة التعريف</h3></div>
-                <div class="p-6"><h4 class="font-bold text-gray-700 mb-3 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:file-check-2"></span>الوثائق المطلوبة</h4><ul class="space-y-2.5 mb-6"><li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>شهادة ميلاد رقم 12 (أصل + نسخة)</li><li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>نسخة من بطاقة التعريف الوطنية</li><li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>شهادة سكن أو كشف حساب بنكي</li><li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>صورتان شمسيتان (أبيض)</li><li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>الطابع الجباري</li><li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>استمارة معبأة</li></ul><button onclick="downloadForm('جواز السفر البيومتري')" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2 shadow-md"><span class="iconify text-lg" data-icon="lucide:download"></span>تحميل استمارة جواز السفر</button><button onclick="downloadForm('بطاقة التعريف')" class="w-full mt-3 bg-blue-100 hover:bg-blue-200 text-blue-700 py-3 px-4 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2"><span class="iconify text-lg" data-icon="lucide:download"></span>تحميل استمارة بطاقة التعريف</button></div>
+                <div class="bg-gradient-to-l from-blue-600 to-blue-800 p-6 text-white text-center">
+                    <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                        <span class="iconify text-3xl" data-icon="lucide:fingerprint"></span>
+                    </div>
+                    <h3 class="text-xl font-extrabold">جواز السفر البيومتري / بطاقة التعريف</h3>
+                </div>
+                <div class="p-6">
+                    <h4 class="font-bold text-gray-700 mb-3 flex items-center gap-2">
+                        <span class="iconify text-emerald-500" data-icon="lucide:file-check-2"></span>الوثائق المطلوبة
+                    </h4>
+                    <ul class="space-y-2.5 mb-6">
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>شهادة ميلاد رقم 12 (أصل + نسخة)</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>نسخة من بطاقة التعريف الوطنية</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>شهادة سكن أو كشف حساب بنكي</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>صورتان شمسيتان (خلفية بيضاء)</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>الطابع الجباري</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>استمارة معبأة</li>
+                    </ul>
+                    <button onclick="downloadForm('جواز السفر البيومتري')" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2 shadow-md">
+                        <span class="iconify text-lg" data-icon="lucide:download"></span>تحميل استمارة جواز السفر
+                    </button>
+                    <button onclick="downloadForm('بطاقة التعريف')" class="w-full mt-3 bg-blue-100 hover:bg-blue-200 text-blue-700 py-3 px-4 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2">
+                        <span class="iconify text-lg" data-icon="lucide:download"></span>تحميل استمارة بطاقة التعريف
+                    </button>
+                </div>
             </div>
+            <!-- الحالة المدنية -->
             <div class="service-card bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-md">
-                <div class="bg-gradient-to-l from-emerald-600 to-emerald-800 p-6 text-white text-center"><div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3"><span class="iconify text-3xl" data-icon="lucide:book-open"></span></div><h3 class="text-xl font-extrabold">الحالة المدنية</h3></div>
-                <div class="p-6"><h4 class="font-bold text-gray-700 mb-3 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:file-check-2"></span>الوثائق المطلوبة</h4><ul class="space-y-2.5 mb-6"><li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>طلب كتابي موجه إلى ضابط الحالة المدنية</li><li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>شهادة ميلاد المعني بالأمر</li><li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>نسخة من بطاقة التعريف الوطنية</li><li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>شهادة سكن سارية المفعول</li><li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>الطابع الجباري</li><li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>استمارة الطلب</li></ul><button onclick="downloadForm('شهادة ميلاد رقم 12')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 px-4 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2 shadow-md"><span class="iconify text-lg" data-icon="lucide:download"></span>تحميل استمارة شهادة الميلاد</button><button onclick="downloadForm('شهادة ميلاد رقم 3')" class="w-full mt-3 bg-emerald-100 hover:bg-emerald-200 text-emerald-700 py-3 px-4 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2"><span class="iconify text-lg" data-icon="lucide:download"></span>تحميل استمارة شهادة رقم 3</button></div>
+                <div class="bg-gradient-to-l from-emerald-600 to-emerald-800 p-6 text-white text-center">
+                    <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                        <span class="iconify text-3xl" data-icon="lucide:book-open"></span>
+                    </div>
+                    <h3 class="text-xl font-extrabold">الحالة المدنية</h3>
+                </div>
+                <div class="p-6">
+                    <h4 class="font-bold text-gray-700 mb-3 flex items-center gap-2">
+                        <span class="iconify text-emerald-500" data-icon="lucide:file-check-2"></span>الوثائق المطلوبة
+                    </h4>
+                    <ul class="space-y-2.5 mb-6">
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>طلب كتابي موجه إلى ضابط الحالة المدنية</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>شهادة ميلاد المعني بالأمر</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>نسخة من بطاقة التعريف الوطنية</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>شهادة سكن سارية المفعول</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>الطابع الجباري</li>
+                    </ul>
+                    <button onclick="downloadForm('شهادة ميلاد رقم 12')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 px-4 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2 shadow-md">
+                        <span class="iconify text-lg" data-icon="lucide:download"></span>تحميل استمارة شهادة الميلاد
+                    </button>
+                    <button onclick="downloadForm('شهادة ميلاد رقم 3')" class="w-full mt-3 bg-emerald-100 hover:bg-emerald-200 text-emerald-700 py-3 px-4 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2">
+                        <span class="iconify text-lg" data-icon="lucide:download"></span>تحميل استمارة شهادة رقم 3
+                    </button>
+                </div>
             </div>
+            <!-- التعمير -->
             <div class="service-card bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-md">
-                <div class="bg-gradient-to-l from-amber-600 to-amber-800 p-6 text-white text-center"><div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3"><span class="iconify text-3xl" data-icon="lucide:building"></span></div><h3 class="text-xl font-extrabold">التعمير — رخصة البناء</h3></div>
-                <div class="p-6"><h4 class="font-bold text-gray-700 mb-3 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:file-check-2"></span>الوثائق المطلوبة</h4><ul class="space-y-2.5 mb-6"><li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>طلب كتابي موجه إلى رئيس المجلس</li><li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>نسخة من عقد الملكية أو محضر الحيازة</li><li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>مخططات البناء (4 نسخ) معتمدة من مهندس</li><li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>شهادة التوجيه العقاري</li><li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>رخصة الحفر أو شهادة المطابقة</li><li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>استمارة رخصة البناء</li></ul><button onclick="downloadForm('رخصة البناء')" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-3 px-4 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2 shadow-md"><span class="iconify text-lg" data-icon="lucide:download"></span>تحميل استمارة رخصة البناء</button><button onclick="downloadForm('شهادة المطابقة')" class="w-full mt-3 bg-amber-100 hover:bg-amber-200 text-amber-700 py-3 px-4 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2"><span class="iconify text-lg" data-icon="lucide:download"></span>تحميل استمارة شهادة المطابقة</button></div>
+                <div class="bg-gradient-to-l from-amber-600 to-amber-800 p-6 text-white text-center">
+                    <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                        <span class="iconify text-3xl" data-icon="lucide:building"></span>
+                    </div>
+                    <h3 class="text-xl font-extrabold">التعمير — رخصة البناء</h3>
+                </div>
+                <div class="p-6">
+                    <h4 class="font-bold text-gray-700 mb-3 flex items-center gap-2">
+                        <span class="iconify text-emerald-500" data-icon="lucide:file-check-2"></span>الوثائق المطلوبة
+                    </h4>
+                    <ul class="space-y-2.5 mb-6">
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>طلب كتابي موجه إلى رئيس المجلس</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>نسخة من عقد الملكية أو محضر الحيازة</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>مخططات البناء (4 نسخ) معتمدة من مهندس</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>شهادة التوجيه العقاري</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</span>رخصة الحفر أو شهادة المطابقة</li>
+                    </ul>
+                    <button onclick="downloadForm('رخصة البناء')" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-3 px-4 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2 shadow-md">
+                        <span class="iconify text-lg" data-icon="lucide:download"></span>تحميل استمارة رخصة البناء
+                    </button>
+                    <button onclick="downloadForm('شهادة المطابقة')" class="w-full mt-3 bg-amber-100 hover:bg-amber-200 text-amber-700 py-3 px-4 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2">
+                        <span class="iconify text-lg" data-icon="lucide:download"></span>تحميل استمارة شهادة المطابقة
+                    </button>
+                </div>
             </div>
         </div>
+        <!-- خدمات إضافية من API -->
         <div id="extra-services">
             <div id="extra-services-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8"></div>
         </div>
+        <!-- زر عرض المزيد -->
         <div class="text-center mt-10" id="more-services-btn-wrap">
-            <button id="more-services-btn" onclick="toggleExtraServices()" class="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 px-8 py-3 rounded-2xl font-bold text-sm transition-all shadow-sm hover:shadow-md">
+            <button id="more-services-btn" onclick="toggleExtraServices()"
+                    class="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 px-8 py-3 rounded-2xl font-bold text-sm transition-all shadow-sm hover:shadow-md">
                 <span class="iconify text-lg" data-icon="lucide:chevrons-down" id="more-services-icon"></span>
                 <span id="more-services-text">عرض المزيد من الخدمات</span>
             </button>
@@ -371,7 +448,7 @@
             </button>
         </div>
         <!-- لوحة: الفروع الإدارية -->
-        <div id="gpanel-admin-branches" class="guide-panel"><div id="gpanel-admin-branches-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+        <div id="gpanel-admin-branches" class="guide-panel">
             <p class="text-gray-500 text-sm mb-6 text-center">فروع تابعة لبلدية شطايبي لتقريب الإدارة من المواطن وتسهيل سحب الوثائق الرسمية</p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="bg-white rounded-2xl p-6 border border-emerald-200 hover:shadow-lg transition-shadow shadow-sm">
@@ -401,7 +478,7 @@
             </div>
         </div>
         <!-- لوحة: المؤسسات التعليمية -->
-        <div id="gpanel-education" class="guide-panel hidden"><div id="gpanel-education-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+        <div id="gpanel-education" class="guide-panel hidden">
             <p class="text-gray-500 text-sm mb-6 text-center">مؤسسات التعليم العام في بلدية شطايبي من الابتدائي إلى الثانوي</p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="bg-white rounded-2xl p-6 border border-indigo-200 hover:shadow-lg transition-shadow shadow-sm">
@@ -435,7 +512,7 @@
             </div>
         </div>
         <!-- لوحة: المرافق الصحية -->
-        <div id="gpanel-health" class="guide-panel hidden"><div id="gpanel-health-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        <div id="gpanel-health" class="guide-panel hidden">
             <p class="text-gray-500 text-sm mb-6 text-center">المؤسسات الصحية العمومية التي تخدم سكان بلدية شطايبي والمناطق المجاورة</p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="bg-white rounded-2xl p-6 border border-red-200 hover:shadow-lg transition-shadow shadow-sm">
@@ -852,54 +929,6 @@ window.addEventListener('resize',handleMobileNav,{passive:true});
 handleMobileNav();
 
 // ── TABS ──
-
-// ── GUIDE PANELS (فروع إدارية / تعليمية / صحية) ──
-const GUIDE_PANEL_META = {
-    'admin-branches': { cat:'branches', color:'bg-emerald-600', icon:'lucide:landmark',  badge:'text-emerald-600 bg-emerald-100' },
-    'education':      { cat:'education', color:'bg-indigo-600',  icon:'lucide:school',    badge:'text-indigo-600 bg-indigo-100'   },
-    'health':         { cat:'health',    color:'bg-red-600',      icon:'lucide:hospital',  badge:'text-red-600 bg-red-100'         },
-};
-const guideLoaded = {};
-
-async function switchGuideTab(tab) {
-    document.querySelectorAll('.guide-panel').forEach(p=>p.classList.add('hidden'));
-    document.querySelectorAll('.guide-tab').forEach(b=>b.classList.remove('active'));
-    document.getElementById('gpanel-'+tab).classList.remove('hidden');
-    document.getElementById('gtab-'+tab).classList.add('active');
-    if (!guideLoaded[tab]) { await loadGuidePanel(tab); guideLoaded[tab]=true; }
-}
-
-async function loadGuidePanel(tab) {
-    const meta = GUIDE_PANEL_META[tab];
-    if (!meta) return;
-    const grid = document.getElementById('gpanel-'+tab+'-grid');
-    if (!grid) return;
-    grid.innerHTML = '<div class="col-span-full text-center py-8 text-gray-300"><span class="iconify text-3xl animate-spin inline-block" data-icon="lucide:loader-2"></span></div>';
-    try {
-        const res  = await fetch('/api/facilities?cat='+meta.cat);
-        const data = await res.json();
-        const items = data.success && data.data.length ? data.data : null;
-        if (!items) { grid.innerHTML = ''; return; } // يبقى المحتوى الثابت
-        grid.innerHTML = items.map(f => {
-            const tags = Array.isArray(f.tags) ? f.tags : [];
-            return `<div class="bg-white rounded-2xl p-6 border border-gray-100 hover:shadow-lg transition-shadow shadow-sm">
-                <div class="flex items-center gap-3 mb-4">
-                    <div class="w-12 h-12 ${meta.color} rounded-xl flex items-center justify-center flex-shrink-0">
-                        ${f.image_url ? `<img src="${f.image_url}" class="w-full h-full object-cover rounded-xl">` : `<span class="iconify text-white text-2xl" data-icon="${meta.icon}"></span>`}
-                    </div>
-                    <div>
-                        <span class="inline-flex items-center gap-1 text-xs font-bold ${meta.badge} px-2 py-0.5 rounded-full">${f.sub_type||''}</span>
-                        <h4 class="font-extrabold text-gray-800 mt-0.5">${f.name}</h4>
-                    </div>
-                </div>
-                <p class="text-sm text-gray-600 leading-relaxed mb-4">${f.description||''}</p>
-                <div class="flex flex-wrap gap-2">${tags.map(t=>`<span class="text-xs bg-gray-50 text-gray-600 border border-gray-200 px-3 py-1 rounded-full font-semibold">${t}</span>`).join('')}</div>
-            </div>`;
-        }).join('');
-        if (window.Iconify) Iconify.scan();
-    } catch(e) { /* يبقى المحتوى الثابت */ }
-}
-
 // ── NEWS TABS & SHOW MORE ──
 const newsExpanded={announcements:false,activities:false,community:false};
 
@@ -1422,16 +1451,62 @@ async function renderExploreOverlay() {
 }
 
 // ── FACILITIES OVERLAY (مرافق وخدمات) ──
-const FAC_CONFIG = {
-    religious: { title:'المرافق الدينية',   desc:'المساجد والمدارس القرآنية ودور القرآن الكريم في بلدية شطايبي',                          color:'bg-emerald-700', icon:'lucide:moon'           },
-    cultural:  { title:'المرافق الثقافية',   desc:'دور الشباب والمكتبات والمراكز الثقافية في بلدية شطايبي',                              color:'bg-purple-700',  icon:'lucide:drama'          },
-    sports:    { title:'المرافق الرياضية',   desc:'الملاعب والقاعات الرياضية والبنية التحتية الرياضية في بلدية شطايبي',                   color:'bg-orange-600',  icon:'lucide:trophy'         },
-    public:    { title:'خدمات عمومية',       desc:'مصالح البريد والضرائب والنقل وغيرها من الخدمات العمومية في شطايبي',                   color:'bg-blue-700',    icon:'lucide:building'       },
-    training:  { title:'مراكز التكوين',      desc:'مراكز التكوين المهني وفروع الإدارة المختصة بالتأهيل والتدريب',                        color:'bg-teal-700',    icon:'lucide:graduation-cap' },
-    assoc:     { title:'الجمعيات',           desc:'الجمعيات المحلية الناشطة في المجال الاجتماعي والثقافي والخيري ببلدية شطايبي',          color:'bg-rose-700',    icon:'lucide:users'          },
+const FAC_META = {
+    religious: {
+        title: 'المرافق الدينية',
+        desc:  'المساجد والمدارس القرآنية ودور القرآن الكريم في بلدية شطايبي',
+        color: 'bg-emerald-700', icon: 'lucide:moon',
+        items: [
+            { name: 'مسجد الرحمة — شطايبي', sub: 'مسجد جامع', desc: 'المسجد الجامع الرئيسي في مركز شطايبي، يستقبل المصلين لإقامة الصلوات الخمس وصلاة الجمعة والمناسبات الدينية.', tags: ['صلاة الجمعة','دروس دينية'] },
+            { name: 'مسجد النور — الزاوية', sub: 'مسجد', desc: 'مسجد حي الزاوية، يخدم سكان المنطقة ويحتضن حلقات تحفيظ القرآن الكريم.', tags: ['تحفيظ القرآن'] },
+            { name: 'مسجد الإخلاص — الزقع', sub: 'مسجد', desc: 'مسجد منطقة الزقع، يؤدي دوراً محورياً في خدمة المجتمع المحلي.', tags: ['صلاة الجمعة'] },
+        ]
+    },
+    cultural: {
+        title: 'المرافق الثقافية',
+        desc:  'دور الشباب والمكتبات والمراكز الثقافية في بلدية شطايبي',
+        color: 'bg-purple-700', icon: 'lucide:drama',
+        items: [
+            { name: 'دار الشباب — شطايبي', sub: 'مرفق ثقافي', desc: 'دار الشباب بلدية شطايبي تحتضن الأنشطة الثقافية والترفيهية والتكوينية للشباب، وتنظم مخيمات وورشات متنوعة.', tags: ['أنشطة ثقافية','ورشات','مخيمات'] },
+        ]
+    },
+    sports: {
+        title: 'المرافق الرياضية',
+        desc:  'الملاعب والقاعات الرياضية والبنية التحتية الرياضية في بلدية شطايبي',
+        color: 'bg-orange-600', icon: 'lucide:trophy',
+        items: [
+            { name: 'ملعب بلدية شطايبي', sub: 'ملعب كرة قدم', desc: 'الملعب البلدي لكرة القدم، يستضيف المباريات المحلية وتدريبات الفرق الرياضية.', tags: ['كرة قدم','تدريب'] },
+            { name: 'قاعة رياضية متعددة الرياضات', sub: 'قاعة مغطاة', desc: 'قاعة مغطاة متعددة الرياضات تتيح ممارسة ألعاب داخلية متنوعة.', tags: ['ألعاب داخلية'] },
+        ]
+    },
+    public: {
+        title: 'خدمات عمومية',
+        desc:  'مصالح البريد والضرائب والنقل وغيرها من الخدمات العمومية في شطايبي',
+        color: 'bg-blue-700', icon: 'lucide:building',
+        items: [
+            { name: 'مكتب بريد شطايبي', sub: 'بريد الجزائر', desc: 'يقدم خدمات البريد والتوفير البريدي والتحويلات المالية لسكان البلدية.', tags: ['بريد','توفير','تحويل مالي'] },
+            { name: 'مفتشية الضرائب — شطايبي', sub: 'مديرية الضرائب', desc: 'مفتشية ضرائب تتولى استقبال الملفات الجبائية ومتابعة المكلفين بالضريبة.', tags: ['ضرائب','جباية'] },
+        ]
+    },
+    training: {
+        title: 'مراكز التكوين',
+        desc:  'مراكز التكوين المهني وفروع الإدارة المختصة بالتأهيل والتدريب',
+        color: 'bg-teal-700', icon: 'lucide:graduation-cap',
+        items: [
+            { name: 'مركز التكوين المهني — شطايبي', sub: 'تكوين مهني', desc: 'يوفر تخصصات مهنية متنوعة للشباب بهدف الإدماج المهني وتنمية الكفاءات المحلية.', tags: ['خياطة','إعلام آلي','بناء','كهرباء'] },
+        ]
+    },
+    assoc: {
+        title: 'الجمعيات',
+        desc:  'الجمعيات المحلية الناشطة في المجال الاجتماعي والثقافي والخيري ببلدية شطايبي',
+        color: 'bg-rose-700', icon: 'lucide:users',
+        items: [
+            { name: 'جمعية الأمل للتنمية المحلية', sub: 'جمعية اجتماعية', desc: 'تنشط في مجال التنمية المحلية ومساعدة الأسر المحتاجة وتنظيم أيام تطوعية.', tags: ['تطوع','تنمية','خيري'] },
+            { name: 'جمعية شطايبي للرياضة والشباب', sub: 'جمعية رياضية', desc: 'تشرف على تأطير الشباب رياضياً وتنظيم البطولات المحلية.', tags: ['رياضة','شباب'] },
+        ]
+    },
 };
-const FAC_TAG_COLORS = { religious:'emerald', cultural:'purple', sports:'orange', public:'blue', training:'teal', assoc:'rose' };
-let facCat = 'religious', facCache = {};
+let facCat = 'religious';
 function openFacilitiesOverlay() {
     document.getElementById('facilities-overlay').classList.remove('hidden');
     document.getElementById('facilities-overlay').classList.add('flex');
@@ -1443,7 +1518,7 @@ function closeFacilitiesOverlay() {
     document.getElementById('facilities-overlay').classList.remove('flex');
     document.body.style.overflow = '';
 }
-async function facSetCat(cat) {
+function facSetCat(cat) {
     facCat = cat;
     document.querySelectorAll('.fcat-btn').forEach(b=>{ b.classList.remove('bg-white','text-slate-800'); b.classList.add('bg-white/20','text-white'); });
     const ab = document.getElementById('fcat-'+cat);
@@ -1452,40 +1527,23 @@ async function facSetCat(cat) {
     document.getElementById('fac-cat-title').textContent = m.title;
     document.getElementById('fac-cat-desc').textContent  = m.desc;
     document.getElementById('fac-overlay-title').textContent = m.title;
-    const grid = document.getElementById('fac-grid');
-    grid.innerHTML = '<div class="col-span-full text-center py-10 text-gray-300"><span class="iconify text-4xl animate-spin inline-block" data-icon="lucide:loader-2"></span></div>';
-    try {
-        const res  = await fetch('/api/facilities?cat='+cat);
-        const data = await res.json();
-        const items = data.success ? data.data : [];
-        const tagColors = { religious:'emerald', cultural:'purple', sports:'orange', public:'blue', training:'teal', assoc:'rose' };
-        const col = tagColors[cat]||'gray';
-        if (!items.length) { grid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-10">لا توجد مرافق في هذا التصنيف</p>'; return; }
-        grid.innerHTML = items.map(item => {
-            const tags = Array.isArray(item.tags) ? item.tags : [];
-            const albums = Array.isArray(item.albums) ? item.albums : [];
-            const albumHtml = albums.length ? `<div class="mt-4 pt-4 border-t border-gray-100">
-                <p class="text-xs font-bold text-gray-500 mb-2 flex items-center gap-1"><span class="iconify" data-icon="lucide:images"></span> معرض الصور</p>
-                <div class="grid grid-cols-3 gap-1.5">${albums.map(u=>`<div class="cursor-pointer overflow-hidden rounded-lg" onclick="openModalLightbox('${u}','')"><img src="${u}" class="w-full h-14 object-cover hover:scale-110 transition-transform"></div>`).join('')}</div>
-            </div>` : '';
-            return `<div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-md hover:shadow-xl transition-shadow">
-                <div class="flex items-start gap-4 mb-4">
-                    ${item.image_url ? `<div class="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0"><img src="${item.image_url}" class="w-full h-full object-cover"></div>` :
-                    `<div class="w-12 h-12 ${m.color} rounded-xl flex items-center justify-center flex-shrink-0"><span class="iconify text-white text-2xl" data-icon="${m.icon}"></span></div>`}
-                    <div>
-                        <span class="inline-block text-xs font-bold bg-${col}-100 text-${col}-700 px-2 py-0.5 rounded-full mb-1">${item.sub_type||''}</span>
-                        <h4 class="font-extrabold text-gray-800 leading-snug">${item.name}</h4>
-                    </div>
+    const tagColors = { religious:'emerald', cultural:'purple', sports:'orange', public:'blue', training:'teal', assoc:'rose' };
+    const col = tagColors[cat]||'gray';
+    document.getElementById('fac-grid').innerHTML = m.items.map(item => `
+        <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-md hover:shadow-xl transition-shadow">
+            <div class="flex items-start gap-4 mb-4">
+                <div class="w-12 h-12 ${m.color} rounded-xl flex items-center justify-center flex-shrink-0">
+                    <span class="iconify text-white text-2xl" data-icon="${m.icon}"></span>
                 </div>
-                <p class="text-sm text-gray-600 leading-relaxed mb-4">${item.description||''}</p>
-                <div class="flex flex-wrap gap-2">${tags.map(t=>`<span class="text-xs bg-${col}-50 text-${col}-700 border border-${col}-200 px-3 py-1 rounded-full font-semibold">${t}</span>`).join('')}</div>
-                ${albumHtml}
-            </div>`;
-        }).join('');
-        if(window.Iconify) Iconify.scan();
-    } catch(e) {
-        grid.innerHTML = '<p class="col-span-full text-red-400 text-center py-10">تعذر تحميل البيانات</p>';
-    }
+                <div>
+                    <span class="inline-block text-xs font-bold bg-${col}-100 text-${col}-700 px-2 py-0.5 rounded-full mb-1">${item.sub}</span>
+                    <h4 class="font-extrabold text-gray-800 leading-snug">${item.name}</h4>
+                </div>
+            </div>
+            <p class="text-sm text-gray-600 leading-relaxed mb-4">${item.desc}</p>
+            <div class="flex flex-wrap gap-2">${item.tags.map(t=>`<span class="text-xs bg-${col}-50 text-${col}-700 border border-${col}-200 px-3 py-1 rounded-full font-semibold">${t}</span>`).join('')}</div>
+        </div>`).join('');
+    if(window.Iconify) Iconify.scan();
 }
 
 // ── NEWS MODAL ──
@@ -1699,16 +1757,11 @@ async function openMayorsOverlay() {
             list.innerHTML = '<p class="col-span-full text-center text-gray-400 py-16">لا توجد بيانات بعد</p>';
             return;
         }
-        // ترتيب حسب آخر سنة في حقل period (مثال: "2021-2025" نأخذ 2025)
-        function extractLastYear(period) {
-            const nums = (period || '').match(/\d{4}/g);
-            return nums ? Math.max(...nums.map(Number)) : 0;
-        }
-        const sorted = [...mayors].sort((a, b) => extractLastYear(b.period) - extractLastYear(a.period));
-        const current  = sorted[0];
-        const previous = sorted.slice(1);
+        // أول عنصر = الرئيس الحالي، الباقون = سابقون
+        const current  = mayors[0];
+        const previous = mayors.slice(1);
         let html = '';
-        // الرئيس الحالي — بطاقة بارزة مع وصف
+        // الرئيس الحالي — بطاقة بارزة
         html += `<div class="col-span-full sm:col-span-2 md:col-span-3">
             <div class="bg-gradient-to-l from-emerald-700 to-emerald-900 rounded-2xl p-6 text-white flex flex-col sm:flex-row items-center gap-6 shadow-xl mb-2">
                 <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-white/30 flex-shrink-0 bg-white/20 flex items-center justify-center">
@@ -1716,11 +1769,10 @@ async function openMayorsOverlay() {
                         ? `<img src="${current.image_url}" alt="${current.name}" class="w-full h-full object-cover">`
                         : `<span class="iconify text-white text-4xl" data-icon="lucide:user-circle"></span>`}
                 </div>
-                <div class="text-center sm:text-right flex-1">
+                <div class="text-center sm:text-right">
                     <span class="inline-block bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full mb-2">الرئيس الحالي</span>
                     <h4 class="text-2xl font-extrabold mb-1">${current.name}</h4>
-                    <p class="text-emerald-200 text-sm flex items-center justify-center sm:justify-start gap-1 mb-3"><span class="iconify" data-icon="lucide:calendar"></span>${current.period}</p>
-                    <p class="text-white/75 text-sm leading-relaxed">يتولى السيد ${current.name} رئاسة المجلس الشعبي البلدي لبلدية شطايبي، حيث يعمل على تطوير البلدية وتحسين الخدمات المقدمة للمواطنين ضمن رؤية تنموية شاملة.</p>
+                    <p class="text-emerald-200 text-sm flex items-center justify-center sm:justify-start gap-1"><span class="iconify" data-icon="lucide:calendar"></span>${current.period}</p>
                 </div>
             </div>
         </div>`;
@@ -1734,6 +1786,7 @@ async function openMayorsOverlay() {
                             : `<span class="iconify text-emerald-300 text-3xl" data-icon="lucide:user-circle"></span>`}
                     </div>
                     <div>
+    
                         <h4 class="font-extrabold text-gray-800 text-base leading-snug mb-1">${m.name}</h4>
                         <p class="text-gray-400 text-xs flex items-center justify-center gap-1"><span class="iconify" data-icon="lucide:calendar"></span>${m.period}</p>
                     </div>
