@@ -371,7 +371,7 @@
             </button>
         </div>
         <!-- لوحة: الفروع الإدارية -->
-        <div id="gpanel-admin-branches" class="guide-panel">
+        <div id="gpanel-admin-branches" class="guide-panel"><div id="gpanel-admin-branches-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
             <p class="text-gray-500 text-sm mb-6 text-center">فروع تابعة لبلدية شطايبي لتقريب الإدارة من المواطن وتسهيل سحب الوثائق الرسمية</p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="bg-white rounded-2xl p-6 border border-emerald-200 hover:shadow-lg transition-shadow shadow-sm">
@@ -401,7 +401,7 @@
             </div>
         </div>
         <!-- لوحة: المؤسسات التعليمية -->
-        <div id="gpanel-education" class="guide-panel hidden">
+        <div id="gpanel-education" class="guide-panel hidden"><div id="gpanel-education-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
             <p class="text-gray-500 text-sm mb-6 text-center">مؤسسات التعليم العام في بلدية شطايبي من الابتدائي إلى الثانوي</p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="bg-white rounded-2xl p-6 border border-indigo-200 hover:shadow-lg transition-shadow shadow-sm">
@@ -435,7 +435,7 @@
             </div>
         </div>
         <!-- لوحة: المرافق الصحية -->
-        <div id="gpanel-health" class="guide-panel hidden">
+        <div id="gpanel-health" class="guide-panel hidden"><div id="gpanel-health-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
             <p class="text-gray-500 text-sm mb-6 text-center">المؤسسات الصحية العمومية التي تخدم سكان بلدية شطايبي والمناطق المجاورة</p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="bg-white rounded-2xl p-6 border border-red-200 hover:shadow-lg transition-shadow shadow-sm">
@@ -852,6 +852,54 @@ window.addEventListener('resize',handleMobileNav,{passive:true});
 handleMobileNav();
 
 // ── TABS ──
+
+// ── GUIDE PANELS (فروع إدارية / تعليمية / صحية) ──
+const GUIDE_PANEL_META = {
+    'admin-branches': { cat:'branches', color:'bg-emerald-600', icon:'lucide:landmark',  badge:'text-emerald-600 bg-emerald-100' },
+    'education':      { cat:'education', color:'bg-indigo-600',  icon:'lucide:school',    badge:'text-indigo-600 bg-indigo-100'   },
+    'health':         { cat:'health',    color:'bg-red-600',      icon:'lucide:hospital',  badge:'text-red-600 bg-red-100'         },
+};
+const guideLoaded = {};
+
+async function switchGuideTab(tab) {
+    document.querySelectorAll('.guide-panel').forEach(p=>p.classList.add('hidden'));
+    document.querySelectorAll('.guide-tab').forEach(b=>b.classList.remove('active'));
+    document.getElementById('gpanel-'+tab).classList.remove('hidden');
+    document.getElementById('gtab-'+tab).classList.add('active');
+    if (!guideLoaded[tab]) { await loadGuidePanel(tab); guideLoaded[tab]=true; }
+}
+
+async function loadGuidePanel(tab) {
+    const meta = GUIDE_PANEL_META[tab];
+    if (!meta) return;
+    const grid = document.getElementById('gpanel-'+tab+'-grid');
+    if (!grid) return;
+    grid.innerHTML = '<div class="col-span-full text-center py-8 text-gray-300"><span class="iconify text-3xl animate-spin inline-block" data-icon="lucide:loader-2"></span></div>';
+    try {
+        const res  = await fetch('/api/facilities?cat='+meta.cat);
+        const data = await res.json();
+        const items = data.success && data.data.length ? data.data : null;
+        if (!items) { grid.innerHTML = ''; return; } // يبقى المحتوى الثابت
+        grid.innerHTML = items.map(f => {
+            const tags = Array.isArray(f.tags) ? f.tags : [];
+            return `<div class="bg-white rounded-2xl p-6 border border-gray-100 hover:shadow-lg transition-shadow shadow-sm">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-12 h-12 ${meta.color} rounded-xl flex items-center justify-center flex-shrink-0">
+                        ${f.image_url ? `<img src="${f.image_url}" class="w-full h-full object-cover rounded-xl">` : `<span class="iconify text-white text-2xl" data-icon="${meta.icon}"></span>`}
+                    </div>
+                    <div>
+                        <span class="inline-flex items-center gap-1 text-xs font-bold ${meta.badge} px-2 py-0.5 rounded-full">${f.sub_type||''}</span>
+                        <h4 class="font-extrabold text-gray-800 mt-0.5">${f.name}</h4>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-600 leading-relaxed mb-4">${f.description||''}</p>
+                <div class="flex flex-wrap gap-2">${tags.map(t=>`<span class="text-xs bg-gray-50 text-gray-600 border border-gray-200 px-3 py-1 rounded-full font-semibold">${t}</span>`).join('')}</div>
+            </div>`;
+        }).join('');
+        if (window.Iconify) Iconify.scan();
+    } catch(e) { /* يبقى المحتوى الثابت */ }
+}
+
 // ── NEWS TABS & SHOW MORE ──
 const newsExpanded={announcements:false,activities:false,community:false};
 
