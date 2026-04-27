@@ -466,12 +466,15 @@
                         <div>
                             <label class="text-xs font-bold text-gray-500 mb-1 block">التصنيف <span class="text-red-400">*</span></label>
                             <select id="fac-admin-cat-select" class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-emerald-400">
-                                <option value="religious">دينية</option>
-                                <option value="cultural">ثقافية</option>
-                                <option value="sports">رياضية</option>
-                                <option value="public">خدمات عمومية</option>
-                                <option value="training">تكوين</option>
-                                <option value="assoc">جمعيات</option>
+                                <option value="religious">🕌 دينية</option>
+                                <option value="cultural">🎭 ثقافية</option>
+                                <option value="sports">⚽ رياضية</option>
+                                <option value="public">🏢 خدمات عمومية</option>
+                                <option value="training">📚 تكوين</option>
+                                <option value="assoc">🤝 جمعيات</option>
+                                <option value="branches">🏛️ فروع إدارية</option>
+                                <option value="education">🎓 مؤسسات تعليمية</option>
+                                <option value="health">🏥 مرافق صحية</option>
                             </select>
                         </div>
                         <div>
@@ -545,6 +548,83 @@
             </div>
         </div>
 
+        <!-- FACILITIES -->
+        <div id="section-facilities" class="content-section hidden fade-in">
+            <div class="mb-4 flex justify-end">
+                <button onclick="toggleFormPanel('facilities')" id="btn-open-facilities"
+                        class="inline-flex items-center gap-2 bg-slate-600 hover:bg-slate-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-md">
+                    <span class="iconify text-lg" data-icon="lucide:plus-circle"></span>
+                    إضافة مرفق
+                </button>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div id="form-panel-facilities" class="lg:col-span-1 bg-white rounded-2xl p-5 shadow-md border border-gray-100 h-fit sticky top-24 hidden">
+                    <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="iconify text-slate-500" data-icon="lucide:building-2"></span>
+                        <span id="facilities-form-title">إضافة مرفق</span>
+                    </h3>
+                    <input type="hidden" id="facilities-edit-id" value="">
+                    <div class="space-y-3">
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">التصنيف</label>
+                            <select id="facilities-category" class="w-full">
+                                <option value="religious">🕌 دينية</option>
+                                <option value="cultural">🎭 ثقافية</option>
+                                <option value="sports">⚽ رياضية</option>
+                                <option value="public">🏢 خدمات عمومية</option>
+                                <option value="training">📚 تكوين</option>
+                                <option value="assoc">🤝 جمعيات</option>
+                                <option value="branches">🏛️ فروع إدارية</option>
+                                <option value="education">🎓 مؤسسات تعليمية</option>
+                                <option value="health">🏥 مرافق صحية</option>
+                            </select>
+                        </div>
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">اسم المرفق</label><input id="facilities-name" type="text" placeholder="مثال: مسجد الرحمة — شطايبي"></div>
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">نوع المرفق</label><input id="facilities-subtype" type="text" placeholder="مثال: مسجد جامع / ملعب كرة قدم"></div>
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">الوصف</label><textarea id="facilities-desc" rows="3" placeholder="وصف مختصر للمرفق..."></textarea></div>
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">الكلمات الدلالية (مفصولة بفاصلة)</label><input id="facilities-tags" type="text" placeholder="مثال: صلاة الجمعة، دروس دينية"></div>
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">📷 الصورة الرئيسية</label>
+                            <div id="fac-img-widget" class="upload-widget p-3 cursor-pointer" onclick="triggerUpload('fac-img-input')">
+                                <div id="fac-img-placeholder" class="flex flex-col items-center gap-1 py-2"><span class="iconify text-2xl text-gray-200" data-icon="lucide:image-plus"></span><span class="text-xs text-gray-400">رفع صورة</span></div>
+                                <div id="fac-img-preview" class="hidden"><img id="fac-img-img" src="" class="w-full h-24 object-cover rounded-lg mb-1"><button onclick="event.stopPropagation();clearWidget('fac-img','facilities-image','facilities-image-manual')" class="text-[10px] text-red-500 font-bold">✕ حذف</button></div>
+                                <div id="fac-img-uploading" class="hidden flex flex-col items-center gap-1 py-2"><span class="iconify text-2xl text-indigo-400 spin" data-icon="lucide:loader-2"></span><span class="text-xs text-indigo-500">جاري الرفع...</span></div>
+                            </div>
+                            <input type="file" id="fac-img-input" accept="image/*" class="hidden" onchange="handleFeatured(this,'fac-img','facilities-image','facilities')">
+                            <input type="hidden" id="facilities-image" value="">
+                            <input id="facilities-image-manual" type="url" placeholder="أو الصق رابطاً..." class="mt-1 text-xs" oninput="document.getElementById('facilities-image').value=this.value">
+                        </div>
+                        <!-- ألبوم الصور -->
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-2 block flex items-center gap-1"><span class="iconify" data-icon="lucide:images"></span> معرض الصور</label>
+                            <div id="fac-album-grid" class="grid grid-cols-3 gap-2 mb-2"></div>
+                            <div id="fac-album-upload" class="upload-widget p-2 cursor-pointer" onclick="triggerUpload('fac-album-input')">
+                                <div class="flex items-center justify-center gap-2 py-1"><span class="iconify text-lg text-gray-300" data-icon="lucide:plus"></span><span class="text-xs text-gray-400">إضافة صورة للمعرض</span></div>
+                            </div>
+                            <input type="file" id="fac-album-input" accept="image/*" class="hidden" onchange="handleFacAlbum(this)">
+                            <input type="hidden" id="facilities-albums" value="[]">
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="saveFacility()" class="flex-1 bg-slate-600 hover:bg-slate-700 text-white py-3 rounded-xl font-bold text-sm transition-colors">💾 حفظ</button>
+                            <button onclick="cancelFacilityEdit()" id="facilities-cancel-btn" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-600 py-3 px-4 rounded-xl font-bold text-sm transition-colors">إلغاء</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- فلترة + قائمة -->
+                <div class="lg:col-span-2">
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <button onclick="filterFacAdmin('all')" id="fac-filter-all" class="fac-filter-btn text-xs px-3 py-1.5 rounded-lg font-bold bg-slate-600 text-white">الكل</button>
+                        <button onclick="filterFacAdmin('religious')"  id="fac-filter-religious"  class="fac-filter-btn text-xs px-3 py-1.5 rounded-lg font-bold bg-gray-100 text-gray-600 hover:bg-gray-200">🕌 دينية</button>
+                        <button onclick="filterFacAdmin('cultural')"   id="fac-filter-cultural"   class="fac-filter-btn text-xs px-3 py-1.5 rounded-lg font-bold bg-gray-100 text-gray-600 hover:bg-gray-200">🎭 ثقافية</button>
+                        <button onclick="filterFacAdmin('sports')"     id="fac-filter-sports"     class="fac-filter-btn text-xs px-3 py-1.5 rounded-lg font-bold bg-gray-100 text-gray-600 hover:bg-gray-200">⚽ رياضية</button>
+                        <button onclick="filterFacAdmin('public')"     id="fac-filter-public"     class="fac-filter-btn text-xs px-3 py-1.5 rounded-lg font-bold bg-gray-100 text-gray-600 hover:bg-gray-200">🏢 عمومية</button>
+                        <button onclick="filterFacAdmin('training')"   id="fac-filter-training"   class="fac-filter-btn text-xs px-3 py-1.5 rounded-lg font-bold bg-gray-100 text-gray-600 hover:bg-gray-200">📚 تكوين</button>
+                        <button onclick="filterFacAdmin('assoc')"      id="fac-filter-assoc"      class="fac-filter-btn text-xs px-3 py-1.5 rounded-lg font-bold bg-gray-100 text-gray-600 hover:bg-gray-200">🤝 جمعيات</button>
+                    </div>
+                    <div id="facilities-list" class="space-y-3"></div>
+                </div>
+            </div>
+        </div>
 
     </div>
 </div>
@@ -581,7 +661,7 @@ function switchTab(tab){
     loadTab(tab);
 }
 function loadTab(tab){
-    const m={news:loadNews,services:loadServices,archives:loadArchives,tourism:loadTourism,mayors:loadMayors,beaches:loadBeaches_admin,facilities:loadFacilitiesAdmin};
+    const m={news:loadNews,services:loadServices,archives:loadArchives,tourism:loadTourism,mayors:loadMayors,beaches:loadBeaches_admin};
     if(m[tab]) m[tab]();
 }
 

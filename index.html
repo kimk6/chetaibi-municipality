@@ -741,6 +741,9 @@
             <button onclick="facSetCat('public')"     id="fcat-public"     class="fcat-btn text-xs px-3 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white">🏢 خدمات عمومية</button>
             <button onclick="facSetCat('training')"   id="fcat-training"   class="fcat-btn text-xs px-3 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white">📚 تكوين</button>
             <button onclick="facSetCat('assoc')"      id="fcat-assoc"      class="fcat-btn text-xs px-3 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white">🤝 جمعيات</button>
+            <button onclick="facSetCat('branches')"   id="fcat-branches"   class="fcat-btn text-xs px-3 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white">🏛️ فروع إدارية</button>
+            <button onclick="facSetCat('education')"  id="fcat-education"  class="fcat-btn text-xs px-3 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white">🎓 تعليمية</button>
+            <button onclick="facSetCat('health')"     id="fcat-health"     class="fcat-btn text-xs px-3 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white">🏥 صحية</button>
         </div>
     </div>
     <div class="flex-1 overflow-y-auto bg-gray-50">
@@ -1423,14 +1426,17 @@ async function renderExploreOverlay() {
 
 // ── FACILITIES OVERLAY (مرافق وخدمات) ──
 const FAC_CONFIG = {
-    religious: { title:'المرافق الدينية',   desc:'المساجد والمدارس القرآنية ودور القرآن الكريم في بلدية شطايبي',                          color:'bg-emerald-700', icon:'lucide:moon'           },
-    cultural:  { title:'المرافق الثقافية',   desc:'دور الشباب والمكتبات والمراكز الثقافية في بلدية شطايبي',                              color:'bg-purple-700',  icon:'lucide:drama'          },
-    sports:    { title:'المرافق الرياضية',   desc:'الملاعب والقاعات الرياضية والبنية التحتية الرياضية في بلدية شطايبي',                   color:'bg-orange-600',  icon:'lucide:trophy'         },
-    public:    { title:'خدمات عمومية',       desc:'مصالح البريد والضرائب والنقل وغيرها من الخدمات العمومية في شطايبي',                   color:'bg-blue-700',    icon:'lucide:building'       },
-    training:  { title:'مراكز التكوين',      desc:'مراكز التكوين المهني وفروع الإدارة المختصة بالتأهيل والتدريب',                        color:'bg-teal-700',    icon:'lucide:graduation-cap' },
-    assoc:     { title:'الجمعيات',           desc:'الجمعيات المحلية الناشطة في المجال الاجتماعي والثقافي والخيري ببلدية شطايبي',          color:'bg-rose-700',    icon:'lucide:users'          },
+    religious: { title:'المرافق الدينية',    desc:'المساجد والمدارس القرآنية ودور القرآن الكريم في بلدية شطايبي',              color:'bg-emerald-700', icon:'lucide:moon',           col:'emerald' },
+    cultural:  { title:'المرافق الثقافية',   desc:'دور الشباب والمكتبات والمراكز الثقافية في بلدية شطايبي',                   color:'bg-purple-700',  icon:'lucide:drama',          col:'purple'  },
+    sports:    { title:'المرافق الرياضية',   desc:'الملاعب والقاعات الرياضية والبنية التحتية الرياضية في بلدية شطايبي',        color:'bg-orange-600',  icon:'lucide:trophy',         col:'orange'  },
+    public:    { title:'خدمات عمومية',       desc:'مصالح البريد والضرائب والنقل وغيرها من الخدمات العمومية في شطايبي',        color:'bg-blue-700',    icon:'lucide:building',       col:'blue'    },
+    training:  { title:'مراكز التكوين',      desc:'مراكز التكوين المهني والتأهيل والتدريب في شطايبي',                         color:'bg-teal-700',    icon:'lucide:graduation-cap', col:'teal'    },
+    assoc:     { title:'الجمعيات',           desc:'الجمعيات المحلية الناشطة في المجال الاجتماعي والثقافي والخيري',             color:'bg-rose-700',    icon:'lucide:users',          col:'rose'    },
+    branches:  { title:'الفروع الإدارية',   desc:'فروع بلدية شطايبي الإدارية لتقريب الخدمات من المواطن',                    color:'bg-emerald-600', icon:'lucide:landmark',       col:'emerald' },
+    education: { title:'المؤسسات التعليمية',desc:'مؤسسات التعليم العام من الابتدائي إلى الثانوي في شطايبي',                  color:'bg-indigo-700',  icon:'lucide:school',         col:'indigo'  },
+    health:    { title:'المرافق الصحية',     desc:'المؤسسات الصحية العمومية التي تخدم سكان بلدية شطايبي',                   color:'bg-red-600',     icon:'lucide:heart-pulse',    col:'red'     },
 };
-const FAC_TAG_COLORS = { religious:'emerald', cultural:'purple', sports:'orange', public:'blue', training:'teal', assoc:'rose' };
+const FAC_TAG_COLORS = { religious:'emerald', cultural:'purple', sports:'orange', public:'blue', training:'teal', assoc:'rose', branches:'emerald', education:'indigo', health:'red' };
 let facCat = 'religious', facCache = {};
 function openFacilitiesOverlay() {
     document.getElementById('facilities-overlay').classList.remove('hidden');
@@ -1448,7 +1454,7 @@ async function facSetCat(cat) {
     document.querySelectorAll('.fcat-btn').forEach(b=>{ b.classList.remove('bg-white','text-slate-800'); b.classList.add('bg-white/20','text-white'); });
     const ab = document.getElementById('fcat-'+cat);
     if(ab){ ab.classList.remove('bg-white/20','text-white'); ab.classList.add('bg-white','text-slate-800'); }
-    const m = FAC_META[cat];
+    const m = FAC_CONFIG[cat] || { title:cat, desc:'', color:'bg-gray-700', icon:'lucide:building-2', col:'gray' };
     document.getElementById('fac-cat-title').textContent = m.title;
     document.getElementById('fac-cat-desc').textContent  = m.desc;
     document.getElementById('fac-overlay-title').textContent = m.title;
@@ -1459,7 +1465,7 @@ async function facSetCat(cat) {
         const data = await res.json();
         const items = data.success ? data.data : [];
         const tagColors = { religious:'emerald', cultural:'purple', sports:'orange', public:'blue', training:'teal', assoc:'rose' };
-        const col = tagColors[cat]||'gray';
+        const col = m.col || FAC_TAG_COLORS[cat] || 'gray';
         if (!items.length) { grid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-10">لا توجد مرافق في هذا التصنيف</p>'; return; }
         grid.innerHTML = items.map(item => {
             const tags = Array.isArray(item.tags) ? item.tags : [];
