@@ -86,7 +86,7 @@
             <div class="hidden md:flex items-center justify-center flex-1 gap-1">
                 <a href="#home" class="nav-link active-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">الرئيسية</a>
                 <a href="#news" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">المستجدات</a>
-                <a href="#admin" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">الخدمات</a>
+                <a href="#admin" onclick="event.preventDefault();document.getElementById('admin').scrollIntoView({behavior:'smooth'})" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">الخدمات</a>
                 <a href="#archive" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">الأرشيف</a>
                 <a href="#guide" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">الدليل</a>
                 <a href="#beaches" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">السياحة</a>
@@ -132,8 +132,8 @@
         <p class="text-xl md:text-3xl font-bold mb-2 max-w-2xl mx-auto text-white/95 animate-fadeInUp anim-delay-2">جوهرة الساحل الشرقي الجزائري</p>
         <p class="text-lg md:text-xl font-bold mb-8 max-w-xl mx-auto text-white/85 animate-fadeInUp anim-delay-2">حيث تمتزج الطبيعة بالتاريخ</p>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3 animate-fadeInUp anim-delay-3 max-w-2xl mx-auto w-full">
-            <a href="#admin" class="bg-white/75 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white/85 transition-colors text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-md text-center"><span class="iconify text-base md:text-lg" data-icon="lucide:file-text"></span>الخدمات الإدارية</a>
-            <a href="#tourism" class="bg-white/75 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white/85 transition-colors text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-md text-center"><span class="iconify text-base md:text-lg" data-icon="lucide:compass"></span>اكتشف السياحة</a>
+            <a href="#admin" onclick="setTimeout(()=>document.getElementById('admin').scrollIntoView({behavior:'smooth'}),100)" class="bg-white/75 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white/85 transition-colors text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-md text-center"><span class="iconify text-base md:text-lg" data-icon="lucide:file-text"></span>الخدمات الإدارية</a>
+            <a href="#tourism" onclick="setTimeout(()=>document.getElementById('tourism').scrollIntoView({behavior:'smooth'}),100)" class="bg-white/75 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white/85 transition-colors text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-md text-center"><span class="iconify text-base md:text-lg" data-icon="lucide:compass"></span>اكتشف السياحة</a>
             <a href="#news" class="bg-white/75 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white/85 transition-colors text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-md text-center"><span class="iconify text-base md:text-lg" data-icon="lucide:newspaper"></span>آخر المستجدات</a>
             <a href="#guide" class="bg-white/75 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white/85 transition-colors text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-md text-center"><span class="iconify text-base md:text-lg" data-icon="lucide:map"></span>دليل شطايبي</a>
         </div>
@@ -210,7 +210,7 @@
         <div class="text-center md:text-right flex-1">
             <p class="text-emerald-200 text-sm font-semibold mb-1">رئيس المجلس الشعبي البلدي</p>
             <h3 id="mayor-name" class="text-2xl md:text-3xl font-extrabold mb-2">السيد عثماني سليمان</h3>
-            <p id="mayor-bio" class="text-white/75 text-sm leading-relaxed max-w-xl">يتولى السيد <span id="mayor-name-inline">عثماني سليمان</span> رئاسة المجلس الشعبي البلدي لشطايبي، حيث يعمل على تطوير البلدية وتحسين الخدمات المقدمة للمواطنين ضمن رؤية تنموية شاملة.</p>
+            <p id="mayor-bio" class="text-white/75 text-sm leading-relaxed max-w-xl">يتولى السيد <span id="mayor-name-inline">عثماني سليمان</span> رئاسة المجلس الشعبي البلدي لبلدية شطايبي، حيث يعمل على تطوير البلدية وتحسين الخدمات المقدمة للمواطنين ضمن رؤية تنموية شاملة.</p>
         </div>
         <div class="flex gap-3 flex-wrap justify-center md:justify-start">
             <button onclick="openMayorsOverlay()" class="bg-white/15 hover:bg-white/25 backdrop-blur-sm px-5 py-2.5 rounded-xl text-sm font-bold transition-colors border border-white/20"><span class="iconify inline-block ml-1" data-icon="lucide:users"></span>الرؤساء السابقون</button>
@@ -225,9 +225,9 @@
             <p class="text-gray-500 max-w-xl mx-auto">أحدث الأخبار والإعلانات الرسمية ونشاطات البلدية</p>
         </div>
         <div class="flex flex-wrap justify-center gap-3 mb-10">
-            <button onclick="switchNewsTab('announcements')" id="tab-announcements" class="news-tab active px-6 py-2.5 rounded-xl text-sm font-bold transition-all">📢 إعلانات رسمية</button>
-            <button onclick="switchNewsTab('activities')" id="tab-activities" class="news-tab px-6 py-2.5 rounded-xl text-sm font-bold transition-all">📋 نشاطات البلدية</button>
-            <button onclick="switchNewsTab('community')" id="tab-community" class="news-tab px-6 py-2.5 rounded-xl text-sm font-bold transition-all">🤝 ركن المجتمع</button>
+            <button onclick="switchNewsTab('announcements')" id="tab-announcements" class="news-tab active px-6 py-2.5 rounded-xl text-sm font-bold transition-all"><span class="iconify text-base" data-icon="lucide:megaphone"></span> إعلانات رسمية</button>
+            <button onclick="switchNewsTab('activities')" id="tab-activities" class="news-tab px-6 py-2.5 rounded-xl text-sm font-bold transition-all"><span class="iconify text-base" data-icon="lucide:clipboard-list"></span> نشاطات البلدية</button>
+            <button onclick="switchNewsTab('community')" id="tab-community" class="news-tab px-6 py-2.5 rounded-xl text-sm font-bold transition-all"><span class="iconify text-base" data-icon="lucide:handshake"></span> ركن المجتمع</button>
         </div>
         <div id="news-loading" class="text-center py-16 text-gray-400"><span class="iconify text-5xl animate-spin inline-block" data-icon="lucide:loader-2"></span><p class="mt-3 text-sm font-semibold">جاري تحميل الأخبار...</p></div>
         <!-- كل tab له grid + extra + أزرار -->
@@ -615,8 +615,8 @@
             <div class="w-9"></div>
         </div>
         <div class="flex justify-center gap-3 px-4 pb-3">
-            <button onclick="archSetCat('compare')"  id="acat-compare"  class="acat-btn text-xs px-4 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white">🔄 مقارنة الأمس بالحاضر</button>
-            <button onclick="archSetCat('historic')" id="acat-historic" class="acat-btn text-xs px-4 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white">📜 صور تاريخية</button>
+            <button onclick="archSetCat('compare')"  id="acat-compare"  class="acat-btn text-xs px-4 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white"><span class="iconify text-base" data-icon="lucide:arrow-left-right"></span> مقارنة الأمس بالحاضر</button>
+            <button onclick="archSetCat('historic')" id="acat-historic" class="acat-btn text-xs px-4 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white"><span class="iconify text-base" data-icon="lucide:scroll"></span> صور تاريخية</button>
         </div>
     </div>
     <div class="flex-1 overflow-y-auto bg-gray-950">
@@ -679,8 +679,8 @@
             <div class="w-9"></div>
         </div>
         <div class="flex justify-center gap-2 px-4 pb-3">
-            <button onclick="exploreSetType('beaches')" id="etype-beaches" class="etype-btn text-xs px-4 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white">🏖️ الشواطئ</button>
-            <button onclick="exploreSetType('tourism')" id="etype-tourism" class="etype-btn text-xs px-4 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white">🧭 المعالم</button>
+            <button onclick="exploreSetType('beaches')" id="etype-beaches" class="etype-btn text-xs px-4 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white"><span class="iconify text-base" data-icon="lucide:umbrella"></span> الشواطئ</button>
+            <button onclick="exploreSetType('tourism')" id="etype-tourism" class="etype-btn text-xs px-4 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white"><span class="iconify text-base" data-icon="lucide:map-pin"></span> المعالم السياحية</button>
         </div>
     </div>
     <div class="flex-1 overflow-y-auto bg-gray-50">
@@ -702,12 +702,15 @@
             <div class="w-9"></div>
         </div>
         <div class="flex flex-wrap justify-center gap-2 px-4 pb-3">
-            <button onclick="facSetCat('religious')"  id="fcat-religious"  class="fcat-btn text-xs px-3 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white">🕌 دينية</button>
-            <button onclick="facSetCat('cultural')"   id="fcat-cultural"   class="fcat-btn text-xs px-3 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white">🎭 ثقافية</button>
-            <button onclick="facSetCat('sports')"     id="fcat-sports"     class="fcat-btn text-xs px-3 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white">⚽ رياضية</button>
-            <button onclick="facSetCat('public')"     id="fcat-public"     class="fcat-btn text-xs px-3 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white">🏢 خدمات عمومية</button>
-            <button onclick="facSetCat('training')"   id="fcat-training"   class="fcat-btn text-xs px-3 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white">📚 تكوين</button>
-            <button onclick="facSetCat('assoc')"      id="fcat-assoc"      class="fcat-btn text-xs px-3 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white">🤝 جمعيات</button>
+            <button onclick="facSetCat('religious')"  id="fcat-religious"  class="fcat-btn text-xs px-3 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white"><span class="iconify text-base" data-icon="lucide:moon"></span> دينية</button>
+            <button onclick="facSetCat('cultural')"   id="fcat-cultural"   class="fcat-btn text-xs px-3 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white"><span class="iconify text-base" data-icon="lucide:drama"></span> ثقافية</button>
+            <button onclick="facSetCat('sports')"     id="fcat-sports"     class="fcat-btn text-xs px-3 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white"><span class="iconify text-base" data-icon="lucide:trophy"></span> رياضية</button>
+            <button onclick="facSetCat('public')"     id="fcat-public"     class="fcat-btn text-xs px-3 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white"><span class="iconify text-base" data-icon="lucide:building"></span> خدمات عمومية</button>
+            <button onclick="facSetCat('training')"   id="fcat-training"   class="fcat-btn text-xs px-3 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white"><span class="iconify text-base" data-icon="lucide:graduation-cap"></span> تكوين</button>
+            <button onclick="facSetCat('assoc')"      id="fcat-assoc"      class="fcat-btn text-xs px-3 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white"><span class="iconify text-base" data-icon="lucide:users"></span> جمعيات</button>
+            <button onclick="facSetCat('branches')"   id="fcat-branches"   class="fcat-btn text-xs px-3 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white"><span class="iconify text-base" data-icon="lucide:landmark"></span> فروع إدارية</button>
+            <button onclick="facSetCat('education')"  id="fcat-education"  class="fcat-btn text-xs px-3 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white"><span class="iconify text-base" data-icon="lucide:school"></span> تعليمية</button>
+            <button onclick="facSetCat('health')"     id="fcat-health"     class="fcat-btn text-xs px-3 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white"><span class="iconify text-base" data-icon="lucide:heart-pulse"></span> صحية</button>
         </div>
     </div>
     <div class="flex-1 overflow-y-auto bg-gray-50">
@@ -738,9 +741,9 @@
         </div>
         <!-- سطر أزرار التصنيف -->
         <div class="flex justify-center gap-2 px-4 pb-3">
-            <button onclick="overlaySetCat('official')" id="ocat-official" class="ocat-btn text-xs px-4 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white">📢 إعلانات</button>
-            <button onclick="overlaySetCat('activity')" id="ocat-activity" class="ocat-btn text-xs px-4 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white">📋 نشاطات</button>
-            <button onclick="overlaySetCat('social')"   id="ocat-social"   class="ocat-btn text-xs px-4 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white">🤝 مجتمع</button>
+            <button onclick="overlaySetCat('official')" id="ocat-official" class="ocat-btn text-xs px-4 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white"><span class="iconify text-base" data-icon="lucide:megaphone"></span> إعلانات</button>
+            <button onclick="overlaySetCat('activity')" id="ocat-activity" class="ocat-btn text-xs px-4 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white"><span class="iconify text-base" data-icon="lucide:clipboard-list"></span> نشاطات</button>
+            <button onclick="overlaySetCat('social')"   id="ocat-social"   class="ocat-btn text-xs px-4 py-1.5 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white"><span class="iconify text-base" data-icon="lucide:handshake"></span> مجتمع</button>
         </div>
     </div>
     <!-- محتوى قابل للتمرير -->
@@ -774,8 +777,8 @@
                 <h4 class="font-extrabold text-lg mb-5 flex items-center gap-2"><span class="iconify text-emerald-400" data-icon="lucide:link"></span>روابط سريعة</h4>
                 <ul class="space-y-3">
                     <li><a href="#news" class="text-sm text-gray-400 hover:text-emerald-400 transition-colors flex items-center gap-2"><span class="iconify text-xs" data-icon="lucide:chevron-left"></span>آخر المستجدات</a></li>
-                    <li><a href="#admin" class="text-sm text-gray-400 hover:text-emerald-400 transition-colors flex items-center gap-2"><span class="iconify text-xs" data-icon="lucide:chevron-left"></span>الخدمات الإدارية</a></li>
-                    <li><a href="/archives" class="text-sm text-gray-400 hover:text-emerald-400 transition-colors flex items-center gap-2"><span class="iconify text-xs" data-icon="lucide:chevron-left"></span>الأرشيف والتاريخ</a></li>
+                    <li><a href="#admin" onclick="event.preventDefault();document.getElementById('admin').scrollIntoView({behavior:'smooth'})" class="text-sm text-gray-400 hover:text-emerald-400 transition-colors flex items-center gap-2"><span class="iconify text-xs" data-icon="lucide:chevron-left"></span>الخدمات الإدارية</a></li>
+                    <li><a href="#archive" onclick="event.preventDefault();document.getElementById('archive').scrollIntoView({behavior:'smooth'})" class="text-sm text-gray-400 hover:text-emerald-400 transition-colors flex items-center gap-2"><span class="iconify text-xs" data-icon="lucide:chevron-left"></span>الأرشيف والتاريخ</a></li>
                     <li><a href="#guide" class="text-sm text-gray-400 hover:text-emerald-400 transition-colors flex items-center gap-2"><span class="iconify text-xs" data-icon="lucide:chevron-left"></span>دليل شطايبي</a></li>
                     <li><a href="#beaches" class="text-sm text-gray-400 hover:text-emerald-400 transition-colors flex items-center gap-2"><span class="iconify text-xs" data-icon="lucide:chevron-left"></span>اكتشف السياحة</a></li>
                 </ul>
@@ -1245,10 +1248,8 @@ async function loadCurrentMayor(){
         const res=await fetch('/api/mayors');
         const data=await res.json();
         if(!data.success||!data.data||!data.data.length) return;
-        // ترتيب حسب التاريخ لتحديد الرئيس الحالي
-        function _ey(p){const s=p||'';const c=/الآن|الحالي/i.test(s);const y=[...s.matchAll(/(\d{4})/g)].map(x=>+x[1]);return{s:y[0]||0,e:c?9999:(y[y.length-1]||y[0]||0)};}
-        const sorted=[...data.data].sort((a,b)=>{const ya=_ey(a.period),yb=_ey(b.period);return yb.e!==ya.e?yb.e-ya.e:yb.s-ya.s;});
-        const m=sorted[0];
+        // أول سجل هو الرئيس الحالي (ORDER BY id DESC في API)
+        const m=data.data[0];
         // تحديث الاسم
         document.getElementById('mayor-name').textContent='السيد '+m.name;
         document.getElementById('mayor-name-inline').textContent=m.name;
