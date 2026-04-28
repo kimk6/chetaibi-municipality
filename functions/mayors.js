@@ -1,31 +1,25 @@
-// functions/mayors.js
 export async function onRequestGet(context) {
     const { env } = context;
     try {
-        const { results: rawMayors } = await env.DB.prepare('SELECT * FROM mayors').all();
+        const { results: raw } = await env.DB.prepare('SELECT * FROM mayors').all();
 
-        // ترتيب حسب سنة الفترة: من يملك "الآن" = الرئيس الحالي أولاً
-        function extractYears(period) {
-            const str = period || '';
-            const isCurrent = /الآن|الحالي/i.test(str);
-            const years = [...str.matchAll(/(\d{4})/g)].map(m => parseInt(m[1], 10));
-            const startYear = years[0] || 0;
-            const endYear = isCurrent ? 9999 : (years[years.length - 1] || startYear);
-            return { startYear, endYear };
+        // ── ترتيب: من period يحتوي "الآن" أو أحدث سنة نهاية = أول ──
+        function ey(p) {
+            const s = p || '';
+            const c = /الآن|الحالي/i.test(s);
+            const y = [...s.matchAll(/(\d{4})/g)].map(m => +m[1]);
+            return { s: y[0] || 0, e: c ? 9999 : (y[y.length - 1] || y[0] || 0) };
         }
-
-        const mayors = [...rawMayors].sort((a, b) => {
-            const ya = extractYears(a.period);
-            const yb = extractYears(b.period);
-            if (yb.endYear !== ya.endYear) return yb.endYear - ya.endYear;
-            return yb.startYear - ya.startYear;
+        const mayors = [...raw].sort((a, b) => {
+            const ya = ey(a.period), yb = ey(b.period);
+            return yb.e !== ya.e ? yb.e - ya.e : yb.s - ya.s;
         });
 
-        const current   = mayors[0] || null;
+        const current    = mayors[0] || null;
         const pastMayors = mayors.slice(1);
 
         // بطاقة الرئيس الحالي
-        const currentCardHtml = current ? `
+        const currentHtml = current ? `
         <div class="bg-gradient-to-l from-emerald-700 to-emerald-800 rounded-2xl p-8 shadow-2xl text-white mb-14 flex flex-col md:flex-row items-center gap-8">
             <div class="flex-shrink-0">
                 <div class="w-36 h-36 rounded-full overflow-hidden border-4 border-white/30 shadow-xl flex items-center justify-center ${current.image_url ? '' : 'bg-white/20'}">
@@ -37,7 +31,9 @@ export async function onRequestGet(context) {
             <div class="text-center md:text-right flex-1">
                 <span class="inline-block bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full mb-3">🏛️ الرئيس الحالي</span>
                 <h3 class="text-2xl md:text-3xl font-extrabold mb-1">${current.name}</h3>
-                <p class="text-emerald-200 text-sm font-semibold mb-4">${current.period}</p>
+                <p class="text-emerald-200 text-sm font-semibold mb-4 flex items-center justify-center md:justify-start gap-1">
+                    <span class="iconify" data-icon="lucide:calendar"></span>${current.period}
+                </p>
                 <p class="text-white/80 text-sm leading-relaxed max-w-xl">
                     يتولى السيد ${current.name} رئاسة المجلس الشعبي البلدي لبلدية شطايبي، حيث يعمل على تطوير البلدية وتحسين الخدمات المقدمة للمواطنين ضمن رؤية تنموية شاملة.
                 </p>
@@ -45,7 +41,7 @@ export async function onRequestGet(context) {
         </div>` : '';
 
         // بطاقات الرؤساء السابقين
-        const pastCardsHtml = pastMayors.map(m => `
+        const pastHtml = pastMayors.map(m => `
             <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 text-center hover:shadow-xl transition-shadow">
                 <div class="w-24 h-24 ${m.image_url ? '' : 'bg-emerald-100'} rounded-full mx-auto mb-4 overflow-hidden flex items-center justify-center border-4 border-emerald-200">
                     ${m.image_url
@@ -107,15 +103,15 @@ export async function onRequestGet(context) {
                 <span class="iconify text-6xl block mb-4" data-icon="lucide:users"></span>
                 <p>لا توجد بيانات بعد</p>
                </div>`
-            : `${currentCardHtml}
+            : `${currentHtml}
                ${pastMayors.length > 0 ? `
-               <div class="mb-8">
+               <div>
                    <h3 class="text-xl font-extrabold text-gray-700 mb-6 flex items-center gap-2">
                        <span class="iconify text-emerald-500 text-2xl" data-icon="lucide:history"></span>
                        الرؤساء السابقون
                    </h3>
                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                       ${pastCardsHtml}
+                       ${pastHtml}
                    </div>
                </div>` : ''}`
         }
