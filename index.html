@@ -9,6 +9,17 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <!-- Leaflet.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <style>
+        #chetaibi-map { height: 500px; border-radius: 16px; z-index: 1; }
+        .map-popup img { width: 100%; height: 80px; object-fit: cover; border-radius: 8px; margin-bottom: 6px; }
+        .map-popup-name { font-weight: 800; font-size: 13px; color: #1f2937; margin-bottom: 2px; }
+        .map-popup-type { font-size: 11px; color: #6b7280; margin-bottom: 6px; }
+        .map-popup-link { display: inline-block; background: #059669; color: white; padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; text-decoration: none; }
+        .leaflet-popup-content { margin: 10px 12px; min-width: 160px; }
+    </style>
     <script>tailwind.config={theme:{extend:{fontFamily:{cairo:['Cairo','sans-serif']}}}}</script>
     <style>
         *{font-family:'Cairo',sans-serif;}
@@ -89,6 +100,7 @@
                 <a href="#admin" onclick="event.preventDefault();document.getElementById('admin').scrollIntoView({behavior:'smooth'})" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">الخدمات</a>
                 <a href="#archive" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">الأرشيف</a>
                 <a href="#guide" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">الدليل</a>
+                <a href="#map-section" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">الخريطة</a>
                 <a href="#beaches" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">السياحة</a>
                 <a href="#contact-footer" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">اتصل بنا</a>
             </div>
@@ -111,6 +123,7 @@
                 <a href="#admin" class="flex items-center gap-3 text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg font-semibold transition-colors"><span class="iconify text-white text-lg" data-icon="lucide:landmark"></span><span class="text-base">الخدمات</span></a>
                 <a href="#archive" class="flex items-center gap-3 text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg font-semibold transition-colors"><span class="iconify text-white text-lg" data-icon="lucide:scroll-text"></span><span class="text-base">الأرشيف</span></a>
                 <a href="#guide" class="flex items-center gap-3 text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg font-semibold transition-colors"><span class="iconify text-white text-lg" data-icon="lucide:map-pin"></span><span class="text-base">الدليل</span></a>
+                <a href="#map-section" class="flex items-center gap-3 text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg font-semibold transition-colors"><span class="iconify text-white text-lg" data-icon="lucide:map"></span><span class="text-base">الخريطة</span></a>
                 <a href="#beaches" class="flex items-center gap-3 text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg font-semibold transition-colors"><span class="iconify text-white text-lg" data-icon="lucide:sun"></span><span class="text-base">السياحة</span></a>
                 <a href="#contact-footer" class="flex items-center gap-3 text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg font-semibold transition-colors"><span class="iconify text-white text-lg" data-icon="lucide:phone"></span><span class="text-base">اتصل بنا</span></a>
             </div>
@@ -395,6 +408,36 @@
 </section>
 
 <!-- TOURISM & BEACHES COMBINED -->
+
+<!-- ══════════════════════════════════════════════
+     🗺️ INTERACTIVE MAP
+══════════════════════════════════════════════ -->
+<section id="map-section" class="py-14 bg-white">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center mb-10">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 flex items-center justify-center gap-3">
+                <span class="iconify text-emerald-600" data-icon="lucide:map"></span>
+                خريطة شطايبي التفاعلية
+            </h2>
+            <p class="text-gray-500 max-w-2xl mx-auto">استكشف مرافق وشواطئ ومعالم شطايبي على الخريطة التفاعلية</p>
+        </div>
+        <!-- مفتاح الألوان -->
+        <div class="flex flex-wrap justify-center gap-3 mb-6">
+            <span class="inline-flex items-center gap-1.5 bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-full text-xs font-bold text-gray-600"><span class="w-3 h-3 rounded-full bg-cyan-500 flex-shrink-0"></span>شواطئ</span>
+            <span class="inline-flex items-center gap-1.5 bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-full text-xs font-bold text-gray-600"><span class="w-3 h-3 rounded-full bg-emerald-600 flex-shrink-0"></span>معالم سياحية</span>
+            <span class="inline-flex items-center gap-1.5 bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-full text-xs font-bold text-gray-600"><span class="w-3 h-3 rounded-full bg-green-600 flex-shrink-0"></span>فروع إدارية</span>
+            <span class="inline-flex items-center gap-1.5 bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-full text-xs font-bold text-gray-600"><span class="w-3 h-3 rounded-full bg-blue-600 flex-shrink-0"></span>تعليمية</span>
+            <span class="inline-flex items-center gap-1.5 bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-full text-xs font-bold text-gray-600"><span class="w-3 h-3 rounded-full bg-red-500 flex-shrink-0"></span>صحية</span>
+            <span class="inline-flex items-center gap-1.5 bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-full text-xs font-bold text-gray-600"><span class="w-3 h-3 rounded-full bg-amber-500 flex-shrink-0"></span>دينية</span>
+            <span class="inline-flex items-center gap-1.5 bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-full text-xs font-bold text-gray-600"><span class="w-3 h-3 rounded-full bg-orange-500 flex-shrink-0"></span>رياضية</span>
+            <span class="inline-flex items-center gap-1.5 bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-full text-xs font-bold text-gray-600"><span class="w-3 h-3 rounded-full bg-purple-500 flex-shrink-0"></span>ثقافية</span>
+            <span class="inline-flex items-center gap-1.5 bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-full text-xs font-bold text-gray-600"><span class="w-3 h-3 rounded-full bg-gray-500 flex-shrink-0"></span>أخرى</span>
+        </div>
+        <div id="chetaibi-map" class="w-full shadow-xl border border-gray-200"></div>
+        <p class="text-center text-xs text-gray-400 mt-3">انقر على أي علامة لعرض التفاصيل</p>
+    </div>
+</section>
+
 <section id="beaches" class="py-14 bg-gradient-to-b from-sky-900 via-emerald-900 to-teal-900 relative overflow-hidden">
     <!-- خلفية زخرفية -->
     <div class="absolute inset-0 opacity-10">
@@ -2033,6 +2076,163 @@ fetchWeather(); fetchSeaState(); loadNews(); loadTourism(); loadBeaches(); loadC
 setInterval(()=>{fetchWeather();fetchSeaState();},900000);
 // ✅ سنة تلقائية
 document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+// ═══════════════════════════════════════════════════════
+// 🗺️ LEAFLET MAP — خريطة شطايبي التفاعلية
+// ═══════════════════════════════════════════════════════
+let chetaibiMap = null;
+
+// ألوان حسب النوع
+const MAP_COLORS = {
+    beach:      '#06b6d4', // سماوي   — شواطئ
+    tourism:    '#059669', // زمردي   — معالم سياحية
+    branches:   '#16a34a', // أخضر    — فروع إدارية
+    education:  '#2563eb', // أزرق    — تعليمية
+    health:     '#ef4444', // أحمر    — صحية
+    religious:  '#f59e0b', // ذهبي    — دينية
+    sports:     '#f97316', // برتقالي — رياضية
+    cultural:   '#a855f7', // بنفسجي  — ثقافية
+    public:     '#64748b', // رمادي   — خدمات عمومية
+    training:   '#0891b2', // بحري    — تكوين
+    assoc:      '#7c3aed', // بنفسجي غامق — جمعيات
+    default:    '#6b7280', // رمادي   — غيرها
+};
+
+function getMarkerColor(type, category) {
+    if (type === 'beach')   return MAP_COLORS.beach;
+    if (type === 'tourism') return MAP_COLORS.tourism;
+    return MAP_COLORS[category] || MAP_COLORS.default;
+}
+
+function createCircleMarker(lat, lng, color, item, type) {
+    const marker = L.circleMarker([lat, lng], {
+        radius: 10,
+        fillColor: color,
+        color: '#ffffff',
+        weight: 2.5,
+        opacity: 1,
+        fillOpacity: 0.9,
+    });
+
+    // Popup مخصص
+    const imgHtml = item.image_url
+        ? `<img src="${item.image_url}" alt="${item.name}">`
+        : '';
+    const name    = item.name || '';
+    const subtype = item.sub_type || item.subtitle || '';
+    const detailUrl = type === 'beach'   ? `/beaches#${item.id}`
+                    : type === 'tourism' ? `/#tourism`
+                    : '';
+
+    marker.bindPopup(`
+        <div class="map-popup">
+            ${imgHtml}
+            <div class="map-popup-name">${name}</div>
+            ${subtype ? `<div class="map-popup-type">${subtype}</div>` : ''}
+            ${detailUrl ? `<a href="${detailUrl}" class="map-popup-link">عرض التفاصيل</a>` : ''}
+        </div>
+    `, { maxWidth: 200 });
+
+    return marker;
+}
+
+async function initMap() {
+    if (chetaibiMap) return; // منع التهيئة المزدوجة
+
+    const mapEl = document.getElementById('chetaibi-map');
+    if (!mapEl) return;
+
+    // إحداثيات مركز شطايبي
+    chetaibiMap = L.map('chetaibi-map', {
+        center: [37.085, 7.255],
+        zoom: 13,
+        zoomControl: true,
+    });
+
+    // طبقة الخريطة — OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        maxZoom: 19,
+    }).addTo(chetaibiMap);
+
+    // تحميل كل البيانات بشكل متوازٍ
+    try {
+        const [beachesRes, tourismRes, facilitiesRes] = await Promise.all([
+            fetch('/api/beaches'),
+            fetch('/api/tourism'),
+            fetch('/api/facilities'),
+        ]);
+        const [beachesData, tourismData, facilitiesData] = await Promise.all([
+            beachesRes.json(),
+            tourismRes.json(),
+            facilitiesRes.json(),
+        ]);
+
+        let markersAdded = 0;
+
+        // الشواطئ
+        if (beachesData.success) {
+            for (const b of beachesData.data) {
+                const lat = parseFloat(b.lat), lng = parseFloat(b.lng);
+                if (!isNaN(lat) && !isNaN(lng)) {
+                    createCircleMarker(lat, lng, MAP_COLORS.beach, b, 'beach').addTo(chetaibiMap);
+                    markersAdded++;
+                }
+            }
+        }
+
+        // المعالم السياحية
+        if (tourismData.success) {
+            for (const t of tourismData.data) {
+                const lat = parseFloat(t.lat), lng = parseFloat(t.lng);
+                if (!isNaN(lat) && !isNaN(lng)) {
+                    createCircleMarker(lat, lng, MAP_COLORS.tourism, t, 'tourism').addTo(chetaibiMap);
+                    markersAdded++;
+                }
+            }
+        }
+
+        // المرافق
+        if (facilitiesData.success) {
+            for (const f of facilitiesData.data) {
+                const lat = parseFloat(f.lat), lng = parseFloat(f.lng);
+                if (!isNaN(lat) && !isNaN(lng)) {
+                    const color = getMarkerColor('facility', f.category);
+                    createCircleMarker(lat, lng, color, f, 'facility').addTo(chetaibiMap);
+                    markersAdded++;
+                }
+            }
+        }
+
+        if (markersAdded === 0) {
+            // لا توجد إحداثيات بعد — أضف marker للمركز فقط
+            L.marker([37.085, 7.255])
+                .addTo(chetaibiMap)
+                .bindPopup('<b>بلدية شطايبي</b><br>أضف إحداثيات للمرافق من لوحة التحكم لتظهر هنا')
+                .openPopup();
+        }
+
+    } catch(e) {
+        console.error('Map data error:', e);
+    }
+}
+
+// تهيئة الخريطة عند الوصول إليها (Intersection Observer للأداء)
+const _mapObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            initMap();
+            _mapObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.1 });
+
+// ننتظر حتى يُبنى الـ DOM
+document.addEventListener('DOMContentLoaded', () => {
+    const mapEl = document.getElementById('chetaibi-map');
+    if (mapEl) _mapObserver.observe(mapEl);
+});
+
 </script>
 </body>
 </html>
