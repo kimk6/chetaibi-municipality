@@ -65,6 +65,67 @@
     .guide-tab{background:#f1f5f9;color:#475569;}
 .guide-tab.active{background:#059669;color:#fff;box-shadow:0 4px 14px rgba(5,150,105,.35);}
 .guide-tab:hover:not(.active){background:#e2e8f0;}
+
+/* ══════════════════════════════════════════
+   City Index Background — دليل + خريطة
+   خلفية موحدة مع pattern أيقونات المرافق
+══════════════════════════════════════════ */
+.city-index-bg {
+    background-color: #f0f7f3;
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg fill='none' stroke='%23059669' stroke-opacity='0.065' stroke-width='1.3'%3E%3C!-- مسجد --%3E%3Cpath d='M18 52 Q24 40 30 52 L30 66 L18 66 Z'/%3E%3Cpath d='M24 40 L24 35'/%3E%3Ccircle cx='24' cy='33' r='2.5'/%3E%3Cpath d='M15 66 L33 66'/%3E%3C!-- كتاب --%3E%3Crect x='68' y='38' width='20' height='26' rx='2'/%3E%3Cpath d='M78 38 L78 64'/%3E%3Cpath d='M70 45 L76 45'/%3E%3Cpath d='M70 50 L76 50'/%3E%3Cpath d='M70 55 L76 55'/%3E%3C!-- هلال أحمر --%3E%3Cpath d='M126 24 Q137 30 137 43 Q137 56 126 62 Q132 54 132 43 Q132 32 126 24 Z'/%3E%3Ccircle cx='140' cy='40' r='2.5' fill='%23059669' fill-opacity='0.065' stroke='none'/%3E%3C!-- مبنى بلدية --%3E%3Crect x='16' y='100' width='24' height='32' rx='1'/%3E%3Crect x='20' y='105' width='5' height='5'/%3E%3Crect x='28' y='105' width='5' height='5'/%3E%3Crect x='20' y='115' width='5' height='5'/%3E%3Crect x='28' y='115' width='5' height='5'/%3E%3Crect x='24' y='124' width='6' height='8'/%3E%3Cpath d='M13 100 L43 100'/%3E%3C!-- ملعب --%3E%3Ccircle cx='108' cy='118' r='16'/%3E%3Ccircle cx='108' cy='118' r='7'/%3E%3Cpath d='M92 118 L124 118'/%3E%3Cpath d='M108 102 L108 134'/%3E%3C!-- نجمة ثقافة --%3E%3Cpath d='M76 102 L78 108 L84 108 L79.5 111.5 L81.5 117.5 L76 114 L70.5 117.5 L72.5 111.5 L68 108 L74 108 Z'/%3E%3C!-- شجرة --%3E%3Cpath d='M140 90 L140 108'/%3E%3Cpath d='M134 100 Q140 88 146 100'/%3E%3Cpath d='M132 106 Q140 92 148 106'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 160px 160px;
+}
+
+/* ══════════════════════════════════════════
+   فاصل تلاشي: قاع الأرشيف → خلفية الدليل
+══════════════════════════════════════════ */
+.fade-into-guide::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 90px;
+    background: linear-gradient(to bottom, transparent, #f0f7f3);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ══════════════════════════════════════════
+   فاصل تلاشي: قاع الخدمات الإدارية → الأرشيف
+══════════════════════════════════════════ */
+.fade-into-archive::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 80px;
+    background: linear-gradient(to bottom, transparent, #f5ede0);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ══════════════════════════════════════════
+   فاصل تلاشي: رأس الأرشيف ← قادم من أبيض
+══════════════════════════════════════════ */
+.archive-top-fade::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 70px;
+    background: linear-gradient(to bottom, #ffffff, transparent);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ══════════════════════════════════════════
+   فاصل مثلثات: الخدمات الإدارية → المستجدات
+══════════════════════════════════════════ */
+.triangle-divider {
+    line-height: 0;
+    font-size: 0;
+    overflow: hidden;
+    height: 36px;
+    background: #ffffff;
+}
 </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -236,8 +297,9 @@
         </div>
     </div>
 </section>
+
 <!-- NEWS -->
-<section id="news" class="py-14 pattern-bg">
+<section id="news" class="py-14" style="background-color:#f0fdf4;">
     <div class="max-w-7xl mx-auto px-4">
         <div class="text-center mb-12">
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 flex items-center justify-center gap-3"><span class="iconify text-emerald-600" data-icon="lucide:newspaper"></span>آخر المستجدات</h2>
@@ -288,10 +350,39 @@
         </div>
     </div>
 </section>
+<!-- فاصل مثلثات: المستجدات → الخدمات الإدارية -->
+<div class="triangle-divider" aria-hidden="true" style="background:#f0fdf4;">
+    <svg viewBox="0 0 1440 36" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="display:block;width:100%;height:36px;">
+        <polygon points="0,0 60,36 120,0"    fill="#ffffff" opacity="0.92"/>
+        <polygon points="60,36 120,0 180,36"  fill="#e6f5ec" opacity="0.88"/>
+        <polygon points="120,0 180,36 240,0"  fill="#ffffff" opacity="0.92"/>
+        <polygon points="180,36 240,0 300,36" fill="#e6f5ec" opacity="0.88"/>
+        <polygon points="240,0 300,36 360,0"  fill="#ffffff" opacity="0.92"/>
+        <polygon points="300,36 360,0 420,36" fill="#e6f5ec" opacity="0.88"/>
+        <polygon points="360,0 420,36 480,0"  fill="#ffffff" opacity="0.92"/>
+        <polygon points="420,36 480,0 540,36" fill="#e6f5ec" opacity="0.88"/>
+        <polygon points="480,0 540,36 600,0"  fill="#ffffff" opacity="0.92"/>
+        <polygon points="540,36 600,0 660,36" fill="#e6f5ec" opacity="0.88"/>
+        <polygon points="600,0 660,36 720,0"  fill="#ffffff" opacity="0.92"/>
+        <polygon points="660,36 720,0 780,36" fill="#e6f5ec" opacity="0.88"/>
+        <polygon points="720,0 780,36 840,0"  fill="#ffffff" opacity="0.92"/>
+        <polygon points="780,36 840,0 900,36" fill="#e6f5ec" opacity="0.88"/>
+        <polygon points="840,0 900,36 960,0"  fill="#ffffff" opacity="0.92"/>
+        <polygon points="900,36 960,0 1020,36" fill="#e6f5ec" opacity="0.88"/>
+        <polygon points="960,0 1020,36 1080,0" fill="#ffffff" opacity="0.92"/>
+        <polygon points="1020,36 1080,0 1140,36" fill="#e6f5ec" opacity="0.88"/>
+        <polygon points="1080,0 1140,36 1200,0" fill="#ffffff" opacity="0.92"/>
+        <polygon points="1140,36 1200,0 1260,36" fill="#e6f5ec" opacity="0.88"/>
+        <polygon points="1200,0 1260,36 1320,0" fill="#ffffff" opacity="0.92"/>
+        <polygon points="1260,36 1320,0 1380,36" fill="#e6f5ec" opacity="0.88"/>
+        <polygon points="1320,0 1380,36 1440,0" fill="#ffffff" opacity="0.92"/>
+        <polygon points="1380,36 1440,0 1440,36" fill="#e6f5ec" opacity="0.88"/>
+    </svg>
+</div>
 
 <!-- ADMIN -->
-<section id="admin" class="py-14 bg-white">
-    <div class="max-w-7xl mx-auto px-4">
+<section id="admin" class="py-14 bg-white relative fade-into-archive">
+    <div class="max-w-7xl mx-auto px-4 relative z-10">
         <div class="text-center mb-12">
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 flex items-center justify-center gap-3"><span class="iconify text-emerald-600" data-icon="lucide:landmark"></span>الخدمات الإدارية</h2>
             <p class="text-gray-500 max-w-xl mx-auto">جميع الخدمات الإدارية مع الوثائق المطلوبة واستمارات التحميل</p>
@@ -321,8 +412,8 @@
 </section>
 
 <!-- ARCHIVE -->
-<section id="archive" class="py-14 bg-gradient-to-b from-gray-50 to-white pattern-bg">
-    <div class="max-w-7xl mx-auto px-4">
+<section id="archive" class="py-14 relative archive-top-fade fade-into-guide" style="background-color:#f5ede0;">
+    <div class="max-w-7xl mx-auto px-4 relative z-10">
         <div class="text-center mb-16">
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 flex items-center justify-center gap-3"><span class="iconify text-amber-500" data-icon="lucide:scroll-text"></span>تاريخ شطايبي</h2>
             <p class="text-gray-500 max-w-2xl mx-auto">رحلة عبر الزمن من العصر النوميدي إلى الاستقلال فالعصر الحديث</p>
@@ -365,9 +456,9 @@
     </div>
 </section>
 
-<!-- GUIDE -->
-<section id="guide" class="py-14 bg-slate-50">
-    <div class="max-w-7xl mx-auto px-4">
+<!-- GUIDE + MAP unified section with icon pattern background -->
+<section id="guide" class="py-14 city-index-bg relative">
+    <div class="max-w-7xl mx-auto px-4 relative z-10">
         <div class="text-center mb-10">
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 flex items-center justify-center gap-3"><span class="iconify text-emerald-600" data-icon="lucide:map-pin"></span>دليل شطايبي</h2>
             <p class="text-gray-500 max-w-2xl mx-auto">دليل شامل يضم الفروع الإدارية والمؤسسات التعليمية والصحية والخدماتية، إلى جانب مختلف المرافق الاجتماعية في شطايبي</p>
@@ -413,13 +504,11 @@
     </div>
 </section>
 
-<!-- TOURISM & BEACHES COMBINED -->
-
 <!-- ══════════════════════════════════════════════
      🗺️ INTERACTIVE MAP
 ══════════════════════════════════════════════ -->
-<section id="map-section" class="py-14 bg-white">
-    <div class="max-w-7xl mx-auto px-4">
+<section id="map-section" class="pb-0 pt-0 city-index-bg">
+    <div class="max-w-7xl mx-auto px-4 pb-14 relative z-10">
         <div class="text-center mb-10">
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 flex items-center justify-center gap-3">
                 <span class="iconify text-emerald-600" data-icon="lucide:map"></span>
@@ -450,10 +539,10 @@
 </section>
 
 <section id="beaches" class="pt-0 pb-14 bg-gradient-to-b from-sky-900 via-emerald-900 to-teal-900 relative overflow-hidden">
-    <!-- موجة فاصلة بيضاء في الأعلى -->
+    <!-- موجة فاصلة في الأعلى — لونها يطابق city-index-bg -->
     <div class="w-full overflow-hidden leading-[0] -mt-1">
         <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="block w-full" style="height:60px;">
-            <path d="M0,30 C180,60 360,0 540,30 C720,60 900,0 1080,30 C1260,60 1380,20 1440,30 L1440,0 L0,0 Z" fill="#ffffff"/>
+            <path d="M0,30 C180,60 360,0 540,30 C720,60 900,0 1080,30 C1260,60 1380,20 1440,30 L1440,0 L0,0 Z" fill="#f0f7f3"/>
         </svg>
     </div>
     <!-- خلفية زخرفية -->
