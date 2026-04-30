@@ -543,6 +543,9 @@
                         <button onclick="filterFacAdmin('public')"     id="fac-filter-public"     class="fac-filter-btn text-xs px-3 py-1.5 rounded-lg font-bold bg-gray-100 text-gray-600 hover:bg-gray-200">🏢 عمومية</button>
                         <button onclick="filterFacAdmin('training')"   id="fac-filter-training"   class="fac-filter-btn text-xs px-3 py-1.5 rounded-lg font-bold bg-gray-100 text-gray-600 hover:bg-gray-200">📚 تكوين</button>
                         <button onclick="filterFacAdmin('assoc')"      id="fac-filter-assoc"      class="fac-filter-btn text-xs px-3 py-1.5 rounded-lg font-bold bg-gray-100 text-gray-600 hover:bg-gray-200">🤝 جمعيات</button>
+                        <button onclick="filterFacAdmin('branches')"   id="fac-filter-branches"   class="fac-filter-btn text-xs px-3 py-1.5 rounded-lg font-bold bg-gray-100 text-gray-600 hover:bg-gray-200">🏛️ فروع إدارية</button>
+                        <button onclick="filterFacAdmin('education')"  id="fac-filter-education"  class="fac-filter-btn text-xs px-3 py-1.5 rounded-lg font-bold bg-gray-100 text-gray-600 hover:bg-gray-200">🎓 تعليمية</button>
+                        <button onclick="filterFacAdmin('health')"     id="fac-filter-health"     class="fac-filter-btn text-xs px-3 py-1.5 rounded-lg font-bold bg-gray-100 text-gray-600 hover:bg-gray-200">🏥 صحية</button>
                     </div>
                     <div id="fac-admin-list" class="space-y-3"></div>
                 </div>
@@ -1190,6 +1193,9 @@ const FAC_CATS = {
     public:   { label:'خدمات عمومية',icon:'lucide:building',     color:'bg-blue-700'    },
     training: { label:'تكوين',      icon:'lucide:graduation-cap',color:'bg-teal-700'    },
     assoc:    { label:'جمعيات',     icon:'lucide:users',         color:'bg-rose-700'    },
+    branches: { label:'فروع إدارية',icon:'lucide:landmark',      color:'bg-emerald-600' },
+    education:{ label:'تعليمية',    icon:'lucide:school',        color:'bg-indigo-600'  },
+    health:   { label:'صحية',       icon:'lucide:heart-pulse',   color:'bg-red-600'     },
 };
 let facAdminCat = 'religious', facEditId = '', facAlbumUrls = [];
 
