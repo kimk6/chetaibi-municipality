@@ -14,11 +14,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
     <style>
         #chetaibi-map { height: 500px; border-radius: 16px; z-index: 1; }
+        .leaflet-control-attribution { display: none !important; }
+        .leaflet-control-attribution.leaflet-control { display: none !important; }
         .map-popup img { width: 100%; height: 80px; object-fit: cover; border-radius: 8px; margin-bottom: 6px; }
         .map-popup-name { font-weight: 800; font-size: 13px; color: #1f2937; margin-bottom: 2px; }
         .map-popup-type { font-size: 11px; color: #6b7280; margin-bottom: 6px; }
         .map-popup-link { display: inline-block; background: #059669; color: white; padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; text-decoration: none; }
         .leaflet-popup-content { margin: 10px 12px; min-width: 160px; }
+        .chetaibi-popup .leaflet-popup-content-wrapper { border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,.15); padding: 0; overflow: hidden; }
+        .chetaibi-popup .leaflet-popup-content { margin: 0; }
+        .chetaibi-popup .map-popup { padding: 10px 12px; }
+        .chetaibi-popup .map-popup img { margin: -0px -0px 8px -0px; width: calc(100% + 0px); border-radius: 0; }
     </style>
     <script>tailwind.config={theme:{extend:{fontFamily:{cairo:['Cairo','sans-serif']}}}}</script>
     <style>
@@ -417,7 +423,7 @@
         <div class="text-center mb-10">
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 flex items-center justify-center gap-3">
                 <span class="iconify text-emerald-600" data-icon="lucide:map"></span>
-                خريطة شطايبي التفاعلية
+                خريطة شطايبي
             </h2>
             <p class="text-gray-500 max-w-2xl mx-auto">استكشف مرافق وشواطئ ومعالم شطايبي على الخريطة التفاعلية</p>
         </div>
@@ -2078,7 +2084,7 @@ setInterval(()=>{fetchWeather();fetchSeaState();},900000);
 document.getElementById('footer-year').textContent = new Date().getFullYear();
 
 // ═══════════════════════════════════════════════════════
-// 🗺️ LEAFLET MAP — خريطة شطايبي التفاعلية
+// 🗺️ LEAFLET MAP — خريطة شطايبي
 // ═══════════════════════════════════════════════════════
 let chetaibiMap = null;
 
@@ -2124,14 +2130,21 @@ function createCircleMarker(lat, lng, color, item, type) {
                     : type === 'tourism' ? `/#tourism`
                     : '';
 
+    // بناء شارة اللون للنوع
+    const typeLabel = type === 'beach'   ? '🏖️ شاطئ'
+                    : type === 'tourism' ? '🧭 معلم سياحي'
+                    : type === 'facility'? '📍 مرفق'
+                    : '';
     marker.bindPopup(`
         <div class="map-popup">
             ${imgHtml}
-            <div class="map-popup-name">${name}</div>
-            ${subtype ? `<div class="map-popup-type">${subtype}</div>` : ''}
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+                <div class="map-popup-name" style="margin:0;">${name}</div>
+            </div>
+            ${subtype ? `<div class="map-popup-type">${subtype}</div>` : `<div class="map-popup-type">${typeLabel}</div>`}
             ${detailUrl ? `<a href="${detailUrl}" class="map-popup-link">عرض التفاصيل</a>` : ''}
         </div>
-    `, { maxWidth: 200 });
+    `, { maxWidth: 220, className: 'chetaibi-popup' });
 
     return marker;
 }
@@ -2144,14 +2157,14 @@ async function initMap() {
 
     // إحداثيات مركز شطايبي
     chetaibiMap = L.map('chetaibi-map', {
-        center: [37.085, 7.255],
+        center: [37.067177, 7.380601],
         zoom: 13,
         zoomControl: true,
     });
 
     // طبقة الخريطة — OpenStreetMap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        attribution: '',
         maxZoom: 19,
     }).addTo(chetaibiMap);
 
@@ -2204,13 +2217,24 @@ async function initMap() {
             }
         }
 
-        if (markersAdded === 0) {
-            // لا توجد إحداثيات بعد — أضف marker للمركز فقط
-            L.marker([37.085, 7.255])
-                .addTo(chetaibiMap)
-                .bindPopup('<b>بلدية شطايبي</b><br>أضف إحداثيات للمرافق من لوحة التحكم لتظهر هنا')
-                .openPopup();
-        }
+        // ── Marker دائم لمقر البلدية (يظهر دائماً بغض النظر عن بقية العلامات) ──
+        const municipalityIcon = L.divIcon({
+            className: '',
+            html: '<div style="width:38px;height:38px;background:#059669;border:3px solid white;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;font-size:18px;">🏛️</div>',
+            iconSize:    [38, 38],
+            iconAnchor:  [19, 19],
+            popupAnchor: [0, -22],
+        });
+        L.marker([37.067177, 7.380601], { icon: municipalityIcon })
+            .addTo(chetaibiMap)
+            .bindPopup(
+                '<div class="map-popup">' +
+                    '<div class="map-popup-name" style="font-size:14px;">🏛️ مقر بلدية شطايبي</div>' +
+                    '<div class="map-popup-type">المجلس الشعبي البلدي — ولاية عنابة</div>' +
+                    '<a href="#contact" class="map-popup-link">اتصل بنا</a>' +
+                '</div>',
+                { maxWidth: 220, className: 'chetaibi-popup' }
+            );
 
     } catch(e) {
         console.error('Map data error:', e);
