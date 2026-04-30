@@ -2120,31 +2120,37 @@ function createCircleMarker(lat, lng, color, item, type) {
         fillOpacity: 0.9,
     });
 
-    // Popup مخصص
-    const imgHtml = item.image_url
-        ? `<img src="${item.image_url}" alt="${item.name}">`
-        : '';
     const name    = item.name || '';
     const subtype = item.sub_type || item.subtitle || '';
-    const detailUrl = type === 'beach'   ? `/beaches#${item.id}`
-                    : type === 'tourism' ? `/#tourism`
+    const imgHtml = item.image_url
+        ? `<img src="${item.image_url}" alt="${name}" style="width:100%;height:80px;object-fit:cover;border-radius:8px;margin-bottom:6px;">`
+        : '';
+    const typeLabel = type === 'beach'    ? '🏖️ شاطئ'
+                    : type === 'tourism'  ? '🧭 معلم سياحي'
+                    : type === 'facility' ? '📍 مرفق'
                     : '';
 
-    // بناء شارة اللون للنوع
-    const typeLabel = type === 'beach'   ? '🏖️ شاطئ'
-                    : type === 'tourism' ? '🧭 معلم سياحي'
-                    : type === 'facility'? '📍 مرفق'
+    // الـ popup يحتوي زر يغلق popup ثم يفتح الـ modal المناسب
+    const modalCall = type === 'beach'    ? `openBeachModal(${item.id})`
+                    : type === 'tourism'  ? `openTourismModal(${item.id})`
+                    : type === 'facility' ? `openFacilityDetail(${item.id})`
                     : '';
-    marker.bindPopup(`
-        <div class="map-popup">
-            ${imgHtml}
-            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
-                <div class="map-popup-name" style="margin:0;">${name}</div>
-            </div>
-            ${subtype ? `<div class="map-popup-type">${subtype}</div>` : `<div class="map-popup-type">${typeLabel}</div>`}
-            ${detailUrl ? `<a href="${detailUrl}" class="map-popup-link">عرض التفاصيل</a>` : ''}
-        </div>
-    `, { maxWidth: 220, className: 'chetaibi-popup' });
+
+    const btnHtml = modalCall
+        ? `<br><button onclick="chetaibiMap.closePopup();setTimeout(function(){${modalCall};},80);"
+                   style="background:#059669;color:#fff;border:none;padding:4px 14px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;margin-top:4px;">
+               عرض التفاصيل
+           </button>`
+        : '';
+
+    marker.bindPopup(
+        `<div class="map-popup">${imgHtml}` +
+        `<div class="map-popup-name">${name}</div>` +
+        `<div class="map-popup-type">${subtype || typeLabel}</div>` +
+        btnHtml +
+        `</div>`,
+        { maxWidth: 220, className: 'chetaibi-popup' }
+    );
 
     return marker;
 }
