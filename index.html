@@ -162,9 +162,9 @@
 <!-- WIDGETS & STATS -->
 <section class="relative z-20 max-w-7xl mx-auto px-4 mt-8 mb-10">
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-6">
-        <div class="stat-card bg-white rounded-2xl p-6 shadow-lg border border-emerald-100 text-center hover:shadow-xl"><div class="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-4"><span class="iconify text-emerald-600 text-3xl" data-icon="lucide:maximize-2"></span></div><p class="text-3xl font-extrabold text-emerald-700">134</p><p class="text-sm text-gray-500 font-semibold mt-1">كم² — المساحة الإجمالية</p></div>
-        <div class="stat-card bg-white rounded-2xl p-6 shadow-lg border border-blue-100 text-center hover:shadow-xl"><div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4"><span class="iconify text-blue-600 text-3xl" data-icon="lucide:users"></span></div><p class="text-3xl font-extrabold text-blue-700">8,767</p><p class="text-sm text-gray-500 font-semibold mt-1">نسمة — عدد السكان</p></div>
-        <div class="stat-card bg-white rounded-2xl p-6 shadow-lg border border-amber-100 text-center hover:shadow-xl"><div class="w-16 h-16 bg-amber-100 rounded-2xl flex items-center justify-center mx-auto mb-4"><span class="iconify text-amber-600 text-3xl" data-icon="lucide:mail"></span></div><p class="text-3xl font-extrabold text-amber-700">23014</p><p class="text-sm text-gray-500 font-semibold mt-1">الرمز البريدي</p></div>
+        <div class="stat-card bg-emerald-50 rounded-2xl p-6 shadow-lg border border-emerald-200 text-center hover:shadow-xl"><div class="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-4"><span class="iconify text-emerald-600 text-3xl" data-icon="lucide:maximize-2"></span></div><p class="text-3xl font-extrabold text-emerald-700">134</p><p class="text-sm text-gray-500 font-semibold mt-1">كم² — المساحة الإجمالية</p></div>
+        <div class="stat-card bg-blue-50 rounded-2xl p-6 shadow-lg border border-blue-200 text-center hover:shadow-xl"><div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4"><span class="iconify text-blue-600 text-3xl" data-icon="lucide:users"></span></div><p class="text-3xl font-extrabold text-blue-700">8,767</p><p class="text-sm text-gray-500 font-semibold mt-1">نسمة — عدد السكان</p></div>
+        <div class="stat-card bg-amber-50 rounded-2xl p-6 shadow-lg border border-amber-200 text-center hover:shadow-xl"><div class="w-16 h-16 bg-amber-100 rounded-2xl flex items-center justify-center mx-auto mb-4"><span class="iconify text-amber-600 text-3xl" data-icon="lucide:mail"></span></div><p class="text-3xl font-extrabold text-amber-700">23014</p><p class="text-sm text-gray-500 font-semibold mt-1">الرمز البريدي</p></div>
     </div>
 
     <!-- ✅ 1: WEATHER — ذكي نهار/ليل -->
@@ -446,18 +446,23 @@
             <span class="inline-flex items-center gap-1.5 bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-full text-xs font-bold text-gray-600"><span class="w-3 h-3 rounded-full bg-gray-500 flex-shrink-0"></span>أخرى</span>
         </div>
         <div id="chetaibi-map" class="w-full shadow-xl border border-gray-200"></div>
-        <p class="text-center text-xs text-gray-400 mt-3">انقر على أي علامة لعرض التفاصيل</p>
     </div>
 </section>
 
-<section id="beaches" class="py-14 bg-gradient-to-b from-sky-900 via-emerald-900 to-teal-900 relative overflow-hidden">
+<section id="beaches" class="pt-0 pb-14 bg-gradient-to-b from-sky-900 via-emerald-900 to-teal-900 relative overflow-hidden">
+    <!-- موجة فاصلة بيضاء في الأعلى -->
+    <div class="w-full overflow-hidden leading-[0] -mt-1">
+        <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="block w-full" style="height:60px;">
+            <path d="M0,30 C180,60 360,0 540,30 C720,60 900,0 1080,30 C1260,60 1380,20 1440,30 L1440,0 L0,0 Z" fill="#ffffff"/>
+        </svg>
+    </div>
     <!-- خلفية زخرفية -->
     <div class="absolute inset-0 opacity-10">
         <div class="absolute top-10 right-10 w-64 h-64 border border-white/30 rounded-full"></div>
         <div class="absolute bottom-10 left-10 w-48 h-48 border border-white/20 rounded-full"></div>
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 border border-white/10 rounded-full"></div>
     </div>
-    <div class="max-w-7xl mx-auto px-4 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 relative z-10 pt-4">
         <!-- العنوان الكبير -->
         <div class="text-center mb-12">
             <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-3 flex items-center justify-center gap-3">
@@ -2140,7 +2145,7 @@ function createCircleMarker(lat, lng, color, item, type) {
     // الـ popup يحتوي زر يغلق popup ثم يفتح الـ modal المناسب
     const modalCall = type === 'beach'    ? `openBeachModal(${item.id})`
                     : type === 'tourism'  ? `openTourismModal(${item.id})`
-                    : type === 'facility' ? `openFacilityDetail(${item.id})`
+                    : type === 'facility' ? `openFacModal(${item.id},null)`
                     : '';
 
     const btnHtml = modalCall
