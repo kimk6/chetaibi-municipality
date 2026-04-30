@@ -1247,14 +1247,14 @@ function switchFacAdminCat(cat) {
         b.classList.toggle('bg-gray-100', b.dataset.cat !== cat);
         b.classList.toggle('text-gray-600', b.dataset.cat !== cat);
     });
-    document.getElementById('fac-admin-cat-select').value = cat;
+    document.getElementById('facilities-category').value = cat;
     loadFacilitiesAdmin();
 }
 
 function renderFacAlbum() {
     const el = document.getElementById('fac-album-preview');
     if(!el) return;
-    el.innerHTML = facAlbumUrls.map((u,i) => `<div class="relative group"><img src="${u}" class="w-full h-16 object-cover rounded-lg"><button onclick="facAlbumUrls.splice(${i},1);document.getElementById('fac-album-urls').value=JSON.stringify(facAlbumUrls);renderFacAlbum()" class="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white rounded-full text-[9px] flex items-center justify-center opacity-0 group-hover:opacity-100">✕</button></div>`).join('');
+    el.innerHTML = facAlbumUrls.map((u,i) => `<div class="relative group"><img src="${u}" class="w-full h-16 object-cover rounded-lg"><button onclick="facAlbumUrls.splice(${i},1);document.getElementById('facilities-albums').value=JSON.stringify(facAlbumUrls);renderFacAlbum()" class="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white rounded-full text-[9px] flex items-center justify-center opacity-0 group-hover:opacity-100">✕</button></div>`).join('');
 }
 
 async function handleFacImageUpload(input) {
@@ -1263,8 +1263,8 @@ async function handleFacImageUpload(input) {
     try {
         const url = await uploadFile(file, 'facilities');
         document.getElementById('fac-image').value = url;
-        document.getElementById('fac-image-preview').src = url;
-        document.getElementById('fac-image-preview').classList.remove('hidden');
+        const _fip=document.getElementById('fac-img-img'); if(_fip) _fip.src = url;
+        const _fipw=document.getElementById('fac-img-preview'); if(_fipw){_fipw.classList.remove('hidden');document.getElementById('fac-img-placeholder').classList.add('hidden');}
         adminToast('✅ تم رفع الصورة');
     } catch(e) { adminToast('❌ '+e.message); }
 }
@@ -1277,7 +1277,7 @@ async function handleFacAlbumUpload(input) {
             const url = await uploadFile(file, 'facilities');
             facAlbumUrls.push(url);
         }
-        document.getElementById('fac-album-urls').value = JSON.stringify(facAlbumUrls);
+        document.getElementById('facilities-albums').value = JSON.stringify(facAlbumUrls);
         renderFacAlbum();
         adminToast('✅ تم رفع '+files.length+' صورة');
         loadRepoSize();
@@ -1291,51 +1291,73 @@ async function editFacility(id) {
         const f   = d.data.find(x => x.id == id);
         if(!f) return;
         facEditId = id;
-        document.getElementById('fac-edit-id').value = id;
-        document.getElementById('fac-name').value = f.name;
-        document.getElementById('fac-subtype').value = f.sub_type||'';
-        document.getElementById('fac-desc').value = f.description||'';
-        document.getElementById('fac-admin-cat-select').value = f.category;
-        document.getElementById('fac-image').value = f.image_url||'';
-        const prev = document.getElementById('fac-image-preview');
-        if(f.image_url){ prev.src=f.image_url; prev.classList.remove('hidden'); } else { prev.classList.add('hidden'); }
+        document.getElementById('facilities-edit-id').value = id;
+        document.getElementById('facilities-name').value = f.name;
+        document.getElementById('facilities-subtype').value = f.sub_type||'';
+        document.getElementById('facilities-desc').value = f.description||'';
+        document.getElementById('facilities-category').value = f.category;
+        document.getElementById('facilities-image').value = f.image_url||'';
+        document.getElementById('facilities-image-manual').value = f.image_url||'';
+        // معاينة الصورة
+        const imgImg = document.getElementById('fac-img-img');
+        const imgPrev = document.getElementById('fac-img-preview');
+        const imgPlaceholder = document.getElementById('fac-img-placeholder');
+        if(f.image_url){
+            imgImg.src = f.image_url;
+            imgPrev.classList.remove('hidden');
+            imgPlaceholder.classList.add('hidden');
+        } else {
+            imgPrev.classList.add('hidden');
+            imgPlaceholder.classList.remove('hidden');
+        }
         const tags = Array.isArray(f.tags) ? f.tags : [];
-        document.getElementById('fac-tags').value = tags.join('، ');
+        document.getElementById('facilities-tags').value = tags.join('، ');
         facAlbumUrls = Array.isArray(f.albums) ? f.albums : [];
-        document.getElementById('fac-album-urls').value = JSON.stringify(facAlbumUrls);
+        document.getElementById('facilities-albums').value = JSON.stringify(facAlbumUrls);
         renderFacAlbum();
         document.getElementById('facilities-lat').value = f.lat||'';
         document.getElementById('facilities-lng').value = f.lng||'';
-        document.getElementById('fac-form-title').textContent = 'تعديل مرفق';
-        document.getElementById('fac-cancel-btn').classList.remove('hidden');
+        document.getElementById('facilities-form-title').textContent = 'تعديل مرفق';
+        document.getElementById('facilities-cancel-btn').classList.remove('hidden');
         toggleFormPanel('facilities', true);
     } catch(e) { adminToast('❌ '+e.message); }
 }
 
 function cancelFacilityEdit() {
     facEditId = '';
-    document.getElementById('fac-edit-id').value = '';
-    document.getElementById('fac-form').reset();
-    document.getElementById('fac-image-preview').classList.add('hidden');
+    document.getElementById('facilities-edit-id').value = '';
+    document.getElementById('facilities-name').value = '';
+    document.getElementById('facilities-subtype').value = '';
+    document.getElementById('facilities-desc').value = '';
+    document.getElementById('facilities-tags').value = '';
+    document.getElementById('facilities-image').value = '';
+    document.getElementById('facilities-image-manual').value = '';
+    document.getElementById('facilities-lat').value = '';
+    document.getElementById('facilities-lng').value = '';
+    const imgPrev = document.getElementById('fac-img-preview');
+    const imgPlaceholder = document.getElementById('fac-img-placeholder');
+    if(imgPrev) imgPrev.classList.add('hidden');
+    if(imgPlaceholder) imgPlaceholder.classList.remove('hidden');
     facAlbumUrls = [];
+    document.getElementById('facilities-albums').value = '[]';
     renderFacAlbum();
-    document.getElementById('fac-form-title').textContent = 'إضافة مرفق';
-    document.getElementById('fac-cancel-btn').classList.add('hidden');
+    document.getElementById('facilities-form-title').textContent = 'إضافة مرفق';
+    document.getElementById('facilities-cancel-btn').classList.add('hidden');
     toggleFormPanel('facilities', false);
 }
 
 async function saveFacility() {
-    const editId = document.getElementById('fac-edit-id').value;
-    const name   = document.getElementById('fac-name').value.trim();
-    const cat    = document.getElementById('fac-admin-cat-select').value;
+    const editId = document.getElementById('facilities-edit-id').value;
+    const name   = document.getElementById('facilities-name').value.trim();
+    const cat    = document.getElementById('facilities-category').value;
     if(!name || !cat) { adminToast('الاسم والتصنيف مطلوبان','error'); return; }
-    const tagsRaw = document.getElementById('fac-tags').value;
+    const tagsRaw = document.getElementById('facilities-tags').value;
     const tags = tagsRaw.split(/[،,]/).map(t=>t.trim()).filter(Boolean);
     const body = {
         name, category: cat,
-        sub_type:    document.getElementById('fac-subtype').value,
-        description: document.getElementById('fac-desc').value,
-        image_url:   document.getElementById('fac-image').value,
+        sub_type:    document.getElementById('facilities-subtype').value,
+        description: document.getElementById('facilities-desc').value,
+        image_url:   document.getElementById('facilities-image').value,
         tags, albums: facAlbumUrls,
         lat: parseFloat(document.getElementById('facilities-lat').value)||null,
         lng: parseFloat(document.getElementById('facilities-lng').value)||null,
