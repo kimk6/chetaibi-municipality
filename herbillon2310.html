@@ -235,20 +235,113 @@
                 <button onclick="toggleFormPanel('services')" id="btn-open-services"
                         class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-md">
                     <span class="iconify text-lg" data-icon="lucide:plus-circle"></span>
-                    إضافة خدمة
+                    إضافة خدمة / تطبيق
                 </button>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div id="form-panel-services" class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24 hidden">
-                    <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span><span id="services-form-title">إضافة خدمة</span></h3>
+                    <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span>
+                        <span id="services-form-title">إضافة خدمة / تطبيق</span>
+                    </h3>
                     <input type="hidden" id="services-edit-id" value="">
                     <div class="space-y-3">
-                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">اسم الخدمة</label><input id="services-name" type="text" placeholder="مثال: جواز السفر"></div>
-                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">الوثائق المطلوبة (يفصلها |)</label><textarea id="services-docs" placeholder="وثيقة 1|وثيقة 2" rows="3"></textarea></div>
-                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">رابط PDF</label><input id="services-pdf" type="url" placeholder="https://..."></div>
-                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">اللون</label><select id="services-color"><option value="blue">أزرق</option><option value="emerald">أخضر</option><option value="amber">ذهبي</option><option value="purple">بنفسجي</option></select></div>
-                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">الأيقونة</label><input id="services-icon" type="text" value="file-text"></div>
-                        <div class="flex gap-2">
+
+                        <!-- نوع: خدمة أو تطبيق -->
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">نوع العنصر</label>
+                            <div class="flex gap-2">
+                                <label class="flex-1 flex items-center gap-2 cursor-pointer bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2.5 has-[:checked]:bg-emerald-600 has-[:checked]:text-white has-[:checked]:border-emerald-600 transition-all">
+                                    <input type="radio" name="svc-type" id="svc-type-service" value="service" checked class="accent-emerald-600">
+                                    <span class="text-xs font-bold">🏛️ خدمة</span>
+                                </label>
+                                <label class="flex-1 flex items-center gap-2 cursor-pointer bg-blue-50 border border-blue-200 rounded-xl px-3 py-2.5 has-[:checked]:bg-blue-600 has-[:checked]:text-white has-[:checked]:border-blue-600 transition-all">
+                                    <input type="radio" name="svc-type" id="svc-type-app" value="app" class="accent-blue-600">
+                                    <span class="text-xs font-bold">📱 تطبيق</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- اسم الخدمة/التطبيق -->
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">اسم الخدمة / التطبيق</label>
+                            <input id="services-name" type="text" placeholder="مثال: جواز السفر البيومتري">
+                        </div>
+
+                        <!-- الأيقونة -->
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">الأيقونة <span class="font-normal text-gray-400">(Lucide icon name)</span></label>
+                            <input id="services-icon" type="text" value="file-text" placeholder="file-text">
+                        </div>
+
+                        <!-- صورة مميزة -->
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">🖼️ الصورة المميزة <span class="font-normal text-gray-400">(اختياري)</span></label>
+                            <div id="svc-img-widget" class="upload-widget p-3 cursor-pointer" onclick="triggerUpload('svc-img-input')">
+                                <div id="svc-img-placeholder" class="flex flex-col items-center gap-1 py-2">
+                                    <span class="iconify text-2xl text-gray-200" data-icon="lucide:image-plus"></span>
+                                    <span class="text-xs text-gray-400 font-semibold">اضغط لرفع صورة</span>
+                                </div>
+                                <div id="svc-img-preview" class="hidden">
+                                    <img id="svc-img-img" src="" class="w-full h-24 object-cover rounded-lg mb-1">
+                                    <button onclick="event.stopPropagation();clearSvcImage()" class="text-[10px] text-red-500 font-bold">✕ حذف</button>
+                                </div>
+                                <div id="svc-img-uploading" class="hidden flex-col items-center gap-1 py-2">
+                                    <span class="iconify text-2xl text-indigo-400 spin" data-icon="lucide:loader-2"></span>
+                                    <span class="text-xs text-indigo-500">جاري الرفع...</span>
+                                </div>
+                            </div>
+                            <input type="file" id="svc-img-input" accept="image/*" class="hidden" onchange="handleSvcImageUpload(this)">
+                            <input type="hidden" id="services-image" value="">
+                            <input id="services-image-manual" type="url" placeholder="أو الصق رابطاً مباشرةً..." class="mt-1 text-xs"
+                                   oninput="document.getElementById('services-image').value=this.value;if(this.value){document.getElementById('svc-img-img').src=this.value;document.getElementById('svc-img-preview').classList.remove('hidden');document.getElementById('svc-img-placeholder').classList.add('hidden');}">
+                        </div>
+
+                        <!-- رابط مباشر -->
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">🔗 الرابط المباشر <span class="font-normal text-gray-400">(اختياري)</span></label>
+                            <input id="services-link" type="url" placeholder="https://...">
+                            <p class="text-[10px] text-gray-400 mt-0.5">للخدمة: رابط الموقع الرسمي — للتطبيق: رابط المتجر</p>
+                        </div>
+
+                        <!-- التعريف المختصر -->
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">📝 التعريف المختصر</label>
+                            <textarea id="services-desc" rows="2" placeholder="وصف مختصر للخدمة أو التطبيق..."></textarea>
+                        </div>
+
+                        <!-- الوثائق المطلوبة -->
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">📋 الوثائق المطلوبة <span class="font-normal text-gray-400">(يفصلها |)</span></label>
+                            <textarea id="services-docs" rows="3" placeholder="وثيقة 1|وثيقة 2|وثيقة 3"></textarea>
+                        </div>
+
+                        <!-- روابط الاستمارات (متعددة) -->
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-2 block flex items-center gap-1">
+                                <span class="iconify text-indigo-400" data-icon="lucide:clipboard-list"></span>
+                                روابط الاستمارات <span class="font-normal text-gray-400">(اختياري — متعددة)</span>
+                            </label>
+                            <div id="svc-forms-list" class="space-y-2 mb-2"></div>
+                            <button type="button" onclick="addSvcFormLink()" class="w-full py-2 border border-dashed border-gray-300 rounded-xl text-xs text-gray-500 hover:border-indigo-400 hover:text-indigo-600 hover:bg-indigo-50 transition-all flex items-center justify-center gap-1 font-bold">
+                                <span class="iconify" data-icon="lucide:plus-circle"></span> إضافة رابط استمارة
+                            </button>
+                        </div>
+
+                        <!-- اللون -->
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">🎨 اللون المميز</label>
+                            <div class="grid grid-cols-3 gap-2" id="svc-color-picker">
+                                <label class="cursor-pointer"><input type="radio" name="svc-color" value="blue" checked class="sr-only"><div class="h-8 rounded-xl bg-gradient-to-l from-blue-600 to-blue-800 flex items-center justify-center svc-color-opt border-2 border-transparent" data-color="blue"><span class="iconify text-white text-sm hidden" data-icon="lucide:check"></span></div><p class="text-[10px] text-center text-gray-500 mt-0.5">أزرق</p></label>
+                                <label class="cursor-pointer"><input type="radio" name="svc-color" value="emerald" class="sr-only"><div class="h-8 rounded-xl bg-gradient-to-l from-emerald-600 to-emerald-800 flex items-center justify-center svc-color-opt border-2 border-transparent" data-color="emerald"><span class="iconify text-white text-sm hidden" data-icon="lucide:check"></span></div><p class="text-[10px] text-center text-gray-500 mt-0.5">أخضر</p></label>
+                                <label class="cursor-pointer"><input type="radio" name="svc-color" value="amber" class="sr-only"><div class="h-8 rounded-xl bg-gradient-to-l from-amber-600 to-amber-800 flex items-center justify-center svc-color-opt border-2 border-transparent" data-color="amber"><span class="iconify text-white text-sm hidden" data-icon="lucide:check"></span></div><p class="text-[10px] text-center text-gray-500 mt-0.5">ذهبي</p></label>
+                                <label class="cursor-pointer"><input type="radio" name="svc-color" value="purple" class="sr-only"><div class="h-8 rounded-xl bg-gradient-to-l from-purple-600 to-purple-800 flex items-center justify-center svc-color-opt border-2 border-transparent" data-color="purple"><span class="iconify text-white text-sm hidden" data-icon="lucide:check"></span></div><p class="text-[10px] text-center text-gray-500 mt-0.5">بنفسجي</p></label>
+                                <label class="cursor-pointer"><input type="radio" name="svc-color" value="teal" class="sr-only"><div class="h-8 rounded-xl bg-gradient-to-l from-teal-600 to-teal-800 flex items-center justify-center svc-color-opt border-2 border-transparent" data-color="teal"><span class="iconify text-white text-sm hidden" data-icon="lucide:check"></span></div><p class="text-[10px] text-center text-gray-500 mt-0.5">تركوازي</p></label>
+                                <label class="cursor-pointer"><input type="radio" name="svc-color" value="red" class="sr-only"><div class="h-8 rounded-xl bg-gradient-to-l from-red-600 to-red-800 flex items-center justify-center svc-color-opt border-2 border-transparent" data-color="red"><span class="iconify text-white text-sm hidden" data-icon="lucide:check"></span></div><p class="text-[10px] text-center text-gray-500 mt-0.5">أحمر</p></label>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2 pt-1">
                             <button onclick="saveService()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm transition-colors">💾 حفظ</button>
                             <button onclick="cancelServiceEdit()" id="services-cancel-btn" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-600 py-3 px-4 rounded-xl font-bold text-sm transition-colors">إلغاء</button>
                         </div>
@@ -852,35 +945,230 @@ async function deleteNews(id){
 // ═══════════════════════════════
 // SERVICES
 // ═══════════════════════════════
+
+// ── مساعد روابط الاستمارات ──
+let svcFormLinks = []; // [{label:'', url:''}]
+
+function renderSvcFormLinks() {
+    const container = document.getElementById('svc-forms-list');
+    if (!container) return;
+    container.innerHTML = svcFormLinks.map((f, i) => `
+        <div class="flex gap-1.5 items-center">
+            <input type="text" value="${f.label||''}" placeholder="اسم الاستمارة" class="flex-1 text-xs py-2"
+                   oninput="svcFormLinks[${i}].label=this.value">
+            <input type="url" value="${f.url||''}" placeholder="https://..." class="flex-1 text-xs py-2"
+                   oninput="svcFormLinks[${i}].url=this.value">
+            <button onclick="removeSvcFormLink(${i})" class="w-7 h-7 bg-red-50 hover:bg-red-100 text-red-500 rounded-lg flex items-center justify-center flex-shrink-0 text-xs font-bold">✕</button>
+        </div>`).join('');
+}
+function addSvcFormLink() { svcFormLinks.push({label:'', url:''}); renderSvcFormLinks(); }
+function removeSvcFormLink(i) { svcFormLinks.splice(i,1); renderSvcFormLinks(); }
+
+// ── مساعد color picker ──
+function initSvcColorPicker() {
+    document.querySelectorAll('#svc-color-picker input[type=radio]').forEach(radio => {
+        radio.addEventListener('change', updateSvcColorUI);
+    });
+    updateSvcColorUI();
+}
+function updateSvcColorUI() {
+    document.querySelectorAll('.svc-color-opt').forEach(div => {
+        const val = div.getAttribute('data-color');
+        const isChecked = document.querySelector(`input[name="svc-color"][value="${val}"]`)?.checked;
+        div.classList.toggle('border-white', isChecked);
+        div.classList.toggle('border-transparent', !isChecked);
+        const icon = div.querySelector('.iconify');
+        if (icon) icon.classList.toggle('hidden', !isChecked);
+    });
+}
+function getSvcColor() {
+    return document.querySelector('input[name="svc-color"]:checked')?.value || 'blue';
+}
+function setSvcColor(val) {
+    const radio = document.querySelector(`input[name="svc-color"][value="${val}"]`);
+    if (radio) { radio.checked = true; updateSvcColorUI(); }
+}
+function getSvcType() {
+    return document.querySelector('input[name="svc-type"]:checked')?.value || 'service';
+}
+function setSvcType(val) {
+    const radio = document.querySelector(`input[name="svc-type"][value="${val}"]`);
+    if (radio) { radio.checked = true; }
+}
+
+// ── رفع صورة الخدمة ──
+async function handleSvcImageUpload(input) {
+    const file = input.files[0]; if (!file) return; input.value='';
+    const widget = document.getElementById('svc-img-widget');
+    const ph = document.getElementById('svc-img-placeholder');
+    const prev = document.getElementById('svc-img-preview');
+    const uploading = document.getElementById('svc-img-uploading');
+    widget.classList.add('uploading');
+    ph.classList.add('hidden'); prev.classList.add('hidden');
+    uploading.classList.remove('hidden'); uploading.classList.add('flex');
+    adminToast('جاري الرفع...');
+    try {
+        const url = await uploadFile(file, 'services');
+        document.getElementById('services-image').value = url;
+        document.getElementById('services-image-manual').value = url;
+        document.getElementById('svc-img-img').src = url;
+        widget.classList.remove('uploading'); widget.classList.add('has-image');
+        uploading.classList.add('hidden'); uploading.classList.remove('flex');
+        prev.classList.remove('hidden');
+        adminToast('✅ تم رفع الصورة');
+    } catch(e) {
+        widget.classList.remove('uploading');
+        uploading.classList.add('hidden'); uploading.classList.remove('flex');
+        ph.classList.remove('hidden');
+        adminToast('❌ ' + e.message);
+    }
+}
+function clearSvcImage() {
+    document.getElementById('services-image').value = '';
+    document.getElementById('services-image-manual').value = '';
+    document.getElementById('svc-img-img').src = '';
+    document.getElementById('svc-img-preview').classList.add('hidden');
+    document.getElementById('svc-img-placeholder').classList.remove('hidden');
+    document.getElementById('svc-img-widget').classList.remove('has-image');
+}
+
+// ── تحميل قائمة الخدمات ──
 async function loadServices(){
     try{
-        const res=await fetch('/api/services',{headers:authHeaders()});
-        const d=await res.json(); const list=document.getElementById('services-list');
-        if(!d.success||!d.data?.length){list.innerHTML='<p class="text-gray-400 text-sm text-center py-8">لا توجد خدمات بعد</p>';return;}
-        list.innerHTML=d.data.map(s=>`
-            <div class="item-card"><div class="flex items-start justify-between gap-3">
-                <div class="flex-1 min-w-0"><h4 class="font-bold text-gray-800 text-sm mb-1">${s.service_name}</h4><p class="text-xs text-gray-500 line-clamp-2">${(s.required_docs||'').replace(/\|/g,' • ')}</p></div>
-                <div class="flex items-center gap-1 flex-shrink-0">
-                    <button onclick="editService(${s.id})" class="w-8 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:pencil"></span></button>
-                    <button onclick="deleteService(${s.id})" class="w-8 h-8 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:trash-2"></span></button>
+        const res = await fetch('/api/services', {headers: authHeaders()});
+        const d   = await res.json();
+        const list = document.getElementById('services-list');
+        if (!d.success || !d.data?.length) {
+            list.innerHTML = '<p class="text-gray-400 text-sm text-center py-8">لا توجد خدمات بعد</p>';
+            return;
+        }
+        const colorDot = { blue:'bg-blue-500', emerald:'bg-emerald-500', amber:'bg-amber-500', purple:'bg-purple-500', teal:'bg-teal-500', red:'bg-red-500' };
+        list.innerHTML = d.data.map(s => {
+            const isApp = s.service_type === 'app';
+            let formLinks = [];
+            try { formLinks = JSON.parse(s.form_links || '[]'); } catch {}
+            return `
+            <div class="item-card">
+                <div class="flex items-start gap-3">
+                    ${s.image_url
+                        ? `<img src="${s.image_url}" class="w-16 h-14 object-cover rounded-xl flex-shrink-0">`
+                        : `<div class="w-16 h-14 ${colorDot[s.color]||'bg-gray-300'} rounded-xl flex items-center justify-center flex-shrink-0">
+                               <span class="iconify text-white text-2xl" data-icon="lucide:${s.icon||'file-text'}"></span>
+                           </div>`}
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-1 flex-wrap">
+                            <span class="inline-block ${isApp ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'} text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                ${isApp ? '📱 تطبيق' : '🏛️ خدمة'}
+                            </span>
+                            <span class="w-3 h-3 rounded-full ${colorDot[s.color]||'bg-gray-300'} flex-shrink-0"></span>
+                        </div>
+                        <h4 class="font-bold text-gray-800 text-sm truncate mb-0.5">${s.service_name}</h4>
+                        ${s.description ? `<p class="text-xs text-gray-500 line-clamp-1">${s.description.substring(0,60)}</p>` : ''}
+                        ${formLinks.length ? `<p class="text-[10px] text-indigo-500 mt-0.5">📎 ${formLinks.length} استمارة</p>` : ''}
+                        ${s.direct_link ? `<p class="text-[10px] text-blue-400 mt-0.5 truncate">🔗 ${s.direct_link.substring(0,40)}...</p>` : ''}
+                    </div>
+                    <div class="flex flex-col gap-1 flex-shrink-0">
+                        <button onclick="editService(${s.id})" class="w-8 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center">
+                            <span class="iconify text-sm" data-icon="lucide:pencil"></span>
+                        </button>
+                        <button onclick="deleteService(${s.id})" class="w-8 h-8 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg flex items-center justify-center">
+                            <span class="iconify text-sm" data-icon="lucide:trash-2"></span>
+                        </button>
+                    </div>
                 </div>
-            </div></div>`).join('');
-    } catch { document.getElementById('services-list').innerHTML='<p class="text-red-400 text-sm text-center py-8">تعذر التحميل</p>'; }
+            </div>`;
+        }).join('');
+        if (window.Iconify) Iconify.scan();
+    } catch {
+        document.getElementById('services-list').innerHTML = '<p class="text-red-400 text-sm text-center py-8">تعذر التحميل</p>';
+    }
 }
-async function saveService(){
-    const editId=document.getElementById('services-edit-id').value;
-    const body={service_name:document.getElementById('services-name').value,required_docs:document.getElementById('services-docs').value,pdf_link:document.getElementById('services-pdf').value,color:document.getElementById('services-color').value,icon:document.getElementById('services-icon').value};
-    if(!body.service_name){adminToast('اسم الخدمة مطلوب');return;}
-    try{const res=await fetch(editId?'/api/services?id='+editId:'/api/services',{method:editId?'PUT':'POST',headers:authHeaders(),body:JSON.stringify(body)});const d=await res.json();if(d.success){adminToast(editId?'تم التعديل':'تمت الإضافة');cancelServiceEdit();loadServices();}}catch{adminToast('تعذر الحفظ');}
-}
-async function editService(id){
-    const res=await fetch('/api/services',{headers:authHeaders()});const d=await res.json();const s=d.data.find(x=>x.id==id);if(!s)return;
-    document.getElementById('services-edit-id').value=s.id;document.getElementById('services-name').value=s.service_name;document.getElementById('services-docs').value=s.required_docs;document.getElementById('services-pdf').value=s.pdf_link||'';document.getElementById('services-color').value=s.color||'blue';document.getElementById('services-icon').value=s.icon||'file-text';
-    document.getElementById('services-form-title').textContent='تعديل الخدمة';document.getElementById('services-cancel-btn').classList.remove('hidden');
 
-    toggleFormPanel('services', true);}
-function cancelServiceEdit(){['services-edit-id','services-name','services-docs','services-pdf'].forEach(id=>document.getElementById(id).value='');document.getElementById('services-color').value='blue';document.getElementById('services-icon').value='file-text';document.getElementById('services-form-title').textContent='إضافة خدمة'; toggleFormPanel('services', false);document.getElementById('services-cancel-btn').classList.add('hidden');}
-async function deleteService(id){if(!confirm('حذف؟'))return;try{await fetch('/api/services?id='+id,{method:'DELETE',headers:authHeaders()});adminToast('تم الحذف');loadServices();}catch{adminToast('تعذر الحذف');}}
+async function saveService(){
+    const editId = document.getElementById('services-edit-id').value;
+    const name   = document.getElementById('services-name').value.trim();
+    if (!name) { adminToast('اسم الخدمة مطلوب', 'error'); return; }
+    // تحديث قيم الاستمارات من الـ inputs
+    document.querySelectorAll('#svc-forms-list input[type=text]').forEach((inp, i) => { if (svcFormLinks[i]) svcFormLinks[i].label = inp.value; });
+    document.querySelectorAll('#svc-forms-list input[type=url]').forEach((inp, i) => { if (svcFormLinks[i]) svcFormLinks[i].url = inp.value; });
+    const body = {
+        service_name:  name,
+        service_type:  getSvcType(),
+        description:   document.getElementById('services-desc').value,
+        required_docs: document.getElementById('services-docs').value,
+        direct_link:   document.getElementById('services-link').value,
+        form_links:    JSON.stringify(svcFormLinks.filter(f => f.url)),
+        image_url:     document.getElementById('services-image').value,
+        color:         getSvcColor(),
+        icon:          document.getElementById('services-icon').value || 'file-text',
+    };
+    try {
+        const url = editId ? '/api/services?id=' + editId : '/api/services';
+        const res = await fetch(url, {method: editId ? 'PUT' : 'POST', headers: {...authHeaders(), 'Content-Type':'application/json'}, body: JSON.stringify(body)});
+        const d   = await res.json();
+        if (d.success) { adminToast(editId ? '✅ تم التعديل' : '✅ تمت الإضافة'); cancelServiceEdit(); loadServices(); }
+        else adminToast('❌ ' + (d.error||''));
+    } catch { adminToast('❌ تعذر الحفظ'); }
+}
+
+async function editService(id){
+    try {
+        const res = await fetch('/api/services', {headers: authHeaders()});
+        const d   = await res.json();
+        const s   = d.data.find(x => x.id == id);
+        if (!s) return;
+        document.getElementById('services-edit-id').value = s.id;
+        document.getElementById('services-name').value    = s.service_name;
+        document.getElementById('services-icon').value    = s.icon || 'file-text';
+        document.getElementById('services-desc').value    = s.description || '';
+        document.getElementById('services-docs').value    = s.required_docs || '';
+        document.getElementById('services-link').value    = s.direct_link || '';
+        document.getElementById('services-image').value   = s.image_url || '';
+        document.getElementById('services-image-manual').value = s.image_url || '';
+        setSvcType(s.service_type || 'service');
+        setSvcColor(s.color || 'blue');
+        // صورة
+        if (s.image_url) {
+            document.getElementById('svc-img-img').src = s.image_url;
+            document.getElementById('svc-img-preview').classList.remove('hidden');
+            document.getElementById('svc-img-placeholder').classList.add('hidden');
+            document.getElementById('svc-img-widget').classList.add('has-image');
+        }
+        // استمارات
+        try { svcFormLinks = JSON.parse(s.form_links || '[]'); } catch { svcFormLinks = []; }
+        renderSvcFormLinks();
+        document.getElementById('services-form-title').textContent = 'تعديل الخدمة / التطبيق';
+        document.getElementById('services-cancel-btn').classList.remove('hidden');
+        toggleFormPanel('services', true);
+    } catch(e) { adminToast('❌ ' + e.message); }
+}
+
+function cancelServiceEdit(){
+    document.getElementById('services-edit-id').value = '';
+    document.getElementById('services-name').value    = '';
+    document.getElementById('services-icon').value    = 'file-text';
+    document.getElementById('services-desc').value    = '';
+    document.getElementById('services-docs').value    = '';
+    document.getElementById('services-link').value    = '';
+    setSvcType('service');
+    setSvcColor('blue');
+    clearSvcImage();
+    svcFormLinks = []; renderSvcFormLinks();
+    document.getElementById('services-form-title').textContent = 'إضافة خدمة / تطبيق';
+    document.getElementById('services-cancel-btn').classList.add('hidden');
+    toggleFormPanel('services', false);
+}
+
+async function deleteService(id){
+    if (!confirm('حذف هذا العنصر؟')) return;
+    try {
+        await fetch('/api/services?id=' + id, {method:'DELETE', headers: authHeaders()});
+        adminToast('✅ تم الحذف'); loadServices();
+    } catch { adminToast('❌ تعذر الحذف'); }
+}
+
+// تهيئة color picker عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', initSvcColorPicker);
 
 // ═══════════════════════════════
 // ARCHIVES
