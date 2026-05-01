@@ -158,7 +158,7 @@
                                 <option value="poster">🖼️ ملصق إعلاني</option>
                             </select>
                         </div>
-                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">المحتوى</label><textarea id="news-content" placeholder="نص الخبر الكامل..." rows="4"></textarea></div>
+                        <div><label id="news-content-label" class="text-xs font-bold text-gray-500 mb-1 block">المحتوى</label><textarea id="news-content" placeholder="نص الخبر الكامل..." rows="4"></textarea></div>
 
                         <!-- ✅ 2: تصنيف حر اختياري -->
                         <div>
@@ -757,7 +757,8 @@ async function saveNews(){
     const clEl=document.getElementById('news-custom-label');
     const body={title:document.getElementById('news-title').value,category:document.getElementById('news-category').value,content:document.getElementById('news-content').value,image_url:document.getElementById('news-image').value,album_urls:document.getElementById('news-album-urls').value||'[]',date:document.getElementById('news-date').value||new Date().toISOString().split('T')[0],is_pinned:document.getElementById('news-pinned').checked?1:0,custom_label:clEl?clEl.value:''};
     const isOfficial = body.category === 'official' || body.category === 'poster';
-    if(!body.content){adminToast('المحتوى مطلوب');return;}
+    const isOptionalContent = body.category === 'official' || body.category === 'poster';
+    if(!isOptionalContent && !body.content){adminToast('المحتوى مطلوب');return;}
     if(!isOfficial && !body.title){adminToast('العنوان مطلوب');return;}
     try {
         const res=await fetch(editId?'/api/news?id='+editId:'/api/news',{method:editId?'PUT':'POST',headers:{...authHeaders(),'Content-Type':'application/json'},body:JSON.stringify(body)});
@@ -801,15 +802,29 @@ document.addEventListener('DOMContentLoaded', function(){
     const catSel = document.getElementById('news-category');
     const titleInp = document.getElementById('news-title');
     const titleLabel = titleInp ? titleInp.closest('div')?.querySelector('label') : null;
+    const contentInp = document.getElementById('news-content');
+    const contentLabel = document.getElementById('news-content-label');
     function updateTitleRequired(){
         if(!titleInp) return;
-        if(catSel && (catSel.value === 'official' || catSel.value === 'poster')){
-            titleInp.placeholder = catSel.value === 'poster' ? 'اختياري للملصقات...' : 'اختياري للإعلانات الرسمية...';
+        const isPoster = catSel && catSel.value === 'poster';
+        const isOfficial = catSel && catSel.value === 'official';
+        if(isPoster){
+            titleInp.placeholder = 'اختياري للملصقات...';
             titleInp.removeAttribute('required');
             if(titleLabel) titleLabel.textContent = 'العنوان (اختياري)';
+            if(contentInp) contentInp.placeholder = 'وصف اختياري للملصق...';
+            if(contentLabel) contentLabel.textContent = 'الوصف (اختياري)';
+        } else if(isOfficial){
+            titleInp.placeholder = 'اختياري للإعلانات الرسمية...';
+            titleInp.removeAttribute('required');
+            if(titleLabel) titleLabel.textContent = 'العنوان (اختياري)';
+            if(contentInp) contentInp.placeholder = 'نص الخبر الكامل...';
+            if(contentLabel) contentLabel.textContent = 'المحتوى';
         } else {
             titleInp.placeholder = 'عنوان الخبر...';
             if(titleLabel) titleLabel.textContent = 'العنوان';
+            if(contentInp) contentInp.placeholder = 'نص الخبر الكامل...';
+            if(contentLabel) contentLabel.textContent = 'المحتوى';
         }
     }
     if(catSel){ catSel.addEventListener('change', updateTitleRequired); updateTitleRequired(); }
