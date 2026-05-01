@@ -13,6 +13,7 @@ export async function onRequestGet(context) {
             official: { label: 'إعلان رسمي', color: 'red', bg: 'bg-red-100 text-red-700' },
             activity: { label: 'نشاط بلدي', color: 'emerald', bg: 'bg-emerald-100 text-emerald-700' },
             social: { label: 'ركن المجتمع', color: 'purple', bg: 'bg-purple-100 text-purple-700' },
+            poster: { label: 'ملصق إعلاني', color: 'indigo', bg: 'bg-indigo-100 text-indigo-700' },
         };
         const cat = categoryMap[news.category] || categoryMap.official;
         const displayLabel = (news.custom_label && news.custom_label.trim()) ? news.custom_label : cat.label;
