@@ -13,11 +13,26 @@ export async function onRequestGet(context) {
 export async function onRequestPost(context) {
     const auth = await withAuth(context); if (auth) return auth;
     try {
-        const { service_name, required_docs, pdf_link, color, icon } = await context.request.json();
+        const {
+            service_name, service_type, description, required_docs,
+            direct_link, form_links, image_url, color, icon
+        } = await context.request.json();
         if (!service_name) return createResponse({ success: false, error: 'اسم الخدمة مطلوب' }, 400);
         const result = await context.env.DB
-            .prepare('INSERT INTO services (service_name,required_docs,pdf_link,color,icon) VALUES (?,?,?,?,?)')
-            .bind(service_name, required_docs || '', pdf_link || '', color || 'blue', icon || 'file-text')
+            .prepare(`INSERT INTO services
+                (service_name, service_type, description, required_docs, direct_link, form_links, image_url, color, icon)
+                VALUES (?,?,?,?,?,?,?,?,?)`)
+            .bind(
+                service_name,
+                service_type || 'service',
+                description  || '',
+                required_docs || '',
+                direct_link  || '',
+                form_links   || '[]',
+                image_url    || '',
+                color        || 'blue',
+                icon         || 'file-text'
+            )
             .run();
         return createResponse({ success: true, id: result.meta.last_row_id }, 201);
     } catch (e) { return createResponse({ success: false, error: e.message }, 500); }
@@ -28,10 +43,27 @@ export async function onRequestPut(context) {
     try {
         const id = new URL(context.request.url).searchParams.get('id');
         if (!id) return createResponse({ success: false, error: 'id مطلوب' }, 400);
-        const { service_name, required_docs, pdf_link, color, icon } = await context.request.json();
+        const {
+            service_name, service_type, description, required_docs,
+            direct_link, form_links, image_url, color, icon
+        } = await context.request.json();
         await context.env.DB
-            .prepare('UPDATE services SET service_name=?,required_docs=?,pdf_link=?,color=?,icon=? WHERE id=?')
-            .bind(service_name, required_docs, pdf_link || '', color, icon, id)
+            .prepare(`UPDATE services SET
+                service_name=?, service_type=?, description=?, required_docs=?,
+                direct_link=?, form_links=?, image_url=?, color=?, icon=?
+                WHERE id=?`)
+            .bind(
+                service_name,
+                service_type || 'service',
+                description  || '',
+                required_docs || '',
+                direct_link  || '',
+                form_links   || '[]',
+                image_url    || '',
+                color,
+                icon,
+                id
+            )
             .run();
         return createResponse({ success: true });
     } catch (e) { return createResponse({ success: false, error: e.message }, 500); }
