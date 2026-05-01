@@ -235,10 +235,15 @@
                 <div id="weather-icon-bg" class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center transition-colors duration-500">
                     <span class="iconify text-amber-500 text-2xl" data-icon="lucide:sun" id="weather-header-icon"></span>
                 </div>
-                <div>
+                <div class="flex-1">
                     <h3 class="font-bold text-gray-800">حالة الطقس</h3>
                     <p id="weather-time-label" class="text-xs text-gray-500">جاري التحميل...</p>
                 </div>
+                <button onclick="openWeatherOverlay()"
+                        class="flex items-center gap-1.5 bg-sky-50 hover:bg-sky-100 border border-sky-200 text-sky-600 text-xs font-bold px-3 py-1.5 rounded-xl transition-all shadow-sm hover:shadow-md flex-shrink-0">
+                    <span class="iconify text-sm" data-icon="lucide:calendar-days"></span>
+                    توقعات الأيام
+                </button>
             </div>
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-4">
@@ -280,6 +285,51 @@
             </div>
         </div>
     </div>
+
+<!-- ══════════ WEATHER FORECAST OVERLAY ══════════ -->
+<div id="weather-overlay" class="hidden fixed inset-0 z-[300] bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 py-8">
+    <div class="w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden">
+        <!-- رأس الـ overlay — خلفية متدرجة سماوية -->
+        <div class="bg-gradient-to-l from-sky-500 to-blue-600 px-6 py-5 relative">
+            <button onclick="closeWeatherOverlay()"
+                    class="absolute top-4 left-4 w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors">
+                <span class="iconify text-white text-lg" data-icon="lucide:x"></span>
+            </button>
+            <div class="flex items-center gap-3">
+                <span class="text-4xl" id="wov-today-icon">☀️</span>
+                <div>
+                    <p class="text-white/80 text-xs font-semibold">شطايبي — ولاية عنابة</p>
+                    <p class="text-white text-2xl font-extrabold leading-tight">توقعات الطقس</p>
+                    <p class="text-white/70 text-xs mt-0.5" id="wov-subtitle">جاري التحميل...</p>
+                </div>
+            </div>
+        </div>
+        <!-- المحتوى -->
+        <div class="px-5 py-5 overflow-y-auto max-h-[70vh]">
+            <!-- الحالة الراهنة -->
+            <div id="wov-current" class="flex items-center justify-between bg-sky-50 rounded-2xl px-5 py-4 mb-5 border border-sky-100">
+                <div>
+                    <p class="text-xs text-sky-500 font-bold mb-0.5">الآن</p>
+                    <p id="wov-cur-temp" class="text-4xl font-extrabold text-gray-900">--°</p>
+                    <p id="wov-cur-desc" class="text-sm text-gray-500 mt-0.5">جاري التحميل...</p>
+                </div>
+                <div class="space-y-2 text-sm text-gray-600">
+                    <div class="flex items-center gap-2"><span class="iconify text-blue-400" data-icon="lucide:droplets"></span><span id="wov-cur-hum">--%</span></div>
+                    <div class="flex items-center gap-2"><span class="iconify text-emerald-400" data-icon="lucide:wind"></span><span id="wov-cur-wind">-- كم/س</span></div>
+                    <div class="flex items-center gap-2"><span class="iconify text-orange-400" data-icon="lucide:thermometer"></span><span id="wov-cur-feels">يشعر كـ --°</span></div>
+                </div>
+            </div>
+            <!-- بطاقات الأيام -->
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 px-1">الأيام القادمة</p>
+            <div id="wov-days" class="space-y-3">
+                <div class="text-center py-8 text-gray-300">
+                    <span class="iconify text-3xl animate-spin inline-block" data-icon="lucide:loader-2"></span>
+                </div>
+            </div>
+            <p class="text-center text-[10px] text-gray-300 mt-5">البيانات من Open-Meteo · تُحدَّث تلقائياً</p>
+        </div>
+    </div>
+</div>
 
     <!-- رئيس المجلس -->
     <div class="bg-gradient-to-l from-emerald-700 to-emerald-800 rounded-2xl p-6 md:p-8 shadow-xl text-white flex flex-col md:flex-row items-center gap-6">
@@ -359,27 +409,8 @@
         </div>
     </div>
 </section>
-<!-- فاصل مثلثات: المستجدات → الخدمات الإدارية (مقلوبة — ورقة ممزقة) -->
-<div aria-hidden="true" style="display:block;background:#ffffff;line-height:0;font-size:0;margin:0;padding:0;">
-    <svg viewBox="0 0 1440 44" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="display:block;width:100%;height:44px;">
-        <!-- الخلفية الخضراء تملأ الجزء العلوي -->
-        <rect x="0" y="0" width="1440" height="44" fill="#f0fdf4"/>
-        <!-- مثلثات بيضاء مقلوبة تشق الأسفل → تبدو الخضراء كورقة ممزقة -->
-        <polygon points="0,0 60,0 0,44"        fill="#ffffff"/>
-        <polygon points="60,0 120,44 180,0"    fill="#ffffff"/>
-        <polygon points="180,0 240,44 300,0"   fill="#ffffff"/>
-        <polygon points="300,0 360,44 420,0"   fill="#ffffff"/>
-        <polygon points="420,0 480,44 540,0"   fill="#ffffff"/>
-        <polygon points="540,0 600,44 660,0"   fill="#ffffff"/>
-        <polygon points="660,0 720,44 780,0"   fill="#ffffff"/>
-        <polygon points="780,0 840,44 900,0"   fill="#ffffff"/>
-        <polygon points="900,0 960,44 1020,0"  fill="#ffffff"/>
-        <polygon points="1020,0 1080,44 1140,0" fill="#ffffff"/>
-        <polygon points="1140,0 1200,44 1260,0" fill="#ffffff"/>
-        <polygon points="1260,0 1320,44 1380,0" fill="#ffffff"/>
-        <polygon points="1380,0 1440,44 1440,0" fill="#ffffff"/>
-    </svg>
-</div>
+<!-- فاصل تلاشي: المستجدات → الخدمات الإدارية -->
+<div aria-hidden="true" style="height:64px;background:linear-gradient(to bottom,#dcfce7,#ffffff);display:block;margin:0;padding:0;line-height:0;"></div>
 
 <!-- ADMIN / SERVICES -->
 <section id="admin" class="py-14 bg-white relative fade-into-archive">
@@ -1284,7 +1315,114 @@ async function fetchWeather(){
     } catch { document.getElementById('weather-desc').textContent='تعذر التحميل'; }
 }
 
-// ── ✅ 1: SEA — نهار/ليل ──
+// ══════════════════════════════════════
+// WEATHER FORECAST OVERLAY
+// ══════════════════════════════════════
+const WOV_DAYS_AR = ['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+const WOV_WM = {
+    0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',
+    51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',
+    80:'🌦️',81:'🌧️',82:'⛈️',95:'⛈️',96:'⛈️',99:'⛈️'
+};
+const WOV_DESC = {
+    0:'صافٍ',1:'غائم خفيف',2:'غائم جزئياً',3:'غائم',45:'ضبابي',48:'ضبابي',
+    51:'رذاذ خفيف',53:'رذاذ',55:'رذاذ كثيف',61:'ممطر',63:'مطر متوسط',65:'مطر غزير',
+    80:'زخات خفيفة',81:'زخات',82:'زخات قوية',95:'عاصفة رعدية',96:'عاصفة مع برَد',99:'عاصفة شديدة'
+};
+const WOV_BG = {
+    0:'from-amber-400 to-orange-300',1:'from-sky-400 to-blue-300',2:'from-sky-400 to-blue-300',
+    3:'from-slate-400 to-gray-300',45:'from-gray-400 to-gray-300',48:'from-gray-400 to-gray-300',
+    51:'from-blue-400 to-cyan-300',53:'from-blue-500 to-cyan-400',55:'from-blue-600 to-cyan-500',
+    61:'from-blue-500 to-indigo-400',63:'from-blue-600 to-indigo-500',65:'from-blue-700 to-indigo-600',
+    80:'from-teal-400 to-cyan-300',81:'from-teal-500 to-cyan-400',82:'from-teal-600 to-cyan-500',
+    95:'from-purple-600 to-indigo-500',96:'from-purple-700 to-indigo-600',99:'from-purple-800 to-indigo-700'
+};
+
+let _wovLoaded = false;
+
+function openWeatherOverlay() {
+    document.getElementById('weather-overlay').classList.remove('hidden');
+    document.getElementById('weather-overlay').classList.add('flex');
+    document.body.style.overflow = 'hidden';
+    if (!_wovLoaded) { fetchWeatherForecast(); _wovLoaded = true; }
+}
+function closeWeatherOverlay() {
+    document.getElementById('weather-overlay').classList.add('hidden');
+    document.getElementById('weather-overlay').classList.remove('flex');
+    document.body.style.overflow = '';
+}
+document.getElementById('weather-overlay').addEventListener('click', function(e){
+    if (e.target === this) closeWeatherOverlay();
+});
+
+async function fetchWeatherForecast() {
+    try {
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}`
+            + `&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code,apparent_temperature,is_day`
+            + `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max`
+            + `&timezone=Africa%2FAlgiers&forecast_days=7`;
+        const r = await fetch(url);
+        const d = await r.json();
+        const cu = d.current, dl = d.daily;
+
+        // ── الحالة الراهنة ──
+        const wIcon = WOV_WM[cu.weather_code] || '🌡️';
+        document.getElementById('wov-today-icon').textContent   = wIcon;
+        document.getElementById('wov-cur-temp').textContent     = Math.round(cu.temperature_2m) + '°C';
+        document.getElementById('wov-cur-desc').textContent     = WOV_DESC[cu.weather_code] || 'متغير';
+        document.getElementById('wov-cur-hum').textContent      = cu.relative_humidity_2m + '% رطوبة';
+        document.getElementById('wov-cur-wind').textContent     = Math.round(cu.wind_speed_10m) + ' كم/س';
+        document.getElementById('wov-cur-feels').textContent    = 'يشعر كـ ' + Math.round(cu.apparent_temperature) + '°';
+        document.getElementById('wov-subtitle').textContent     = 'تحديث مباشر — ' + (cu.is_day ? 'نهاراً' : 'ليلاً');
+
+        // ── بطاقات الأيام السبعة ──
+        const daysContainer = document.getElementById('wov-days');
+        const today = new Date();
+        daysContainer.innerHTML = dl.time.map((dateStr, i) => {
+            const date    = new Date(dateStr);
+            const dayName = i === 0 ? 'اليوم' : i === 1 ? 'الغد' : WOV_DAYS_AR[date.getDay()];
+            const dateLabel = date.toLocaleDateString('ar-DZ', {day:'numeric', month:'short'});
+            const code    = dl.weather_code[i];
+            const icon    = WOV_WM[code]  || '🌡️';
+            const desc    = WOV_DESC[code] || 'متغير';
+            const bg      = WOV_BG[code]  || 'from-sky-400 to-blue-300';
+            const tmax    = Math.round(dl.temperature_2m_max[i]);
+            const tmin    = Math.round(dl.temperature_2m_min[i]);
+            const rain    = dl.precipitation_probability_max[i];
+            const wind    = Math.round(dl.wind_speed_10m_max[i]);
+            const isToday = i === 0;
+            return `
+            <div class="flex items-center gap-3 bg-gray-50 hover:bg-gray-100 rounded-2xl px-4 py-3 transition-colors border border-gray-100 ${isToday ? 'ring-2 ring-sky-400 ring-offset-1' : ''}">
+                <!-- أيقونة الطقس -->
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-br ${bg} flex items-center justify-center text-2xl flex-shrink-0 shadow-sm">
+                    ${icon}
+                </div>
+                <!-- اليوم والوصف -->
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2">
+                        <p class="font-extrabold text-gray-800 text-sm">${dayName}</p>
+                        <p class="text-[10px] text-gray-400">${dateLabel}</p>
+                        ${isToday ? '<span class="text-[9px] bg-sky-100 text-sky-600 font-bold px-1.5 py-0.5 rounded-full">الآن</span>' : ''}
+                    </div>
+                    <p class="text-xs text-gray-500">${desc}</p>
+                    <div class="flex items-center gap-3 mt-1">
+                        ${rain > 0 ? `<span class="text-[10px] text-blue-500 flex items-center gap-0.5"><span class="iconify text-xs" data-icon="lucide:droplets"></span>${rain}%</span>` : ''}
+                        <span class="text-[10px] text-gray-400 flex items-center gap-0.5"><span class="iconify text-xs" data-icon="lucide:wind"></span>${wind} كم/س</span>
+                    </div>
+                </div>
+                <!-- الحرارة -->
+                <div class="text-left flex-shrink-0">
+                    <p class="text-lg font-extrabold text-gray-800 leading-none">${tmax}°</p>
+                    <p class="text-xs text-gray-400 mt-0.5">${tmin}°</p>
+                </div>
+            </div>`;
+        }).join('');
+        if (window.Iconify) Iconify.scan();
+    } catch(e) {
+        document.getElementById('wov-days').innerHTML =
+            '<p class="text-center text-red-400 text-sm py-6">تعذر تحميل التوقعات — تحقق من الاتصال</p>';
+    }
+}
 async function fetchSeaState(){
     try{
         const r=await fetch(`https://marine-api.open-meteo.com/v1/marine?latitude=${LAT}&longitude=${LON}&current=wave_height,wave_period,wave_direction&timezone=Africa%2FAlgiers`);
