@@ -155,6 +155,7 @@
                                 <option value="official">📢 إعلان رسمي</option>
                                 <option value="activity">🏗️ نشاط بلدي</option>
                                 <option value="social">🤝 ركن المجتمع</option>
+                                <option value="poster">🖼️ ملصق إعلاني</option>
                             </select>
                         </div>
                         <div><label class="text-xs font-bold text-gray-500 mb-1 block">المحتوى</label><textarea id="news-content" placeholder="نص الخبر الكامل..." rows="4"></textarea></div>
@@ -722,8 +723,8 @@ async function loadRepoSize(){
 // ═══════════════════════════════
 // NEWS
 // ═══════════════════════════════
-const catLabels={official:'📢 إعلان رسمي',activity:'🏗️ نشاط بلدي',social:'🤝 ركن المجتمع'};
-const catColors={official:'red',activity:'emerald',social:'purple'};
+const catLabels={official:'📢 إعلان رسمي',activity:'🏗️ نشاط بلدي',social:'🤝 ركن المجتمع',poster:'🖼️ ملصق إعلاني'};
+const catColors={official:'red',activity:'emerald',social:'purple',poster:'indigo'};
 
 async function loadNews(){
     try {
@@ -755,7 +756,7 @@ async function saveNews(){
     const editId=document.getElementById('news-edit-id').value;
     const clEl=document.getElementById('news-custom-label');
     const body={title:document.getElementById('news-title').value,category:document.getElementById('news-category').value,content:document.getElementById('news-content').value,image_url:document.getElementById('news-image').value,album_urls:document.getElementById('news-album-urls').value||'[]',date:document.getElementById('news-date').value||new Date().toISOString().split('T')[0],is_pinned:document.getElementById('news-pinned').checked?1:0,custom_label:clEl?clEl.value:''};
-    const isOfficial = body.category === 'official';
+    const isOfficial = body.category === 'official' || body.category === 'poster';
     if(!body.content){adminToast('المحتوى مطلوب');return;}
     if(!isOfficial && !body.title){adminToast('العنوان مطلوب');return;}
     try {
@@ -802,8 +803,8 @@ document.addEventListener('DOMContentLoaded', function(){
     const titleLabel = titleInp ? titleInp.closest('div')?.querySelector('label') : null;
     function updateTitleRequired(){
         if(!titleInp) return;
-        if(catSel && catSel.value === 'official'){
-            titleInp.placeholder = 'اختياري للإعلانات الرسمية...';
+        if(catSel && (catSel.value === 'official' || catSel.value === 'poster')){
+            titleInp.placeholder = catSel.value === 'poster' ? 'اختياري للملصقات...' : 'اختياري للإعلانات الرسمية...';
             titleInp.removeAttribute('required');
             if(titleLabel) titleLabel.textContent = 'العنوان (اختياري)';
         } else {
