@@ -43,10 +43,10 @@ export async function onRequestGet(context) {
 
         let query, args;
         if (cat) {
-            query = 'SELECT * FROM news WHERE category=? ORDER BY is_pinned DESC, created_at DESC';
+            query = 'SELECT * FROM news WHERE category=? ORDER BY is_pinned DESC, id DESC';
             args  = [cat];
         } else {
-            query = 'SELECT * FROM news ORDER BY is_pinned DESC, created_at DESC';
+            query = 'SELECT * FROM news ORDER BY is_pinned DESC, id DESC';
             args  = [];
         }
 
