@@ -491,22 +491,43 @@
         <div id="gpanel-admin-branches" class="guide-panel">
             <p class="text-gray-500 text-sm mb-6 text-center">فروع تابعة لبلدية شطايبي لتقريب الإدارة من المواطن وتسهيل سحب الوثائق الرسمية</p>
             <div id="gpanel-admin-branches-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+            <div id="gpanel-admin-branches-extra" class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 hidden"></div>
+            <div id="gpanel-admin-branches-more" class="text-center mt-6 hidden">
+                <button onclick="toggleGuideMore('admin-branches')" id="gbtn-admin-branches" class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
+                    <span class="iconify" data-icon="lucide:chevrons-down" id="gicon-admin-branches"></span>
+                    <span id="gtxt-admin-branches">عرض المزيد من الفروع الإدارية</span>
+                </button>
+            </div>
         </div>
         <!-- لوحة: المؤسسات التعليمية -->
         <div id="gpanel-education" class="guide-panel hidden">
             <p class="text-gray-500 text-sm mb-6 text-center">مؤسسات التعليم العام في بلدية شطايبي من الابتدائي إلى الثانوي</p>
             <div id="gpanel-education-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+            <div id="gpanel-education-extra" class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 hidden"></div>
+            <div id="gpanel-education-more" class="text-center mt-6 hidden">
+                <button onclick="toggleGuideMore('education')" id="gbtn-education" class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-indigo-700 border border-indigo-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
+                    <span class="iconify" data-icon="lucide:chevrons-down" id="gicon-education"></span>
+                    <span id="gtxt-education">عرض المزيد من المؤسسات التعليمية</span>
+                </button>
+            </div>
         </div>
         <!-- لوحة: المرافق الصحية -->
         <div id="gpanel-health" class="guide-panel hidden">
             <p class="text-gray-500 text-sm mb-6 text-center">المؤسسات الصحية العمومية التي تخدم سكان بلدية شطايبي والمناطق المجاورة</p>
-            <div id="gpanel-health-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+            <div id="gpanel-health-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+            <div id="gpanel-health-extra" class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 hidden"></div>
+            <div id="gpanel-health-more" class="text-center mt-6 hidden">
+                <button onclick="toggleGuideMore('health')" id="gbtn-health" class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-red-700 border border-red-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
+                    <span class="iconify" data-icon="lucide:chevrons-down" id="gicon-health"></span>
+                    <span id="gtxt-health">عرض المزيد من المرافق الصحية</span>
+                </button>
+            </div>
         </div>
         <!-- زر المزيد من المرافق -->
         <div class="text-center mt-10">
             <button onclick="openFacilitiesOverlay()" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-2xl font-bold text-sm transition-all shadow-md">
                 <span class="iconify text-lg" data-icon="lucide:building-2"></span>
-                المزيد من المرافق والخدمات
+                تصفح بقية المرافق والخدمات
                 <span class="iconify text-lg" data-icon="lucide:chevron-left"></span>
             </button>
         </div>
@@ -1470,7 +1491,9 @@ async function switchGuideTab(tab) {
 async function loadGuidePanel(tab) {
     const meta = GUIDE_META[tab];
     if (!meta) return;
-    const grid = document.getElementById('gpanel-'+tab+'-grid');
+    const grid  = document.getElementById('gpanel-'+tab+'-grid');
+    const extra = document.getElementById('gpanel-'+tab+'-extra');
+    const moreW = document.getElementById('gpanel-'+tab+'-more');
     if (!grid) return;
     grid.innerHTML = '<div class="col-span-full text-center py-8 text-gray-300"><span class="iconify text-3xl animate-spin inline-block" data-icon="lucide:loader-2"></span></div>';
     try {
@@ -1479,21 +1502,21 @@ async function loadGuidePanel(tab) {
         const items = data.success && data.data && data.data.length ? data.data : null;
         if (!items) {
             grid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-8 text-sm">لا توجد مرافق بعد</p>';
+            if(moreW) moreW.classList.add('hidden');
             return;
         }
-        grid.innerHTML = items.map(f => {
+
+        const renderCard = f => {
             const tags   = Array.isArray(f.tags)   ? f.tags   : [];
             const albums = Array.isArray(f.albums) ? f.albums : [];
             const hasImg = !!f.image_url;
             const hasAlbum = albums.length > 0;
             return '<div class="bg-white rounded-2xl border border-gray-100 hover:shadow-lg transition-all shadow-sm overflow-hidden cursor-pointer group" onclick="openFacModal(' + f.id + ',\'' + tab + '\')">'
-                // صورة رئيسية كبيرة إذا وجدت
                 + (hasImg
                     ? '<div class="h-44 overflow-hidden relative"><img src="' + f.image_url + '" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-400"><div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>'
                       + (hasAlbum ? '<span class="absolute top-2 left-2 bg-black/60 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1"><span class="iconify text-xs" data-icon="lucide:images"></span>' + albums.length + '</span>' : '')
                       + '</div>'
                     : '')
-                // محتوى البطاقة
                 + '<div class="p-5">'
                 +   '<div class="flex items-center gap-3 mb-3">'
                 +     (!hasImg ? '<div class="w-12 h-12 ' + meta.color + ' rounded-xl flex items-center justify-center flex-shrink-0"><span class="iconify text-white text-2xl" data-icon="' + meta.icon + '"></span></div>' : '')
@@ -1507,11 +1530,41 @@ async function loadGuidePanel(tab) {
                 +   (tags.length ? '<div class="flex flex-wrap gap-1.5">' + tags.map(t => '<span class="text-xs bg-gray-50 text-gray-600 border border-gray-200 px-2.5 py-0.5 rounded-full font-semibold">' + t + '</span>').join('') + '</div>' : '')
                 + '</div>'
                 + '</div>';
-        }).join('');
+        };
+
+        const first6 = items.slice(0, 6);
+        const rest   = items.slice(6);
+
+        grid.innerHTML = first6.map(renderCard).join('');
+        if (extra) extra.innerHTML = rest.map(renderCard).join('');
+
+        if (moreW) {
+            if (rest.length > 0) moreW.classList.remove('hidden');
+            else moreW.classList.add('hidden');
+        }
+
         if (window.Iconify) Iconify.scan();
     } catch(e) {
         grid.innerHTML = '<p class="col-span-full text-center text-red-400 py-8 text-sm">حدث خطأ في التحميل</p>';
     }
+}
+
+const guideExpanded = {};
+function toggleGuideMore(tab) {
+    guideExpanded[tab] = !guideExpanded[tab];
+    const extra = document.getElementById('gpanel-'+tab+'-extra');
+    const icon  = document.getElementById('gicon-'+tab);
+    const txt   = document.getElementById('gtxt-'+tab);
+    const labels = {
+        'admin-branches': ['عرض المزيد من الفروع الإدارية',    'إخفاء الفروع الإدارية'],
+        'education':      ['عرض المزيد من المؤسسات التعليمية', 'إخفاء المؤسسات التعليمية'],
+        'health':         ['عرض المزيد من المرافق الصحية',     'إخفاء المرافق الصحية'],
+    };
+    const expanded = guideExpanded[tab];
+    if (extra) extra.classList.toggle('hidden', !expanded);
+    if (icon)  icon.setAttribute('data-icon', expanded ? 'lucide:chevrons-up' : 'lucide:chevrons-down');
+    if (txt)   txt.textContent = (labels[tab] || ['عرض المزيد','إخفاء'])[expanded ? 1 : 0];
+    if (window.Iconify) Iconify.scan();
 }
 
 // ── NEWS MODAL ──
