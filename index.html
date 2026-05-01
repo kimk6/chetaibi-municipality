@@ -394,8 +394,8 @@
     <div class="max-w-7xl mx-auto px-4 relative z-10">
         <div class="text-center mb-4">
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 flex items-center justify-center gap-3">
-                <span class="iconify text-emerald-600" data-icon="lucide:layout-grid"></span>
-                الخدمات والتطبيقات الرسمية
+                <span class="iconify text-emerald-600" data-icon="lucide:landmark"></span>
+                الخدمات الإدارية
             </h2>
             <p class="text-gray-500 max-w-xl mx-auto">
                 دليلك الشامل للخدمات الإدارية والتطبيقات الرقمية المتاحة للمواطنين — مع الوثائق المطلوبة والاستمارات
@@ -405,7 +405,7 @@
         <div class="flex items-start gap-3 bg-emerald-50 border border-emerald-200 rounded-2xl px-5 py-3 mb-10 max-w-3xl mx-auto">
             <span class="iconify text-emerald-500 text-xl flex-shrink-0 mt-0.5" data-icon="lucide:shield-check"></span>
             <p class="text-xs text-emerald-700 leading-relaxed font-medium">
-                جميع الخدمات والتطبيقات المعروضة تندرج ضمن جهات رسمية معتمدة، من بينها وزارة الداخلية والجماعات المحلية، وقطاع النقل — لضمان موثوقية المعلومات وسلامة الوصول.
+                جميع هذه الخدمات والتطبيقات تابعة لجهات رسمية معتمدة من وزارة الداخلية، مما يضمن موثوقية المعلومات وسهولة الوصول.
             </p>
         </div>
 
@@ -421,7 +421,7 @@
         <div class="text-center mt-10">
             <button onclick="openServicesOverlay()" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-2xl font-bold text-sm transition-all shadow-md">
                 <span class="iconify text-lg" data-icon="lucide:layout-grid"></span>
-                عرض المزيد من الخدمات والتطبيقات
+                عرض المزيد من الخدمات
                 <span class="iconify text-lg" data-icon="lucide:chevron-left"></span>
             </button>
         </div>
@@ -433,52 +433,43 @@
     <div class="bg-white rounded-3xl shadow-2xl w-full max-w-5xl relative">
         <!-- رأس الـ overlay -->
         <div class="sticky top-0 bg-white rounded-t-3xl border-b border-gray-100 px-6 py-4 z-10">
-            <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between mb-4">
                 <div>
                     <h3 class="text-xl font-extrabold text-gray-900 flex items-center gap-2">
-                        <span class="iconify text-emerald-600" data-icon="lucide:layout-grid"></span>
-                        الخدمات والتطبيقات الرسمية
+                        <span class="iconify text-emerald-600" data-icon="lucide:landmark"></span>
+                        الخدمات الإدارية
                     </h3>
                     <p class="text-xs text-gray-400 mt-0.5">جميع الخدمات والتطبيقات المتاحة</p>
                 </div>
-                <button onclick="closeServicesOverlay()" class="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors">
+                <button onclick="closeServicesOverlay()" class="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors flex-shrink-0">
                     <span class="iconify text-gray-600 text-xl" data-icon="lucide:x"></span>
+                </button>
+            </div>
+            <!-- تابات التصنيف -->
+            <div class="flex gap-3">
+                <button onclick="switchServicesTab('services')" id="sov-tab-services"
+                        class="sov-tab active flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all">
+                    <span class="iconify text-base" data-icon="lucide:landmark"></span> الخدمات
+                </button>
+                <button onclick="switchServicesTab('apps')" id="sov-tab-apps"
+                        class="sov-tab flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all">
+                    <span class="iconify text-base" data-icon="lucide:smartphone"></span> التطبيقات
                 </button>
             </div>
         </div>
         <div class="px-6 pb-8 pt-6">
-            <!-- تصنيف: الخدمات -->
-            <div class="mb-10">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center">
-                        <span class="iconify text-emerald-600 text-xl" data-icon="lucide:landmark"></span>
-                    </div>
-                    <div>
-                        <h4 class="text-lg font-extrabold text-gray-800">الخدمات الإدارية</h4>
-                        <p class="text-xs text-gray-400">خدمات بلدية وإدارية رسمية</p>
-                    </div>
-                    <div class="h-px flex-1 bg-gray-100 mr-2"></div>
-                </div>
+            <!-- لوحة الخدمات -->
+            <div id="sov-panel-services" class="sov-panel">
                 <div id="overlay-services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="col-span-full text-center py-8 text-gray-300">
+                    <div class="col-span-full text-center py-10 text-gray-300">
                         <span class="iconify text-3xl animate-spin inline-block" data-icon="lucide:loader-2"></span>
                     </div>
                 </div>
             </div>
-            <!-- تصنيف: التطبيقات -->
-            <div>
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
-                        <span class="iconify text-blue-600 text-xl" data-icon="lucide:smartphone"></span>
-                    </div>
-                    <div>
-                        <h4 class="text-lg font-extrabold text-gray-800">التطبيقات الرقمية</h4>
-                        <p class="text-xs text-gray-400">تطبيقات جوال ومنصات رقمية رسمية</p>
-                    </div>
-                    <div class="h-px flex-1 bg-gray-100 mr-2"></div>
-                </div>
+            <!-- لوحة التطبيقات -->
+            <div id="sov-panel-apps" class="sov-panel hidden">
                 <div id="overlay-apps-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="col-span-full text-center py-8 text-gray-300">
+                    <div class="col-span-full text-center py-10 text-gray-300">
                         <span class="iconify text-3xl animate-spin inline-block" data-icon="lucide:loader-2"></span>
                     </div>
                 </div>
@@ -486,6 +477,11 @@
         </div>
     </div>
 </div>
+
+<style>
+.sov-tab.active { background:#059669; color:white; box-shadow:0 4px 14px rgba(5,150,105,.3); }
+.sov-tab:not(.active) { background:white; color:#374151; border:1px solid #e5e7eb; }
+</style>
 
 <!-- ARCHIVE -->
 <section id="archive" class="py-14 relative archive-top-fade fade-into-guide" style="background-color:#f5ede0;">
@@ -1122,10 +1118,10 @@ function buildServiceCard(s) {
     const headerHtml = s.image_url
         ? `<div class="relative h-40 overflow-hidden">
                <img src="${s.image_url}" alt="${s.service_name}" class="w-full h-full object-cover">
-               <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-4">
-                   <div>
+               <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end justify-center p-4">
+                   <div class="text-center">
                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full mb-1 inline-block ${isApp ? 'bg-blue-400/80 text-white' : 'bg-white/20 text-white'}">${isApp ? '📱 تطبيق' : '🏛️ خدمة'}</span>
-                       <h3 class="text-white font-extrabold text-lg leading-tight">${s.service_name}</h3>
+                       <h3 class="text-white font-extrabold text-lg leading-tight text-center">${s.service_name}</h3>
                    </div>
                </div>
            </div>`
@@ -1202,11 +1198,12 @@ async function loadServicesMain() {
 
 // فتح وإغلاق Overlay الخدمات والتطبيقات
 let _overlayServicesLoaded = false;
+let _overlayAppsLoaded     = false;
 function openServicesOverlay() {
     document.getElementById('services-overlay').classList.remove('hidden');
     document.getElementById('services-overlay').classList.add('flex');
     document.body.style.overflow = 'hidden';
-    if (!_overlayServicesLoaded) { loadServicesOverlay(); _overlayServicesLoaded = true; }
+    if (!_overlayServicesLoaded) { loadServicesOverlay('services'); }
 }
 function closeServicesOverlay() {
     document.getElementById('services-overlay').classList.add('hidden');
@@ -1216,21 +1213,35 @@ function closeServicesOverlay() {
 document.getElementById('services-overlay').addEventListener('click', function(e) {
     if (e.target === this) closeServicesOverlay();
 });
-async function loadServicesOverlay() {
-    const sGrid = document.getElementById('overlay-services-grid');
-    const aGrid = document.getElementById('overlay-apps-grid');
+
+function switchServicesTab(tab) {
+    document.querySelectorAll('.sov-tab').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.sov-panel').forEach(p => p.classList.add('hidden'));
+    document.getElementById('sov-tab-' + tab).classList.add('active');
+    document.getElementById('sov-panel-' + tab).classList.remove('hidden');
+    if (tab === 'services' && !_overlayServicesLoaded) loadServicesOverlay('services');
+    if (tab === 'apps'     && !_overlayAppsLoaded)     loadServicesOverlay('apps');
+    if (window.Iconify) Iconify.scan();
+}
+
+async function loadServicesOverlay(tab) {
+    const gridId = tab === 'apps' ? 'overlay-apps-grid' : 'overlay-services-grid';
+    const grid   = document.getElementById(gridId);
     try {
         const res  = await fetch('/api/services');
         const data = await res.json();
         const all  = data.data || [];
-        const services = all.filter(s => s.service_type !== 'app');
-        const apps     = all.filter(s => s.service_type === 'app');
-        sGrid.innerHTML = services.length ? services.map(buildServiceCard).join('') : '<p class="col-span-full text-center text-gray-400 py-6 text-sm">لا توجد خدمات بعد</p>';
-        aGrid.innerHTML = apps.length     ? apps.map(buildServiceCard).join('')     : '<p class="col-span-full text-center text-gray-400 py-6 text-sm">لا توجد تطبيقات بعد</p>';
+        const items = tab === 'apps'
+            ? all.filter(s => s.service_type === 'app')
+            : all.filter(s => s.service_type !== 'app');
+        grid.innerHTML = items.length
+            ? items.map(buildServiceCard).join('')
+            : `<p class="col-span-full text-center text-gray-400 py-8 text-sm">${tab === 'apps' ? 'لا توجد تطبيقات بعد' : 'لا توجد خدمات بعد'}</p>`;
+        if (tab === 'apps')     _overlayAppsLoaded     = true;
+        else                    _overlayServicesLoaded = true;
         if (window.Iconify) Iconify.scan();
     } catch {
-        sGrid.innerHTML = '<p class="col-span-full text-center text-red-400 py-6 text-sm">تعذر التحميل</p>';
-        aGrid.innerHTML = '';
+        grid.innerHTML = '<p class="col-span-full text-center text-red-400 py-6 text-sm">تعذر التحميل</p>';
     }
 }
 
