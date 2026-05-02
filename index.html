@@ -383,7 +383,7 @@
         <div class="text-center md:text-right flex-1">
             <p class="text-emerald-200 text-sm font-semibold mb-1">رئيس المجلس الشعبي البلدي</p>
             <h3 id="mayor-name" class="text-2xl md:text-3xl font-extrabold mb-2">السيد عثماني سليمان</h3>
-            <p id="mayor-bio" class="text-white/75 text-sm leading-relaxed max-w-xl">يتولى الإشراف المباشر على تسيير الشؤون العمومية للبلدية، والسهر على تنفيذ مداولات المجلس الشعبي البلدي، بما يضمن الارتقاء بجودة المرفق العام وتعزيز التنمية المحلية لخدمة تطلعات الساكنة.</p>
+            <p id="mayor-bio" class="text-white/75 text-sm leading-relaxed max-w-xl"><span id="mayor-name-inline" class="hidden"></span>يتولى الإشراف المباشر على تسيير الشؤون العمومية للبلدية، والسهر على تنفيذ مداولات المجلس الشعبي البلدي، بما يضمن الارتقاء بجودة المرفق العام وتعزيز التنمية المحلية لخدمة تطلعات الساكنة.</p>
         </div>
         <div class="flex gap-3 flex-wrap justify-center md:justify-start">
             <button onclick="openMayorsOverlay()" class="bg-white/15 hover:bg-white/25 backdrop-blur-sm px-5 py-2.5 rounded-xl text-sm font-bold transition-colors border border-white/20"><span class="iconify inline-block ml-1" data-icon="lucide:users"></span>الرؤساء السابقون</button>
@@ -566,22 +566,71 @@
         </div>
         <div class="relative max-w-4xl mx-auto mb-20">
             <div class="timeline-line"></div>
+
+            <!-- بطاقة 1: العصر الروماني -->
             <div class="relative flex flex-col md:flex-row items-start mb-12 md:mb-16">
-                <div class="md:w-1/2 md:pl-12 pl-14 mb-4 md:mb-0 md:text-left"><div class="bg-white rounded-2xl p-6 shadow-lg border border-emerald-100"><span class="inline-block bg-amber-100 text-amber-700 text-xs font-bold px-3 py-1 rounded-full mb-3">العصر النوميدي</span><h4 class="text-xl font-extrabold text-gray-800 mb-2">تيكوش — Tikouch</h4><p class="text-sm text-gray-500 leading-relaxed">يعود أصل شطايبي إلى العصر النوميدي حيث كانت تُعرف باسم "تيكوش". كانت المنطقة نقطة استراتيجية على الساحل الشرقي للمنطقة النوميدية، اشتهرت بثرواتها الطبيعية وموانئها الصغيرة التي استخدمت في التجارة البحرية.</p></div></div>
+                <div class="md:w-1/2 md:pl-12 pl-14 mb-4 md:mb-0 md:text-left">
+                    <div class="bg-white rounded-2xl p-6 shadow-lg border border-amber-100">
+                        <div class="flex flex-wrap items-center gap-2 mb-3">
+                            <span class="inline-block bg-amber-100 text-amber-700 text-xs font-bold px-3 py-1 rounded-full">العهد القديم — العصر الروماني</span>
+                            <span class="inline-block bg-orange-50 text-orange-600 text-xs font-semibold px-3 py-1 rounded-full border border-orange-200">القرن 1 — 5 م</span>
+                        </div>
+                        <h4 class="text-xl font-extrabold text-gray-800 mb-2">تاكاتوا — Tacatua</h4>
+                        <p class="text-sm text-gray-500 leading-relaxed">تأسست كمدينة مرفئية هامة ومحطة رئيسية على الطريق الساحلي الرابط بين "هيبون" والمدن الغربية. اشتهرت عالمياً بمناجم "البورفير الأحمر" الفاخر الذي كان يُصدر خصيصاً لتزيين قصور وتوابيت أباطرة روما. لا تزال آثارها شاهدة على عظمة تلك الحقبة، ومن أبرزها "النافورة الرومانية" وبقايا نظام الري المتطور.</p>
+                    </div>
+                </div>
                 <div class="absolute right-[14px] md:right-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-amber-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
                 <div class="md:w-1/2 md:pr-12 hidden md:block"></div>
             </div>
+
+            <!-- بطاقة 2: العهد الإسلامي والعثماني -->
             <div class="relative flex flex-col md:flex-row items-start mb-12 md:mb-16">
                 <div class="md:w-1/2 md:pl-12 hidden md:block"></div>
-                <div class="absolute right-[14px] md:right-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-red-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
-                <div class="md:w-1/2 md:pr-12 pr-14 pl-0 md:pl-0"><div class="bg-white rounded-2xl p-6 shadow-lg border border-red-100"><span class="inline-block bg-red-100 text-red-700 text-xs font-bold px-3 py-1 rounded-full mb-3">العهد الاستعماري</span><h4 class="text-xl font-extrabold text-gray-800 mb-2">هربيلون — Herbillon</h4><p class="text-sm text-gray-500 leading-relaxed">خلال الفترة الاستعمارية الفرنسية، أُطلق عليها اسم "هربيلون" نسبة إلى الجنرال الفرنسي. تم إنشاء مرافق استعمارية واستغلال الأراضي الخصبة. لا تزال بعض بقايا المباني الاستعمارية شاهدة على تلك الحقبة.</p></div></div>
+                <div class="absolute right-[14px] md:right-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-teal-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
+                <div class="md:w-1/2 md:pr-12 pr-14 pl-0 md:pl-0">
+                    <div class="bg-white rounded-2xl p-6 shadow-lg border border-teal-100">
+                        <div class="flex flex-wrap items-center gap-2 mb-3">
+                            <span class="inline-block bg-teal-100 text-teal-700 text-xs font-bold px-3 py-1 rounded-full">العهد الإسلامي والعثماني</span>
+                            <span class="inline-block bg-cyan-50 text-cyan-600 text-xs font-semibold px-3 py-1 rounded-full border border-cyan-200">القرن 11 — 1830 م</span>
+                        </div>
+                        <h4 class="text-xl font-extrabold text-gray-800 mb-2">تكوش — Tekkouch</h4>
+                        <p class="text-sm text-gray-500 leading-relaxed">تحول اسمها إلى "تكوش" (مشتق من الأصل الأمازيغي "تيكوش")، وبرزت كمركز استراتيجي للمراقبة البحرية بفضل موقع "رأس تكوش" المحمي طبيعياً. خلال العهد العثماني، كانت المنطقة محطة حيوية لتأمين السفن وتزويد الأسطول الجزائري بالمؤن والأخشاب، وظلت "منارة رأس تكوش" منارة تاريخية لا غنى عنها للملاحة الدولية في المتوسط.</p>
+                    </div>
+                </div>
             </div>
-            <div class="relative flex flex-col md:flex-row items-start">
-                <div class="md:w-1/2 md:pl-12 pl-14 mb-4 md:mb-0 md:text-left"><div class="bg-white rounded-2xl p-6 shadow-lg border border-emerald-100"><span class="inline-block bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full mb-3">بعد الاستقلال</span><h4 class="text-xl font-extrabold text-gray-800 mb-2">شطايبي — Chetaïbi</h4><p class="text-sm text-gray-500 leading-relaxed">بعد استقلال الجزائر سنة 1962، استعادت المنطقة هويتها الوطنية وأصبحت تُعرف باسم "شطايبي" تخليداً لاسم الشهيد الذي استشهد في المنطقة. تطورت البلدية تدريجياً لتصبح اليوم مقصداً سياحياً وبلدية فاعلة في ولاية عنابة.</p></div></div>
-                <div class="absolute right-[14px] md:right-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-emerald-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
+
+            <!-- بطاقة 3: العهد الاستعماري -->
+            <div class="relative flex flex-col md:flex-row items-start mb-12 md:mb-16">
+                <div class="md:w-1/2 md:pl-12 pl-14 mb-4 md:mb-0 md:text-left">
+                    <div class="bg-white rounded-2xl p-6 shadow-lg border border-red-100">
+                        <div class="flex flex-wrap items-center gap-2 mb-3">
+                            <span class="inline-block bg-red-100 text-red-700 text-xs font-bold px-3 py-1 rounded-full">العهد الاستعماري الفرنسي</span>
+                            <span class="inline-block bg-rose-50 text-rose-600 text-xs font-semibold px-3 py-1 rounded-full border border-rose-200">1869 — 1962 م</span>
+                        </div>
+                        <h4 class="text-xl font-extrabold text-gray-800 mb-2">هيربيون — Herbillon</h4>
+                        <p class="text-sm text-gray-500 leading-relaxed">أُنشئ المركز السكاني بمرسوم رسمي عام 1869 وسُمي نسبة للجنرال "إيميل هيربيون". شهدت المنطقة نهضة صناعية كبرى عبر استغلال مقالع "الجرانيت الأخضر" الصلب الذي استُخدم لرصف شوارع باريس، مارسيليا، وروما. وبالتوازي مع ذلك، كانت جبالها معقلاً للمقاومة، بدءاً من ثورة "سي زغدود" عام 1841 وصولاً إلى اندلاع الثورة التحريرية الكبرى.</p>
+                    </div>
+                </div>
+                <div class="absolute right-[14px] md:right-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-red-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
                 <div class="md:w-1/2 md:pr-12 hidden md:block"></div>
             </div>
-        </div>
+
+            <!-- بطاقة 4: عهد الاستقلال -->
+            <div class="relative flex flex-col md:flex-row items-start">
+                <div class="md:w-1/2 md:pl-12 hidden md:block"></div>
+                <div class="absolute right-[14px] md:right-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-emerald-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
+                <div class="md:w-1/2 md:pr-12 pr-14 pl-0 md:pl-0">
+                    <div class="bg-white rounded-2xl p-6 shadow-lg border border-emerald-100">
+                        <div class="flex flex-wrap items-center gap-2 mb-3">
+                            <span class="inline-block bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full">عهد الاستقلال والجزائر الحديثة</span>
+                            <span class="inline-block bg-green-50 text-green-600 text-xs font-semibold px-3 py-1 rounded-full border border-green-200">منذ 1962 م</span>
+                        </div>
+                        <h4 class="text-xl font-extrabold text-gray-800 mb-2">شطايبي — Chetaïbi</h4>
+                        <p class="text-sm text-gray-500 leading-relaxed">استعادت المدينة هويتها الوطنية عام 1962، وسُميت "شطايبي" تخليداً للشهيد البطل "عمار شطايبي" الذي استشهد في ميدان الشرف بالمنطقة. تحولت البلدية اليوم إلى قطب سياحي عالمي، حيث صُنف خليجها عام 2006 كواحد من أجمل الخلجان في العالم، مما جعلها وجهة رائدة تجمع بين عبق التاريخ وسحر الطبيعة العذراء.</p>
+                    </div>
+                </div>
+            </div>
+                    </div>
         <div>
             <h3 class="text-2xl font-extrabold text-gray-900 text-center mb-10"><span class="iconify inline-block ml-2 text-emerald-500" data-icon="lucide:images"></span>أرشيف الصور<span class="block text-base font-semibold text-gray-500 mt-1">شطايبي بين الأمس واليوم</span></h3>
             <!-- بطاقات ديناميكية من DB -->
@@ -1759,7 +1808,7 @@ async function loadBeaches(){
         const totalCount = allBeaches.length;
         const introEl = document.getElementById('beaches-intro-text');
         if(introEl){
-            introEl.textContent = `تتميز شطايبي بشواطئها الرائعة ذات المياه الصافية والرمال الذهبية، وتضم ${totalCount} شاطئاً بما فيها ${supervisedCount} شاطئ مرخص ومراقب رسمياً، توفر بيئة آمنة ومريحة لجميع الزوار والعائلات طوال موسم الاصطياف.`;
+            introEl.textContent = `تتميز شطايبي بشواطئها الرائعة ذات المياه الصافية والرمال الذهبية، وتضم شريطاً ساحلياً من الشواطئ المسموحة للسباحة، والمجهزة لضمان راحة وسلامة المصطافين والعائلات.`;
         }
         const first4 = allBeaches.slice(0,4);
         const rest   = allBeaches.slice(4);
