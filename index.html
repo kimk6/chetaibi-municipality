@@ -392,7 +392,7 @@
 </section>
 
 <!-- NEWS -->
-<section id="news" class="pb-14 pt-0" style="background-color:#f0fdf4;">
+<section id="news" class="pb-8 pt-0" style="background-color:#f0fdf4;">
     <div class="max-w-7xl mx-auto px-4">
         <div class="text-center mb-12">
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 flex items-center justify-center gap-3"><span class="iconify text-emerald-600" data-icon="lucide:newspaper"></span>آخر المستجدات</h2>
@@ -496,7 +496,7 @@
 <div id="services-overlay" class="hidden fixed inset-0 z-[200] bg-black/60 backdrop-blur-sm flex items-start justify-center overflow-y-auto py-8 px-4">
     <div class="bg-white rounded-3xl shadow-2xl w-full max-w-5xl relative">
         <!-- رأس الـ overlay -->
-        <div class="sticky top-0 bg-white rounded-t-3xl border-b border-gray-100 px-6 py-4 z-10">
+        <div class="sticky top-0 bg-white rounded-t-3xl border-b border-gray-100 px-6 py-4 z-10 shadow-sm">
             <div class="flex items-center justify-between mb-4">
                 <div>
                     <h3 class="text-xl font-extrabold text-gray-900 flex items-center gap-2">
@@ -549,6 +549,16 @@
 
 <!-- ARCHIVE -->
 <section id="archive" class="py-14 relative archive-top-fade fade-into-guide" style="background-color:#f5ede0;">
+    <!-- أيقونات باهتة تاريخية في الخلفية -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none z-0" aria-hidden="true">
+        <span class="iconify absolute" data-icon="lucide:scroll-text"  style="top:8%;right:4%;font-size:7rem;color:#c49a6c;opacity:0.10;transform:rotate(-12deg);"></span>
+        <span class="iconify absolute" data-icon="lucide:landmark"     style="top:20%;left:6%;font-size:9rem;color:#b07d4a;opacity:0.08;transform:rotate(8deg);"></span>
+        <span class="iconify absolute" data-icon="lucide:archive"      style="top:50%;right:8%;font-size:8rem;color:#c49a6c;opacity:0.09;transform:rotate(6deg);"></span>
+        <span class="iconify absolute" data-icon="lucide:book-open"    style="top:68%;left:3%;font-size:6rem;color:#b07d4a;opacity:0.08;transform:rotate(-8deg);"></span>
+        <span class="iconify absolute" data-icon="lucide:clock"        style="top:35%;right:2%;font-size:5rem;color:#c49a6c;opacity:0.07;transform:rotate(15deg);"></span>
+        <span class="iconify absolute" data-icon="lucide:image"        style="bottom:10%;right:15%;font-size:6rem;color:#b07d4a;opacity:0.08;transform:rotate(-5deg);"></span>
+        <span class="iconify absolute" data-icon="lucide:feather"      style="bottom:18%;left:10%;font-size:5rem;color:#c49a6c;opacity:0.07;transform:rotate(10deg);"></span>
+    </div>
     <div class="max-w-7xl mx-auto px-4 relative z-10">
         <div class="text-center mb-16">
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 flex items-center justify-center gap-3"><span class="iconify text-amber-500" data-icon="lucide:scroll-text"></span>تاريخ شطايبي</h2>
@@ -582,7 +592,7 @@
             </div>
             <!-- ✅ 6: زر صفحة الأرشيف الكاملة -->
             <div class="text-center">
-                <button onclick="openArchivesOverlay()" class="inline-flex items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-8 py-4 rounded-2xl font-bold text-sm transition-all shadow-lg hover:shadow-xl">
+                <button onclick="openArchivesOverlay()" class="inline-flex items-center gap-2 text-white px-8 py-4 rounded-2xl font-bold text-sm transition-all shadow-lg hover:shadow-xl hover:opacity-90" style="background-color:#d87706;">
                     <span class="iconify text-xl" data-icon="lucide:images"></span>
                     استعراض الأرشيف الكامل
                     <span class="iconify text-sm" data-icon="lucide:arrow-left"></span>
@@ -783,7 +793,10 @@
     <div id="beach-modal" class="hidden fixed inset-0 z-[200] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" onclick="closeBeachModal(event)">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
             <div class="relative">
-                <img id="bm-img" src="" alt="" class="w-full h-52 object-cover rounded-t-2xl">
+                <img id="bm-img" src="" alt="" class="w-full h-52 object-cover rounded-t-2xl hidden">
+                <div id="bm-img-placeholder" class="w-full h-52 bg-gradient-to-bl from-sky-400 to-blue-600 flex items-center justify-center rounded-t-2xl">
+                    <span class="iconify text-white/50 text-6xl animate-pulse" data-icon="lucide:waves"></span>
+                </div>
                 <button onclick="document.getElementById('beach-modal').classList.add('hidden')" class="absolute top-3 left-3 w-9 h-9 bg-black/50 text-white rounded-full flex items-center justify-center hover:bg-black/70"><span class="iconify" data-icon="lucide:x"></span></button>
                 <div class="absolute bottom-3 right-4 text-white"><h3 id="bm-name" class="text-2xl font-extrabold drop-shadow"></h3></div>
             </div>
@@ -797,7 +810,10 @@
     <div id="tourism-modal" class="hidden fixed inset-0 z-[200] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" onclick="closeTourismModal(event)">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
             <div class="relative">
-                <img id="tm-img" src="" alt="" class="w-full h-52 object-cover rounded-t-2xl">
+                <img id="tm-img" src="" alt="" class="w-full h-52 object-cover rounded-t-2xl hidden">
+                <div id="tm-img-placeholder" class="w-full h-52 bg-gradient-to-bl from-emerald-400 to-emerald-700 flex items-center justify-center rounded-t-2xl">
+                    <span class="iconify text-white/50 text-6xl animate-pulse" data-icon="lucide:compass"></span>
+                </div>
                 <button onclick="document.getElementById('tourism-modal').classList.add('hidden')" class="absolute top-3 left-3 w-9 h-9 bg-black/50 text-white rounded-full flex items-center justify-center hover:bg-black/70"><span class="iconify" data-icon="lucide:x"></span></button>
                 <div class="absolute bottom-3 right-4 text-white"><h3 id="tm-name" class="text-2xl font-extrabold drop-shadow"></h3><p id="tm-subtitle" class="text-sm text-white/80"></p></div>
             </div>
@@ -831,9 +847,6 @@
             <div id="nm-img-wrap" class="hidden h-56 md:h-72 overflow-hidden">
                 <img id="nm-img" src="" alt="" class="w-full h-full object-cover">
             </div>
-            <div id="nm-img-placeholder" class="h-32 bg-gradient-to-bl from-emerald-500 to-emerald-700 hidden items-center justify-center">
-                <span class="iconify text-white text-6xl" data-icon="lucide:newspaper"></span>
-            </div>
             <!-- النص -->
             <div class="p-5 md:p-8">
                 <div class="flex items-center gap-2 mb-1 text-xs text-gray-400">
@@ -858,8 +871,8 @@
 </div>
 
 <!-- ── ARCHIVES OVERLAY ── -->
-<div id="archives-overlay" class="fixed inset-0 z-[300] bg-white hidden flex-col">
-    <div class="bg-gray-900 flex-shrink-0 shadow-lg">
+<div id="archives-overlay" class="fixed inset-0 z-[300] hidden flex-col" style="background-color:#fdf6ec;">
+    <div class="flex-shrink-0 shadow-md" style="background-color:#92400e;">
         <div class="px-4 py-3 flex items-center gap-3 text-white">
             <button onclick="closeArchivesOverlay()" class="w-9 h-9 bg-white/20 hover:bg-white/30 rounded-xl flex items-center justify-center transition-colors flex-shrink-0">
                 <span class="iconify text-lg" data-icon="lucide:x"></span>
@@ -868,11 +881,15 @@
             <div class="w-9"></div>
         </div>
         <div class="flex justify-center gap-3 px-4 pb-3">
-            <button onclick="archSetCat('compare')" id="acat-compare" class="acat-btn text-xs px-4 py-2 rounded-lg font-bold transition-all bg-white/10 text-white hover:bg-white/20 flex items-center gap-1.5"><span class="iconify" data-icon="lucide:arrow-left-right"></span>مقارنة الأمس بالحاضر</button>
-            <button onclick="archSetCat('historic')" id="acat-historic" class="acat-btn text-xs px-4 py-2 rounded-lg font-bold transition-all bg-white/10 text-white hover:bg-white/20 flex items-center gap-1.5"><span class="iconify" data-icon="lucide:image"></span>صور تاريخية</button>
+            <button onclick="archSetCat('compare')" id="acat-compare" class="acat-btn text-xs px-4 py-2 rounded-xl font-bold transition-all flex items-center gap-1.5 bg-white/15 text-white hover:bg-white/25 border border-white/20">
+                <span class="iconify" data-icon="lucide:arrow-left-right"></span>مقارنة الأمس بالحاضر
+            </button>
+            <button onclick="archSetCat('historic')" id="acat-historic" class="acat-btn text-xs px-4 py-2 rounded-xl font-bold transition-all flex items-center gap-1.5 bg-white/15 text-white hover:bg-white/25 border border-white/20">
+                <span class="iconify" data-icon="lucide:image"></span>صور تاريخية
+            </button>
         </div>
     </div>
-    <div class="flex-1 overflow-y-auto bg-gray-950">
+    <div class="flex-1 overflow-y-auto" style="background-color:#fdf6ec;">
         <div class="max-w-7xl mx-auto px-4 py-8">
             <div id="arch-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"></div>
             <div id="arch-pagination" class="flex flex-wrap justify-center gap-2 mt-4"></div>
@@ -926,30 +943,28 @@
 </div>
 
 <!-- ── MAYORS OVERLAY ── -->
-<div id="mayors-overlay" class="fixed inset-0 z-[300] bg-white hidden flex-col">
-    <div class="bg-emerald-800 flex-shrink-0 shadow-lg">
-        <div class="px-4 py-3 flex items-center gap-3 text-white">
-            <button onclick="closeMayorsOverlay()" class="w-9 h-9 bg-white/20 hover:bg-white/30 rounded-xl flex items-center justify-center transition-colors flex-shrink-0">
-                <span class="iconify text-lg" data-icon="lucide:x"></span>
-            </button>
-            <h2 class="text-base font-extrabold flex-1 text-center">رؤساء المجلس الشعبي البلدي</h2>
-            <div class="w-9"></div>
-        </div>
-    </div>
-    <div class="flex-1 overflow-y-auto bg-gradient-to-b from-emerald-50 to-white">
-        <div class="max-w-5xl mx-auto px-4 py-10">
-            <!-- عنوان ووصف -->
-            <div class="text-center mb-10">
-                <div class="inline-flex items-center justify-center w-16 h-16 bg-emerald-100 rounded-full mb-4">
-                    <span class="iconify text-emerald-700 text-3xl" data-icon="lucide:landmark"></span>
+<div id="mayors-overlay" class="hidden fixed inset-0 z-[300] bg-black/60 backdrop-blur-sm flex items-start justify-center overflow-y-auto py-8 px-4">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl relative">
+        <!-- رأس -->
+        <div class="sticky top-0 bg-white rounded-t-3xl border-b border-gray-100 px-6 py-4 z-10 shadow-sm">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-xl font-extrabold text-gray-900 flex items-center gap-2">
+                        <span class="iconify text-emerald-600" data-icon="lucide:users"></span>
+                        رؤساء المجلس الشعبي البلدي
+                    </h3>
+                    <p class="text-xs text-gray-400 mt-0.5">سجل تاريخي بأسماء الرؤساء منذ التأسيس</p>
                 </div>
-                <h3 class="text-2xl font-extrabold text-gray-900 mb-2">قائمة رؤساء المجلس الشعبي البلدي لشطايبي</h3>
-                <p class="text-gray-500 text-sm max-w-xl mx-auto leading-relaxed">سجل تاريخي بأسماء الرؤساء الذين تولوا قيادة المجلس الشعبي البلدي لبلدية شطايبي منذ تأسيسه، وأسهموا في خدمة المواطن وتطوير البلدية.</p>
+                <button onclick="closeMayorsOverlay()" class="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors flex-shrink-0">
+                    <span class="iconify text-gray-600 text-xl" data-icon="lucide:x"></span>
+                </button>
             </div>
-            <!-- قائمة الرؤساء -->
-            <div id="mayors-overlay-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                <div class="col-span-full text-center py-16 text-gray-300">
-                    <span class="iconify text-5xl animate-spin inline-block" data-icon="lucide:loader-2"></span>
+        </div>
+        <!-- المحتوى -->
+        <div class="px-6 pb-8 pt-6">
+            <div id="mayors-overlay-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+                <div class="col-span-full text-center py-12 text-gray-300">
+                    <span class="iconify text-4xl animate-spin inline-block" data-icon="lucide:loader-2"></span>
                 </div>
             </div>
         </div>
@@ -1788,7 +1803,10 @@ function toggleMoreBeaches(){
 
 async function openBeachModal(id){
     const modal = document.getElementById('beach-modal');
-    document.getElementById('bm-img').src='';
+    const bmImg = document.getElementById('bm-img');
+    const bmPh  = document.getElementById('bm-img-placeholder');
+    bmImg.src=''; bmImg.classList.add('hidden');
+    bmPh.classList.remove('hidden');
     document.getElementById('bm-name').textContent='جاري التحميل...';
     document.getElementById('bm-desc').textContent='';
     document.getElementById('bm-badges').innerHTML='';
@@ -1799,7 +1817,11 @@ async function openBeachModal(id){
         const d   = await res.json();
         if(!d.success) return;
         const b = d.data;
-        document.getElementById('bm-img').src  = b.image_url||'https://placehold.co/800x300/0ea5e9/fff?text='+encodeURIComponent(b.name);
+        if (b.image_url) {
+            bmImg.src = b.image_url;
+            bmImg.onload = () => { bmImg.classList.remove('hidden'); bmPh.classList.add('hidden'); };
+            bmImg.onerror = () => { bmImg.classList.add('hidden'); bmPh.classList.remove('hidden'); };
+        }
         document.getElementById('bm-name').textContent = b.name;
         document.getElementById('bm-desc').textContent = b.description||'';
         document.getElementById('bm-badges').innerHTML =
@@ -1869,7 +1891,10 @@ function toggleMoreTourism(){
 
 async function openTourismModal(id){
     const modal=document.getElementById('tourism-modal');
-    document.getElementById('tm-img').src='';
+    const tmImg = document.getElementById('tm-img');
+    const tmPh  = document.getElementById('tm-img-placeholder');
+    tmImg.src=''; tmImg.classList.add('hidden');
+    tmPh.classList.remove('hidden');
     document.getElementById('tm-name').textContent='جاري التحميل...';
     document.getElementById('tm-subtitle').textContent='';
     document.getElementById('tm-desc').textContent='';
@@ -1881,7 +1906,11 @@ async function openTourismModal(id){
         const d=await res.json();
         if(!d.success) return;
         const t=d.data;
-        document.getElementById('tm-img').src=t.image_url||'https://placehold.co/800x300/059669/fff?text='+encodeURIComponent(t.name);
+        if (t.image_url) {
+            tmImg.src = t.image_url;
+            tmImg.onload = () => { tmImg.classList.remove('hidden'); tmPh.classList.add('hidden'); };
+            tmImg.onerror = () => { tmImg.classList.add('hidden'); tmPh.classList.remove('hidden'); };
+        }
         document.getElementById('tm-name').textContent=t.name;
         document.getElementById('tm-subtitle').textContent=t.subtitle||'';
         document.getElementById('tm-desc').textContent=t.description||'';
@@ -2170,8 +2199,6 @@ async function openNewsModal(id) {
     document.getElementById('nm-content').textContent = '';
     document.getElementById('nm-date').textContent    = '';
     document.getElementById('nm-img-wrap').classList.add('hidden');
-    document.getElementById('nm-img-placeholder').classList.remove('hidden');
-    document.getElementById('nm-img-placeholder').classList.add('flex');
     document.getElementById('nm-official-imgs').classList.add('hidden');
     document.getElementById('nm-official-imgs').innerHTML = '';
     document.getElementById('nm-album-wrap').classList.add('hidden');
@@ -2203,12 +2230,8 @@ async function openNewsModal(id) {
         if (n.image_url && !isOfficial) {
             document.getElementById('nm-img').src = n.image_url;
             document.getElementById('nm-img-wrap').classList.remove('hidden');
-            document.getElementById('nm-img-placeholder').classList.add('hidden');
-            document.getElementById('nm-img-placeholder').classList.remove('flex');
         } else if (isOfficial) {
             document.getElementById('nm-img-wrap').classList.add('hidden');
-            document.getElementById('nm-img-placeholder').classList.add('hidden');
-            document.getElementById('nm-img-placeholder').classList.remove('flex');
         }
         let albums = [];
         try { albums = JSON.parse(n.album_urls || '[]'); } catch {}
@@ -2494,6 +2517,9 @@ function closeMayorsOverlay() {
     document.getElementById('mayors-overlay').classList.remove('flex');
     document.body.style.overflow = '';
 }
+document.getElementById('mayors-overlay').addEventListener('click', function(e){
+    if (e.target === this) closeMayorsOverlay();
+});
 
 // ── EXPLORE OVERLAY MODAL (يفتح modal فوق explore بدون إغلاقه) ──
 async function openBeachModalInExplore(id){
