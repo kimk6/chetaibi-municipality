@@ -1256,11 +1256,8 @@ function buildServiceCard(s) {
     const headerHtml = s.image_url
         ? `<div class="relative h-40 overflow-hidden">
                <img src="${s.image_url}" alt="${s.service_name}" class="w-full h-full object-cover">
-               <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end justify-center p-4">
-                   <div class="text-center">
-                       <span class="text-[10px] font-bold px-2 py-0.5 rounded-full mb-1 inline-block ${isApp ? 'bg-blue-400/80 text-white' : 'bg-white/20 text-white'}">${isApp ? '📱 تطبيق' : '🏛️ خدمة'}</span>
-                       <h3 class="text-white font-extrabold text-lg leading-tight text-center">${s.service_name}</h3>
-                   </div>
+               <div class="absolute bottom-0 inset-x-0 flex items-end justify-center p-4">
+                   <h3 class="text-white font-extrabold text-lg leading-tight text-center drop-shadow-lg">${s.service_name}</h3>
                </div>
            </div>`
         : `<div class="bg-gradient-to-l ${cm.grad} p-5 text-white text-center">
@@ -1269,7 +1266,6 @@ function buildServiceCard(s) {
                        <span class="iconify text-2xl" data-icon="lucide:${s.icon||'file-text'}"></span>
                    </div>
                </div>
-               <span class="text-[10px] font-bold px-2 py-0.5 rounded-full mb-2 inline-block bg-white/20">${isApp ? '📱 تطبيق' : '🏛️ خدمة'}</span>
                <h3 class="text-lg font-extrabold leading-tight">${s.service_name}</h3>
            </div>`;
 
