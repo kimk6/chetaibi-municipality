@@ -121,127 +121,6 @@
     background: #ffffff;
 }
 </style>
-
-<script>
-// ── CUSTOM ICONS SYSTEM ──
-// الأيقونات المخصصة للخدمات الحكومية (outline أبيض، minimal)
-const CUSTOM_ICONS = {
-
-"birth-cert": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-  <rect x="8" y="4" width="26" height="34" rx="3"/>
-  <path d="M15 14h14M15 20h10M15 26h8"/>
-  <circle cx="34" cy="35" r="7"/>
-  <path d="M31 35l2 2 4-4"/>
-  <path d="M8 38c0 2 2 4 4 4h20"/>
-</svg>`,
-
-"e-service": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-  <rect x="4" y="8" width="30" height="22" rx="3"/>
-  <path d="M14 30v6M10 36h12"/>
-  <path d="M28 12c4-2 12 0 12 8s-8 10-12 8"/>
-  <path d="M34 28l4-2 2 4"/>
-  <circle cx="38" cy="30" r="1.5" fill="currentColor" stroke="none"/>
-</svg>`,
-
-"marriage-cert": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-  <rect x="6" y="6" width="28" height="36" rx="3"/>
-  <circle cx="14" cy="20" r="4"/>
-  <circle cx="26" cy="20" r="4"/>
-  <path d="M20 18a3 3 0 006 0"/>
-  <path d="M12 30h16M12 35h10"/>
-</svg>`,
-
-"death-cert": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-  <rect x="8" y="4" width="26" height="34" rx="3"/>
-  <path d="M20 12v10M15 17h10"/>
-  <path d="M14 28h14M14 33h10"/>
-  <path d="M30 36c4 0 8-3 8-8V8"/>
-</svg>`,
-
-"family-record": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-  <rect x="6" y="6" width="28" height="36" rx="3"/>
-  <path d="M12 16h16M12 22h12M12 28h10M12 34h8"/>
-  <path d="M28 2l6 6-6 2z"/>
-</svg>`,
-
-"biometric-id": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-  <rect x="4" y="10" width="40" height="28" rx="3"/>
-  <circle cx="17" cy="24" r="6"/>
-  <path d="M27 19h12M27 24h10M27 29h8"/>
-  <path d="M4 16h4M4 32h4M44 16h-4M44 32h-4"/>
-</svg>`,
-
-"driving-license": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-  <rect x="4" y="10" width="40" height="28" rx="3"/>
-  <circle cx="17" cy="24" r="6"/>
-  <path d="M14 24h6M17 21v6"/>
-  <path d="M27 20h12M27 26h10M27 31h6"/>
-</svg>`,
-
-"announcement": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M8 18h18l8-8v28l-8-8H8z"/>
-  <path d="M8 22v8"/>
-  <path d="M14 38l-4-12"/>
-  <path d="M40 14c3 2 5 6 5 10s-2 8-5 10"/>
-</svg>`,
-
-"urban-permit": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-  <rect x="8" y="22" width="32" height="20" rx="2"/>
-  <path d="M16 22v-6a8 8 0 0116 0v6"/>
-  <path d="M14 32h6M28 32h6"/>
-  <path d="M22 32v6"/>
-  <path d="M18 38h12"/>
-</svg>`,
-
-"allo-police": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M10 10h22a4 4 0 014 4v12a4 4 0 01-4 4H22l-8 8V30h-4a4 4 0 01-4-4V14a4 4 0 014-4z"/>
-  <path d="M16 20h12M16 26h8"/>
-  <path d="M36 14c4 0 7 3 7 7s-3 7-7 7"/>
-</svg>`,
-
-};
-
-/**
- * الحصول على SVG أيقونة مخصصة حسب الاسم
- * @param {string} key - اسم الأيقونة (مثل: birth-cert)
- * @param {string} color - اللون (افتراضي: white)
- * @param {number} size - الحجم بالبكسل (افتراضي: 32)
- * @returns {string} HTML string
- */
-function getCustomIcon(key, color = 'white', size = 32) {
-    const svg = CUSTOM_ICONS[key];
-    if (!svg) return '';
-    return svg
-        .replace('stroke="currentColor"', `stroke="${color}"`)
-        .replace(/(<svg[^>]*)>/, `$1 width="${size}" height="${size}">`);
-}
-
-/**
- * عرض الأيقونة في عنصر HTML
- * @param {string} containerId - ID العنصر
- * @param {string} key - اسم الأيقونة
- * @param {string} color - اللون
- * @param {number} size - الحجم
- */
-function renderCustomIcon(containerId, key, color = 'white', size = 32) {
-    const el = document.getElementById(containerId);
-    if (el) el.innerHTML = getCustomIcon(key, color, size);
-}
-
-// قائمة الأيقونات المتاحة للوحة التحكم
-const CUSTOM_ICONS_LIST = [
-    { key: 'birth-cert',       label: 'شهادة الميلاد' },
-    { key: 'e-service',        label: 'خدمة إلكترونية' },
-    { key: 'marriage-cert',    label: 'عقد الزواج' },
-    { key: 'death-cert',       label: 'شهادة الوفاة' },
-    { key: 'family-record',    label: 'شهادة الحالة المدنية رقم 12' },
-    { key: 'biometric-id',     label: 'بطاقة تعريف بيومترية' },
-    { key: 'driving-license',  label: 'رخصة السياقة' },
-    { key: 'announcement',     label: 'إعلان رسمي' },
-    { key: 'urban-permit',     label: 'رخصة البناء / التعمير' },
-    { key: 'allo-police',      label: 'تطبيق ألو شرطة' },
-];
-</script>
 </head>
 <body class="bg-gray-50 text-gray-800">
 
@@ -1355,6 +1234,143 @@ const navLinks=document.querySelectorAll('.nav-link');
 window.addEventListener('scroll',()=>{let c='';sections.forEach(s=>{if(window.scrollY>=s.offsetTop-100)c=s.id;});navLinks.forEach(l=>{l.classList.remove('active-link');if(l.getAttribute('href')==='#'+c)l.classList.add('active-link');});});
 
 // ══════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// CHETAIBI ICONS — مكتبة الأيقونات الرسمية SVG (outline أبيض)
+// الاستخدام من لوحة التحكم: أدخل اسم المفتاح في حقل الأيقونة
+// ══════════════════════════════════════════════════════
+const CHETAIBI_ICONS = {
+
+  // biometric-id — بطاقة التعريف البيومترية + بصمة
+  'biometric-id': `
+    <rect x="12" y="18" width="76" height="56" rx="6"/>
+    <path d="M30 38 Q30 26 42 26 Q54 26 54 38 Q54 50 42 50 Q30 50 30 38Z" stroke-width="3"/>
+    <path d="M60 32 Q68 28 74 34 Q80 40 76 52 Q72 60 64 60"/>
+    <path d="M63 39 Q66 36 70 38 Q74 42 72 50 Q70 56 66 56"/>
+    <line x1="20" y1="62" x2="52" y2="62"/>
+    <line x1="20" y1="68" x2="42" y2="68"/>
+  `,
+
+  // birth-cert-12 — شهادة الميلاد رقم 12 + ختم
+  'birth-cert-12': `
+    <rect x="14" y="10" width="52" height="68" rx="4"/>
+    <circle cx="28" cy="26" r="7"/>
+    <line x1="24" y1="40" x2="56" y2="40"/>
+    <line x1="24" y1="48" x2="50" y2="48"/>
+    <line x1="24" y1="56" x2="46" y2="56"/>
+    <text x="32" y="36" font-size="10" stroke="white" fill="none" stroke-width="2">12</text>
+    <circle cx="70" cy="68" r="14"/>
+    <rect x="60" y="72" width="20" height="8" rx="2"/>
+    <line x1="64" y1="72" x2="64" y2="80"/>
+    <line x1="68" y1="72" x2="68" y2="80"/>
+    <line x1="72" y1="72" x2="72" y2="80"/>
+  `,
+
+  // birth-cert-online — شهادة الميلاد الإلكترونية
+  'birth-cert-online': `
+    <rect x="14" y="8" width="50" height="64" rx="4"/>
+    <path d="M50 8 L64 8 L64 22 Z"/>
+    <line x1="22" y1="28" x2="46" y2="28"/>
+    <line x1="22" y1="36" x2="46" y2="36"/>
+    <line x1="22" y1="44" x2="36" y2="44"/>
+    <ellipse cx="36" cy="56" rx="8" ry="8"/>
+    <path d="M30 60 L36 56 L42 60"/>
+    <circle cx="66" cy="66" r="14"/>
+    <path d="M60 62 Q66 56 72 62 Q78 68 72 74 Q66 80 60 74 Q54 68 60 62"/>
+    <path d="M63 66 L66 70 L72 62"/>
+  `,
+
+  // marriage-cert — عقد الزواج
+  'marriage-cert': `
+    <rect x="18" y="8" width="50" height="68" rx="4"/>
+    <path d="M54 8 L68 8 L68 22 Z"/>
+    <circle cx="34" cy="34" r="9"/>
+    <circle cx="48" cy="34" r="9"/>
+    <circle cx="26" cy="62" r="7"/>
+    <path d="M20 70 L26 64 L32 70"/>
+    <line x1="36" y1="62" x2="56" y2="62"/>
+    <circle cx="60" cy="66" r="10"/>
+    <path d="M55 63 Q60 57 65 63 Q70 69 65 75 Q60 81 55 75 Q50 69 55 63"/>
+    <line x1="18" y1="50" x2="36" y2="50"/>
+  `,
+
+  // official-doc — وثيقة رسمية بالشعار الجزائري
+  'official-doc': `
+    <rect x="10" y="10" width="80" height="80" rx="6"/>
+    <path d="M50 24 Q58 28 58 38 Q58 48 50 52 Q42 48 42 38 Q42 28 50 24Z"/>
+    <line x1="38" y1="58" x2="62" y2="58"/>
+    <line x1="40" y1="64" x2="60" y2="64"/>
+    <path d="M30 48 Q24 42 26 34 Q28 26 34 22"/>
+    <path d="M70 48 Q76 42 74 34 Q72 26 66 22"/>
+    <circle cx="74" cy="72" r="12"/>
+    <path d="M68 70 Q74 64 80 70 Q80 78 74 80 Q68 78 68 70"/>
+    <path d="M71 72 L74 76 L80 68"/>
+  `,
+
+  // driver-license — رخصة السياقة
+  'driver-license': `
+    <rect x="8" y="22" width="84" height="56" rx="8"/>
+    <circle cx="34" cy="46" r="14"/>
+    <path d="M24 46 L34 38 L44 46"/>
+    <line x1="32" y1="38" x2="32" y2="54"/>
+    <line x1="36" y1="38" x2="36" y2="54"/>
+    <line x1="56" y1="40" x2="80" y2="40"/>
+    <line x1="56" y1="48" x2="76" y2="48"/>
+    <rect x="62" y="56" width="14" height="12" rx="3"/>
+    <path d="M66 61 L69 64 L74 58"/>
+  `,
+
+  // e-service — خدمة إلكترونية (شاشة + يد)
+  'e-service': `
+    <rect x="8" y="16" width="64" height="44" rx="5"/>
+    <line x1="24" y1="60" x2="24" y2="72"/>
+    <line x1="16" y1="72" x2="32" y2="72"/>
+    <rect x="16" y="28" width="28" height="6" rx="2"/>
+    <line x1="16" y1="42" x2="44" y2="42"/>
+    <line x1="16" y1="50" x2="36" y2="50"/>
+    <circle cx="72" cy="28" r="10"/>
+    <path d="M66 24 Q72 18 78 24 Q84 30 78 36 Q72 42 66 36 Q60 30 66 24"/>
+    <path d="M58 52 L64 46 Q68 50 72 46 L80 52 L80 70 L58 70 Z"/>
+    <line x1="65" y1="60" x2="65" y2="68"/>
+    <line x1="72" y1="60" x2="72" y2="68"/>
+  `,
+
+  // civil-registry — السجل المدني
+  'civil-registry': `
+    <circle cx="50" cy="28" r="14"/>
+    <rect x="26" y="44" width="18" height="44" rx="4"/>
+    <line x1="30" y1="54" x2="40" y2="54"/>
+    <line x1="30" y1="62" x2="40" y2="62"/>
+    <line x1="30" y1="70" x2="40" y2="70"/>
+    <rect x="56" y="50" width="22" height="38" rx="4"/>
+    <line x1="60" y1="60" x2="74" y2="60"/>
+    <line x1="60" y1="68" x2="74" y2="68"/>
+    <line x1="60" y1="76" x2="70" y2="76"/>
+  `,
+
+  // announcement — إعلان وتواصل
+  'announcement': `
+    <rect x="14" y="14" width="50" height="58" rx="4"/>
+    <path d="M50 14 L64 14 L64 28 Z"/>
+    <line x1="22" y1="30" x2="56" y2="30"/>
+    <line x1="22" y1="38" x2="56" y2="38"/>
+    <line x1="22" y1="46" x2="44" y2="46"/>
+    <path d="M56 52 Q68 48 72 60 Q68 72 56 68 Z"/>
+    <path d="M72 56 Q80 58 80 64"/>
+    <path d="M72 50 Q84 53 84 64"/>
+  `,
+
+  // app-mobile — تطبيق جوال
+  'app-mobile': `
+    <rect x="28" y="8" width="44" height="76" rx="8"/>
+    <line x1="44" y1="18" x2="56" y2="18"/>
+    <circle cx="50" cy="76" r="4"/>
+    <rect x="34" y="28" width="32" height="36" rx="3"/>
+    <line x1="38" y1="38" x2="58" y2="38"/>
+    <line x1="38" y1="46" x2="52" y2="46"/>
+  `,
+
+};
+
 // SERVICES — بطاقة الخدمة/التطبيق
 // ══════════════════════════════════════
 const SVC_COLOR_MAP = {
@@ -1378,19 +1394,18 @@ function buildServiceCard(s) {
         ? `<div class="relative h-40 overflow-hidden">
                <img src="${s.image_url}" alt="${s.service_name}" class="w-full h-full object-cover">
                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end justify-center p-4">
-                   <div class="text-center">
-                       <span class="text-[10px] font-bold px-2 py-0.5 rounded-full mb-1 inline-block ${isApp ? 'bg-blue-400/80 text-white' : 'bg-white/20 text-white'}">${isApp ? '📱 تطبيق' : '🏛️ خدمة'}</span>
-                       <h3 class="text-white font-extrabold text-lg leading-tight text-center">${s.service_name}</h3>
-                   </div>
+                   <h3 class="text-white font-extrabold text-lg leading-tight text-center">${s.service_name}</h3>
                </div>
            </div>`
-        : `<div class="bg-gradient-to-l ${cm.grad} p-5 text-white text-center">
-               <div class="flex items-center justify-center gap-2 mb-2">
-                   <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                       ${CUSTOM_ICONS[s.icon] ? getCustomIcon(s.icon, 'white', 28) : '<span class="iconify text-2xl" data-icon="lucide:' + (s.icon||'file-text') + '"></span>'}
+        : `<div class="bg-gradient-to-l ${cm.grad} p-6 text-white text-center">
+               <div class="flex items-center justify-center mb-3">
+                   <div class="w-20 h-20 bg-white/15 rounded-2xl flex items-center justify-center">
+                       ${CHETAIBI_ICONS[s.icon]
+                           ? `<svg viewBox="0 0 100 100" class="w-12 h-12" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">${CHETAIBI_ICONS[s.icon]}</svg>`
+                           : `<span class="iconify text-4xl" data-icon="lucide:${s.icon||'file-text'}"></span>`
+                       }
                    </div>
                </div>
-               <span class="text-[10px] font-bold px-2 py-0.5 rounded-full mb-2 inline-block bg-white/20">${isApp ? '📱 تطبيق' : '🏛️ خدمة'}</span>
                <h3 class="text-lg font-extrabold leading-tight">${s.service_name}</h3>
            </div>`;
 
