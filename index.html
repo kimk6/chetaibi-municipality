@@ -97,23 +97,17 @@
     content: '';
     position: absolute;
     bottom: 0; left: 0; right: 0;
-    height: 80px;
-    background: linear-gradient(to bottom, transparent, #f5ede0);
+    height: 72px;
+    background: linear-gradient(to bottom, #ffffff, #f5ede0);
     pointer-events: none;
     z-index: 1;
 }
 
 /* ══════════════════════════════════════════
-   فاصل تلاشي: رأس الأرشيف ← قادم من أبيض
+   فاصل تلاشي: رأس الأرشيف — معطَّل (يكفي ::after أعلاه)
 ══════════════════════════════════════════ */
 .archive-top-fade::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 70px;
-    background: linear-gradient(to bottom, #ffffff, transparent);
-    pointer-events: none;
-    z-index: 1;
+    display: none;
 }
 
 /* ══════════════════════════════════════════
