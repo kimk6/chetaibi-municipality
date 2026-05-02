@@ -236,7 +236,7 @@
                 <button onclick="openWeatherOverlay()"
                         class="flex items-center gap-1.5 bg-sky-50 hover:bg-sky-100 border border-sky-200 text-sky-600 text-xs font-bold px-3 py-1.5 rounded-xl transition-all shadow-sm hover:shadow-md flex-shrink-0">
                     <span class="iconify text-sm" data-icon="lucide:calendar-days"></span>
-                    توقعات الأيام
+                    الأيام القادمة
                 </button>
             </div>
             <div class="flex items-center justify-between">
@@ -257,11 +257,16 @@
         <!-- ✅ 1: SEA -->
         <div class="glass-card rounded-2xl p-6 shadow-xl">
             <div class="flex items-center gap-3 mb-4">
-                <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center"><span class="iconify text-blue-500 text-2xl" data-icon="lucide:waves"></span></div>
-                <div>
+                <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0"><span class="iconify text-blue-500 text-2xl" data-icon="lucide:waves"></span></div>
+                <div class="flex-1">
                     <h3 class="font-bold text-gray-800">حالة البحر</h3>
                     <p id="sea-time-label" class="text-xs text-gray-500">للصيادين والسياح</p>
                 </div>
+                <button onclick="openSeaOverlay()"
+                        class="flex items-center gap-1.5 bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-600 text-xs font-bold px-3 py-1.5 rounded-xl transition-all shadow-sm hover:shadow-md flex-shrink-0">
+                    <span class="iconify text-sm" data-icon="lucide:calendar-days"></span>
+                    الأيام القادمة
+                </button>
             </div>
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-4">
@@ -321,6 +326,50 @@
                 </div>
             </div>
             <p class="text-center text-[10px] text-gray-300 mt-5">البيانات من Open-Meteo · تُحدَّث تلقائياً</p>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════ SEA FORECAST OVERLAY ══════════ -->
+<div id="sea-overlay" class="hidden fixed inset-0 z-[300] bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 py-8">
+    <div class="w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden">
+        <!-- رأس الـ overlay -->
+        <div class="bg-gradient-to-l from-blue-600 to-cyan-500 px-6 py-5 relative">
+            <button onclick="closeSeaOverlay()"
+                    class="absolute top-4 left-4 w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors">
+                <span class="iconify text-white text-lg" data-icon="lucide:x"></span>
+            </button>
+            <div class="flex items-center gap-3">
+                <span class="text-4xl">🌊</span>
+                <div>
+                    <p class="text-white/80 text-xs font-semibold">شطايبي — ساحل البحر الأبيض المتوسط</p>
+                    <p class="text-white text-2xl font-extrabold leading-tight">توقعات حالة البحر</p>
+                    <p class="text-white/70 text-xs mt-0.5" id="sov-subtitle">جاري التحميل...</p>
+                </div>
+            </div>
+        </div>
+        <!-- الحالة الراهنة -->
+        <div class="px-5 py-5 overflow-y-auto max-h-[70vh]">
+            <div id="sov-current" class="flex items-center justify-between bg-blue-50 rounded-2xl px-5 py-4 mb-5 border border-blue-100">
+                <div>
+                    <p class="text-xs text-blue-500 font-bold mb-0.5">الآن</p>
+                    <p id="sov-cur-state" class="text-3xl font-extrabold text-gray-900">--</p>
+                    <p id="sov-cur-desc" class="text-sm text-gray-500 mt-0.5">جاري التحميل...</p>
+                </div>
+                <div class="space-y-2 text-sm text-gray-600">
+                    <div class="flex items-center gap-2"><span class="iconify text-blue-400" data-icon="lucide:waves"></span><span>الموج: <span id="sov-cur-wave">--</span> م</span></div>
+                    <div class="flex items-center gap-2"><span class="iconify text-teal-400" data-icon="lucide:thermometer"></span><span>الماء: <span id="sov-cur-wtemp">--</span>°C</span></div>
+                    <div class="flex items-center gap-2"><span class="iconify text-indigo-400" data-icon="lucide:compass"></span><span>الاتجاه: <span id="sov-cur-dir">--</span></span></div>
+                </div>
+            </div>
+            <!-- الأيام القادمة -->
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 px-1">الأيام القادمة</p>
+            <div id="sov-days" class="space-y-3">
+                <div class="text-center py-8 text-gray-300">
+                    <span class="iconify text-3xl animate-spin inline-block" data-icon="lucide:loader-2"></span>
+                </div>
+            </div>
+            <p class="text-center text-[10px] text-gray-300 mt-5">البيانات من Open-Meteo Marine API · تُحدَّث تلقائياً</p>
         </div>
     </div>
 </div>
@@ -1415,6 +1464,99 @@ async function fetchWeatherForecast() {
             '<p class="text-center text-red-400 text-sm py-6">تعذر تحميل التوقعات — تحقق من الاتصال</p>';
     }
 }
+
+// ══════════════════════════════════════
+// SEA FORECAST OVERLAY
+// ══════════════════════════════════════
+const SOV_DIRS = ['شمال','شمال شرقي','شرقي','جنوب شرقي','جنوبي','جنوب غربي','غربي','شمال غربي'];
+const SOV_DAYS_AR = ['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+
+function seaStateFromWave(v) {
+    if (v < 0.5) return { st:'هادئ',        si:'🟢', bg:'from-emerald-400 to-teal-300',  tip:'مناسب للسباحة والصيد' };
+    if (v < 1.0) return { st:'هادئ نسبياً', si:'🟡', bg:'from-lime-400 to-green-300',    tip:'مناسب مع انتباه' };
+    if (v < 1.5) return { st:'معتدل',        si:'🟠', bg:'from-amber-400 to-orange-300',  tip:'يُنصح بالحذر' };
+    if (v < 2.5) return { st:'مضطرب',        si:'🔴', bg:'from-orange-500 to-red-400',    tip:'غير مناسب للسباحة' };
+    return             { st:'عاصف',           si:'⛔', bg:'from-red-600 to-red-500',        tip:'يُمنع الخروج للبحر' };
+}
+
+let _sovLoaded = false;
+
+function openSeaOverlay() {
+    document.getElementById('sea-overlay').classList.remove('hidden');
+    document.getElementById('sea-overlay').classList.add('flex');
+    document.body.style.overflow = 'hidden';
+    if (!_sovLoaded) { fetchSeaForecast(); _sovLoaded = true; }
+}
+function closeSeaOverlay() {
+    document.getElementById('sea-overlay').classList.add('hidden');
+    document.getElementById('sea-overlay').classList.remove('flex');
+    document.body.style.overflow = '';
+}
+document.getElementById('sea-overlay').addEventListener('click', function(e){
+    if (e.target === this) closeSeaOverlay();
+});
+
+async function fetchSeaForecast() {
+    try {
+        const url = `https://marine-api.open-meteo.com/v1/marine?latitude=${LAT}&longitude=${LON}`
+            + `&current=wave_height,wave_period,wave_direction,sea_surface_temperature`
+            + `&daily=wave_height_max,wave_period_max,wind_wave_height_max`
+            + `&timezone=Africa%2FAlgiers&forecast_days=7`;
+        const r = await fetch(url);
+        const d = await r.json();
+        const cu = d.current, dl = d.daily;
+
+        // ── الحالة الراهنة ──
+        const curWave = cu.wave_height != null ? cu.wave_height.toFixed(1) : '--';
+        const curTemp = cu.sea_surface_temperature != null ? Math.round(cu.sea_surface_temperature) : '--';
+        const curDir  = cu.wave_direction != null ? SOV_DIRS[Math.round(cu.wave_direction / 45) % 8] : '--';
+        const curInfo = cu.wave_height != null ? seaStateFromWave(cu.wave_height) : { st:'--', si:'🌊', tip:'' };
+        document.getElementById('sov-cur-state').textContent = curInfo.st;
+        document.getElementById('sov-cur-desc').textContent  = curInfo.tip;
+        document.getElementById('sov-cur-wave').textContent  = curWave;
+        document.getElementById('sov-cur-wtemp').textContent = curTemp;
+        document.getElementById('sov-cur-dir').textContent   = curDir;
+        document.getElementById('sov-subtitle').textContent  = `ارتفاع الموج الحالي: ${curWave} م`;
+
+        // ── الأيام السبعة ──
+        const container = document.getElementById('sov-days');
+        container.innerHTML = dl.time.map((dateStr, i) => {
+            const date      = new Date(dateStr);
+            const dayName   = i === 0 ? 'اليوم' : i === 1 ? 'الغد' : SOV_DAYS_AR[date.getDay()];
+            const dateLabel = date.toLocaleDateString('ar-DZ', { day:'numeric', month:'short' });
+            const waveMax   = dl.wave_height_max[i]      != null ? dl.wave_height_max[i].toFixed(1)      : '--';
+            const windWave  = dl.wind_wave_height_max[i] != null ? dl.wind_wave_height_max[i].toFixed(1) : '--';
+            const info      = dl.wave_height_max[i]      != null ? seaStateFromWave(dl.wave_height_max[i]) : { st:'--', si:'🌊', bg:'from-blue-300 to-cyan-200', tip:'--' };
+            const isToday   = i === 0;
+            return `
+            <div class="flex items-center gap-3 bg-gray-50 hover:bg-gray-100 rounded-2xl px-4 py-3 transition-colors border border-gray-100 ${isToday ? 'ring-2 ring-blue-400 ring-offset-1' : ''}">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-br ${info.bg} flex items-center justify-center text-xl flex-shrink-0 shadow-sm">${info.si}</div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <p class="font-extrabold text-gray-800 text-sm">${dayName}</p>
+                        <p class="text-[10px] text-gray-400">${dateLabel}</p>
+                        ${isToday ? '<span class="text-[9px] bg-blue-100 text-blue-600 font-bold px-1.5 py-0.5 rounded-full">الآن</span>' : ''}
+                    </div>
+                    <p class="text-xs text-gray-500">${info.st} — ${info.tip}</p>
+                    <div class="flex items-center gap-2 mt-1">
+                        <span class="text-[10px] text-blue-500 flex items-center gap-0.5">
+                            <span class="iconify text-xs" data-icon="lucide:waves"></span>موج الرياح: ${windWave} م
+                        </span>
+                    </div>
+                </div>
+                <div class="text-left flex-shrink-0">
+                    <p class="text-lg font-extrabold text-gray-800 leading-none">${waveMax} م</p>
+                    <p class="text-[10px] text-gray-400 mt-0.5">أقصى ارتفاع</p>
+                </div>
+            </div>`;
+        }).join('');
+        if (window.Iconify) Iconify.scan();
+    } catch(e) {
+        document.getElementById('sov-days').innerHTML =
+            '<p class="text-center text-red-400 text-sm py-6">تعذر تحميل توقعات البحر — تحقق من الاتصال</p>';
+    }
+}
+
 async function fetchSeaState(){
     try{
         const r=await fetch(`https://marine-api.open-meteo.com/v1/marine?latitude=${LAT}&longitude=${LON}&current=wave_height,wave_period,wave_direction&timezone=Africa%2FAlgiers`);
