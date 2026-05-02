@@ -2643,7 +2643,9 @@ function archSetCat(cat) {
 async function renderArchives() {
     const grid = document.getElementById('arch-grid');
     const pag  = document.getElementById('arch-pagination');
-    grid.innerHTML = '<div class="col-span-full text-center py-16 text-gray-500"><span class="iconify text-5xl animate-spin inline-block" data-icon="lucide:loader-2"></span></div>';
+    const archIcon = archCat === 'compare' ? 'lucide:arrow-left-right' : 'lucide:image';
+    const archLabel = archCat === 'compare' ? 'مقارنة الأمس بالحاضر' : 'الصور التاريخية';
+    grid.innerHTML = '<div class="col-span-full text-center py-16"><span class="iconify text-5xl animate-spin inline-block text-amber-500" data-icon="' + archIcon + '"></span><p class="mt-3 text-sm font-semibold text-gray-400">' + archLabel + '...</p></div>';
     pag.innerHTML = '';
     try {
         const res  = await fetch('/api/archives');
