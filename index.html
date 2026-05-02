@@ -404,7 +404,7 @@
             <button onclick="switchNewsTab('community')" id="tab-community" class="news-tab py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2"><span class="iconify text-base" data-icon="lucide:handshake"></span> ركن المجتمع</button>
             <button onclick="switchNewsTab('posters')" id="tab-posters" class="news-tab py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2"><span class="iconify text-base" data-icon="lucide:image"></span> معرض الملصقات</button>
         </div>
-        <div id="news-loading" class="text-center py-16 text-gray-400"><span class="iconify text-5xl animate-spin inline-block" data-icon="lucide:loader-2"></span><p class="mt-3 text-sm font-semibold">جاري تحميل الأخبار...</p></div>
+        <div id="news-loading" class="text-center py-16"><span class="iconify text-5xl animate-spin inline-block text-emerald-500" data-icon="lucide:newspaper"></span><p class="mt-3 text-sm font-semibold text-gray-400">جاري تحميل الأخبار...</p></div>
         <!-- كل tab له grid + extra + أزرار -->
         <div id="tab-panel-announcements" class="news-panel hidden">
             <div id="grid-announcements" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6"></div>
@@ -798,8 +798,9 @@
             </div>
             <p id="beaches-intro-text" class="text-white/65 text-sm text-center mb-8 max-w-2xl mx-auto">تتميز شطايبي بشواطئها الرائعة ذات المياه الصافية والرمال الذهبية، وتضم شريطاً ساحلياً من الشواطئ المسموحة للسباحة، والمجهزة لضمان راحة وسلامة المصطافين والعائلات</p>
             <div id="beaches-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-5">
-                <div class="col-span-full text-center py-12 text-white/40">
-                    <span class="iconify text-4xl animate-spin inline-block" data-icon="lucide:loader-2"></span>
+                <div class="col-span-full text-center py-12">
+                    <span class="iconify text-4xl animate-spin inline-block text-sky-400" data-icon="lucide:waves"></span>
+                    <p class="mt-3 text-sm font-semibold text-white/50">جاري تحميل الشواطئ...</p>
                 </div>
             </div>
             <div id="beaches-extra" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-5 hidden"></div>
@@ -829,7 +830,10 @@
             </div>
             <p class="text-white/65 text-sm text-center mb-8 max-w-2xl mx-auto">اكتشف أجمل المعالم الطبيعية والسياحية التي تنفرد بها شطايبي</p>
             <div id="tourism-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-5">
-                <div class="col-span-full text-center py-12 text-white/40"><span class="iconify text-4xl animate-spin inline-block" data-icon="lucide:loader-2"></span></div>
+                <div class="col-span-full text-center py-12">
+                    <span class="iconify text-4xl animate-spin inline-block text-amber-300" data-icon="lucide:compass"></span>
+                    <p class="mt-3 text-sm font-semibold text-white/50">جاري تحميل المعالم...</p>
+                </div>
             </div>
             <div id="tourism-extra" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-5 hidden"></div>
             <div id="tourism-more-wrap" class="text-center mb-4 hidden">
@@ -2136,6 +2140,7 @@ async function renderExploreOverlay() {
     if(exploreType==='beaches') {
         hdr.style.background = 'linear-gradient(135deg,#0c4a6e,#065f46)';
         title.textContent = 'شواطئ شطايبي';
+        grid.innerHTML = '<div class="col-span-full text-center py-16"><span class="iconify text-5xl animate-spin inline-block text-sky-400" data-icon="lucide:waves"></span><p class="mt-3 text-sm font-semibold text-gray-400">جاري تحميل الشواطئ...</p></div>';
         const res = await fetch('/api/beaches'); const d = await res.json();
         const all = d.data||[];
         const total = all.length; const totalPages = Math.ceil(total/EXPLORE_PER)||1;
@@ -2151,6 +2156,7 @@ async function renderExploreOverlay() {
     } else {
         hdr.style.background = 'linear-gradient(135deg,#064e3b,#065f46)';
         title.textContent = 'المعالم السياحية';
+        grid.innerHTML = '<div class="col-span-full text-center py-16"><span class="iconify text-5xl animate-spin inline-block text-amber-400" data-icon="lucide:compass"></span><p class="mt-3 text-sm font-semibold text-gray-400">جاري تحميل المعالم...</p></div>';
         const res = await fetch('/api/tourism'); const d = await res.json();
         const all = d.data||[];
         const total = all.length; const totalPages = Math.ceil(total/EXPLORE_PER)||1;
@@ -2650,13 +2656,15 @@ async function renderArchives() {
             if(archCat === 'compare' && hasOld && hasNew) {
                 return `<div class="bg-gray-800 rounded-xl overflow-hidden shadow-lg">
                     <div class="grid grid-cols-2 gap-0.5">
-                        <div class="relative cursor-pointer group" onclick="openModalLightbox('${a.image_old_url}','الأمس — ${(a.title||'').replace(/'/g,"\'")}')">
+                        <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_old_url}','الأمس — ${(a.title||'').replace(/'/g,"\'")}')">
                             <img src="${a.image_old_url}" class="w-full h-36 object-cover group-hover:scale-105 transition-transform duration-500">
-                            <div class="absolute inset-0 bg-black/30 flex items-end p-2"><span class="text-white text-[10px] font-bold bg-black/50 px-2 py-0.5 rounded-full">الأمس</span></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                            <span class="absolute bottom-2 right-2 text-white text-[10px] font-bold bg-black/50 px-2 py-0.5 rounded-full">الأمس</span>
                         </div>
-                        <div class="relative cursor-pointer group" onclick="openModalLightbox('${a.image_new_url}','اليوم — ${(a.title||'').replace(/'/g,"\'")}')">
+                        <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_new_url}','اليوم — ${(a.title||'').replace(/'/g,"\'")}')">
                             <img src="${a.image_new_url}" class="w-full h-36 object-cover group-hover:scale-105 transition-transform duration-500">
-                            <div class="absolute inset-0 bg-black/30 flex items-end p-2"><span class="text-white text-[10px] font-bold bg-black/50 px-2 py-0.5 rounded-full">اليوم</span></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                            <span class="absolute bottom-2 right-2 text-white text-[10px] font-bold bg-black/50 px-2 py-0.5 rounded-full">اليوم</span>
                         </div>
                     </div>
                     <div class="p-3">
@@ -2721,7 +2729,7 @@ function overlaySetCat(cat) {
 async function renderOverlay() {
     const grid = document.getElementById('overlay-grid');
     const pag  = document.getElementById('overlay-pagination');
-    grid.innerHTML = '<div class="col-span-full text-center py-16 text-gray-300"><span class="iconify text-5xl animate-spin inline-block" data-icon="lucide:loader-2"></span></div>';
+    grid.innerHTML = '<div class="col-span-full text-center py-16"><span class="iconify text-5xl animate-spin inline-block text-emerald-500" data-icon="lucide:newspaper"></span><p class="mt-3 text-sm font-semibold text-gray-400">جاري تحميل الأخبار...</p></div>';
     pag.innerHTML = '';
     document.querySelectorAll('.ocat-btn').forEach(b => { b.classList.remove('bg-white','text-emerald-800'); b.classList.add('bg-white/20','text-white'); });
     const activeBtn = document.getElementById('ocat-'+overlayCat);
@@ -2748,8 +2756,9 @@ async function renderOverlay() {
             const label = (n.custom_label&&n.custom_label.trim()) ? n.custom_label : m.label;
             const pin = n.is_pinned ? '<span class="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full border border-emerald-200 font-bold">📌 مثبت</span>' : '';
             const snippet = (n.content||'').replace(/\n/g,' ').substring(0,90) + ((n.content||'').length>90?'...':'');
+            const showGrad2 = overlayCat !== 'official';
             const img = n.image_url
-                ? `<div class="h-44 overflow-hidden"><img src="${n.image_url}" alt="${n.title||''}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"></div>`
+                ? `<div class="h-44 overflow-hidden relative"><img src="${n.image_url}" alt="${n.title||''}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">${showGrad2?'<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>':''}</div>`
                 : `<div class="h-44 bg-gradient-to-bl ${m.grad} flex items-center justify-center"><span style="font-size:2.5rem">📰</span></div>`;
             return `<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100 cursor-pointer" onclick="openNewsModal(${n.id})">
                 ${img}
@@ -2797,13 +2806,15 @@ async function loadArchivePreview() {
         grid.innerHTML = compares.map(a => `
             <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100">
                 <div class="grid grid-cols-2">
-                    <div class="relative cursor-pointer" onclick="openModalLightbox('${a.image_old_url}','الأمس — ${(a.title||'').replace(/'/g,"\\'")}')">
-                        <img src="${a.image_old_url}" alt="قديماً" class="w-full h-48 object-cover">
-                        <span class="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded-lg">الأمس</span>
+                    <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_old_url}','الأمس — ${(a.title||'').replace(/'/g,"\\'")}')">
+                        <img src="${a.image_old_url}" alt="قديماً" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <span class="absolute bottom-2 right-2 text-white text-xs font-bold px-2 py-0.5 rounded-full bg-black/50">الأمس</span>
                     </div>
-                    <div class="relative cursor-pointer" onclick="openModalLightbox('${a.image_new_url}','اليوم — ${(a.title||'').replace(/'/g,"\\'")}')">
-                        <img src="${a.image_new_url}" alt="حديثاً" class="w-full h-48 object-cover">
-                        <span class="absolute bottom-2 right-2 bg-emerald-600/80 text-white text-xs px-2 py-1 rounded-lg">اليوم</span>
+                    <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_new_url}','اليوم — ${(a.title||'').replace(/'/g,"\\'")}')">
+                        <img src="${a.image_new_url}" alt="حديثاً" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <span class="absolute bottom-2 right-2 text-white text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-600/80">اليوم</span>
                     </div>
                 </div>
                 <div class="p-4 text-center">
