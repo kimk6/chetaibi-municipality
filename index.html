@@ -121,6 +121,127 @@
     background: #ffffff;
 }
 </style>
+
+<script>
+// ── CUSTOM ICONS SYSTEM ──
+// الأيقونات المخصصة للخدمات الحكومية (outline أبيض، minimal)
+const CUSTOM_ICONS = {
+
+"birth-cert": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="8" y="4" width="26" height="34" rx="3"/>
+  <path d="M15 14h14M15 20h10M15 26h8"/>
+  <circle cx="34" cy="35" r="7"/>
+  <path d="M31 35l2 2 4-4"/>
+  <path d="M8 38c0 2 2 4 4 4h20"/>
+</svg>`,
+
+"e-service": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="4" y="8" width="30" height="22" rx="3"/>
+  <path d="M14 30v6M10 36h12"/>
+  <path d="M28 12c4-2 12 0 12 8s-8 10-12 8"/>
+  <path d="M34 28l4-2 2 4"/>
+  <circle cx="38" cy="30" r="1.5" fill="currentColor" stroke="none"/>
+</svg>`,
+
+"marriage-cert": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="6" y="6" width="28" height="36" rx="3"/>
+  <circle cx="14" cy="20" r="4"/>
+  <circle cx="26" cy="20" r="4"/>
+  <path d="M20 18a3 3 0 006 0"/>
+  <path d="M12 30h16M12 35h10"/>
+</svg>`,
+
+"death-cert": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="8" y="4" width="26" height="34" rx="3"/>
+  <path d="M20 12v10M15 17h10"/>
+  <path d="M14 28h14M14 33h10"/>
+  <path d="M30 36c4 0 8-3 8-8V8"/>
+</svg>`,
+
+"family-record": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="6" y="6" width="28" height="36" rx="3"/>
+  <path d="M12 16h16M12 22h12M12 28h10M12 34h8"/>
+  <path d="M28 2l6 6-6 2z"/>
+</svg>`,
+
+"biometric-id": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="4" y="10" width="40" height="28" rx="3"/>
+  <circle cx="17" cy="24" r="6"/>
+  <path d="M27 19h12M27 24h10M27 29h8"/>
+  <path d="M4 16h4M4 32h4M44 16h-4M44 32h-4"/>
+</svg>`,
+
+"driving-license": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="4" y="10" width="40" height="28" rx="3"/>
+  <circle cx="17" cy="24" r="6"/>
+  <path d="M14 24h6M17 21v6"/>
+  <path d="M27 20h12M27 26h10M27 31h6"/>
+</svg>`,
+
+"announcement": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8 18h18l8-8v28l-8-8H8z"/>
+  <path d="M8 22v8"/>
+  <path d="M14 38l-4-12"/>
+  <path d="M40 14c3 2 5 6 5 10s-2 8-5 10"/>
+</svg>`,
+
+"urban-permit": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="8" y="22" width="32" height="20" rx="2"/>
+  <path d="M16 22v-6a8 8 0 0116 0v6"/>
+  <path d="M14 32h6M28 32h6"/>
+  <path d="M22 32v6"/>
+  <path d="M18 38h12"/>
+</svg>`,
+
+"allo-police": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 10h22a4 4 0 014 4v12a4 4 0 01-4 4H22l-8 8V30h-4a4 4 0 01-4-4V14a4 4 0 014-4z"/>
+  <path d="M16 20h12M16 26h8"/>
+  <path d="M36 14c4 0 7 3 7 7s-3 7-7 7"/>
+</svg>`,
+
+};
+
+/**
+ * الحصول على SVG أيقونة مخصصة حسب الاسم
+ * @param {string} key - اسم الأيقونة (مثل: birth-cert)
+ * @param {string} color - اللون (افتراضي: white)
+ * @param {number} size - الحجم بالبكسل (افتراضي: 32)
+ * @returns {string} HTML string
+ */
+function getCustomIcon(key, color = 'white', size = 32) {
+    const svg = CUSTOM_ICONS[key];
+    if (!svg) return '';
+    return svg
+        .replace('stroke="currentColor"', `stroke="${color}"`)
+        .replace(/(<svg[^>]*)>/, `$1 width="${size}" height="${size}">`);
+}
+
+/**
+ * عرض الأيقونة في عنصر HTML
+ * @param {string} containerId - ID العنصر
+ * @param {string} key - اسم الأيقونة
+ * @param {string} color - اللون
+ * @param {number} size - الحجم
+ */
+function renderCustomIcon(containerId, key, color = 'white', size = 32) {
+    const el = document.getElementById(containerId);
+    if (el) el.innerHTML = getCustomIcon(key, color, size);
+}
+
+// قائمة الأيقونات المتاحة للوحة التحكم
+const CUSTOM_ICONS_LIST = [
+    { key: 'birth-cert',       label: 'شهادة الميلاد' },
+    { key: 'e-service',        label: 'خدمة إلكترونية' },
+    { key: 'marriage-cert',    label: 'عقد الزواج' },
+    { key: 'death-cert',       label: 'شهادة الوفاة' },
+    { key: 'family-record',    label: 'شهادة الحالة المدنية رقم 12' },
+    { key: 'biometric-id',     label: 'بطاقة تعريف بيومترية' },
+    { key: 'driving-license',  label: 'رخصة السياقة' },
+    { key: 'announcement',     label: 'إعلان رسمي' },
+    { key: 'urban-permit',     label: 'رخصة البناء / التعمير' },
+    { key: 'allo-police',      label: 'تطبيق ألو شرطة' },
+];
+</script>
 </head>
 <body class="bg-gray-50 text-gray-800">
 
@@ -1266,7 +1387,7 @@ function buildServiceCard(s) {
         : `<div class="bg-gradient-to-l ${cm.grad} p-5 text-white text-center">
                <div class="flex items-center justify-center gap-2 mb-2">
                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                       <span class="iconify text-2xl" data-icon="lucide:${s.icon||'file-text'}"></span>
+                       ${CUSTOM_ICONS[s.icon] ? getCustomIcon(s.icon, 'white', 28) : '<span class="iconify text-2xl" data-icon="lucide:' + (s.icon||'file-text') + '"></span>'}
                    </div>
                </div>
                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full mb-2 inline-block bg-white/20">${isApp ? '📱 تطبيق' : '🏛️ خدمة'}</span>
