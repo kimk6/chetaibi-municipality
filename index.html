@@ -58,6 +58,12 @@
         .timeline-line{position:absolute;right:23px;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,#059669,#34d399,#059669)}
         @media(min-width:768px){.timeline-line{right:50%;transform:translateX(50%)}}
         @media(max-width:767px){#main-nav{position:fixed;top:0;left:0;right:0;transform:translateY(-100%);opacity:0;transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .35s ease;pointer-events:none;z-index:50}#main-nav.nav-visible{transform:translateY(0);opacity:1;pointer-events:auto}}
+        /* ── زر تغيير اللغة — موبايل ── */
+        #lang-btn-mobile{transition:background .2s,transform .15s;letter-spacing:.05em}
+        #lang-btn-mobile:active{transform:scale(.93)}
+        /* ── fade-in للعناصر داخل الشريط عند ظهوره ── */
+        #main-nav .nav-inner-fade{opacity:0;transform:translateY(-6px);transition:opacity .4s ease .1s,transform .4s ease .1s}
+        #main-nav.nav-visible .nav-inner-fade{opacity:1;transform:translateY(0)}
         .pin-badge{position:absolute;top:12px;left:12px;width:32px;height:32px;background:rgba(5,150,105,.9);backdrop-filter:blur(4px);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;box-shadow:0 2px 8px rgba(0,0,0,.2);z-index:5}
         /* services expand */
         #extra-services{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.4,0,.2,1)}
@@ -164,18 +170,30 @@
                 <a href="#map-section" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">الخريطة</a>
                 <a href="#beaches" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">السياحة</a>
                 <a href="#contact-footer" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">اتصل بنا</a>
+                <!-- ══ زر تغيير اللغة — ديسكتوب | قبل "اتصل بنا" مباشرة ══ -->
+                <button onclick="switchLang('fr')" class="inline-flex items-center gap-1.5 border border-white/40 hover:border-white text-white/85 hover:text-white hover:bg-white/10 px-3 py-1.5 rounded-lg text-sm font-bold transition-all ml-1" title="Passer en Français">
+                    <span class="text-base leading-none">🇫🇷</span>
+                    <span>Français</span>
+                </button>
+                <!-- ══ نهاية زر اللغة — ديسكتوب ══ -->
             </div>
-            <button id="mobile-btn" class="md:hidden text-white p-2 rounded-lg hover:bg-emerald-600 transition-colors">
+            <!-- زر القائمة موبايل -->
+            <button id="mobile-btn" class="md:hidden text-white p-2 rounded-lg hover:bg-emerald-600 transition-colors nav-inner-fade">
                 <span class="iconify text-2xl" data-icon="lucide:menu"></span>
             </button>
-            <!-- ✅ 9: لوجو صغير بجانب الاسم في الموبايل -->
-            <div class="md:hidden flex items-center gap-2">
+            <!-- لوجو + اسم البلدية — موبايل (وسط) -->
+            <div class="md:hidden flex items-center gap-2 nav-inner-fade" style="transition-delay:.05s">
                 <div class="w-10 h-10 rounded-full overflow-hidden shadow flex-shrink-0">
                     <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo.webp" alt="شعار" class="w-full h-full object-cover">
                 </div>
                 <span class="text-white font-bold text-base">بلدية شطايبي</span>
             </div>
-            <div class="md:hidden w-10"></div>
+            <!-- ══ زر تغيير اللغة — موبايل (يسار الشريط) ══ -->
+            <button id="lang-btn-mobile" onclick="switchLang('fr')" class="md:hidden flex items-center gap-1 bg-white/15 hover:bg-white/25 border border-white/30 text-white px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition-all nav-inner-fade" style="transition-delay:.1s" title="Passer en Français">
+                <span class="text-sm leading-none">🇫🇷</span>
+                <span class="tracking-wide">FR</span>
+            </button>
+            <!-- ══ نهاية زر اللغة — موبايل ══ -->
         </div>
         <div id="mobile-menu" class="mobile-menu md:hidden">
             <div class="pb-4 space-y-1">
@@ -1167,6 +1185,12 @@
                     <li><a href="#guide" class="text-sm text-gray-400 hover:text-emerald-400 transition-colors flex items-center gap-2"><span class="iconify text-xs" data-icon="lucide:chevron-left"></span>دليل شطايبي</a></li>
                     <li><a href="#beaches" class="text-sm text-gray-400 hover:text-emerald-400 transition-colors flex items-center gap-2"><span class="iconify text-xs" data-icon="lucide:chevron-left"></span>اكتشف السياحة</a></li>
                 </ul>
+                <!-- ══ زر تغيير اللغة — الفوتر (أسفل روابط سريعة) ══ -->
+                <button onclick="switchLang('fr')" class="mt-5 inline-flex items-center gap-2 border border-emerald-600/60 hover:border-emerald-400 text-emerald-400 hover:text-white hover:bg-emerald-700/50 px-4 py-2 rounded-xl text-sm font-bold transition-all">
+                    <span class="text-base leading-none">🇫🇷</span>
+                    <span>Français</span>
+                </button>
+                <!-- ══ نهاية زر اللغة — الفوتر ══ -->
             </div>
             <div>
                 <h4 class="font-extrabold text-lg mb-5 flex items-center gap-2"><span class="iconify text-emerald-400" data-icon="lucide:phone"></span>اتصل بنا</h4>
@@ -1205,6 +1229,25 @@ function handleMobileNav(){if(window.innerWidth<768){if(window.scrollY>300)mainN
 window.addEventListener('scroll',handleMobileNav,{passive:true});
 window.addEventListener('resize',handleMobileNav,{passive:true});
 handleMobileNav();
+
+// ══════════════════════════════════════════════════════════════
+// ██ زر تغيير اللغة — switchLang()
+// ██ يُستدعى من ثلاثة أماكن:
+// ██   1) زر FR  في الشريط العلوي (موبايل)       → id="lang-btn-mobile"
+// ██   2) زر Français في قائمة الديسكتوب         → قبل "اتصل بنا"
+// ██   3) زر Français في الفوتر                 → أسفل "روابط سريعة"
+// ██
+// ██ لإضافة النسخة الفرنسية: ضع رابط الصفحة الفرنسية
+// ██ داخل الـ href بدلاً من alert().
+// ══════════════════════════════════════════════════════════════
+function switchLang(lang) {
+    if (lang === 'fr') {
+        // ── TODO: استبدل هذا بـ window.location.href = '/fr/index.html' ──
+        // ── أو أي مسار للنسخة الفرنسية من الموقع ──
+        alert('🇫🇷 La version française sera disponible prochainement.\n\nالنسخة الفرنسية ستكون متاحة قريباً.');
+    }
+}
+// ══════════════════════════════════════════════════════════════
 
 // ── TABS ──
 // ── NEWS TABS & SHOW MORE ──
