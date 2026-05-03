@@ -149,7 +149,12 @@
                     </h3>
                     <input type="hidden" id="news-edit-id" value="">
                     <div class="space-y-3">
-                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">العنوان</label><input id="news-title" type="text" placeholder="عنوان الخبر..."></div>
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">العنوان (عربي)</label><input id="news-title" type="text" placeholder="عنوان الخبر..."></div>
+                        <!-- 🇫🇷 ترجمة فرنسية -->
+                        <div class="border-r-2 border-blue-400 pr-3 bg-blue-50 rounded-lg py-2 px-2">
+                            <label class="text-xs font-bold text-blue-600 mb-1 block">🇫🇷 Titre — Français <span class="text-gray-400 font-normal">(اختياري)</span></label>
+                            <input id="news-title-fr" type="text" placeholder="Titre de l'actualité en français..." class="border-blue-200">
+                        </div>
                         <div><label class="text-xs font-bold text-gray-500 mb-1 block">التصنيف</label>
                             <select id="news-category">
                                 <option value="official">📢 إعلان رسمي</option>
@@ -158,7 +163,12 @@
                                 <option value="poster">🖼️ ملصق إعلاني</option>
                             </select>
                         </div>
-                        <div><label id="news-content-label" class="text-xs font-bold text-gray-500 mb-1 block">المحتوى</label><textarea id="news-content" placeholder="نص الخبر الكامل..." rows="4"></textarea></div>
+                        <div><label id="news-content-label" class="text-xs font-bold text-gray-500 mb-1 block">المحتوى (عربي)</label><textarea id="news-content" placeholder="نص الخبر الكامل..." rows="4"></textarea></div>
+                        <!-- 🇫🇷 ترجمة فرنسية للمحتوى -->
+                        <div class="border-r-2 border-blue-400 pr-3 bg-blue-50 rounded-lg py-2 px-2">
+                            <label class="text-xs font-bold text-blue-600 mb-1 block">🇫🇷 Contenu — Français <span class="text-gray-400 font-normal">(اختياري)</span></label>
+                            <textarea id="news-content-fr" placeholder="Texte complet de l'actualité en français..." rows="3" class="border-blue-200"></textarea>
+                        </div>
 
                         <!-- ✅ 2: تصنيف حر اختياري -->
                         <div>
@@ -264,8 +274,13 @@
 
                         <!-- اسم الخدمة/التطبيق -->
                         <div>
-                            <label class="text-xs font-bold text-gray-500 mb-1 block">اسم الخدمة / التطبيق</label>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">اسم الخدمة / التطبيق (عربي)</label>
                             <input id="services-name" type="text" placeholder="مثال: جواز السفر البيومتري">
+                        </div>
+                        <!-- 🇫🇷 -->
+                        <div class="border-r-2 border-blue-400 pr-3 bg-blue-50 rounded-lg py-2 px-2">
+                            <label class="text-xs font-bold text-blue-600 mb-1 block">🇫🇷 Nom — Français <span class="text-gray-400 font-normal">(اختياري)</span></label>
+                            <input id="services-name-fr" type="text" placeholder="Ex: Passeport biométrique" class="border-blue-200">
                         </div>
 
                         <!-- الأيقونة -->
@@ -306,8 +321,13 @@
 
                         <!-- التعريف المختصر -->
                         <div>
-                            <label class="text-xs font-bold text-gray-500 mb-1 block">📝 التعريف المختصر</label>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">📝 التعريف المختصر (عربي)</label>
                             <textarea id="services-desc" rows="2" placeholder="وصف مختصر للخدمة أو التطبيق..."></textarea>
+                        </div>
+                        <!-- 🇫🇷 -->
+                        <div class="border-r-2 border-blue-400 pr-3 bg-blue-50 rounded-lg py-2 px-2">
+                            <label class="text-xs font-bold text-blue-600 mb-1 block">🇫🇷 Description — Français <span class="text-gray-400 font-normal">(اختياري)</span></label>
+                            <textarea id="services-desc-fr" rows="2" placeholder="Description courte du service en français..." class="border-blue-200"></textarea>
                         </div>
 
                         <!-- الوثائق المطلوبة -->
@@ -423,9 +443,24 @@
                     <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span><span id="tourism-form-title">إضافة معلم سياحي</span></h3>
                     <input type="hidden" id="tourism-edit-id" value="">
                     <div class="space-y-3">
-                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">الاسم</label><input id="tourism-name" type="text" placeholder="باي ويست"></div>
-                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">العنوان الفرعي</label><input id="tourism-subtitle" type="text" placeholder="Baie Ouest"></div>
-                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">الوصف</label><textarea id="tourism-desc" rows="3" placeholder="وصف المعلم..."></textarea></div>
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">الاسم (عربي)</label><input id="tourism-name" type="text" placeholder="باي ويست"></div>
+                        <!-- 🇫🇷 -->
+                        <div class="border-r-2 border-blue-400 pr-3 bg-blue-50 rounded-lg py-2 px-2">
+                            <label class="text-xs font-bold text-blue-600 mb-1 block">🇫🇷 Nom — Français <span class="text-gray-400 font-normal">(اختياري)</span></label>
+                            <input id="tourism-name-fr" type="text" placeholder="Baie Ouest..." class="border-blue-200">
+                        </div>
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">العنوان الفرعي (عربي)</label><input id="tourism-subtitle" type="text" placeholder="Baie Ouest"></div>
+                        <!-- 🇫🇷 subtitle -->
+                        <div class="border-r-2 border-blue-400 pr-3 bg-blue-50 rounded-lg py-2 px-2">
+                            <label class="text-xs font-bold text-blue-600 mb-1 block">🇫🇷 Sous-titre — Français <span class="text-gray-400 font-normal">(اختياري)</span></label>
+                            <input id="tourism-subtitle-fr" type="text" placeholder="Sous-titre en français..." class="border-blue-200">
+                        </div>
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">الوصف (عربي)</label><textarea id="tourism-desc" rows="3" placeholder="وصف المعلم..."></textarea></div>
+                        <!-- 🇫🇷 desc -->
+                        <div class="border-r-2 border-blue-400 pr-3 bg-blue-50 rounded-lg py-2 px-2">
+                            <label class="text-xs font-bold text-blue-600 mb-1 block">🇫🇷 Description — Français <span class="text-gray-400 font-normal">(اختياري)</span></label>
+                            <textarea id="tourism-desc-fr" rows="3" placeholder="Description du site touristique en français..." class="border-blue-200"></textarea>
+                        </div>
                         <!-- صورة المعلم -->
                         <div>
                             <label class="text-xs font-bold text-gray-500 mb-1 block">🏖️ صورة المعلم</label>
@@ -518,8 +553,18 @@
                     </h3>
                     <input type="hidden" id="beaches-edit-id" value="">
                     <div class="space-y-3">
-                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">اسم الشاطئ</label><input id="beaches-name" type="text" placeholder="مثال: شاطئ واد الغنم"></div>
-                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">الوصف</label><textarea id="beaches-desc" rows="3" placeholder="وصف الشاطئ..."></textarea></div>
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">اسم الشاطئ (عربي)</label><input id="beaches-name" type="text" placeholder="مثال: شاطئ واد الغنم"></div>
+                        <!-- 🇫🇷 -->
+                        <div class="border-r-2 border-blue-400 pr-3 bg-blue-50 rounded-lg py-2 px-2">
+                            <label class="text-xs font-bold text-blue-600 mb-1 block">🇫🇷 Nom de la plage — Français <span class="text-gray-400 font-normal">(اختياري)</span></label>
+                            <input id="beaches-name-fr" type="text" placeholder="Ex: Plage Oued Ghnem" class="border-blue-200">
+                        </div>
+                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">الوصف (عربي)</label><textarea id="beaches-desc" rows="3" placeholder="وصف الشاطئ..."></textarea></div>
+                        <!-- 🇫🇷 desc -->
+                        <div class="border-r-2 border-blue-400 pr-3 bg-blue-50 rounded-lg py-2 px-2">
+                            <label class="text-xs font-bold text-blue-600 mb-1 block">🇫🇷 Description — Français <span class="text-gray-400 font-normal">(اختياري)</span></label>
+                            <textarea id="beaches-desc-fr" rows="3" placeholder="Description de la plage en français..." class="border-blue-200"></textarea>
+                        </div>
                         <div>
                             <label class="text-xs font-bold text-gray-500 mb-1 block">🏖️ الصورة الرئيسية</label>
                             <div id="beaches-img-widget" class="upload-widget p-3 cursor-pointer" onclick="triggerUpload('beaches-img-input')">
@@ -848,7 +893,18 @@ async function loadNews(){
 async function saveNews(){
     const editId=document.getElementById('news-edit-id').value;
     const clEl=document.getElementById('news-custom-label');
-    const body={title:document.getElementById('news-title').value,category:document.getElementById('news-category').value,content:document.getElementById('news-content').value,image_url:document.getElementById('news-image').value,album_urls:document.getElementById('news-album-urls').value||'[]',date:document.getElementById('news-date').value||new Date().toISOString().split('T')[0],is_pinned:document.getElementById('news-pinned').checked?1:0,custom_label:clEl?clEl.value:''};
+    const body={
+        title:document.getElementById('news-title').value,
+        title_fr:document.getElementById('news-title-fr')?.value||'',
+        category:document.getElementById('news-category').value,
+        content:document.getElementById('news-content').value,
+        content_fr:document.getElementById('news-content-fr')?.value||'',
+        image_url:document.getElementById('news-image').value,
+        album_urls:document.getElementById('news-album-urls').value||'[]',
+        date:document.getElementById('news-date').value||new Date().toISOString().split('T')[0],
+        is_pinned:document.getElementById('news-pinned').checked?1:0,
+        custom_label:clEl?clEl.value:''
+    };
     const isOfficial = body.category === 'official' || body.category === 'poster';
     const isOptionalContent = body.category === 'official' || body.category === 'poster';
     if(!isOptionalContent && !body.content){adminToast('المحتوى مطلوب');return;}
@@ -866,8 +922,10 @@ async function editNews(id){
         const d=await res.json(); const n=d.data.find(x=>x.id==id); if(!n) return;
         document.getElementById('news-edit-id').value=n.id;
         document.getElementById('news-title').value=n.title;
+        if(document.getElementById('news-title-fr')) document.getElementById('news-title-fr').value=n.title_fr||'';
         document.getElementById('news-category').value=n.category;
         document.getElementById('news-content').value=n.content;
+        if(document.getElementById('news-content-fr')) document.getElementById('news-content-fr').value=n.content_fr||'';
         document.getElementById('news-date').value=n.date;
         document.getElementById('news-pinned').checked=n.is_pinned==1;
         document.getElementById('news-image').value=n.image_url||'';
@@ -925,7 +983,9 @@ document.addEventListener('DOMContentLoaded', function(){
 function cancelNewsEdit(){
     document.getElementById('news-edit-id').value='';
     document.getElementById('news-title').value='';
+    if(document.getElementById('news-title-fr')) document.getElementById('news-title-fr').value='';
     document.getElementById('news-content').value='';
+    if(document.getElementById('news-content-fr')) document.getElementById('news-content-fr').value='';
     document.getElementById('news-date').value='';
     document.getElementById('news-pinned').checked=false;
     clearWidget('news-featured','news-image','news-image-url-manual');
@@ -1095,6 +1155,8 @@ async function saveService(){
         service_name:  name,
         service_type:  getSvcType(),
         description:   document.getElementById('services-desc').value,
+        description_fr: document.getElementById('services-desc-fr')?.value || '',
+        name_fr:       document.getElementById('services-name-fr')?.value || '',
         required_docs: document.getElementById('services-docs').value,
         direct_link:   document.getElementById('services-link').value,
         form_links:    JSON.stringify(svcFormLinks.filter(f => f.url)),
@@ -1121,6 +1183,8 @@ async function editService(id){
         document.getElementById('services-name').value    = s.service_name;
         document.getElementById('services-icon').value    = s.icon || 'file-text';
         document.getElementById('services-desc').value    = s.description || '';
+        if (document.getElementById('services-name-fr')) document.getElementById('services-name-fr').value = s.name_fr || '';
+        if (document.getElementById('services-desc-fr')) document.getElementById('services-desc-fr').value = s.description_fr || '';
         document.getElementById('services-docs').value    = s.required_docs || '';
         document.getElementById('services-link').value    = s.direct_link || '';
         document.getElementById('services-image').value   = s.image_url || '';
@@ -1150,6 +1214,8 @@ function cancelServiceEdit(){
     document.getElementById('services-desc').value    = '';
     document.getElementById('services-docs').value    = '';
     document.getElementById('services-link').value    = '';
+    if (document.getElementById('services-name-fr')) document.getElementById('services-name-fr').value = '';
+    if (document.getElementById('services-desc-fr')) document.getElementById('services-desc-fr').value = '';
     setSvcType('service');
     setSvcColor('blue');
     clearSvcImage();
@@ -1261,13 +1327,34 @@ async function loadTourism(){
 }
 async function saveTourism(){
     const editId=document.getElementById('tourism-edit-id').value;
-    const body={name:document.getElementById('tourism-name').value,subtitle:document.getElementById('tourism-subtitle').value,description:document.getElementById('tourism-desc').value,image_url:document.getElementById('tourism-image').value,rating:document.getElementById('tourism-rating').value,distance_info:document.getElementById('tourism-distance').value,badge_text:document.getElementById('tourism-badge').value,badge_color:document.getElementById('tourism-badge-color').value,lat:parseFloat(document.getElementById('tourism-lat').value)||null,lng:parseFloat(document.getElementById('tourism-lng').value)||null};
+    const body={
+        name:document.getElementById('tourism-name').value,
+        name_fr:document.getElementById('tourism-name-fr')?.value||'',
+        subtitle:document.getElementById('tourism-subtitle').value,
+        subtitle_fr:document.getElementById('tourism-subtitle-fr')?.value||'',
+        description:document.getElementById('tourism-desc').value,
+        description_fr:document.getElementById('tourism-desc-fr')?.value||'',
+        image_url:document.getElementById('tourism-image').value,
+        rating:document.getElementById('tourism-rating').value,
+        distance_info:document.getElementById('tourism-distance').value,
+        badge_text:document.getElementById('tourism-badge').value,
+        badge_color:document.getElementById('tourism-badge-color').value,
+        lat:parseFloat(document.getElementById('tourism-lat').value)||null,
+        lng:parseFloat(document.getElementById('tourism-lng').value)||null
+    };
     if(!body.name){adminToast('الاسم مطلوب');return;}
     try{const res=await fetch(editId?'/api/tourism?id='+editId:'/api/tourism',{method:editId?'PUT':'POST',headers:authHeaders(),body:JSON.stringify(body)});const d=await res.json();if(d.success){adminToast(editId?'تم التعديل':'تمت الإضافة');cancelTourismEdit();loadTourism();}else adminToast('خطأ: '+(d.error||''));}catch(e){adminToast('تعذر الحفظ: '+e.message);}
 }
 async function editTourism(id){
     const res=await fetch('/api/tourism',{headers:authHeaders()});const d=await res.json();const t=d.data.find(x=>x.id==id);if(!t)return;
-    document.getElementById('tourism-edit-id').value=t.id;document.getElementById('tourism-name').value=t.name;document.getElementById('tourism-subtitle').value=t.subtitle||'';document.getElementById('tourism-desc').value=t.description||'';document.getElementById('tourism-image').value=t.image_url||'';document.getElementById('tourism-rating').value=t.rating||'4.5';document.getElementById('tourism-distance').value=t.distance_info||'';document.getElementById('tourism-badge').value=t.badge_text||'';document.getElementById('tourism-badge-color').value=t.badge_color||'emerald';document.getElementById('tourism-image-manual').value=t.image_url||'';
+    document.getElementById('tourism-edit-id').value=t.id;
+    document.getElementById('tourism-name').value=t.name;
+    document.getElementById('tourism-subtitle').value=t.subtitle||'';
+    document.getElementById('tourism-desc').value=t.description||'';
+    if(document.getElementById('tourism-name-fr')) document.getElementById('tourism-name-fr').value=t.name_fr||'';
+    if(document.getElementById('tourism-subtitle-fr')) document.getElementById('tourism-subtitle-fr').value=t.subtitle_fr||'';
+    if(document.getElementById('tourism-desc-fr')) document.getElementById('tourism-desc-fr').value=t.description_fr||'';
+    document.getElementById('tourism-image').value=t.image_url||'';document.getElementById('tourism-rating').value=t.rating||'4.5';document.getElementById('tourism-distance').value=t.distance_info||'';document.getElementById('tourism-badge').value=t.badge_text||'';document.getElementById('tourism-badge-color').value=t.badge_color||'emerald';document.getElementById('tourism-image-manual').value=t.image_url||'';
     if(t.image_url){document.getElementById('tourism-img-placeholder').classList.add('hidden');document.getElementById('tourism-img-img').src=t.image_url;document.getElementById('tourism-img-preview').classList.remove('hidden');document.getElementById('tourism-img-widget').classList.add('has-image');}
     document.getElementById('tourism-lat').value=t.lat||'';
     document.getElementById('tourism-lng').value=t.lng||'';
@@ -1275,6 +1362,9 @@ async function editTourism(id){
     toggleFormPanel('tourism', true);}
 function cancelTourismEdit(){
     ['tourism-edit-id','tourism-name','tourism-subtitle','tourism-desc','tourism-image','tourism-image-manual','tourism-distance','tourism-badge','tourism-lat','tourism-lng'].forEach(id=>document.getElementById(id).value='');
+    if(document.getElementById('tourism-name-fr')) document.getElementById('tourism-name-fr').value='';
+    if(document.getElementById('tourism-subtitle-fr')) document.getElementById('tourism-subtitle-fr').value='';
+    if(document.getElementById('tourism-desc-fr')) document.getElementById('tourism-desc-fr').value='';
     document.getElementById('tourism-rating').value='4.5';document.getElementById('tourism-badge-color').value='emerald';
     clearWidget('tourism-img','tourism-image','tourism-image-manual');
     document.getElementById('tourism-form-title').textContent='إضافة معلم سياحي'; toggleFormPanel('tourism', false);document.getElementById('tourism-cancel-btn').classList.add('hidden');
@@ -1364,7 +1454,17 @@ async function loadBeaches_admin(){
 
 async function saveBeach(){
     const editId=document.getElementById('beaches-edit-id').value;
-    const body={name:document.getElementById('beaches-name').value,description:document.getElementById('beaches-desc').value,image_url:document.getElementById('beaches-image').value,is_supervised:document.getElementById('beaches-supervised').checked?1:0,season:document.getElementById('beaches-season').value,lat:parseFloat(document.getElementById('beaches-lat').value)||null,lng:parseFloat(document.getElementById('beaches-lng').value)||null};
+    const body={
+        name:document.getElementById('beaches-name').value,
+        name_fr:document.getElementById('beaches-name-fr')?.value||'',
+        description:document.getElementById('beaches-desc').value,
+        description_fr:document.getElementById('beaches-desc-fr')?.value||'',
+        image_url:document.getElementById('beaches-image').value,
+        is_supervised:document.getElementById('beaches-supervised').checked?1:0,
+        season:document.getElementById('beaches-season').value,
+        lat:parseFloat(document.getElementById('beaches-lat').value)||null,
+        lng:parseFloat(document.getElementById('beaches-lng').value)||null
+    };
     if(!body.name){adminToast('الاسم مطلوب');return;}
     try{
         const res=await fetch(editId?'/api/beaches?id='+editId:'/api/beaches',{method:editId?'PUT':'POST',headers:authHeaders(),body:JSON.stringify(body)});
@@ -1380,6 +1480,8 @@ async function editBeach(id){
     document.getElementById('beaches-edit-id').value=b.id;
     document.getElementById('beaches-name').value=b.name;
     document.getElementById('beaches-desc').value=b.description||'';
+    if(document.getElementById('beaches-name-fr')) document.getElementById('beaches-name-fr').value=b.name_fr||'';
+    if(document.getElementById('beaches-desc-fr')) document.getElementById('beaches-desc-fr').value=b.description_fr||'';
     document.getElementById('beaches-image').value=b.image_url||'';
     document.getElementById('beaches-image-manual').value=b.image_url||'';
     document.getElementById('beaches-supervised').checked=b.is_supervised==1;
@@ -1394,6 +1496,8 @@ async function editBeach(id){
 
 function cancelBeachEdit(){
     ['beaches-edit-id','beaches-name','beaches-desc','beaches-season','beaches-lat','beaches-lng'].forEach(id=>document.getElementById(id).value='');
+    if(document.getElementById('beaches-name-fr')) document.getElementById('beaches-name-fr').value='';
+    if(document.getElementById('beaches-desc-fr')) document.getElementById('beaches-desc-fr').value='';
     document.getElementById('beaches-season').value='صيف';
     document.getElementById('beaches-supervised').checked=true;
     clearWidget('beaches-img','beaches-image','beaches-image-manual');
