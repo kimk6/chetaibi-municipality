@@ -172,7 +172,6 @@
                 <a href="#contact-footer" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">اتصل بنا</a>
                 <!-- ══ زر تغيير اللغة — ديسكتوب | قبل "اتصل بنا" مباشرة ══ -->
                 <button onclick="switchLang('fr')" class="inline-flex items-center gap-1.5 border border-white/40 hover:border-white text-white/85 hover:text-white hover:bg-white/10 px-3 py-1.5 rounded-lg text-sm font-bold transition-all ml-1" title="Passer en Français">
-                    <span class="text-base leading-none">🇫🇷</span>
                     <span>Français</span>
                 </button>
                 <!-- ══ نهاية زر اللغة — ديسكتوب ══ -->
@@ -190,7 +189,6 @@
             </div>
             <!-- ══ زر تغيير اللغة — موبايل (يسار الشريط) ══ -->
             <button id="lang-btn-mobile" onclick="switchLang('fr')" class="md:hidden flex items-center gap-1 bg-white/15 hover:bg-white/25 border border-white/30 text-white px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition-all nav-inner-fade" style="transition-delay:.1s" title="Passer en Français">
-                <span class="text-sm leading-none">🇫🇷</span>
                 <span class="tracking-wide">FR</span>
             </button>
             <!-- ══ نهاية زر اللغة — موبايل ══ -->
@@ -417,10 +415,10 @@
             <p class="text-gray-500 max-w-xl mx-auto">أحدث الأخبار والإعلانات الرسمية ونشاطات البلدية</p>
         </div>
         <div class="grid grid-cols-2 md:flex md:flex-wrap md:justify-center gap-3 mb-10">
-            <button onclick="switchNewsTab('announcements')" id="tab-announcements" class="news-tab active py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2"><span class="iconify text-base" data-icon="lucide:megaphone"></span> إعلانات رسمية</button>
-            <button onclick="switchNewsTab('activities')" id="tab-activities" class="news-tab py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2"><span class="iconify text-base" data-icon="lucide:clipboard-list"></span> نشاطات البلدية</button>
-            <button onclick="switchNewsTab('community')" id="tab-community" class="news-tab py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2"><span class="iconify text-base" data-icon="lucide:handshake"></span> ركن المجتمع</button>
-            <button onclick="switchNewsTab('posters')" id="tab-posters" class="news-tab py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2"><span class="iconify text-base" data-icon="lucide:image"></span> معرض الملصقات</button>
+            <button onclick="switchNewsTab('announcements')" id="tab-announcements" class="news-tab active py-2.5 px-4 md:px-5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 min-w-0"><span class="iconify text-base flex-shrink-0" data-icon="lucide:megaphone"></span><span class="truncate md:whitespace-nowrap"> إعلانات رسمية</span></button>
+            <button onclick="switchNewsTab('activities')" id="tab-activities" class="news-tab py-2.5 px-4 md:px-5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 min-w-0"><span class="iconify text-base flex-shrink-0" data-icon="lucide:clipboard-list"></span><span class="truncate md:whitespace-nowrap"> نشاطات البلدية</span></button>
+            <button onclick="switchNewsTab('community')" id="tab-community" class="news-tab py-2.5 px-4 md:px-5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 min-w-0"><span class="iconify text-base flex-shrink-0" data-icon="lucide:handshake"></span><span class="truncate md:whitespace-nowrap"> ركن المجتمع</span></button>
+            <button onclick="switchNewsTab('posters')" id="tab-posters" class="news-tab py-2.5 px-4 md:px-5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 min-w-0"><span class="iconify text-base flex-shrink-0" data-icon="lucide:image"></span><span class="truncate md:whitespace-nowrap"> معرض الملصقات</span></button>
         </div>
         <div id="news-loading" class="text-center py-16"><span class="iconify text-5xl animate-spin inline-block text-emerald-500" data-icon="lucide:newspaper"></span><p class="mt-3 text-sm font-semibold text-gray-400">جاري تحميل الأخبار...</p></div>
         <!-- كل tab له grid + extra + أزرار -->
@@ -778,7 +776,23 @@
             <span class="inline-flex items-center gap-1.5 bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-full text-xs font-bold text-gray-600"><span class="w-3 h-3 rounded-full bg-purple-500 flex-shrink-0"></span>ثقافية</span>
             <span class="inline-flex items-center gap-1.5 bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-full text-xs font-bold text-gray-600"><span class="w-3 h-3 rounded-full bg-gray-500 flex-shrink-0"></span>أخرى</span>
         </div>
-        <div id="chetaibi-map" class="w-full shadow-xl border border-gray-200"></div>
+        <div class="relative">
+            <div id="chetaibi-map" class="w-full shadow-xl border border-gray-200"></div>
+            <!-- ══ طبقة حماية التمرير فوق الخريطة ══
+                 تمنع الخريطة من "اختطاف" اللمس/الفأرة أثناء التمرير العادي.
+                 عند النقر/اللمس على الطبقة تختفي وتصبح الخريطة تفاعلية.
+                 تعود تلقائياً بعد 4 ثوانٍ من آخر تفاعل. ══ -->
+            <div id="map-shield"
+                 onclick="activateMap()"
+                 class="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 cursor-pointer select-none transition-opacity duration-300"
+                 style="background:rgba(0,0,0,0.08);border-radius:16px;">
+                <div class="bg-white/90 backdrop-blur-sm shadow-lg rounded-2xl px-5 py-3 flex items-center gap-2.5 border border-gray-200/80">
+                    <span class="iconify text-emerald-600 text-xl" data-icon="lucide:map-pin"></span>
+                    <span class="text-sm font-bold text-gray-700">انقر لتفعيل الخريطة</span>
+                </div>
+                <p class="text-xs text-white font-semibold drop-shadow">اسحب داخل الخريطة للتنقل</p>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -1187,7 +1201,6 @@
                 </ul>
                 <!-- ══ زر تغيير اللغة — الفوتر (أسفل روابط سريعة) ══ -->
                 <button onclick="switchLang('fr')" class="mt-5 inline-flex items-center gap-2 border border-emerald-600/60 hover:border-emerald-400 text-emerald-400 hover:text-white hover:bg-emerald-700/50 px-4 py-2 rounded-xl text-sm font-bold transition-all">
-                    <span class="text-base leading-none">🇫🇷</span>
                     <span>Français</span>
                 </button>
                 <!-- ══ نهاية زر اللغة — الفوتر ══ -->
@@ -1231,7 +1244,33 @@ window.addEventListener('resize',handleMobileNav,{passive:true});
 handleMobileNav();
 
 // ══════════════════════════════════════════════════════════════
-// ██ زر تغيير اللغة — switchLang()
+// ██ حماية تمرير الخريطة — Map Scroll Shield
+// ██ يمنع الخريطة من "اختطاف" التمرير أثناء التصفح العادي.
+// ██ عند النقر على الخريطة تصبح تفاعلية، وتعود للحماية بعد 4ث.
+// ══════════════════════════════════════════════════════════════
+let mapShieldTimer = null;
+function activateMap() {
+    const shield = document.getElementById('map-shield');
+    if (!shield) return;
+    shield.style.opacity = '0';
+    shield.style.pointerEvents = 'none';
+    clearTimeout(mapShieldTimer);
+    mapShieldTimer = setTimeout(() => {
+        shield.style.opacity = '1';
+        shield.style.pointerEvents = 'auto';
+    }, 4000);
+}
+// إعادة الحماية عند الخروج من منطقة الخريطة
+document.addEventListener('DOMContentLoaded', () => {
+    const mapSection = document.getElementById('map-section');
+    if (mapSection) {
+        mapSection.addEventListener('mouseleave', () => {
+            const shield = document.getElementById('map-shield');
+            if (shield) { clearTimeout(mapShieldTimer); shield.style.opacity='1'; shield.style.pointerEvents='auto'; }
+        });
+    }
+});
+// ══════════════════════════════════════════════════════════════
 // ██ يُستدعى من ثلاثة أماكن:
 // ██   1) زر FR  في الشريط العلوي (موبايل)       → id="lang-btn-mobile"
 // ██   2) زر Français في قائمة الديسكتوب         → قبل "اتصل بنا"
