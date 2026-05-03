@@ -1857,18 +1857,6 @@ document.addEventListener('DOMContentLoaded', () => {
 // ██   2) زر Français في قائمة الديسكتوب         → قبل "اتصل بنا"
 // ██   3) زر Français في الفوتر                 → أسفل "روابط سريعة"
 // ██
-// ██ لإضافة النسخة الفرنسية: ضع رابط الصفحة الفرنسية
-// ██ داخل الـ href بدلاً من alert().
-// ══════════════════════════════════════════════════════════════
-function switchLang(lang) {
-    if (lang === 'fr') {
-        // ── TODO: استبدل هذا بـ window.location.href = '/fr/index.html' ──
-        // ── أو أي مسار للنسخة الفرنسية من الموقع ──
-        alert('🇫🇷 La version française sera disponible prochainement.\n\nالنسخة الفرنسية ستكون متاحة قريباً.');
-    }
-}
-// ══════════════════════════════════════════════════════════════
-
 // ── TABS ──
 // ── NEWS TABS & SHOW MORE ──
 const newsExpanded={announcements:false,activities:false,community:false,posters:false};
@@ -3534,9 +3522,8 @@ document.getElementById('footer-year').textContent = new Date().getFullYear();
         // تأكد من صحة dir/lang حتى للعربية
         document.documentElement.setAttribute('lang','ar');
         document.documentElement.setAttribute('dir','rtl');
-        // تحديث أزرار اللغة
+        // تحديث أزرار اللغة — بدون تغيير النص (data-i18n يتولى ذلك)
         document.querySelectorAll('[data-lang-btn]').forEach(btn => {
-            btn.textContent = btn.dataset.langBtn === 'mobile' ? 'FR' : 'Français';
             btn.onclick = () => switchLang('fr');
         });
     }
