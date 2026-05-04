@@ -106,6 +106,7 @@
             /* ─── MAYOR ─── */
             'mayor-role':         'رئيس المجلس الشعبي البلدي',
             'mayor-prev-btn':     'الرؤساء السابقون',
+            'mayor-bio-default':  'يتولى الإشراف المباشر على تسيير الشؤون العمومية للبلدية، والسهر على تنفيذ مداولات المجلس الشعبي البلدي، بما يضمن الارتقاء بجودة المرفق العام وتعزيز التنمية المحلية لخدمة تطلعات الساكنة',
             'mayors-overlay-title':'رؤساء المجلس الشعبي البلدي',
             'mayors-overlay-sub': 'سجل تاريخي بأسماء الرؤساء منذ التأسيس',
             /* ─── NEWS ─── */
@@ -114,7 +115,7 @@
             'tab-announcements':  'إعلانات رسمية',
             'tab-activities':     'نشاطات البلدية',
             'tab-community':      'ركن المجتمع',
-            'tab-posters':        'معرض الملصقات',
+            'tab-posters':        'صور وملصقات',
             'news-loading':       'جاري تحميل الأخبار...',
             'show-more':          'عرض المزيد',
             'show-less':          'إخفاء',
@@ -206,6 +207,7 @@
             'tourism-section-title': 'معالم سياحية',
             'tourism-section-sub': 'اكتشف أجمل المعالم الطبيعية والسياحية التي تنفرد بها شطايبي',
             'beaches-more-btn':   'عرض بقية الشواطئ',
+            'beaches-intro':      'تتميز شطايبي بشواطئها الرائعة ذات المياه الصافية والرمال الذهبية، وتضم شريطاً ساحلياً من الشواطئ المسموحة للسباحة، والمجهزة لضمان راحة وسلامة المصطافين والعائلات',
             'tourism-more-btn':   'عرض المزيد من المعالم',
             'all-beaches-btn':    'جميع الشواطئ',
             'all-tourism-btn':    'جميع المعالم',
@@ -331,6 +333,7 @@
             /* ─── MAYOR ─── */
             'mayor-role':         'Président de l\'APC',
             'mayor-prev-btn':     'Anciens présidents',
+            'mayor-bio-default':  'Il assure la supervision directe de la gestion des affaires publiques de la commune et veille à l\'exécution des délibérations de l\'Assemblée Populaire Communale, dans l\'objectif d\'améliorer la qualité du service public et de promouvoir le développement local.',
             'mayors-overlay-title': 'Présidents de l\'APC',
             'mayors-overlay-sub': 'Registre historique des présidents depuis la création',
             /* ─── NEWS ─── */
@@ -339,7 +342,7 @@
             'tab-announcements':  'Annonces officielles',
             'tab-activities':     'Activités municipales',
             'tab-community':      'Coin communauté',
-            'tab-posters':        'Galerie d\'affiches',
+            'tab-posters':        'Photos & Affiches',
             'news-loading':       'Chargement des actualités...',
             'show-more':          'Voir plus',
             'show-less':          'Masquer',
@@ -431,6 +434,7 @@
             'tourism-section-title': 'Sites touristiques',
             'tourism-section-sub': 'Découvrez les plus beaux sites naturels et touristiques de Chetaïbi',
             'beaches-more-btn':   'Voir toutes les plages',
+            'beaches-intro':      'Chetaïbi se distingue par ses plages remarquables aux eaux cristallines et au sable doré. Elle dispose d\'un littoral de plages autorisées à la baignade, aménagées pour garantir le confort et la sécurité des estivants et des familles.',
             'tourism-more-btn':   'Voir plus de sites',
             'all-beaches-btn':    'Toutes les plages',
             'all-tourism-btn':    'Tous les sites',
@@ -972,10 +976,13 @@ html[dir="ltr"] article {
         <div class="text-center md:text-right flex-1">
             <p class="text-emerald-200 text-sm font-semibold mb-1" data-i18n="mayor-role">رئيس المجلس الشعبي البلدي</p>
             <h3 id="mayor-name" class="text-2xl md:text-3xl font-extrabold mb-2">السيد عثماني سليمان</h3>
-            <p id="mayor-bio" class="text-white/75 text-sm leading-relaxed max-w-xl"><span id="mayor-name-inline" class="hidden"></span>يتولى الإشراف المباشر على تسيير الشؤون العمومية للبلدية، والسهر على تنفيذ مداولات المجلس الشعبي البلدي، بما يضمن الارتقاء بجودة المرفق العام وتعزيز التنمية المحلية لخدمة تطلعات الساكنة</p>
+            <p id="mayor-bio" class="text-white/75 text-sm leading-relaxed max-w-xl"><span id="mayor-name-inline" class="hidden"></span><span id="mayor-bio-text" data-i18n="mayor-bio-default">يتولى الإشراف المباشر على تسيير الشؤون العمومية للبلدية، والسهر على تنفيذ مداولات المجلس الشعبي البلدي، بما يضمن الارتقاء بجودة المرفق العام وتعزيز التنمية المحلية لخدمة تطلعات الساكنة</span></p>
         </div>
         <div class="flex gap-3 flex-wrap justify-center md:justify-start">
-            <button onclick="openMayorsOverlay()" class="bg-white/15 hover:bg-white/25 backdrop-blur-sm px-5 py-2.5 rounded-xl text-sm font-bold transition-colors border border-white/20"><span class="iconify inline-block ml-1" data-icon="lucide:users"></span><span data-i18n="mayor-prev-btn">الرؤساء السابقون</span></button>
+            <button onclick="openMayorsOverlay()" class="bg-white/15 hover:bg-white/25 backdrop-blur-sm px-5 py-2.5 rounded-xl text-sm font-bold transition-colors border border-white/20">
+                <span class="iconify inline-block" data-icon="lucide:users"></span>
+                &nbsp;<span data-i18n="mayor-prev-btn">الرؤساء السابقون</span>
+            </button>
         </div>
     </div>
 </section>
@@ -1171,11 +1178,11 @@ html[dir="ltr"] article {
                 <div class="md:w-1/2 md:pl-12 pl-14 mb-4 md:mb-0 md:text-left">
                     <div class="bg-white rounded-2xl p-6 shadow-lg border border-amber-100">
                         <div class="flex flex-wrap items-center gap-2 mb-3">
-                            <span class="inline-block bg-amber-100 text-amber-700 text-xs font-bold px-3 py-1 rounded-full">العهد القديم — العصر الروماني</span>
-                            <span class="inline-block bg-orange-50 text-orange-600 text-xs font-semibold px-3 py-1 rounded-full border border-orange-200">القرن 1 — 5 م</span>
+                            <span class="inline-block bg-amber-100 text-amber-700 text-xs font-bold px-3 py-1 rounded-full" data-i18n="era-roman-badge">العهد القديم — العصر الروماني</span>
+                            <span class="inline-block bg-orange-50 text-orange-600 text-xs font-semibold px-3 py-1 rounded-full border border-orange-200" data-i18n="era-roman-dates">القرن 1 — 5 م</span>
                         </div>
-                        <h4 class="text-xl font-extrabold text-gray-800 mb-2">تاكاتوا — Tacatua</h4>
-                        <p class="text-sm text-gray-500 leading-relaxed">تأسست كمدينة مرفئية هامة ومحطة رئيسية على الطريق الساحلي الرابط بين "هيبون" والمدن الغربية. اشتهرت عالمياً بمناجم "البورفير الأحمر" الفاخر الذي كان يُصدر خصيصاً لتزيين قصور وتوابيت أباطرة روما. لا تزال آثارها شاهدة على عظمة تلك الحقبة، ومن أبرزها "النافورة الرومانية" وبقايا نظام الري المتطور.</p>
+                        <h4 class="text-xl font-extrabold text-gray-800 mb-2" data-i18n="era-roman-title">تاكاتوا — Tacatua</h4>
+                        <p class="text-sm text-gray-500 leading-relaxed" data-i18n="era-roman-text">تأسست كمدينة مرفئية هامة ومحطة رئيسية على الطريق الساحلي الرابط بين "هيبون" والمدن الغربية. اشتهرت عالمياً بمناجم "البورفير الأحمر" الفاخر الذي كان يُصدر خصيصاً لتزيين قصور وتوابيت أباطرة روما. لا تزال آثارها شاهدة على عظمة تلك الحقبة، ومن أبرزها "النافورة الرومانية" وبقايا نظام الري المتطور.</p>
                     </div>
                 </div>
                 <div class="absolute right-[14px] md:right-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-amber-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
@@ -1189,11 +1196,11 @@ html[dir="ltr"] article {
                 <div class="md:w-1/2 md:pr-12 pr-14 pl-0 md:pl-0">
                     <div class="bg-white rounded-2xl p-6 shadow-lg border border-teal-100">
                         <div class="flex flex-wrap items-center gap-2 mb-3">
-                            <span class="inline-block bg-teal-100 text-teal-700 text-xs font-bold px-3 py-1 rounded-full">العهد الإسلامي والعثماني</span>
-                            <span class="inline-block bg-cyan-50 text-cyan-600 text-xs font-semibold px-3 py-1 rounded-full border border-cyan-200">القرن 11 — 1830 م</span>
+                            <span class="inline-block bg-teal-100 text-teal-700 text-xs font-bold px-3 py-1 rounded-full" data-i18n="era-ottoman-badge">العهد الإسلامي والعثماني</span>
+                            <span class="inline-block bg-cyan-50 text-cyan-600 text-xs font-semibold px-3 py-1 rounded-full border border-cyan-200" data-i18n="era-ottoman-dates">القرن 11 — 1830 م</span>
                         </div>
-                        <h4 class="text-xl font-extrabold text-gray-800 mb-2">تكوش — Tekkouch</h4>
-                        <p class="text-sm text-gray-500 leading-relaxed">تحول اسمها إلى "تكوش" (مشتق من الأصل الأمازيغي "تيكوش")، وبرزت كمركز استراتيجي للمراقبة البحرية بفضل موقع "رأس تكوش" المحمي طبيعياً. خلال العهد العثماني، كانت المنطقة محطة حيوية لتأمين السفن وتزويد الأسطول الجزائري بالمؤن والأخشاب، وظلت "منارة رأس تكوش" منارة تاريخية لا غنى عنها للملاحة الدولية في المتوسط.</p>
+                        <h4 class="text-xl font-extrabold text-gray-800 mb-2" data-i18n="era-ottoman-title">تكوش — Tekkouch</h4>
+                        <p class="text-sm text-gray-500 leading-relaxed" data-i18n="era-ottoman-text">تحول اسمها إلى "تكوش" (مشتق من الأصل الأمازيغي "تيكوش")، وبرزت كمركز استراتيجي للمراقبة البحرية بفضل موقع "رأس تكوش" المحمي طبيعياً. خلال العهد العثماني، كانت المنطقة محطة حيوية لتأمين السفن وتزويد الأسطول الجزائري بالمؤن والأخشاب، وظلت "منارة رأس تكوش" منارة تاريخية لا غنى عنها للملاحة الدولية في المتوسط.</p>
                     </div>
                 </div>
             </div>
@@ -1203,11 +1210,11 @@ html[dir="ltr"] article {
                 <div class="md:w-1/2 md:pl-12 pl-14 mb-4 md:mb-0 md:text-left">
                     <div class="bg-white rounded-2xl p-6 shadow-lg border border-red-100">
                         <div class="flex flex-wrap items-center gap-2 mb-3">
-                            <span class="inline-block bg-red-100 text-red-700 text-xs font-bold px-3 py-1 rounded-full">العهد الاستعماري الفرنسي</span>
-                            <span class="inline-block bg-rose-50 text-rose-600 text-xs font-semibold px-3 py-1 rounded-full border border-rose-200">1869 — 1962 م</span>
+                            <span class="inline-block bg-red-100 text-red-700 text-xs font-bold px-3 py-1 rounded-full" data-i18n="era-colonial-badge">العهد الاستعماري الفرنسي</span>
+                            <span class="inline-block bg-rose-50 text-rose-600 text-xs font-semibold px-3 py-1 rounded-full border border-rose-200" data-i18n="era-colonial-dates">1869 — 1962 م</span>
                         </div>
-                        <h4 class="text-xl font-extrabold text-gray-800 mb-2">هيربيون — Herbillon</h4>
-                        <p class="text-sm text-gray-500 leading-relaxed">أُنشئ المركز السكاني بمرسوم رسمي عام 1869 وسُمي نسبة للجنرال "إيميل هيربيون". شهدت المنطقة نهضة صناعية كبرى عبر استغلال مقالع "الجرانيت الأخضر" الصلب الذي استُخدم لرصف شوارع باريس، مارسيليا، وروما. وبالتوازي مع ذلك، كانت جبالها معقلاً للمقاومة، بدءاً من ثورة "سي زغدود" عام 1841 وصولاً إلى اندلاع الثورة التحريرية الكبرى.</p>
+                        <h4 class="text-xl font-extrabold text-gray-800 mb-2" data-i18n="era-colonial-title">هيربيون — Herbillon</h4>
+                        <p class="text-sm text-gray-500 leading-relaxed" data-i18n="era-colonial-text">أُنشئ المركز السكاني بمرسوم رسمي عام 1869 وسُمي نسبة للجنرال "إيميل هيربيون". شهدت المنطقة نهضة صناعية كبرى عبر استغلال مقالع "الجرانيت الأخضر" الصلب الذي استُخدم لرصف شوارع باريس، مارسيليا، وروما. وبالتوازي مع ذلك، كانت جبالها معقلاً للمقاومة، بدءاً من ثورة "سي زغدود" عام 1841 وصولاً إلى اندلاع الثورة التحريرية الكبرى.</p>
                     </div>
                 </div>
                 <div class="absolute right-[14px] md:right-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-red-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
@@ -1221,17 +1228,21 @@ html[dir="ltr"] article {
                 <div class="md:w-1/2 md:pr-12 pr-14 pl-0 md:pl-0">
                     <div class="bg-white rounded-2xl p-6 shadow-lg border border-emerald-100">
                         <div class="flex flex-wrap items-center gap-2 mb-3">
-                            <span class="inline-block bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full">عهد الاستقلال والجزائر الحديثة</span>
-                            <span class="inline-block bg-green-50 text-green-600 text-xs font-semibold px-3 py-1 rounded-full border border-green-200">منذ 1962 م</span>
+                            <span class="inline-block bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full" data-i18n="era-modern-badge">عهد الاستقلال والجزائر الحديثة</span>
+                            <span class="inline-block bg-green-50 text-green-600 text-xs font-semibold px-3 py-1 rounded-full border border-green-200" data-i18n="era-modern-dates">منذ 1962 م</span>
                         </div>
-                        <h4 class="text-xl font-extrabold text-gray-800 mb-2">شطايبي — Chetaïbi</h4>
-                        <p class="text-sm text-gray-500 leading-relaxed">استعادت المدينة هويتها الوطنية عام 1962، وسُميت "شطايبي" تخليداً للشهيد البطل "عمار شطايبي" الذي استشهد في ميدان الشرف بالمنطقة. تحولت البلدية اليوم إلى قطب سياحي عالمي، حيث صُنف خليجها عام 2006 كواحد من أجمل الخلجان في العالم، مما جعلها وجهة رائدة تجمع بين عبق التاريخ وسحر الطبيعة العذراء.</p>
+                        <h4 class="text-xl font-extrabold text-gray-800 mb-2" data-i18n="era-modern-title">شطايبي — Chetaïbi</h4>
+                        <p class="text-sm text-gray-500 leading-relaxed" data-i18n="era-modern-text">استعادت المدينة هويتها الوطنية عام 1962، وسُميت "شطايبي" تخليداً للشهيد البطل "عمار شطايبي" الذي استشهد في ميدان الشرف بالمنطقة. تحولت البلدية اليوم إلى قطب سياحي عالمي، حيث صُنف خليجها عام 2006 كواحد من أجمل الخلجان في العالم، مما جعلها وجهة رائدة تجمع بين عبق التاريخ وسحر الطبيعة العذراء.</p>
                     </div>
                 </div>
             </div>
                     </div>
         <div>
-            <h3 class="text-2xl font-extrabold text-gray-900 text-center mb-10"><span class="iconify inline-block ml-2 text-emerald-500" data-icon="lucide:images"></span><span data-i18n="archive-photos-title">أرشيف الصور</span><span class="block text-base font-semibold text-gray-500 mt-1" data-i18n="archive-photos-sub">شطايبي بين الأمس واليوم</span></h3>
+            <h3 class="text-2xl font-extrabold text-gray-900 text-center mb-10">
+                <span class="iconify inline-block text-emerald-500 align-middle" data-icon="lucide:images"></span>
+                &nbsp;<span data-i18n="archive-photos-title" class="align-middle">أرشيف الصور</span>
+                <span class="block text-base font-semibold text-gray-500 mt-1" data-i18n="archive-photos-sub">شطايبي بين الأمس واليوم</span>
+            </h3>
             <!-- بطاقات ديناميكية من DB -->
             <div id="archive-preview-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
                 <div class="col-span-full text-center py-10 text-gray-300">
@@ -1397,7 +1408,7 @@ html[dir="ltr"] article {
                 </h3>
                 <div class="h-px flex-1 bg-white/20"></div>
             </div>
-            <p id="beaches-intro-text" class="text-white/65 text-sm text-center mb-8 max-w-2xl mx-auto">تتميز شطايبي بشواطئها الرائعة ذات المياه الصافية والرمال الذهبية، وتضم شريطاً ساحلياً من الشواطئ المسموحة للسباحة، والمجهزة لضمان راحة وسلامة المصطافين والعائلات</p>
+            <p id="beaches-intro-text" class="text-white/65 text-sm text-center mb-8 max-w-2xl mx-auto" data-i18n="beaches-intro">تتميز شطايبي بشواطئها الرائعة ذات المياه الصافية والرمال الذهبية، وتضم شريطاً ساحلياً من الشواطئ المسموحة للسباحة، والمجهزة لضمان راحة وسلامة المصطافين والعائلات</p>
             <div id="beaches-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-5">
                 <div class="col-span-full text-center py-12">
                     <span class="iconify text-4xl animate-spin inline-block text-sky-400" data-icon="lucide:waves"></span>
@@ -1548,15 +1559,15 @@ html[dir="ltr"] article {
             <button onclick="closeArchivesOverlay()" class="w-9 h-9 bg-white/20 hover:bg-white/30 rounded-xl flex items-center justify-center transition-colors flex-shrink-0">
                 <span class="iconify text-lg" data-icon="lucide:x"></span>
             </button>
-            <h2 id="arch-overlay-title" class="text-base font-extrabold flex-1 text-center">أرشيف الصور</h2>
+            <h2 id="arch-overlay-title" class="text-base font-extrabold flex-1 text-center" data-i18n="arch-overlay-title">أرشيف الصور</h2>
             <div class="w-9"></div>
         </div>
         <div class="flex justify-center gap-3 px-4 pb-3">
             <button onclick="archSetCat('compare')" id="acat-compare" class="acat-btn text-xs px-4 py-2 rounded-xl font-bold transition-all flex items-center gap-1.5 bg-white/15 text-white hover:bg-white/25 border border-white/20">
-                <span class="iconify" data-icon="lucide:arrow-left-right"></span>مقارنة الأمس بالحاضر
+                <span class="iconify" data-icon="lucide:arrow-left-right"></span>&nbsp;<span data-i18n="arch-tab-compare">مقارنة الأمس بالحاضر</span>
             </button>
             <button onclick="archSetCat('historic')" id="acat-historic" class="acat-btn text-xs px-4 py-2 rounded-xl font-bold transition-all flex items-center gap-1.5 bg-white/15 text-white hover:bg-white/25 border border-white/20">
-                <span class="iconify" data-icon="lucide:image"></span>صور تاريخية
+                <span class="iconify" data-icon="lucide:image"></span>&nbsp;<span data-i18n="arch-tab-historic">صور تاريخية</span>
             </button>
         </div>
     </div>
@@ -1606,7 +1617,7 @@ html[dir="ltr"] article {
 <div id="modal-lightbox" class="fixed inset-0 z-[500] bg-black/95 hidden items-center justify-center p-4" onclick="closeModalLightbox()">
     <div class="relative max-w-4xl w-full" onclick="event.stopPropagation()">
         <button onclick="closeModalLightbox()" class="absolute -top-10 left-0 text-white/70 hover:text-white flex items-center gap-2 text-sm font-bold">
-            <span class="iconify" data-icon="lucide:x"></span> إغلاق
+            <span class="iconify" data-icon="lucide:x"></span> <span data-i18n="close-btn">إغلاق</span>
         </button>
         <img id="modal-lightbox-img" src="" class="w-full max-h-[80vh] object-contain rounded-xl shadow-2xl">
         <p id="modal-lightbox-caption" class="text-white/70 text-sm text-center mt-3"></p>
@@ -1621,10 +1632,10 @@ html[dir="ltr"] article {
             <div class="flex items-center justify-between">
                 <div>
                     <h3 class="text-xl font-extrabold text-gray-900 flex items-center gap-2">
-                        <span class="iconify text-emerald-600" data-icon="lucide:users"></span>
-                        رؤساء المجلس الشعبي البلدي
+                        <span class="iconify text-emerald-600 align-middle" data-icon="lucide:users"></span>
+                        &nbsp;<span data-i18n="mayors-overlay-title">رؤساء المجلس الشعبي البلدي</span>
                     </h3>
-                    <p class="text-xs text-gray-400 mt-0.5">سجل تاريخي بأسماء الرؤساء منذ التأسيس</p>
+                    <p class="text-xs text-gray-400 mt-0.5" data-i18n="mayors-overlay-sub">سجل تاريخي بأسماء الرؤساء منذ التأسيس</p>
                 </div>
                 <button onclick="closeMayorsOverlay()" class="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors flex-shrink-0">
                     <span class="iconify text-gray-600 text-xl" data-icon="lucide:x"></span>
@@ -1672,16 +1683,16 @@ html[dir="ltr"] article {
             <button onclick="closeFacilitiesOverlay()" class="w-9 h-9 bg-white/20 hover:bg-white/30 rounded-xl flex items-center justify-center transition-colors flex-shrink-0">
                 <span class="iconify text-lg" data-icon="lucide:x"></span>
             </button>
-            <h2 id="fac-overlay-title" class="text-base font-extrabold flex-1 text-center">المرافق والخدمات</h2>
+            <h2 id="fac-overlay-title" class="text-base font-extrabold flex-1 text-center" data-i18n="fac-overlay-title">المرافق والخدمات</h2>
             <div class="w-9"></div>
         </div>
         <div class="flex flex-wrap justify-center gap-2 px-4 pb-3">
-            <button onclick="facSetCat('religious')" id="fcat-religious" class="fcat-btn text-xs px-3 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:moon"></span>دينية</button>
-            <button onclick="facSetCat('cultural')" id="fcat-cultural" class="fcat-btn text-xs px-3 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:drama"></span>ثقافية</button>
-            <button onclick="facSetCat('sports')" id="fcat-sports" class="fcat-btn text-xs px-3 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:trophy"></span>رياضية</button>
-            <button onclick="facSetCat('public')" id="fcat-public" class="fcat-btn text-xs px-3 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:building"></span>خدمات عمومية</button>
-            <button onclick="facSetCat('training')" id="fcat-training" class="fcat-btn text-xs px-3 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:graduation-cap"></span>تكوين</button>
-            <button onclick="facSetCat('assoc')" id="fcat-assoc" class="fcat-btn text-xs px-3 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:users"></span>جمعيات</button>
+            <button onclick="facSetCat('religious')" id="fcat-religious" class="fcat-btn text-xs px-3 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:moon"></span>&nbsp;<span data-i18n="fcat-religious">دينية</span></button>
+            <button onclick="facSetCat('cultural')" id="fcat-cultural" class="fcat-btn text-xs px-3 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:drama"></span>&nbsp;<span data-i18n="fcat-cultural">ثقافية</span></button>
+            <button onclick="facSetCat('sports')" id="fcat-sports" class="fcat-btn text-xs px-3 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:trophy"></span>&nbsp;<span data-i18n="fcat-sports">رياضية</span></button>
+            <button onclick="facSetCat('public')" id="fcat-public" class="fcat-btn text-xs px-3 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:building"></span>&nbsp;<span data-i18n="fcat-public">خدمات عمومية</span></button>
+            <button onclick="facSetCat('training')" id="fcat-training" class="fcat-btn text-xs px-3 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:graduation-cap"></span>&nbsp;<span data-i18n="fcat-training">تكوين</span></button>
+            <button onclick="facSetCat('assoc')" id="fcat-assoc" class="fcat-btn text-xs px-3 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:users"></span>&nbsp;<span data-i18n="fcat-assoc">جمعيات</span></button>
             <button onclick="facSetCat('branches')" id="fcat-branches" class="fcat-btn text-xs px-3 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:landmark"></span>فروع إدارية</button>
             <button onclick="facSetCat('education')" id="fcat-education" class="fcat-btn text-xs px-3 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:school"></span>تعليمية</button>
             <button onclick="facSetCat('health')" id="fcat-health" class="fcat-btn text-xs px-3 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:heart-pulse"></span>صحية</button>
@@ -1943,7 +1954,7 @@ function buildServiceCard(s) {
     const docsHtml = docs.length
         ? `<div class="mb-4">
                <h4 class="font-bold text-gray-700 mb-2 flex items-center gap-2 text-sm">
-                   <span class="iconify text-emerald-500" data-icon="lucide:file-check-2"></span>الوثائق المطلوبة
+                   <span class="iconify text-emerald-500" data-icon="lucide:file-check-2"></span>${t('svc-docs-title')}
                </h4>
                <ul class="space-y-1.5">
                    ${docs.map(d=>`<li class="flex items-start gap-2 text-xs text-gray-600"><span class="w-4 h-4 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-[10px] font-bold">✓</span>${d}</li>`).join('')}
@@ -1954,9 +1965,9 @@ function buildServiceCard(s) {
     const formsHtml = formLinks.length
         ? `<div class="mb-4 space-y-2">
                <h4 class="font-bold text-gray-700 mb-2 flex items-center gap-2 text-sm">
-                   <span class="iconify text-indigo-500" data-icon="lucide:clipboard-list"></span>الاستمارات
+                   <span class="iconify text-indigo-500" data-icon="lucide:clipboard-list"></span>${t('svc-forms-title')}
                </h4>
-               ${formLinks.map((f,i)=>`<a href="${f.url||f}" target="_blank" rel="noopener" class="flex items-center gap-2 text-xs ${cm.light} border px-3 py-2 rounded-xl font-bold hover:opacity-80 transition-opacity w-full"><span class="iconify" data-icon="lucide:download"></span>${f.label||('استمارة '+(i+1))}</a>`).join('')}
+               ${formLinks.map((f,i)=>`<a href="${f.url||f}" target="_blank" rel="noopener" class="flex items-center gap-2 text-xs ${cm.light} border px-3 py-2 rounded-xl font-bold hover:opacity-80 transition-opacity w-full"><span class="iconify" data-icon="lucide:download"></span>${f.label||((currentLang==='fr'?'Formulaire ':'استمارة ')+(i+1))}</a>`).join('')}
            </div>`
         : '';
 
@@ -1964,7 +1975,7 @@ function buildServiceCard(s) {
         ? `<a href="${s.direct_link}" target="_blank" rel="noopener"
                class="w-full inline-flex items-center justify-center gap-2 ${cm.btn} text-white py-2.5 px-4 rounded-xl font-bold text-sm transition-colors shadow-md mt-auto">
                <span class="iconify" data-icon="${isApp ? 'lucide:smartphone' : 'lucide:external-link'}"></span>
-               ${isApp ? 'تحميل التطبيق' : 'الوصول للخدمة'}
+               ${isApp ? t('svc-btn-app') : t('svc-btn-service')}
            </a>`
         : '';
 
@@ -2061,16 +2072,17 @@ async function fetchWeather(){
         const isDay=cu.is_day===1;
 
         // أيقونات نهارية/ليلية
-        const wmDay ={0:{i:'☀️',d:'صافٍ'},1:{i:'🌤️',d:'غائم خفيف'},2:{i:'⛅',d:'غائم جزئياً'},3:{i:'☁️',d:'غائم'},45:{i:'🌫️',d:'ضبابي'},48:{i:'🌫️',d:'ضبابي'},51:{i:'🌦️',d:'رذاذ خفيف'},53:{i:'🌦️',d:'رذاذ'},55:{i:'🌧️',d:'رذاذ كثيف'},61:{i:'🌧️',d:'ممطر'},63:{i:'🌧️',d:'مطر متوسط'},65:{i:'🌧️',d:'مطر غزير'},80:{i:'🌦️',d:'زخات'},81:{i:'🌧️',d:'زخات'},82:{i:'⛈️',d:'عاصفة'},95:{i:'⛈️',d:'عاصفة رعدية'}};
-        const wmNight={0:{i:'🌕',d:'صافٍ'},1:{i:'🌙',d:'غائم خفيف'},2:{i:'🌥️',d:'غائم جزئياً'},3:{i:'☁️',d:'غائم'},45:{i:'🌫️',d:'ضبابي'},48:{i:'🌫️',d:'ضبابي'},51:{i:'🌧️',d:'رذاذ خفيف'},53:{i:'🌧️',d:'رذاذ'},55:{i:'🌧️',d:'رذاذ كثيف'},61:{i:'🌧️',d:'ممطر'},63:{i:'🌧️',d:'مطر'},65:{i:'🌧️',d:'مطر غزير'},80:{i:'🌧️',d:'زخات'},81:{i:'🌧️',d:'زخات'},82:{i:'⛈️',d:'عاصفة'},95:{i:'⛈️',d:'عاصفة رعدية'}};
+        const wmDay ={0:{i:'☀️',ar:'صافٍ',fr:'Ensoleillé'},1:{i:'🌤️',ar:'غائم خفيف',fr:'Peu nuageux'},2:{i:'⛅',ar:'غائم جزئياً',fr:'Partiellement nuageux'},3:{i:'☁️',ar:'غائم',fr:'Nuageux'},45:{i:'🌫️',ar:'ضبابي',fr:'Brumeux'},48:{i:'🌫️',ar:'ضبابي',fr:'Brumeux'},51:{i:'🌦️',ar:'رذاذ خفيف',fr:'Bruine légère'},53:{i:'🌦️',ar:'رذاذ',fr:'Bruine'},55:{i:'🌧️',ar:'رذاذ كثيف',fr:'Bruine dense'},61:{i:'🌧️',ar:'ممطر',fr:'Pluie'},63:{i:'🌧️',ar:'مطر متوسط',fr:'Pluie modérée'},65:{i:'🌧️',ar:'مطر غزير',fr:'Pluie forte'},80:{i:'🌦️',ar:'زخات',fr:'Averses'},81:{i:'🌧️',ar:'زخات',fr:'Averses'},82:{i:'⛈️',ar:'عاصفة',fr:'Orage'},95:{i:'⛈️',ar:'عاصفة رعدية',fr:'Orage'}};
+        const wmNight={0:{i:'🌕',ar:'صافٍ',fr:'Clair'},1:{i:'🌙',ar:'غائم خفيف',fr:'Peu nuageux'},2:{i:'🌥️',ar:'غائم جزئياً',fr:'Partiellement nuageux'},3:{i:'☁️',ar:'غائم',fr:'Nuageux'},45:{i:'🌫️',ar:'ضبابي',fr:'Brumeux'},48:{i:'🌫️',ar:'ضبابي',fr:'Brumeux'},51:{i:'🌧️',ar:'رذاذ خفيف',fr:'Bruine légère'},53:{i:'🌧️',ar:'رذاذ',fr:'Bruine'},55:{i:'🌧️',ar:'رذاذ كثيف',fr:'Bruine dense'},61:{i:'🌧️',ar:'ممطر',fr:'Pluie'},63:{i:'🌧️',ar:'مطر',fr:'Pluie'},65:{i:'🌧️',ar:'مطر غزير',fr:'Pluie forte'},80:{i:'🌧️',ar:'زخات',fr:'Averses'},81:{i:'🌧️',ar:'زخات',fr:'Averses'},82:{i:'⛈️',ar:'عاصفة',fr:'Orage'},95:{i:'⛈️',ar:'عاصفة رعدية',fr:'Orage'}};
         const wm=isDay?wmDay:wmNight;
-        const w=wm[cu.weather_code]||{i:isDay?'🌡️':'🌙',d:'متغير'};
+        const w=wm[cu.weather_code]||{i:isDay?'🌡️':'🌙',ar:'متغير',fr:'Variable'};
+        const wDesc = currentLang==='fr' ? w.fr : w.ar;
 
         document.getElementById('weather-temp').textContent=Math.round(cu.temperature_2m)+'°';
         document.getElementById('weather-icon').textContent=w.i;
-        document.getElementById('weather-desc').textContent=w.d;
+        document.getElementById('weather-desc').textContent=wDesc;
         document.getElementById('weather-humidity').textContent=cu.relative_humidity_2m+'%';
-        document.getElementById('weather-wind').textContent=Math.round(cu.wind_speed_10m)+' كم/س';
+        document.getElementById('weather-wind').textContent=Math.round(cu.wind_speed_10m)+' '+t('weather-wind-label');
         document.getElementById('weather-max').textContent=Math.round(dl.temperature_2m_max[0])+'°';
         document.getElementById('weather-min').textContent=Math.round(dl.temperature_2m_min[0])+'°';
 
@@ -2081,32 +2093,37 @@ async function fetchWeather(){
             hdrIcon.setAttribute('data-icon','lucide:sun');
             hdrIcon.className='iconify text-amber-500 text-2xl';
             hdrBg.className='w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center transition-colors duration-500';
-            // في النهار: نعرض حرارة الليل القادمة (min اليوم كتقدير للليل)
-            document.getElementById('weather-time-label').textContent='الليل: '+Math.round(dl.temperature_2m_min[0])+'°C';
+            document.getElementById('weather-time-label').textContent=t('weather-night-label')+' '+Math.round(dl.temperature_2m_min[0])+'°C';
         } else {
             hdrIcon.setAttribute('data-icon','lucide:moon');
             hdrIcon.className='iconify text-indigo-400 text-2xl';
             hdrBg.className='w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center transition-colors duration-500';
-            // في الليل: نعرض حرارة الغد (max يوم غد كتقدير للنهار)
-            document.getElementById('weather-time-label').textContent='غداً: '+Math.round(dl.temperature_2m_max[0])+'°C';
+            document.getElementById('weather-time-label').textContent=t('weather-day-label')+' '+Math.round(dl.temperature_2m_max[0])+'°C';
         }
-    } catch { document.getElementById('weather-desc').textContent='تعذر التحميل'; }
+    } catch { document.getElementById('weather-desc').textContent=currentLang==='fr'?'Données indisponibles':'تعذر التحميل'; }
 }
 
 // ══════════════════════════════════════
 // WEATHER FORECAST OVERLAY
 // ══════════════════════════════════════
 const WOV_DAYS_AR = ['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+const WOV_DAYS_FR = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
 const WOV_WM = {
     0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',
     51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',
     80:'🌦️',81:'🌧️',82:'⛈️',95:'⛈️',96:'⛈️',99:'⛈️'
 };
-const WOV_DESC = {
+const WOV_DESC_AR = {
     0:'صافٍ',1:'غائم خفيف',2:'غائم جزئياً',3:'غائم',45:'ضبابي',48:'ضبابي',
     51:'رذاذ خفيف',53:'رذاذ',55:'رذاذ كثيف',61:'ممطر',63:'مطر متوسط',65:'مطر غزير',
     80:'زخات خفيفة',81:'زخات',82:'زخات قوية',95:'عاصفة رعدية',96:'عاصفة مع برَد',99:'عاصفة شديدة'
 };
+const WOV_DESC_FR = {
+    0:'Ensoleillé',1:'Peu nuageux',2:'Partiellement nuageux',3:'Nuageux',45:'Brumeux',48:'Brumeux',
+    51:'Bruine légère',53:'Bruine',55:'Bruine dense',61:'Pluie',63:'Pluie modérée',65:'Pluie forte',
+    80:'Averses légères',81:'Averses',82:'Averses fortes',95:'Orage',96:'Orage avec grêle',99:'Orage violent'
+};
+function WOV_DESC(code){ return currentLang==='fr' ? (WOV_DESC_FR[code]||'Variable') : (WOV_DESC_AR[code]||'متغير'); }
 const WOV_BG = {
     0:'from-amber-400 to-orange-300',1:'from-sky-400 to-blue-300',2:'from-sky-400 to-blue-300',
     3:'from-slate-400 to-gray-300',45:'from-gray-400 to-gray-300',48:'from-gray-400 to-gray-300',
@@ -2147,48 +2164,50 @@ async function fetchWeatherForecast() {
         const wIcon = WOV_WM[cu.weather_code] || '🌡️';
         document.getElementById('wov-today-icon').textContent   = wIcon;
         document.getElementById('wov-cur-temp').textContent     = Math.round(cu.temperature_2m) + '°C';
-        document.getElementById('wov-cur-desc').textContent     = WOV_DESC[cu.weather_code] || 'متغير';
-        document.getElementById('wov-cur-hum').textContent      = cu.relative_humidity_2m + '% رطوبة';
-        document.getElementById('wov-cur-wind').textContent     = Math.round(cu.wind_speed_10m) + ' كم/س';
-        document.getElementById('wov-cur-feels').textContent    = 'يشعر كـ ' + Math.round(cu.apparent_temperature) + '°';
-        document.getElementById('wov-subtitle').textContent     = 'تحديث مباشر — ' + (cu.is_day ? 'نهاراً' : 'ليلاً');
+        document.getElementById('wov-cur-desc').textContent     = WOV_DESC(cu.weather_code);
+        document.getElementById('wov-cur-hum').textContent      = cu.relative_humidity_2m + '%';
+        document.getElementById('wov-cur-wind').textContent     = Math.round(cu.wind_speed_10m) + ' ' + t('weather-wind-label');
+        document.getElementById('wov-cur-feels').textContent    = t('wov-feels') + ' ' + Math.round(cu.apparent_temperature) + '°';
+        document.getElementById('wov-subtitle').textContent     = currentLang==='fr'
+            ? 'Mise à jour en direct — ' + (cu.is_day ? 'Journée' : 'Nuit')
+            : 'تحديث مباشر — ' + (cu.is_day ? 'نهاراً' : 'ليلاً');
 
         // ── بطاقات الأيام السبعة ──
         const daysContainer = document.getElementById('wov-days');
-        const today = new Date();
         daysContainer.innerHTML = dl.time.map((dateStr, i) => {
             const date    = new Date(dateStr);
-            const dayName = i === 0 ? 'اليوم' : i === 1 ? 'الغد' : WOV_DAYS_AR[date.getDay()];
-            const dateLabel = date.toLocaleDateString('ar-DZ', {day:'numeric', month:'short'});
+            const isFr    = currentLang === 'fr';
+            const dayArr  = isFr ? WOV_DAYS_FR : WOV_DAYS_AR;
+            const dayName = i === 0 ? t('wov-day-today') : i === 1 ? t('wov-day-tomorrow') : dayArr[date.getDay()];
+            const dateLabel = date.toLocaleDateString(isFr ? 'fr-FR' : 'ar-DZ', {day:'numeric', month:'short'});
             const code    = dl.weather_code[i];
             const icon    = WOV_WM[code]  || '🌡️';
-            const desc    = WOV_DESC[code] || 'متغير';
+            const desc    = WOV_DESC(code);
             const bg      = WOV_BG[code]  || 'from-sky-400 to-blue-300';
             const tmax    = Math.round(dl.temperature_2m_max[i]);
             const tmin    = Math.round(dl.temperature_2m_min[i]);
             const rain    = dl.precipitation_probability_max[i];
             const wind    = Math.round(dl.wind_speed_10m_max[i]);
             const isToday = i === 0;
+            const nowBadge = isFr ? 'Maintenant' : 'الآن';
+            const windLabel = t('weather-wind-label');
             return `
             <div class="flex items-center gap-3 bg-gray-50 hover:bg-gray-100 rounded-2xl px-4 py-3 transition-colors border border-gray-100 ${isToday ? 'ring-2 ring-sky-400 ring-offset-1' : ''}">
-                <!-- أيقونة الطقس -->
                 <div class="w-11 h-11 rounded-xl bg-gradient-to-br ${bg} flex items-center justify-center text-2xl flex-shrink-0 shadow-sm">
                     ${icon}
                 </div>
-                <!-- اليوم والوصف -->
                 <div class="flex-1 min-w-0">
                     <div class="flex items-center gap-2">
                         <p class="font-extrabold text-gray-800 text-sm">${dayName}</p>
                         <p class="text-[10px] text-gray-400">${dateLabel}</p>
-                        ${isToday ? '<span class="text-[9px] bg-sky-100 text-sky-600 font-bold px-1.5 py-0.5 rounded-full">الآن</span>' : ''}
+                        ${isToday ? `<span class="text-[9px] bg-sky-100 text-sky-600 font-bold px-1.5 py-0.5 rounded-full">${nowBadge}</span>` : ''}
                     </div>
                     <p class="text-xs text-gray-500">${desc}</p>
                     <div class="flex items-center gap-3 mt-1">
                         ${rain > 0 ? `<span class="text-[10px] text-blue-500 flex items-center gap-0.5"><span class="iconify text-xs" data-icon="lucide:droplets"></span>${rain}%</span>` : ''}
-                        <span class="text-[10px] text-gray-400 flex items-center gap-0.5"><span class="iconify text-xs" data-icon="lucide:wind"></span>${wind} كم/س</span>
+                        <span class="text-[10px] text-gray-400 flex items-center gap-0.5"><span class="iconify text-xs" data-icon="lucide:wind"></span>${wind} ${windLabel}</span>
                     </div>
                 </div>
-                <!-- الحرارة -->
                 <div class="text-left flex-shrink-0">
                     <p class="text-lg font-extrabold text-gray-800 leading-none">${tmax}°</p>
                     <p class="text-xs text-gray-400 mt-0.5">${tmin}°</p>
@@ -2205,15 +2224,18 @@ async function fetchWeatherForecast() {
 // ══════════════════════════════════════
 // SEA FORECAST OVERLAY
 // ══════════════════════════════════════
-const SOV_DIRS = ['شمال','شمال شرقي','شرقي','جنوب شرقي','جنوبي','جنوب غربي','غربي','شمال غربي'];
+const SOV_DIRS_AR = ['شمال','شمال شرقي','شرقي','جنوب شرقي','جنوبي','جنوب غربي','غربي','شمال غربي'];
+const SOV_DIRS_FR = ['Nord','Nord-Est','Est','Sud-Est','Sud','Sud-Ouest','Ouest','Nord-Ouest'];
 const SOV_DAYS_AR = ['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+const SOV_DAYS_FR = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
 
 function seaStateFromWave(v) {
-    if (v < 0.5) return { st:'هادئ',        si:'🟢', bg:'from-emerald-400 to-teal-300',  tip:'مناسب للسباحة والصيد' };
-    if (v < 1.0) return { st:'هادئ نسبياً', si:'🟡', bg:'from-lime-400 to-green-300',    tip:'مناسب مع انتباه' };
-    if (v < 1.5) return { st:'معتدل',        si:'🟠', bg:'from-amber-400 to-orange-300',  tip:'يُنصح بالحذر' };
-    if (v < 2.5) return { st:'مضطرب',        si:'🔴', bg:'from-orange-500 to-red-400',    tip:'غير مناسب للسباحة' };
-    return             { st:'عاصف',           si:'⛔', bg:'from-red-600 to-red-500',        tip:'يُمنع الخروج للبحر' };
+    const isFr = currentLang === 'fr';
+    if (v < 0.5) return { st: isFr?'Calme':'هادئ',             si:'🟢', bg:'from-emerald-400 to-teal-300',  tip: isFr?'Baignade et pêche possibles':'مناسب للسباحة والصيد' };
+    if (v < 1.0) return { st: isFr?'Assez calme':'هادئ نسبياً',si:'🟡', bg:'from-lime-400 to-green-300',    tip: isFr?'Possible avec prudence':'مناسب مع انتباه' };
+    if (v < 1.5) return { st: isFr?'Modéré':'معتدل',            si:'🟠', bg:'from-amber-400 to-orange-300',  tip: isFr?'Prudence recommandée':'يُنصح بالحذر' };
+    if (v < 2.5) return { st: isFr?'Agité':'مضطرب',             si:'🔴', bg:'from-orange-500 to-red-400',    tip: isFr?'Baignade déconseillée':'غير مناسب للسباحة' };
+    return             { st: isFr?'Tempétueux':'عاصف',           si:'⛔', bg:'from-red-600 to-red-500',        tip: isFr?'Sortie en mer interdite':'يُمنع الخروج للبحر' };
 }
 
 let _sovLoaded = false;
@@ -2246,25 +2268,33 @@ async function fetchSeaForecast() {
         // ── الحالة الراهنة ──
         const curWave = cu.wave_height != null ? cu.wave_height.toFixed(1) : '--';
         const curTemp = cu.sea_surface_temperature != null ? Math.round(cu.sea_surface_temperature) : '--';
-        const curDir  = cu.wave_direction != null ? SOV_DIRS[Math.round(cu.wave_direction / 45) % 8] : '--';
+        const dirDirs = currentLang==='fr' ? SOV_DIRS_FR : SOV_DIRS_AR;
+        const curDir  = cu.wave_direction != null ? dirDirs[Math.round(cu.wave_direction / 45) % 8] : '--';
         const curInfo = cu.wave_height != null ? seaStateFromWave(cu.wave_height) : { st:'--', si:'🌊', tip:'' };
         document.getElementById('sov-cur-state').textContent = curInfo.st;
         document.getElementById('sov-cur-desc').textContent  = curInfo.tip;
         document.getElementById('sov-cur-wave').textContent  = curWave;
         document.getElementById('sov-cur-wtemp').textContent = curTemp;
         document.getElementById('sov-cur-dir').textContent   = curDir;
-        document.getElementById('sov-subtitle').textContent  = `ارتفاع الموج الحالي: ${curWave} م`;
+        document.getElementById('sov-subtitle').textContent  = currentLang==='fr'
+            ? `Hauteur des vagues : ${curWave} m`
+            : `ارتفاع الموج الحالي: ${curWave} م`;
 
         // ── الأيام السبعة ──
         const container = document.getElementById('sov-days');
         container.innerHTML = dl.time.map((dateStr, i) => {
             const date      = new Date(dateStr);
-            const dayName   = i === 0 ? 'اليوم' : i === 1 ? 'الغد' : SOV_DAYS_AR[date.getDay()];
-            const dateLabel = date.toLocaleDateString('ar-DZ', { day:'numeric', month:'short' });
+            const isFr      = currentLang === 'fr';
+            const dayArr    = isFr ? SOV_DAYS_FR : SOV_DAYS_AR;
+            const dayName   = i === 0 ? t('wov-day-today') : i === 1 ? t('wov-day-tomorrow') : dayArr[date.getDay()];
+            const dateLabel = date.toLocaleDateString(isFr?'fr-FR':'ar-DZ', { day:'numeric', month:'short' });
             const waveMax   = dl.wave_height_max[i]      != null ? dl.wave_height_max[i].toFixed(1)      : '--';
             const windWave  = dl.wind_wave_height_max[i] != null ? dl.wind_wave_height_max[i].toFixed(1) : '--';
             const info      = dl.wave_height_max[i]      != null ? seaStateFromWave(dl.wave_height_max[i]) : { st:'--', si:'🌊', bg:'from-blue-300 to-cyan-200', tip:'--' };
             const isToday   = i === 0;
+            const nowBadge  = isFr ? 'Maintenant' : 'الآن';
+            const windWaveLabel = isFr ? `Vagues de vent : ${windWave} m` : `موج الرياح: ${windWave} م`;
+            const maxLabel  = isFr ? 'Max' : 'أقصى';
             return `
             <div class="flex items-center gap-3 bg-gray-50 hover:bg-gray-100 rounded-2xl px-4 py-3 transition-colors border border-gray-100 ${isToday ? 'ring-2 ring-blue-400 ring-offset-1' : ''}">
                 <div class="w-11 h-11 rounded-xl bg-gradient-to-br ${info.bg} flex items-center justify-center text-xl flex-shrink-0 shadow-sm">${info.si}</div>
@@ -2272,18 +2302,18 @@ async function fetchSeaForecast() {
                     <div class="flex items-center gap-2 flex-wrap">
                         <p class="font-extrabold text-gray-800 text-sm">${dayName}</p>
                         <p class="text-[10px] text-gray-400">${dateLabel}</p>
-                        ${isToday ? '<span class="text-[9px] bg-blue-100 text-blue-600 font-bold px-1.5 py-0.5 rounded-full">الآن</span>' : ''}
+                        ${isToday ? `<span class="text-[9px] bg-blue-100 text-blue-600 font-bold px-1.5 py-0.5 rounded-full">${nowBadge}</span>` : ''}
                     </div>
                     <p class="text-xs text-gray-500">${info.st} — ${info.tip}</p>
                     <div class="flex items-center gap-2 mt-1">
                         <span class="text-[10px] text-blue-500 flex items-center gap-0.5">
-                            <span class="iconify text-xs" data-icon="lucide:waves"></span>موج الرياح: ${windWave} م
+                            <span class="iconify text-xs" data-icon="lucide:waves"></span>${windWaveLabel}
                         </span>
                     </div>
                 </div>
                 <div class="text-left flex-shrink-0">
-                    <p class="text-lg font-extrabold text-gray-800 leading-none">${waveMax} م</p>
-                    <p class="text-[10px] text-gray-400 mt-0.5">أقصى ارتفاع</p>
+                    <p class="text-lg font-extrabold text-gray-800 leading-none">${waveMax} m</p>
+                    <p class="text-[10px] text-gray-400 mt-0.5">${maxLabel}</p>
                 </div>
             </div>`;
         }).join('');
@@ -2301,29 +2331,29 @@ async function fetchSeaState(){
         if(!cu||cu.wave_height===null||cu.wave_height===undefined){document.getElementById('sea-state').textContent='--';document.getElementById('sea-desc').textContent='البيانات غير متاحة';return;}
         const wh=cu.wave_height.toFixed(1);
         const dirDeg=cu.wave_direction;
-        const dirs=['شمال','شمال شرقي','شرقي','جنوب شرقي','جنوبي','جنوب غربي','غربي','شمال غربي'];
-        const dirLabel=dirDeg!=null?dirs[Math.round(dirDeg/45)%8]:'--';
+        const dirsArr = currentLang==='fr' ? SOV_DIRS_FR : SOV_DIRS_AR;
+        const dirLabel=dirDeg!=null?dirsArr[Math.round(dirDeg/45)%8]:'--';
         const v=parseFloat(wh);
-        // هل نهار؟ نستخدم ساعة الجهاز مع offset الجزائر (UTC+1)
         const nowAlgiers=new Date(new Date().toLocaleString('en-US',{timeZone:'Africa/Algiers'}));
         const hour=nowAlgiers.getHours();
         const isDaytime=hour>=6&&hour<20;
+        const isFr = currentLang==='fr';
         let st,si,sd;
         if(v<0.5){
-            st='هادئ'; si='🌊';
-            sd=isDaytime?'البحر هادئ — مناسب للسباحة':'البحر هادئ — مناسب للصيد';
+            st=isFr?'Calme':'هادئ'; si='🌊';
+            sd=isDaytime?(isFr?'Mer calme — Baignade possible':'البحر هادئ — مناسب للسباحة'):(isFr?'Mer calme — Pêche possible':'البحر هادئ — مناسب للصيد');
         } else if(v<1.0){
-            st='هادئ نسبياً'; si='🌅';
-            sd=isDaytime?'هادئ نسبياً — مناسب للسباحة':'هادئ نسبياً — مناسب للصيد';
+            st=isFr?'Assez calme':'هادئ نسبياً'; si='🌅';
+            sd=isDaytime?(isFr?'Assez calme — Baignade possible':'هادئ نسبياً — مناسب للسباحة'):(isFr?'Assez calme — Pêche possible':'هادئ نسبياً — مناسب للصيد');
         } else if(v<1.5){
-            st='معتدل'; si='🌊';
-            sd=isDaytime?'البحر معتدل — حذر للسباحة':'البحر معتدل — حذر للصيادين';
+            st=isFr?'Modéré':'معتدل'; si='🌊';
+            sd=isDaytime?(isFr?'Mer modérée — Prudence':'البحر معتدل — حذر للسباحة'):(isFr?'Mer modérée — Prudence pêcheurs':'البحر معتدل — حذر للصيادين');
         } else if(v<2.5){
-            st='مضطرب'; si='⚠️';
-            sd='البحر مضطرب — يُنصح بالحذر';
+            st=isFr?'Agité':'مضطرب'; si='⚠️';
+            sd=isFr?'Mer agitée — Prudence recommandée':'البحر مضطرب — يُنصح بالحذر';
         } else {
-            st='عاصف'; si='🔴';
-            sd='البحر عاصف — يُمنع الخروج';
+            st=isFr?'Tempétueux':'عاصف'; si='🔴';
+            sd=isFr?'Mer tempétueuse — Interdit':'البحر عاصف — يُمنع الخروج';
         }
         document.getElementById('sea-state').textContent=st;
         document.getElementById('sea-icon').textContent=si;
@@ -2331,9 +2361,8 @@ async function fetchSeaState(){
         document.getElementById('sea-wave').textContent=wh;
         document.getElementById('sea-water-temp').textContent='19';
         document.getElementById('sea-dir').textContent=dirLabel;
-        // ✅ نص الهيدر حسب النهار/الليل
-        document.getElementById('sea-time-label').textContent=isDaytime?'للسياح والسباحين':'للصيادين الليليين';
-    } catch{document.getElementById('sea-state').textContent='--';document.getElementById('sea-desc').textContent='تعذر التحميل';}
+        document.getElementById('sea-time-label').textContent=isDaytime?t('sea-daytime-label'):t('sea-nighttime-label');
+    } catch{document.getElementById('sea-state').textContent='--';document.getElementById('sea-desc').textContent=currentLang==='fr'?'Données indisponibles':'تعذر التحميل';}
 }
 
 // ── ✅ 2: NEWS — custom_label حر ──
@@ -3309,7 +3338,7 @@ async function renderArchives() {
     const grid = document.getElementById('arch-grid');
     const pag  = document.getElementById('arch-pagination');
     const archIcon = archCat === 'compare' ? 'lucide:arrow-left-right' : 'lucide:image';
-    const archLabel = archCat === 'compare' ? 'مقارنة الأمس بالحاضر' : 'الصور التاريخية';
+    const archLabel = archCat === 'compare' ? t('arch-tab-compare') : t('arch-tab-historic');
     grid.innerHTML = '<div class="col-span-full text-center py-16"><span class="iconify text-5xl animate-spin inline-block text-amber-500" data-icon="' + archIcon + '"></span><p class="mt-3 text-sm font-semibold text-gray-400">' + archLabel + '...</p></div>';
     pag.innerHTML = '';
     try {
@@ -3331,6 +3360,7 @@ async function renderArchives() {
         grid.innerHTML = items.map(a => {
             const hasOld = a.image_old_url && a.image_old_url.trim() !== '';
             const hasNew = a.image_new_url && a.image_new_url.trim() !== '';
+            const lblOld = t('archive-yesterday'); const lblNew = t('archive-today');
             if(archCat === 'compare' && hasOld && hasNew) {
                 return `<div class="bg-gray-800 rounded-xl overflow-hidden shadow-lg">
                     <div class="grid grid-cols-2 gap-0.5">
