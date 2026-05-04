@@ -2,12 +2,13 @@
 <html lang="ar" dir="rtl" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>بلدية شطايبي - الموقع الرسمي</title>
     <!-- ✅ 10: Favicon -->
     <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/app-icon.png">
     <link rel="apple-touch-icon" href="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/app-icon.png">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#059669">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <!-- Splash screen for iOS PWA -->
     <link rel="apple-touch-startup-image" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3)" href="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/app-splash.jpg">
     <link rel="apple-touch-startup-image" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3)" href="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/app-splash.jpg">
@@ -39,7 +40,6 @@
     <script>tailwind.config={theme:{extend:{fontFamily:{cairo:['Cairo','sans-serif']}}}}</script>
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#059669">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="بلدية شطايبي">
@@ -687,12 +687,6 @@
     </script>
     <style>
         *{font-family:'Cairo',sans-serif;}
-        /* PWA fullscreen safe-area support */
-        body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
-        /* PWA splash screen background */
-        @media all and (display-mode: fullscreen), all and (display-mode: standalone) {
-            body { background-color: #059669; }
-        }
         ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:#f1f5f9}
         ::-webkit-scrollbar-thumb{background:#059669;border-radius:4px}
         ::-webkit-scrollbar-thumb:hover{background:#047857}
@@ -3718,84 +3712,7 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js').catch(() => {});
 }
 
-// ══════════════════════════════════════════════════════
-// 🎨 توليد أيقونة maskable بخلفية خضراء لـ splash screen
-// يحل مشكلة الخلفية السوداء في Android PWA
-// ══════════════════════════════════════════════════════
-(function generateMaskableIcon() {
-    const ICON_URL = 'https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/app-icon.png';
-    const BG_COLOR = '#059669';
-    const SIZE = 512;
-    const ICON_SCALE = 0.75; // الشعار يشغل 75% من المساحة (معيار maskable)
 
-    const canvas = document.createElement('canvas');
-    canvas.width = SIZE;
-    canvas.height = SIZE;
-    const ctx = canvas.getContext('2d');
-
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.onload = function() {
-        // رسم الخلفية الخضراء
-        ctx.fillStyle = BG_COLOR;
-        ctx.fillRect(0, 0, SIZE, SIZE);
-
-        // رسم الشعار في المنتصف مع هامش آمن
-        const iconSize = SIZE * ICON_SCALE;
-        const offset = (SIZE - iconSize) / 2;
-        ctx.drawImage(img, offset, offset, iconSize, iconSize);
-
-        // تحويل Canvas إلى Blob وتسجيل الأيقونة
-        canvas.toBlob(function(blob) {
-            if (!blob) return;
-            const blobUrl = URL.createObjectURL(blob);
-
-            // تحديث الـ manifest ديناميكياً
-            const manifestLink = document.querySelector('link[rel="manifest"]');
-            if (!manifestLink) return;
-
-            fetch(manifestLink.href)
-                .then(r => r.json())
-                .then(manifest => {
-                    // إضافة/استبدال الأيقونة maskable بالـ blob
-                    manifest.icons = manifest.icons.filter(i => i.purpose !== 'maskable');
-                    manifest.icons.push({
-                        src: blobUrl,
-                        sizes: `${SIZE}x${SIZE}`,
-                        type: 'image/png',
-                        purpose: 'maskable'
-                    });
-
-                    const newManifest = new Blob(
-                        [JSON.stringify(manifest)],
-                        { type: 'application/manifest+json' }
-                    );
-                    const newManifestUrl = URL.createObjectURL(newManifest);
-                    manifestLink.href = newManifestUrl;
-                })
-                .catch(() => {});
-        }, 'image/png');
-    };
-    img.onerror = function() {
-        // fallback: خلفية خضراء فقط بدون شعار
-        ctx.fillStyle = BG_COLOR;
-        ctx.fillRect(0, 0, SIZE, SIZE);
-        canvas.toBlob(function(blob) {
-            if (!blob) return;
-            const blobUrl = URL.createObjectURL(blob);
-            const manifestLink = document.querySelector('link[rel="manifest"]');
-            if (!manifestLink) return;
-            fetch(manifestLink.href)
-                .then(r => r.json())
-                .then(manifest => {
-                    manifest.icons = manifest.icons.filter(i => i.purpose !== 'maskable');
-                    manifest.icons.push({ src: blobUrl, sizes: `${SIZE}x${SIZE}`, type: 'image/png', purpose: 'maskable' });
-                    manifestLink.href = URL.createObjectURL(new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' }));
-                }).catch(() => {});
-        }, 'image/png');
-    };
-    img.src = ICON_URL;
-})();
 
 // ══════════════════════════════════════════════════════
 // 🌐 تطبيق اللغة المحفوظة عند التحميل

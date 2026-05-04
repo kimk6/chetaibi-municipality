@@ -3,8 +3,7 @@
   "short_name": "شطايبي",
   "description": "البوابة الإلكترونية الرسمية لبلدية شطايبي",
   "start_url": "/",
-  "display": "fullscreen",
-  "display_override": ["fullscreen", "standalone", "minimal-ui"],
+  "display": "standalone",
   "orientation": "portrait",
   "background_color": "#059669",
   "theme_color": "#059669",
@@ -22,6 +21,12 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/app-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "categories": ["government", "utilities"],
