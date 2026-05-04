@@ -2,12 +2,19 @@
 <html lang="ar" dir="rtl" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>بلدية شطايبي - الموقع الرسمي</title>
     <!-- ✅ 10: Favicon -->
     <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/app-icon.png">
     <link rel="apple-touch-icon" href="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/app-icon.png">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Splash screen for iOS PWA -->
+    <link rel="apple-touch-startup-image" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3)" href="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/app-splash.jpg">
+    <link rel="apple-touch-startup-image" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3)" href="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/app-splash.jpg">
+    <link rel="apple-touch-startup-image" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)" href="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/app-splash.jpg">
+    <link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" href="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/app-splash.jpg">
+    <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" href="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/app-splash.jpg">
+    <link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" href="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/app-splash.jpg">
     <link rel="apple-touch-startup-image" href="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/app-splash.jpg">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -35,7 +42,6 @@
     <meta name="theme-color" content="#059669">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="بلدية شطايبي">
     <!-- ══════════════════════════════════════════════════════════
          🌐 نظام الترجمة الثنائية AR / FR
@@ -664,6 +670,8 @@
         if (typeof loadTourism === 'function') loadTourism();
         // ─── إعادة رسم الخدمات ───
         if (typeof loadServicesMain === 'function') loadServicesMain();
+        // ─── إعادة رسم معاينة الأرشيف لتحديث "اليوم/الأمس" ───
+        if (typeof loadArchivePreview === 'function') loadArchivePreview();
         // ─── إعادة تهيئة الخريطة لتحديث نصوص popups ───
         if (typeof chetaibiMap !== 'undefined' && chetaibiMap) {
             chetaibiMap.remove();
@@ -679,6 +687,12 @@
     </script>
     <style>
         *{font-family:'Cairo',sans-serif;}
+        /* PWA fullscreen safe-area support */
+        body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
+        /* PWA splash screen background */
+        @media all and (display-mode: fullscreen), all and (display-mode: standalone) {
+            body { background-color: #059669; }
+        }
         ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:#f1f5f9}
         ::-webkit-scrollbar-thumb{background:#059669;border-radius:4px}
         ::-webkit-scrollbar-thumb:hover{background:#047857}
@@ -709,6 +723,16 @@
         @media(min-width:768px){.timeline-line{right:50%;transform:translateX(50%)}}
         html[lang="fr"] .timeline-line{right:auto;left:23px}
         @media(min-width:768px){html[lang="fr"] .timeline-line{left:50%;right:auto;transform:translateX(-50%)}}
+        /* Timeline dots: RTL (ar) stays right, LTR (fr) moves to left on mobile */
+        .timeline-dot{position:absolute;right:14px;width:20px;height:20px;border-radius:50%;border:4px solid white;box-shadow:0 2px 8px rgba(0,0,0,.15);z-index:10;margin-top:24px}
+        @media(min-width:768px){.timeline-dot{right:50%;left:auto;transform:translateX(50%)}}
+        html[lang="fr"] .timeline-dot{right:auto;left:14px}
+        @media(min-width:768px){html[lang="fr"] .timeline-dot{left:50%;right:auto;transform:translateX(-50%)}}
+        /* Timeline card padding: RTL pulls from right, LTR from left on mobile */
+        .timeline-card-right{padding-right:56px}
+        @media(min-width:768px){.timeline-card-right{padding-right:48px;padding-left:0}}
+        html[lang="fr"] .timeline-card-right{padding-right:0;padding-left:56px}
+        @media(min-width:768px){html[lang="fr"] .timeline-card-right{padding-left:48px;padding-right:0}}
         html[lang="fr"] .news-tab{font-size:0.72rem}
         html[lang="fr"] .news-tab .iconify{font-size:0.85rem}
         @media(max-width:767px){#main-nav{position:fixed;top:0;left:0;right:0;transform:translateY(-100%);opacity:0;transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .35s ease;pointer-events:none;z-index:50}#main-nav.nav-visible{transform:translateY(0);opacity:1;pointer-events:auto}}
@@ -1074,6 +1098,7 @@ html[dir="ltr"] article {
 </div>
 
     <!-- رئيس المجلس -->
+    <div class="md:max-w-[80%] md:mx-auto">
     <div class="bg-gradient-to-l from-emerald-700 to-emerald-800 rounded-2xl p-6 md:p-8 shadow-xl text-white flex flex-col md:flex-row items-center gap-6">
         <div id="mayor-photo-wrap" class="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border-4 border-white/30">
             <span id="mayor-photo-placeholder" class="iconify text-4xl text-white" data-icon="lucide:user-circle"></span>
@@ -1090,6 +1115,7 @@ html[dir="ltr"] article {
                 &nbsp;<span data-i18n="mayor-prev-btn">الرؤساء السابقون</span>
             </button>
         </div>
+    </div>
     </div>
 </section>
 
@@ -1283,7 +1309,7 @@ html[dir="ltr"] article {
 
             <!-- بطاقة 1: العصر الروماني -->
             <div class="relative flex flex-col md:flex-row items-start mb-12 md:mb-16">
-                <div class="md:w-1/2 md:pl-12 pl-14 mb-4 md:mb-0 md:text-left">
+                <div class="timeline-card-right md:w-1/2 md:pl-12 mb-4 md:mb-0 md:text-left">
                     <div class="bg-white rounded-2xl p-6 shadow-lg border border-amber-100">
                         <div class="flex flex-wrap items-center gap-2 mb-3">
                             <span class="inline-block bg-amber-100 text-amber-700 text-xs font-bold px-3 py-1 rounded-full" data-i18n="era-roman-badge">العهد القديم — العصر الروماني</span>
@@ -1293,15 +1319,15 @@ html[dir="ltr"] article {
                         <p class="text-sm text-gray-500 leading-relaxed" data-i18n="era-roman-text">تأسست كمدينة مرفئية هامة ومحطة رئيسية على الطريق الساحلي الرابط بين "هيبون" والمدن الغربية. اشتهرت عالمياً بمناجم "البورفير الأحمر" الفاخر الذي كان يُصدر خصيصاً لتزيين قصور وتوابيت أباطرة روما. لا تزال آثارها شاهدة على عظمة تلك الحقبة، ومن أبرزها "النافورة الرومانية" وبقايا نظام الري المتطور.</p>
                     </div>
                 </div>
-                <div class="absolute left-[14px] md:left-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-amber-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
+                <div class="timeline-dot bg-amber-500"></div>
                 <div class="md:w-1/2 md:pr-12 hidden md:block"></div>
             </div>
 
             <!-- بطاقة 2: العهد الإسلامي والعثماني -->
             <div class="relative flex flex-col md:flex-row items-start mb-12 md:mb-16">
                 <div class="md:w-1/2 md:pl-12 hidden md:block"></div>
-                <div class="absolute left-[14px] md:left-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-teal-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
-                <div class="md:w-1/2 md:pr-12 pr-0 pl-14 md:pl-0">
+                <div class="timeline-dot bg-teal-500"></div>
+                <div class="timeline-card-right md:w-1/2 md:pr-12 md:pl-0">
                     <div class="bg-white rounded-2xl p-6 shadow-lg border border-teal-100">
                         <div class="flex flex-wrap items-center gap-2 mb-3">
                             <span class="inline-block bg-teal-100 text-teal-700 text-xs font-bold px-3 py-1 rounded-full" data-i18n="era-ottoman-badge">العهد الإسلامي والعثماني</span>
@@ -1315,7 +1341,7 @@ html[dir="ltr"] article {
 
             <!-- بطاقة 3: العهد الاستعماري -->
             <div class="relative flex flex-col md:flex-row items-start mb-12 md:mb-16">
-                <div class="md:w-1/2 md:pl-12 pl-14 mb-4 md:mb-0 md:text-left">
+                <div class="timeline-card-right md:w-1/2 md:pl-12 mb-4 md:mb-0 md:text-left">
                     <div class="bg-white rounded-2xl p-6 shadow-lg border border-red-100">
                         <div class="flex flex-wrap items-center gap-2 mb-3">
                             <span class="inline-block bg-red-100 text-red-700 text-xs font-bold px-3 py-1 rounded-full" data-i18n="era-colonial-badge">العهد الاستعماري الفرنسي</span>
@@ -1325,15 +1351,15 @@ html[dir="ltr"] article {
                         <p class="text-sm text-gray-500 leading-relaxed" data-i18n="era-colonial-text">أُنشئ المركز السكاني بمرسوم رسمي عام 1869 وسُمي نسبة للجنرال "إيميل هيربيون". شهدت المنطقة نهضة صناعية كبرى عبر استغلال مقالع "الجرانيت الأخضر" الصلب الذي استُخدم لرصف شوارع باريس، مارسيليا، وروما. وبالتوازي مع ذلك، كانت جبالها معقلاً للمقاومة، بدءاً من ثورة "سي زغدود" عام 1841 وصولاً إلى اندلاع الثورة التحريرية الكبرى.</p>
                     </div>
                 </div>
-                <div class="absolute left-[14px] md:left-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-red-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
+                <div class="timeline-dot bg-red-500"></div>
                 <div class="md:w-1/2 md:pr-12 hidden md:block"></div>
             </div>
 
             <!-- بطاقة 4: عهد الاستقلال -->
             <div class="relative flex flex-col md:flex-row items-start">
                 <div class="md:w-1/2 md:pl-12 hidden md:block"></div>
-                <div class="absolute left-[14px] md:left-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-emerald-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
-                <div class="md:w-1/2 md:pr-12 pr-0 pl-14 md:pl-0">
+                <div class="timeline-dot bg-emerald-500"></div>
+                <div class="timeline-card-right md:w-1/2 md:pr-12 md:pl-0">
                     <div class="bg-white rounded-2xl p-6 shadow-lg border border-emerald-100">
                         <div class="flex flex-wrap items-center gap-2 mb-3">
                             <span class="inline-block bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full" data-i18n="era-modern-badge">عهد الاستقلال والجزائر الحديثة</span>
@@ -3485,15 +3511,15 @@ async function renderArchives() {
             if(archCat === 'compare' && hasOld && hasNew) {
                 return `<div class="bg-gray-800 rounded-xl overflow-hidden shadow-lg">
                     <div class="grid grid-cols-2 gap-0.5">
-                        <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_old_url}','الأمس — ${(a.title||'').replace(/'/g,"\'")}')">
+                        <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_old_url}','${lblOld} — ${(a.title||'').replace(/'/g,"\\'")}')">
                             <img src="${a.image_old_url}" class="w-full h-36 object-cover group-hover:scale-105 transition-transform duration-500">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                            <span class="absolute bottom-2 right-2 text-white text-[10px] font-bold bg-black/50 px-2 py-0.5 rounded-full">الأمس</span>
+                            <span class="absolute bottom-2 right-2 text-white text-[10px] font-bold bg-black/50 px-2 py-0.5 rounded-full">${lblOld}</span>
                         </div>
-                        <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_new_url}','اليوم — ${(a.title||'').replace(/'/g,"\'")}')">
+                        <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_new_url}','${lblNew} — ${(a.title||'').replace(/'/g,"\\'")}')">
                             <img src="${a.image_new_url}" class="w-full h-36 object-cover group-hover:scale-105 transition-transform duration-500">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                            <span class="absolute bottom-2 right-2 text-white text-[10px] font-bold bg-black/50 px-2 py-0.5 rounded-full">اليوم</span>
+                            <span class="absolute bottom-2 right-2 text-white text-[10px] font-bold bg-black/50 px-2 py-0.5 rounded-full">${lblNew}</span>
                         </div>
                     </div>
                     <div class="p-3">
@@ -3632,25 +3658,27 @@ async function loadArchivePreview() {
             grid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-10">لا توجد صور مقارنة بعد</p>';
             return;
         }
-        grid.innerHTML = compares.map(a => `
+        grid.innerHTML = compares.map(a => {
+            const lblOld = t('archive-yesterday'); const lblNew = t('archive-today');
+            return `
             <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100">
                 <div class="grid grid-cols-2">
-                    <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_old_url}','الأمس — ${(a.title||'').replace(/'/g,"\\'")}')">
+                    <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_old_url}','${lblOld} — ${(a.title||'').replace(/'/g,"\\'")}')">
                         <img src="${a.image_old_url}" alt="قديماً" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <span class="absolute bottom-2 right-2 text-white text-xs font-bold px-2 py-0.5 rounded-full bg-black/50">الأمس</span>
+                        <span class="absolute bottom-2 right-2 text-white text-xs font-bold px-2 py-0.5 rounded-full bg-black/50">${lblOld}</span>
                     </div>
-                    <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_new_url}','اليوم — ${(a.title||'').replace(/'/g,"\\'")}')">
+                    <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_new_url}','${lblNew} — ${(a.title||'').replace(/'/g,"\\'")}')">
                         <img src="${a.image_new_url}" alt="حديثاً" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <span class="absolute bottom-2 right-2 text-white text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-600/80">اليوم</span>
+                        <span class="absolute bottom-2 right-2 text-white text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-600/80">${lblNew}</span>
                     </div>
                 </div>
                 <div class="p-4 text-center">
                     <p class="font-bold text-gray-700 text-sm">${a.title||''}</p>
                     ${a.description ? `<p class="text-xs text-gray-400 mt-1">${a.description}</p>` : ''}
                 </div>
-            </div>`).join('');
+            </div>`}).join('');
     } catch(e) {
         grid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-10">تعذر تحميل الصور</p>';
     }
