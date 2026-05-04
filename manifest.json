@@ -22,12 +22,6 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
-    },
-    {
-      "src": "https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/app-splash.jpg",
-      "sizes": "512x512",
-      "type": "image/jpeg",
-      "purpose": "maskable"
     }
   ],
   "categories": ["government", "utilities"],
