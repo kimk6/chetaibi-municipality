@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>بلدية شطايبي - الموقع الرسمي</title>
     <!-- ✅ 10: Favicon -->
-    <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo.webp">
-    <link rel="apple-touch-icon" href="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo.webp">
+    <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/app-icon.png">
+    <link rel="apple-touch-icon" href="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/app-icon.png">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-startup-image" href="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/app-splash.jpg">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
@@ -662,6 +664,12 @@
         if (typeof loadTourism === 'function') loadTourism();
         // ─── إعادة رسم الخدمات ───
         if (typeof loadServicesMain === 'function') loadServicesMain();
+        // ─── إعادة تهيئة الخريطة لتحديث نصوص popups ───
+        if (typeof chetaibiMap !== 'undefined' && chetaibiMap) {
+            chetaibiMap.remove();
+            chetaibiMap = null;
+            initMap && initMap();
+        }
     }
 
     // ─── تصدير للـ global scope ───
@@ -1096,7 +1104,7 @@ html[dir="ltr"] article {
             <button onclick="switchNewsTab('announcements')" id="tab-announcements" class="news-tab active py-2.5 px-4 md:px-5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 min-w-0"><span class="iconify text-base flex-shrink-0" data-icon="lucide:megaphone"></span><span class="truncate md:whitespace-nowrap" data-i18n="tab-announcements"> إعلانات رسمية</span></button>
             <button onclick="switchNewsTab('activities')" id="tab-activities" class="news-tab py-2.5 px-4 md:px-5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 min-w-0"><span class="iconify text-base flex-shrink-0" data-icon="lucide:clipboard-list"></span><span class="truncate md:whitespace-nowrap" data-i18n="tab-activities"> نشاطات البلدية</span></button>
             <button onclick="switchNewsTab('community')" id="tab-community" class="news-tab py-2.5 px-4 md:px-5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 min-w-0"><span class="iconify text-base flex-shrink-0" data-icon="lucide:handshake"></span><span class="truncate md:whitespace-nowrap" data-i18n="tab-community"> ركن المجتمع</span></button>
-            <button onclick="switchNewsTab('posters')" id="tab-posters" class="news-tab py-2.5 px-4 md:px-5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 min-w-0"><span class="iconify text-base flex-shrink-0" data-icon="lucide:image"></span><span class="truncate md:whitespace-nowrap" data-i18n="tab-posters"> معرض الملصقات</span></button>
+            <button onclick="switchNewsTab('posters')" id="tab-posters" class="news-tab py-2.5 px-4 md:px-5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 min-w-0"><span class="iconify text-base flex-shrink-0" data-icon="lucide:image"></span><span class="truncate md:whitespace-nowrap" data-i18n="tab-posters">صور وملصقات</span></button>
         </div>
         <div id="news-loading" class="text-center py-16"><span class="iconify text-5xl animate-spin inline-block text-emerald-500" data-icon="lucide:newspaper"></span><p class="mt-3 text-sm font-semibold text-gray-400">جاري تحميل الأخبار...</p></div>
         <!-- كل tab له grid + extra + أزرار -->
@@ -1285,15 +1293,15 @@ html[dir="ltr"] article {
                         <p class="text-sm text-gray-500 leading-relaxed" data-i18n="era-roman-text">تأسست كمدينة مرفئية هامة ومحطة رئيسية على الطريق الساحلي الرابط بين "هيبون" والمدن الغربية. اشتهرت عالمياً بمناجم "البورفير الأحمر" الفاخر الذي كان يُصدر خصيصاً لتزيين قصور وتوابيت أباطرة روما. لا تزال آثارها شاهدة على عظمة تلك الحقبة، ومن أبرزها "النافورة الرومانية" وبقايا نظام الري المتطور.</p>
                     </div>
                 </div>
-                <div class="absolute right-[14px] md:right-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-amber-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
+                <div class="absolute left-[14px] md:left-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-amber-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
                 <div class="md:w-1/2 md:pr-12 hidden md:block"></div>
             </div>
 
             <!-- بطاقة 2: العهد الإسلامي والعثماني -->
             <div class="relative flex flex-col md:flex-row items-start mb-12 md:mb-16">
                 <div class="md:w-1/2 md:pl-12 hidden md:block"></div>
-                <div class="absolute right-[14px] md:right-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-teal-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
-                <div class="md:w-1/2 md:pr-12 pr-14 pl-0 md:pl-0">
+                <div class="absolute left-[14px] md:left-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-teal-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
+                <div class="md:w-1/2 md:pr-12 pr-0 pl-14 md:pl-0">
                     <div class="bg-white rounded-2xl p-6 shadow-lg border border-teal-100">
                         <div class="flex flex-wrap items-center gap-2 mb-3">
                             <span class="inline-block bg-teal-100 text-teal-700 text-xs font-bold px-3 py-1 rounded-full" data-i18n="era-ottoman-badge">العهد الإسلامي والعثماني</span>
@@ -1317,15 +1325,15 @@ html[dir="ltr"] article {
                         <p class="text-sm text-gray-500 leading-relaxed" data-i18n="era-colonial-text">أُنشئ المركز السكاني بمرسوم رسمي عام 1869 وسُمي نسبة للجنرال "إيميل هيربيون". شهدت المنطقة نهضة صناعية كبرى عبر استغلال مقالع "الجرانيت الأخضر" الصلب الذي استُخدم لرصف شوارع باريس، مارسيليا، وروما. وبالتوازي مع ذلك، كانت جبالها معقلاً للمقاومة، بدءاً من ثورة "سي زغدود" عام 1841 وصولاً إلى اندلاع الثورة التحريرية الكبرى.</p>
                     </div>
                 </div>
-                <div class="absolute right-[14px] md:right-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-red-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
+                <div class="absolute left-[14px] md:left-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-red-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
                 <div class="md:w-1/2 md:pr-12 hidden md:block"></div>
             </div>
 
             <!-- بطاقة 4: عهد الاستقلال -->
             <div class="relative flex flex-col md:flex-row items-start">
                 <div class="md:w-1/2 md:pl-12 hidden md:block"></div>
-                <div class="absolute right-[14px] md:right-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-emerald-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
-                <div class="md:w-1/2 md:pr-12 pr-14 pl-0 md:pl-0">
+                <div class="absolute left-[14px] md:left-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-emerald-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
+                <div class="md:w-1/2 md:pr-12 pr-0 pl-14 md:pl-0">
                     <div class="bg-white rounded-2xl p-6 shadow-lg border border-emerald-100">
                         <div class="flex flex-wrap items-center gap-2 mb-3">
                             <span class="inline-block bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full" data-i18n="era-modern-badge">عهد الاستقلال والجزائر الحديثة</span>
@@ -1793,9 +1801,9 @@ html[dir="ltr"] article {
             <button onclick="facSetCat('public')" id="fcat-public" class="fcat-btn text-xs px-3 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:building"></span>&nbsp;<span data-i18n="fcat-public">خدمات عمومية</span></button>
             <button onclick="facSetCat('training')" id="fcat-training" class="fcat-btn text-xs px-3 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:graduation-cap"></span>&nbsp;<span data-i18n="fcat-training">تكوين</span></button>
             <button onclick="facSetCat('assoc')" id="fcat-assoc" class="fcat-btn text-xs px-3 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:users"></span>&nbsp;<span data-i18n="fcat-assoc">جمعيات</span></button>
-            <button onclick="facSetCat('branches')" id="fcat-branches" class="fcat-btn text-xs px-3 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:landmark"></span>فروع إدارية</button>
-            <button onclick="facSetCat('education')" id="fcat-education" class="fcat-btn text-xs px-3 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:school"></span>تعليمية</button>
-            <button onclick="facSetCat('health')" id="fcat-health" class="fcat-btn text-xs px-3 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:heart-pulse"></span>صحية</button>
+            <button onclick="facSetCat('branches')" id="fcat-branches" class="fcat-btn text-xs px-3 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:landmark"></span>&nbsp;<span data-i18n="fcat-branches">فروع إدارية</span></button>
+            <button onclick="facSetCat('education')" id="fcat-education" class="fcat-btn text-xs px-3 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:school"></span>&nbsp;<span data-i18n="fcat-education">تعليمية</span></button>
+            <button onclick="facSetCat('health')" id="fcat-health" class="fcat-btn text-xs px-3 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:heart-pulse"></span>&nbsp;<span data-i18n="fcat-health">صحية</span></button>
         </div>
     </div>
     <div class="flex-1 overflow-y-auto bg-gray-50">
@@ -3757,7 +3765,7 @@ function createCircleMarker(lat, lng, color, item, type) {
     const btnHtml = modalCall
         ? `<br><button onclick="chetaibiMap.closePopup();setTimeout(function(){${modalCall};},80);"
                    style="background:#059669;color:#fff;border:none;padding:4px 14px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;margin-top:4px;">
-               عرض التفاصيل
+               ${t('map-popup-details')}
            </button>`
         : '';
 
@@ -3856,8 +3864,8 @@ async function initMap() {
                     '<img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/Chetaibi-Town-Hall.webp"' +
                         ' style="width:100%;height:120px;object-fit:cover;display:block;">' +
                     '<div style="padding:10px 12px;text-align:center;">' +
-                        '<div style="font-weight:800;font-size:14px;color:#1a1a1a;margin-bottom:4px;font-family:Cairo,sans-serif;direction:rtl;">مقر بلدية شطايبي</div>' +
-                        '<div style="font-size:11px;color:#6b7280;font-family:Cairo,sans-serif;direction:rtl;">المجلس الشعبي البلدي لبلدية شطايبي</div>' +
+                        '<div style="font-weight:800;font-size:14px;color:#1a1a1a;margin-bottom:4px;font-family:Cairo,sans-serif;">' + t('map-municipality-name') + '</div>' +
+                        '<div style="font-size:11px;color:#6b7280;font-family:Cairo,sans-serif;">' + t('map-municipality-sub') + '</div>' +
                     '</div>' +
                 '</div>',
                 { maxWidth: 230, className: 'chetaibi-popup', offset: [0, -5] }
