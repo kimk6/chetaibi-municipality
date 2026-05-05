@@ -3680,18 +3680,35 @@ window.addEventListener('appinstalled', () => {
 });
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js')
-        .then(reg => {
+        .then(async reg => {
             window._swReg = reg;
-            if ('PushManager' in window) {
+            if (!('PushManager' in window)) return;
+
+            // ── كشف FCM Legacy وإجبار إعادة تسجيل SW كاملة ──
+            const existing = await reg.pushManager.getSubscription().catch(() => null);
+            if (existing?.endpoint?.includes('/fcm/send/')) {
+                await existing.unsubscribe().catch(() => {});
+                // إلغاء تسجيل SW كلياً يمسح FCM token القديم
+                await reg.unregister().catch(() => {});
+                // إعادة تسجيل SW من جديد
+                const newReg = await navigator.serviceWorker.register('/sw.js');
+                await navigator.serviceWorker.ready;
+                window._swReg = newReg;
+                // الاشتراك بـ VAPID key الجديد
                 if (Notification.permission === 'granted') {
-                    subscribePush(reg);
-                } else if (Notification.permission === 'default') {
-                    setTimeout(() => {
-                        Notification.requestPermission().then(perm => {
-                            if (perm === 'granted') subscribePush(reg);
-                        });
-                    }, 3000);
+                    await subscribePush(newReg);
                 }
+                return;
+            }
+
+            if (Notification.permission === 'granted') {
+                subscribePush(reg);
+            } else if (Notification.permission === 'default') {
+                setTimeout(() => {
+                    Notification.requestPermission().then(perm => {
+                        if (perm === 'granted') subscribePush(reg);
+                    });
+                }, 3000);
             }
         })
         .catch(() => {});
