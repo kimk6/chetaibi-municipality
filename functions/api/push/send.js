@@ -13,8 +13,8 @@ export async function onRequestPost(context) {
             return createResponse({ success: false, error: 'العنوان والرسالة مطلوبان' }, 400);
 
         // ── 1. تحميل المفاتيح ──
-        const vapidPublic  = (context.env.VAPID_PUBLIC  || '').trim();
-        const vapidPrivate = (context.env.VAPID_PRIVATE || '').trim();
+        const vapidPublic  = (context.env.VAPID_PUBLIC_KEY  || '').trim();
+        const vapidPrivate = (context.env.VAPID_PRIVATE_KEY || '').trim();
         const vapidSubject = (context.env.VAPID_SUBJECT     || 'mailto:apc.chetaibi.officiel@gmail.com').trim();
 
         // تشخيص دقيق بدل رسالة مبهمة
