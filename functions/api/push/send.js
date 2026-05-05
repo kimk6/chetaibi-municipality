@@ -1,5 +1,4 @@
 // functions/api/push/send.js
-// يرسل Push Notification لجميع المشتركين
 import { withAuth, createResponse, handleOptions } from '../_utils.js';
 
 export async function onRequestOptions() { return handleOptions(); }
@@ -10,55 +9,52 @@ export async function onRequestPost(context) {
 
     const { env, request } = context;
     try {
-        const { title, body, url, icon } = await request.json();
+        const { title, body, url } = await request.json();
         if (!title || !body) return createResponse({ success: false, error: 'title و body مطلوبان' }, 400);
 
-        // جلب كل المشتركين
-        const { results: subs } = await env.DB.prepare('SELECT * FROM push_subscriptions').all();
-        if (!subs || subs.length === 0) return createResponse({ success: true, sent: 0, message: 'لا يوجد مشتركون' });
-
-        // VAPID keys — يجب تخزينها في Cloudflare env variables
-        const VAPID_PUBLIC  = env.VAPID_PUBLIC  || '';
-        const VAPID_PRIVATE = env.VAPID_PRIVATE || '';
+        const VAPID_PUBLIC  = env.VAPID_PUBLIC;
+        const VAPID_PRIVATE = env.VAPID_PRIVATE;
         const VAPID_SUBJECT = env.VAPID_SUBJECT || 'mailto:apc.chetaibi.officiel@gmail.com';
 
         if (!VAPID_PUBLIC || !VAPID_PRIVATE) {
-            return createResponse({ success: false, error: 'VAPID keys غير مُعرَّفة في البيئة. أضف VAPID_PUBLIC و VAPID_PRIVATE في Cloudflare.' }, 500);
+            return createResponse({ success: false, error: 'VAPID_PUBLIC و VAPID_PRIVATE غير موجودين في Environment Variables' }, 500);
         }
 
-        const payload = JSON.stringify({ title, body, url: url || '/', icon: icon || '' });
+        const { results: subs } = await env.DB.prepare('SELECT * FROM push_subscriptions').all();
+        if (!subs || subs.length === 0) {
+            return createResponse({ success: true, sent: 0, message: 'لا يوجد مشتركون' });
+        }
+
+        const payload = JSON.stringify({
+            title,
+            body,
+            url:   url || '/',
+            icon:  'https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/app-icon.png',
+            badge: 'https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/app-icon.png',
+        });
 
         let sent = 0, failed = 0;
         const toDelete = [];
 
         for (const sub of subs) {
             try {
-                const res = await sendWebPush({
-                    endpoint: sub.endpoint,
-                    p256dh:   sub.p256dh,
-                    auth:     sub.auth,
-                    payload,
-                    vapidPublic:  VAPID_PUBLIC,
-                    vapidPrivate: VAPID_PRIVATE,
-                    vapidSubject: VAPID_SUBJECT,
-                });
-                if (res.status === 201 || res.status === 200) {
+                const result = await sendPush(sub, payload, VAPID_PUBLIC, VAPID_PRIVATE, VAPID_SUBJECT);
+                if (result.ok) {
                     sent++;
-                } else if (res.status === 404 || res.status === 410) {
-                    // الاشتراك منتهي — نحذفه
+                } else if (result.status === 404 || result.status === 410) {
                     toDelete.push(sub.endpoint);
                     failed++;
                 } else {
                     failed++;
                 }
-            } catch {
+            } catch (e) {
                 failed++;
             }
         }
 
         // حذف الاشتراكات المنتهية
         for (const ep of toDelete) {
-            await env.DB.prepare('DELETE FROM push_subscriptions WHERE endpoint=?').bind(ep).run().catch(()=>{});
+            await env.DB.prepare('DELETE FROM push_subscriptions WHERE endpoint=?').bind(ep).run().catch(() => {});
         }
 
         return createResponse({ success: true, sent, failed, total: subs.length });
@@ -67,117 +63,155 @@ export async function onRequestPost(context) {
     }
 }
 
-// ── دالة إرسال Web Push بدون مكتبات خارجية (Web Crypto API) ──
-async function sendWebPush({ endpoint, p256dh, auth, payload, vapidPublic, vapidPrivate, vapidSubject }) {
-    const origin = new URL(endpoint).origin;
-    const audience = origin;
-    const expiration = Math.floor(Date.now() / 1000) + 43200; // 12 ساعة
+// ══════════════════════════════════════════════════════
+// Web Push باستخدام Web Crypto API الأصلية في Cloudflare
+// ══════════════════════════════════════════════════════
+async function sendPush(sub, payload, vapidPublic, vapidPrivate, subject) {
+    const endpoint = sub.endpoint;
+    const origin   = new URL(endpoint).origin;
+    const now      = Math.floor(Date.now() / 1000);
+    const exp      = now + 43200;
 
-    // بناء VAPID JWT
-    const header  = b64url(JSON.stringify({ typ: 'JWT', alg: 'ES256' }));
-    const claims  = b64url(JSON.stringify({ aud: audience, exp: expiration, sub: vapidSubject }));
-    const toSign  = `${header}.${claims}`;
+    // ── بناء JWT للـ VAPID ──
+    const header  = urlB64Encode(JSON.stringify({ typ: 'JWT', alg: 'ES256' }));
+    const claims  = urlB64Encode(JSON.stringify({ aud: origin, exp, sub: subject }));
+    const msg     = `${header}.${claims}`;
 
-    const privKeyBytes = b64decode(vapidPrivate);
-    const privKey = await crypto.subtle.importKey(
-        'pkcs8', privKeyBytes,
+    // استيراد المفتاح الخاص
+    const privBytes = urlB64Decode(vapidPrivate);
+    const privKey   = await crypto.subtle.importKey(
+        'raw', privBytes,
         { name: 'ECDSA', namedCurve: 'P-256' },
         false, ['sign']
-    );
-    const sigBytes  = await crypto.subtle.sign({ name: 'ECDSA', hash: 'SHA-256' }, privKey, new TextEncoder().encode(toSign));
-    const signature = b64url(sigBytes);
-    const jwt = `${toSign}.${signature}`;
+    ).catch(async () => {
+        // جرب pkcs8 إذا فشل raw
+        const pkcs8 = buildPkcs8(privBytes);
+        return crypto.subtle.importKey('pkcs8', pkcs8, { name: 'ECDSA', namedCurve: 'P-256' }, false, ['sign']);
+    });
 
-    // تشفير الـ payload
-    const encrypted = await encryptPayload(payload, p256dh, auth);
+    const sigBuf  = await crypto.subtle.sign({ name: 'ECDSA', hash: 'SHA-256' }, privKey, new TextEncoder().encode(msg));
+    const sig     = urlB64EncodeBuffer(sigBuf);
+    const jwt     = `${msg}.${sig}`;
+
+    // ── تشفير الـ payload ──
+    const encrypted = await encryptPayload(payload, sub.p256dh, sub.auth);
 
     return fetch(endpoint, {
         method: 'POST',
         headers: {
-            'Authorization': `vapid t=${jwt},k=${vapidPublic}`,
-            'Content-Type':  'application/octet-stream',
+            'Authorization':    `vapid t=${jwt},k=${vapidPublic}`,
+            'Content-Type':     'application/octet-stream',
             'Content-Encoding': 'aes128gcm',
-            'TTL': '86400',
+            'TTL':              '86400',
         },
         body: encrypted,
     });
 }
 
-// ── تشفير AES-GCM للـ Web Push ──
-async function encryptPayload(payload, p256dhB64, authB64) {
-    const encoder = new TextEncoder();
-    const payloadBytes = encoder.encode(payload);
+// ── تشفير Payload بـ aes128gcm ──
+async function encryptPayload(plaintext, p256dhB64, authB64) {
+    const enc      = new TextEncoder();
+    const authInfo = enc.encode('Content-Encoding: auth\0');
 
-    const p256dh = b64decode(p256dhB64);
-    const authBytes = b64decode(authB64);
+    const p256dh   = urlB64Decode(p256dhB64);
+    const authBytes = urlB64Decode(authB64);
 
-    // مفتاح ECDH مؤقت
-    const localKey = await crypto.subtle.generateKey({ name: 'ECDH', namedCurve: 'P-256' }, true, ['deriveKey', 'deriveBits']);
-    const localPubKeyRaw = await crypto.subtle.exportKey('raw', localKey.publicKey);
+    // مفتاح محلي مؤقت
+    const localKP  = await crypto.subtle.generateKey({ name: 'ECDH', namedCurve: 'P-256' }, true, ['deriveBits']);
+    const localPub = await crypto.subtle.exportKey('raw', localKP.publicKey);
 
-    // استيراد مفتاح المستخدم
-    const remoteKey = await crypto.subtle.importKey('raw', p256dh, { name: 'ECDH', namedCurve: 'P-256' }, false, []);
+    // مفتاح العميل
+    const remotePub = await crypto.subtle.importKey('raw', p256dh, { name: 'ECDH', namedCurve: 'P-256' }, false, []);
 
-    // ECDH shared secret
-    const sharedBits = await crypto.subtle.deriveBits({ name: 'ECDH', public: remoteKey }, localKey.privateKey, 256);
+    // ECDH
+    const sharedBits = await crypto.subtle.deriveBits({ name: 'ECDH', public: remotePub }, localKP.privateKey, 256);
 
-    // salt عشوائي 16 byte
+    // Salt
     const salt = crypto.getRandomValues(new Uint8Array(16));
 
-    // HKDF
-    const ikm = await hkdf(authBytes, new Uint8Array(sharedBits), encoder.encode('Content-Encoding: auth\0'), 32);
-    const keyInfo = buildInfo('aesgcm', new Uint8Array(localPubKeyRaw), p256dh);
-    const nonceInfo = buildInfo('nonce', new Uint8Array(localPubKeyRaw), p256dh);
+    // PRK
+    const prk = await hkdf(authBytes, new Uint8Array(sharedBits), authInfo, 32);
 
-    const contentKey = await hkdfKey(salt, new Uint8Array(ikm), keyInfo, 16);
-    const nonce = await hkdf(salt, new Uint8Array(ikm), nonceInfo, 12);
+    // Content key + nonce
+    const localPubArr  = new Uint8Array(localPub);
+    const remotePubArr = new Uint8Array(p256dh);
+    const keyInfo   = buildKeyInfo('aesgcm', localPubArr, remotePubArr);
+    const nonceInfo = buildKeyInfo('nonce',  localPubArr, remotePubArr);
+
+    const contentKey  = await hkdf(salt, new Uint8Array(prk), keyInfo,   16);
+    const nonceBytes  = await hkdf(salt, new Uint8Array(prk), nonceInfo, 12);
 
     const aesKey = await crypto.subtle.importKey('raw', contentKey, 'AES-GCM', false, ['encrypt']);
-    const padded = new Uint8Array([0, 0, ...payloadBytes]);
-    const ciphertext = await crypto.subtle.encrypt({ name: 'AES-GCM', iv: nonce }, aesKey, padded);
 
-    // بناء رسالة aes128gcm
-    const rs = 4096;
-    const result = new Uint8Array(21 + localPubKeyRaw.byteLength + ciphertext.byteLength);
-    result.set(salt, 0);
-    new DataView(result.buffer).setUint32(16, rs, false);
-    result[20] = localPubKeyRaw.byteLength;
-    result.set(new Uint8Array(localPubKeyRaw), 21);
-    result.set(new Uint8Array(ciphertext), 21 + localPubKeyRaw.byteLength);
+    // Padding
+    const text    = enc.encode(plaintext);
+    const padded  = new Uint8Array(2 + text.length);
+    padded.set(text, 2);
 
-    return result.buffer;
+    const cipherBuf = await crypto.subtle.encrypt({ name: 'AES-GCM', iv: nonceBytes }, aesKey, padded);
+    const cipher    = new Uint8Array(cipherBuf);
+
+    // بناء الرسالة النهائية
+    const rs       = 4096;
+    const keyIdLen = localPubArr.length;
+    const out      = new Uint8Array(16 + 4 + 1 + keyIdLen + cipher.length);
+    let   off      = 0;
+
+    out.set(salt, off);                    off += 16;
+    new DataView(out.buffer).setUint32(off, rs, false); off += 4;
+    out[off++] = keyIdLen;
+    out.set(localPubArr, off);             off += keyIdLen;
+    out.set(cipher, off);
+
+    return out.buffer;
 }
 
-async function hkdf(salt, ikm, info, length) {
-    const keyMaterial = await crypto.subtle.importKey('raw', ikm, 'HKDF', false, ['deriveBits']);
-    const bits = await crypto.subtle.deriveBits({ name: 'HKDF', hash: 'SHA-256', salt, info }, keyMaterial, length * 8);
+// ── HKDF ──
+async function hkdf(salt, ikm, info, len) {
+    const key  = await crypto.subtle.importKey('raw', ikm, 'HKDF', false, ['deriveBits']);
+    const bits = await crypto.subtle.deriveBits({ name: 'HKDF', hash: 'SHA-256', salt, info }, key, len * 8);
     return new Uint8Array(bits);
 }
 
-async function hkdfKey(salt, ikm, info, length) {
-    return hkdf(salt, ikm, info, length);
-}
-
-function buildInfo(type, clientKey, serverKey) {
-    const enc = new TextEncoder();
-    const prefix = enc.encode(`Content-Encoding: ${type}\0P-256\0`);
-    const result = new Uint8Array(prefix.length + 2 + clientKey.length + 2 + serverKey.length);
-    let offset = 0;
-    result.set(prefix, offset); offset += prefix.length;
-    new DataView(result.buffer).setUint16(offset, clientKey.length, false); offset += 2;
-    result.set(clientKey, offset); offset += clientKey.length;
-    new DataView(result.buffer).setUint16(offset, serverKey.length, false); offset += 2;
-    result.set(serverKey, offset);
+function buildKeyInfo(type, clientKey, serverKey) {
+    const label  = new TextEncoder().encode(`Content-Encoding: ${type}\0P-256\0`);
+    const result = new Uint8Array(label.length + 2 + clientKey.length + 2 + serverKey.length);
+    let i = 0;
+    result.set(label, i);                                                       i += label.length;
+    new DataView(result.buffer).setUint16(i, clientKey.length, false);          i += 2;
+    result.set(clientKey, i);                                                   i += clientKey.length;
+    new DataView(result.buffer).setUint16(i, serverKey.length, false);          i += 2;
+    result.set(serverKey, i);
     return result;
 }
 
-function b64url(data) {
-    const bytes = typeof data === 'string' ? new TextEncoder().encode(data) : new Uint8Array(data);
-    return btoa(String.fromCharCode(...bytes)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+// ── بناء PKCS8 من raw key (fallback) ──
+function buildPkcs8(rawKey) {
+    const header = new Uint8Array([
+        0x30, 0x41, 0x02, 0x01, 0x00, 0x30, 0x13,
+        0x06, 0x07, 0x2a, 0x86, 0x48, 0xce, 0x3d, 0x02, 0x01,
+        0x06, 0x08, 0x2a, 0x86, 0x48, 0xce, 0x3d, 0x03, 0x01, 0x07,
+        0x04, 0x27, 0x30, 0x25, 0x02, 0x01, 0x01, 0x04, 0x20,
+    ]);
+    const pkcs8 = new Uint8Array(header.length + rawKey.byteLength);
+    pkcs8.set(header);
+    pkcs8.set(new Uint8Array(rawKey), header.length);
+    return pkcs8.buffer;
 }
 
-function b64decode(str) {
-    const s = str.replace(/-/g, '+').replace(/_/g, '/');
+// ── Base64url helpers ──
+function urlB64Encode(str) {
+    return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+}
+function urlB64EncodeBuffer(buf) {
+    const bytes = new Uint8Array(buf);
+    let bin = '';
+    for (const b of bytes) bin += String.fromCharCode(b);
+    return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+}
+function urlB64Decode(str) {
+    const s = (str + '===').slice(0, str.length + (4 - str.length % 4) % 4)
+        .replace(/-/g, '+').replace(/_/g, '/');
     const bin = atob(s);
     const buf = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
