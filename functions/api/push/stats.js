@@ -9,9 +9,14 @@ export async function onRequestGet(context) {
     try {
         const row = await context.env.DB
             .prepare('SELECT COUNT(*) as count FROM push_subscriptions')
-            .first().catch(() => ({ count: 0 }));
+            .first();
         return createResponse({ success: true, count: row?.count ?? 0 });
     } catch (e) {
-        return createResponse({ success: true, count: 0 });
+        // إذا الجدول غير موجود → شغّل push_migration.sql
+        return createResponse({
+            success: false,
+            count: 0,
+            error: 'جدول push_subscriptions غير موجود — شغّل push_migration.sql',
+        });
     }
 }
