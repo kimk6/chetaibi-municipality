@@ -15,8 +15,8 @@ export async function onRequestPost(context) {
         }
 
         // ── 1. تحميل المفاتيح من env ──
-        const vapidPublic  = context.env.VAPID_PUBLIC_KEY;
-        const vapidPrivate = context.env.VAPID_PRIVATE_KEY;
+        const vapidPublic  = context.env.VAPID_PUBLIC;
+        const vapidPrivate = context.env.VAPID_PRIVATE;
         const vapidSubject = context.env.VAPID_SUBJECT || 'mailto:apc.chetaibi.officiel@gmail.com';
 
         if (!vapidPublic || !vapidPrivate) {
