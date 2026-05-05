@@ -28,6 +28,9 @@
         .chetaibi-popup .map-popup img { margin: -0px -0px 8px -0px; width: calc(100% + 0px); border-radius: 0; }
     </style>
     <script>tailwind.config={theme:{extend:{fontFamily:{cairo:['Cairo','sans-serif']}}}}</script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js"></script>
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#059669">
@@ -3678,107 +3681,54 @@ window.addEventListener('appinstalled', () => {
     if (wrap) wrap.classList.add('hidden');
     _pwaPrompt = null;
 });
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js')
-        .then(async reg => {
-            window._swReg = reg;
-            if (!('PushManager' in window)) return;
+// ══ Firebase FCM ══
+const _fbApp = firebase.initializeApp({
+    apiKey:            "AIzaSyCWUUSEoz2zaz-0KVTWGbSmK_sVX1hyg8w",
+    authDomain:        "chetaibi-71f80.firebaseapp.com",
+    projectId:         "chetaibi-71f80",
+    storageBucket:     "chetaibi-71f80.appspot.com",
+    messagingSenderId: "314577571705",
+    appId:             "1:314577571705:web:4063450187d6df202529a8",
+});
+const _fbMsg = firebase.messaging();
 
-            // ── كشف FCM Legacy وإجبار إعادة تسجيل SW كاملة ──
-            const existing = await reg.pushManager.getSubscription().catch(() => null);
-            if (existing?.endpoint?.includes('/fcm/send/')) {
-                await existing.unsubscribe().catch(() => {});
-                // إلغاء تسجيل SW كلياً يمسح FCM token القديم
-                await reg.unregister().catch(() => {});
-                // إعادة تسجيل SW من جديد
-                const newReg = await navigator.serviceWorker.register('/sw.js');
-                await navigator.serviceWorker.ready;
-                window._swReg = newReg;
-                // الاشتراك بـ VAPID key الجديد
-                if (Notification.permission === 'granted') {
-                    await subscribePush(newReg);
-                }
-                return;
-            }
+// VAPID Key من Firebase Console → Cloud Messaging → Certificats Web push
+const FCM_VAPID = 'BDOP1U8Pc-BySzNtqkvJJcKsP1ehDSKfJ2nLtnvCloTlvGWRbnx3NM9lxol4RsXgTA-ebRiw2DSBfySWmE97Fy0';
 
-            if (Notification.permission === 'granted') {
-                subscribePush(reg);
-            } else if (Notification.permission === 'default') {
-                setTimeout(() => {
-                    Notification.requestPermission().then(perm => {
-                        if (perm === 'granted') subscribePush(reg);
-                    });
-                }, 3000);
-            }
-        })
-        .catch(() => {});
-}
-
-// دالة يدوية لطلب الإذن (تُستدعى من أي مكان)
-async function requestPushPermission() {
-    if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
-    const perm = await Notification.requestPermission();
-    if (perm === 'granted' && window._swReg) await subscribePush(window._swReg);
-    return perm;
-}
-
-// VAPID Public Key — يجب مطابقته مع VAPID_PUBLIC في Cloudflare
-const VAPID_PUB_KEY = 'BBYBCkteVEkVDOFwYglgTpPEx-dQHiU4DEQ9caOlbr6JO0ceE1ebpU9hFmNaIcotydXAQzWhzCQivH6a8o3J9nQ';
-
-async function subscribePush(reg) {
+async function initFCM() {
     try {
-        const existing = await reg.pushManager.getSubscription();
-
-        // اكتشاف الاشتراك القديم legacy وإلغاؤه تلقائياً
-        if (existing) {
-            const isLegacy = existing.endpoint.includes('/fcm/send/');
-            if (isLegacy) {
-                await existing.unsubscribe();
-                // أنشئ اشتراكاً جديداً صحيحاً
-                const newSub = await reg.pushManager.subscribe({
-                    userVisibleOnly: true,
-                    applicationServerKey: urlBase64ToUint8Array(VAPID_PUB_KEY)
-                });
-                await sendSubToServer(newSub);
-            } else {
-                // اشتراك سليم — أرسله للسيرفر (يتجاهل إذا موجود مسبقاً)
-                await sendSubToServer(existing);
-            }
-            return;
+        if (!('serviceWorker' in navigator)) return;
+        await navigator.serviceWorker.register('/sw.js');
+        const perm = await Notification.requestPermission();
+        if (perm !== 'granted') return;
+        const token = await _fbMsg.getToken({ vapidKey: FCM_VAPID });
+        if (token) {
+            await fetch('/api/push/subscribe', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ fcm_token: token }),
+            });
         }
+    } catch (e) { console.warn('FCM init:', e.message); }
+}
 
-        // لا يوجد اشتراك — أنشئ واحداً جديداً
-        const sub = await reg.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: urlBase64ToUint8Array(VAPID_PUB_KEY)
+// استقبال الإشعارات عند فتح التطبيق
+_fbMsg.onMessage(payload => {
+    const { title, body } = payload.notification || {};
+    if (title && 'Notification' in window && Notification.permission === 'granted') {
+        new Notification(title, {
+            body,
+            icon: 'https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/app-icon.png',
         });
-        await sendSubToServer(sub);
-    } catch (err) {
-        console.warn('[Push] subscribePush error:', err);
     }
-}
+});
 
-async function sendSubToServer(sub) {
-    try {
-        const res = await fetch('/api/push/subscribe', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(sub.toJSON())
-        });
-        if (!res.ok) console.warn('[Push] subscribe API error:', res.status);
-    } catch (err) {
-        console.warn('[Push] sendSubToServer error:', err);
-    }
-}
+// تهيئة FCM بعد 2 ثانية من تحميل الصفحة
+setTimeout(initFCM, 2000);
 
-function urlBase64ToUint8Array(base64String) {
-    const padding = '='.repeat((4 - base64String.length % 4) % 4);
-    const base64  = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
-    const rawData = atob(base64);
-    const output  = new Uint8Array(rawData.length);
-    for (let i = 0; i < rawData.length; ++i) output[i] = rawData.charCodeAt(i);
-    return output;
-}
+async function requestPushPermission() { await initFCM(); }
+
+
 
 // ══════════════════════════════════════════════════════
 // 🌐 تطبيق اللغة المحفوظة عند التحميل
