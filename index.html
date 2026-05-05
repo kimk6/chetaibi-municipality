@@ -3681,18 +3681,34 @@ window.addEventListener('appinstalled', () => {
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js')
         .then(reg => {
-            // طلب إذن الإشعارات + الاشتراك
+            window._swReg = reg;
+            // إذا الإذن ممنوح مسبقاً → اشترك فوراً
             if ('PushManager' in window) {
-                Notification.requestPermission().then(perm => {
-                    if (perm === 'granted') subscribePush(reg);
-                });
+                if (Notification.permission === 'granted') {
+                    subscribePush(reg);
+                } else if (Notification.permission === 'default') {
+                    // طلب الإذن تلقائياً بعد 3 ثوان
+                    setTimeout(() => {
+                        Notification.requestPermission().then(perm => {
+                            if (perm === 'granted') subscribePush(reg);
+                        });
+                    }, 3000);
+                }
             }
         })
         .catch(() => {});
 }
 
+// دالة يدوية لطلب الإذن (تُستدعى من أي مكان)
+async function requestPushPermission() {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+    const perm = await Notification.requestPermission();
+    if (perm === 'granted' && window._swReg) await subscribePush(window._swReg);
+    return perm;
+}
+
 // VAPID Public Key — يجب مطابقته مع VAPID_PUBLIC في Cloudflare
-const VAPID_PUB_KEY = 'BGYqlUambHPpqcjGDxoEpVcUH3lOnxuKffR_VvvpKSnXKL4-fvJi7qBTq5Ofyw5apxP-shwRjj7AUyasBqFeG7Y';
+const VAPID_PUB_KEY = 'BBN42emFiHasQaY9oZVOHolw-DlaiB18ujg6G3Am4AAf4ag33kzdt_y6N7laHo5vd9TZ5lfrd9da-fO9ZQiiYbg';
 
 async function subscribePush(reg) {
     try {
