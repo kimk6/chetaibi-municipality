@@ -3682,12 +3682,10 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js')
         .then(reg => {
             window._swReg = reg;
-            // إذا الإذن ممنوح مسبقاً → اشترك فوراً
             if ('PushManager' in window) {
                 if (Notification.permission === 'granted') {
                     subscribePush(reg);
                 } else if (Notification.permission === 'default') {
-                    // طلب الإذن تلقائياً بعد 3 ثوان
                     setTimeout(() => {
                         Notification.requestPermission().then(perm => {
                             if (perm === 'granted') subscribePush(reg);
@@ -3714,17 +3712,25 @@ async function subscribePush(reg) {
     try {
         const existing = await reg.pushManager.getSubscription();
 
-        // إذا كان الاشتراك القديم من نوع FCM Legacy (ميت منذ يونيو 2024) → أعد الاشتراك
+        // اكتشاف الاشتراك القديم legacy وإلغاؤه تلقائياً
         if (existing) {
             const isLegacy = existing.endpoint.includes('/fcm/send/');
             if (isLegacy) {
                 await existing.unsubscribe();
+                // أنشئ اشتراكاً جديداً صحيحاً
+                const newSub = await reg.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: urlBase64ToUint8Array(VAPID_PUB_KEY)
+                });
+                await sendSubToServer(newSub);
             } else {
+                // اشتراك سليم — أرسله للسيرفر (يتجاهل إذا موجود مسبقاً)
                 await sendSubToServer(existing);
-                return;
             }
+            return;
         }
 
+        // لا يوجد اشتراك — أنشئ واحداً جديداً
         const sub = await reg.pushManager.subscribe({
             userVisibleOnly: true,
             applicationServerKey: urlBase64ToUint8Array(VAPID_PUB_KEY)
