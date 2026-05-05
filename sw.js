@@ -1,5 +1,5 @@
-// Service Worker — بلدية شطايبي PWA v3
-const CACHE = 'chetaibi-v3';
+// Service Worker — بلدية شطايبي PWA v4
+const CACHE = 'chetaibi-v4';
 const VAPID_PUB_KEY = 'BBYBCkteVEkVDOFwYglgTpPEx-dQHiU4DEQ9caOlbr6JO0ceE1ebpU9hFmNaIcotydXAQzWhzCQivH6a8o3J9nQ';
 const STATIC = ['/', '/index.html', '/manifest.json'];
 
@@ -60,7 +60,8 @@ self.addEventListener('fetch', e => {
         fetch(e.request)
             .then(res => {
                 if (res && res.status === 200 && e.request.method === 'GET') {
-                    caches.open(CACHE).then(c => c.put(e.request, res.clone()));
+                    const resClone = res.clone();
+                    caches.open(CACHE).then(c => c.put(e.request, resClone));
                 }
                 return res;
             })
