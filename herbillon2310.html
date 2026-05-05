@@ -805,12 +805,12 @@ function appendNotifLog(title, body, sent) {
     const now = new Date().toLocaleString('ar-DZ');
     const item = document.createElement('div');
     item.className = 'flex items-start gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100';
-    item.innerHTML = \`<span class="iconify text-emerald-500 text-xl flex-shrink-0 mt-0.5" data-icon="lucide:check-circle"></span>
+    item.innerHTML = `<span class="iconify text-emerald-500 text-xl flex-shrink-0 mt-0.5" data-icon="lucide:check-circle"></span>
         <div class="flex-1 text-right">
-            <p class="font-bold text-gray-700 text-sm">\${title}</p>
-            <p class="text-xs text-gray-400">\${body}</p>
-            <p class="text-xs text-emerald-500 mt-1">أُرسل لـ \${sent} مستخدم · \${now}</p>
-        </div>\`;
+            <p class="font-bold text-gray-700 text-sm">${title}</p>
+            <p class="text-xs text-gray-400">${body}</p>
+            <p class="text-xs text-emerald-500 mt-1">أُرسل لـ ${sent} مستخدم · ${now}</p>
+        </div>`;
     if (log.querySelector('[data-icon]')) log.innerHTML = '';
     log.prepend(item);
 }
