@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>بلدية شطايبي - الموقع الرسمي</title>
     <!-- ✅ 10: Favicon -->
     <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo.webp">
@@ -30,11 +30,10 @@
     <script>tailwind.config={theme:{extend:{fontFamily:{cairo:['Cairo','sans-serif']}}}}</script>
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#059669" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#059669" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#059669">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="بلدية شطايبي">
     <!-- ══════════════════════════════════════════════════════════
          🌐 نظام الترجمة الثنائية AR / FR
@@ -704,52 +703,6 @@
         @media(min-width:768px){html[lang="fr"] .timeline-line{left:50%;right:auto;transform:translateX(-50%)}}
         html[lang="fr"] .news-tab{font-size:0.72rem}
         html[lang="fr"] .news-tab .iconify{font-size:0.85rem}
-        /* ══ PWA Splash Screen ══ */
-        #pwa-splash {
-            position: fixed; inset: 0; z-index: 99999;
-            background: linear-gradient(160deg, #064e3b 0%, #059669 50%, #34d399 100%);
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            gap: 20px;
-            transition: opacity .5s ease, transform .5s ease;
-            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-        }
-        #pwa-splash.fade-out { opacity: 0; transform: scale(1.05); pointer-events: none; }
-        #pwa-splash .splash-logo {
-            width: 110px; height: 110px;
-            border-radius: 50%;
-            overflow: hidden;
-            background: white;
-            box-shadow: 0 8px 40px rgba(0,0,0,.25), 0 0 0 4px rgba(255,255,255,.2);
-            flex-shrink: 0;
-        }
-        #pwa-splash .splash-logo img { width: 100%; height: 100%; object-fit: cover; }
-        #pwa-splash .splash-name {
-            font-family: 'Cairo', sans-serif;
-            font-size: 28px; font-weight: 900;
-            color: white; letter-spacing: .5px;
-            text-shadow: 0 2px 12px rgba(0,0,0,.2);
-        }
-        #pwa-splash .splash-sub {
-            font-family: 'Cairo', sans-serif;
-            font-size: 14px; font-weight: 500;
-            color: rgba(255,255,255,.8);
-            margin-top: -12px;
-        }
-        #pwa-splash .splash-dots {
-            display: flex; gap: 8px; margin-top: 16px;
-        }
-        #pwa-splash .splash-dots span {
-            width: 8px; height: 8px; border-radius: 50%;
-            background: rgba(255,255,255,.4);
-            animation: dot-pulse 1.4s ease-in-out infinite;
-        }
-        #pwa-splash .splash-dots span:nth-child(2) { animation-delay: .2s; }
-        #pwa-splash .splash-dots span:nth-child(3) { animation-delay: .4s; }
-        @keyframes dot-pulse {
-            0%,80%,100% { background: rgba(255,255,255,.3); transform: scale(.8); }
-            40% { background: white; transform: scale(1.1); }
-        }
         @media(max-width:767px){#main-nav{position:fixed;top:0;left:0;right:0;transform:translateY(-100%);opacity:0;transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .35s ease;pointer-events:none;z-index:50}#main-nav.nav-visible{transform:translateY(0);opacity:1;pointer-events:auto}}
         /* ── زر تغيير اللغة — موبايل ── */
         #lang-btn-mobile{transition:background .2s,transform .15s;letter-spacing:.05em}
@@ -852,17 +805,6 @@ html[dir="ltr"] article {
 </head>
 <body class="bg-gray-50 text-gray-800">
 
-<!-- ══ PWA Splash Screen ══ -->
-<div id="pwa-splash">
-    <div class="splash-logo">
-        <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo.webp" alt="شعار بلدية شطايبي">
-    </div>
-    <div class="splash-name">بلدية شطايبي</div>
-    <div class="splash-sub">ولاية عنابة — الجزائر</div>
-    <div class="splash-dots">
-        <span></span><span></span><span></span>
-    </div>
-</div>
 <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-[100] bg-emerald-600 text-white px-6 py-3 rounded-xl shadow-2xl flex items-center gap-3">
     <span class="iconify text-xl" data-icon="lucide:check-circle"></span>
     <span id="toast-msg">جاري تحميل الاستمارة...</span>
@@ -3712,21 +3654,6 @@ setInterval(()=>{fetchWeather();fetchSeaState();},900000);
 document.getElementById('footer-year').textContent = new Date().getFullYear();
 
 // ══════════════════════════════════════════════════════
-// ── PWA Splash ──
-(function() {
-    const splash = document.getElementById('pwa-splash');
-    if (!splash) return;
-    const hideSplash = () => {
-        splash.classList.add('fade-out');
-        setTimeout(() => { if(splash.parentNode) splash.parentNode.removeChild(splash); }, 550);
-    };
-    if (document.readyState === 'complete') {
-        setTimeout(hideSplash, 1800);
-    } else {
-        window.addEventListener('load', () => setTimeout(hideSplash, 1800));
-    }
-})();
-
 // 📱 PWA — تثبيت التطبيق
 // ══════════════════════════════════════════════════════
 let _pwaPrompt = null;
@@ -3752,7 +3679,50 @@ window.addEventListener('appinstalled', () => {
     _pwaPrompt = null;
 });
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').catch(() => {});
+    navigator.serviceWorker.register('/sw.js')
+        .then(reg => {
+            // طلب إذن الإشعارات + الاشتراك
+            if ('PushManager' in window) {
+                Notification.requestPermission().then(perm => {
+                    if (perm === 'granted') subscribePush(reg);
+                });
+            }
+        })
+        .catch(() => {});
+}
+
+// VAPID Public Key — يجب مطابقته مع VAPID_PUBLIC في Cloudflare
+const VAPID_PUB_KEY = 'BKkr1c6gldTYBuLcNRf1KxVl5YBfYDohTlTsDM_eHv1aEvvgMPUQ9hIVB_FW0Qf8VN_vYUpTNd_qLHCeMbpbjH4';
+
+async function subscribePush(reg) {
+    try {
+        const existing = await reg.pushManager.getSubscription();
+        if (existing) { await sendSubToServer(existing); return; }
+        const sub = await reg.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array(VAPID_PUB_KEY)
+        });
+        await sendSubToServer(sub);
+    } catch {}
+}
+
+async function sendSubToServer(sub) {
+    try {
+        await fetch('/api/push/subscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(sub.toJSON())
+        });
+    } catch {}
+}
+
+function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64  = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+    const rawData = atob(base64);
+    const output  = new Uint8Array(rawData.length);
+    for (let i = 0; i < rawData.length; ++i) output[i] = rawData.charCodeAt(i);
+    return output;
 }
 
 // ══════════════════════════════════════════════════════
