@@ -13,9 +13,10 @@ export async function onRequestPost(context) {
             return createResponse({ success: false, error: 'العنوان والرسالة مطلوبان' }, 400);
 
         // ── 1. تحميل المفاتيح ──
-        const vapidPublic  = (context.env.VAPID_PUBLIC_KEY  || '').trim();
-        const vapidPrivate = (context.env.VAPID_PRIVATE_KEY || '').trim();
-        const vapidSubject = (context.env.VAPID_SUBJECT     || 'mailto:apc.chetaibi.officiel@gmail.com').trim();
+        const vapidPublic  = (context.env.VAPID_PUBLIC_KEY  || context.env.VAPID_PUBLIC  || '').trim();
+        const vapidPrivate = (context.env.VAPID_PRIVATE_KEY || context.env.VAPID_PRIVATE || '').trim();
+        const rawSubject   = (context.env.VAPID_SUBJECT || 'apc.chetaibi.officiel@gmail.com').trim();
+        const vapidSubject = rawSubject.startsWith('mailto:') ? rawSubject : `mailto:${rawSubject}`;
 
         // تشخيص دقيق بدل رسالة مبهمة
         if (!vapidPublic && !vapidPrivate)
@@ -30,8 +31,21 @@ export async function onRequestPost(context) {
             .prepare('SELECT * FROM push_subscriptions')
             .all().catch(() => ({ results: [] }));
 
-        if (!subs || subs.length === 0)
-            return createResponse({ success: true, sent: 0, message: 'لا يوجد مشتركون' });
+        if (!subs || subs.length === 0) {
+            // تحقق من وجود الجدول نفسه
+            let tableExists = false;
+            try {
+                await context.env.DB.prepare('SELECT 1 FROM push_subscriptions LIMIT 1').all();
+                tableExists = true;
+            } catch {}
+            return createResponse({
+                success: true,
+                sent: 0,
+                message: tableExists
+                    ? 'الجدول موجود لكن لا يوجد مشتركون — تأكد أن المستخدم قبل الإشعارات في المتصفح'
+                    : 'جدول push_subscriptions غير موجود — يجب تشغيل migrate أو إنشاء الجدول'
+            });
+        }
 
         // ── 3. بيانات الإشعار ──
         const payload = JSON.stringify({
