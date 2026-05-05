@@ -14,8 +14,5 @@ GITHUB_USERNAME = "kimk6"
 CURRENT_REPO    = "chetaibi-assets-v1"
 
 # إضافة مفاتيح الـ VAPID هنا
-VAPID_PUBLIC_KEY    = "BBYBCkteVEkVDOFwYglgTpPEx-dQHiU4DEQ9caOlbr6JO0ceE1ebpU9hFmNaIcotydXAQzWhzCQivH6a8o3J9nQ"
-VAPID_SUBJECT   = "mailto:abdehakim.kassis@gmail.com"
-
 # ملاحظة: VAPID_PRIVATE لا يُفضل وضعه هنا إذا كنت ترفع الملف على GitHub
 # يفضل إضافته من Dashboard كـ Secret تماماً مثل GITHUB_TOKEN
