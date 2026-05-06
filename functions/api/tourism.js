@@ -3,21 +3,10 @@ import { withAuth, createResponse, handleOptions } from './_utils.js';
 
 export async function onRequestOptions() { return handleOptions(); }
 
-async function migrateTourismTable(db) {
-    try {
-        const cols = await db.prepare("PRAGMA table_info(tourism)").all();
-        const names = cols.results.map(c => c.name);
-        if (!names.includes('name_fr'))        await db.prepare("ALTER TABLE tourism ADD COLUMN name_fr TEXT DEFAULT ''").run();
-        if (!names.includes('subtitle_fr'))    await db.prepare("ALTER TABLE tourism ADD COLUMN subtitle_fr TEXT DEFAULT ''").run();
-        if (!names.includes('description_fr')) await db.prepare("ALTER TABLE tourism ADD COLUMN description_fr TEXT DEFAULT ''").run();
-    } catch(e) {}
-}
-
 export async function onRequestGet(context) {
     const url = new URL(context.request.url);
     const id  = url.searchParams.get('id');
     try {
-        await migrateTourismTable(context.env.DB);
         if (id) {
             const item = await context.env.DB.prepare('SELECT * FROM tourism WHERE id=?').bind(id).first();
             if (!item) return createResponse({ success: false, error: 'غير موجود' }, 404);
@@ -44,14 +33,21 @@ export async function onRequestPost(context) {
         } catch (e) { return createResponse({ success: false, error: e.message }, 500); }
     }
     try {
-        await migrateTourismTable(context.env.DB);
-        const { name, name_fr, subtitle, subtitle_fr, description, description_fr, image_url, rating, distance_info, badge_text, badge_color, lat, lng } = await context.request.json();
+        const {
+            name, subtitle, description, image_url, rating, distance_info, badge_text, badge_color, lat, lng,
+            name_fr, subtitle_fr, description_fr, distance_info_fr
+        } = await context.request.json();
         if (!name) return createResponse({ success: false, error: 'الاسم مطلوب' }, 400);
         const r = await context.env.DB
-            .prepare('INSERT INTO tourism (name,name_fr,subtitle,subtitle_fr,description,description_fr,image_url,rating,distance_info,badge_text,badge_color,lat,lng) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)')
-            .bind(name, name_fr||'', subtitle||'', subtitle_fr||'', description||'', description_fr||'',
-                  image_url||'', rating||'4.5', distance_info||'', badge_text||'', badge_color||'emerald',
-                  lat||null, lng||null).run();
+            .prepare(`INSERT INTO tourism
+                (name,subtitle,description,image_url,rating,distance_info,badge_text,badge_color,lat,lng,
+                 name_fr,subtitle_fr,description_fr,distance_info_fr,badge_text_fr)
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`)
+            .bind(
+                name, subtitle||'', description||'', image_url||'', rating||'4.5',
+                distance_info||'', badge_text||'', badge_color||'emerald', lat||null, lng||null,
+                name_fr||'', subtitle_fr||'', description_fr||'', distance_info_fr||'', badge_text_fr||''
+            ).run();
         return createResponse({ success: true, id: r.meta.last_row_id }, 201);
     } catch (e) { return createResponse({ success: false, error: e.message }, 500); }
 }
@@ -59,15 +55,23 @@ export async function onRequestPost(context) {
 export async function onRequestPut(context) {
     const auth = await withAuth(context); if (auth) return auth;
     try {
-        await migrateTourismTable(context.env.DB);
         const id = new URL(context.request.url).searchParams.get('id');
         if (!id) return createResponse({ success: false, error: 'id مطلوب' }, 400);
-        const { name, name_fr, subtitle, subtitle_fr, description, description_fr, image_url, rating, distance_info, badge_text, badge_color, lat, lng } = await context.request.json();
+        const {
+            name, subtitle, description, image_url, rating, distance_info, badge_text, badge_color, lat, lng,
+            name_fr, subtitle_fr, description_fr, distance_info_fr
+        } = await context.request.json();
         await context.env.DB
-            .prepare('UPDATE tourism SET name=?,name_fr=?,subtitle=?,subtitle_fr=?,description=?,description_fr=?,image_url=?,rating=?,distance_info=?,badge_text=?,badge_color=?,lat=?,lng=? WHERE id=?')
-            .bind(name, name_fr||'', subtitle||'', subtitle_fr||'', description||'', description_fr||'',
-                  image_url||'', rating||'4.5', distance_info||'', badge_text||'', badge_color||'emerald',
-                  lat||null, lng||null, id).run();
+            .prepare(`UPDATE tourism SET
+                name=?,subtitle=?,description=?,image_url=?,rating=?,distance_info=?,badge_text=?,badge_color=?,lat=?,lng=?,
+                name_fr=?,subtitle_fr=?,description_fr=?,distance_info_fr=?,badge_text_fr=?
+                WHERE id=?`)
+            .bind(
+                name, subtitle||'', description||'', image_url||'', rating||'4.5',
+                distance_info||'', badge_text||'', badge_color||'emerald', lat||null, lng||null,
+                name_fr||'', subtitle_fr||'', description_fr||'', distance_info_fr||'', badge_text_fr||'',
+                id
+            ).run();
         return createResponse({ success: true });
     } catch (e) { return createResponse({ success: false, error: e.message }, 500); }
 }
