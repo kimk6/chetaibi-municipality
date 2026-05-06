@@ -1,78 +1,87 @@
-// functions/api/beaches.js
+// functions/api/beaches.js — مع دعم اللغة الفرنسية
 import { withAuth, createResponse, handleOptions } from './_utils.js';
 
 export async function onRequestOptions() { return handleOptions(); }
 
-async function migrateBeachesTable(db) {
-    try {
-        const cols = await db.prepare("PRAGMA table_info(beaches)").all();
-        const names = cols.results.map(c => c.name);
-        if (!names.includes('name_fr'))        await db.prepare("ALTER TABLE beaches ADD COLUMN name_fr TEXT DEFAULT ''").run();
-        if (!names.includes('description_fr')) await db.prepare("ALTER TABLE beaches ADD COLUMN description_fr TEXT DEFAULT ''").run();
-    } catch(e) {}
-}
-
 export async function onRequestGet(context) {
+    const url = new URL(context.request.url);
+    const id  = url.searchParams.get('id');
     try {
-        await migrateBeachesTable(context.env.DB);
-        const url = new URL(context.request.url);
-        const id  = url.searchParams.get('id');
         if (id) {
-            const row = await context.env.DB.prepare('SELECT * FROM beaches WHERE id=?').bind(id).first();
-            if (!row) return createResponse({ success: false, error: 'not found' }, 404);
-            let albums = [];
-            try {
-                const { results } = await context.env.DB.prepare('SELECT * FROM beach_albums WHERE beach_id=? ORDER BY id ASC').bind(id).all();
-                albums = results;
-            } catch(e) {}
-            return createResponse({ success: true, data: { ...row, albums } });
+            const beach = await context.env.DB.prepare('SELECT * FROM beaches WHERE id=?').bind(id).first();
+            if (!beach) return createResponse({ success: false, error: 'غير موجود' }, 404);
+            const { results: albums } = await context.env.DB
+                .prepare('SELECT * FROM beach_albums WHERE beach_id=? ORDER BY id').bind(id).all();
+            return createResponse({ success: true, data: { ...beach, albums } });
         }
-        const { results } = await context.env.DB.prepare('SELECT * FROM beaches ORDER BY id ASC').all();
+        const { results } = await context.env.DB.prepare('SELECT * FROM beaches ORDER BY id').all();
         return createResponse({ success: true, data: results });
     } catch (e) { return createResponse({ success: false, error: e.message }, 500); }
 }
 
 export async function onRequestPost(context) {
-    const auth = await withAuth(context);
-    if (auth) return auth;
+    const auth = await withAuth(context); if (auth) return auth;
+    const url  = new URL(context.request.url);
+    if (url.searchParams.get('action') === 'album') {
+        try {
+            const { beach_id, image_url, caption } = await context.request.json();
+            if (!beach_id || !image_url) return createResponse({ success: false, error: 'beach_id و image_url مطلوبان' }, 400);
+            const r = await context.env.DB
+                .prepare('INSERT INTO beach_albums (beach_id,image_url,caption) VALUES (?,?,?)')
+                .bind(beach_id, image_url, caption || '').run();
+            return createResponse({ success: true, id: r.meta.last_row_id }, 201);
+        } catch (e) { return createResponse({ success: false, error: e.message }, 500); }
+    }
     try {
-        await migrateBeachesTable(context.env.DB);
-        const { name, name_fr, description, description_fr, image_url, is_supervised, season, lat, lng } = await context.request.json();
-        if (!name) return createResponse({ success: false, error: 'name مطلوب' }, 400);
-        const result = await context.env.DB
-            .prepare('INSERT INTO beaches (name,name_fr,description,description_fr,image_url,is_supervised,season,lat,lng) VALUES (?,?,?,?,?,?,?,?,?)')
-            .bind(name, name_fr||'', description||'', description_fr||'', image_url||'', is_supervised?1:0, season||'صيف', lat||null, lng||null)
-            .run();
-        return createResponse({ success: true, data: { id: result.meta.last_row_id } });
+        const { name, description, image_url, is_supervised, season, lat, lng, name_fr, description_fr } = await context.request.json();
+        if (!name) return createResponse({ success: false, error: 'الاسم مطلوب' }, 400);
+        const r = await context.env.DB
+            .prepare(`INSERT INTO beaches
+                (name,description,image_url,is_supervised,season,lat,lng,name_fr,description_fr)
+                VALUES (?,?,?,?,?,?,?,?,?)`)
+            .bind(
+                name, description||'', image_url||'', is_supervised??1, season||'صيف',
+                lat||null, lng||null, name_fr||'', description_fr||''
+            ).run();
+        return createResponse({ success: true, id: r.meta.last_row_id }, 201);
     } catch (e) { return createResponse({ success: false, error: e.message }, 500); }
 }
 
 export async function onRequestPut(context) {
-    const auth = await withAuth(context);
-    if (auth) return auth;
+    const auth = await withAuth(context); if (auth) return auth;
     try {
-        await migrateBeachesTable(context.env.DB);
-        const url = new URL(context.request.url);
-        const id  = url.searchParams.get('id');
+        const id = new URL(context.request.url).searchParams.get('id');
         if (!id) return createResponse({ success: false, error: 'id مطلوب' }, 400);
-        const { name, name_fr, description, description_fr, image_url, is_supervised, season, lat, lng } = await context.request.json();
+        const { name, description, image_url, is_supervised, season, lat, lng, name_fr, description_fr } = await context.request.json();
         await context.env.DB
-            .prepare('UPDATE beaches SET name=?,name_fr=?,description=?,description_fr=?,image_url=?,is_supervised=?,season=?,lat=?,lng=? WHERE id=?')
-            .bind(name, name_fr||'', description||'', description_fr||'', image_url||'', is_supervised?1:0, season||'صيف', lat||null, lng||null, id)
-            .run();
+            .prepare(`UPDATE beaches SET
+                name=?,description=?,image_url=?,is_supervised=?,season=?,lat=?,lng=?,
+                name_fr=?,description_fr=?
+                WHERE id=?`)
+            .bind(
+                name, description||'', image_url||'', is_supervised??1, season||'صيف',
+                lat||null, lng||null, name_fr||'', description_fr||'',
+                id
+            ).run();
         return createResponse({ success: true });
     } catch (e) { return createResponse({ success: false, error: e.message }, 500); }
 }
 
 export async function onRequestDelete(context) {
-    const auth = await withAuth(context);
-    if (auth) return auth;
+    const auth = await withAuth(context); if (auth) return auth;
+    const url = new URL(context.request.url);
+    if (url.searchParams.get('action') === 'album') {
+        try {
+            const albumId = url.searchParams.get('album_id');
+            if (!albumId) return createResponse({ success: false, error: 'album_id مطلوب' }, 400);
+            await context.env.DB.prepare('DELETE FROM beach_albums WHERE id=?').bind(albumId).run();
+            return createResponse({ success: true });
+        } catch (e) { return createResponse({ success: false, error: e.message }, 500); }
+    }
     try {
-        const url = new URL(context.request.url);
-        const id  = url.searchParams.get('id');
+        const id = url.searchParams.get('id');
         if (!id) return createResponse({ success: false, error: 'id مطلوب' }, 400);
         await context.env.DB.prepare('DELETE FROM beaches WHERE id=?').bind(id).run();
-        try { await context.env.DB.prepare('DELETE FROM beach_albums WHERE beach_id=?').bind(id).run(); } catch(e){}
         return createResponse({ success: true });
     } catch (e) { return createResponse({ success: false, error: e.message }, 500); }
 }
