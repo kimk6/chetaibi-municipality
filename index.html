@@ -639,6 +639,9 @@
             ? 'بلدية شطايبي - الموقع الرسمي'
             : 'Commune de Chetaïbi - Site officiel';
 
+        // ─── تحديث اسم رئيس المجلس ───
+        if (window._currentMayor) applyMayorLang(window._currentMayor);
+
         // ─── إعادة رسم العناصر الديناميكية ───
         reloadDynamicTranslations();
     }
@@ -2810,21 +2813,34 @@ async function loadCurrentMayor(){
         const res=await fetch('/api/mayors');
         const data=await res.json();
         if(!data.success||!data.data||!data.data.length) return;
-        // أول سجل هو الرئيس الحالي (ORDER BY id DESC في API)
         const m=data.data[0];
-        // تحديث الاسم
-        document.getElementById('mayor-name').textContent='السيد '+m.name;
-        document.getElementById('mayor-name-inline').textContent=m.name;
+        window._currentMayor = m; // نحفظه لإعادة الاستخدام عند تغيير اللغة
+        applyMayorLang(m);
         // تحديث الصورة
         if(m.image_url){
             const img=document.getElementById('mayor-photo');
             img.src=m.image_url;
-            img.alt=m.name;
+            img.alt=getLF(m,'name');
             img.classList.remove('hidden');
             document.getElementById('mayor-photo-placeholder').classList.add('hidden');
             document.getElementById('mayor-photo-wrap').classList.remove('bg-white/20');
         }
     }catch(e){ /* نبقى على المحتوى الافتراضي في حال الخطأ */ }
+}
+
+function applyMayorLang(m){
+    if(!m) return;
+    const prefix = currentLang==='fr' ? 'M. ' : 'السيد ';
+    const name   = getLF(m,'name');
+    const bio    = getLF(m,'bio');
+    document.getElementById('mayor-name').textContent = prefix + name;
+    document.getElementById('mayor-name-inline').textContent = name;
+    if(bio){
+        document.getElementById('mayor-bio-text').removeAttribute('data-i18n');
+        document.getElementById('mayor-bio-text').textContent = bio;
+    } else {
+        document.getElementById('mayor-bio-text').setAttribute('data-i18n','mayor-bio-default');
+    }
 }
 
 // ── دليل شطايبي tabs ──
