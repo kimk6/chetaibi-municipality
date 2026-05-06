@@ -655,7 +655,7 @@
                             <div id="fac-album-upload" class="upload-widget p-2 cursor-pointer" onclick="triggerUpload('fac-album-input')">
                                 <div class="flex items-center justify-center gap-2 py-1"><span class="iconify text-lg text-gray-300" data-icon="lucide:plus"></span><span class="text-xs text-gray-400">إضافة صورة للمعرض</span></div>
                             </div>
-                            <input type="file" id="fac-album-input" accept="image/*" class="hidden" onchange="handleFacAlbum(this)">
+                            <input type="file" id="fac-album-input" accept="image/*" class="hidden" onchange="handleFacAlbumUpload(this)">
                             <input type="hidden" id="facilities-albums" value="[]">
                         </div>
                         <!-- إحداثيات الخريطة -->
@@ -1539,7 +1539,11 @@ async function handleBeachAlbumUpload(input, beachId){
     grid.innerHTML='<div class="col-span-4 text-xs text-indigo-500 text-center py-2 flex items-center justify-center gap-1"><span class="iconify spin" data-icon="lucide:loader-2"></span>جاري الرفع...</div>';
     try{
         const url=await uploadFile(file,'beaches');
-        const res=await fetch('/api/beaches?action=album',{method:'POST',headers:authHeaders(),body:JSON.stringify({beach_id:beachId,image_url:url})});
+        const res=await fetch('/api/beaches?action=album',{
+            method:'POST',
+            headers:{...authHeaders(),'Content-Type':'application/json'},
+            body:JSON.stringify({beach_id:Number(beachId),image_url:url})
+        });
         const d=await res.json();
         if(d.success){adminToast('✅ تمت إضافة الصورة');loadBeachAlbum(beachId);loadRepoSize();}
         else adminToast('❌ '+d.error);
