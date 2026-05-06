@@ -1664,9 +1664,11 @@ function switchFacAdminCat(cat) {
 }
 
 function renderFacAlbum() {
-    const el = document.getElementById('fac-album-preview');
+    const el = document.getElementById('fac-album-grid');
     if(!el) return;
-    el.innerHTML = facAlbumUrls.map((u,i) => `<div class="relative group"><img src="${u}" class="w-full h-16 object-cover rounded-lg"><button onclick="facAlbumUrls.splice(${i},1);document.getElementById('facilities-albums').value=JSON.stringify(facAlbumUrls);renderFacAlbum()" class="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white rounded-full text-[9px] flex items-center justify-center opacity-0 group-hover:opacity-100">✕</button></div>`).join('');
+    el.innerHTML = facAlbumUrls.length
+        ? facAlbumUrls.map((u,i) => `<div class="relative group"><img src="${u}" class="w-full h-16 object-cover rounded-lg"><button onclick="facAlbumUrls.splice(${i},1);document.getElementById('facilities-albums').value=JSON.stringify(facAlbumUrls);renderFacAlbum()" class="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white rounded-full text-[9px] flex items-center justify-center opacity-0 group-hover:opacity-100">✕</button></div>`).join('')
+        : '<p class="col-span-3 text-xs text-gray-400 text-center py-2">لا توجد صور في الألبوم</p>';
 }
 
 async function handleFacImageUpload(input) {
