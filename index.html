@@ -639,6 +639,9 @@
             ? 'بلدية شطايبي - الموقع الرسمي'
             : 'Commune de Chetaïbi - Site officiel';
 
+        // ─── تحديث اسم واتجاه رئيس المجلس ───
+        if (window._currentMayor && typeof applyMayorLang === 'function') applyMayorLang(window._currentMayor);
+
         // ─── إعادة رسم العناصر الديناميكية ───
         reloadDynamicTranslations();
     }
@@ -821,7 +824,7 @@ html[dir="ltr"] article {
     <div class="absolute inset-0 opacity-10"><div class="absolute top-1 right-10 w-20 h-20 border border-white/30 rounded-full"></div><div class="absolute bottom-0 left-20 w-16 h-16 border border-white/20 rounded-full"></div></div>
     <div class="max-w-7xl mx-auto px-4 flex flex-col items-center justify-center relative z-10 text-center">
         <h1 class="text-sm md:text-lg font-bold tracking-wide whitespace-nowrap" data-i18n="republic-name">الجمهورية الجزائرية الديمقراطية الشعبية</h1>
-        <p class="text-[11px] md:text-sm text-emerald-200 mt-0.5 font-medium" data-i18n="ministry-name">وزارة الداخليــة و الجماعـــات المحليــة و النقــــل</p>
+        <p class="text-[10px] md:text-xs text-emerald-200 mt-0.5 font-medium" data-i18n="ministry-name">وزارة الداخليــة و الجماعـــات المحليــة و النقــــل</p>
     </div>
 </header>
 
@@ -843,14 +846,14 @@ html[dir="ltr"] article {
     <div class="max-w-7xl mx-auto px-4">
         <div class="flex items-center justify-between h-14">
             <div class="hidden md:flex items-center justify-center flex-1 gap-1">
-                <a href="#home" class="nav-link active-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" data-i18n="nav-home"><span class="iconify text-sm" data-icon="lucide:home"></span>الرئيسية</a>
-                <a href="#news" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" data-i18n="nav-news"><span class="iconify text-sm" data-icon="lucide:newspaper"></span>المستجدات</a>
-                <a href="#admin" onclick="event.preventDefault();document.getElementById('admin').scrollIntoView({behavior:'smooth'})" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" data-i18n="nav-services"><span class="iconify text-sm" data-icon="lucide:landmark"></span>الخدمات</a>
-                <a href="#archive" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" data-i18n="nav-archive"><span class="iconify text-sm" data-icon="lucide:scroll-text"></span>الأرشيف</a>
-                <a href="#guide" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" data-i18n="nav-guide"><span class="iconify text-sm" data-icon="lucide:map-pin"></span>الدليل</a>
-                <a href="#map-section" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" data-i18n="nav-map"><span class="iconify text-sm" data-icon="lucide:map"></span>الخريطة</a>
-                <a href="#beaches" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" data-i18n="nav-beaches"><span class="iconify text-sm" data-icon="lucide:umbrella"></span>السياحة</a>
-                <a href="#contact-footer" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" data-i18n="nav-contact"><span class="iconify text-sm" data-icon="lucide:phone"></span>اتصل بنا</a>
+                <a href="#home" class="nav-link active-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors" data-i18n="nav-home">الرئيسية</a>
+                <a href="#news" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors" data-i18n="nav-news">المستجدات</a>
+                <a href="#admin" onclick="event.preventDefault();document.getElementById('admin').scrollIntoView({behavior:'smooth'})" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors" data-i18n="nav-services">الخدمات</a>
+                <a href="#archive" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors" data-i18n="nav-archive">الأرشيف</a>
+                <a href="#guide" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors" data-i18n="nav-guide">الدليل</a>
+                <a href="#map-section" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors" data-i18n="nav-map">الخريطة</a>
+                <a href="#beaches" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors" data-i18n="nav-beaches">السياحة</a>
+                <a href="#contact-footer" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors" data-i18n="nav-contact">اتصل بنا</a>
                 <!-- ══ زر تغيير اللغة — ديسكتوب | قبل "اتصل بنا" مباشرة ══ -->
                 <button data-lang-btn="desktop" onclick="switchLang(currentLang==='ar'?'fr':'ar')" class="inline-flex items-center gap-1.5 border border-white/40 hover:border-white text-white/85 hover:text-white hover:bg-white/10 px-3 py-1.5 rounded-lg text-sm font-bold transition-all ml-1" title="Passer en Français">
                     <span data-i18n="lang-btn-label">Français</span>
@@ -869,8 +872,8 @@ html[dir="ltr"] article {
                 <span class="text-white font-bold text-base" data-i18n="municipality-name">بلدية شطايبي</span>
             </div>
             <!-- ══ زر تغيير اللغة — موبايل (يسار الشريط) ══ -->
-            <button id="lang-btn-mobile" data-lang-btn="mobile" onclick="switchLang(currentLang==='ar'?'fr':'ar')" class="md:hidden flex items-center justify-center gap-1 bg-white/15 hover:bg-white/25 border border-white/30 text-white px-2.5 py-0 rounded-lg text-xs font-extrabold transition-all nav-inner-fade" style="height:32px;line-height:1" style="transition-delay:.1s" title="Passer en Français">
-                <span class="tracking-wide" data-i18n="lang-btn-mobile-label">FR</span>
+            <button id="lang-btn-mobile" data-lang-btn="mobile" onclick="switchLang(currentLang==='ar'?'fr':'ar')" class="md:hidden bg-white/15 hover:bg-white/25 border border-white/30 text-white rounded-lg text-xs font-extrabold transition-all nav-inner-fade" style="transition-delay:.1s;width:34px;height:34px;display:flex;align-items:center;justify-content:center;line-height:1;padding:0;" title="Passer en Français">
+                <span data-i18n="lang-btn-mobile-label" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;">FR</span>
             </button>
             <!-- ══ نهاية زر اللغة — موبايل ══ -->
         </div>
@@ -882,7 +885,7 @@ html[dir="ltr"] article {
                 <a href="#archive" class="flex items-center gap-3 text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg font-semibold transition-colors"><span class="iconify text-white text-lg" data-icon="lucide:scroll-text"></span><span class="text-base" data-i18n="nav-archive">الأرشيف</span></a>
                 <a href="#guide" class="flex items-center gap-3 text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg font-semibold transition-colors"><span class="iconify text-white text-lg" data-icon="lucide:map-pin"></span><span class="text-base" data-i18n="nav-guide">الدليل</span></a>
                 <a href="#map-section" class="flex items-center gap-3 text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg font-semibold transition-colors"><span class="iconify text-white text-lg" data-icon="lucide:map"></span><span class="text-base" data-i18n="nav-map">الخريطة</span></a>
-                <a href="#beaches" class="flex items-center gap-3 text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg font-semibold transition-colors"><span class="iconify text-white text-lg" data-icon="lucide:umbrella"></span><span class="text-base" data-i18n="nav-beaches">السياحة</span></a>
+                <a href="#beaches" class="flex items-center gap-3 text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg font-semibold transition-colors"><span class="iconify text-white text-lg" data-icon="lucide:sailboat"></span><span class="text-base" data-i18n="nav-beaches">السياحة</span></a>
                 <a href="#contact-footer" class="flex items-center gap-3 text-white/90 hover:text-white hover:bg-emerald-600 px-4 py-2.5 rounded-lg font-semibold transition-colors"><span class="iconify text-white text-lg" data-icon="lucide:phone"></span><span class="text-base" data-i18n="nav-contact">اتصل بنا</span></a>
             </div>
         </div>
@@ -1072,12 +1075,12 @@ html[dir="ltr"] article {
 </div>
 
     <!-- رئيس المجلس -->
-    <div class="bg-gradient-to-l from-emerald-700 to-emerald-800 rounded-2xl p-6 md:p-8 shadow-xl text-white flex flex-col md:flex-row items-center gap-6">
+    <div id="mayor-card" class="bg-gradient-to-l from-emerald-700 to-emerald-800 rounded-2xl p-6 md:p-8 shadow-xl text-white flex flex-col md:flex-row items-center gap-6">
         <div id="mayor-photo-wrap" class="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border-4 border-white/30">
             <span id="mayor-photo-placeholder" class="iconify text-4xl text-white" data-icon="lucide:user-circle"></span>
             <img id="mayor-photo" src="" alt="" class="hidden w-full h-full object-cover">
         </div>
-        <div class="text-center md:text-right flex-1">
+        <div id="mayor-text-wrap" class="text-center md:text-right flex-1">
             <p class="text-emerald-200 text-sm font-semibold mb-1" data-i18n="mayor-role">رئيس المجلس الشعبي البلدي</p>
             <h3 id="mayor-name" class="text-2xl md:text-3xl font-extrabold mb-2">السيد عثماني سليمان</h3>
             <p id="mayor-bio" class="text-white/75 text-sm leading-relaxed max-w-xl"><span id="mayor-name-inline" class="hidden"></span><span id="mayor-bio-text" data-i18n="mayor-bio-default">يتولى الإشراف المباشر على تسيير الشؤون العمومية للبلدية، والسهر على تنفيذ مداولات المجلس الشعبي البلدي، بما يضمن الارتقاء بجودة المرفق العام وتعزيز التنمية المحلية لخدمة تطلعات الساكنة</span></p>
@@ -1515,13 +1518,13 @@ html[dir="ltr"] article {
                 <div class="h-px flex-1 bg-white/20"></div>
             </div>
             <p id="beaches-intro-text" class="text-white/65 text-sm text-center mb-8 max-w-2xl mx-auto" data-i18n="beaches-intro">تتميز شطايبي بشواطئها الرائعة ذات المياه الصافية والرمال الذهبية، وتضم شريطاً ساحلياً من الشواطئ المسموحة للسباحة، والمجهزة لضمان راحة وسلامة المصطافين والعائلات</p>
-            <div id="beaches-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-5">
+            <div id="beaches-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
                 <div class="col-span-full text-center py-12">
                     <span class="iconify text-4xl animate-spin inline-block text-sky-400" data-icon="lucide:waves"></span>
                     <p class="mt-3 text-sm font-semibold text-white/50" data-i18n="beach-loading">جاري تحميل الشواطئ...</p>
                 </div>
             </div>
-            <div id="beaches-extra" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-5 hidden"></div>
+            <div id="beaches-extra" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-5 hidden"></div>
             <div id="beaches-more-wrap" class="text-center mb-4 hidden">
                 <button id="beaches-more-btn" onclick="toggleMoreBeaches()"
                         class="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 text-white border border-white/30 px-8 py-3 rounded-2xl font-bold text-sm transition-all backdrop-blur-sm">
@@ -1871,15 +1874,9 @@ html[dir="ltr"] article {
                     <div><h4 class="font-extrabold text-lg" data-i18n="municipality-name">بلدية شطايبي</h4><p class="text-xs text-gray-400" data-i18n="footer-wilaya">ولاية عنابة — الجزائر</p></div>
                 </div>
                 <p class="text-sm text-gray-400 leading-relaxed mb-4" data-i18n="footer-about">البوابة الإلكترونية الرسمية لبلدية شطايبي: خدمات عمومية عصرية، وتثمين للمقومات السياحية والتاريخية للمنطقة</p>
-                <div class="flex items-center gap-3 flex-wrap">
+                <div class="flex items-center gap-3">
                     <a href="https://facebook.com/apc.chetaibi.page.officielle" target="_blank" class="w-10 h-10 bg-blue-600 hover:bg-blue-500 rounded-xl flex items-center justify-center transition-colors"><span class="iconify text-xl" data-icon="lucide:facebook"></span></a>
                     <a href="mailto:apc.chetaibi.officiel@gmail.com" class="w-10 h-10 bg-emerald-600 hover:bg-emerald-500 rounded-xl flex items-center justify-center transition-colors"><span class="iconify text-xl" data-icon="lucide:mail"></span></a>
-                    <div id="pwa-install-wrap" class="hidden">
-                        <button id="pwa-install-btn" onclick="installPWA()" class="h-10 inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-3 rounded-xl font-bold text-sm transition-all shadow-lg" title="تثبيت تطبيق البلدية">
-                            <span class="iconify text-base" data-icon="lucide:download"></span>
-                            <span class="font-extrabold text-sm" data-i18n="pwa-install-title">تثبيت التطبيق</span>
-                        </button>
-                    </div>
                 </div>
             </div>
             <div>
@@ -1896,7 +1893,17 @@ html[dir="ltr"] article {
                     <span data-i18n="lang-btn-label">Français</span>
                 </button>
                 <!-- ══ نهاية زر اللغة — الفوتر ══ -->
-
+                <!-- ══ زر تثبيت التطبيق PWA ══ -->
+                <div id="pwa-install-wrap" class="hidden mt-3">
+                    <button id="pwa-install-btn" onclick="installPWA()"
+                        class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2.5 rounded-xl font-bold text-sm transition-all shadow-lg hover:shadow-emerald-500/25">
+                        <span class="iconify text-base" data-icon="lucide:download"></span>
+                        <div class="text-right">
+                            <p class="font-extrabold text-sm leading-tight" data-i18n="pwa-install-title">تثبيت تطبيق البلدية</p>
+                            <p class="text-xs text-emerald-200 font-normal leading-tight" data-i18n="pwa-install-sub">أضف للشاشة الرئيسية</p>
+                        </div>
+                    </button>
+                </div>
             </div>
             <div>
                 <h4 class="font-extrabold text-lg mb-5 flex items-center gap-2"><span class="iconify text-emerald-400" data-icon="lucide:phone"></span><span data-i18n="footer-contact-title">اتصل بنا</span></h4>
@@ -2633,7 +2640,7 @@ async function loadBeaches(){
         const rest   = allBeaches.slice(6);
         grid.innerHTML  = first3.map(beachCard).join('');
         extra.innerHTML = next3.map(beachCard).join('');
-        if(rest.length>0) moreW.classList.remove('hidden');
+        if(next3.length>0 || rest.length>0) moreW.classList.remove('hidden');
         else moreW.classList.add('hidden');
         if(window.Iconify) Iconify.scan();
     } catch { grid.innerHTML='<p class="col-span-full text-red-400 text-center py-8">تعذر تحميل الشواطئ</p>'; }
@@ -2719,9 +2726,8 @@ async function loadTourism(){
         const d=await res.json();
         if(!d.success||!d.data?.length){grid.innerHTML='<p class="col-span-full text-gray-400 text-center py-8">لا توجد معالم سياحية بعد</p>';return;}
         allTourism = d.data;
-        const first3 = allTourism.slice(0,3);
-        const next3  = allTourism.slice(3,6);
-        const rest   = allTourism.slice(6);
+        const first4 = allTourism.slice(0,4);
+        const rest   = allTourism.slice(4);
         const bcColors={emerald:'bg-emerald-500',amber:'bg-amber-500',purple:'bg-purple-500',teal:'bg-teal-500',blue:'bg-blue-500'};
         const tourCard = item => {
             const tName = getLF(item,'name');
@@ -2746,9 +2752,9 @@ async function loadTourism(){
                 </div>
             </div>`;
         };
-        grid.innerHTML  = first3.map(tourCard).join('');
-        extra.innerHTML = next3.map(tourCard).join('');
-        if(next3.length>0 || rest.length>0) moreW.classList.remove('hidden');
+        grid.innerHTML  = first4.map(tourCard).join('');
+        extra.innerHTML = rest.map(tourCard).join('');
+        if(rest.length>0) moreW.classList.remove('hidden');
         else moreW.classList.add('hidden');
         if(window.Iconify) Iconify.scan();
     } catch{grid.innerHTML='<p class="col-span-full text-red-400 text-center py-8">تعذر تحميل المعالم</p>';}
@@ -2803,26 +2809,59 @@ async function openTourismModal(id){
     } catch{}
 }
 
+function applyMayorLang(m) {
+    if (!m) return;
+    const isFr = currentLang === 'fr';
+    const prefix = isFr ? 'M. ' : 'السيد ';
+    const name   = getLF(m, 'name');
+    const bio    = getLF(m, 'bio');
+
+    document.getElementById('mayor-name').textContent = prefix + name;
+    document.getElementById('mayor-name-inline').textContent = name;
+
+    // اتجاه البطاقة حسب اللغة
+    const card    = document.getElementById('mayor-card');
+    const txtWrap = document.getElementById('mayor-text-wrap');
+    if (isFr) {
+        card.style.flexDirection    = '';
+        card.classList.remove('md:flex-row');
+        card.classList.add('md:flex-row-reverse');
+        txtWrap.classList.remove('md:text-right');
+        txtWrap.classList.add('md:text-left');
+    } else {
+        card.classList.remove('md:flex-row-reverse');
+        card.classList.add('md:flex-row');
+        txtWrap.classList.remove('md:text-left');
+        txtWrap.classList.add('md:text-right');
+    }
+
+    // السيرة الذاتية
+    const bioEl = document.getElementById('mayor-bio-text');
+    if (bio && bio.trim()) {
+        bioEl.removeAttribute('data-i18n');
+        bioEl.textContent = bio;
+    } else {
+        bioEl.setAttribute('data-i18n', 'mayor-bio-default');
+    }
+}
+
 async function loadCurrentMayor(){
     try{
         const res=await fetch('/api/mayors');
         const data=await res.json();
         if(!data.success||!data.data||!data.data.length) return;
-        // أول سجل هو الرئيس الحالي (ORDER BY id DESC في API)
         const m=data.data[0];
-        // تحديث الاسم
-        document.getElementById('mayor-name').textContent='السيد '+m.name;
-        document.getElementById('mayor-name-inline').textContent=m.name;
-        // تحديث الصورة
+        window._currentMayor = m;
+        applyMayorLang(m);
         if(m.image_url){
             const img=document.getElementById('mayor-photo');
             img.src=m.image_url;
-            img.alt=m.name;
+            img.alt=getLF(m,'name');
             img.classList.remove('hidden');
             document.getElementById('mayor-photo-placeholder').classList.add('hidden');
             document.getElementById('mayor-photo-wrap').classList.remove('bg-white/20');
         }
-    }catch(e){ /* نبقى على المحتوى الافتراضي في حال الخطأ */ }
+    }catch(e){}
 }
 
 // ── دليل شطايبي tabs ──
