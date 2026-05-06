@@ -36,20 +36,8 @@ export async function onRequestPost(context) {
     try {
         const {
             name, sub_type, description, category, image_url, tags, albums, lat, lng,
-            name_fr, sub_type_fr, description_fr
+            name_fr, sub_type_fr, description_fr, tags_fr
         } = await context.request.json();
-        if (!name || !category) return createResponse({ success: false, error: 'name, category مطلوبان' }, 400);
-        const r = await context.env.DB
-            .prepare(`INSERT INTO facilities
-                (name,sub_type,description,category,image_url,tags,albums,lat,lng,
-                 name_fr,sub_type_fr,description_fr,tags_fr)
-                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`)
-            .bind(
-                name, sub_type||'', description||'', category, image_url||'',
-                JSON.stringify(tags||[]), JSON.stringify(albums||[]),
-                lat||null, lng||null,
-                name_fr||'', sub_type_fr||'', description_fr||'', tags_fr||''
-            ).run();
         return createResponse({ success: true, id: r.meta.last_row_id }, 201);
     } catch (e) { return createResponse({ success: false, error: e.message }, 500); }
 }
@@ -61,13 +49,8 @@ export async function onRequestPut(context) {
         if (!id) return createResponse({ success: false, error: 'id مطلوب' }, 400);
         const {
             name, sub_type, description, category, image_url, tags, albums, lat, lng,
-            name_fr, sub_type_fr, description_fr
+            name_fr, sub_type_fr, description_fr, tags_fr
         } = await context.request.json();
-        await context.env.DB
-            .prepare(`UPDATE facilities SET
-                name=?,sub_type=?,description=?,category=?,image_url=?,tags=?,albums=?,lat=?,lng=?,
-                name_fr=?,sub_type_fr=?,description_fr=?,tags_fr=?
-                WHERE id=?`)
             .bind(
                 name, sub_type||'', description||'', category, image_url||'',
                 JSON.stringify(tags||[]), JSON.stringify(albums||[]),

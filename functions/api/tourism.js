@@ -35,9 +35,8 @@ export async function onRequestPost(context) {
     try {
         const {
             name, subtitle, description, image_url, rating, distance_info, badge_text, badge_color, lat, lng,
-            name_fr, subtitle_fr, description_fr, distance_info_fr
+            name_fr, subtitle_fr, description_fr, distance_info_fr, badge_text_fr
         } = await context.request.json();
-        if (!name) return createResponse({ success: false, error: 'الاسم مطلوب' }, 400);
         const r = await context.env.DB
             .prepare(`INSERT INTO tourism
                 (name,subtitle,description,image_url,rating,distance_info,badge_text,badge_color,lat,lng,
@@ -59,7 +58,7 @@ export async function onRequestPut(context) {
         if (!id) return createResponse({ success: false, error: 'id مطلوب' }, 400);
         const {
             name, subtitle, description, image_url, rating, distance_info, badge_text, badge_color, lat, lng,
-            name_fr, subtitle_fr, description_fr, distance_info_fr
+            name_fr, subtitle_fr, description_fr, distance_info_fr, badge_text_fr
         } = await context.request.json();
         await context.env.DB
             .prepare(`UPDATE tourism SET
