@@ -27,14 +27,34 @@
         textarea { resize: vertical; min-height: 100px; }
         .item-card { background: white; border: 1px solid #f3f4f6; border-radius: 16px; padding: 16px; transition: all 0.2s; }
         .item-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
-        /* ✅ 4/5: Mobile collapsible form */
+        /* ── Mobile: form panel كـ modal ── */
         @media (max-width: 1023px) {
             .form-panel { display: none; }
-            .form-panel.mobile-open { display: block; }
+            .form-panel.mobile-open {
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                inset: 0;
+                z-index: 200;
+                background: rgba(0,0,0,0.5);
+                align-items: center;
+                justify-content: flex-end;
+                padding: 0;
+            }
+            .form-panel.mobile-open > .form-panel-inner {
+                background: white;
+                border-radius: 20px 20px 0 0;
+                width: 100%;
+                max-height: 90vh;
+                overflow-y: auto;
+                padding: 20px 16px 32px;
+                box-shadow: 0 -4px 32px rgba(0,0,0,0.15);
+            }
         }
         @media (min-width: 1024px) {
             .mobile-add-btn { display: none; }
             .form-panel { display: block !important; }
+            .form-panel-inner { /* لا شيء خاص على desktop */ }
         }
         /* Upload Widget */
         .upload-widget { border: 2px dashed #d1d5db; border-radius: 12px; background: #f9fafb; transition: all 0.2s; }
@@ -129,6 +149,7 @@
             <button onclick="switchTab('mayors')" id="tab-mayors" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1"><span class="iconify" data-icon="lucide:users"></span> الرؤساء</button>
             <button onclick="switchTab('beaches')" id="tab-beaches" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1"><span class="iconify" data-icon="lucide:waves"></span> الشواطئ</button>
             <button onclick="switchTab('facilities')" id="tab-facilities" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1"><span class="iconify" data-icon="lucide:building-2"></span> المرافق</button>
+            <button onclick="switchTab('notify')" id="tab-notify" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1"><span class="iconify" data-icon="lucide:bell-ring"></span> الإشعارات</button>
         </div>
 
         <!-- NEWS -->
@@ -142,8 +163,19 @@
                 </button>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div id="form-panel-news" class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24 hidden">
-                    <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2">
+                <div id="form-panel-news" class="lg:col-span-1 bg-white rounded-2xl shadow-md border border-gray-100 h-fit lg:sticky lg:top-24 hidden">
+                  <div class="form-panel-inner p-6">
+                    <!-- زر إغلاق موبايل -->
+                    <div class="flex items-center justify-between mb-4 lg:hidden">
+                        <h3 class="font-extrabold text-gray-800 flex items-center gap-2">
+                            <span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span>
+                            <span id="news-form-title-mobile">إضافة خبر</span>
+                        </h3>
+                        <button onclick="toggleFormPanel('news',false)" class="w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-500 transition-colors">
+                            <span class="iconify" data-icon="lucide:x"></span>
+                        </button>
+                    </div>
+                    <h3 class="font-extrabold text-gray-800 mb-4 items-center gap-2 hidden lg:flex">
                         <span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span>
                         <span id="news-form-title">إضافة خبر جديد</span>
                     </h3>
@@ -206,35 +238,6 @@
                             <input id="news-image-url-manual" type="url" placeholder="أو الصق رابطاً مباشرةً..." class="mt-2 text-xs" oninput="document.getElementById('news-image').value=this.value">
                         </div>
 
-                        <!-- 🇫🇷 صورة خاصة بالنسخة الفرنسية — للإعلانات الرسمية فقط -->
-                        <div id="news-image-fr-wrap" class="hidden border-r-2 border-blue-400 pr-3 bg-blue-50 rounded-xl py-3 px-3">
-                            <label class="text-xs font-bold text-blue-700 mb-1 block flex items-center gap-1">
-                                🇫🇷 Image — Version française
-                                <span class="text-gray-400 font-normal">(تُعرض عند تغيير اللغة للفرنسية)</span>
-                            </label>
-                            <div id="news-img-fr-widget" class="upload-widget p-3 cursor-pointer border border-blue-200 rounded-xl bg-white" onclick="triggerUpload('news-img-fr-input')">
-                                <div id="news-img-fr-placeholder" class="flex flex-col items-center gap-1 py-2">
-                                    <span class="iconify text-2xl text-blue-200" data-icon="lucide:image-plus"></span>
-                                    <span class="text-xs text-blue-400 font-semibold">Cliquez pour télécharger</span>
-                                </div>
-                                <div id="news-img-fr-preview" class="hidden">
-                                    <img id="news-img-fr-img" src="" class="w-full h-24 object-cover rounded-lg mb-1">
-                                    <div class="flex items-center justify-between">
-                                        <span id="news-img-fr-name" class="text-[10px] text-gray-500 truncate flex-1"></span>
-                                        <button onclick="event.stopPropagation();document.getElementById('news-image-fr').value='';document.getElementById('news-img-fr-preview').classList.add('hidden');document.getElementById('news-img-fr-placeholder').classList.remove('hidden');" class="text-[10px] text-red-500 font-bold flex-shrink-0">✕</button>
-                                    </div>
-                                </div>
-                                <div id="news-img-fr-uploading" class="hidden flex flex-col items-center gap-1 py-2">
-                                    <span class="iconify text-2xl text-indigo-400 spin" data-icon="lucide:loader-2"></span>
-                                    <span class="text-xs text-indigo-500">جاري الرفع...</span>
-                                </div>
-                            </div>
-                            <input type="file" id="news-img-fr-input" accept="image/*" class="hidden" onchange="handleFeatured(this,'news-img-fr','news-image-fr','news')">
-                            <input type="hidden" id="news-image-fr" value="">
-                            <input type="url" id="news-image-fr-url" placeholder="أو الصق رابطاً مباشرةً..." class="mt-2 text-xs border-blue-200"
-                                   oninput="document.getElementById('news-image-fr').value=this.value">
-                        </div>
-
                         <!-- ألبوم صور -->
                         <div>
                             <label class="text-xs font-bold text-gray-500 mb-2 block flex items-center gap-1">
@@ -262,6 +265,7 @@
                             <button onclick="cancelNewsEdit()" id="news-cancel-btn" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-600 py-3 px-4 rounded-xl font-bold text-sm transition-colors">إلغاء</button>
                         </div>
                     </div>
+                  </div><!-- /form-panel-inner -->
                 </div>
                 <div class="lg:col-span-2"><div id="news-list" class="space-y-3"></div></div>
             </div>
@@ -278,7 +282,17 @@
                 </button>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div id="form-panel-services" class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24 hidden">
+                <div id="form-panel-services" class="lg:col-span-1 bg-white rounded-2xl shadow-md border border-gray-100 h-fit lg:sticky lg:top-24 hidden">
+                  <div class="form-panel-inner p-6">
+                    <div class="flex items-center justify-between mb-4 lg:hidden">
+                        <h3 class="font-extrabold text-gray-800 flex items-center gap-2">
+                            <span class="iconify text-emerald-500" data-icon="lucide:layout-grid"></span>
+                            إضافة خدمة
+                        </h3>
+                        <button onclick="toggleFormPanel('services',false)" class="w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-500 transition-colors">
+                            <span class="iconify" data-icon="lucide:x"></span>
+                        </button>
+                    </div>
                     <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2">
                         <span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span>
                         <span id="services-form-title">إضافة خدمة / تطبيق</span>
@@ -395,6 +409,7 @@
                             <button onclick="cancelServiceEdit()" id="services-cancel-btn" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-600 py-3 px-4 rounded-xl font-bold text-sm transition-colors">إلغاء</button>
                         </div>
                     </div>
+                  </div><!-- /form-panel-inner -->
                 </div>
                 <div class="lg:col-span-2"><div id="services-list" class="space-y-3"></div></div>
             </div>
@@ -411,7 +426,17 @@
                 </button>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div id="form-panel-archives" class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24 hidden">
+                <div id="form-panel-archives" class="lg:col-span-1 bg-white rounded-2xl shadow-md border border-gray-100 h-fit lg:sticky lg:top-24 hidden">
+                  <div class="form-panel-inner p-6">
+                    <div class="flex items-center justify-between mb-4 lg:hidden">
+                        <h3 class="font-extrabold text-gray-800 flex items-center gap-2">
+                            <span class="iconify text-emerald-500" data-icon="lucide:archive"></span>
+                            إضافة صورة أرشيف
+                        </h3>
+                        <button onclick="toggleFormPanel('archives',false)" class="w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-500 transition-colors">
+                            <span class="iconify" data-icon="lucide:x"></span>
+                        </button>
+                    </div>
                     <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span><span id="archives-form-title">إضافة صورة أرشيفية</span></h3>
                     <input type="hidden" id="archives-edit-id" value="">
                     <!-- تلميح التصنيف -->
@@ -452,6 +477,7 @@
                             <button onclick="cancelArchiveEdit()" id="archives-cancel-btn" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-600 py-3 px-4 rounded-xl font-bold text-sm transition-colors">إلغاء</button>
                         </div>
                     </div>
+                  </div><!-- /form-panel-inner -->
                 </div>
                 <div class="lg:col-span-2"><div id="archives-list" class="space-y-3"></div></div>
             </div>
@@ -468,7 +494,17 @@
                 </button>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div id="form-panel-tourism" class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24 hidden">
+                <div id="form-panel-tourism" class="lg:col-span-1 bg-white rounded-2xl shadow-md border border-gray-100 h-fit lg:sticky lg:top-24 hidden">
+                  <div class="form-panel-inner p-6">
+                    <div class="flex items-center justify-between mb-4 lg:hidden">
+                        <h3 class="font-extrabold text-gray-800 flex items-center gap-2">
+                            <span class="iconify text-emerald-500" data-icon="lucide:compass"></span>
+                            إضافة معلم سياحي
+                        </h3>
+                        <button onclick="toggleFormPanel('tourism',false)" class="w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-500 transition-colors">
+                            <span class="iconify" data-icon="lucide:x"></span>
+                        </button>
+                    </div>
                     <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span><span id="tourism-form-title">إضافة معلم سياحي</span></h3>
                     <input type="hidden" id="tourism-edit-id" value="">
                     <div class="space-y-3">
@@ -519,6 +555,7 @@
                             <button onclick="cancelTourismEdit()" id="tourism-cancel-btn" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-600 py-3 px-4 rounded-xl font-bold text-sm transition-colors">إلغاء</button>
                         </div>
                     </div>
+                  </div><!-- /form-panel-inner -->
                 </div>
                 <div class="lg:col-span-2"><div id="tourism-list" class="space-y-3"></div></div>
             </div>
@@ -535,7 +572,17 @@
                 </button>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div id="form-panel-mayors" class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24 hidden">
+                <div id="form-panel-mayors" class="lg:col-span-1 bg-white rounded-2xl shadow-md border border-gray-100 h-fit lg:sticky lg:top-24 hidden">
+                  <div class="form-panel-inner p-6">
+                    <div class="flex items-center justify-between mb-4 lg:hidden">
+                        <h3 class="font-extrabold text-gray-800 flex items-center gap-2">
+                            <span class="iconify text-emerald-500" data-icon="lucide:user"></span>
+                            إضافة رئيس بلدية
+                        </h3>
+                        <button onclick="toggleFormPanel('mayors',false)" class="w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-500 transition-colors">
+                            <span class="iconify" data-icon="lucide:x"></span>
+                        </button>
+                    </div>
                     <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span><span id="mayors-form-title">إضافة رئيس</span></h3>
                     <input type="hidden" id="mayors-edit-id" value="">
                     <div class="space-y-3">
@@ -558,6 +605,7 @@
                             <button onclick="cancelMayorEdit()" id="mayors-cancel-btn" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-600 py-3 px-4 rounded-xl font-bold text-sm transition-colors">إلغاء</button>
                         </div>
                     </div>
+                  </div><!-- /form-panel-inner -->
                 </div>
                 <div class="lg:col-span-2"><div id="mayors-list" class="space-y-3"></div></div>
             </div>
@@ -575,7 +623,17 @@
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- نموذج إضافة -->
-                <div id="form-panel-beaches" class="lg:col-span-1 bg-white rounded-2xl p-5 shadow-md border border-gray-100 h-fit sticky top-24 hidden">
+                <div id="form-panel-beaches" class="lg:col-span-1 bg-white rounded-2xl shadow-md border border-gray-100 h-fit lg:sticky lg:top-24 hidden">
+                  <div class="form-panel-inner p-6">
+                    <div class="flex items-center justify-between mb-4 lg:hidden">
+                        <h3 class="font-extrabold text-gray-800 flex items-center gap-2">
+                            <span class="iconify text-emerald-500" data-icon="lucide:waves"></span>
+                            إضافة شاطئ
+                        </h3>
+                        <button onclick="toggleFormPanel('beaches',false)" class="w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-500 transition-colors">
+                            <span class="iconify" data-icon="lucide:x"></span>
+                        </button>
+                    </div>
                     <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2">
                         <span class="iconify text-sky-500" data-icon="lucide:plus-circle"></span>
                         <span id="beaches-form-title">إضافة شاطئ</span>
@@ -623,6 +681,7 @@
                             <button onclick="cancelBeachEdit()" id="beaches-cancel-btn" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-600 py-3 px-4 rounded-xl font-bold text-sm transition-colors">إلغاء</button>
                         </div>
                     </div>
+                  </div><!-- /form-panel-inner -->
                 </div>
                 <!-- قائمة الشواطئ -->
                 <div class="lg:col-span-2">
@@ -641,7 +700,7 @@
                 </button>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div id="form-panel-facilities" class="lg:col-span-1 bg-white rounded-2xl p-5 shadow-md border border-gray-100 sticky top-24 hidden" style="max-height:calc(100vh - 100px);overflow-y:auto;">
+                <div id="form-panel-facilities" class="lg:col-span-1 bg-white rounded-2xl shadow-md border border-gray-100 h-fit lg:sticky lg:top-24 hidden" style="max-height:calc(100vh - 100px);overflow-y:auto;">
                     <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2">
                         <span class="iconify text-slate-500" data-icon="lucide:building-2"></span>
                         <span id="facilities-form-title">إضافة مرفق</span>
@@ -700,6 +759,7 @@
                             <button onclick="cancelFacilityEdit()" id="facilities-cancel-btn" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-600 py-3 px-4 rounded-xl font-bold text-sm transition-colors">إلغاء</button>
                         </div>
                     </div>
+                  </div><!-- /form-panel-inner -->
                 </div>
                 <!-- فلترة + قائمة -->
                 <div class="lg:col-span-2">
@@ -720,6 +780,68 @@
             </div>
         </div>
 
+        <!-- ══ قسم الإشعارات ══ -->
+        <div id="section-notify" class="content-section hidden fade-in">
+            <!-- إرسال إشعار يدوي -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
+                    <h3 class="font-extrabold text-gray-800 text-lg mb-1 flex items-center gap-2">
+                        <span class="iconify text-emerald-500 text-xl" data-icon="lucide:send"></span>
+                        إرسال إشعار للمستخدمين
+                    </h3>
+                    <p class="text-xs text-gray-400 mb-5">يُرسل الإشعار فوراً لجميع من ثبّتوا التطبيق وقبلوا الإشعارات</p>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">عنوان الإشعار</label>
+                            <input id="notif-title" type="text" placeholder="مثال: إعلان مهم من بلدية شطايبي"
+                                class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-emerald-400">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">نص الرسالة</label>
+                            <textarea id="notif-body" rows="3" placeholder="اكتب محتوى الإشعار هنا..."
+                                class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-emerald-400 resize-none"></textarea>
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">رابط (اختياري)</label>
+                            <input id="notif-url" type="url" placeholder="https://chetaibi.pages.dev/..."
+                                class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-emerald-400">
+                        </div>
+                        <button onclick="sendManualNotif()"
+                            class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2">
+                            <span class="iconify text-lg" data-icon="lucide:send"></span>
+                            إرسال الإشعار الآن
+                        </button>
+                    </div>
+                </div>
+                <!-- إحصائيات المشتركين -->
+                <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
+                    <h3 class="font-extrabold text-gray-800 text-lg mb-4 flex items-center gap-2">
+                        <span class="iconify text-blue-500 text-xl" data-icon="lucide:users"></span>
+                        المشتركون في الإشعارات
+                    </h3>
+                    <div class="text-center py-6">
+                        <p id="notif-sub-count" class="text-5xl font-extrabold text-emerald-600 mb-2">—</p>
+                        <p class="text-sm text-gray-400">مستخدم مشترك</p>
+                    </div>
+                    <button onclick="loadNotifStats()"
+                        class="w-full bg-gray-100 hover:bg-gray-200 text-gray-600 py-2.5 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2">
+                        <span class="iconify" data-icon="lucide:refresh-cw"></span>
+                        تحديث الإحصائيات
+                    </button>
+                </div>
+            </div>
+            <!-- سجل الإشعارات المرسلة -->
+            <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
+                <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2">
+                    <span class="iconify text-gray-400" data-icon="lucide:history"></span>
+                    آخر الإشعارات المرسلة
+                </h3>
+                <div id="notif-log" class="space-y-2 text-sm text-gray-400 text-center py-8">
+                    <span class="iconify text-3xl block mx-auto mb-2" data-icon="lucide:bell-off"></span>
+                    لا توجد إشعارات مرسلة بعد
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -730,6 +852,57 @@ let newsAlbumUrls = [];
 
 // ══════════════════════════════════════════════════════
 // 🔔 Push Notifications
+// ══════════════════════════════════════════════════════
+
+async function loadNotifStats() {
+    try {
+        const res = await fetch('/api/push/stats', { headers: authHeaders() });
+        const d = await res.json();
+        document.getElementById('notif-sub-count').textContent = d.count ?? '—';
+    } catch {
+        document.getElementById('notif-sub-count').textContent = '—';
+    }
+}
+
+async function sendManualNotif() {
+    const title = document.getElementById('notif-title').value.trim();
+    const body  = document.getElementById('notif-body').value.trim();
+    const url   = document.getElementById('notif-url').value.trim() || '/';
+    if (!title || !body) { adminToast('العنوان والرسالة مطلوبان'); return; }
+    try {
+        const res = await fetch('/api/push/send', {
+            method: 'POST',
+            headers: authHeaders(),
+            body: JSON.stringify({ title, body, url, icon: '/manifest.json' })
+        });
+        const d = await res.json();
+        if (d.success) {
+            adminToast('✅ تم إرسال الإشعار لـ ' + (d.sent||0) + ' مستخدم');
+            document.getElementById('notif-title').value = '';
+            document.getElementById('notif-body').value  = '';
+            document.getElementById('notif-url').value   = '';
+            appendNotifLog(title, body, d.sent||0);
+        } else {
+            adminToast('خطأ: ' + (d.error||'تعذر الإرسال'));
+        }
+    } catch { adminToast('تعذر الإرسال'); }
+}
+
+function appendNotifLog(title, body, sent) {
+    const log = document.getElementById('notif-log');
+    const now = new Date().toLocaleString('ar-DZ');
+    const item = document.createElement('div');
+    item.className = 'flex items-start gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100';
+    item.innerHTML = `<span class="iconify text-emerald-500 text-xl flex-shrink-0 mt-0.5" data-icon="lucide:check-circle"></span>
+        <div class="flex-1 text-right">
+            <p class="font-bold text-gray-700 text-sm">${title}</p>
+            <p class="text-xs text-gray-400">${body}</p>
+            <p class="text-xs text-emerald-500 mt-1">أُرسل لـ ${sent} مستخدم · ${now}</p>
+        </div>`;
+    if (log.querySelector('[data-icon]')) log.innerHTML = '';
+    log.prepend(item);
+}
+
 if (token) showDashboard(); else showLogin();
 
 function showLogin() { document.getElementById('login-screen').classList.remove('hidden'); document.getElementById('dashboard').classList.add('hidden'); }
@@ -757,7 +930,7 @@ function switchTab(tab){
     loadTab(tab);
 }
 function loadTab(tab){
-    const m={news:loadNews,services:loadServices,archives:loadArchives,tourism:loadTourism,mayors:loadMayors,beaches:loadBeaches_admin,facilities:loadFacilitiesAdmin};
+    const m={news:loadNews,services:loadServices,archives:loadArchives,tourism:loadTourism,mayors:loadMayors,beaches:loadBeaches_admin,facilities:loadFacilitiesAdmin,notify:loadNotifStats};
     if(m[tab]) m[tab]();
 }
 
@@ -767,14 +940,33 @@ function toggleFormPanel(sec, forceOpen) {
     const panel = document.getElementById('form-panel-' + sec);
     const btn   = document.getElementById('btn-open-' + sec);
     if (!panel) return;
-    const willOpen = forceOpen !== undefined ? forceOpen : panel.classList.contains('hidden');
-    panel.classList.toggle('hidden', !willOpen);
+    const willOpen = forceOpen !== undefined ? forceOpen : panel.classList.contains('hidden') || !panel.classList.contains('mobile-open');
+    const isMobile = window.innerWidth < 1024;
+
+    if (isMobile) {
+        if (willOpen) {
+            panel.classList.remove('hidden');
+            panel.classList.add('mobile-open');
+            document.body.style.overflow = 'hidden';
+            // إغلاق عند النقر على الخلفية
+            panel._backdropHandler = (e) => { if (e.target === panel) toggleFormPanel(sec, false); };
+            panel.addEventListener('click', panel._backdropHandler);
+        } else {
+            panel.classList.remove('mobile-open');
+            panel.classList.add('hidden');
+            document.body.style.overflow = '';
+            if (panel._backdropHandler) panel.removeEventListener('click', panel._backdropHandler);
+        }
+    } else {
+        panel.classList.toggle('hidden', !willOpen);
+    }
+
     if (btn) {
         btn.innerHTML = willOpen
             ? '<span class="iconify text-lg" data-icon="lucide:x"></span> إغلاق'
             : `<span class="iconify text-lg" data-icon="lucide:plus-circle"></span> ${btn.dataset.label || 'إضافة'}`;
     }
-    if (willOpen) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (willOpen && !isMobile) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 // للتوافق مع الكود القديم
 function toggleNewsForm(btn){ toggleFormPanel('news'); }
@@ -787,10 +979,8 @@ function readBase64(file){return new Promise((res,rej)=>{const r=new FileReader(
 
 async function uploadFile(file, folder){
     if(file.size>25*1024*1024) throw new Error('حجم الملف يتجاوز 25 MB');
-    const ext = (file.name && file.name.includes('.')) ? file.name.split('.').pop() : (file.type.split('/')[1]||'jpg');
-    const filename = (file.name && file.name.trim()) ? file.name : `upload_${Date.now()}.${ext}`;
     const base64=await readBase64(file);
-    const resp=await fetch('/api/media',{method:'POST',headers:authHeaders(),body:JSON.stringify({filename,folder,data:base64,mime:file.type||'image/jpeg'})});
+    const resp=await fetch('/api/media',{method:'POST',headers:authHeaders(),body:JSON.stringify({filename:file.name,folder,data:base64,mime:file.type})});
     const d=await resp.json();
     if(!d.success) throw new Error(d.error||'فشل الرفع');
     return d.data.cdn_url;
@@ -933,7 +1123,6 @@ async function saveNews(){
         content:document.getElementById('news-content').value,
         content_fr:document.getElementById('news-content-fr')?.value||'',
         image_url:document.getElementById('news-image').value,
-        image_url_fr:document.getElementById('news-image-fr')?.value||'',
         album_urls:document.getElementById('news-album-urls').value||'[]',
         date:document.getElementById('news-date').value||new Date().toISOString().split('T')[0],
         is_pinned:document.getElementById('news-pinned').checked?1:0,
@@ -949,6 +1138,18 @@ async function saveNews(){
         if(d.success){
             adminToast(editId?'تم تعديل الخبر':'تم إضافة الخبر');
             cancelNewsEdit(); loadNews();
+            // إرسال إشعار تلقائي عند إضافة إعلان رسمي جديد
+            if (!editId && body.category === 'official') {
+                const notifTitle = body.title || 'إعلان جديد';
+                const notifBody  = body.content ? body.content.substring(0,100)+'...' : 'صدر إعلان رسمي جديد من بلدية شطايبي';
+                fetch('/api/push/send', {
+                    method: 'POST',
+                    headers: authHeaders(),
+                    body: JSON.stringify({ title: notifTitle, body: notifBody, url: '/#news' })
+                }).then(r=>r.json()).then(nd=>{
+                    if(nd.success && nd.sent > 0) adminToast('📣 أُرسل إشعار لـ '+nd.sent+' مستخدم');
+                }).catch(()=>{});
+            }
         }
         else adminToast('خطأ: '+(d.error||''));
     } catch { adminToast('تعذر الحفظ'); }
@@ -967,17 +1168,6 @@ async function editNews(id){
         document.getElementById('news-pinned').checked=n.is_pinned==1;
         document.getElementById('news-image').value=n.image_url||'';
         document.getElementById('news-image-url-manual').value=n.image_url||'';
-        // صورة النسخة الفرنسية
-        if(document.getElementById('news-image-fr')){
-            document.getElementById('news-image-fr').value=n.image_url_fr||'';
-            if(document.getElementById('news-image-fr-url')) document.getElementById('news-image-fr-url').value=n.image_url_fr||'';
-            if(n.image_url_fr){
-                document.getElementById('news-img-fr-placeholder').classList.add('hidden');
-                document.getElementById('news-img-fr-img').src=n.image_url_fr;
-                document.getElementById('news-img-fr-name').textContent='صورة موجودة';
-                document.getElementById('news-img-fr-preview').classList.remove('hidden');
-            }
-        }
         const clEl2=document.getElementById('news-custom-label'); if(clEl2) clEl2.value=n.custom_label||'';
         // تحميل ألبوم الصور الموجود
         try{ newsAlbumUrls=JSON.parse(n.album_urls||'[]'); }catch{ newsAlbumUrls=[]; }
@@ -1026,20 +1216,10 @@ document.addEventListener('DOMContentLoaded', function(){
             if(contentLabel) contentLabel.textContent = 'المحتوى';
         }
     }
-    if(catSel){
-        catSel.addEventListener('change', updateTitleRequired);
-        updateTitleRequired();
-        // إظهار/إخفاء حقل صورة النسخة الفرنسية
-        function toggleFrImageWrap(){
-            const wrap = document.getElementById('news-image-fr-wrap');
-            if(!wrap) return;
-            catSel.value === 'official' ? wrap.classList.remove('hidden') : wrap.classList.add('hidden');
-        }
-        catSel.addEventListener('change', toggleFrImageWrap);
-        toggleFrImageWrap();
-    }
+    if(catSel){ catSel.addEventListener('change', updateTitleRequired); updateTitleRequired(); }
 });
 function cancelNewsEdit(){
+    if(window.innerWidth<1024) toggleFormPanel(\'news\',false);
     document.getElementById('news-edit-id').value='';
     document.getElementById('news-title').value='';
     if(document.getElementById('news-title-fr')) document.getElementById('news-title-fr').value='';
@@ -1048,10 +1228,6 @@ function cancelNewsEdit(){
     document.getElementById('news-date').value='';
     document.getElementById('news-pinned').checked=false;
     clearWidget('news-featured','news-image','news-image-url-manual');
-    if(document.getElementById('news-image-fr')) document.getElementById('news-image-fr').value='';
-    if(document.getElementById('news-image-fr-url')) document.getElementById('news-image-fr-url').value='';
-    if(document.getElementById('news-img-fr-preview')){ document.getElementById('news-img-fr-preview').classList.add('hidden'); document.getElementById('news-img-fr-placeholder').classList.remove('hidden'); }
-    document.getElementById('news-image-fr-wrap')?.classList.add('hidden');
     const clEl3=document.getElementById('news-custom-label');
     if(clEl3) clEl3.value='';
     newsAlbumUrls=[]; document.getElementById('news-album-urls').value='[]'; renderAlbum();
@@ -1271,6 +1447,7 @@ async function editService(id){
 }
 
 function cancelServiceEdit(){
+    if(window.innerWidth<1024) toggleFormPanel(\'services\',false);
     document.getElementById('services-edit-id').value = '';
     document.getElementById('services-name').value    = '';
     document.getElementById('services-icon').value    = 'file-text';
@@ -1346,6 +1523,7 @@ async function editArchive(id){
 
     toggleFormPanel('archives', true);}
 function cancelArchiveEdit(){
+    if(window.innerWidth<1024) toggleFormPanel(\'archives\',false);
     ['archives-edit-id','archives-title','archives-desc'].forEach(id=>document.getElementById(id).value='');
     clearWidget('archives-old','archives-old','archives-old-url-manual');clearWidget('archives-new','archives-new','archives-new-url-manual');
     document.getElementById('archives-form-title').textContent='إضافة صورة أرشيفية'; toggleFormPanel('archives', false);document.getElementById('archives-cancel-btn').classList.add('hidden');
@@ -1424,6 +1602,7 @@ async function editTourism(id){
     document.getElementById('tourism-form-title').textContent='تعديل المعلم';document.getElementById('tourism-cancel-btn').classList.remove('hidden');
     toggleFormPanel('tourism', true);}
 function cancelTourismEdit(){
+    if(window.innerWidth<1024) toggleFormPanel(\'tourism\',false);
     ['tourism-edit-id','tourism-name','tourism-subtitle','tourism-desc','tourism-image','tourism-image-manual','tourism-distance','tourism-badge','tourism-lat','tourism-lng'].forEach(id=>document.getElementById(id).value='');
     if(document.getElementById('tourism-name-fr')) document.getElementById('tourism-name-fr').value='';
     if(document.getElementById('tourism-subtitle-fr')) document.getElementById('tourism-subtitle-fr').value='';
@@ -1468,6 +1647,7 @@ async function editMayor(id){
 
     toggleFormPanel('mayors', true);}
 function cancelMayorEdit(){
+    if(window.innerWidth<1024) toggleFormPanel(\'mayors\',false);
     ['mayors-edit-id','mayors-name','mayors-period','mayors-image','mayors-image-manual'].forEach(id=>document.getElementById(id).value='');
     clearWidget('mayors-img','mayors-image','mayors-image-manual');
     document.getElementById('mayors-form-title').textContent='إضافة رئيس'; toggleFormPanel('mayors', false);document.getElementById('mayors-cancel-btn').classList.add('hidden');
@@ -1558,6 +1738,7 @@ async function editBeach(id){
 }
 
 function cancelBeachEdit(){
+    if(window.innerWidth<1024) toggleFormPanel(\'beaches\',false);
     ['beaches-edit-id','beaches-name','beaches-desc','beaches-season','beaches-lat','beaches-lng'].forEach(id=>document.getElementById(id).value='');
     if(document.getElementById('beaches-name-fr')) document.getElementById('beaches-name-fr').value='';
     if(document.getElementById('beaches-desc-fr')) document.getElementById('beaches-desc-fr').value='';
@@ -1795,6 +1976,7 @@ async function editFacility(id) {
 }
 
 function cancelFacilityEdit() {
+    if(window.innerWidth<1024) toggleFormPanel('facilities',false);
     facEditId = '';
     document.getElementById('facilities-edit-id').value = '';
     document.getElementById('facilities-name').value = '';
