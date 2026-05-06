@@ -28,9 +28,6 @@
         .chetaibi-popup .map-popup img { margin: -0px -0px 8px -0px; width: calc(100% + 0px); border-radius: 0; }
     </style>
     <script>tailwind.config={theme:{extend:{fontFamily:{cairo:['Cairo','sans-serif']}}}}</script>
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js"></script>
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#059669">
@@ -663,9 +660,14 @@
         // ─── إعادة رسم الشواطئ والمعالم ───
         if (typeof loadBeaches === 'function') loadBeaches();
         if (typeof loadTourism === 'function') loadTourism();
+        // ─── إعادة رسم المرافق ───
+        if (typeof loadGuidePanel === 'function') {
+            ['admin-branches','education','health'].forEach(tab => loadGuidePanel(tab));
+        }
         // ─── إعادة رسم الخدمات ───
         if (typeof loadServicesMain === 'function') loadServicesMain();
-    }
+        // ─── إعادة رسم معاينة الأرشيف ───
+        if (typeof loadArchivePreview === 'function') loadArchivePreview();
 
     // ─── تصدير للـ global scope ───
     window.t = t;
@@ -2790,9 +2792,9 @@ async function openTourismModal(id){
         document.getElementById("tm-subtitle").textContent=getLF(t,"subtitle")||"";
         document.getElementById("tm-desc").textContent=getLF(t,"description")||"";
         document.getElementById('tm-badges').innerHTML=
-            (t.badge_text?`<span class="text-xs bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full font-bold">${t.badge_text}</span>`:'')+
+            (t.badge_text?`<span class="text-xs bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full font-bold">${getLF(t,'badge_text')}</span>`:'')+
             (t.rating?`<span class="text-xs bg-amber-100 text-amber-700 px-3 py-1 rounded-full font-bold">⭐ ${t.rating}/5</span>`:'')+
-            (t.distance_info?`<span class="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-bold">${t.distance_info}</span>`:'');
+            (t.distance_info?`<span class="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-bold">${getLF(t,'distance_info')}</span>`:'');
         if(t.albums?.length){
             document.getElementById('tm-album').innerHTML=
                 '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class=\"iconify text-emerald-500\" data-icon=\"lucide:images\"></span>معرض الصور ('+t.albums.length+')</h4>'+
@@ -2872,12 +2874,12 @@ async function loadGuidePanel(tab) {
                 +   '<div class="flex items-center gap-3 mb-3">'
                 +     (!hasImg ? '<div class="w-12 h-12 ' + meta.color + ' rounded-xl flex items-center justify-center flex-shrink-0"><span class="iconify text-white text-2xl" data-icon="' + meta.icon + '"></span></div>' : '')
                 +     '<div class="flex-1 min-w-0">'
-                +       (f.sub_type ? '<span class="inline-flex items-center gap-1 text-xs font-bold ' + meta.badge + ' px-2 py-0.5 rounded-full">' + f.sub_type + '</span>' : '')
-                +       '<h4 class="font-extrabold text-gray-800 mt-0.5 leading-snug">' + f.name + '</h4>'
+                +       (f.sub_type ? '<span class="inline-flex items-center gap-1 text-xs font-bold ' + meta.badge + ' px-2 py-0.5 rounded-full">' + getLF(f,'sub_type') + '</span>' : '')
+                +       '<h4 class="font-extrabold text-gray-800 mt-0.5 leading-snug">' + getLF(f,'name') + '</h4>'
                 +     '</div>'
                 +     (hasAlbum && !hasImg ? '<span class="text-[10px] bg-emerald-50 text-emerald-600 border border-emerald-200 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 flex-shrink-0"><span class="iconify" data-icon="lucide:images"></span>' + albums.length + '</span>' : '')
                 +   '</div>'
-                +   (f.description ? '<p class="text-sm text-gray-600 leading-relaxed mb-3 line-clamp-2">' + f.description + '</p>' : '')
+                +   (f.description ? '<p class="text-sm text-gray-600 leading-relaxed mb-3 line-clamp-2">' + getLF(f,'description') + '</p>' : '')
                 +   (tags.length ? '<div class="flex flex-wrap gap-1.5">' + tags.map(t => '<span class="text-xs bg-gray-50 text-gray-600 border border-gray-200 px-2.5 py-0.5 rounded-full font-semibold">' + t + '</span>').join('') + '</div>' : '')
                 + '</div>'
                 + '</div>';
@@ -3051,12 +3053,12 @@ function facSetCat(cat) {
                     +   '<div class="flex items-center gap-3 mb-3">'
                     +     (!hasImg ? '<div class="w-12 h-12 ' + m.color + ' rounded-xl flex items-center justify-center flex-shrink-0"><span class="iconify text-white text-2xl" data-icon="' + m.icon + '"></span></div>' : '')
                     +     '<div class="flex-1 min-w-0">'
-                    +       (f.sub_type ? '<span class="inline-block text-xs font-bold bg-' + m.col + '-100 text-' + m.col + '-700 px-2 py-0.5 rounded-full mb-1">' + f.sub_type + '</span>' : '')
-                    +       '<h4 class="font-extrabold text-gray-800 leading-snug">' + f.name + '</h4>'
+                    +       (f.sub_type ? '<span class="inline-block text-xs font-bold bg-' + m.col + '-100 text-' + m.col + '-700 px-2 py-0.5 rounded-full mb-1">' + getLF(f,'sub_type') + '</span>' : '')
+                    +       '<h4 class="font-extrabold text-gray-800 leading-snug">' + getLF(f,'name') + '</h4>'
                     +     '</div>'
                     +     (hasAlbum && !hasImg ? '<span class="text-[10px] bg-emerald-50 text-emerald-600 border border-emerald-200 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 flex-shrink-0"><span class="iconify" data-icon="lucide:images"></span>' + albums.length + '</span>' : '')
                     +   '</div>'
-                    +   (f.description ? '<p class="text-sm text-gray-600 leading-relaxed mb-3 line-clamp-2">' + f.description + '</p>' : '')
+                    +   (f.description ? '<p class="text-sm text-gray-600 leading-relaxed mb-3 line-clamp-2">' + getLF(f,'description') + '</p>' : '')
                     +   (tags.length ? '<div class="flex flex-wrap gap-1.5">' + tags.map(t => '<span class="text-xs bg-' + m.col + '-50 text-' + m.col + '-700 border border-' + m.col + '-200 px-2.5 py-0.5 rounded-full font-semibold">' + t + '</span>').join('') + '</div>' : '')
                     + '</div>'
                     + '</div>';
@@ -3195,12 +3197,12 @@ async function openTourismModalFromExplore(id) {
         const t=d.data;
         document.getElementById('tm-img').src=t.image_url||'https://placehold.co/800x300/059669/fff?text='+encodeURIComponent(t.name);
         document.getElementById('tm-name').textContent=t.name;
-        document.getElementById('tm-subtitle').textContent=t.subtitle||'';
-        document.getElementById('tm-desc').textContent=t.description||'';
+        document.getElementById('tm-subtitle').textContent=getLF(t,'subtitle')||'';
+        document.getElementById('tm-desc').textContent=getLF(t,'description')||'';
         document.getElementById('tm-badges').innerHTML=
-            (t.badge_text?`<span class="text-xs bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full font-bold">${t.badge_text}</span>`:'')+
+            (t.badge_text?`<span class="text-xs bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full font-bold">${getLF(t,'badge_text')}</span>`:'')+
             (t.rating?`<span class="text-xs bg-amber-100 text-amber-700 px-3 py-1 rounded-full font-bold">⭐ ${t.rating}/5</span>`:'')+
-            (t.distance_info?`<span class="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-bold">${t.distance_info}</span>`:'');
+            (t.distance_info?`<span class="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-bold">${getLF(t,'distance_info')}</span>`:'');
         if(t.albums?.length){
             document.getElementById('tm-album').innerHTML=
                 '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:images"></span>معرض الصور ('+t.albums.length+')</h4>'+
@@ -3294,10 +3296,10 @@ async function openFacModal(id, tab) {
         }
         // بيانات
         const subEl = document.getElementById('fac-modal-sub');
-        subEl.textContent = f.sub_type || '';
+        subEl.textContent = getLF(f,'sub_type') || '';
         subEl.className = 'inline-block text-xs font-bold px-2 py-0.5 rounded-full mb-2 bg-emerald-100 text-emerald-700';
-        document.getElementById('fac-modal-name').textContent = f.name;
-        document.getElementById('fac-modal-desc').textContent = f.description || '';
+        document.getElementById('fac-modal-name').textContent = getLF(f,'name');
+        document.getElementById('fac-modal-desc').textContent = getLF(f,'description') || '';
         // tags
         document.getElementById('fac-modal-tags').innerHTML = tags.map(t =>
             `<span class="text-xs bg-gray-100 text-gray-700 border border-gray-200 px-2.5 py-0.5 rounded-full font-semibold">${t}</span>`
@@ -3363,29 +3365,28 @@ async function openMayorsOverlay() {
             <div class="bg-gradient-to-l from-emerald-700 to-emerald-900 rounded-2xl p-6 text-white flex flex-col sm:flex-row items-center gap-6 shadow-xl mb-2">
                 <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-white/30 flex-shrink-0 bg-white/20 flex items-center justify-center">
                     ${current.image_url
-                        ? `<img src="${current.image_url}" alt="${current.name}" class="w-full h-full object-cover">`
+                        ? `<img src="${current.image_url}" alt="${getLF(current,'name')}" class="w-full h-full object-cover">`
                         : `<span class="iconify text-white text-4xl" data-icon="lucide:user-circle"></span>`}
                 </div>
                 <div class="text-center sm:text-right">
-                    <span class="inline-block bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full mb-2">الرئيس الحالي</span>
-                    <h4 class="text-2xl font-extrabold mb-1">${current.name}</h4>
-                    <p class="text-emerald-200 text-sm flex items-center justify-center sm:justify-start gap-1"><span class="iconify" data-icon="lucide:calendar"></span>${current.period}</p>
+                    <span class="inline-block bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full mb-2">${t('mayor-role')}</span>
+                    <h4 class="text-2xl font-extrabold mb-1">${getLF(current,'name')}</h4>
+                    <p class="text-emerald-200 text-sm flex items-center justify-center sm:justify-start gap-1"><span class="iconify" data-icon="lucide:calendar"></span>${getLF(current,'period')}</p>
                 </div>
             </div>
         </div>`;
         if (previous.length) {
-            html += `<div class="col-span-full mt-4 mb-2"><h4 class="text-lg font-extrabold text-gray-700 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:history"></span>الرؤساء السابقون</h4></div>`;
+            html += `<div class="col-span-full mt-4 mb-2"><h4 class="text-lg font-extrabold text-gray-700 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:history"></span>${t('mayor-prev-btn')}</h4></div>`;
             html += previous.map((m, i) => `
                 <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-md hover:shadow-xl transition-shadow flex flex-col items-center text-center gap-4">
                     <div class="w-20 h-20 rounded-full overflow-hidden border-4 border-emerald-100 bg-emerald-50 flex items-center justify-center flex-shrink-0">
                         ${m.image_url
-                            ? `<img src="${m.image_url}" alt="${m.name}" class="w-full h-full object-cover">`
+                            ? `<img src="${m.image_url}" alt="${getLF(m,'name')}" class="w-full h-full object-cover">`
                             : `<span class="iconify text-emerald-300 text-3xl" data-icon="lucide:user-circle"></span>`}
                     </div>
                     <div>
-    
-                        <h4 class="font-extrabold text-gray-800 text-base leading-snug mb-1">${m.name}</h4>
-                        <p class="text-gray-400 text-xs flex items-center justify-center gap-1"><span class="iconify" data-icon="lucide:calendar"></span>${m.period}</p>
+                        <h4 class="font-extrabold text-gray-800 text-base leading-snug mb-1">${getLF(m,'name')}</h4>
+                        <p class="text-gray-400 text-xs flex items-center justify-center gap-1"><span class="iconify" data-icon="lucide:calendar"></span>${getLF(m,'period')}</p>
                     </div>
                 </div>`).join('');
         }
@@ -3681,54 +3682,107 @@ window.addEventListener('appinstalled', () => {
     if (wrap) wrap.classList.add('hidden');
     _pwaPrompt = null;
 });
-// ══ Firebase FCM ══
-const _fbApp = firebase.initializeApp({
-    apiKey:            "AIzaSyCWUUSEoz2zaz-0KVTWGbSmK_sVX1hyg8w",
-    authDomain:        "chetaibi-71f80.firebaseapp.com",
-    projectId:         "chetaibi-71f80",
-    storageBucket:     "chetaibi-71f80.appspot.com",
-    messagingSenderId: "314577571705",
-    appId:             "1:314577571705:web:4063450187d6df202529a8",
-});
-const _fbMsg = firebase.messaging();
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+        .then(async reg => {
+            window._swReg = reg;
+            if (!('PushManager' in window)) return;
 
-// VAPID Key من Firebase Console → Cloud Messaging → Certificats Web push
-const FCM_VAPID = 'BDOP1U8Pc-BySzNtqkvJJcKsP1ehDSKfJ2nLtnvCloTlvGWRbnx3NM9lxol4RsXgTA-ebRiw2DSBfySWmE97Fy0';
+            // ── كشف FCM Legacy وإجبار إعادة تسجيل SW كاملة ──
+            const existing = await reg.pushManager.getSubscription().catch(() => null);
+            if (existing?.endpoint?.includes('/fcm/send/')) {
+                await existing.unsubscribe().catch(() => {});
+                // إلغاء تسجيل SW كلياً يمسح FCM token القديم
+                await reg.unregister().catch(() => {});
+                // إعادة تسجيل SW من جديد
+                const newReg = await navigator.serviceWorker.register('/sw.js');
+                await navigator.serviceWorker.ready;
+                window._swReg = newReg;
+                // الاشتراك بـ VAPID key الجديد
+                if (Notification.permission === 'granted') {
+                    await subscribePush(newReg);
+                }
+                return;
+            }
 
-async function initFCM() {
-    try {
-        if (!('serviceWorker' in navigator)) return;
-        await navigator.serviceWorker.register('/sw.js');
-        const perm = await Notification.requestPermission();
-        if (perm !== 'granted') return;
-        const token = await _fbMsg.getToken({ vapidKey: FCM_VAPID });
-        if (token) {
-            await fetch('/api/push/subscribe', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ fcm_token: token }),
-            });
-        }
-    } catch (e) { console.warn('FCM init:', e.message); }
+            if (Notification.permission === 'granted') {
+                subscribePush(reg);
+            } else if (Notification.permission === 'default') {
+                setTimeout(() => {
+                    Notification.requestPermission().then(perm => {
+                        if (perm === 'granted') subscribePush(reg);
+                    });
+                }, 3000);
+            }
+        })
+        .catch(() => {});
 }
 
-// استقبال الإشعارات عند فتح التطبيق
-_fbMsg.onMessage(payload => {
-    const { title, body } = payload.notification || {};
-    if (title && 'Notification' in window && Notification.permission === 'granted') {
-        new Notification(title, {
-            body,
-            icon: 'https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/app-icon.png',
+// دالة يدوية لطلب الإذن (تُستدعى من أي مكان)
+async function requestPushPermission() {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+    const perm = await Notification.requestPermission();
+    if (perm === 'granted' && window._swReg) await subscribePush(window._swReg);
+    return perm;
+}
+
+// VAPID Public Key — يجب مطابقته مع VAPID_PUBLIC في Cloudflare
+const VAPID_PUB_KEY = 'BBYBCkteVEkVDOFwYglgTpPEx-dQHiU4DEQ9caOlbr6JO0ceE1ebpU9hFmNaIcotydXAQzWhzCQivH6a8o3J9nQ';
+
+async function subscribePush(reg) {
+    try {
+        const existing = await reg.pushManager.getSubscription();
+
+        // اكتشاف الاشتراك القديم legacy وإلغاؤه تلقائياً
+        if (existing) {
+            const isLegacy = existing.endpoint.includes('/fcm/send/');
+            if (isLegacy) {
+                await existing.unsubscribe();
+                // أنشئ اشتراكاً جديداً صحيحاً
+                const newSub = await reg.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: urlBase64ToUint8Array(VAPID_PUB_KEY)
+                });
+                await sendSubToServer(newSub);
+            } else {
+                // اشتراك سليم — أرسله للسيرفر (يتجاهل إذا موجود مسبقاً)
+                await sendSubToServer(existing);
+            }
+            return;
+        }
+
+        // لا يوجد اشتراك — أنشئ واحداً جديداً
+        const sub = await reg.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array(VAPID_PUB_KEY)
         });
+        await sendSubToServer(sub);
+    } catch (err) {
+        console.warn('[Push] subscribePush error:', err);
     }
-});
+}
 
-// تهيئة FCM بعد 2 ثانية من تحميل الصفحة
-setTimeout(initFCM, 2000);
+async function sendSubToServer(sub) {
+    try {
+        const res = await fetch('/api/push/subscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(sub.toJSON())
+        });
+        if (!res.ok) console.warn('[Push] subscribe API error:', res.status);
+    } catch (err) {
+        console.warn('[Push] sendSubToServer error:', err);
+    }
+}
 
-async function requestPushPermission() { await initFCM(); }
-
-
+function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64  = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+    const rawData = atob(base64);
+    const output  = new Uint8Array(rawData.length);
+    for (let i = 0; i < rawData.length; ++i) output[i] = rawData.charCodeAt(i);
+    return output;
+}
 
 // ══════════════════════════════════════════════════════
 // 🌐 تطبيق اللغة المحفوظة عند التحميل
