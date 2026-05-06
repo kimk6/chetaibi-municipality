@@ -129,7 +129,6 @@
             <button onclick="switchTab('mayors')" id="tab-mayors" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1"><span class="iconify" data-icon="lucide:users"></span> الرؤساء</button>
             <button onclick="switchTab('beaches')" id="tab-beaches" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1"><span class="iconify" data-icon="lucide:waves"></span> الشواطئ</button>
             <button onclick="switchTab('facilities')" id="tab-facilities" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1"><span class="iconify" data-icon="lucide:building-2"></span> المرافق</button>
-            <button onclick="switchTab('notify')" id="tab-notify" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1"><span class="iconify" data-icon="lucide:bell-ring"></span> الإشعارات</button>
         </div>
 
         <!-- NEWS -->
@@ -692,68 +691,6 @@
             </div>
         </div>
 
-        <!-- ══ قسم الإشعارات ══ -->
-        <div id="section-notify" class="content-section hidden fade-in">
-            <!-- إرسال إشعار يدوي -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
-                    <h3 class="font-extrabold text-gray-800 text-lg mb-1 flex items-center gap-2">
-                        <span class="iconify text-emerald-500 text-xl" data-icon="lucide:send"></span>
-                        إرسال إشعار للمستخدمين
-                    </h3>
-                    <p class="text-xs text-gray-400 mb-5">يُرسل الإشعار فوراً لجميع من ثبّتوا التطبيق وقبلوا الإشعارات</p>
-                    <div class="space-y-3">
-                        <div>
-                            <label class="text-xs font-bold text-gray-500 mb-1 block">عنوان الإشعار</label>
-                            <input id="notif-title" type="text" placeholder="مثال: إعلان مهم من بلدية شطايبي"
-                                class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-emerald-400">
-                        </div>
-                        <div>
-                            <label class="text-xs font-bold text-gray-500 mb-1 block">نص الرسالة</label>
-                            <textarea id="notif-body" rows="3" placeholder="اكتب محتوى الإشعار هنا..."
-                                class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-emerald-400 resize-none"></textarea>
-                        </div>
-                        <div>
-                            <label class="text-xs font-bold text-gray-500 mb-1 block">رابط (اختياري)</label>
-                            <input id="notif-url" type="url" placeholder="https://chetaibi.pages.dev/..."
-                                class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-emerald-400">
-                        </div>
-                        <button onclick="sendManualNotif()"
-                            class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2">
-                            <span class="iconify text-lg" data-icon="lucide:send"></span>
-                            إرسال الإشعار الآن
-                        </button>
-                    </div>
-                </div>
-                <!-- إحصائيات المشتركين -->
-                <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
-                    <h3 class="font-extrabold text-gray-800 text-lg mb-4 flex items-center gap-2">
-                        <span class="iconify text-blue-500 text-xl" data-icon="lucide:users"></span>
-                        المشتركون في الإشعارات
-                    </h3>
-                    <div class="text-center py-6">
-                        <p id="notif-sub-count" class="text-5xl font-extrabold text-emerald-600 mb-2">—</p>
-                        <p class="text-sm text-gray-400">مستخدم مشترك</p>
-                    </div>
-                    <button onclick="loadNotifStats()"
-                        class="w-full bg-gray-100 hover:bg-gray-200 text-gray-600 py-2.5 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2">
-                        <span class="iconify" data-icon="lucide:refresh-cw"></span>
-                        تحديث الإحصائيات
-                    </button>
-                </div>
-            </div>
-            <!-- سجل الإشعارات المرسلة -->
-            <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
-                <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2">
-                    <span class="iconify text-gray-400" data-icon="lucide:history"></span>
-                    آخر الإشعارات المرسلة
-                </h3>
-                <div id="notif-log" class="space-y-2 text-sm text-gray-400 text-center py-8">
-                    <span class="iconify text-3xl block mx-auto mb-2" data-icon="lucide:bell-off"></span>
-                    لا توجد إشعارات مرسلة بعد
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -761,59 +698,6 @@
 let token = localStorage.getItem('admin_token') || '';
 let activeTab = 'news';
 let newsAlbumUrls = [];
-
-// ══════════════════════════════════════════════════════
-// 🔔 Push Notifications
-// ══════════════════════════════════════════════════════
-
-async function loadNotifStats() {
-    try {
-        const res = await fetch('/api/push/stats', { headers: authHeaders() });
-        const d = await res.json();
-        document.getElementById('notif-sub-count').textContent = d.count ?? '—';
-    } catch {
-        document.getElementById('notif-sub-count').textContent = '—';
-    }
-}
-
-async function sendManualNotif() {
-    const title = document.getElementById('notif-title').value.trim();
-    const body  = document.getElementById('notif-body').value.trim();
-    const url   = document.getElementById('notif-url').value.trim() || '/';
-    if (!title || !body) { adminToast('العنوان والرسالة مطلوبان'); return; }
-    try {
-        const res = await fetch('/api/push/send', {
-            method: 'POST',
-            headers: authHeaders(),
-            body: JSON.stringify({ title, body, url, icon: '/manifest.json' })
-        });
-        const d = await res.json();
-        if (d.success) {
-            adminToast('✅ تم إرسال الإشعار لـ ' + (d.sent||0) + ' مستخدم');
-            document.getElementById('notif-title').value = '';
-            document.getElementById('notif-body').value  = '';
-            document.getElementById('notif-url').value   = '';
-            appendNotifLog(title, body, d.sent||0);
-        } else {
-            adminToast('خطأ: ' + (d.error||'تعذر الإرسال'));
-        }
-    } catch { adminToast('تعذر الإرسال'); }
-}
-
-function appendNotifLog(title, body, sent) {
-    const log = document.getElementById('notif-log');
-    const now = new Date().toLocaleString('ar-DZ');
-    const item = document.createElement('div');
-    item.className = 'flex items-start gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100';
-    item.innerHTML = `<span class="iconify text-emerald-500 text-xl flex-shrink-0 mt-0.5" data-icon="lucide:check-circle"></span>
-        <div class="flex-1 text-right">
-            <p class="font-bold text-gray-700 text-sm">${title}</p>
-            <p class="text-xs text-gray-400">${body}</p>
-            <p class="text-xs text-emerald-500 mt-1">أُرسل لـ ${sent} مستخدم · ${now}</p>
-        </div>`;
-    if (log.querySelector('[data-icon]')) log.innerHTML = '';
-    log.prepend(item);
-}
 
 if (token) showDashboard(); else showLogin();
 
@@ -842,7 +726,7 @@ function switchTab(tab){
     loadTab(tab);
 }
 function loadTab(tab){
-    const m={news:loadNews,services:loadServices,archives:loadArchives,tourism:loadTourism,mayors:loadMayors,beaches:loadBeaches_admin,facilities:loadFacilitiesAdmin,notify:loadNotifStats};
+    const m={news:loadNews,services:loadServices,archives:loadArchives,tourism:loadTourism,mayors:loadMayors,beaches:loadBeaches_admin,facilities:loadFacilitiesAdmin};
     if(m[tab]) m[tab]();
 }
 
@@ -1028,22 +912,7 @@ async function saveNews(){
     try {
         const res=await fetch(editId?'/api/news?id='+editId:'/api/news',{method:editId?'PUT':'POST',headers:{...authHeaders(),'Content-Type':'application/json'},body:JSON.stringify(body)});
         const d=await res.json();
-        if(d.success){
-            adminToast(editId?'تم تعديل الخبر':'تم إضافة الخبر');
-            cancelNewsEdit(); loadNews();
-            // إرسال إشعار تلقائي عند إضافة إعلان رسمي جديد
-            if (!editId && body.category === 'official') {
-                const notifTitle = body.title || 'إعلان جديد';
-                const notifBody  = body.content ? body.content.substring(0,100)+'...' : 'صدر إعلان رسمي جديد من بلدية شطايبي';
-                fetch('/api/push/send', {
-                    method: 'POST',
-                    headers: authHeaders(),
-                    body: JSON.stringify({ title: notifTitle, body: notifBody, url: '/#news' })
-                }).then(r=>r.json()).then(nd=>{
-                    if(nd.success && nd.sent > 0) adminToast('📣 أُرسل إشعار لـ '+nd.sent+' مستخدم');
-                }).catch(()=>{});
-            }
-        }
+        if(d.success){adminToast(editId?'تم تعديل الخبر':'تم إضافة الخبر');cancelNewsEdit();loadNews();}
         else adminToast('خطأ: '+(d.error||''));
     } catch { adminToast('تعذر الحفظ'); }
 }
