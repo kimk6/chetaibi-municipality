@@ -149,7 +149,6 @@
             <button onclick="switchTab('mayors')" id="tab-mayors" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1"><span class="iconify" data-icon="lucide:users"></span> الرؤساء</button>
             <button onclick="switchTab('beaches')" id="tab-beaches" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1"><span class="iconify" data-icon="lucide:waves"></span> الشواطئ</button>
             <button onclick="switchTab('facilities')" id="tab-facilities" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1"><span class="iconify" data-icon="lucide:building-2"></span> المرافق</button>
-            <button onclick="switchTab('notify')" id="tab-notify" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1"><span class="iconify" data-icon="lucide:bell-ring"></span> الإشعارات</button>
         </div>
 
         <!-- NEWS -->
@@ -236,6 +235,18 @@
                             <input type="file" id="news-featured-input" accept="image/*" class="hidden" onchange="handleFeatured(this,'news-featured','news-image','news')">
                             <input type="hidden" id="news-image" value="">
                             <input id="news-image-url-manual" type="url" placeholder="أو الصق رابطاً مباشرةً..." class="mt-2 text-xs" oninput="document.getElementById('news-image').value=this.value">
+                        </div>
+                        <!-- 🇫🇷 صورة خاصة بالنسخة الفرنسية — للإعلانات الرسمية فقط -->
+                        <div id="news-image-fr-wrap" class="hidden border-r-4 border-blue-400 pr-3 bg-blue-50 rounded-xl py-3 px-3">
+                            <label class="text-xs font-bold text-blue-700 mb-2 block">🇫🇷 Image — Version française <span class="text-gray-400 font-normal mr-1">(تُعرض عند تغيير اللغة للفرنسية)</span></label>
+                            <div id="news-img-fr-widget" class="upload-widget p-3 cursor-pointer bg-white border border-blue-200 rounded-xl" onclick="triggerUpload('news-img-fr-input')">
+                                <div id="news-img-fr-placeholder" class="flex flex-col items-center gap-1 py-2"><span class="iconify text-2xl text-blue-200" data-icon="lucide:image-plus"></span><span class="text-xs text-blue-400 font-semibold">Cliquez pour télécharger</span></div>
+                                <div id="news-img-fr-preview" class="hidden"><img id="news-img-fr-img" src="" class="w-full h-24 object-cover rounded-lg mb-1"><div class="flex items-center justify-between"><span id="news-img-fr-name" class="text-[10px] text-gray-500 truncate flex-1"></span><button type="button" onclick="event.stopPropagation();document.getElementById('news-image-fr').value='';document.getElementById('news-image-fr-url').value='';document.getElementById('news-img-fr-preview').classList.add('hidden');document.getElementById('news-img-fr-placeholder').classList.remove('hidden');" class="text-[10px] text-red-500 font-bold mr-1">✕</button></div></div>
+                                <div id="news-img-fr-uploading" class="hidden flex flex-col items-center gap-1 py-2"><span class="iconify text-2xl text-indigo-400 spin" data-icon="lucide:loader-2"></span><span class="text-xs text-indigo-500">جاري الرفع...</span></div>
+                            </div>
+                            <input type="file" id="news-img-fr-input" accept="image/*" class="hidden" onchange="handleFeatured(this,'news-img-fr','news-image-fr','news')">
+                            <input type="hidden" id="news-image-fr" value="">
+                            <input type="url" id="news-image-fr-url" placeholder="أو الصق رابطاً مباشرةً..." class="mt-2 text-xs" oninput="document.getElementById('news-image-fr').value=this.value">
                         </div>
 
                         <!-- ألبوم صور -->
@@ -779,71 +790,7 @@
                 </div>
             </div>
         </div>
-
-        <!-- ══ قسم الإشعارات ══ -->
-        <div id="section-notify" class="content-section hidden fade-in">
-            <!-- إرسال إشعار يدوي -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
-                    <h3 class="font-extrabold text-gray-800 text-lg mb-1 flex items-center gap-2">
-                        <span class="iconify text-emerald-500 text-xl" data-icon="lucide:send"></span>
-                        إرسال إشعار للمستخدمين
-                    </h3>
-                    <p class="text-xs text-gray-400 mb-5">يُرسل الإشعار فوراً لجميع من ثبّتوا التطبيق وقبلوا الإشعارات</p>
-                    <div class="space-y-3">
-                        <div>
-                            <label class="text-xs font-bold text-gray-500 mb-1 block">عنوان الإشعار</label>
-                            <input id="notif-title" type="text" placeholder="مثال: إعلان مهم من بلدية شطايبي"
-                                class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-emerald-400">
-                        </div>
-                        <div>
-                            <label class="text-xs font-bold text-gray-500 mb-1 block">نص الرسالة</label>
-                            <textarea id="notif-body" rows="3" placeholder="اكتب محتوى الإشعار هنا..."
-                                class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-emerald-400 resize-none"></textarea>
-                        </div>
-                        <div>
-                            <label class="text-xs font-bold text-gray-500 mb-1 block">رابط (اختياري)</label>
-                            <input id="notif-url" type="url" placeholder="https://chetaibi.pages.dev/..."
-                                class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-emerald-400">
-                        </div>
-                        <button onclick="sendManualNotif()"
-                            class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2">
-                            <span class="iconify text-lg" data-icon="lucide:send"></span>
-                            إرسال الإشعار الآن
-                        </button>
-                    </div>
-                </div>
-                <!-- إحصائيات المشتركين -->
-                <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
-                    <h3 class="font-extrabold text-gray-800 text-lg mb-4 flex items-center gap-2">
-                        <span class="iconify text-blue-500 text-xl" data-icon="lucide:users"></span>
-                        المشتركون في الإشعارات
-                    </h3>
-                    <div class="text-center py-6">
-                        <p id="notif-sub-count" class="text-5xl font-extrabold text-emerald-600 mb-2">—</p>
-                        <p class="text-sm text-gray-400">مستخدم مشترك</p>
-                    </div>
-                    <button onclick="loadNotifStats()"
-                        class="w-full bg-gray-100 hover:bg-gray-200 text-gray-600 py-2.5 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2">
-                        <span class="iconify" data-icon="lucide:refresh-cw"></span>
-                        تحديث الإحصائيات
-                    </button>
-                </div>
-            </div>
-            <!-- سجل الإشعارات المرسلة -->
-            <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
-                <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2">
-                    <span class="iconify text-gray-400" data-icon="lucide:history"></span>
-                    آخر الإشعارات المرسلة
-                </h3>
-                <div id="notif-log" class="space-y-2 text-sm text-gray-400 text-center py-8">
-                    <span class="iconify text-3xl block mx-auto mb-2" data-icon="lucide:bell-off"></span>
-                    لا توجد إشعارات مرسلة بعد
-                </div>
-            </div>
-        </div>
     </div>
-</div>
 
 <script>
 let token = localStorage.getItem('admin_token') || '';
@@ -906,7 +853,7 @@ function appendNotifLog(title, body, sent) {
 if (token) showDashboard(); else showLogin();
 
 function showLogin() { document.getElementById('login-screen').classList.remove('hidden'); document.getElementById('dashboard').classList.add('hidden'); }
-function showDashboard() { document.getElementById('login-screen').classList.add('hidden'); document.getElementById('dashboard').classList.remove('hidden'); try{loadTab(activeTab);}catch(e){console.warn('loadTab:',e);} try{loadRepoSize();}catch(e){} }
+function showDashboard() { document.getElementById('login-screen').classList.add('hidden'); document.getElementById('dashboard').classList.remove('hidden'); loadTab(activeTab); loadRepoSize(); }
 function adminToast(msg) { const t=document.getElementById('admin-toast'); document.getElementById('admin-toast-msg').textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3500); }
 async function login() {
     const u=document.getElementById('login-username').value, p=document.getElementById('login-password').value;
@@ -979,8 +926,10 @@ function readBase64(file){return new Promise((res,rej)=>{const r=new FileReader(
 
 async function uploadFile(file, folder){
     if(file.size>25*1024*1024) throw new Error('حجم الملف يتجاوز 25 MB');
+    const ext=(file.name&&file.name.includes('.'))?file.name.split('.').pop():(file.type.split('/')[1]||'jpg');
+    const filename=(file.name&&file.name.trim())?file.name:('upload_'+Date.now()+'.'+ext);
     const base64=await readBase64(file);
-    const resp=await fetch('/api/media',{method:'POST',headers:authHeaders(),body:JSON.stringify({filename:file.name,folder,data:base64,mime:file.type})});
+    const resp=await fetch('/api/media',{method:'POST',headers:authHeaders(),body:JSON.stringify({filename,folder,data:base64,mime:file.type||'image/jpeg'})});
     const d=await resp.json();
     if(!d.success) throw new Error(d.error||'فشل الرفع');
     return d.data.cdn_url;
@@ -1123,6 +1072,7 @@ async function saveNews(){
         content:document.getElementById('news-content').value,
         content_fr:document.getElementById('news-content-fr')?.value||'',
         image_url:document.getElementById('news-image').value,
+        image_url_fr:(document.getElementById('news-image-fr')||{}).value||'',
         album_urls:document.getElementById('news-album-urls').value||'[]',
         date:document.getElementById('news-date').value||new Date().toISOString().split('T')[0],
         is_pinned:document.getElementById('news-pinned').checked?1:0,
@@ -1216,7 +1166,17 @@ document.addEventListener('DOMContentLoaded', function(){
             if(contentLabel) contentLabel.textContent = 'المحتوى';
         }
     }
-    if(catSel){ catSel.addEventListener('change', updateTitleRequired); updateTitleRequired(); }
+    if(catSel){
+        catSel.addEventListener('change', updateTitleRequired);
+        updateTitleRequired();
+        function toggleFrImageWrap(){
+            const w=document.getElementById('news-image-fr-wrap');
+            if(!w) return;
+            catSel.value==='official'?w.classList.remove('hidden'):w.classList.add('hidden');
+        }
+        catSel.addEventListener('change', toggleFrImageWrap);
+        toggleFrImageWrap();
+    }
 });
 function cancelNewsEdit(){
     if(window.innerWidth<1024) toggleFormPanel(\'news\',false);
@@ -1228,6 +1188,11 @@ function cancelNewsEdit(){
     document.getElementById('news-date').value='';
     document.getElementById('news-pinned').checked=false;
     clearWidget('news-featured','news-image','news-image-url-manual');
+    var frEl=document.getElementById('news-image-fr'); if(frEl) frEl.value='';
+    var frUrl=document.getElementById('news-image-fr-url'); if(frUrl) frUrl.value='';
+    var frPrev=document.getElementById('news-img-fr-preview'); if(frPrev) frPrev.classList.add('hidden');
+    var frPh=document.getElementById('news-img-fr-placeholder'); if(frPh) frPh.classList.remove('hidden');
+    var frWrap=document.getElementById('news-image-fr-wrap'); if(frWrap) frWrap.classList.add('hidden');
     const clEl3=document.getElementById('news-custom-label');
     if(clEl3) clEl3.value='';
     newsAlbumUrls=[]; document.getElementById('news-album-urls').value='[]'; renderAlbum();
