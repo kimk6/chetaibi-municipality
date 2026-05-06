@@ -5,6 +5,13 @@ export async function onRequestOptions() { return handleOptions(); }
 
 export async function onRequestGet(context) {
     try {
+        // ── auto-migrate: إضافة أعمدة fr إن لم تكن موجودة ──
+        const cols = await context.env.DB.prepare("PRAGMA table_info(facilities)").all();
+        const names = (cols.results||[]).map(c => c.name);
+        if (!names.includes('name_fr'))        await context.env.DB.prepare("ALTER TABLE facilities ADD COLUMN name_fr TEXT DEFAULT ''").run().catch(()=>{});
+        if (!names.includes('sub_type_fr'))    await context.env.DB.prepare("ALTER TABLE facilities ADD COLUMN sub_type_fr TEXT DEFAULT ''").run().catch(()=>{});
+        if (!names.includes('description_fr')) await context.env.DB.prepare("ALTER TABLE facilities ADD COLUMN description_fr TEXT DEFAULT ''").run().catch(()=>{});
+        if (!names.includes('tags_fr'))        await context.env.DB.prepare("ALTER TABLE facilities ADD COLUMN tags_fr TEXT DEFAULT ''").run().catch(()=>{});
         const url = new URL(context.request.url);
         const cat = url.searchParams.get('cat');
         const id  = url.searchParams.get('id');
@@ -38,6 +45,18 @@ export async function onRequestPost(context) {
             name, sub_type, description, category, image_url, tags, albums, lat, lng,
             name_fr, sub_type_fr, description_fr, tags_fr
         } = await context.request.json();
+        if (!name || !category) return createResponse({ success: false, error: 'name, category مطلوبان' }, 400);
+        const r = await context.env.DB
+            .prepare(`INSERT INTO facilities
+                (name,sub_type,description,category,image_url,tags,albums,lat,lng,
+                 name_fr,sub_type_fr,description_fr,tags_fr)
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`)
+            .bind(
+                name, sub_type||'', description||'', category, image_url||'',
+                JSON.stringify(tags||[]), JSON.stringify(albums||[]),
+                lat||null, lng||null,
+                name_fr||'', sub_type_fr||'', description_fr||'', tags_fr||''
+            ).run();
         return createResponse({ success: true, id: r.meta.last_row_id }, 201);
     } catch (e) { return createResponse({ success: false, error: e.message }, 500); }
 }
@@ -51,6 +70,11 @@ export async function onRequestPut(context) {
             name, sub_type, description, category, image_url, tags, albums, lat, lng,
             name_fr, sub_type_fr, description_fr, tags_fr
         } = await context.request.json();
+        await context.env.DB
+            .prepare(`UPDATE facilities SET
+                name=?,sub_type=?,description=?,category=?,image_url=?,tags=?,albums=?,lat=?,lng=?,
+                name_fr=?,sub_type_fr=?,description_fr=?,tags_fr=?
+                WHERE id=?`)
             .bind(
                 name, sub_type||'', description||'', category, image_url||'',
                 JSON.stringify(tags||[]), JSON.stringify(albums||[]),
