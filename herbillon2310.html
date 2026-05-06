@@ -179,8 +179,11 @@
                             <input id="news-custom-label" type="text" placeholder="مثال: حملة نظافة، نظافة المحيط، فعالية رياضية...">
                             <p class="text-[10px] text-gray-400 mt-1">اتركه فارغاً لعدم إظهار أي تصنيف</p>
                         </div>
-
-                        <!-- صورة مميزة -->
+                        <!-- 🇫🇷 custom label -->
+                        <div class="border-r-2 border-blue-400 pr-3 bg-blue-50 rounded-lg py-2 px-2">
+                            <label class="text-xs font-bold text-blue-600 mb-2 block">🇫🇷 Étiquette — Français <span class="text-gray-400 font-normal">(اختياري)</span></label>
+                            <input id="news-custom-label-fr" type="text" placeholder="Ex: Campagne propreté, Événement sportif..." class="border-blue-200">
+                        </div>
                         <div>
                             <label class="text-xs font-bold text-gray-500 mb-1 block">🖼️ الصورة المميزة</label>
                             <div id="news-featured-widget" class="upload-widget p-3 cursor-pointer" onclick="triggerUpload('news-featured-input')">
@@ -393,7 +396,17 @@
                     </div>
                     <div class="space-y-3">
                         <div><label class="text-xs font-bold text-gray-500 mb-1 block">العنوان</label><input id="archives-title" type="text" placeholder="مثال: المدخل الرئيسي"></div>
+                        <!-- 🇫🇷 -->
+                        <div class="border-r-2 border-blue-400 pr-3 bg-blue-50 rounded-lg py-2 px-2">
+                            <label class="text-xs font-bold text-blue-600 mb-1 block">🇫🇷 Titre — Français <span class="text-gray-400 font-normal">(اختياري)</span></label>
+                            <input id="archives-title-fr" type="text" placeholder="Ex: Entrée principale" class="border-blue-200">
+                        </div>
                         <div><label class="text-xs font-bold text-gray-500 mb-1 block">الوصف</label><textarea id="archives-desc" placeholder="وصف مختصر..." rows="2"></textarea></div>
+                        <!-- 🇫🇷 desc -->
+                        <div class="border-r-2 border-blue-400 pr-3 bg-blue-50 rounded-lg py-2 px-2">
+                            <label class="text-xs font-bold text-blue-600 mb-1 block">🇫🇷 Description — Français <span class="text-gray-400 font-normal">(اختياري)</span></label>
+                            <textarea id="archives-desc-fr" placeholder="Description en français..." rows="2" class="border-blue-200"></textarea>
+                        </div>
                         <!-- صورة قديمة -->
                         <div>
                             <label class="text-xs font-bold text-gray-500 mb-1 block">📷 الصورة القديمة</label>
@@ -483,7 +496,17 @@
                             </div>
                         </div>
                         <div><label class="text-xs font-bold text-gray-500 mb-1 block">معلومات المسافة</label><input id="tourism-distance" type="text" placeholder="10 دقائق"></div>
+                        <!-- 🇫🇷 distance -->
+                        <div class="border-r-2 border-blue-400 pr-3 bg-blue-50 rounded-lg py-2 px-2">
+                            <label class="text-xs font-bold text-blue-600 mb-1 block">🇫🇷 Distance — Français <span class="text-gray-400 font-normal">(اختياري)</span></label>
+                            <input id="tourism-distance-fr" type="text" placeholder="Ex: 10 minutes" class="border-blue-200">
+                        </div>
                         <div><label class="text-xs font-bold text-gray-500 mb-1 block">نص الشارة</label><input id="tourism-badge" type="text" placeholder="الأكثر زيارة"></div>
+                        <!-- 🇫🇷 badge -->
+                        <div class="border-r-2 border-blue-400 pr-3 bg-blue-50 rounded-lg py-2 px-2">
+                            <label class="text-xs font-bold text-blue-600 mb-1 block">🇫🇷 Badge — Français <span class="text-gray-400 font-normal">(اختياري)</span></label>
+                            <input id="tourism-badge-fr" type="text" placeholder="Ex: Le plus visité" class="border-blue-200">
+                        </div>
                         <div><label class="text-xs font-bold text-gray-500 mb-1 block">لون الشارة</label><select id="tourism-badge-color"><option value="emerald">أخضر</option><option value="amber">ذهبي</option><option value="purple">بنفسجي</option><option value="teal">تركوازي</option></select></div>
                         <div class="flex gap-2">
                             <button onclick="saveTourism()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm transition-colors">💾 حفظ</button>
@@ -511,7 +534,17 @@
                     <input type="hidden" id="mayors-edit-id" value="">
                     <div class="space-y-3">
                         <div><label class="text-xs font-bold text-gray-500 mb-1 block">الاسم الكامل</label><input id="mayors-name" type="text" placeholder="السيد ..."></div>
+                        <!-- 🇫🇷 -->
+                        <div class="border-r-2 border-blue-400 pr-3 bg-blue-50 rounded-lg py-2 px-2">
+                            <label class="text-xs font-bold text-blue-600 mb-1 block">🇫🇷 Nom complet — Français <span class="text-gray-400 font-normal">(اختياري)</span></label>
+                            <input id="mayors-name-fr" type="text" placeholder="Ex: M. Mohamed Benali" class="border-blue-200">
+                        </div>
                         <div><label class="text-xs font-bold text-gray-500 mb-1 block">فترة الولاية</label><input id="mayors-period" type="text" placeholder="2021 — الآن"></div>
+                        <!-- 🇫🇷 period -->
+                        <div class="border-r-2 border-blue-400 pr-3 bg-blue-50 rounded-lg py-2 px-2">
+                            <label class="text-xs font-bold text-blue-600 mb-1 block">🇫🇷 Mandat — Français <span class="text-gray-400 font-normal">(اختياري)</span></label>
+                            <input id="mayors-period-fr" type="text" placeholder="Ex: 2021 — Présent" class="border-blue-200">
+                        </div>
                         <!-- صورة الرئيس -->
                         <div>
                             <label class="text-xs font-bold text-gray-500 mb-1 block">👤 صورة الرئيس</label>
@@ -634,9 +667,29 @@
                             </select>
                         </div>
                         <div><label class="text-xs font-bold text-gray-500 mb-1 block">اسم المرفق</label><input id="facilities-name" type="text" placeholder="مثال: مسجد الرحمة — شطايبي"></div>
+                        <!-- 🇫🇷 -->
+                        <div class="border-r-2 border-blue-400 pr-3 bg-blue-50 rounded-lg py-2 px-2">
+                            <label class="text-xs font-bold text-blue-600 mb-1 block">🇫🇷 Nom du lieu — Français <span class="text-gray-400 font-normal">(اختياري)</span></label>
+                            <input id="facilities-name-fr" type="text" placeholder="Ex: Mosquée Errahma" class="border-blue-200">
+                        </div>
                         <div><label class="text-xs font-bold text-gray-500 mb-1 block">نوع المرفق</label><input id="facilities-subtype" type="text" placeholder="مثال: مسجد جامع / ملعب كرة قدم"></div>
+                        <!-- 🇫🇷 subtype -->
+                        <div class="border-r-2 border-blue-400 pr-3 bg-blue-50 rounded-lg py-2 px-2">
+                            <label class="text-xs font-bold text-blue-600 mb-1 block">🇫🇷 Type — Français <span class="text-gray-400 font-normal">(اختياري)</span></label>
+                            <input id="facilities-subtype-fr" type="text" placeholder="Ex: Grande mosquée / Terrain de football" class="border-blue-200">
+                        </div>
                         <div><label class="text-xs font-bold text-gray-500 mb-1 block">الوصف</label><textarea id="facilities-desc" rows="3" placeholder="وصف مختصر للمرفق..."></textarea></div>
+                        <!-- 🇫🇷 desc -->
+                        <div class="border-r-2 border-blue-400 pr-3 bg-blue-50 rounded-lg py-2 px-2">
+                            <label class="text-xs font-bold text-blue-600 mb-1 block">🇫🇷 Description — Français <span class="text-gray-400 font-normal">(اختياري)</span></label>
+                            <textarea id="facilities-desc-fr" rows="3" placeholder="Description du lieu en français..." class="border-blue-200"></textarea>
+                        </div>
                         <div><label class="text-xs font-bold text-gray-500 mb-1 block">الكلمات الدلالية (مفصولة بفاصلة)</label><input id="facilities-tags" type="text" placeholder="مثال: صلاة الجمعة، دروس دينية"></div>
+                        <!-- 🇫🇷 tags -->
+                        <div class="border-r-2 border-blue-400 pr-3 bg-blue-50 rounded-lg py-2 px-2">
+                            <label class="text-xs font-bold text-blue-600 mb-1 block">🇫🇷 Mots-clés — Français <span class="text-gray-400 font-normal">(اختياري)</span></label>
+                            <input id="facilities-tags-fr" type="text" placeholder="Ex: prière du vendredi, cours religieux" class="border-blue-200">
+                        </div>
                         <div>
                             <label class="text-xs font-bold text-gray-500 mb-1 block">📷 الصورة الرئيسية</label>
                             <div id="fac-img-widget" class="upload-widget p-3 cursor-pointer" onclick="triggerUpload('fac-img-input')">
@@ -903,7 +956,8 @@ async function saveNews(){
         album_urls:document.getElementById('news-album-urls').value||'[]',
         date:document.getElementById('news-date').value||new Date().toISOString().split('T')[0],
         is_pinned:document.getElementById('news-pinned').checked?1:0,
-        custom_label:clEl?clEl.value:''
+        custom_label:    clEl?clEl.value:'',
+        custom_label_fr: document.getElementById('news-custom-label-fr')?.value||''
     };
     const isOfficial = body.category === 'official' || body.category === 'poster';
     const isOptionalContent = body.category === 'official' || body.category === 'poster';
@@ -931,6 +985,7 @@ async function editNews(id){
         document.getElementById('news-image').value=n.image_url||'';
         document.getElementById('news-image-url-manual').value=n.image_url||'';
         const clEl2=document.getElementById('news-custom-label'); if(clEl2) clEl2.value=n.custom_label||'';
+        if(document.getElementById('news-custom-label-fr')) document.getElementById('news-custom-label-fr').value=n.custom_label_fr||'';
         // تحميل ألبوم الصور الموجود
         try{ newsAlbumUrls=JSON.parse(n.album_urls||'[]'); }catch{ newsAlbumUrls=[]; }
         document.getElementById('news-album-urls').value=JSON.stringify(newsAlbumUrls); renderAlbum();
@@ -991,6 +1046,7 @@ function cancelNewsEdit(){
     clearWidget('news-featured','news-image','news-image-url-manual');
     const clEl3=document.getElementById('news-custom-label');
     if(clEl3) clEl3.value='';
+    if(document.getElementById('news-custom-label-fr')) document.getElementById('news-custom-label-fr').value='';
     newsAlbumUrls=[]; document.getElementById('news-album-urls').value='[]'; renderAlbum();
     document.getElementById('news-form-title').textContent='إضافة خبر جديد'; toggleFormPanel('news', false);
     document.getElementById('news-save-btn').textContent='حفظ';
@@ -1262,10 +1318,16 @@ async function loadArchives(){
 }
 async function saveArchive(){
     const editId=document.getElementById('archives-edit-id').value;
-    const body={title:document.getElementById('archives-title').value,description:document.getElementById('archives-desc').value,image_old_url:document.getElementById('archives-old').value,image_new_url:document.getElementById('archives-new').value};
+    const body={
+        title:       document.getElementById('archives-title').value,
+        description: document.getElementById('archives-desc').value,
+        image_old_url: document.getElementById('archives-old').value,
+        image_new_url: document.getElementById('archives-new').value,
+        title_fr:       document.getElementById('archives-title-fr')?.value||'',
+        description_fr: document.getElementById('archives-desc-fr')?.value||'',
+    };
     if(!body.title){adminToast('العنوان مطلوب');return;}
     try{
-        // archives.js يقرأ id من querystring في PUT
         const url=editId?'/api/archives?id='+editId:'/api/archives';
         const res=await fetch(url,{method:editId?'PUT':'POST',headers:authHeaders(),body:JSON.stringify(body)});
         const d=await res.json();
@@ -1275,15 +1337,20 @@ async function saveArchive(){
 }
 async function editArchive(id){
     const res=await fetch('/api/archives',{headers:authHeaders()});const d=await res.json();const a=d.data.find(x=>x.id==id);if(!a)return;
-    document.getElementById('archives-edit-id').value=a.id;document.getElementById('archives-title').value=a.title;document.getElementById('archives-desc').value=a.description||'';
+    document.getElementById('archives-edit-id').value=a.id;
+    document.getElementById('archives-title').value=a.title;
+    document.getElementById('archives-desc').value=a.description||'';
+    if(document.getElementById('archives-title-fr')) document.getElementById('archives-title-fr').value=a.title_fr||'';
+    if(document.getElementById('archives-desc-fr'))  document.getElementById('archives-desc-fr').value=a.description_fr||'';
     document.getElementById('archives-old').value=a.image_old_url||'';document.getElementById('archives-new').value=a.image_new_url||'';
     document.getElementById('archives-old-url-manual').value=a.image_old_url||'';document.getElementById('archives-new-url-manual').value=a.image_new_url||'';
     ['old','new'].forEach(s=>{const url=s==='old'?a.image_old_url:a.image_new_url;if(url){document.getElementById('archives-'+s+'-placeholder').classList.add('hidden');document.getElementById('archives-'+s+'-img').src=url;document.getElementById('archives-'+s+'-preview').classList.remove('hidden');document.getElementById('archives-'+s+'-widget').classList.add('has-image');}});
     document.getElementById('archives-form-title').textContent='تعديل الصورة الأرشيفية';document.getElementById('archives-cancel-btn').classList.remove('hidden');
-
     toggleFormPanel('archives', true);}
 function cancelArchiveEdit(){
     ['archives-edit-id','archives-title','archives-desc'].forEach(id=>document.getElementById(id).value='');
+    if(document.getElementById('archives-title-fr')) document.getElementById('archives-title-fr').value='';
+    if(document.getElementById('archives-desc-fr'))  document.getElementById('archives-desc-fr').value='';
     clearWidget('archives-old','archives-old','archives-old-url-manual');clearWidget('archives-new','archives-new','archives-new-url-manual');
     document.getElementById('archives-form-title').textContent='إضافة صورة أرشيفية'; toggleFormPanel('archives', false);document.getElementById('archives-cancel-btn').classList.add('hidden');
 }
@@ -1336,9 +1403,11 @@ async function saveTourism(){
         description_fr:document.getElementById('tourism-desc-fr')?.value||'',
         image_url:document.getElementById('tourism-image').value,
         rating:document.getElementById('tourism-rating').value,
-        distance_info:document.getElementById('tourism-distance').value,
-        badge_text:document.getElementById('tourism-badge').value,
-        badge_color:document.getElementById('tourism-badge-color').value,
+        distance_info:   document.getElementById('tourism-distance').value,
+        distance_info_fr:document.getElementById('tourism-distance-fr')?.value||'',
+        badge_text:      document.getElementById('tourism-badge').value,
+        badge_text_fr:   document.getElementById('tourism-badge-fr')?.value||'',
+        badge_color:     document.getElementById('tourism-badge-color').value,
         lat:parseFloat(document.getElementById('tourism-lat').value)||null,
         lng:parseFloat(document.getElementById('tourism-lng').value)||null
     };
@@ -1355,6 +1424,8 @@ async function editTourism(id){
     if(document.getElementById('tourism-subtitle-fr')) document.getElementById('tourism-subtitle-fr').value=t.subtitle_fr||'';
     if(document.getElementById('tourism-desc-fr')) document.getElementById('tourism-desc-fr').value=t.description_fr||'';
     document.getElementById('tourism-image').value=t.image_url||'';document.getElementById('tourism-rating').value=t.rating||'4.5';document.getElementById('tourism-distance').value=t.distance_info||'';document.getElementById('tourism-badge').value=t.badge_text||'';document.getElementById('tourism-badge-color').value=t.badge_color||'emerald';document.getElementById('tourism-image-manual').value=t.image_url||'';
+    if(document.getElementById('tourism-distance-fr')) document.getElementById('tourism-distance-fr').value=t.distance_info_fr||'';
+    if(document.getElementById('tourism-badge-fr'))    document.getElementById('tourism-badge-fr').value=t.badge_text_fr||'';
     if(t.image_url){document.getElementById('tourism-img-placeholder').classList.add('hidden');document.getElementById('tourism-img-img').src=t.image_url;document.getElementById('tourism-img-preview').classList.remove('hidden');document.getElementById('tourism-img-widget').classList.add('has-image');}
     document.getElementById('tourism-lat').value=t.lat||'';
     document.getElementById('tourism-lng').value=t.lng||'';
@@ -1362,9 +1433,11 @@ async function editTourism(id){
     toggleFormPanel('tourism', true);}
 function cancelTourismEdit(){
     ['tourism-edit-id','tourism-name','tourism-subtitle','tourism-desc','tourism-image','tourism-image-manual','tourism-distance','tourism-badge','tourism-lat','tourism-lng'].forEach(id=>document.getElementById(id).value='');
-    if(document.getElementById('tourism-name-fr')) document.getElementById('tourism-name-fr').value='';
+    if(document.getElementById('tourism-name-fr'))     document.getElementById('tourism-name-fr').value='';
     if(document.getElementById('tourism-subtitle-fr')) document.getElementById('tourism-subtitle-fr').value='';
-    if(document.getElementById('tourism-desc-fr')) document.getElementById('tourism-desc-fr').value='';
+    if(document.getElementById('tourism-desc-fr'))     document.getElementById('tourism-desc-fr').value='';
+    if(document.getElementById('tourism-distance-fr')) document.getElementById('tourism-distance-fr').value='';
+    if(document.getElementById('tourism-badge-fr'))    document.getElementById('tourism-badge-fr').value='';
     document.getElementById('tourism-rating').value='4.5';document.getElementById('tourism-badge-color').value='emerald';
     clearWidget('tourism-img','tourism-image','tourism-image-manual');
     document.getElementById('tourism-form-title').textContent='إضافة معلم سياحي'; toggleFormPanel('tourism', false);document.getElementById('tourism-cancel-btn').classList.add('hidden');
@@ -1393,19 +1466,32 @@ async function loadMayors(){
 }
 async function saveMayor(){
     const editId=document.getElementById('mayors-edit-id').value;
-    const body={name:document.getElementById('mayors-name').value,period:document.getElementById('mayors-period').value,image_url:document.getElementById('mayors-image').value};
+    const body={
+        name:       document.getElementById('mayors-name').value,
+        period:     document.getElementById('mayors-period').value,
+        image_url:  document.getElementById('mayors-image').value,
+        name_fr:    document.getElementById('mayors-name-fr')?.value||'',
+        period_fr:  document.getElementById('mayors-period-fr')?.value||'',
+    };
     if(!body.name||!body.period){adminToast('الاسم والفترة مطلوبان');return;}
     try{const res=await fetch(editId?'/api/mayors?id='+editId:'/api/mayors',{method:editId?'PUT':'POST',headers:authHeaders(),body:JSON.stringify(body)});const d=await res.json();if(d.success){adminToast(editId?'تم التعديل':'تمت الإضافة');cancelMayorEdit();loadMayors();}else adminToast('خطأ: '+(d.error||''));}catch(e){adminToast('تعذر الحفظ: '+e.message);}
 }
 async function editMayor(id){
     const res=await fetch('/api/mayors',{headers:authHeaders()});const d=await res.json();const m=d.data.find(x=>x.id==id);if(!m)return;
-    document.getElementById('mayors-edit-id').value=m.id;document.getElementById('mayors-name').value=m.name;document.getElementById('mayors-period').value=m.period;document.getElementById('mayors-image').value=m.image_url||'';document.getElementById('mayors-image-manual').value=m.image_url||'';
+    document.getElementById('mayors-edit-id').value=m.id;
+    document.getElementById('mayors-name').value=m.name;
+    document.getElementById('mayors-period').value=m.period;
+    document.getElementById('mayors-image').value=m.image_url||'';
+    document.getElementById('mayors-image-manual').value=m.image_url||'';
+    if(document.getElementById('mayors-name-fr'))   document.getElementById('mayors-name-fr').value=m.name_fr||'';
+    if(document.getElementById('mayors-period-fr')) document.getElementById('mayors-period-fr').value=m.period_fr||'';
     if(m.image_url){document.getElementById('mayors-img-placeholder').classList.add('hidden');document.getElementById('mayors-img-img').src=m.image_url;document.getElementById('mayors-img-preview').classList.remove('hidden');document.getElementById('mayors-img-widget').classList.add('has-image');}
     document.getElementById('mayors-form-title').textContent='تعديل الرئيس';document.getElementById('mayors-cancel-btn').classList.remove('hidden');
-
     toggleFormPanel('mayors', true);}
 function cancelMayorEdit(){
     ['mayors-edit-id','mayors-name','mayors-period','mayors-image','mayors-image-manual'].forEach(id=>document.getElementById(id).value='');
+    if(document.getElementById('mayors-name-fr'))   document.getElementById('mayors-name-fr').value='';
+    if(document.getElementById('mayors-period-fr')) document.getElementById('mayors-period-fr').value='';
     clearWidget('mayors-img','mayors-image','mayors-image-manual');
     document.getElementById('mayors-form-title').textContent='إضافة رئيس'; toggleFormPanel('mayors', false);document.getElementById('mayors-cancel-btn').classList.add('hidden');
 }
@@ -1726,6 +1812,10 @@ async function editFacility(id) {
         }
         const tags = Array.isArray(f.tags) ? f.tags : [];
         document.getElementById('facilities-tags').value = tags.join('، ');
+        if(document.getElementById('facilities-name-fr'))    document.getElementById('facilities-name-fr').value    = f.name_fr||'';
+        if(document.getElementById('facilities-subtype-fr')) document.getElementById('facilities-subtype-fr').value = f.sub_type_fr||'';
+        if(document.getElementById('facilities-desc-fr'))    document.getElementById('facilities-desc-fr').value    = f.description_fr||'';
+        if(document.getElementById('facilities-tags-fr'))    document.getElementById('facilities-tags-fr').value    = f.tags_fr||'';
         facAlbumUrls = Array.isArray(f.albums) ? f.albums : [];
         document.getElementById('facilities-albums').value = JSON.stringify(facAlbumUrls);
         renderFacAlbum();
@@ -1744,6 +1834,10 @@ function cancelFacilityEdit() {
     document.getElementById('facilities-subtype').value = '';
     document.getElementById('facilities-desc').value = '';
     document.getElementById('facilities-tags').value = '';
+    if(document.getElementById('facilities-name-fr')) document.getElementById('facilities-name-fr').value = '';
+    if(document.getElementById('facilities-subtype-fr')) document.getElementById('facilities-subtype-fr').value = '';
+    if(document.getElementById('facilities-desc-fr')) document.getElementById('facilities-desc-fr').value = '';
+    if(document.getElementById('facilities-tags-fr')) document.getElementById('facilities-tags-fr').value = '';
     document.getElementById('facilities-image').value = '';
     document.getElementById('facilities-image-manual').value = '';
     document.getElementById('facilities-lat').value = '';
@@ -1767,14 +1861,19 @@ async function saveFacility() {
     if(!name || !cat) { adminToast('الاسم والتصنيف مطلوبان','error'); return; }
     const tagsRaw = document.getElementById('facilities-tags').value;
     const tags = tagsRaw.split(/[،,]/).map(t=>t.trim()).filter(Boolean);
+    const tagsRawFr = document.getElementById('facilities-tags-fr')?.value || '';
     const body = {
         name, category: cat,
-        sub_type:    document.getElementById('facilities-subtype').value,
-        description: document.getElementById('facilities-desc').value,
-        image_url:   document.getElementById('facilities-image').value,
+        sub_type:       document.getElementById('facilities-subtype').value,
+        description:    document.getElementById('facilities-desc').value,
+        image_url:      document.getElementById('facilities-image').value,
         tags, albums: facAlbumUrls,
         lat: parseFloat(document.getElementById('facilities-lat').value)||null,
         lng: parseFloat(document.getElementById('facilities-lng').value)||null,
+        name_fr:        document.getElementById('facilities-name-fr')?.value||'',
+        sub_type_fr:    document.getElementById('facilities-subtype-fr')?.value||'',
+        description_fr: document.getElementById('facilities-desc-fr')?.value||'',
+        tags_fr:        tagsRawFr,
     };
     try {
         const url = editId ? '/api/facilities?id='+editId : '/api/facilities';
