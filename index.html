@@ -2852,25 +2852,22 @@ function applyMayorLang(m) {
     if (!card || !photo || !txtWrap || !btnWrap) return;
 
     if (isFr) {
-        // الترتيب المطلوب: زر(يمين) | نص(وسط) | صورة(يسار)
-        // نعيد ترتيب العناصر داخل card مباشرة
-        card.style.flexDirection = 'row';
         card.style.direction = 'ltr';
-        // نضع: btnWrap أولاً، ثم txtWrap، ثم photo
-        card.appendChild(btnWrap);   // ← يمين الشاشة (أول في LTR)
-        card.insertBefore(txtWrap, btnWrap);  // ← وسط
-        card.insertBefore(photo, txtWrap);    // ← يسار الشاشة (قبل النص)
-        // نعيد الترتيب: photo | txtWrap | btnWrap  ← يسار إلى يمين
-        card.insertBefore(photo, card.firstChild);
-        if (txtWrap) txtWrap.style.textAlign = 'left';
+        txtWrap.style.textAlign = 'left';
+        // إعادة الترتيب فقط على الديسكتوب (md+)
+        if (window.innerWidth >= 768) {
+            card.appendChild(photo);
+            card.appendChild(txtWrap);
+            card.appendChild(btnWrap);
+        }
     } else {
-        // العربية: photo | txtWrap | btnWrap (RTL: صورة يمين)
-        card.style.flexDirection = '';
         card.style.direction = '';
-        card.insertBefore(photo, card.firstChild);
-        card.insertBefore(txtWrap, photo.nextSibling);
-        card.appendChild(btnWrap);
-        if (txtWrap) txtWrap.style.textAlign = '';
+        txtWrap.style.textAlign = '';
+        if (window.innerWidth >= 768) {
+            card.appendChild(photo);
+            card.appendChild(txtWrap);
+            card.appendChild(btnWrap);
+        }
     }
 }
 
