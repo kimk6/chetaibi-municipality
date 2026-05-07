@@ -113,6 +113,7 @@
             'weather-day-label':  'غداً:',
             /* ─── MAYOR ─── */
             'mayor-role':         'رئيس المجلس الشعبي البلدي',
+            'mayor-dec-badge':    'رئيس المندوبية التنفيذية',
             'mayor-prev-btn':     'الرؤساء السابقون',
             'mayor-bio-default':  'يتولى الإشراف المباشر على تسيير الشؤون العمومية للبلدية، والسهر على تنفيذ مداولات المجلس الشعبي البلدي، بما يضمن الارتقاء بجودة المرفق العام وتعزيز التنمية المحلية لخدمة تطلعات الساكنة',
             'mayors-overlay-title':'رؤساء المجلس الشعبي البلدي',
@@ -366,6 +367,7 @@
             'weather-day-label':  'Demain :',
             /* ─── MAYOR ─── */
             'mayor-role':         'Président de l\'APC',
+            'mayor-dec-badge':    'DEC',
             'mayor-prev-btn':     'Anciens présidents',
             'mayor-bio-default':  'Il assure la supervision directe de la gestion des affaires publiques de la commune et veille à l\'exécution des délibérations de l\'Assemblée Populaire Communale, dans l\'objectif d\'améliorer la qualité du service public et de promouvoir le développement local.',
             'mayors-overlay-title': 'Présidents de l\'APC',
@@ -3459,6 +3461,7 @@ async function openMayorsOverlay() {
                     </div>
                     <div>
                         <h4 class="font-extrabold text-gray-800 text-base leading-snug mb-1">${getLF(m,'name')}</h4>
+                        ${m.is_dec ? `<span class="inline-block bg-amber-100 text-amber-700 text-[11px] font-extrabold px-3 py-0.5 rounded-full mb-1.5 border border-amber-200">${t('mayor-dec-badge')}</span>` : ''}
                         <p class="text-gray-400 text-xs flex items-center justify-center gap-1"><span class="iconify" data-icon="lucide:calendar"></span>${getLF(m,'period')}</p>
                     </div>
                 </div>`).join('');

@@ -634,6 +634,14 @@
                             <input type="hidden" id="mayors-image" value="">
                             <input id="mayors-image-manual" type="url" placeholder="أو الصق رابطاً..." class="mt-2 text-xs" oninput="document.getElementById('mayors-image').value=this.value">
                         </div>
+                        <!-- بادج المندوبية التنفيذية -->
+                        <div class="border-r-2 border-amber-400 pr-3 bg-amber-50 rounded-lg py-2 px-2">
+                            <label class="flex items-center gap-2 cursor-pointer select-none">
+                                <input type="checkbox" id="mayors-is-dec" class="w-4 h-4 accent-amber-500 rounded">
+                                <span class="text-xs font-bold text-amber-700">🏅 رئيس المندوبية التنفيذية <span class="text-gray-400 font-normal">(DEC)</span></span>
+                            </label>
+                            <p class="text-[10px] text-amber-600 mt-1 mr-6">سيظهر بادج خاص تحت الولاية في صفحة الرؤساء السابقين</p>
+                        </div>
                         <div class="flex gap-2">
                             <button onclick="saveMayor()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm transition-colors">💾 حفظ</button>
                             <button onclick="cancelMayorEdit()" id="mayors-cancel-btn" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-600 py-3 px-4 rounded-xl font-bold text-sm transition-colors">إلغاء</button>
@@ -1588,7 +1596,7 @@ async function loadMayors(){
             <div class="item-card"><div class="flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3 flex-1 min-w-0">
                     ${m.image_url?`<img src="${m.image_url}" class="w-12 h-12 rounded-full object-cover border-2 border-emerald-200 flex-shrink-0">`:'<div class="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0"><span class="iconify text-emerald-500 text-xl" data-icon="lucide:user"></span></div>'}
-                    <div class="min-w-0"><h4 class="font-bold text-gray-800 text-sm truncate">${m.name}</h4><p class="text-xs text-gray-500">${m.period}</p></div>
+                    <div class="min-w-0"><h4 class="font-bold text-gray-800 text-sm truncate">${m.name}${m.is_dec?'<span class="mr-1.5 inline-block bg-amber-100 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-200">DEC</span>':''}</h4><p class="text-xs text-gray-500">${m.period}</p></div>
                 </div>
                 <div class="flex items-center gap-1 flex-shrink-0">
                     <button onclick="editMayor(${m.id})" class="w-8 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center"><span class="iconify text-sm" data-icon="lucide:pencil"></span></button>
@@ -1605,6 +1613,7 @@ async function saveMayor(){
         image_url:  document.getElementById('mayors-image').value,
         name_fr:    document.getElementById('mayors-name-fr')?.value||'',
         period_fr:  document.getElementById('mayors-period-fr')?.value||'',
+        is_dec:     document.getElementById('mayors-is-dec')?.checked||false,
     };
     if(!body.name||!body.period){adminToast('الاسم والفترة مطلوبان');return;}
     try{const res=await fetch(editId?'/api/mayors?id='+editId:'/api/mayors',{method:editId?'PUT':'POST',headers:authHeaders(),body:JSON.stringify(body)});const d=await res.json();if(d.success){adminToast(editId?'تم التعديل':'تمت الإضافة');cancelMayorEdit();loadMayors();}else adminToast('خطأ: '+(d.error||''));}catch(e){adminToast('تعذر الحفظ: '+e.message);}
@@ -1618,6 +1627,7 @@ async function editMayor(id){
     document.getElementById('mayors-image-manual').value=m.image_url||'';
     if(document.getElementById('mayors-name-fr'))   document.getElementById('mayors-name-fr').value=m.name_fr||'';
     if(document.getElementById('mayors-period-fr')) document.getElementById('mayors-period-fr').value=m.period_fr||'';
+    if(document.getElementById('mayors-is-dec'))    document.getElementById('mayors-is-dec').checked=!!(m.is_dec);
     if(m.image_url){document.getElementById('mayors-img-placeholder').classList.add('hidden');document.getElementById('mayors-img-img').src=m.image_url;document.getElementById('mayors-img-preview').classList.remove('hidden');document.getElementById('mayors-img-widget').classList.add('has-image');}
     document.getElementById('mayors-form-title').textContent='تعديل الرئيس';document.getElementById('mayors-cancel-btn').classList.remove('hidden');
     toggleFormPanel('mayors', true);}
@@ -1625,6 +1635,7 @@ function cancelMayorEdit(){
     ['mayors-edit-id','mayors-name','mayors-period','mayors-image','mayors-image-manual'].forEach(id=>document.getElementById(id).value='');
     if(document.getElementById('mayors-name-fr'))   document.getElementById('mayors-name-fr').value='';
     if(document.getElementById('mayors-period-fr')) document.getElementById('mayors-period-fr').value='';
+    if(document.getElementById('mayors-is-dec'))    document.getElementById('mayors-is-dec').checked=false;
     clearWidget('mayors-img','mayors-image','mayors-image-manual');
     document.getElementById('mayors-form-title').textContent='إضافة رئيس'; toggleFormPanel('mayors', false);document.getElementById('mayors-cancel-btn').classList.add('hidden');
 }
