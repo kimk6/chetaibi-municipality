@@ -716,7 +716,19 @@
         /* ── زر تغيير اللغة — موبايل ── */
         #lang-btn-mobile{transition:background .2s,transform .15s;letter-spacing:.05em}
         #lang-btn-mobile:active{transform:scale(.93)}
-        html[lang="fr"] #lang-btn-mobile span[data-i18n]{font-size:1.1rem;line-height:1;font-family:'Cairo',sans-serif;font-weight:900}
+        #lang-btn-mobile span[data-i18n]{
+            display:flex;align-items:center;justify-content:center;
+            width:100%;height:100%;
+            font-size:1rem;line-height:1;
+            font-family:'Cairo',sans-serif;font-weight:900;
+            position:relative;top:0;
+        }
+        html[lang="fr"] #lang-btn-mobile span[data-i18n]{
+            font-size:0.7rem;letter-spacing:0.05em;
+        }
+        html[lang="ar"] #lang-btn-mobile span[data-i18n]{
+            font-size:1.05rem;
+        }
         /* ── fade-in للعناصر داخل الشريط عند ظهوره ── */
         #main-nav .nav-inner-fade{opacity:0;transform:translateY(-6px);transition:opacity .4s ease .1s,transform .4s ease .1s}
         #main-nav.nav-visible .nav-inner-fade{opacity:1;transform:translateY(0)}
@@ -1085,7 +1097,7 @@ html[dir="ltr"] article {
             <h3 id="mayor-name" class="text-2xl md:text-3xl font-extrabold mb-2">السيد عثماني سليمان</h3>
             <p id="mayor-bio" class="text-white/75 text-sm leading-relaxed max-w-xl"><span id="mayor-name-inline" class="hidden"></span><span id="mayor-bio-text" data-i18n="mayor-bio-default">يتولى الإشراف المباشر على تسيير الشؤون العمومية للبلدية، والسهر على تنفيذ مداولات المجلس الشعبي البلدي، بما يضمن الارتقاء بجودة المرفق العام وتعزيز التنمية المحلية لخدمة تطلعات الساكنة</span></p>
         </div>
-        <div class="flex gap-3 flex-wrap justify-center md:justify-start">
+        <div id="mayor-btn-wrap" class="flex gap-3 flex-wrap justify-center md:justify-start">
             <button onclick="openMayorsOverlay()" class="bg-white/15 hover:bg-white/25 backdrop-blur-sm px-5 py-2.5 rounded-xl text-sm font-bold transition-colors border border-white/20">
                 <span class="iconify inline-block" data-icon="lucide:users"></span>
                 &nbsp;<span data-i18n="mayor-prev-btn">الرؤساء السابقون</span>
@@ -2827,29 +2839,32 @@ function applyMayorLang(m) {
     document.getElementById('mayor-name').textContent = prefix + name;
     document.getElementById('mayor-name-inline').textContent = name;
 
-    // اتجاه البطاقة حسب اللغة
+    // اتجاه البطاقة — inline styles مضمونة بدل Tailwind classes
     const card    = document.getElementById('mayor-card');
     const txtWrap = document.getElementById('mayor-text-wrap');
-    if (isFr) {
-        card.style.flexDirection    = '';
-        card.classList.remove('md:flex-row');
-        card.classList.add('md:flex-row-reverse');
-        txtWrap.classList.remove('md:text-right');
-        txtWrap.classList.add('md:text-left');
-    } else {
-        card.classList.remove('md:flex-row-reverse');
-        card.classList.add('md:flex-row');
-        txtWrap.classList.remove('md:text-left');
-        txtWrap.classList.add('md:text-right');
+    if (card) {
+        card.style.flexDirection = isFr ? 'row-reverse' : '';
+        card.style.direction     = isFr ? 'ltr' : 'rtl';
+    }
+    if (txtWrap) {
+        txtWrap.style.textAlign = isFr ? 'left' : 'right';
+    }
+    // زر الرؤساء السابقين — يبقى في اليمين دائماً عند الفرنسية
+    const btnWrap = document.getElementById('mayor-btn-wrap');
+    if (btnWrap) {
+        btnWrap.style.alignSelf = isFr ? 'flex-start' : '';
+        btnWrap.style.marginRight = isFr ? '' : 'auto';
     }
 
     // السيرة الذاتية
     const bioEl = document.getElementById('mayor-bio-text');
-    if (bio && bio.trim()) {
-        bioEl.removeAttribute('data-i18n');
-        bioEl.textContent = bio;
-    } else {
-        bioEl.setAttribute('data-i18n', 'mayor-bio-default');
+    if (bioEl) {
+        if (bio && bio.trim()) {
+            bioEl.removeAttribute('data-i18n');
+            bioEl.textContent = bio;
+        } else {
+            bioEl.setAttribute('data-i18n', 'mayor-bio-default');
+        }
     }
 }
 
