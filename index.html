@@ -2832,49 +2832,45 @@ async function openTourismModal(id){
 function applyMayorLang(m) {
     if (!m) return;
     const isFr = currentLang === 'fr';
-    const prefix = isFr ? 'M. ' : 'السيد ';
-    const name   = getLF(m, 'name');
-    const bio    = getLF(m, 'bio');
 
+    // الاسم
     const nameEl = document.getElementById('mayor-name');
-    if (nameEl) nameEl.textContent = prefix + name;
-    const inlineEl = document.getElementById('mayor-name-inline');
-    if (inlineEl) inlineEl.textContent = name;
+    if (nameEl) nameEl.textContent = (isFr ? 'M. ' : 'السيد ') + getLF(m,'name');
 
-    const card    = document.getElementById('mayor-card');
-    const txtWrap = document.getElementById('mayor-text-wrap');
-    const btnWrap = document.getElementById('mayor-btn-wrap');
-
-    if (isFr) {
-        // فرنسية: زر يمين | نص وسط | صورة يسار
-        // نرتب العناصر داخل flex: photo آخر (يسار في RTL → أول في LTR)
-        if (card) {
-            card.style.direction   = 'ltr';
-            card.style.flexWrap    = 'wrap';
-        }
-        if (txtWrap) txtWrap.style.textAlign = 'left';
-        if (btnWrap) {
-            btnWrap.style.order = '-1'; // الزر يذهب لليمين (أول في LTR = يمين الشاشة RTL)
-        }
-        const photoWrap = document.getElementById('mayor-photo-wrap');
-        if (photoWrap) photoWrap.style.order = '2'; // الصورة آخر = يسار
-    } else {
-        // عربية: reset كامل
-        if (card) { card.style.direction = ''; card.style.flexWrap = ''; }
-        if (txtWrap) txtWrap.style.textAlign = '';
-        if (btnWrap) btnWrap.style.order = '';
-        const photoWrap = document.getElementById('mayor-photo-wrap');
-        if (photoWrap) photoWrap.style.order = '';
-    }
-
+    // السيرة
     const bioEl = document.getElementById('mayor-bio-text');
     if (bioEl) {
-        if (bio && bio.trim()) {
-            bioEl.removeAttribute('data-i18n');
-            bioEl.textContent = bio;
-        } else {
-            bioEl.setAttribute('data-i18n', 'mayor-bio-default');
-        }
+        const bio = getLF(m,'bio');
+        if (bio && bio.trim()) { bioEl.removeAttribute('data-i18n'); bioEl.textContent = bio; }
+        else bioEl.setAttribute('data-i18n','mayor-bio-default');
+    }
+
+    const card     = document.getElementById('mayor-card');
+    const photo    = document.getElementById('mayor-photo-wrap');
+    const txtWrap  = document.getElementById('mayor-text-wrap');
+    const btnWrap  = document.getElementById('mayor-btn-wrap');
+    if (!card || !photo || !txtWrap || !btnWrap) return;
+
+    if (isFr) {
+        // الترتيب المطلوب: زر(يمين) | نص(وسط) | صورة(يسار)
+        // نعيد ترتيب العناصر داخل card مباشرة
+        card.style.flexDirection = 'row';
+        card.style.direction = 'ltr';
+        // نضع: btnWrap أولاً، ثم txtWrap، ثم photo
+        card.appendChild(btnWrap);   // ← يمين الشاشة (أول في LTR)
+        card.insertBefore(txtWrap, btnWrap);  // ← وسط
+        card.insertBefore(photo, txtWrap);    // ← يسار الشاشة (قبل النص)
+        // نعيد الترتيب: photo | txtWrap | btnWrap  ← يسار إلى يمين
+        card.insertBefore(photo, card.firstChild);
+        if (txtWrap) txtWrap.style.textAlign = 'left';
+    } else {
+        // العربية: photo | txtWrap | btnWrap (RTL: صورة يمين)
+        card.style.flexDirection = '';
+        card.style.direction = '';
+        card.insertBefore(photo, card.firstChild);
+        card.insertBefore(txtWrap, photo.nextSibling);
+        card.appendChild(btnWrap);
+        if (txtWrap) txtWrap.style.textAlign = '';
     }
 }
 
