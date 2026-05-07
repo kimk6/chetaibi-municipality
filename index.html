@@ -2844,7 +2844,7 @@ async function openTourismModal(id){
             (t.distance_info?`<span class="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-bold">${getLF(t,'distance_info')}</span>`:'');
         if(t.albums?.length){
             document.getElementById('tm-album').innerHTML=
-                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class=\"iconify text-emerald-500\" data-icon=\"lucide:images\"></span>'+t('album-gallery')+'(\'+t.albums.length+')</h4>'+
+                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:images"></span>' + t('album-gallery') + ' (' + t.albums.length + ')</h4>' +
                 t.albums.map(a=>`<div class="cursor-pointer group relative overflow-hidden rounded-xl" onclick="openModalLightbox('${a.image_url}','${(a.caption||'').replace(/'/g,"\\'")}')" ><img src="${a.image_url}" alt="${a.caption||''}" class="w-full h-24 object-cover group-hover:scale-110 transition-transform duration-300"><div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center"><span class="iconify text-white opacity-0 group-hover:opacity-100 text-2xl transition-opacity" data-icon="lucide:zoom-in"></span></div>${a.caption?`<p class="text-[10px] text-gray-500 mt-1 text-center truncate">${a.caption}</p>`:''}</div>`).join('');
             if(window.Iconify) Iconify.scan();
         }
@@ -3261,7 +3261,7 @@ async function openBeachModalFromExplore(id) {
             (b.season?`<span class="text-xs bg-sky-100 text-sky-700 px-3 py-1 rounded-full font-bold">${b.season}</span>`:'');
         if(b.albums?.length){
             document.getElementById('bm-album').innerHTML =
-                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-sky-500" data-icon="lucide:images"></span>'+t('album-gallery')+'(\'+b.albums.length+')</h4>'+
+                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-sky-500" data-icon="lucide:images"></span>' + t('album-gallery') + ' (' + b.albums.length + ')</h4>' +
                 b.albums.map(a=>`<div class="cursor-pointer group relative overflow-hidden rounded-xl" onclick="openModalLightbox('${a.image_url}','${(a.caption||'').replace(/'/g,"\\'")}')"><img src="${a.image_url}" alt="${a.caption||''}" class="w-full h-24 object-cover group-hover:scale-110 transition-transform duration-300"><div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center"><span class="iconify text-white opacity-0 group-hover:opacity-100 text-2xl transition-opacity" data-icon="lucide:zoom-in"></span></div>${a.caption?`<p class="text-[10px] text-gray-500 mt-1 text-center truncate">${a.caption}</p>`:''}</div>`).join('');
             if(window.Iconify) Iconify.scan();
         }
@@ -3291,7 +3291,7 @@ async function openTourismModalFromExplore(id) {
             (t.distance_info?`<span class="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-bold">${getLF(t,'distance_info')}</span>`:'');
         if(t.albums?.length){
             document.getElementById('tm-album').innerHTML=
-                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:images"></span>'+t('album-gallery')+'(\'+t.albums.length+')</h4>'+
+                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:images"></span>' + t('album-gallery') + ' (' + t.albums.length + ')</h4>' +
                 t.albums.map(a=>`<div class="cursor-pointer group relative overflow-hidden rounded-xl" onclick="openModalLightbox('${a.image_url}','${(a.caption||'').replace(/'/g,"\\'")}')"><img src="${a.image_url}" alt="${a.caption||''}" class="w-full h-24 object-cover group-hover:scale-110 transition-transform duration-300"><div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center"><span class="iconify text-white opacity-0 group-hover:opacity-100 text-2xl transition-opacity" data-icon="lucide:zoom-in"></span></div>${a.caption?`<p class="text-[10px] text-gray-500 mt-1 text-center truncate">${a.caption}</p>`:''}</div>`).join('');
             if(window.Iconify) Iconify.scan();
         }
