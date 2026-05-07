@@ -858,14 +858,14 @@ html[dir="ltr"] article {
     <div class="max-w-7xl mx-auto px-4">
         <div class="flex items-center justify-between h-14">
             <div class="hidden md:flex items-center justify-center flex-1 gap-1">
-                <a href="#home" class="nav-link active-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" data-i18n="nav-home"><span class="iconify text-sm" data-icon="lucide:home"></span>الرئيسية</a>
-                <a href="#news" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" data-i18n="nav-news"><span class="iconify text-sm" data-icon="lucide:newspaper"></span>المستجدات</a>
-                <a href="#admin" onclick="event.preventDefault();document.getElementById('admin').scrollIntoView({behavior:'smooth'})" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" data-i18n="nav-services"><span class="iconify text-sm" data-icon="lucide:landmark"></span>الخدمات</a>
-                <a href="#archive" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" data-i18n="nav-archive"><span class="iconify text-sm" data-icon="lucide:scroll-text"></span>الأرشيف</a>
-                <a href="#guide" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" data-i18n="nav-guide"><span class="iconify text-sm" data-icon="lucide:map-pin"></span>الدليل</a>
-                <a href="#map-section" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" data-i18n="nav-map"><span class="iconify text-sm" data-icon="lucide:map"></span>الخريطة</a>
-                <a href="#beaches" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" data-i18n="nav-beaches"><span class="iconify text-sm" data-icon="lucide:sailboat"></span>السياحة</a>
-                <a href="#contact-footer" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" data-i18n="nav-contact"><span class="iconify text-sm" data-icon="lucide:phone"></span>اتصل بنا</a>
+                <a href="#home" class="nav-link active-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" ><span class="iconify text-sm" data-icon="lucide:home"></span><span data-i18n="nav-home">الرئيسية</span></a>
+                <a href="#news" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" ><span class="iconify text-sm" data-icon="lucide:newspaper"></span><span data-i18n="nav-news">المستجدات</span></a>
+                <a href="#admin" onclick="event.preventDefault();document.getElementById('admin').scrollIntoView({behavior:'smooth'})" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" ><span class="iconify text-sm" data-icon="lucide:landmark"></span><span data-i18n="nav-services">الخدمات</span></a>
+                <a href="#archive" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" ><span class="iconify text-sm" data-icon="lucide:scroll-text"></span><span data-i18n="nav-archive">الأرشيف</span></a>
+                <a href="#guide" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" ><span class="iconify text-sm" data-icon="lucide:map-pin"></span><span data-i18n="nav-guide">الدليل</span></a>
+                <a href="#map-section" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" ><span class="iconify text-sm" data-icon="lucide:map"></span><span data-i18n="nav-map">الخريطة</span></a>
+                <a href="#beaches" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" ><span class="iconify text-sm" data-icon="lucide:sailboat"></span><span data-i18n="nav-beaches">السياحة</span></a>
+                <a href="#contact-footer" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" ><span class="iconify text-sm" data-icon="lucide:phone"></span><span data-i18n="nav-contact">اتصل بنا</span></a>
                 <!-- ══ زر تغيير اللغة — ديسكتوب | قبل "اتصل بنا" مباشرة ══ -->
                 <button data-lang-btn="desktop" onclick="switchLang(currentLang==='ar'?'fr':'ar')" class="inline-flex items-center gap-1.5 border border-white/40 hover:border-white text-white/85 hover:text-white hover:bg-white/10 px-3 py-1.5 rounded-lg text-sm font-bold transition-all ml-1" title="Passer en Français">
                     <span data-i18n="lang-btn-label">Français</span>
@@ -2836,27 +2836,37 @@ function applyMayorLang(m) {
     const name   = getLF(m, 'name');
     const bio    = getLF(m, 'bio');
 
-    document.getElementById('mayor-name').textContent = prefix + name;
-    document.getElementById('mayor-name-inline').textContent = name;
+    const nameEl = document.getElementById('mayor-name');
+    if (nameEl) nameEl.textContent = prefix + name;
+    const inlineEl = document.getElementById('mayor-name-inline');
+    if (inlineEl) inlineEl.textContent = name;
 
-    // اتجاه البطاقة — inline styles مضمونة بدل Tailwind classes
     const card    = document.getElementById('mayor-card');
     const txtWrap = document.getElementById('mayor-text-wrap');
-    if (card) {
-        card.style.flexDirection = isFr ? 'row-reverse' : '';
-        card.style.direction     = isFr ? 'ltr' : 'rtl';
-    }
-    if (txtWrap) {
-        txtWrap.style.textAlign = isFr ? 'left' : 'right';
-    }
-    // زر الرؤساء السابقين — يبقى في اليمين دائماً عند الفرنسية
     const btnWrap = document.getElementById('mayor-btn-wrap');
-    if (btnWrap) {
-        btnWrap.style.alignSelf = isFr ? 'flex-start' : '';
-        btnWrap.style.marginRight = isFr ? '' : 'auto';
+
+    if (isFr) {
+        // فرنسية: زر يمين | نص وسط | صورة يسار
+        // نرتب العناصر داخل flex: photo آخر (يسار في RTL → أول في LTR)
+        if (card) {
+            card.style.direction   = 'ltr';
+            card.style.flexWrap    = 'wrap';
+        }
+        if (txtWrap) txtWrap.style.textAlign = 'left';
+        if (btnWrap) {
+            btnWrap.style.order = '-1'; // الزر يذهب لليمين (أول في LTR = يمين الشاشة RTL)
+        }
+        const photoWrap = document.getElementById('mayor-photo-wrap');
+        if (photoWrap) photoWrap.style.order = '2'; // الصورة آخر = يسار
+    } else {
+        // عربية: reset كامل
+        if (card) { card.style.direction = ''; card.style.flexWrap = ''; }
+        if (txtWrap) txtWrap.style.textAlign = '';
+        if (btnWrap) btnWrap.style.order = '';
+        const photoWrap = document.getElementById('mayor-photo-wrap');
+        if (photoWrap) photoWrap.style.order = '';
     }
 
-    // السيرة الذاتية
     const bioEl = document.getElementById('mayor-bio-text');
     if (bioEl) {
         if (bio && bio.trim()) {
