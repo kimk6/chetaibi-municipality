@@ -6,27 +6,11 @@ export async function onRequestOptions() { return handleOptions(); }
 async function ensurePosterCategory(db) {
     try {
         const info = await db.prepare("SELECT sql FROM sqlite_master WHERE type='table' AND name='news'").first();
-        if (info && info.sql && info.sql.includes("category IN") && !info.sql.includes("'poster'")) {
-            await db.batch([
-                db.prepare(`CREATE TABLE IF NOT EXISTS news_new (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    title TEXT NOT NULL DEFAULT '',
-                    category TEXT NOT NULL CHECK(category IN ('official','activity','social','poster')),
-                    content TEXT NOT NULL DEFAULT '',
-                    image_url TEXT DEFAULT '',
-                    album_urls TEXT DEFAULT '[]',
-                    date TEXT,
-                    is_pinned INTEGER DEFAULT 0,
-                    custom_label TEXT DEFAULT '',
-                    title_fr TEXT DEFAULT '',
-                    content_fr TEXT DEFAULT '',
-                    custom_label_fr TEXT DEFAULT ''
-                )`),
-                db.prepare(`INSERT INTO news_new SELECT id,title,category,content,image_url,album_urls,date,is_pinned,custom_label,
-                    COALESCE(title_fr,''),COALESCE(content_fr,''),COALESCE(custom_label_fr,'') FROM news`),
-                db.prepare(`DROP TABLE news`),
-                db.prepare(`ALTER TABLE news_new RENAME TO news`),
-            ]);
+        if (info?.sql) {
+            // إضافة image_url_fr إن لم تكن موجودة
+            if (!info.sql.includes('image_url_fr')) {
+                await db.prepare("ALTER TABLE news ADD COLUMN image_url_fr TEXT DEFAULT ''").run().catch(()=>{});
+            }
         }
     } catch(e) { /* migration اختياري */ }
 }
@@ -67,7 +51,7 @@ export async function onRequestPost(context) {
         await ensurePosterCategory(context.env.DB);
         const {
             title, category, content, image_url, album_urls, date, is_pinned, custom_label,
-            title_fr, content_fr, custom_label_fr
+            title_fr, content_fr, custom_label_fr, image_url_fr
         } = await context.request.json();
         if (!category)
             return createResponse({ success: false, error: 'category مطلوبة' }, 400);
@@ -76,13 +60,13 @@ export async function onRequestPost(context) {
         const result = await context.env.DB
             .prepare(`INSERT INTO news
                 (title,category,content,image_url,album_urls,date,is_pinned,custom_label,
-                 title_fr,content_fr,custom_label_fr)
-                VALUES (?,?,?,?,?,?,?,?,?,?,?)`)
+                 title_fr,content_fr,custom_label_fr,image_url_fr)
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`)
             .bind(
                 title || '', category, content || '', image_url || '',
                 album_urls || '[]', date || new Date().toISOString().split('T')[0],
                 is_pinned ? 1 : 0, custom_label || '',
-                title_fr || '', content_fr || '', custom_label_fr || ''
+                title_fr || '', content_fr || '', custom_label_fr || '', image_url_fr || ''
             )
             .run();
         return createResponse({ success: true, data: { id: result.meta.last_row_id } });
@@ -99,18 +83,18 @@ export async function onRequestPut(context) {
         if (!id) return createResponse({ success: false, error: 'id مطلوب' }, 400);
         const {
             title, category, content, image_url, album_urls, date, is_pinned, custom_label,
-            title_fr, content_fr, custom_label_fr
+            title_fr, content_fr, custom_label_fr, image_url_fr
         } = await context.request.json();
         await context.env.DB
             .prepare(`UPDATE news SET
                 title=?,category=?,content=?,image_url=?,album_urls=?,date=?,is_pinned=?,custom_label=?,
-                title_fr=?,content_fr=?,custom_label_fr=?
+                title_fr=?,content_fr=?,custom_label_fr=?,image_url_fr=?
                 WHERE id=?`)
             .bind(
                 title || '', category, content || '', image_url || '',
                 album_urls || '[]', date || new Date().toISOString().split('T')[0],
                 is_pinned ? 1 : 0, custom_label || '',
-                title_fr || '', content_fr || '', custom_label_fr || '',
+                title_fr || '', content_fr || '', custom_label_fr || '', image_url_fr || '',
                 id
             )
             .run();
