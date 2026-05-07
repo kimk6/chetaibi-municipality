@@ -682,7 +682,13 @@
         }
         // ─── إعادة رسم الخريطة (markers بالاسم المُترجم) ───
         // ─── الخريطة: أعد رسم الـ markers فقط، لا تُدمّر الخريطة أبداً ───
-        if (typeof reloadMapMarkers === 'function') reloadMapMarkers();
+        // إعادة رسم الخريطة مع تأخير للسماح بإعادة layout بعد تغيير dir
+        setTimeout(() => {
+            if (typeof chetaibiMap !== 'undefined' && chetaibiMap) {
+                chetaibiMap.invalidateSize(true);
+            }
+            if (typeof reloadMapMarkers === 'function') reloadMapMarkers();
+        }, 200);
         setTimeout(() => {
             if (typeof chetaibiMap !== 'undefined' && chetaibiMap) {
                 try {
@@ -3207,6 +3213,12 @@ async function openNewsModal(id) {
         document.getElementById('nm-date').parentElement?.classList.toggle('hidden', isOfficial);
         document.getElementById('nm-title').classList.toggle('hidden', isOfficial);
         document.getElementById('nm-content').classList.toggle('hidden', isOfficial);
+        // إخفاء الصورة الرئيسية في الإعلانات - الألبوم فقط يظهر
+        if (isOfficial) {
+            document.getElementById('nm-img-wrap').classList.add('hidden');
+            const _ph = document.getElementById('nm-img-placeholder');
+            if (_ph) _ph.classList.add('hidden');
+        }
         if(!isOfficial){
             document.getElementById('nm-badge').textContent = label;
             document.getElementById('nm-badge').className   = `text-xs font-bold px-3 py-1 rounded-full ${s.badge}`;
@@ -3698,12 +3710,43 @@ async function renderOverlay() {
             const label = (n.custom_label&&n.custom_label.trim()) ? n.custom_label : catLabel;
             const pin = n.is_pinned ? '<span class="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full border border-emerald-200 font-bold">'+(currentLang==='fr'?'Épinglé':'مثبت')+'</span>' : '';
             const snippet = displayContent.replace(/\n/g,' ').substring(0,90)+(displayContent.length>90?'...':'');
-            const showGrad2 = overlayCat!=='official';
-            const img = imgSrc
+
+            // ── poster: صورة كاملة بدون نص ──
+            if (overlayCat === 'poster') {
+                return `<article class="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow cursor-pointer relative group" onclick="openNewsModal(${n.id})">
+                    ${imgSrc
+                        ? `<img src="${imgSrc}" alt="${displayTitle}" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">`
+                        : `<div class="h-64 bg-gradient-to-bl ${m.grad} flex items-center justify-center"><span class="iconify text-white text-7xl" data-icon="${m.icon}"></span></div>`}
+                    ${displayTitle ? `<div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent p-4"><p class="text-white font-extrabold text-sm line-clamp-2">${displayTitle}</p></div>` : ''}
+                </article>`;
+            }
+
+            // ── activity: بطاقة كاملة مثل الواجهة ──
+            if (overlayCat === 'activity') {
+                const img2 = imgSrc
+                    ? `<div class="h-44 overflow-hidden relative"><img src="${imgSrc}" alt="${displayTitle}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"><div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div></div>`
+                    : `<div class="h-44 bg-gradient-to-bl ${m.grad} flex items-center justify-center"><span class="iconify text-white text-6xl" data-icon="${m.icon}"></span></div>`;
+                return `<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100 cursor-pointer" onclick="openNewsModal(${n.id})">
+                    ${img2}
+                    <div class="p-4">
+                        <div class="flex items-center gap-2 mb-2 flex-wrap"><span class="inline-block text-xs font-bold px-2.5 py-0.5 rounded-full ${m.badge}">${label}</span>${pin}</div>
+                        <h4 class="font-bold text-gray-800 mb-2 leading-snug text-sm">${displayTitle}</h4>
+                        <p class="text-xs text-gray-500 mb-3 leading-relaxed">${snippet}</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-400 flex items-center gap-1"><span class="iconify" data-icon="lucide:calendar"></span>${n.date||''}</span>
+                            <span class="text-emerald-600 text-xs font-bold">${t('read-more') || 'اقرأ المزيد'} ←</span>
+                        </div>
+                    </div>
+                </article>`;
+            }
+
+            // ── official / social: بطاقة بسيطة (بدون badge للإعلانات) ──
+            const showGrad2 = overlayCat !== 'official';
+            const imgHtml = imgSrc
                 ? `<div class="h-44 overflow-hidden relative"><img src="${imgSrc}" alt="${displayTitle}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">${showGrad2?'<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>':''}</div>`
                 : `<div class="h-44 bg-gradient-to-bl ${m.grad} flex items-center justify-center"><span class="iconify text-white text-6xl" data-icon="${m.icon}"></span></div>`;
             return `<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100 cursor-pointer" onclick="openNewsModal(${n.id})">
-                ${img}
+                ${imgHtml}
                 <div class="p-4">
                     <p class="text-xs text-gray-500 leading-relaxed line-clamp-2 mb-3">${snippet}</p>
                     <div class="flex items-center justify-between">
@@ -3899,7 +3942,8 @@ function createCircleMarker(lat, lng, color, item, type) {
 }
 
 async function initMap() {
-    if (chetaibiMap) return; // منع التهيئة المزدوجة
+    if (chetaibiMap && chetaibiMap.getContainer()) return; // منع التهيئة المزدوجة
+    chetaibiMap = null; // إعادة تعيين إذا كان محذوفاً
 
     const mapEl = document.getElementById('chetaibi-map');
     if (!mapEl) return;
@@ -4001,6 +4045,8 @@ async function initMap() {
     } catch(e) {
         console.error('Map data error:', e);
     }
+    // تأكد من الحجم الصحيح بعد الإنشاء
+    setTimeout(() => { if(chetaibiMap) chetaibiMap.invalidateSize(true); }, 300);
 }
 
 // إعادة رسم markers عند تغيير اللغة
@@ -4091,6 +4137,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+</script>
+
+<script>
+// ── حل جذري لمشكلة الخريطة عند تغيير اللغة ──
+// MutationObserver يراقب تغيير dir على html ويُصلح حجم الخريطة
+(function() {
+    let _mapSizeTimer = null;
+    const observer = new MutationObserver(() => {
+        clearTimeout(_mapSizeTimer);
+        _mapSizeTimer = setTimeout(() => {
+            if (typeof chetaibiMap !== 'undefined' && chetaibiMap) {
+                chetaibiMap.invalidateSize(true);
+            }
+        }, 250);
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['dir', 'lang'] });
+})();
 </script>
 </body>
 </html>
