@@ -684,7 +684,12 @@
         if (typeof reloadMapMarkers === 'function') reloadMapMarkers();
         // إصلاح حجم الخريطة بعد تغيير الاتجاه rtl/ltr
         if (typeof chetaibiMap !== 'undefined' && chetaibiMap) {
-            setTimeout(() => { chetaibiMap.invalidateSize(); }, 150);
+            setTimeout(() => {
+                chetaibiMap.invalidateSize(true);
+                chetaibiMap.setView(chetaibiMap.getCenter(), chetaibiMap.getZoom());
+            }, 300);
+        } else if (typeof initMap === 'function') {
+            setTimeout(() => initMap(), 300);
         }
         // ─── إعادة رسم الخدمات ───
         if (typeof loadServicesMain === 'function') loadServicesMain();
@@ -3168,6 +3173,7 @@ const NM_STYLES = {
     social:   { badge: 'bg-purple-100 text-purple-700',   grad: 'from-purple-500 to-purple-700'    },
 };
 const NM_LABELS = { official:'إعلان رسمي', activity:'نشاط بلدي', social:'ركن المجتمع' };
+const NM_LABELS_FR = { official:'Annonce officielle', activity:'Activité communale', social:'Coin citoyen' };
 
 async function openNewsModal(id) {
     const modal = document.getElementById('news-modal');
@@ -3190,7 +3196,9 @@ async function openNewsModal(id) {
         document.getElementById('nm-loading').classList.add('hidden');
         if (!n) return;
         const s     = NM_STYLES[n.category] || NM_STYLES.official;
-        const label = (n.custom_label && n.custom_label.trim()) ? n.custom_label : (NM_LABELS[n.category] || '');
+        const _labelAr = (n.custom_label && n.custom_label.trim()) ? n.custom_label : (NM_LABELS[n.category] || '');
+        const _labelFr = (n.custom_label_fr && n.custom_label_fr.trim()) ? n.custom_label_fr : (NM_LABELS_FR[n.category] || _labelAr);
+        const label    = (currentLang === 'fr') ? _labelFr : _labelAr;
         const isOfficial = n.category === 'official';
         // إعلانات رسمية: إخفاء الهيدر والعنوان والنص داخل الـ modal
         document.getElementById('nm-header').classList.toggle('hidden', isOfficial);
@@ -3206,10 +3214,10 @@ async function openNewsModal(id) {
             document.getElementById("nm-content").textContent = getLF(n,"content") || "";
         }
         const modalImg = (currentLang === 'fr' && n.image_url_fr) ? n.image_url_fr : n.image_url;
-        if (modalImg && !isOfficial) {
+        if (modalImg) {
             document.getElementById('nm-img').src = modalImg;
             document.getElementById('nm-img-wrap').classList.remove('hidden');
-        } else if (isOfficial) {
+        } else {
             document.getElementById('nm-img-wrap').classList.add('hidden');
         }
         let albums = [];
@@ -3884,7 +3892,14 @@ function createCircleMarker(lat, lng, color, item, type) {
 }
 
 async function initMap() {
-    if (chetaibiMap) return; // منع التهيئة المزدوجة
+    if (chetaibiMap) {
+        // الخريطة موجودة — فقط أعد الحجم وأعد تحميل الـ markers
+        setTimeout(() => {
+            chetaibiMap.invalidateSize(true);
+            if (typeof reloadMapMarkers === 'function') reloadMapMarkers();
+        }, 200);
+        return;
+    }
 
     const mapEl = document.getElementById('chetaibi-map');
     if (!mapEl) return;
