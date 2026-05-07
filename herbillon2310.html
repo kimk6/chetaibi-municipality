@@ -38,11 +38,10 @@
                 background: white;
                 overflow-y: auto;
                 -webkit-overflow-scrolling: touch;
-                overscroll-behavior-y: contain;
-                padding: 60px 1rem 3rem;
+                overscroll-behavior: contain;
+                padding: 60px 16px 80px;
                 box-sizing: border-box;
             }
-            body.form-open { overflow: hidden; position: fixed; width: 100%; }
             .form-panel.mobile-open .form-close-mobile { display: flex; }
         }
         @media (min-width: 1024px) {
@@ -850,49 +849,20 @@ function toggleFormPanel(sec, forceOpen) {
     if (!panel) return;
     const willOpen = forceOpen !== undefined ? forceOpen : panel.classList.contains('hidden');
 
-    // أغلق أي نموذج آخر مفتوح أولاً
-    if (willOpen) {
-        document.querySelectorAll('.form-panel.mobile-open').forEach(p => {
-            if (p !== panel) p.classList.remove('mobile-open');
-        });
-    }
-
     panel.classList.toggle('hidden', !willOpen);
 
     if (window.innerWidth < 1024) {
         panel.classList.toggle('mobile-open', willOpen);
+        if (willOpen) panel.scrollTop = 0;
 
-        if (willOpen) {
-            // احفظ موضع التمرير الحالي وأثبّت الصفحة
-            window._savedScrollY = window.scrollY;
-            document.body.style.overflow = 'hidden';
-            document.body.style.position = 'fixed';
-            document.body.style.top = `-${window._savedScrollY}px`;
-            document.body.style.width = '100%';
-            // أعد التمرير للأعلى داخل النموذج
-            panel.scrollTop = 0;
-        } else {
-            // أعد الصفحة لحالتها وموضع تمريرها
-            document.body.style.overflow = '';
-            document.body.style.position = '';
-            document.body.style.top = '';
-            document.body.style.width = '';
-            window.scrollTo(0, window._savedScrollY || 0);
-        }
-
-        // إضافة/إزالة زر الإغلاق العائم
+        // زر رجوع عائم
         let floatBtn = panel.querySelector('.form-close-mobile');
-        if (willOpen) {
-            if (!floatBtn) {
-                floatBtn = document.createElement('button');
-                floatBtn.className = 'form-close-mobile';
-                floatBtn.innerHTML = '<span class="iconify" data-icon="lucide:arrow-right"></span> رجوع';
-                floatBtn.onclick = () => toggleFormPanel(sec, false);
-                panel.prepend(floatBtn);
-            }
-            floatBtn.style.display = 'flex';
-        } else if (floatBtn) {
-            floatBtn.style.display = 'none';
+        if (willOpen && !floatBtn) {
+            floatBtn = document.createElement('button');
+            floatBtn.className = 'form-close-mobile';
+            floatBtn.innerHTML = '<span class="iconify" data-icon="lucide:arrow-right"></span> رجوع';
+            floatBtn.onclick = () => toggleFormPanel(sec, false);
+            panel.prepend(floatBtn);
         }
     }
 
