@@ -669,6 +669,8 @@
         if (typeof loadGuidePanel === 'function') {
             ['admin-branches','education','health'].forEach(tab => loadGuidePanel(tab));
         }
+        // ─── إعادة رسم الخريطة (markers بالاسم المُترجم) ───
+        if (typeof reloadMapMarkers === 'function') reloadMapMarkers();
         // ─── إعادة رسم الخدمات ───
         if (typeof loadServicesMain === 'function') loadServicesMain();
         // ─── إعادة رسم معاينة الأرشيف ───
@@ -730,8 +732,21 @@
         /* بطاقات timeline في FR — ديسكتوب: نفس المسافة كالعربية */
         /* FR: نقاط الـ timeline تنتقل لليسار في الموبايل */
         html[lang="fr"] .timeline-dot-mobile{right:auto!important;left:14px}
+        /* FR desktop: إبعاد البطاقات عن الخط الأخضر */
+        @media(min-width:768px){
+            html[lang="fr"] .md\:pl-12{padding-left:3rem!important;padding-right:0!important}
+            html[lang="fr"] .md\:pr-12{padding-right:3rem!important;padding-left:0!important}
+        }
         /* FR ديسكتوب: البطاقات ملتصقة أكثر بالخط */
         @media(min-width:768px){html[lang="fr"] .timeline-card-fr{padding-left:20px!important;padding-right:0!important}}
+        /* FR desktop: إبعاد بطاقات التايم لاين عن الخط الأخضر مثل العربية */
+        @media(min-width:768px){html[lang="fr"] .md\:pl-12{padding-left:3rem!important;padding-right:0!important}}
+        @media(min-width:768px){html[lang="fr"] .md\:pr-12{padding-right:3rem!important;padding-left:0!important}}
+        /* FR desktop: إبعاد البطاقات عن الخط الأخضر */
+        @media(min-width:768px){
+            html[lang="fr"] .md\:pl-12 { padding-left: 3rem !important; padding-right: 0 !important; }
+            html[lang="fr"] .md\:pr-12 { padding-right: 3rem !important; padding-left: 0 !important; }
+        }
         html[lang="fr"] .news-tab{font-size:0.72rem}
         html[lang="fr"] .news-tab .iconify{font-size:0.85rem}
         @media(max-width:767px){#main-nav{position:fixed;top:0;left:0;right:0;transform:translateY(-100%);opacity:0;transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .35s ease;pointer-events:none;z-index:50}#main-nav.nav-visible{transform:translateY(0);opacity:1;pointer-events:auto}}
@@ -2783,7 +2798,7 @@ async function loadTourism(){
                         :`<div class="w-full h-full bg-gradient-to-bl from-emerald-400 to-emerald-700 flex items-center justify-center"><span class="iconify text-white text-5xl opacity-70" data-icon="lucide:compass"></span></div>`}
                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                     <div class="absolute bottom-3 right-3 text-white"><h4 class="font-extrabold text-base drop-shadow">${tName}</h4>${tSub?`<p class="text-xs text-white/80">${tSub}</p>`:''}</div>
-                    ${item.badge_text?`<span class="absolute top-2 left-2 ${bcColors[item.badge_color]||'bg-emerald-500'} text-white text-[10px] font-bold px-2 py-0.5 rounded-full">${item.badge_text}</span>`:''}
+                    ${getLF(item,'badge_text')?`<span class="absolute top-2 left-2 ${bcColors[item.badge_color]||'bg-emerald-500'} text-white text-[10px] font-bold px-2 py-0.5 rounded-full">${getLF(item,'badge_text')}</span>`:''}
                 </div>
                 <div class="p-4">
                     <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed">${(tDesc||t('details-btn')).substring(0,100)}</p>
@@ -3926,14 +3941,14 @@ function createCircleMarker(lat, lng, color, item, type) {
         fillOpacity: 0.9,
     });
 
-    const name    = item.name || '';
-    const subtype = item.sub_type || item.subtitle || '';
+    const name    = getLF(item,'name') || item.name || '';
+    const subtype = getLF(item,'subtitle') || getLF(item,'sub_type') || item.subtitle || item.sub_type || '';
     const imgHtml = item.image_url
         ? `<img src="${item.image_url}" alt="${name}" style="width:100%;height:80px;object-fit:cover;border-radius:8px;margin-bottom:6px;">`
         : '';
-    const typeLabel = type === 'beach'    ? '🏖️ شاطئ'
-                    : type === 'tourism'  ? '🧭 معلم سياحي'
-                    : type === 'facility' ? '📍 مرفق'
+    const typeLabel = type === 'beach'    ? t('map-type-beach')
+                    : type === 'tourism'  ? t('map-type-tourism')
+                    : type === 'facility' ? t('map-type-facility')
                     : '';
 
     // الـ popup يحتوي زر يغلق popup ثم يفتح الـ modal المناسب
@@ -4054,6 +4069,42 @@ async function initMap() {
     } catch(e) {
         console.error('Map data error:', e);
     }
+}
+
+// إعادة رسم markers عند تغيير اللغة
+function reloadMapMarkers() {
+    if (!chetaibiMap) return;
+    // حذف كل الـ markers الحالية وإعادة تحميلها
+    chetaibiMap.eachLayer(layer => {
+        if (layer instanceof L.CircleMarker) {
+            chetaibiMap.removeLayer(layer);
+        }
+    });
+    // إعادة جلب البيانات وإضافة markers جديدة
+    initMapMarkers();
+}
+
+async function initMapMarkers() {
+    try {
+        const [beachRes, tourRes, facRes] = await Promise.all([
+            fetch('/api/beaches'), fetch('/api/tourism'), fetch('/api/facilities')
+        ]);
+        const [bd, td, fd] = await Promise.all([beachRes.json(), tourRes.json(), facRes.json()]);
+
+        (bd.data||[]).forEach(b => {
+            if(b.lat && b.lng) createCircleMarker(b.lat, b.lng, MAP_COLORS.beach, b, 'beach').addTo(chetaibiMap);
+        });
+        (td.data||[]).forEach(t => {
+            if(t.lat && t.lng) createCircleMarker(t.lat, t.lng, MAP_COLORS.tourism, t, 'tourism').addTo(chetaibiMap);
+        });
+        (fd.data||[]).forEach(f => {
+            if(f.lat && f.lng) {
+                const color = MAP_COLORS[f.category] || MAP_COLORS.default;
+                createCircleMarker(f.lat, f.lng, color, f, 'facility').addTo(chetaibiMap);
+            }
+        });
+        if(window.Iconify) Iconify.scan();
+    } catch(e) { console.error('Map reload error:', e); }
 }
 
 // تهيئة الخريطة عند الوصول إليها (Intersection Observer للأداء)
