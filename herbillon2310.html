@@ -27,14 +27,51 @@
         textarea { resize: vertical; min-height: 100px; }
         .item-card { background: white; border: 1px solid #f3f4f6; border-radius: 16px; padding: 16px; transition: all 0.2s; }
         .item-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
-        /* ✅ 4/5: Mobile collapsible form */
+        /* ✅ Mobile form panel — fixed overlay مع scroll داخلي */
         @media (max-width: 1023px) {
             .form-panel { display: none; }
-            .form-panel.mobile-open { display: block; }
+            .form-panel.mobile-open {
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                inset: 0;
+                z-index: 200;
+                background: white;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                padding: 1rem;
+                padding-top: 56px; /* مسافة للهيدر */
+            }
+            /* منع تمرير الخلفية عند فتح النموذج */
+            body.form-open { overflow: hidden; }
+            /* زر إغلاق عائم في الأعلى */
+            .form-panel.mobile-open .form-close-mobile {
+                display: flex;
+            }
         }
         @media (min-width: 1024px) {
             .mobile-add-btn { display: none; }
             .form-panel { display: block !important; }
+            .form-close-mobile { display: none !important; }
+        }
+        /* زر الإغلاق العائم */
+        .form-close-mobile {
+            display: none;
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            z-index: 210;
+            align-items: center;
+            gap: 6px;
+            background: #059669;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
         /* Upload Widget */
         .upload-widget { border: 2px dashed #d1d5db; border-radius: 12px; background: #f9fafb; transition: all 0.2s; }
@@ -207,6 +244,32 @@
                             <input type="file" id="news-featured-input" accept="image/*" class="hidden" onchange="handleFeatured(this,'news-featured','news-image','news')">
                             <input type="hidden" id="news-image" value="">
                             <input id="news-image-url-manual" type="url" placeholder="أو الصق رابطاً مباشرةً..." class="mt-2 text-xs" oninput="document.getElementById('news-image').value=this.value">
+                        </div>
+
+                        <!-- 🇫🇷 الصورة المميزة الفرنسية — للإعلانات الرسمية فقط -->
+                        <div id="news-image-fr-wrap" class="hidden border-r-2 border-blue-400 pr-3 bg-blue-50 rounded-lg py-2 px-2">
+                            <label class="text-xs font-bold text-blue-600 mb-2 block">🇫🇷 Bannière — Français <span class="text-gray-400 font-normal">(صورة مميزة للنسخة الفرنسية)</span></label>
+                            <div id="news-featured-fr-widget" class="upload-widget p-3 cursor-pointer border-blue-200" onclick="triggerUpload('news-featured-fr-input')">
+                                <div id="news-featured-fr-placeholder" class="flex flex-col items-center gap-1 py-3">
+                                    <span class="iconify text-3xl text-blue-200" data-icon="lucide:image-plus"></span>
+                                    <span class="text-xs text-blue-400 font-semibold">Cliquez pour uploader</span>
+                                    <span class="text-[10px] text-blue-300">JPG, PNG, WEBP — max 25MB</span>
+                                </div>
+                                <div id="news-featured-fr-preview" class="hidden">
+                                    <img id="news-featured-fr-img" src="" class="w-full h-28 object-cover rounded-lg mb-2">
+                                    <div class="flex items-center justify-between">
+                                        <span id="news-featured-fr-name" class="text-[10px] text-gray-500 truncate flex-1 ml-1"></span>
+                                        <button onclick="event.stopPropagation();clearWidget('news-featured-fr','news-image-fr','news-image-fr-url-manual')" class="text-[10px] text-red-500 font-bold flex-shrink-0">✕ حذف</button>
+                                    </div>
+                                </div>
+                                <div id="news-featured-fr-uploading" class="hidden flex flex-col items-center gap-1 py-3">
+                                    <span class="iconify text-3xl text-blue-400 spin" data-icon="lucide:loader-2"></span>
+                                    <span class="text-xs text-blue-500 font-semibold">جاري الرفع...</span>
+                                </div>
+                            </div>
+                            <input type="file" id="news-featured-fr-input" accept="image/*" class="hidden" onchange="handleFeatured(this,'news-featured-fr','news-image-fr','news-fr')">
+                            <input type="hidden" id="news-image-fr" value="">
+                            <input id="news-image-fr-url-manual" type="url" placeholder="أو الصق رابط الصورة الفرنسية..." class="mt-2 text-xs border-blue-200" oninput="document.getElementById('news-image-fr').value=this.value">
                         </div>
 
                         <!-- ألبوم صور -->
@@ -790,13 +853,44 @@ function toggleFormPanel(sec, forceOpen) {
     const btn   = document.getElementById('btn-open-' + sec);
     if (!panel) return;
     const willOpen = forceOpen !== undefined ? forceOpen : panel.classList.contains('hidden');
+
+    // أغلق أي نموذج آخر مفتوح أولاً
+    if (willOpen) {
+        document.querySelectorAll('.form-panel.mobile-open').forEach(p => {
+            if (p !== panel) p.classList.remove('mobile-open', 'hidden');
+        });
+    }
+
     panel.classList.toggle('hidden', !willOpen);
+
+    if (window.innerWidth < 1024) {
+        panel.classList.toggle('mobile-open', willOpen);
+        document.body.classList.toggle('form-open', willOpen);
+
+        // إضافة/إزالة زر الإغلاق العائم
+        let floatBtn = panel.querySelector('.form-close-mobile');
+        if (willOpen) {
+            if (!floatBtn) {
+                floatBtn = document.createElement('button');
+                floatBtn.className = 'form-close-mobile';
+                floatBtn.innerHTML = '<span class="iconify" data-icon="lucide:arrow-right"></span> رجوع';
+                floatBtn.onclick = () => toggleFormPanel(sec, false);
+                panel.prepend(floatBtn);
+            }
+            floatBtn.style.display = 'flex';
+        } else if (floatBtn) {
+            floatBtn.style.display = 'none';
+        }
+    }
+
     if (btn) {
         btn.innerHTML = willOpen
             ? '<span class="iconify text-lg" data-icon="lucide:x"></span> إغلاق'
             : `<span class="iconify text-lg" data-icon="lucide:plus-circle"></span> ${btn.dataset.label || 'إضافة'}`;
     }
-    if (willOpen) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (willOpen && window.innerWidth >= 1024) {
+        panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 }
 // للتوافق مع الكود القديم
 function toggleNewsForm(btn){ toggleFormPanel('news'); }
@@ -952,7 +1046,8 @@ async function saveNews(){
         category:document.getElementById('news-category').value,
         content:document.getElementById('news-content').value,
         content_fr:document.getElementById('news-content-fr')?.value||'',
-        image_url:document.getElementById('news-image').value,
+        image_url:    document.getElementById('news-image').value,
+        image_url_fr: document.getElementById('news-image-fr')?.value||'',
         album_urls:document.getElementById('news-album-urls').value||'[]',
         date:document.getElementById('news-date').value||new Date().toISOString().split('T')[0],
         is_pinned:document.getElementById('news-pinned').checked?1:0,
@@ -984,6 +1079,20 @@ async function editNews(id){
         document.getElementById('news-pinned').checked=n.is_pinned==1;
         document.getElementById('news-image').value=n.image_url||'';
         document.getElementById('news-image-url-manual').value=n.image_url||'';
+        // الصورة الفرنسية — للإعلانات الرسمية فقط
+        if(document.getElementById('news-image-fr')){
+            document.getElementById('news-image-fr').value=n.image_url_fr||'';
+            document.getElementById('news-image-fr-url-manual').value=n.image_url_fr||'';
+            const frWrap=document.getElementById('news-image-fr-wrap');
+            if(frWrap) frWrap.classList.toggle('hidden', n.category!=='official');
+            if(n.image_url_fr){
+                document.getElementById('news-featured-fr-placeholder').classList.add('hidden');
+                document.getElementById('news-featured-fr-img').src=n.image_url_fr;
+                document.getElementById('news-featured-fr-name').textContent='صورة موجودة';
+                document.getElementById('news-featured-fr-preview').classList.remove('hidden');
+                document.getElementById('news-featured-fr-widget').classList.add('has-image');
+            }
+        }
         const clEl2=document.getElementById('news-custom-label'); if(clEl2) clEl2.value=n.custom_label||'';
         if(document.getElementById('news-custom-label-fr')) document.getElementById('news-custom-label-fr').value=n.custom_label_fr||'';
         // تحميل ألبوم الصور الموجود
@@ -1014,6 +1123,9 @@ document.addEventListener('DOMContentLoaded', function(){
         if(!titleInp) return;
         const isPoster = catSel && catSel.value === 'poster';
         const isOfficial = catSel && catSel.value === 'official';
+        // إظهار حقل الصورة الفرنسية للإعلانات الرسمية فقط
+        const frImgWrap = document.getElementById('news-image-fr-wrap');
+        if(frImgWrap) frImgWrap.classList.toggle('hidden', !isOfficial);
         if(isPoster){
             titleInp.placeholder = 'اختياري للملصقات...';
             titleInp.removeAttribute('required');
@@ -1044,6 +1156,12 @@ function cancelNewsEdit(){
     document.getElementById('news-date').value='';
     document.getElementById('news-pinned').checked=false;
     clearWidget('news-featured','news-image','news-image-url-manual');
+    // reset الصورة الفرنسية
+    if(document.getElementById('news-image-fr')){
+        clearWidget('news-featured-fr','news-image-fr','news-image-fr-url-manual');
+        const frWrap=document.getElementById('news-image-fr-wrap');
+        if(frWrap) frWrap.classList.add('hidden');
+    }
     const clEl3=document.getElementById('news-custom-label');
     if(clEl3) clEl3.value='';
     if(document.getElementById('news-custom-label-fr')) document.getElementById('news-custom-label-fr').value='';
