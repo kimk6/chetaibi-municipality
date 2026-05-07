@@ -1871,14 +1871,14 @@ html[dir="ltr"] article {
             <button onclick="closeNewsPage()" class="w-9 h-9 bg-white/20 hover:bg-white/30 rounded-xl flex items-center justify-center transition-colors flex-shrink-0">
                 <span class="iconify text-lg" data-icon="lucide:x"></span>
             </button>
-            <h2 id="news-overlay-title" class="text-base font-extrabold flex-1 text-center">جميع الأخبار</h2>
+            <h2 id="news-overlay-title" class="text-base font-extrabold flex-1 text-center" data-i18n="news-overlay-cat-official">جميع الأخبار</h2>
             <div class="w-9"></div><!-- موازن -->
         </div>
         <!-- سطر أزرار التصنيف -->
         <div class="flex justify-center gap-2 px-4 pb-3">
-            <button onclick="overlaySetCat('official')" id="ocat-official" class="ocat-btn text-xs px-4 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:megaphone"></span>إعلانات</button>
-            <button onclick="overlaySetCat('activity')" id="ocat-activity" class="ocat-btn text-xs px-4 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:clipboard-list"></span>نشاطات</button>
-            <button onclick="overlaySetCat('social')" id="ocat-social" class="ocat-btn text-xs px-4 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:handshake"></span>مجتمع</button>
+            <button onclick="overlaySetCat('official')" id="ocat-official" class="ocat-btn text-xs px-4 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:megaphone"></span><span data-i18n="news-overlay-cat-official">إعلانات</span></button>
+            <button onclick="overlaySetCat('activity')" id="ocat-activity" class="ocat-btn text-xs px-4 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:clipboard-list"></span><span data-i18n="news-overlay-cat-activity">نشاطات</span></button>
+            <button onclick="overlaySetCat('social')" id="ocat-social" class="ocat-btn text-xs px-4 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:handshake"></span><span data-i18n="news-overlay-cat-social">مجتمع</span></button>
         </div>
     </div>
     <!-- محتوى قابل للتمرير -->
@@ -3976,6 +3976,11 @@ async function initMap() {
                 { maxWidth: 230, className: 'chetaibi-popup', offset: [0, -5] }
             );
 
+        // ضمان الحجم الصحيح بعد اكتمال التهيئة
+        chetaibiMap.invalidateSize();
+        setTimeout(() => chetaibiMap.invalidateSize(), 300);
+        setTimeout(() => chetaibiMap.invalidateSize(), 800);
+
     } catch(e) {
         console.error('Map data error:', e);
     }
@@ -3983,7 +3988,11 @@ async function initMap() {
 
 // إعادة رسم markers عند تغيير اللغة
 function reloadMapMarkers() {
-    if (!chetaibiMap) return;
+    if (!chetaibiMap) {
+        // الخريطة لم تُهيَّأ بعد — نُهيئها الآن
+        initMap();
+        return;
+    }
     // حذف كل الـ markers الحالية (CircleMarker + L.Marker) وإعادة تحميلها
     const layersToRemove = [];
     chetaibiMap.eachLayer(layer => {
@@ -4048,12 +4057,22 @@ const _mapObserver = new IntersectionObserver((entries) => {
             _mapObserver.unobserve(entry.target);
         }
     });
-}, { threshold: 0.1 });
+}, { threshold: 0.05 });
 
 // ننتظر حتى يُبنى الـ DOM
 document.addEventListener('DOMContentLoaded', () => {
     const mapEl = document.getElementById('chetaibi-map');
-    if (mapEl) _mapObserver.observe(mapEl);
+    if (!mapEl) return;
+
+    // نتحقق إذا كانت الخريطة مرئية مباشرةً (شاشات كبيرة)
+    const rect = mapEl.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+        // مرئية فوراً — نُهيئ مباشرةً بعد لحظة صغيرة للسماح لـ CSS بالاستقرار
+        setTimeout(initMap, 200);
+    } else {
+        // غير مرئية — نستخدم الـ Observer
+        _mapObserver.observe(mapEl);
+    }
 });
 
 </script>
