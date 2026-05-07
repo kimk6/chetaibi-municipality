@@ -846,14 +846,14 @@ html[dir="ltr"] article {
     <div class="max-w-7xl mx-auto px-4">
         <div class="flex items-center justify-between h-14">
             <div class="hidden md:flex items-center justify-center flex-1 gap-1">
-                <a href="#home" class="nav-link active-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors" data-i18n="nav-home">الرئيسية</a>
-                <a href="#news" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors" data-i18n="nav-news">المستجدات</a>
-                <a href="#admin" onclick="event.preventDefault();document.getElementById('admin').scrollIntoView({behavior:'smooth'})" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors" data-i18n="nav-services">الخدمات</a>
-                <a href="#archive" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors" data-i18n="nav-archive">الأرشيف</a>
-                <a href="#guide" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors" data-i18n="nav-guide">الدليل</a>
-                <a href="#map-section" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors" data-i18n="nav-map">الخريطة</a>
-                <a href="#beaches" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors" data-i18n="nav-beaches">السياحة</a>
-                <a href="#contact-footer" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors" data-i18n="nav-contact">اتصل بنا</a>
+                <a href="#home" class="nav-link active-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" data-i18n="nav-home"><span class="iconify text-sm" data-icon="lucide:home"></span>الرئيسية</a>
+                <a href="#news" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" data-i18n="nav-news"><span class="iconify text-sm" data-icon="lucide:newspaper"></span>المستجدات</a>
+                <a href="#admin" onclick="event.preventDefault();document.getElementById('admin').scrollIntoView({behavior:'smooth'})" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" data-i18n="nav-services"><span class="iconify text-sm" data-icon="lucide:landmark"></span>الخدمات</a>
+                <a href="#archive" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" data-i18n="nav-archive"><span class="iconify text-sm" data-icon="lucide:scroll-text"></span>الأرشيف</a>
+                <a href="#guide" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" data-i18n="nav-guide"><span class="iconify text-sm" data-icon="lucide:map-pin"></span>الدليل</a>
+                <a href="#map-section" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" data-i18n="nav-map"><span class="iconify text-sm" data-icon="lucide:map"></span>الخريطة</a>
+                <a href="#beaches" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" data-i18n="nav-beaches"><span class="iconify text-sm" data-icon="lucide:sailboat"></span>السياحة</a>
+                <a href="#contact-footer" class="nav-link text-white/90 hover:text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors inline-flex items-center gap-1.5" data-i18n="nav-contact"><span class="iconify text-sm" data-icon="lucide:phone"></span>اتصل بنا</a>
                 <!-- ══ زر تغيير اللغة — ديسكتوب | قبل "اتصل بنا" مباشرة ══ -->
                 <button data-lang-btn="desktop" onclick="switchLang(currentLang==='ar'?'fr':'ar')" class="inline-flex items-center gap-1.5 border border-white/40 hover:border-white text-white/85 hover:text-white hover:bg-white/10 px-3 py-1.5 rounded-lg text-sm font-bold transition-all ml-1" title="Passer en Français">
                     <span data-i18n="lang-btn-label">Français</span>
@@ -1110,8 +1110,8 @@ html[dir="ltr"] article {
         <div id="news-loading" class="text-center py-16"><span class="iconify text-5xl animate-spin inline-block text-emerald-500" data-icon="lucide:newspaper"></span><p class="mt-3 text-sm font-semibold text-gray-400">جاري تحميل الأخبار...</p></div>
         <!-- كل tab له grid + extra + أزرار -->
         <div id="tab-panel-announcements" class="news-panel hidden">
-            <div id="grid-announcements" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6"></div>
-            <div id="extra-announcements" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6 hidden"></div>
+            <div id="grid-announcements" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6"></div>
+            <div id="extra-announcements" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 hidden"></div>
             <div id="more-wrap-announcements" class="flex flex-wrap items-center justify-center gap-3 mb-4 hidden">
                 <button onclick="toggleMoreNews('announcements')" id="more-btn-announcements"
                         class="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all">
@@ -1122,8 +1122,8 @@ html[dir="ltr"] article {
             </div>
         </div>
         <div id="tab-panel-activities" class="news-panel hidden">
-            <div id="grid-activities" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6"></div>
-            <div id="extra-activities" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6 hidden"></div>
+            <div id="grid-activities" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6"></div>
+            <div id="extra-activities" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 hidden"></div>
             <div id="more-wrap-activities" class="flex flex-wrap items-center justify-center gap-3 mb-4 hidden">
                 <button onclick="toggleMoreNews('activities')" id="more-btn-activities"
                         class="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all">
@@ -1134,8 +1134,8 @@ html[dir="ltr"] article {
             </div>
         </div>
         <div id="tab-panel-community" class="news-panel hidden">
-            <div id="grid-community" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6"></div>
-            <div id="extra-community" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6 hidden"></div>
+            <div id="grid-community" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6"></div>
+            <div id="extra-community" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 hidden"></div>
             <div id="more-wrap-community" class="flex flex-wrap items-center justify-center gap-3 mb-4 hidden">
                 <button onclick="toggleMoreNews('community')" id="more-btn-community"
                         class="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all">
@@ -1996,17 +1996,38 @@ function switchNewsTab(t){
 }
 
 function toggleMoreNews(tab){
-    newsExpanded[tab]=!newsExpanded[tab];
-    const ex=document.getElementById('extra-'+tab);
-    const ic=document.getElementById('more-icon-'+tab);
-    const tx=document.getElementById('more-text-'+tab);
-    ex.classList.toggle('hidden',!newsExpanded[tab]);
-    ic.setAttribute('data-icon',newsExpanded[tab]?'lucide:chevrons-up':'lucide:chevrons-down');
-    tx.textContent=newsExpanded[tab]?t('show-less'):t('show-more');
-    // إظهار زر "جميع..." بعد أول ضغط
-    const allBtn=document.getElementById('all-btn-'+tab);
-    if(allBtn) allBtn.classList.remove('hidden');
-    if(window.Iconify) Iconify.scan();
+    const grid = document.getElementById('grid-'+tab);
+    const moreW = document.getElementById('more-wrap-'+tab);
+    if(!grid) return;
+    const items = window._newsGrouped && window._newsGrouped[tab] ? window._newsGrouped[tab] : [];
+    const page = parseInt(grid.dataset.page||'1');
+    const nextPage = page + 1;
+    const start = page * 3;
+    const end   = nextPage * 3;
+    const newItems = items.slice(start, end);
+    if(newItems.length > 0){
+        newItems.forEach(n => {
+            const s=catStyles[n.category]||catStyles.official;
+            const img=n.image_url||'';
+            const isPinned=n.is_pinned==1;
+            const pinBadge=isPinned?'<div class="pin-badge"><span class="iconify text-sm" data-icon="lucide:pin"></span></div>':'<div></div>';
+            const pinLabel=isPinned?`<span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-600 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-200"><span class="iconify" data-icon="lucide:pin"></span>${t('pinned-badge').replace('\u{1F4CC} ','')}</span>`:'';
+            const pinBorder=isPinned?'border-emerald-300 ring-1 ring-emerald-200':'border-gray-100';
+            const nTitle=getLF(n,'title');
+            const nContent=getLF(n,'content');
+            const labelHtml=n.custom_label&&n.custom_label.trim()?`<span class="inline-block ${s.badge} text-xs font-bold px-3 py-1 rounded-full">${n.custom_label}</span>`:'';
+            const showGrad=n.category!=='official';
+            const card=`<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border ${pinBorder} relative cursor-pointer" onclick="openNewsModal(${n.id})">${img?`<div class="h-44 overflow-hidden relative">${pinBadge}<img src="${img}" alt="${nTitle}" class="w-full h-full object-cover">${showGrad?'<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>':''}</div>`:`<div class="h-44 bg-gradient-to-bl ${s.grad} flex items-center justify-center relative">${pinBadge}<span class="iconify text-white text-6xl" data-icon="${s.icon}"></span></div>`}<div class="p-4"><div class="flex items-center gap-2 mb-2 flex-wrap">${labelHtml}${pinLabel}</div><h4 class="font-bold text-gray-800 mb-2 leading-snug text-sm">${nTitle}</h4><p class="text-xs text-gray-500 mb-3 leading-relaxed">${(nContent||'').substring(0,90)}...</p><div class="flex items-center justify-between"><span class="text-xs text-gray-400 flex items-center gap-1"><span class="iconify" data-icon="lucide:calendar"></span>${n.date}</span><button onclick="openNewsModal(${n.id})" class="text-emerald-600 text-xs font-bold hover:text-emerald-700">${t('read-more')}</button></div></div></article>`;
+            grid.insertAdjacentHTML('beforeend', card);
+        });
+        grid.dataset.page = String(nextPage);
+        if(window.Iconify) Iconify.scan();
+    }
+    if(end >= items.length){
+        if(moreW) moreW.classList.add('hidden');
+        const allBtn=document.getElementById('all-btn-'+tab);
+        if(allBtn) allBtn.classList.remove('hidden');
+    }
 }
 
 // ── TOAST / FORM ──
@@ -2498,6 +2519,7 @@ async function loadNews(){
 
         const tabs=['announcements','activities','community'];
         const grouped={announcements:[],activities:[],community:[],posters:[]};
+        window._newsGrouped = grouped;
 
         if(d.success && d.data && d.data.length>0){
             d.data.forEach(n=>{const t=categoryMap[n.category]||'announcements';if(grouped[t]!==undefined)grouped[t].push(n);});
@@ -2558,23 +2580,12 @@ async function loadNews(){
                 </article>`;
             };
 
-            const first4 = items.slice(0,4);
-            const next4  = items.slice(4,8);
-            const rest   = items.slice(8);
-
-            grid.innerHTML  = first4.map(renderCard).join('');
-            extra.innerHTML = next4.map(renderCard).join('');
-
-            const hasMore = next4.length > 0;
-            const hasAll  = rest.length > 0 || items.length > 4;
-
-            if(hasMore || hasAll) moreW.classList.remove('hidden');
+            // pagination: 3 ثم 3 كل ضغطة
+            grid.dataset.page = '1';
+            grid.dataset.items = JSON.stringify(items.map(n=>n.id));
+            grid.innerHTML = items.slice(0,3).map(renderCard).join('');
+            if(items.length > 3) moreW.classList.remove('hidden');
             else moreW.classList.add('hidden');
-
-            if(!hasMore){
-                const btn=document.getElementById('more-btn-'+tab);
-                if(btn) btn.classList.add('hidden');
-            }
         });
 
         // افتح أول tab فيه محتوى
@@ -2920,10 +2931,10 @@ async function loadGuidePanel(tab) {
                 + '</div>';
         };
 
-        const first6 = items.slice(0, 6);
-        const rest   = items.slice(6);
+        const first3 = items.slice(0, 3);
+        const rest   = items.slice(3);
 
-        grid.innerHTML = first6.map(renderCard).join('');
+        grid.innerHTML = first3.map(renderCard).join('');
         if (extra) extra.innerHTML = rest.map(renderCard).join('');
 
         if (moreW) {
