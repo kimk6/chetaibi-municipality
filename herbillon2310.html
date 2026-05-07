@@ -31,23 +31,20 @@
         @media (max-width: 1023px) {
             .form-panel { display: none; }
             .form-panel.mobile-open {
-                display: flex;
-                flex-direction: column;
+                display: block;
                 position: fixed;
                 inset: 0;
                 z-index: 200;
                 background: white;
-                overflow-y: auto;
+                height: 100dvh;
+                height: 100vh;
+                overflow-y: scroll;
                 -webkit-overflow-scrolling: touch;
-                padding: 1rem;
-                padding-top: 56px; /* مسافة للهيدر */
+                overscroll-behavior: contain;
+                padding: 60px 1rem 2rem;
             }
-            /* منع تمرير الخلفية عند فتح النموذج */
-            body.form-open { overflow: hidden; }
-            /* زر إغلاق عائم في الأعلى */
-            .form-panel.mobile-open .form-close-mobile {
-                display: flex;
-            }
+            body.form-open { overflow: hidden; touch-action: none; }
+            .form-panel.mobile-open .form-close-mobile { display: flex; }
         }
         @media (min-width: 1024px) {
             .mobile-add-btn { display: none; }
