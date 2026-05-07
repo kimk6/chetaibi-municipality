@@ -33,17 +33,16 @@
             .form-panel.mobile-open {
                 display: block;
                 position: fixed;
-                inset: 0;
+                top: 0; left: 0; right: 0; bottom: 0;
                 z-index: 200;
                 background: white;
-                height: 100dvh;
-                height: 100vh;
-                overflow-y: scroll;
+                overflow-y: auto;
                 -webkit-overflow-scrolling: touch;
-                overscroll-behavior: contain;
-                padding: 60px 1rem 2rem;
+                overscroll-behavior-y: contain;
+                padding: 60px 1rem 3rem;
+                box-sizing: border-box;
             }
-            body.form-open { overflow: hidden; touch-action: none; }
+            body.form-open { overflow: hidden; position: fixed; width: 100%; }
             .form-panel.mobile-open .form-close-mobile { display: flex; }
         }
         @media (min-width: 1024px) {
@@ -854,7 +853,7 @@ function toggleFormPanel(sec, forceOpen) {
     // أغلق أي نموذج آخر مفتوح أولاً
     if (willOpen) {
         document.querySelectorAll('.form-panel.mobile-open').forEach(p => {
-            if (p !== panel) p.classList.remove('mobile-open', 'hidden');
+            if (p !== panel) p.classList.remove('mobile-open');
         });
     }
 
@@ -862,7 +861,24 @@ function toggleFormPanel(sec, forceOpen) {
 
     if (window.innerWidth < 1024) {
         panel.classList.toggle('mobile-open', willOpen);
-        document.body.classList.toggle('form-open', willOpen);
+
+        if (willOpen) {
+            // احفظ موضع التمرير الحالي وأثبّت الصفحة
+            window._savedScrollY = window.scrollY;
+            document.body.style.overflow = 'hidden';
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${window._savedScrollY}px`;
+            document.body.style.width = '100%';
+            // أعد التمرير للأعلى داخل النموذج
+            panel.scrollTop = 0;
+        } else {
+            // أعد الصفحة لحالتها وموضع تمريرها
+            document.body.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.width = '';
+            window.scrollTo(0, window._savedScrollY || 0);
+        }
 
         // إضافة/إزالة زر الإغلاق العائم
         let floatBtn = panel.querySelector('.form-close-mobile');
