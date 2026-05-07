@@ -683,14 +683,16 @@
         // ─── إعادة رسم الخريطة (markers بالاسم المُترجم) ───
         if (typeof reloadMapMarkers === 'function') reloadMapMarkers();
         // إصلاح حجم الخريطة بعد تغيير الاتجاه rtl/ltr
-        if (typeof chetaibiMap !== 'undefined' && chetaibiMap) {
-            setTimeout(() => {
-                chetaibiMap.invalidateSize(true);
-                chetaibiMap.setView(chetaibiMap.getCenter(), chetaibiMap.getZoom());
-            }, 300);
-        } else if (typeof initMap === 'function') {
-            setTimeout(() => initMap(), 300);
-        }
+        // إصلاح الخريطة — يجب تدميرها وإعادة بنائها عند تغيير dir
+        setTimeout(() => {
+            if (typeof chetaibiMap !== 'undefined' && chetaibiMap) {
+                try {
+                    chetaibiMap.remove();
+                } catch(e) {}
+                chetaibiMap = null;
+            }
+            if (typeof initMap === 'function') initMap();
+        }, 350);
         // ─── إعادة رسم الخدمات ───
         if (typeof loadServicesMain === 'function') loadServicesMain();
         // ─── إعادة رسم معاينة الأرشيف والأرشيف الكامل ───
@@ -3214,6 +3216,7 @@ async function openNewsModal(id) {
             document.getElementById("nm-content").textContent = getLF(n,"content") || "";
         }
         const modalImg = (currentLang === 'fr' && n.image_url_fr) ? n.image_url_fr : n.image_url;
+        // نعرض الصورة المميزة لجميع التصنيفات بما فيها الإعلانات الرسمية
         if (modalImg) {
             document.getElementById('nm-img').src = modalImg;
             document.getElementById('nm-img-wrap').classList.remove('hidden');
@@ -3892,14 +3895,7 @@ function createCircleMarker(lat, lng, color, item, type) {
 }
 
 async function initMap() {
-    if (chetaibiMap) {
-        // الخريطة موجودة — فقط أعد الحجم وأعد تحميل الـ markers
-        setTimeout(() => {
-            chetaibiMap.invalidateSize(true);
-            if (typeof reloadMapMarkers === 'function') reloadMapMarkers();
-        }, 200);
-        return;
-    }
+    if (chetaibiMap) return; // منع التهيئة المزدوجة
 
     const mapEl = document.getElementById('chetaibi-map');
     if (!mapEl) return;
@@ -4067,9 +4063,8 @@ async function initMapMarkers() {
 // تهيئة الخريطة عند الوصول إليها (Intersection Observer للأداء)
 const _mapObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && !chetaibiMap) {
             initMap();
-            _mapObserver.unobserve(entry.target);
         }
     });
 }, { threshold: 0.05 });
