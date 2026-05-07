@@ -3,6 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- تطبيق اللغة المحفوظة فوراً قبل رسم أي شيء لتجنب وميض الاتجاه الخاطئ -->
+    <script>
+    (function(){
+        var lang = localStorage.getItem('lang') || 'ar';
+        var html = document.documentElement;
+        html.setAttribute('lang', lang);
+        html.setAttribute('dir', lang === 'fr' ? 'ltr' : 'rtl');
+    })();
+    </script>
     <title>بلدية شطايبي - الموقع الرسمي</title>
     <!-- ✅ 10: Favicon -->
     <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo.webp">
@@ -3660,13 +3669,13 @@ async function renderOverlay() {
         const totalPages = Math.ceil(total/OVERLAY_PER)||1;
         overlayPage = Math.min(overlayPage, totalPages);
         const items = all.slice((overlayPage-1)*OVERLAY_PER, overlayPage*OVERLAY_PER);
-        document.getElementById('news-overlay-title').textContent = CAT_META[overlayCat]?.label || 'الأخبار';
-        const countEl = document.getElementById('news-overlay-count');
-        if(countEl) countEl.textContent = total + ' خبر';
-        const m = CAT_META[overlayCat] || CAT_META.official;
         const catLabel = overlayCat === 'official' ? t('news-overlay-cat-official')
                        : overlayCat === 'activity' ? t('news-overlay-cat-activity')
                        : t('news-overlay-cat-social');
+        document.getElementById('news-overlay-title').textContent = catLabel;
+        const countEl = document.getElementById('news-overlay-count');
+        if(countEl) countEl.textContent = total + (currentLang === 'fr' ? ' article(s)' : ' خبر');
+        const m = CAT_META[overlayCat] || CAT_META.official;
         if(!items.length){ grid.innerHTML='<p class="col-span-full text-center text-gray-400 py-16">لا توجد أخبار في هذا الصنف</p>'; return; }
         grid.innerHTML = items.map(n => {
             const displayTitle = getLF(n,'title') || n.title || '';
@@ -3975,12 +3984,35 @@ async function initMap() {
 // إعادة رسم markers عند تغيير اللغة
 function reloadMapMarkers() {
     if (!chetaibiMap) return;
-    // حذف كل الـ markers الحالية وإعادة تحميلها
+    // حذف كل الـ markers الحالية (CircleMarker + L.Marker) وإعادة تحميلها
+    const layersToRemove = [];
     chetaibiMap.eachLayer(layer => {
-        if (layer instanceof L.CircleMarker) {
-            chetaibiMap.removeLayer(layer);
+        if (layer instanceof L.CircleMarker || layer instanceof L.Marker) {
+            layersToRemove.push(layer);
         }
     });
+    layersToRemove.forEach(l => chetaibiMap.removeLayer(l));
+    // إعادة إضافة marker مقر البلدية بالنص المُترجم
+    const municipalityIcon = L.divIcon({
+        className: '',
+        html: '<div style="width:38px;height:38px;background:#059669;border:3px solid white;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;font-size:18px;">🏛️</div>',
+        iconSize:    [38, 38],
+        iconAnchor:  [19, 19],
+        popupAnchor: [0, -22],
+    });
+    L.marker([37.067177, 7.380601], { icon: municipalityIcon })
+        .addTo(chetaibiMap)
+        .bindPopup(
+            '<div style="width:210px;overflow:hidden;border-radius:12px;">' +
+                '<img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/Chetaibi-Town-Hall.webp"' +
+                    ' style="width:100%;height:120px;object-fit:cover;display:block;">' +
+                '<div style="padding:10px 12px;text-align:center;">' +
+                    '<div style="font-weight:800;font-size:14px;color:#1a1a1a;margin-bottom:4px;font-family:Cairo,sans-serif;text-align:center;">' + t('map-municipality-name') + '</div>' +
+                    '<div style="font-size:11px;color:#6b7280;font-family:Cairo,sans-serif;text-align:center;">' + t('map-municipality-sub') + '</div>' +
+                '</div>' +
+            '</div>',
+            { maxWidth: 230, className: 'chetaibi-popup', offset: [0, -5] }
+        );
     // إعادة جلب البيانات وإضافة markers جديدة
     initMapMarkers();
 }
@@ -4020,9 +4052,6 @@ const _mapObserver = new IntersectionObserver((entries) => {
 
 // ننتظر حتى يُبنى الـ DOM
 document.addEventListener('DOMContentLoaded', () => {
-    // تطبيق اللغة المحفوظة فوراً قبل أي شيء آخر
-    if (typeof applyLang === 'function') applyLang();
-
     const mapEl = document.getElementById('chetaibi-map');
     if (mapEl) _mapObserver.observe(mapEl);
 });
