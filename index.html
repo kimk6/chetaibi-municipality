@@ -682,16 +682,13 @@
         }
         // ─── إعادة رسم الخريطة (markers بالاسم المُترجم) ───
         if (typeof reloadMapMarkers === 'function') reloadMapMarkers();
-        // إصلاح حجم الخريطة بعد تغيير الاتجاه rtl/ltr
-        // إصلاح الخريطة — يجب تدميرها وإعادة بنائها عند تغيير dir
+        // إصلاح حجم الخريطة بعد تغيير الاتجاه — بدون تدمير
         setTimeout(() => {
             if (typeof chetaibiMap !== 'undefined' && chetaibiMap) {
-                try {
-                    chetaibiMap.remove();
-                } catch(e) {}
-                chetaibiMap = null;
+                try { chetaibiMap.invalidateSize(); } catch(e) {}
+            } else if (typeof initMap === 'function') {
+                initMap();
             }
-            if (typeof initMap === 'function') initMap();
         }, 350);
         // ─── إعادة رسم الخدمات ───
         if (typeof loadServicesMain === 'function') loadServicesMain();
@@ -1886,6 +1883,7 @@ html[dir="ltr"] article {
             <button onclick="overlaySetCat('official')" id="ocat-official" class="ocat-btn text-xs px-4 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:megaphone"></span><span data-i18n="news-overlay-cat-official">إعلانات</span></button>
             <button onclick="overlaySetCat('activity')" id="ocat-activity" class="ocat-btn text-xs px-4 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:clipboard-list"></span><span data-i18n="news-overlay-cat-activity">نشاطات</span></button>
             <button onclick="overlaySetCat('social')" id="ocat-social" class="ocat-btn text-xs px-4 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:handshake"></span><span data-i18n="news-overlay-cat-social">مجتمع</span></button>
+            <button onclick="overlaySetCat('poster')" id="ocat-poster" class="ocat-btn text-xs px-4 py-2 rounded-lg font-bold transition-all bg-white/20 hover:bg-white/30 text-white flex items-center gap-1.5"><span class="iconify" data-icon="lucide:image"></span><span data-i18n="tab-posters">صور وملصقات</span></button>
         </div>
     </div>
     <!-- محتوى قابل للتمرير -->
@@ -3634,9 +3632,10 @@ async function renderArchives() {
 
 // ── EXPLORE ──
 const CAT_META = {
-    official: { label: 'إعلانات رسمية',  badge: 'bg-red-100 text-red-700',      grad: 'from-red-500 to-red-700'        },
-    activity: { label: 'نشاطات البلدية', badge: 'bg-emerald-100 text-emerald-700', grad: 'from-emerald-500 to-emerald-700' },
-    social:   { label: 'ركن المجتمع',    badge: 'bg-purple-100 text-purple-700', grad: 'from-purple-500 to-purple-700'   },
+    official: { label: 'إعلانات رسمية',  badge: 'bg-red-100 text-red-700',        grad: 'from-red-500 to-red-700',        icon: 'lucide:megaphone'      },
+    activity: { label: 'نشاطات البلدية', badge: 'bg-emerald-100 text-emerald-700', grad: 'from-emerald-500 to-emerald-700', icon: 'lucide:clipboard-list'  },
+    social:   { label: 'ركن المجتمع',    badge: 'bg-purple-100 text-purple-700',   grad: 'from-purple-500 to-purple-700',  icon: 'lucide:handshake'       },
+    poster:   { label: 'صور وملصقات',    badge: 'bg-indigo-100 text-indigo-700',   grad: 'from-indigo-500 to-indigo-700',  icon: 'lucide:image'           },
 };
 let overlayAllNews = [], overlayCat = 'official', overlayPage = 1;
 const OVERLAY_PER = 12;
@@ -3673,31 +3672,37 @@ async function renderOverlay() {
         const data = await res.json();
         const allNews = Array.isArray(data.data) ? data.data : (Array.isArray(data) ? data : []);
         let all;
-        if(overlayCat === 'official')      all = allNews.filter(n=>n.category==='official');
-        else if(overlayCat==='activity')   all = allNews.filter(n=>n.category==='activity');
-        else                               all = allNews.filter(n=>n.category==='social');
+        if(overlayCat === 'official')       all = allNews.filter(n=>n.category==='official');
+        else if(overlayCat === 'activity')  all = allNews.filter(n=>n.category==='activity');
+        else if(overlayCat === 'poster')    all = allNews.filter(n=>n.category==='poster');
+        else                                all = allNews.filter(n=>n.category==='social');
         const total = all.length;
         const totalPages = Math.ceil(total/OVERLAY_PER)||1;
         overlayPage = Math.min(overlayPage, totalPages);
         const items = all.slice((overlayPage-1)*OVERLAY_PER, overlayPage*OVERLAY_PER);
         const catLabel = overlayCat === 'official' ? t('news-overlay-cat-official')
                        : overlayCat === 'activity' ? t('news-overlay-cat-activity')
+                       : overlayCat === 'poster'   ? t('tab-posters')
                        : t('news-overlay-cat-social');
         document.getElementById('news-overlay-title').textContent = catLabel;
         const countEl = document.getElementById('news-overlay-count');
         if(countEl) countEl.textContent = total + (currentLang === 'fr' ? ' article(s)' : ' خبر');
         const m = CAT_META[overlayCat] || CAT_META.official;
-        if(!items.length){ grid.innerHTML='<p class="col-span-full text-center text-gray-400 py-16">لا توجد أخبار في هذا الصنف</p>'; return; }
+        if(!items.length){ grid.innerHTML='<p class="col-span-full text-center text-gray-400 py-16">'+( currentLang==='fr' ? 'Aucun article dans cette catégorie' : 'لا توجد أخبار في هذا الصنف')+'</p>'; return; }
         grid.innerHTML = items.map(n => {
-            const displayTitle = getLF(n,'title') || n.title || '';
+            const displayTitle   = getLF(n,'title')   || n.title   || '';
             const displayContent = getLF(n,'content') || n.content || '';
+            // الصورة: عند الفرنسية نفضّل image_url_fr إن وُجدت
+            const imgSrc = (currentLang==='fr' && n.image_url_fr && n.image_url_fr.trim())
+                ? n.image_url_fr
+                : (n.image_url || '');
             const label = (n.custom_label&&n.custom_label.trim()) ? n.custom_label : catLabel;
-            const pin = n.is_pinned ? '<span class="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full border border-emerald-200 font-bold">📌 مثبت</span>' : '';
+            const pin = n.is_pinned ? '<span class="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full border border-emerald-200 font-bold">📌 '+( currentLang==='fr'?'Épinglé':'مثبت')+'</span>' : '';
             const snippet = displayContent.replace(/\n/g,' ').substring(0,90) + (displayContent.length>90?'...':'');
             const showGrad2 = overlayCat !== 'official';
-            const img = n.image_url
-                ? `<div class="h-44 overflow-hidden relative"><img src="${n.image_url}" alt="${displayTitle}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">${showGrad2?'<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>':''}</div>`
-                : `<div class="h-44 bg-gradient-to-bl ${m.grad} flex items-center justify-center"><span style="font-size:2.5rem">📰</span></div>`;
+            const img = imgSrc
+                ? `<div class="h-44 overflow-hidden relative"><img src="${imgSrc}" alt="${displayTitle}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">${showGrad2?'<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>':''}</div>`
+                : `<div class="h-44 bg-gradient-to-bl ${m.grad} flex items-center justify-center"><span class="iconify text-white text-6xl" data-icon="${m.icon}"></span></div>`;
             return `<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100 cursor-pointer" onclick="openNewsModal(${n.id})">
                 ${img}
                 <div class="p-4">
