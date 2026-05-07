@@ -714,38 +714,12 @@
         @media(min-width:768px){.timeline-line{right:50%;transform:translateX(50%)}}
         html[lang="fr"] .timeline-line{right:auto;left:23px}
         @media(min-width:768px){html[lang="fr"] .timeline-line{left:50%;right:auto;transform:translateX(-50%)}}
-        /* نقاط timeline في FR */
-        /* نقاط timeline - فوق الخط في الوسط على الديسكتوب */
-        @media(min-width:768px){
-            .timeline-dot-mobile{
-                right:auto!important;
-                left:50%!important;
-                transform:translateX(-50%)!important;
-                top:1.5rem!important;
-                margin-top:0!important;
-            }
-        }
-        /* FR desktop: نفس الموضع */
-        @media(min-width:768px){html[lang="fr"] .timeline-dot-mobile{left:50%!important;right:auto!important;transform:translateX(-50%)!important}}
         /* FR mobile: نقاط في اليسار */
-        html[lang="fr"] .timeline-dot-mobile{right:auto;left:14px}
-        /* بطاقات timeline في FR — ديسكتوب: نفس المسافة كالعربية */
-        /* FR: نقاط الـ timeline تنتقل لليسار في الموبايل */
         html[lang="fr"] .timeline-dot-mobile{right:auto!important;left:14px}
-        /* FR desktop: إبعاد البطاقات عن الخط الأخضر */
+        @media(min-width:768px){html[lang="fr"] .timeline-dot-mobile{left:50%!important;right:auto!important;transform:translateX(-50%)!important;top:1.5rem!important;margin-top:0!important}}
+        /* FR desktop: عكس ترتيب البطاقات مع الحفاظ على التباعد */
         @media(min-width:768px){
-            html[lang="fr"] .md\:pl-12{padding-left:3rem!important;padding-right:0!important}
-            html[lang="fr"] .md\:pr-12{padding-right:3rem!important;padding-left:0!important}
-        }
-        /* FR ديسكتوب: البطاقات ملتصقة أكثر بالخط */
-        @media(min-width:768px){html[lang="fr"] .timeline-card-fr{padding-left:20px!important;padding-right:0!important}}
-        /* FR desktop: إبعاد بطاقات التايم لاين عن الخط الأخضر مثل العربية */
-        @media(min-width:768px){html[lang="fr"] .md\:pl-12{padding-left:3rem!important;padding-right:0!important}}
-        @media(min-width:768px){html[lang="fr"] .md\:pr-12{padding-right:3rem!important;padding-left:0!important}}
-        /* FR desktop: إبعاد البطاقات عن الخط الأخضر */
-        @media(min-width:768px){
-            html[lang="fr"] .md\:pl-12 { padding-left: 3rem !important; padding-right: 0 !important; }
-            html[lang="fr"] .md\:pr-12 { padding-right: 3rem !important; padding-left: 0 !important; }
+            html[lang="fr"] .tl-row { flex-direction: row-reverse; }
         }
         html[lang="fr"] .news-tab{font-size:0.72rem}
         html[lang="fr"] .news-tab .iconify{font-size:0.85rem}
@@ -1332,7 +1306,7 @@ html[dir="ltr"] article {
             <div class="timeline-line"></div>
 
             <!-- بطاقة 1: العصر الروماني -->
-            <div class="relative flex flex-col md:flex-row items-start mb-12 md:mb-16">
+            <div class="tl-row relative flex flex-col md:flex-row items-start mb-12 md:mb-16">
                 <div class="md:w-1/2 md:pl-12 pl-14 mb-4 md:mb-0 md:text-left">
                     <div class="bg-white rounded-2xl p-6 shadow-lg border border-amber-100">
                         <div class="flex flex-wrap items-center gap-2 mb-3">
@@ -1348,7 +1322,7 @@ html[dir="ltr"] article {
             </div>
 
             <!-- بطاقة 2: العهد الإسلامي والعثماني -->
-            <div class="relative flex flex-col md:flex-row items-start mb-12 md:mb-16">
+            <div class="tl-row relative flex flex-col md:flex-row items-start mb-12 md:mb-16">
                 <div class="md:w-1/2 md:pl-12 hidden md:block"></div>
                 <div class="timeline-dot-mobile absolute right-[14px] md:right-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-teal-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
                 <div class="md:w-1/2 md:pr-12 pr-14 pl-0 md:pl-0">
@@ -1364,7 +1338,7 @@ html[dir="ltr"] article {
             </div>
 
             <!-- بطاقة 3: العهد الاستعماري -->
-            <div class="relative flex flex-col md:flex-row items-start mb-12 md:mb-16">
+            <div class="tl-row relative flex flex-col md:flex-row items-start mb-12 md:mb-16">
                 <div class="md:w-1/2 md:pl-12 pl-14 mb-4 md:mb-0 md:text-left">
                     <div class="bg-white rounded-2xl p-6 shadow-lg border border-red-100">
                         <div class="flex flex-wrap items-center gap-2 mb-3">
@@ -1380,7 +1354,7 @@ html[dir="ltr"] article {
             </div>
 
             <!-- بطاقة 4: عهد الاستقلال -->
-            <div class="relative flex flex-col md:flex-row items-start">
+            <div class="tl-row relative flex flex-col md:flex-row items-start">
                 <div class="md:w-1/2 md:pl-12 hidden md:block"></div>
                 <div class="timeline-dot-mobile absolute right-[14px] md:right-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-emerald-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
                 <div class="md:w-1/2 md:pr-12 pr-14 pl-0 md:pl-0">
