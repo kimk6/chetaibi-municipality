@@ -27,28 +27,36 @@
         textarea { resize: vertical; min-height: 100px; }
         .item-card { background: white; border: 1px solid #f3f4f6; border-radius: 16px; padding: 16px; transition: all 0.2s; }
         .item-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
-        /* ✅ Mobile form panel — fixed overlay مع scroll داخلي */
-        @media (max-width: 1023px) {
-            .form-panel { display: none; }
-            .form-panel.mobile-open {
-                display: block;
-                position: fixed;
-                top: 0; left: 0; right: 0; bottom: 0;
-                z-index: 200;
-                background: white;
-                overflow-y: auto;
-                -webkit-overflow-scrolling: touch;
-                overscroll-behavior: contain;
-                padding: 60px 16px 80px;
-                box-sizing: border-box;
-            }
-            .form-panel.mobile-open .form-close-mobile { display: flex; }
+        /* ✅ Form panel — modal overlay على كل الأحجام */
+        .form-panel {
+            display: none;
+        }
+        .form-panel.mobile-open {
+            display: block;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 200;
+            background: white;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+            padding: 60px 16px 80px;
+            box-sizing: border-box;
         }
         @media (min-width: 1024px) {
+            .form-panel.mobile-open {
+                top: 64px;
+                left: auto;
+                right: 16px;
+                bottom: 16px;
+                width: 480px;
+                border-radius: 20px;
+                box-shadow: 0 24px 60px rgba(0,0,0,0.18);
+                padding: 24px 24px 80px;
+            }
             .mobile-add-btn { display: none; }
-            .form-panel { display: block !important; }
-            .form-close-mobile { display: none !important; }
         }
+        .form-panel.mobile-open .form-close-mobile { display: flex; }
         /* زر الإغلاق العائم */
         .form-close-mobile {
             display: none;
@@ -83,9 +91,20 @@
         .repo-bar-fill { height:100%; border-radius:99px; transition:width 0.7s; background:linear-gradient(90deg,#059669,#34d399); }
         .repo-bar-fill.warn { background:linear-gradient(90deg,#d97706,#fbbf24); }
         .repo-bar-fill.danger { background:linear-gradient(90deg,#dc2626,#f87171); }
+        /* Modal backdrop */
+        .panel-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 199;
+            backdrop-filter: blur(2px);
+        }
+        .panel-backdrop.active { display: block; }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
+<div id="panel-backdrop" class="panel-backdrop" onclick="closeAllPanels()"></div>
 
 <div id="admin-toast" class="toast-admin fixed top-6 left-1/2 -translate-x-1/2 z-[100] bg-emerald-600 text-white px-6 py-3 rounded-xl shadow-2xl flex items-center gap-3 text-sm font-bold">
     <span class="iconify text-lg" data-icon="lucide:check-circle"></span>
@@ -174,7 +193,7 @@
                 </button>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div id="form-panel-news" class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24 hidden">
+                <div id="form-panel-news" class="form-panel">
                     <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2">
                         <span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span>
                         <span id="news-form-title">إضافة خبر جديد</span>
@@ -310,7 +329,7 @@
                 </button>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div id="form-panel-services" class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24 hidden">
+                <div id="form-panel-services" class="form-panel">
                     <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2">
                         <span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span>
                         <span id="services-form-title">إضافة خدمة / تطبيق</span>
@@ -443,7 +462,7 @@
                 </button>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div id="form-panel-archives" class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24 hidden">
+                <div id="form-panel-archives" class="form-panel">
                     <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span><span id="archives-form-title">إضافة صورة أرشيفية</span></h3>
                     <input type="hidden" id="archives-edit-id" value="">
                     <!-- تلميح التصنيف -->
@@ -510,7 +529,7 @@
                 </button>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div id="form-panel-tourism" class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24 hidden">
+                <div id="form-panel-tourism" class="form-panel">
                     <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span><span id="tourism-form-title">إضافة معلم سياحي</span></h3>
                     <input type="hidden" id="tourism-edit-id" value="">
                     <div class="space-y-3">
@@ -587,7 +606,7 @@
                 </button>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div id="form-panel-mayors" class="lg:col-span-1 bg-white rounded-2xl p-6 shadow-md border border-gray-100 h-fit sticky top-24 hidden">
+                <div id="form-panel-mayors" class="form-panel">
                     <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span><span id="mayors-form-title">إضافة رئيس</span></h3>
                     <input type="hidden" id="mayors-edit-id" value="">
                     <div class="space-y-3">
@@ -637,7 +656,7 @@
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- نموذج إضافة -->
-                <div id="form-panel-beaches" class="lg:col-span-1 bg-white rounded-2xl p-5 shadow-md border border-gray-100 h-fit sticky top-24 hidden">
+                <div id="form-panel-beaches" class="form-panel">
                     <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2">
                         <span class="iconify text-sky-500" data-icon="lucide:plus-circle"></span>
                         <span id="beaches-form-title">إضافة شاطئ</span>
@@ -703,7 +722,7 @@
                 </button>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div id="form-panel-facilities" class="lg:col-span-1 bg-white rounded-2xl p-5 shadow-md border border-gray-100 sticky top-24 hidden" style="max-height:calc(100vh - 100px);overflow-y:auto;">
+                <div id="form-panel-facilities" class="form-panel">
                     <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2">
                         <span class="iconify text-slate-500" data-icon="lucide:building-2"></span>
                         <span id="facilities-form-title">إضافة مرفق</span>
@@ -847,23 +866,29 @@ function toggleFormPanel(sec, forceOpen) {
     const panel = document.getElementById('form-panel-' + sec);
     const btn   = document.getElementById('btn-open-' + sec);
     if (!panel) return;
-    const willOpen = forceOpen !== undefined ? forceOpen : panel.classList.contains('hidden');
+    const willOpen = forceOpen !== undefined ? forceOpen : !panel.classList.contains('mobile-open');
 
-    panel.classList.toggle('hidden', !willOpen);
+    // أغلق كل الـ panels الأخرى أولاً
+    document.querySelectorAll('.form-panel.mobile-open').forEach(p => {
+        if (p !== panel) p.classList.remove('mobile-open');
+    });
 
-    if (window.innerWidth < 1024) {
-        panel.classList.toggle('mobile-open', willOpen);
-        if (willOpen) panel.scrollTop = 0;
+    panel.classList.toggle('mobile-open', willOpen);
+    document.getElementById('panel-backdrop')?.classList.toggle('active', willOpen);
 
-        // زر رجوع عائم
+    if (willOpen) {
+        panel.scrollTop = 0;
+        document.body.style.overflow = 'hidden';
         let floatBtn = panel.querySelector('.form-close-mobile');
-        if (willOpen && !floatBtn) {
+        if (!floatBtn) {
             floatBtn = document.createElement('button');
             floatBtn.className = 'form-close-mobile';
-            floatBtn.innerHTML = '<span class="iconify" data-icon="lucide:arrow-right"></span> رجوع';
+            floatBtn.innerHTML = '<span class="iconify" data-icon="lucide:x"></span> إغلاق';
             floatBtn.onclick = () => toggleFormPanel(sec, false);
             panel.prepend(floatBtn);
         }
+    } else {
+        document.body.style.overflow = '';
     }
 
     if (btn) {
@@ -871,9 +896,16 @@ function toggleFormPanel(sec, forceOpen) {
             ? '<span class="iconify text-lg" data-icon="lucide:x"></span> إغلاق'
             : `<span class="iconify text-lg" data-icon="lucide:plus-circle"></span> ${btn.dataset.label || 'إضافة'}`;
     }
-    if (willOpen && window.innerWidth >= 1024) {
-        panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+}
+
+function closeAllPanels() {
+    document.querySelectorAll('.form-panel.mobile-open').forEach(p => p.classList.remove('mobile-open'));
+    document.getElementById('panel-backdrop')?.classList.remove('active');
+    document.body.style.overflow = '';
+    document.querySelectorAll('[id^="btn-open-"]').forEach(btn => {
+        const sec = btn.id.replace('btn-open-','');
+        btn.innerHTML = `<span class="iconify text-lg" data-icon="lucide:plus-circle"></span> ${btn.dataset.label || 'إضافة'}`;
+    });
 }
 // للتوافق مع الكود القديم
 function toggleNewsForm(btn){ toggleFormPanel('news'); }

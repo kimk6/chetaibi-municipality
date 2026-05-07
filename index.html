@@ -2579,7 +2579,7 @@ async function loadNews(){
 
             const renderCard = n => {
                 const s=catStyles[n.category]||catStyles.official;
-                const img=n.image_url||'';
+                const img=(currentLang==='fr' && n.image_url_fr) ? n.image_url_fr : (n.image_url||'');
                 const isPinned=n.is_pinned==1;
                 const pinBadge=isPinned?'<div class="pin-badge"><span class="iconify text-sm" data-icon="lucide:pin"></span></div>':'';
                 const pinLabel=isPinned?`<span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-600 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-200"><span class="iconify" data-icon="lucide:pin"></span>${t('pinned-badge').replace('📌 ','')}</span>`:'';
@@ -3187,8 +3187,9 @@ async function openNewsModal(id) {
             document.getElementById("nm-title").textContent   = getLF(n,"title");
             document.getElementById("nm-content").textContent = getLF(n,"content") || "";
         }
-        if (n.image_url && !isOfficial) {
-            document.getElementById('nm-img').src = n.image_url;
+        const modalImg = (currentLang === 'fr' && n.image_url_fr) ? n.image_url_fr : n.image_url;
+        if (modalImg && !isOfficial) {
+            document.getElementById('nm-img').src = modalImg;
             document.getElementById('nm-img-wrap').classList.remove('hidden');
         } else if (isOfficial) {
             document.getElementById('nm-img-wrap').classList.add('hidden');
