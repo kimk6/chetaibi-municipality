@@ -673,10 +673,20 @@
         }
         // ─── إعادة رسم الخريطة (markers بالاسم المُترجم) ───
         if (typeof reloadMapMarkers === 'function') reloadMapMarkers();
+        // إصلاح حجم الخريطة بعد تغيير الاتجاه rtl/ltr
+        if (typeof chetaibiMap !== 'undefined' && chetaibiMap) {
+            setTimeout(() => { chetaibiMap.invalidateSize(); }, 150);
+        }
         // ─── إعادة رسم الخدمات ───
         if (typeof loadServicesMain === 'function') loadServicesMain();
-        // ─── إعادة رسم معاينة الأرشيف ───
+        // ─── إعادة رسم معاينة الأرشيف والأرشيف الكامل ───
         if (typeof loadArchivePreview === 'function') loadArchivePreview();
+        if (typeof renderArchives === 'function') renderArchives();
+        // ─── إعادة رسم overlay الأخبار إن كان مفتوحاً ───
+        if (typeof renderOverlay === 'function') {
+            const newsOv = document.getElementById('news-overlay');
+            if (newsOv && !newsOv.classList.contains('hidden')) renderOverlay();
+        }
     }
 
     // ─── تصدير للـ global scope ───
@@ -2735,7 +2745,7 @@ async function openBeachModal(id){
             (b.season?`<span class="text-xs bg-sky-100 text-sky-700 px-3 py-1 rounded-full font-bold">${b.season}</span>`:'');
         if(b.albums?.length){
             document.getElementById('bm-album').innerHTML =
-                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-sky-500" data-icon="lucide:images"></span>' + t('album-gallery') + ' (' + b.albums.length + ')</h4>' +
+                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-sky-500" data-icon="lucide:images"></span>' + window.t('album-gallery') + ' (' + b.albums.length + ')</h4>' +
                 b.albums.map(a=>`<div class="cursor-pointer group relative overflow-hidden rounded-xl" onclick="openModalLightbox('${a.image_url}','${(a.caption||'').replace(/'/g,"\\'")}')" ><img src="${a.image_url}" alt="${a.caption||''}" class="w-full h-24 object-cover group-hover:scale-110 transition-transform duration-300"><div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center"><span class="iconify text-white opacity-0 group-hover:opacity-100 text-2xl transition-opacity" data-icon="lucide:zoom-in"></span></div>${a.caption?`<p class="text-[10px] text-gray-500 mt-1 text-center truncate">${a.caption}</p>`:''}</div>`).join('');
             if(window.Iconify) Iconify.scan();
         }
@@ -2832,7 +2842,7 @@ async function openTourismModal(id){
             (t.distance_info?`<span class="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-bold">${getLF(t,'distance_info')}</span>`:'');
         if(t.albums?.length){
             document.getElementById('tm-album').innerHTML=
-                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:images"></span>' + t('album-gallery') + ' (' + t.albums.length + ')</h4>' +
+                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:images"></span>' + window.t('album-gallery') + ' (' + t.albums.length + ')</h4>' +
                 t.albums.map(a=>`<div class="cursor-pointer group relative overflow-hidden rounded-xl" onclick="openModalLightbox('${a.image_url}','${(a.caption||'').replace(/'/g,"\\'")}')" ><img src="${a.image_url}" alt="${a.caption||''}" class="w-full h-24 object-cover group-hover:scale-110 transition-transform duration-300"><div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center"><span class="iconify text-white opacity-0 group-hover:opacity-100 text-2xl transition-opacity" data-icon="lucide:zoom-in"></span></div>${a.caption?`<p class="text-[10px] text-gray-500 mt-1 text-center truncate">${a.caption}</p>`:''}</div>`).join('');
             if(window.Iconify) Iconify.scan();
         }
@@ -3250,7 +3260,7 @@ async function openBeachModalFromExplore(id) {
             (b.season?`<span class="text-xs bg-sky-100 text-sky-700 px-3 py-1 rounded-full font-bold">${b.season}</span>`:'');
         if(b.albums?.length){
             document.getElementById('bm-album').innerHTML =
-                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-sky-500" data-icon="lucide:images"></span>' + t('album-gallery') + ' (' + b.albums.length + ')</h4>' +
+                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-sky-500" data-icon="lucide:images"></span>' + window.t('album-gallery') + ' (' + b.albums.length + ')</h4>' +
                 b.albums.map(a=>`<div class="cursor-pointer group relative overflow-hidden rounded-xl" onclick="openModalLightbox('${a.image_url}','${(a.caption||'').replace(/'/g,"\\'")}')"><img src="${a.image_url}" alt="${a.caption||''}" class="w-full h-24 object-cover group-hover:scale-110 transition-transform duration-300"><div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center"><span class="iconify text-white opacity-0 group-hover:opacity-100 text-2xl transition-opacity" data-icon="lucide:zoom-in"></span></div>${a.caption?`<p class="text-[10px] text-gray-500 mt-1 text-center truncate">${a.caption}</p>`:''}</div>`).join('');
             if(window.Iconify) Iconify.scan();
         }
@@ -3280,7 +3290,7 @@ async function openTourismModalFromExplore(id) {
             (t.distance_info?`<span class="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-bold">${getLF(t,'distance_info')}</span>`:'');
         if(t.albums?.length){
             document.getElementById('tm-album').innerHTML=
-                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:images"></span>' + t('album-gallery') + ' (' + t.albums.length + ')</h4>' +
+                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:images"></span>' + window.t('album-gallery') + ' (' + t.albums.length + ')</h4>' +
                 t.albums.map(a=>`<div class="cursor-pointer group relative overflow-hidden rounded-xl" onclick="openModalLightbox('${a.image_url}','${(a.caption||'').replace(/'/g,"\\'")}')"><img src="${a.image_url}" alt="${a.caption||''}" class="w-full h-24 object-cover group-hover:scale-110 transition-transform duration-300"><div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center"><span class="iconify text-white opacity-0 group-hover:opacity-100 text-2xl transition-opacity" data-icon="lucide:zoom-in"></span></div>${a.caption?`<p class="text-[10px] text-gray-500 mt-1 text-center truncate">${a.caption}</p>`:''}</div>`).join('');
             if(window.Iconify) Iconify.scan();
         }
@@ -3554,33 +3564,35 @@ async function renderArchives() {
             const hasOld = a.image_old_url && a.image_old_url.trim() !== '';
             const hasNew = a.image_new_url && a.image_new_url.trim() !== '';
             const lblOld = t('archive-yesterday'); const lblNew = t('archive-today');
+            const aTitle = getLF(a,'title') || '';
+            const aDesc  = getLF(a,'description') || '';
             if(archCat === 'compare' && hasOld && hasNew) {
                 return `<div class="bg-gray-800 rounded-xl overflow-hidden shadow-lg">
                     <div class="grid grid-cols-2 gap-0.5">
-                        <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_old_url}','${lblOld} — ${(a.title||'').replace(/'/g,"\\'")}')">
+                        <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_old_url}','${lblOld} — ${aTitle.replace(/'/g,"\\'")}')">
                             <img src="${a.image_old_url}" class="w-full h-36 object-cover group-hover:scale-105 transition-transform duration-500">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                             <span class="absolute bottom-2 right-2 text-white text-[10px] font-bold bg-black/50 px-2 py-0.5 rounded-full">${lblOld}</span>
                         </div>
-                        <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_new_url}','${lblNew} — ${(a.title||'').replace(/'/g,"\\'")}')">
+                        <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_new_url}','${lblNew} — ${aTitle.replace(/'/g,"\\'")}')">
                             <img src="${a.image_new_url}" class="w-full h-36 object-cover group-hover:scale-105 transition-transform duration-500">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                             <span class="absolute bottom-2 right-2 text-white text-[10px] font-bold bg-black/50 px-2 py-0.5 rounded-full">${lblNew}</span>
                         </div>
                     </div>
                     <div class="p-3">
-                        <p class="text-white text-xs font-bold line-clamp-1">${a.title||''}</p>
-                        ${a.description ? `<p class="text-gray-400 text-[11px] mt-1 line-clamp-2">${a.description}</p>` : ''}
+                        <p class="text-white text-xs font-bold line-clamp-1">${aTitle}</p>
+                        ${aDesc ? `<p class="text-gray-400 text-[11px] mt-1 line-clamp-2">${aDesc}</p>` : ''}
                     </div>
                 </div>`;
             } else {
                 const src = a.image_new_url || a.image_old_url || '';
-                return `<div class="cursor-pointer group relative overflow-hidden rounded-xl bg-gray-800 shadow-lg" onclick="openModalLightbox('${src}','${(a.title||'').replace(/'/g,"\'")}')">
-                    <img src="${src}" alt="${a.title||''}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100">
+                return `<div class="cursor-pointer group relative overflow-hidden rounded-xl bg-gray-800 shadow-lg" onclick="openModalLightbox('${src}','${aTitle.replace(/'/g,"\\'")}')">
+                    <img src="${src}" alt="${aTitle}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                     <div class="absolute bottom-3 right-3 left-3">
-                        <p class="text-white text-xs font-bold line-clamp-2 drop-shadow">${a.title||''}</p>
-                        ${a.description ? `<p class="text-white/60 text-[10px] mt-0.5 line-clamp-1">${a.description}</p>` : ''}
+                        <p class="text-white text-xs font-bold line-clamp-2 drop-shadow">${aTitle}</p>
+                        ${aDesc ? `<p class="text-white/60 text-[10px] mt-0.5 line-clamp-1">${aDesc}</p>` : ''}
                     </div>
                     <div class="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity">
                         <span class="iconify text-white text-xl bg-black/30 rounded-lg p-1" data-icon="lucide:zoom-in"></span>
@@ -3652,14 +3664,19 @@ async function renderOverlay() {
         const countEl = document.getElementById('news-overlay-count');
         if(countEl) countEl.textContent = total + ' خبر';
         const m = CAT_META[overlayCat] || CAT_META.official;
+        const catLabel = overlayCat === 'official' ? t('news-overlay-cat-official')
+                       : overlayCat === 'activity' ? t('news-overlay-cat-activity')
+                       : t('news-overlay-cat-social');
         if(!items.length){ grid.innerHTML='<p class="col-span-full text-center text-gray-400 py-16">لا توجد أخبار في هذا الصنف</p>'; return; }
         grid.innerHTML = items.map(n => {
-            const label = (n.custom_label&&n.custom_label.trim()) ? n.custom_label : m.label;
+            const displayTitle = getLF(n,'title') || n.title || '';
+            const displayContent = getLF(n,'content') || n.content || '';
+            const label = (n.custom_label&&n.custom_label.trim()) ? n.custom_label : catLabel;
             const pin = n.is_pinned ? '<span class="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full border border-emerald-200 font-bold">📌 مثبت</span>' : '';
-            const snippet = (n.content||'').replace(/\n/g,' ').substring(0,90) + ((n.content||'').length>90?'...':'');
+            const snippet = displayContent.replace(/\n/g,' ').substring(0,90) + (displayContent.length>90?'...':'');
             const showGrad2 = overlayCat !== 'official';
             const img = n.image_url
-                ? `<div class="h-44 overflow-hidden relative"><img src="${n.image_url}" alt="${n.title||''}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">${showGrad2?'<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>':''}</div>`
+                ? `<div class="h-44 overflow-hidden relative"><img src="${n.image_url}" alt="${displayTitle}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">${showGrad2?'<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>':''}</div>`
                 : `<div class="h-44 bg-gradient-to-bl ${m.grad} flex items-center justify-center"><span style="font-size:2.5rem">📰</span></div>`;
             return `<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100 cursor-pointer" onclick="openNewsModal(${n.id})">
                 ${img}
@@ -3670,8 +3687,8 @@ async function renderOverlay() {
                         ${pin}
                     </div>
                     <div class="mt-2 pt-2 border-t border-gray-50 flex items-center justify-between">
-                        <h3 class="font-extrabold text-gray-800 text-sm leading-snug line-clamp-1">${n.title||''}</h3>
-                        <span class="text-emerald-600 text-xs font-bold flex-shrink-0 mr-2">اقرأ المزيد ←</span>
+                        <h3 class="font-extrabold text-gray-800 text-sm leading-snug line-clamp-1">${displayTitle}</h3>
+                        <span class="text-emerald-600 text-xs font-bold flex-shrink-0 mr-2">${t('read-more') || 'اقرأ المزيد'} ←</span>
                     </div>
                 </div>
             </article>`;
@@ -3706,23 +3723,25 @@ async function loadArchivePreview() {
         }
         grid.innerHTML = compares.map(a => {
             const lblOld = t('archive-yesterday'); const lblNew = t('archive-today');
+            const aTitle = getLF(a,'title') || '';
+            const aDesc  = getLF(a,'description') || '';
             return `
             <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100">
                 <div class="grid grid-cols-2">
-                    <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_old_url}','${lblOld} — ${(a.title||'').replace(/'/g,"\\'")}')">
-                        <img src="${a.image_old_url}" alt="قديماً" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_old_url}','${lblOld} — ${aTitle.replace(/'/g,"\\'")}')">
+                        <img src="${a.image_old_url}" alt="${lblOld}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                         <span class="absolute bottom-2 right-2 text-white text-xs font-bold px-2 py-0.5 rounded-full bg-black/50">${lblOld}</span>
                     </div>
-                    <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_new_url}','${lblNew} — ${(a.title||'').replace(/'/g,"\\'")}')">
-                        <img src="${a.image_new_url}" alt="حديثاً" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_new_url}','${lblNew} — ${aTitle.replace(/'/g,"\\'")}')">
+                        <img src="${a.image_new_url}" alt="${lblNew}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                         <span class="absolute bottom-2 right-2 text-white text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-600/80">${lblNew}</span>
                     </div>
                 </div>
                 <div class="p-4 text-center">
-                    <p class="font-bold text-gray-700 text-sm">${a.title||''}</p>
-                    ${a.description ? `<p class="text-xs text-gray-400 mt-1">${a.description}</p>` : ''}
+                    <p class="font-bold text-gray-700 text-sm">${aTitle}</p>
+                    ${aDesc ? `<p class="text-xs text-gray-400 mt-1">${aDesc}</p>` : ''}
                 </div>
             </div>`;
         }).join('');
@@ -3840,8 +3859,11 @@ function createCircleMarker(lat, lng, color, item, type) {
            </button>`
         : '';
 
+    const closeBtn = `<button onclick="chetaibiMap.closePopup();" title="إغلاق"
+        style="position:absolute;top:6px;left:6px;background:rgba(0,0,0,0.15);color:#555;border:none;width:22px;height:22px;border-radius:50%;font-size:13px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>`;
+
     marker.bindPopup(
-        `<div class="map-popup" style="text-align:center;">${imgHtml}` +
+        `<div class="map-popup" style="text-align:center;position:relative;">${closeBtn}${imgHtml}` +
         `<div class="map-popup-name" style="text-align:center;">${name}</div>` +
         `<div class="map-popup-type" style="text-align:center;">${subtype || typeLabel}</div>` +
         `<div style="text-align:center;">${btnHtml}</div>` +
@@ -3870,6 +3892,9 @@ async function initMap() {
         attribution: '',
         maxZoom: 19,
     }).addTo(chetaibiMap);
+
+    // إصلاح حجم الخريطة بعد أي تغيير في اتجاه الصفحة (rtl/ltr)
+    setTimeout(() => { chetaibiMap.invalidateSize(); }, 100);
 
     // تحميل كل البيانات بشكل متوازٍ
     try {
@@ -3995,6 +4020,9 @@ const _mapObserver = new IntersectionObserver((entries) => {
 
 // ننتظر حتى يُبنى الـ DOM
 document.addEventListener('DOMContentLoaded', () => {
+    // تطبيق اللغة المحفوظة فوراً قبل أي شيء آخر
+    if (typeof applyLang === 'function') applyLang();
+
     const mapEl = document.getElementById('chetaibi-map');
     if (mapEl) _mapObserver.observe(mapEl);
 });
