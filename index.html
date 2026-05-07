@@ -154,6 +154,7 @@
             'archive-title':      'تاريخ شطايبي',
             'archive-sub':        'استعراض للمحطات التاريخية الكبرى التي شكلت مسار المنطقة عبر العصور',
             'archive-photos-title':'أرشيف الصور',
+            'album-gallery':      'معرض الصور',
             'archive-photos-sub': 'شطايبي بين الأمس واليوم',
             'archive-btn':        'استعراض الأرشيف الكامل',
             'arch-tab-compare':   'مقارنة الأمس بالحاضر',
@@ -406,6 +407,7 @@
             'archive-title':      'Histoire de Chetaïbi',
             'archive-sub':        'Aperçu des grandes étapes historiques qui ont façonné cette région à travers les siècles',
             'archive-photos-title':'Archives photos',
+            'album-gallery':      'Galerie photos',
             'archive-photos-sub': 'Chetaïbi hier et aujourd\'hui',
             'archive-btn':        'Voir les archives complètes',
             'arch-tab-compare':   'Comparaison passé / présent',
@@ -711,11 +713,21 @@
         html[lang="fr"] .timeline-line{right:auto;left:23px}
         @media(min-width:768px){html[lang="fr"] .timeline-line{left:50%;right:auto;transform:translateX(-50%)}}
         /* نقاط timeline في FR */
-        html[lang="fr"] .timeline-dot{right:auto!important;left:14px}
-        @media(min-width:768px){html[lang="fr"] .timeline-dot{left:50%!important;right:auto!important;transform:translateX(-50%)!important}}
-        /* بطاقات timeline في FR — ديسكتوب: تلتصق بالخط */
-        @media(min-width:768px){html[lang="fr"] .timeline-card-right{padding-left:2rem!important;padding-right:0!important}
-        html[lang="fr"] .timeline-card-left{padding-right:2rem!important;padding-left:0!important}}
+        /* نقاط timeline - فوق الخط في الوسط على الديسكتوب */
+        @media(min-width:768px){
+            .timeline-dot-mobile{
+                right:auto!important;
+                left:50%!important;
+                transform:translateX(-50%)!important;
+                top:1.5rem!important;
+                margin-top:0!important;
+            }
+        }
+        /* FR desktop: نفس الموضع */
+        @media(min-width:768px){html[lang="fr"] .timeline-dot-mobile{left:50%!important;right:auto!important;transform:translateX(-50%)!important}}
+        /* FR mobile: نقاط في اليسار */
+        html[lang="fr"] .timeline-dot-mobile{right:auto;left:14px}
+        /* بطاقات timeline في FR — ديسكتوب: نفس المسافة كالعربية */
         /* FR: نقاط الـ timeline تنتقل لليسار في الموبايل */
         html[lang="fr"] .timeline-dot-mobile{right:auto!important;left:14px}
         /* FR ديسكتوب: البطاقات ملتصقة أكثر بالخط */
@@ -734,7 +746,7 @@
             position:relative;top:0;
         }
         html[lang="fr"] #lang-btn-mobile span[data-i18n]{
-            font-size:0.7rem;letter-spacing:0.05em;
+            font-size:0.8rem;letter-spacing:0.08em;font-weight:900;
         }
         html[lang="ar"] #lang-btn-mobile span[data-i18n]{
             font-size:1.05rem;
@@ -1674,7 +1686,7 @@ html[dir="ltr"] article {
                 <div id="nm-album-wrap" class="hidden mt-8 pt-6 border-t border-gray-100">
                     <h4 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2 text-sm">
                         <span class="iconify text-emerald-500" data-icon="lucide:images"></span>
-                        معرض الصور <span id="nm-album-count" class="text-gray-400 font-normal"></span>
+                        <span data-i18n="album-gallery">معرض الصور</span> <span id="nm-album-count" class="text-gray-400 font-normal"></span>
                     </h4>
                     <div id="nm-album-grid" class="grid grid-cols-2 md:grid-cols-3 gap-3"></div>
                 </div>
@@ -1736,7 +1748,7 @@ html[dir="ltr"] article {
             <div id="fac-modal-album-wrap" class="hidden">
                 <h4 class="font-bold text-gray-800 text-sm mb-3 flex items-center gap-2">
                     <span class="iconify text-emerald-500" data-icon="lucide:images"></span>
-                    معرض الصور <span id="fac-modal-album-count" class="text-gray-400 font-normal"></span>
+                    <span data-i18n="album-gallery">معرض الصور</span> <span id="fac-modal-album-count" class="text-gray-400 font-normal"></span>
                 </h4>
                 <div id="fac-modal-album-grid" class="grid grid-cols-3 gap-2"></div>
             </div>
@@ -2735,7 +2747,7 @@ async function openBeachModal(id){
             (b.season?`<span class="text-xs bg-sky-100 text-sky-700 px-3 py-1 rounded-full font-bold">${b.season}</span>`:'');
         if(b.albums?.length){
             document.getElementById('bm-album').innerHTML =
-                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class=\"iconify text-sky-500\" data-icon=\"lucide:images\"></span>معرض الصور ('+b.albums.length+')</h4>'+
+                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class=\"iconify text-sky-500\" data-icon=\"lucide:images\"></span>'+t('album-gallery')+'(\'+b.albums.length+')</h4>'+
                 b.albums.map(a=>`<div class="cursor-pointer group relative overflow-hidden rounded-xl" onclick="openModalLightbox('${a.image_url}','${(a.caption||'').replace(/'/g,"\\'")}')" ><img src="${a.image_url}" alt="${a.caption||''}" class="w-full h-24 object-cover group-hover:scale-110 transition-transform duration-300"><div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center"><span class="iconify text-white opacity-0 group-hover:opacity-100 text-2xl transition-opacity" data-icon="lucide:zoom-in"></span></div>${a.caption?`<p class="text-[10px] text-gray-500 mt-1 text-center truncate">${a.caption}</p>`:''}</div>`).join('');
             if(window.Iconify) Iconify.scan();
         }
@@ -2832,7 +2844,7 @@ async function openTourismModal(id){
             (t.distance_info?`<span class="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-bold">${getLF(t,'distance_info')}</span>`:'');
         if(t.albums?.length){
             document.getElementById('tm-album').innerHTML=
-                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class=\"iconify text-emerald-500\" data-icon=\"lucide:images\"></span>معرض الصور ('+t.albums.length+')</h4>'+
+                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class=\"iconify text-emerald-500\" data-icon=\"lucide:images\"></span>'+t('album-gallery')+'(\'+t.albums.length+')</h4>'+
                 t.albums.map(a=>`<div class="cursor-pointer group relative overflow-hidden rounded-xl" onclick="openModalLightbox('${a.image_url}','${(a.caption||'').replace(/'/g,"\\'")}')" ><img src="${a.image_url}" alt="${a.caption||''}" class="w-full h-24 object-cover group-hover:scale-110 transition-transform duration-300"><div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center"><span class="iconify text-white opacity-0 group-hover:opacity-100 text-2xl transition-opacity" data-icon="lucide:zoom-in"></span></div>${a.caption?`<p class="text-[10px] text-gray-500 mt-1 text-center truncate">${a.caption}</p>`:''}</div>`).join('');
             if(window.Iconify) Iconify.scan();
         }
@@ -3249,7 +3261,7 @@ async function openBeachModalFromExplore(id) {
             (b.season?`<span class="text-xs bg-sky-100 text-sky-700 px-3 py-1 rounded-full font-bold">${b.season}</span>`:'');
         if(b.albums?.length){
             document.getElementById('bm-album').innerHTML =
-                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-sky-500" data-icon="lucide:images"></span>معرض الصور ('+b.albums.length+')</h4>'+
+                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-sky-500" data-icon="lucide:images"></span>'+t('album-gallery')+'(\'+b.albums.length+')</h4>'+
                 b.albums.map(a=>`<div class="cursor-pointer group relative overflow-hidden rounded-xl" onclick="openModalLightbox('${a.image_url}','${(a.caption||'').replace(/'/g,"\\'")}')"><img src="${a.image_url}" alt="${a.caption||''}" class="w-full h-24 object-cover group-hover:scale-110 transition-transform duration-300"><div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center"><span class="iconify text-white opacity-0 group-hover:opacity-100 text-2xl transition-opacity" data-icon="lucide:zoom-in"></span></div>${a.caption?`<p class="text-[10px] text-gray-500 mt-1 text-center truncate">${a.caption}</p>`:''}</div>`).join('');
             if(window.Iconify) Iconify.scan();
         }
@@ -3279,7 +3291,7 @@ async function openTourismModalFromExplore(id) {
             (t.distance_info?`<span class="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-bold">${getLF(t,'distance_info')}</span>`:'');
         if(t.albums?.length){
             document.getElementById('tm-album').innerHTML=
-                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:images"></span>معرض الصور ('+t.albums.length+')</h4>'+
+                '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:images"></span>'+t('album-gallery')+'(\'+t.albums.length+')</h4>'+
                 t.albums.map(a=>`<div class="cursor-pointer group relative overflow-hidden rounded-xl" onclick="openModalLightbox('${a.image_url}','${(a.caption||'').replace(/'/g,"\\'")}')"><img src="${a.image_url}" alt="${a.caption||''}" class="w-full h-24 object-cover group-hover:scale-110 transition-transform duration-300"><div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center"><span class="iconify text-white opacity-0 group-hover:opacity-100 text-2xl transition-opacity" data-icon="lucide:zoom-in"></span></div>${a.caption?`<p class="text-[10px] text-gray-500 mt-1 text-center truncate">${a.caption}</p>`:''}</div>`).join('');
             if(window.Iconify) Iconify.scan();
         }
