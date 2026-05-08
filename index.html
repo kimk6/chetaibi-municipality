@@ -3013,7 +3013,7 @@ async function loadGuidePanel(tab) {
                 +   '</div>'
                 +   (f.description ? '<p class="text-sm text-gray-600 leading-relaxed mb-3 line-clamp-2">' + getLF(f,'description') + '</p>' : '')
                 +   (tags.length ? '<div class="flex flex-wrap gap-1.5 mb-3">' + tags.map(tg => '<span class="text-xs bg-gray-50 text-gray-600 border border-gray-200 px-2.5 py-0.5 rounded-full font-semibold">' + tg + '</span>').join('') + '</div>' : '')
-                +   '<div class="pt-2 border-t border-gray-50 mt-auto"><span class="text-xs font-bold text-emerald-600 flex items-center gap-1">' + (currentLang==='fr' ? '<span class="iconify" data-icon="lucide:chevrons-left"></span>' + t('details-btn') : t('details-btn') + '<span class="iconify" data-icon="lucide:chevrons-right"></span>') + '</span></div>'
+                +   '<div class="pt-2 border-t border-gray-50 mt-auto"><span class="text-xs font-bold text-emerald-600 flex items-center gap-1">' + (currentLang==='fr' ? t('details-btn') + '<span class="iconify" data-icon="lucide:chevrons-right"></span>' : t('details-btn') + '<span class="iconify" data-icon="lucide:chevrons-left"></span>') + '</span></div>'
                 + '</div>'
                 + '</div>';
         };
@@ -3198,7 +3198,7 @@ function facSetCat(cat) {
                     +   '</div>'
                     +   (f.description ? '<p class="text-sm text-gray-600 leading-relaxed mb-3 line-clamp-2">' + getLF(f,'description') + '</p>' : '')
                     +   (tags.length ? '<div class="flex flex-wrap gap-1.5 mb-3">' + tags.map(tg => '<span class="text-xs bg-' + m.col + '-50 text-' + m.col + '-700 border border-' + m.col + '-200 px-2.5 py-0.5 rounded-full font-semibold">' + tg + '</span>').join('') + '</div>' : '')
-                    +   '<div class="pt-2 border-t border-gray-50 mt-auto"><span class="text-xs font-bold text-emerald-600 flex items-center gap-1">' + (currentLang==='fr' ? '<span class="iconify" data-icon="lucide:chevrons-left"></span>' + t('details-btn') : t('details-btn') + '<span class="iconify" data-icon="lucide:chevrons-right"></span>') + '</span></div>'
+                    +   '<div class="pt-2 border-t border-gray-50 mt-auto"><span class="text-xs font-bold text-emerald-600 flex items-center gap-1">' + (currentLang==='fr' ? t('details-btn') + '<span class="iconify" data-icon="lucide:chevrons-right"></span>' : t('details-btn') + '<span class="iconify" data-icon="lucide:chevrons-left"></span>') + '</span></div>'
                     + '</div>'
                     + '</div>';
             }).join('');
@@ -4025,10 +4025,15 @@ function createCircleMarker(lat, lng, color, item, type) {
                     : type === 'facility' ? `openFacModal(${item.id},null)`
                     : '';
 
+    const _isFr = document.documentElement.lang === 'fr';
+    const _detailsLabel = _isFr
+        ? t('map-popup-details') + ' <span style="font-size:12px;">»</span>'
+        : t('map-popup-details') + ' <span style="font-size:12px;">«</span>';
+
     const btnHtml = modalCall
         ? `<br><button onclick="chetaibiMap.closePopup();setTimeout(function(){${modalCall};},80);"
-                   style="background:#059669;color:#fff;border:none;padding:5px 14px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;margin-top:6px;display:inline-flex;align-items:center;gap:5px;">
-               <span style="font-size:13px;">⇄</span> ${t('map-popup-details')}
+                   style="background:#059669;color:#fff;border:none;padding:5px 14px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;margin-top:6px;display:inline-flex;align-items:center;gap:4px;font-family:Cairo,sans-serif;">
+               ${_detailsLabel}
            </button>`
         : '';
 
@@ -4139,7 +4144,7 @@ async function initMap() {
                     '<div style="padding:10px 12px;text-align:center;">' +
                         '<div style="font-weight:800;font-size:14px;color:#1a1a1a;margin-bottom:4px;font-family:Cairo,sans-serif;text-align:center;">'+t('map-municipality-name')+'</div>' +
                         '<div style="font-size:11px;color:#6b7280;font-family:Cairo,sans-serif;text-align:center;margin-bottom:8px;">'+t('map-municipality-sub')+'</div>' +
-                        '<button onclick="chetaibiMap.closePopup();setTimeout(openMunicipalityModal,80);" style="background:#059669;color:#fff;border:none;padding:5px 16px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:Cairo,sans-serif;">'+t('map-popup-details')+'</button>' +
+                        '<button onclick="chetaibiMap.closePopup();setTimeout(openMunicipalityModal,80);" style="background:#059669;color:#fff;border:none;padding:5px 16px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:Cairo,sans-serif;display:inline-flex;align-items:center;gap:4px;">'+(document.documentElement.lang==='fr' ? t('map-popup-details')+' <span style="font-size:12px;">»</span>' : t('map-popup-details')+' <span style="font-size:12px;">«</span>')+'</button>' +
                     '</div>' +
                 '</div>',
                 { maxWidth: 230, className: 'chetaibi-popup', offset: [0, -5] }
@@ -4189,7 +4194,7 @@ function reloadMapMarkers() {
                 '<div style="padding:10px 12px;text-align:center;">' +
                     '<div style="font-weight:800;font-size:14px;color:#1a1a1a;margin-bottom:4px;font-family:Cairo,sans-serif;text-align:center;">' + t('map-municipality-name') + '</div>' +
                     '<div style="font-size:11px;color:#6b7280;font-family:Cairo,sans-serif;text-align:center;margin-bottom:8px;">' + t('map-municipality-sub') + '</div>' +
-                    '<button onclick="chetaibiMap.closePopup();setTimeout(openMunicipalityModal,80);" style="background:#059669;color:#fff;border:none;padding:5px 16px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:Cairo,sans-serif;">' + t('map-popup-details') + '</button>' +
+                    '<button onclick="chetaibiMap.closePopup();setTimeout(openMunicipalityModal,80);" style="background:#059669;color:#fff;border:none;padding:5px 16px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:Cairo,sans-serif;">' + (((typeof currentLang!=='undefined'&&currentLang==='fr')||document.documentElement.lang==='fr') ? t('map-popup-details')+' <span style="font-size:12px;">»</span>' : t('map-popup-details')+' <span style="font-size:12px;">«</span>') + '</button>' +
                 '</div>' +
             '</div>',
             { maxWidth: 230, className: 'chetaibi-popup', offset: [0, -5] }
