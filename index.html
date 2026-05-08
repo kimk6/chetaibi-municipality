@@ -771,7 +771,11 @@
         @media(min-width:768px){
             html[lang="fr"] .tl-row { flex-direction: row-reverse; }
         }
-        html[lang="fr"] .news-tab{font-size:0.72rem}
+        html[lang="fr"] #fac-modal-name,
+        html[lang="fr"] #fac-modal-sub,
+        html[lang="fr"] #fac-modal-desc { direction: ltr; text-align: left; }
+        html[lang="fr"] #fac-modal-tags { direction: ltr; }
+        html[lang="fr"] #fac-modal .flex.items-start { flex-direction: row; }
         html[lang="fr"] .news-tab .iconify{font-size:0.85rem}
         @media(max-width:767px){#main-nav{position:fixed;top:0;left:0;right:0;transform:translateY(-100%);opacity:0;transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .35s ease;pointer-events:none;z-index:50}#main-nav.nav-visible{transform:translateY(0);opacity:1;pointer-events:auto}}
         /* ── زر تغيير اللغة — موبايل ── */
@@ -1770,7 +1774,7 @@ html[dir="ltr"] article {
         </div>
         <div class="p-6">
             <div class="flex items-start justify-between gap-3 mb-4">
-                <div>
+                <div class="flex-1">
                     <span id="fac-modal-sub" class="inline-block text-xs font-bold px-2 py-0.5 rounded-full mb-2 bg-emerald-100 text-emerald-700"></span>
                     <h3 id="fac-modal-name" class="text-xl font-extrabold text-gray-900 leading-snug"></h3>
                 </div>
@@ -3482,6 +3486,16 @@ function openModalLightbox(src, caption) {
     lb.classList.remove('hidden');
     lb.classList.add('flex');
 }
+
+// Event delegation لـ arch-lb-trigger (يعمل مع كل الأرشيف بأمان بدون onclick inline)
+document.addEventListener('click', function(e) {
+    const trigger = e.target.closest('.arch-lb-trigger');
+    if (trigger) {
+        const src = trigger.dataset.src;
+        const cap = trigger.dataset.cap || '';
+        if (src) openModalLightbox(src, cap);
+    }
+});
 function closeModalLightbox() {
     const lb = document.getElementById('modal-lightbox');
     lb.classList.add('hidden');
@@ -3629,19 +3643,22 @@ async function renderArchives() {
             const lblOld = t('archive-yesterday'); const lblNew = t('archive-today');
             const aTitle = getLF(a,'title') || '';
             const aDesc  = getLF(a,'description') || '';
-            const safeTitle = encodeURIComponent(aTitle);
             if(archCat === 'compare' && hasOld && hasNew) {
                 return `<div class="bg-gray-800 rounded-xl overflow-hidden shadow-lg">
                     <div class="grid grid-cols-2 gap-0.5">
-                        <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_old_url}',decodeURIComponent('${encodeURIComponent(lblOld+' — '+aTitle)}'))">
-                            <img src="${a.image_old_url}" class="w-full h-36 object-cover group-hover:scale-105 transition-transform duration-500">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                            <span class="absolute bottom-2 right-2 text-white text-[10px] font-bold bg-black/50 px-2 py-0.5 rounded-full">${lblOld}</span>
+                        <div class="arch-lb-trigger relative cursor-pointer group overflow-hidden"
+                             data-src="${a.image_old_url}"
+                             data-cap="${(lblOld+' — '+aTitle).replace(/"/g,'&quot;')}">
+                            <img src="${a.image_old_url}" class="w-full h-36 object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none"></div>
+                            <span class="absolute bottom-2 right-2 text-white text-[10px] font-bold bg-black/50 px-2 py-0.5 rounded-full pointer-events-none">${lblOld}</span>
                         </div>
-                        <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_new_url}',decodeURIComponent('${encodeURIComponent(lblNew+' — '+aTitle)}'))">
-                            <img src="${a.image_new_url}" class="w-full h-36 object-cover group-hover:scale-105 transition-transform duration-500">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                            <span class="absolute bottom-2 right-2 text-white text-[10px] font-bold bg-black/50 px-2 py-0.5 rounded-full">${lblNew}</span>
+                        <div class="arch-lb-trigger relative cursor-pointer group overflow-hidden"
+                             data-src="${a.image_new_url}"
+                             data-cap="${(lblNew+' — '+aTitle).replace(/"/g,'&quot;')}">
+                            <img src="${a.image_new_url}" class="w-full h-36 object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none"></div>
+                            <span class="absolute bottom-2 right-2 text-white text-[10px] font-bold bg-black/50 px-2 py-0.5 rounded-full pointer-events-none">${lblNew}</span>
                         </div>
                     </div>
                     <div class="p-3">
@@ -3651,14 +3668,16 @@ async function renderArchives() {
                 </div>`;
             } else {
                 const src = a.image_new_url || a.image_old_url || '';
-                return `<div class="cursor-pointer group relative overflow-hidden rounded-xl bg-gray-800 shadow-lg" onclick="openModalLightbox('${src}',decodeURIComponent('${encodeURIComponent(aTitle)}'))">
-                    <img src="${src}" alt="${aTitle}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                    <div class="absolute bottom-3 right-3 left-3">
+                return `<div class="arch-lb-trigger cursor-pointer group relative overflow-hidden rounded-xl bg-gray-800 shadow-lg"
+                             data-src="${src}"
+                             data-cap="${aTitle.replace(/"/g,'&quot;')}">
+                    <img src="${src}" alt="" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100 pointer-events-none">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent pointer-events-none"></div>
+                    <div class="absolute bottom-3 right-3 left-3 pointer-events-none">
                         <p class="text-white text-xs font-bold line-clamp-2 drop-shadow">${aTitle}</p>
                         ${aDesc ? `<p class="text-white/60 text-[10px] mt-0.5 line-clamp-1">${aDesc}</p>` : ''}
                     </div>
-                    <div class="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div class="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                         <span class="iconify text-white text-xl bg-black/30 rounded-lg p-1" data-icon="lucide:zoom-in"></span>
                     </div>
                 </div>`;
@@ -3827,15 +3846,19 @@ async function loadArchivePreview() {
             return `
             <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100">
                 <div class="grid grid-cols-2">
-                    <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_old_url}',decodeURIComponent('${encodeURIComponent(lblOld+' — '+aTitle)}'))">
-                        <img src="${a.image_old_url}" alt="${lblOld}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <span class="absolute bottom-2 right-2 text-white text-xs font-bold px-2 py-0.5 rounded-full bg-black/50">${lblOld}</span>
+                    <div class="arch-lb-trigger relative cursor-pointer group overflow-hidden"
+                         data-src="${a.image_old_url}"
+                         data-cap="${(lblOld+' — '+aTitle).replace(/"/g,'&quot;')}">
+                        <img src="${a.image_old_url}" alt="${lblOld}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none"></div>
+                        <span class="absolute bottom-2 right-2 text-white text-xs font-bold px-2 py-0.5 rounded-full bg-black/50 pointer-events-none">${lblOld}</span>
                     </div>
-                    <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_new_url}',decodeURIComponent('${encodeURIComponent(lblNew+' — '+aTitle)}'))">
-                        <img src="${a.image_new_url}" alt="${lblNew}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <span class="absolute bottom-2 right-2 text-white text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-600/80">${lblNew}</span>
+                    <div class="arch-lb-trigger relative cursor-pointer group overflow-hidden"
+                         data-src="${a.image_new_url}"
+                         data-cap="${(lblNew+' — '+aTitle).replace(/"/g,'&quot;')}">
+                        <img src="${a.image_new_url}" alt="${lblNew}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none"></div>
+                        <span class="absolute bottom-2 right-2 text-white text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-600/80 pointer-events-none">${lblNew}</span>
                     </div>
                 </div>
                 <div class="p-4 text-center">
