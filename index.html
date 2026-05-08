@@ -31,6 +31,8 @@
         .map-popup-type { font-size: 11px; color: #6b7280; margin-bottom: 6px; }
         .map-popup-link { display: inline-block; background: #059669; color: white; padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; text-decoration: none; }
         .leaflet-popup-content { margin: 10px 12px; min-width: 160px; }
+        .leaflet-pane { z-index: 400 !important; }
+        .leaflet-popup-pane { z-index: 700 !important; }
         .chetaibi-popup .leaflet-popup-content-wrapper { border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,.15); padding: 0; overflow: hidden; }
         .chetaibi-popup .leaflet-popup-content { margin: 0; }
         .chetaibi-popup .map-popup { padding: 10px 12px; }
@@ -1793,7 +1795,7 @@ html[dir="ltr"] article {
 </div>
 
 <!-- ── MODAL LIGHTBOX ── -->
-<div id="modal-lightbox" class="fixed inset-0 z-[500] bg-black/95 hidden items-center justify-center p-4" onclick="closeModalLightbox()">
+<div id="modal-lightbox" class="fixed inset-0 z-[9999] bg-black/95 hidden items-center justify-center p-4" onclick="closeModalLightbox()">
     <div class="relative max-w-4xl w-full" onclick="event.stopPropagation()">
         <button onclick="closeModalLightbox()" class="absolute -top-10 left-0 text-white/70 hover:text-white flex items-center gap-2 text-sm font-bold">
             <span class="iconify" data-icon="lucide:x"></span> <span data-i18n="close-btn">إغلاق</span>
@@ -3008,7 +3010,10 @@ async function loadGuidePanel(tab) {
                 +     (hasAlbum && !hasImg ? '<span class="text-[10px] bg-emerald-50 text-emerald-600 border border-emerald-200 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 flex-shrink-0"><span class="iconify" data-icon="lucide:images"></span>' + albums.length + '</span>' : '')
                 +   '</div>'
                 +   (f.description ? '<p class="text-sm text-gray-600 leading-relaxed mb-3 line-clamp-2">' + getLF(f,'description') + '</p>' : '')
-                +   (tags.length ? '<div class="flex flex-wrap gap-1.5">' + tags.map(t => '<span class="text-xs bg-gray-50 text-gray-600 border border-gray-200 px-2.5 py-0.5 rounded-full font-semibold">' + t + '</span>').join('') + '</div>' : '')
+                +   (tags.length ? '<div class="flex flex-wrap gap-1.5 mb-3">' + tags.map(t => '<span class="text-xs bg-gray-50 text-gray-600 border border-gray-200 px-2.5 py-0.5 rounded-full font-semibold">' + t + '</span>').join('') + '</div>' : '')
+                +   '<div class="mt-3 pt-3 border-t border-gray-100 flex items-center justify-end">'
+                +     '<span class="inline-flex items-center gap-1 text-emerald-600 text-xs font-bold"><span class="iconify text-sm" data-icon="lucide:arrow-left-right"></span>' + (typeof t === 'function' ? t('fac-view-more') || 'عرض المزيد' : 'عرض المزيد') + '</span>'
+                +   '</div>'
                 + '</div>'
                 + '</div>';
         };
@@ -3192,7 +3197,10 @@ function facSetCat(cat) {
                     +     (hasAlbum && !hasImg ? '<span class="text-[10px] bg-emerald-50 text-emerald-600 border border-emerald-200 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 flex-shrink-0"><span class="iconify" data-icon="lucide:images"></span>' + albums.length + '</span>' : '')
                     +   '</div>'
                     +   (f.description ? '<p class="text-sm text-gray-600 leading-relaxed mb-3 line-clamp-2">' + getLF(f,'description') + '</p>' : '')
-                    +   (tags.length ? '<div class="flex flex-wrap gap-1.5">' + tags.map(t => '<span class="text-xs bg-' + m.col + '-50 text-' + m.col + '-700 border border-' + m.col + '-200 px-2.5 py-0.5 rounded-full font-semibold">' + t + '</span>').join('') + '</div>' : '')
+                    +   (tags.length ? '<div class="flex flex-wrap gap-1.5 mb-3">' + tags.map(t => '<span class="text-xs bg-' + m.col + '-50 text-' + m.col + '-700 border border-' + m.col + '-200 px-2.5 py-0.5 rounded-full font-semibold">' + t + '</span>').join('') + '</div>' : '')
+                    +   '<div class="mt-3 pt-3 border-t border-gray-100 flex items-center justify-end">'
+                    +     '<span class="inline-flex items-center gap-1 text-emerald-600 text-xs font-bold"><span class="iconify text-sm" data-icon="lucide:arrow-left-right"></span>عرض المزيد</span>'
+                    +   '</div>'
                     + '</div>'
                     + '</div>';
             }).join('');
@@ -4001,7 +4009,8 @@ function createCircleMarker(lat, lng, color, item, type) {
 
     const btnHtml = modalCall
         ? `<br><button onclick="chetaibiMap.closePopup();setTimeout(function(){${modalCall};},80);"
-                   style="background:#059669;color:#fff;border:none;padding:4px 14px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;margin-top:4px;">
+                   style="background:#059669;color:#fff;border:none;padding:5px 14px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;margin-top:4px;display:inline-flex;align-items:center;gap:5px;">
+               <svg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><path d='M8 3 3 8l5 5'/><path d='M16 3l5 5-5 5'/><line x1='3' y1='8' x2='21' y2='8'/></svg>
                ${t('map-popup-details')}
            </button>`
         : '';
@@ -4113,7 +4122,7 @@ async function initMap() {
                     '<div style="padding:10px 12px;text-align:center;">' +
                         '<div style="font-weight:800;font-size:14px;color:#1a1a1a;margin-bottom:4px;font-family:Cairo,sans-serif;text-align:center;">'+t('map-municipality-name')+'</div>' +
                         '<div style="font-size:11px;color:#6b7280;font-family:Cairo,sans-serif;text-align:center;margin-bottom:8px;">'+t('map-municipality-sub')+'</div>' +
-                        '<button onclick="chetaibiMap.closePopup();setTimeout(openMunicipalityModal,80);" style="background:#059669;color:#fff;border:none;padding:5px 16px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:Cairo,sans-serif;">'+t('map-popup-details')+'</button>' +
+                        '<button onclick="chetaibiMap.closePopup();setTimeout(openMunicipalityModal,80);" style="background:#059669;color:#fff;border:none;padding:5px 16px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:Cairo,sans-serif;display:inline-flex;align-items:center;gap:5px;"><svg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><path d='M8 3 3 8l5 5'/><path d='M16 3l5 5-5 5'/><line x1='3' y1='8' x2='21' y2='8'/></svg>'+t('map-popup-details')+'</button>' +
                     '</div>' +
                 '</div>',
                 { maxWidth: 230, className: 'chetaibi-popup', offset: [0, -5] }
@@ -4163,7 +4172,7 @@ function reloadMapMarkers() {
                 '<div style="padding:10px 12px;text-align:center;">' +
                     '<div style="font-weight:800;font-size:14px;color:#1a1a1a;margin-bottom:4px;font-family:Cairo,sans-serif;text-align:center;">' + t('map-municipality-name') + '</div>' +
                     '<div style="font-size:11px;color:#6b7280;font-family:Cairo,sans-serif;text-align:center;margin-bottom:8px;">' + t('map-municipality-sub') + '</div>' +
-                    '<button onclick="chetaibiMap.closePopup();setTimeout(openMunicipalityModal,80);" style="background:#059669;color:#fff;border:none;padding:5px 16px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:Cairo,sans-serif;">' + t('map-popup-details') + '</button>' +
+                    '<button onclick="chetaibiMap.closePopup();setTimeout(openMunicipalityModal,80);" style="background:#059669;color:#fff;border:none;padding:5px 16px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:Cairo,sans-serif;display:inline-flex;align-items:center;gap:5px;"><svg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><path d='M8 3 3 8l5 5'/><path d='M16 3l5 5-5 5'/><line x1='3' y1='8' x2='21' y2='8'/></svg>' + t('map-popup-details') + '</button>' +
                 '</div>' +
             '</div>',
             { maxWidth: 230, className: 'chetaibi-popup', offset: [0, -5] }
@@ -4239,7 +4248,7 @@ document.addEventListener('DOMContentLoaded', () => {
 })();
 </script>
 <!-- ══ Modal مقر البلدية ══ -->
-<div id="municipality-modal" class="fixed inset-0 z-[500] hidden items-center justify-center p-4" style="background:rgba(0,0,0,0.7);" onclick="if(event.target===this)closeMunicipalityModal()">
+<div id="municipality-modal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4" style="background:rgba(0,0,0,0.7);" onclick="if(event.target===this)closeMunicipalityModal()">
     <div class="bg-white rounded-3xl overflow-hidden w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl">
         <!-- هيدر -->
         <div class="relative h-48 flex-shrink-0">
