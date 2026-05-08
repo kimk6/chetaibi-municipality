@@ -238,17 +238,13 @@
             'all-beaches-btn':    'جميع الشواطئ',
             'all-tourism-btn':    'جميع المعالم',
             'supervised-badge':   'مراقب',
+            'beach-type-sandy':   'رملي',
+            'beach-type-rocky':   'صخري',
             'details-btn':        'عرض التفاصيل',
             'beach-loading':      'جاري تحميل الشواطئ...',
             'tourism-loading':    'جاري تحميل المعالم...',
             'etype-beaches':      'الشواطئ',
             'etype-tourism':      'المعالم السياحية',
-            'guide-branches-more': 'عرض المزيد من الفروع الإدارية',
-            'guide-branches-hide': 'إخفاء الفروع الإدارية',
-            'guide-education-more':'عرض المزيد من المؤسسات التعليمية',
-            'guide-education-hide':'إخفاء المؤسسات التعليمية',
-            'guide-health-more':   'عرض المزيد من المرافق الصحية',
-            'guide-health-hide':   'إخفاء المرافق الصحية',
             /* ─── FACILITIES OVERLAY ─── */
             'fac-overlay-title':  'المرافق والخدمات',
             'fcat-religious':     'دينية',
@@ -492,17 +488,13 @@
             'all-beaches-btn':    'Toutes les plages',
             'all-tourism-btn':    'Tous les sites',
             'supervised-badge':   'Surveillée',
+            'beach-type-sandy':   'Sableux',
+            'beach-type-rocky':   'Rocheux',
             'details-btn':        'Voir les détails',
             'beach-loading':      'Chargement des plages...',
             'tourism-loading':    'Chargement des sites...',
             'etype-beaches':      'Plages',
             'etype-tourism':      'Sites touristiques',
-            'guide-branches-more': 'Voir plus d\'annexes',
-            'guide-branches-hide': 'Masquer les annexes',
-            'guide-education-more':'Voir plus d\'établissements',
-            'guide-education-hide':'Masquer les établissements',
-            'guide-health-more':   'Voir plus d\'équipements',
-            'guide-health-hide':   'Masquer les équipements',
             /* ─── FACILITIES OVERLAY ─── */
             'fac-overlay-title':  'Équipements et services',
             'fcat-religious':     'Religieux',
@@ -1632,7 +1624,7 @@ html[dir="ltr"] article {
             <div id="all-tourism-wrap" class="text-center mt-2 mb-2 hidden">
                 <button onclick="openExploreOverlay('tourism')"
                         class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white/80 hover:text-white border border-white/20 px-6 py-2 rounded-2xl font-semibold text-xs transition-all backdrop-blur-sm">
-                    <span class="iconify" data-icon="lucide:layout-list"></span> <span data-i18n="all-tourism-btn">جميع المعالم</span>
+                    <span class="iconify" data-icon="lucide:layout-list"></span> جميع المعالم
                 </button>
             </div>
         </div>
@@ -2629,11 +2621,8 @@ async function loadNews(){
                 const pinBorder=isPinned?'border-emerald-300 ring-1 ring-emerald-200':'border-gray-100';
                 const nTitle = getLF(n,'title');
                 const nContent = getLF(n,'content');
-                const labelHtml = (currentLang==='fr' && n.custom_label_fr && n.custom_label_fr.trim())
-                    ? `<span class="inline-block ${s.badge} text-xs font-bold px-3 py-1 rounded-full">${n.custom_label_fr}</span>`
-                    : (n.custom_label && n.custom_label.trim())
-                    ? `<span class="inline-block ${s.badge} text-xs font-bold px-3 py-1 rounded-full">${n.custom_label}</span>`
-                    : '';
+                const labelHtml=n.custom_label&&n.custom_label.trim()
+                    ?`<span class="inline-block ${s.badge} text-xs font-bold px-3 py-1 rounded-full">${n.custom_label}</span>`:'';
                 const showGrad = n.category !== 'official';
                 return `<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border ${pinBorder} relative cursor-pointer" onclick="openNewsModal(${n.id})">
                     ${img?`<div class="h-44 overflow-hidden relative">${pinBadge}<img src="${img}" alt="${nTitle}" class="w-full h-full object-cover">${showGrad?'<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>':''}</div>`:`<div class="h-44 bg-gradient-to-bl ${s.grad} flex items-center justify-center relative">${pinBadge}<span class="iconify text-white text-6xl" data-icon="${s.icon}"></span></div>`}
@@ -2732,7 +2721,8 @@ function beachCard(b){
                 :`<div class="w-full h-full bg-gradient-to-bl from-sky-500/60 to-blue-700/60 flex items-center justify-center"><span class="iconify text-white text-5xl opacity-70" data-icon="lucide:waves"></span></div>`}
             <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
             <div class="absolute bottom-3 right-3 text-white"><h4 class="font-extrabold text-base drop-shadow">${bName}</h4></div>
-            ${b.is_supervised?`<span class="absolute top-2 left-2 bg-green-400 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">${t('supervised-badge')}</span>`:''}
+            ${b.is_supervised?`<span class="absolute top-2 left-2 bg-green-500/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-check"></span>${t('supervised-badge')}</span>`:''}
+            ${b.season?`<span class="absolute top-2 right-2 bg-sky-500/80 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">${b.season==='صخري'?'🪨':' 🏖️'} ${b.season==='صخري'?t('beach-type-rocky'):t('beach-type-sandy')}</span>`:''}
         </div>
         <div class="p-4">
             <p class="text-xs text-white/70 line-clamp-2 leading-relaxed">${bDesc||t('details-btn')}</p>
@@ -2778,8 +2768,8 @@ async function openBeachModal(id){
         document.getElementById("bm-name").textContent = getLF(b,"name");
         document.getElementById("bm-desc").textContent = getLF(b,"description")||"";
         document.getElementById('bm-badges').innerHTML =
-            (b.is_supervised?'<span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-check"></span>'+t('supervised-badge')+'</span>':'')+
-            (b.season?`<span class="text-xs bg-sky-100 text-sky-700 px-3 py-1 rounded-full font-bold">${b.season}</span>`:'');
+            (b.is_supervised?`<span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-check"></span>${t('supervised-badge')}</span>`:'')+
+            (b.season?`<span class="text-xs bg-sky-100 text-sky-700 px-3 py-1 rounded-full font-bold flex items-center gap-1">${b.season==='صخري'?'🪨':'🏖️'} ${b.season==='صخري'?t('beach-type-rocky'):t('beach-type-sandy')}</span>`:'');
         if(b.albums?.length){
             document.getElementById('bm-album').innerHTML =
                 '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-sky-500" data-icon="lucide:images"></span>' + window.t('album-gallery') + ' (' + b.albums.length + ')</h4>' +
@@ -2876,7 +2866,7 @@ async function openTourismModal(id){
         document.getElementById('tm-badges').innerHTML=
             (t.badge_text?`<span class="text-xs bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full font-bold">${getLF(t,'badge_text')}</span>`:'')+
             (t.rating?`<span class="text-xs bg-amber-100 text-amber-700 px-3 py-1 rounded-full font-bold">⭐ ${t.rating}/5</span>`:'')+
-            (t.distance_info?`<span class="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-bold">🚶 ${getLF(t,'distance_info')}</span>`:'');
+            (t.distance_info?`<span class="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-bold">${getLF(t,'distance_info')}</span>`:'');
         if(t.albums?.length){
             document.getElementById('tm-album').innerHTML=
                 '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:images"></span>' + window.t('album-gallery') + ' (' + t.albums.length + ')</h4>' +
@@ -2981,9 +2971,7 @@ async function loadGuidePanel(tab) {
         }
 
         const renderCard = f => {
-            const tagsAr = Array.isArray(f.tags) ? f.tags : [];
-            const tagsFr = f.tags_fr ? f.tags_fr.split(/[,،]/).map(t=>t.trim()).filter(Boolean) : [];
-            const tags   = (currentLang==='fr' && tagsFr.length) ? tagsFr : tagsAr;
+            const tags   = Array.isArray(f.tags)   ? f.tags   : [];
             const albums = Array.isArray(f.albums) ? f.albums : [];
             const hasImg = !!f.image_url;
             const hasAlbum = albums.length > 0;
@@ -3003,7 +2991,7 @@ async function loadGuidePanel(tab) {
                 +     (hasAlbum && !hasImg ? '<span class="text-[10px] bg-emerald-50 text-emerald-600 border border-emerald-200 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 flex-shrink-0"><span class="iconify" data-icon="lucide:images"></span>' + albums.length + '</span>' : '')
                 +   '</div>'
                 +   (f.description ? '<p class="text-sm text-gray-600 leading-relaxed mb-3 line-clamp-2">' + getLF(f,'description') + '</p>' : '')
-                +   (tags.length ? '<div class="flex flex-wrap gap-1.5">' + tags.map(tg => '<span class="text-xs bg-gray-50 text-gray-600 border border-gray-200 px-2.5 py-0.5 rounded-full font-semibold">' + tg + '</span>').join('') + '</div>' : '')
+                +   (tags.length ? '<div class="flex flex-wrap gap-1.5">' + tags.map(t => '<span class="text-xs bg-gray-50 text-gray-600 border border-gray-200 px-2.5 py-0.5 rounded-full font-semibold">' + t + '</span>').join('') + '</div>' : '')
                 + '</div>'
                 + '</div>';
         };
@@ -3032,9 +3020,9 @@ function toggleGuideMore(tab) {
     const icon  = document.getElementById('gicon-'+tab);
     const txt   = document.getElementById('gtxt-'+tab);
     const labels = {
-        'admin-branches': [t('guide-branches-more')||'عرض المزيد من الفروع الإدارية',    t('guide-branches-hide')||'إخفاء الفروع الإدارية'],
-        'education':      [t('guide-education-more')||'عرض المزيد من المؤسسات التعليمية', t('guide-education-hide')||'إخفاء المؤسسات التعليمية'],
-        'health':         [t('guide-health-more')||'عرض المزيد من المرافق الصحية',        t('guide-health-hide')||'إخفاء المرافق الصحية'],
+        'admin-branches': ['عرض المزيد من الفروع الإدارية',    'إخفاء الفروع الإدارية'],
+        'education':      ['عرض المزيد من المؤسسات التعليمية', 'إخفاء المؤسسات التعليمية'],
+        'health':         ['عرض المزيد من المرافق الصحية',     'إخفاء المرافق الصحية'],
     };
     const expanded = guideExpanded[tab];
     if (extra) extra.classList.toggle('hidden', !expanded);
@@ -3091,7 +3079,10 @@ async function renderExploreOverlay() {
             ${b.image_url?`<img src="${b.image_url}" class="w-full h-40 object-cover">`:`<div class="h-40 bg-gradient-to-bl from-sky-400 to-blue-600 flex items-center justify-center"><span class="iconify text-white text-5xl" data-icon="lucide:waves"></span></div>`}
             <div class="p-4"><h3 class="font-extrabold text-gray-800 text-sm mb-1">${getLF(b,'name')}</h3>
             <p class="text-xs text-gray-400 line-clamp-2">${getLF(b,'description')||''}</p>
-            ${b.is_supervised?`<span class="mt-2 inline-block text-[10px] bg-sky-100 text-sky-700 px-2 py-0.5 rounded-full font-bold">${t('supervised-badge')||'مراقب'}</span>`:''}</div></div>`).join('');
+            <div class="flex flex-wrap gap-1 mt-2">
+            ${b.is_supervised?`<span class="inline-flex items-center gap-1 text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold"><span class="iconify" data-icon="lucide:shield-check"></span>${t('supervised-badge')}</span>`:''}
+            ${b.season?`<span class="inline-flex items-center gap-1 text-[10px] bg-sky-100 text-sky-700 px-2 py-0.5 rounded-full font-bold">${b.season==='صخري'?'🪨':'🏖️'} ${b.season==='صخري'?t('beach-type-rocky'):t('beach-type-sandy')}</span>`:''}
+            </div></div></div>`).join('');
         if(totalPages>1){ let h=''; for(let p=1;p<=totalPages;p++){ const a=p===explorePage?'bg-sky-600 text-white':'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'; h+=`<button onclick="explorePage=${p};renderExploreOverlay()" class="${a} w-10 h-10 rounded-xl font-bold text-sm">${p}</button>`; } pag.innerHTML=h; }
     } else {
         hdr.style.background = 'linear-gradient(135deg,#064e3b,#065f46)';
@@ -3104,13 +3095,13 @@ async function renderExploreOverlay() {
         const items = all.slice((explorePage-1)*EXPLORE_PER, explorePage*EXPLORE_PER);
         if(!items.length){ grid.innerHTML='<p class="col-span-full text-center text-gray-400 py-16">لا توجد معالم</p>'; return; }
         const bcColors={emerald:'bg-emerald-500',amber:'bg-amber-500',purple:'bg-purple-500',teal:'bg-teal-500',blue:'bg-blue-500'};
-        grid.innerHTML = items.map(ti => `<div class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100 cursor-pointer" onclick="openTourismInExplore(${ti.id})">
+        grid.innerHTML = items.map(t => `<div class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100 cursor-pointer" onclick="openTourismInExplore(${t.id})">
             <div class="relative h-40 overflow-hidden">
-            ${ti.image_url?`<img src="${ti.image_url}" class="w-full h-full object-cover">`:`<div class="w-full h-full bg-gradient-to-bl from-emerald-400 to-emerald-700 flex items-center justify-center"><span class="iconify text-white text-5xl" data-icon="lucide:compass"></span></div>`}
+            ${t.image_url?`<img src="${t.image_url}" class="w-full h-full object-cover">`:`<div class="w-full h-full bg-gradient-to-bl from-emerald-400 to-emerald-700 flex items-center justify-center"><span class="iconify text-white text-5xl" data-icon="lucide:compass"></span></div>`}
             <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-            <div class="absolute bottom-3 right-3 text-white"><p class="font-extrabold text-sm drop-shadow">${getLF(ti,'name')}</p></div>
-            ${getLF(ti,'badge_text')?`<span class="absolute top-2 left-2 ${bcColors[ti.badge_color]||'bg-emerald-500'} text-white text-[10px] font-bold px-2 py-0.5 rounded-full">${getLF(ti,'badge_text')}</span>`:''}</div>
-            <div class="p-4"><p class="text-xs text-gray-500 line-clamp-2">${getLF(ti,'description')||''}</p></div></div>`).join('');
+            <div class="absolute bottom-3 right-3 text-white"><p class="font-extrabold text-sm drop-shadow">${t.name}</p></div>
+            ${t.badge_text?`<span class="absolute top-2 left-2 ${bcColors[t.badge_color]||'bg-emerald-500'} text-white text-[10px] font-bold px-2 py-0.5 rounded-full">${t.badge_text}</span>`:''}</div>
+            <div class="p-4"><p class="text-xs text-gray-500 line-clamp-2">${t.description||''}</p></div></div>`).join('');
         if(totalPages>1){ let h=''; for(let p=1;p<=totalPages;p++){ const a=p===explorePage?'bg-emerald-600 text-white':'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'; h+=`<button onclick="explorePage=${p};renderExploreOverlay()" class="${a} w-10 h-10 rounded-xl font-bold text-sm">${p}</button>`; } pag.innerHTML=h; }
     }
 }
@@ -3162,9 +3153,7 @@ function facSetCat(cat) {
             const items = data.success && data.data && data.data.length ? data.data : null;
             if (!items) { grid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-8 text-sm">لا توجد مرافق في هذا التصنيف بعد</p>'; return; }
             grid.innerHTML = items.map(f => {
-                const tagsAr = Array.isArray(f.tags) ? f.tags : [];
-                const tagsFr = f.tags_fr ? f.tags_fr.split(/[,،]/).map(tg=>tg.trim()).filter(Boolean) : [];
-                const tags   = (currentLang==='fr' && tagsFr.length) ? tagsFr : tagsAr;
+                const tags   = Array.isArray(f.tags)   ? f.tags   : [];
                 const albums = Array.isArray(f.albums) ? f.albums : [];
                 const hasImg   = !!f.image_url;
                 const hasAlbum = albums.length > 0;
@@ -3184,7 +3173,7 @@ function facSetCat(cat) {
                     +     (hasAlbum && !hasImg ? '<span class="text-[10px] bg-emerald-50 text-emerald-600 border border-emerald-200 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 flex-shrink-0"><span class="iconify" data-icon="lucide:images"></span>' + albums.length + '</span>' : '')
                     +   '</div>'
                     +   (f.description ? '<p class="text-sm text-gray-600 leading-relaxed mb-3 line-clamp-2">' + getLF(f,'description') + '</p>' : '')
-                    +   (tags.length ? '<div class="flex flex-wrap gap-1.5">' + tags.map(tg => '<span class="text-xs bg-' + m.col + '-50 text-' + m.col + '-700 border border-' + m.col + '-200 px-2.5 py-0.5 rounded-full font-semibold">' + tg + '</span>').join('') + '</div>' : '')
+                    +   (tags.length ? '<div class="flex flex-wrap gap-1.5">' + tags.map(t => '<span class="text-xs bg-' + m.col + '-50 text-' + m.col + '-700 border border-' + m.col + '-200 px-2.5 py-0.5 rounded-full font-semibold">' + t + '</span>').join('') + '</div>' : '')
                     + '</div>'
                     + '</div>';
             }).join('');
@@ -3247,8 +3236,8 @@ async function openNewsModal(id) {
             document.getElementById("nm-content").textContent = getLF(n,"content") || "";
         }
         const modalImg = (currentLang === 'fr' && n.image_url_fr) ? n.image_url_fr : n.image_url;
-        // إخفاء الصورة المميزة في الإعلانات الرسمية
-        if (!isOfficial && modalImg) {
+        // نعرض الصورة المميزة لجميع التصنيفات بما فيها الإعلانات الرسمية
+        if (modalImg) {
             document.getElementById('nm-img').src = modalImg;
             document.getElementById('nm-img-wrap').classList.remove('hidden');
         } else {
@@ -3307,8 +3296,8 @@ async function openBeachModalFromExplore(id) {
         document.getElementById("bm-name").textContent = getLF(b,"name");
         document.getElementById("bm-desc").textContent = getLF(b,"description")||"";
         document.getElementById('bm-badges').innerHTML =
-            (b.is_supervised?'<span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-check"></span>'+t('supervised-badge')+'</span>':'')+
-            (b.season?`<span class="text-xs bg-sky-100 text-sky-700 px-3 py-1 rounded-full font-bold">${b.season}</span>`:'');
+            (b.is_supervised?`<span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-check"></span>${t('supervised-badge')}</span>`:'')+
+            (b.season?`<span class="text-xs bg-sky-100 text-sky-700 px-3 py-1 rounded-full font-bold flex items-center gap-1">${b.season==='صخري'?'🪨':'🏖️'} ${b.season==='صخري'?t('beach-type-rocky'):t('beach-type-sandy')}</span>`:'');
         if(b.albums?.length){
             document.getElementById('bm-album').innerHTML =
                 '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-sky-500" data-icon="lucide:images"></span>' + window.t('album-gallery') + ' (' + b.albums.length + ')</h4>' +
@@ -3338,7 +3327,7 @@ async function openTourismModalFromExplore(id) {
         document.getElementById('tm-badges').innerHTML=
             (t.badge_text?`<span class="text-xs bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full font-bold">${getLF(t,'badge_text')}</span>`:'')+
             (t.rating?`<span class="text-xs bg-amber-100 text-amber-700 px-3 py-1 rounded-full font-bold">⭐ ${t.rating}/5</span>`:'')+
-            (t.distance_info?`<span class="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-bold">🚶 ${getLF(t,'distance_info')}</span>`:'');
+            (t.distance_info?`<span class="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-bold">${getLF(t,'distance_info')}</span>`:'');
         if(t.albums?.length){
             document.getElementById('tm-album').innerHTML=
                 '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:images"></span>' + window.t('album-gallery') + ' (' + t.albums.length + ')</h4>' +
@@ -3405,9 +3394,7 @@ async function openFacModal(id, tab) {
             f = _facCache[id];
         }
         if (!f) { closeFacModal(); return; }
-        const tagsAr = Array.isArray(f.tags) ? f.tags : [];
-        const tagsFrRaw = f.tags_fr ? f.tags_fr.split(/[,،]/).map(tg=>tg.trim()).filter(Boolean) : [];
-        const tags   = (currentLang==='fr' && tagsFrRaw.length) ? tagsFrRaw : tagsAr;
+        const tags   = Array.isArray(f.tags)   ? f.tags   : [];
         const albums = Array.isArray(f.albums) ? f.albums : [];
         // تحديد ألوان وأيقونة بناءً على التصنيف
         const catConf = {
@@ -3728,18 +3715,18 @@ async function renderOverlay() {
             const displayTitle   = getLF(n,'title')   || n.title   || '';
             const displayContent = getLF(n,'content') || n.content || '';
             const imgSrc = (currentLang==='fr' && n.image_url_fr && n.image_url_fr.trim()) ? n.image_url_fr : (n.image_url||'');
-            const label = (currentLang==='fr' && n.custom_label_fr && n.custom_label_fr.trim())
-                ? n.custom_label_fr
-                : (n.custom_label && n.custom_label.trim()) ? n.custom_label : catLabel;
+            const label = (n.custom_label&&n.custom_label.trim()) ? n.custom_label : catLabel;
             const pin = n.is_pinned ? '<span class="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full border border-emerald-200 font-bold">'+(currentLang==='fr'?'Épinglé':'مثبت')+'</span>' : '';
             const snippet = displayContent.replace(/\n/g,' ').substring(0,90)+(displayContent.length>90?'...':'');
 
             // ── poster: صورة كاملة بدون نص ──
             if (overlayCat === 'poster') {
-                if (!imgSrc) return '';
-                return `<div class="poster-card cursor-pointer rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all hover:scale-[1.02]" onclick="openPosterLightbox('${imgSrc.replace(/'/g,"\\'")}')">
-                    <img src="${imgSrc}" alt="${displayTitle||'ملصق'}" class="block w-full h-auto">
-                </div>`;
+                return `<article class="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow cursor-pointer relative group" onclick="openNewsModal(${n.id})">
+                    ${imgSrc
+                        ? `<img src="${imgSrc}" alt="${displayTitle}" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">`
+                        : `<div class="h-64 bg-gradient-to-bl ${m.grad} flex items-center justify-center"><span class="iconify text-white text-7xl" data-icon="${m.icon}"></span></div>`}
+                    ${displayTitle ? `<div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent p-4"><p class="text-white font-extrabold text-sm line-clamp-2">${displayTitle}</p></div>` : ''}
+                </article>`;
             }
 
             // ── activity: بطاقة كاملة مثل الواجهة ──
@@ -3755,48 +3742,31 @@ async function renderOverlay() {
                         <p class="text-xs text-gray-500 mb-3 leading-relaxed">${snippet}</p>
                         <div class="flex items-center justify-between">
                             <span class="text-xs text-gray-400 flex items-center gap-1"><span class="iconify" data-icon="lucide:calendar"></span>${n.date||''}</span>
-                            <span class="text-emerald-600 text-xs font-bold">${t('read-more') || 'اقرأ المزيد →'}</span>
+                            <span class="text-emerald-600 text-xs font-bold">${t('read-more') || 'اقرأ المزيد'} ←</span>
                         </div>
                     </div>
                 </article>`;
             }
 
-            // ── official: بطاقة بسيطة بدون badge ──
-            if (overlayCat === 'official') {
-                const showGradO = false;
-                const imgHtmlO = imgSrc
-                    ? `<div class="h-44 overflow-hidden relative"><img src="${imgSrc}" alt="${displayTitle}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"></div>`
-                    : `<div class="h-44 bg-gradient-to-bl ${m.grad} flex items-center justify-center"><span class="iconify text-white text-6xl" data-icon="${m.icon}"></span></div>`;
-                return `<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100 cursor-pointer" onclick="openNewsModal(${n.id})">
-                    ${imgHtmlO}
-                    <div class="p-4">
-                        <p class="text-xs text-gray-500 leading-relaxed line-clamp-2 mb-3">${snippet}</p>
-                        <div class="flex items-center justify-between">
-                            <span class="flex items-center gap-1 text-[11px] text-gray-400"><span class="iconify" data-icon="lucide:calendar-days"></span>${n.date||''}</span>
-                            ${pin}
-                        </div>
+            // ── official / social: بطاقة بسيطة (بدون badge للإعلانات) ──
+            const showGrad2 = overlayCat !== 'official';
+            const imgHtml = imgSrc
+                ? `<div class="h-44 overflow-hidden relative"><img src="${imgSrc}" alt="${displayTitle}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">${showGrad2?'<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>':''}</div>`
+                : `<div class="h-44 bg-gradient-to-bl ${m.grad} flex items-center justify-center"><span class="iconify text-white text-6xl" data-icon="${m.icon}"></span></div>`;
+            return `<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100 cursor-pointer" onclick="openNewsModal(${n.id})">
+                ${imgHtml}
+                <div class="p-4">
+                    <p class="text-xs text-gray-500 leading-relaxed line-clamp-2 mb-3">${snippet}</p>
+                    <div class="flex items-center justify-between">
+                        <span class="flex items-center gap-1 text-[11px] text-gray-400"><span class="iconify" data-icon="lucide:calendar-days"></span>${n.date||''}</span>
+                        ${pin}
                     </div>
-                </article>`;
-            }
-
-            // ── social (ركن المجتمع): مثل الواجهة بالضبط ──
-            if (overlayCat === 'social') {
-                const img2 = imgSrc
-                    ? `<div class="h-44 overflow-hidden relative"><img src="${imgSrc}" alt="${displayTitle}" class="w-full h-full object-cover"><div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div></div>`
-                    : `<div class="h-44 bg-gradient-to-bl ${m.grad} flex items-center justify-center"><span class="iconify text-white text-6xl" data-icon="${m.icon}"></span></div>`;
-                return `<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100 cursor-pointer" onclick="openNewsModal(${n.id})">
-                    ${img2}
-                    <div class="p-4">
-                        <div class="flex items-center gap-2 mb-2 flex-wrap">${label?`<span class="inline-block text-xs font-bold px-2.5 py-0.5 rounded-full ${m.badge}">${label}</span>`:''}${pin}</div>
-                        <h4 class="font-bold text-gray-800 mb-2 leading-snug text-sm">${displayTitle}</h4>
-                        <p class="text-xs text-gray-500 mb-3 leading-relaxed">${snippet}</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs text-gray-400 flex items-center gap-1"><span class="iconify" data-icon="lucide:calendar"></span>${n.date||''}</span>
-                            <span class="text-emerald-600 text-xs font-bold">${t('read-more')}</span>
-                        </div>
+                    <div class="mt-2 pt-2 border-t border-gray-50 flex items-center justify-between">
+                        <h3 class="font-extrabold text-gray-800 text-sm leading-snug line-clamp-1">${displayTitle}</h3>
+                        <span class="text-emerald-600 text-xs font-bold flex-shrink-0 mr-2">${t('read-more') || 'اقرأ المزيد'} ←</span>
                     </div>
-                </article>`;
-            }
+                </div>
+            </article>`;
         }).join('');
         // ترقيم الصفحات
         if(totalPages > 1) {
