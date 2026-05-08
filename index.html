@@ -238,6 +238,7 @@
             'all-beaches-btn':    'جميع الشواطئ',
             'all-tourism-btn':    'جميع المعالم',
             'supervised-badge':   'مراقب',
+            'unsupervised-badge': 'غير مراقب',
             'beach-type-sandy':   'رملي',
             'beach-type-rocky':   'صخري',
             'details-btn':        'عرض التفاصيل',
@@ -488,6 +489,7 @@
             'all-beaches-btn':    'Toutes les plages',
             'all-tourism-btn':    'Tous les sites',
             'supervised-badge':   'Surveillée',
+            'unsupervised-badge': 'Non surveillée',
             'beach-type-sandy':   'Sableux',
             'beach-type-rocky':   'Rocheux',
             'details-btn':        'Voir les détails',
@@ -2721,7 +2723,9 @@ function beachCard(b){
                 :`<div class="w-full h-full bg-gradient-to-bl from-sky-500/60 to-blue-700/60 flex items-center justify-center"><span class="iconify text-white text-5xl opacity-70" data-icon="lucide:waves"></span></div>`}
             <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
             <div class="absolute bottom-3 right-3 text-white"><h4 class="font-extrabold text-base drop-shadow">${bName}</h4></div>
-            ${b.is_supervised?`<span class="absolute top-2 left-2 bg-green-500/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-check"></span>${t('supervised-badge')}</span>`:''}
+            ${b.is_supervised
+                ?`<span class="absolute top-2 left-2 bg-green-500/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-check"></span>${t('supervised-badge')}</span>`
+                :`<span class="absolute top-2 left-2 bg-orange-400/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-x"></span>${t('unsupervised-badge')}</span>`}
             ${b.season?`<span class="absolute top-2 right-2 bg-sky-500/80 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">${b.season==='صخري'?'🪨':' 🏖️'} ${b.season==='صخري'?t('beach-type-rocky'):t('beach-type-sandy')}</span>`:''}
         </div>
         <div class="p-4">
@@ -2768,7 +2772,9 @@ async function openBeachModal(id){
         document.getElementById("bm-name").textContent = getLF(b,"name");
         document.getElementById("bm-desc").textContent = getLF(b,"description")||"";
         document.getElementById('bm-badges').innerHTML =
-            (b.is_supervised?`<span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-check"></span>${t('supervised-badge')}</span>`:'')+
+            (b.is_supervised
+            ?`<span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-check"></span>${t('supervised-badge')}</span>`
+            :`<span class="text-xs bg-orange-100 text-orange-700 px-3 py-1 rounded-full font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-x"></span>${t('unsupervised-badge')}</span>`)+
             (b.season?`<span class="text-xs bg-sky-100 text-sky-700 px-3 py-1 rounded-full font-bold flex items-center gap-1">${b.season==='صخري'?'🪨':'🏖️'} ${b.season==='صخري'?t('beach-type-rocky'):t('beach-type-sandy')}</span>`:'');
         if(b.albums?.length){
             document.getElementById('bm-album').innerHTML =
@@ -3080,7 +3086,9 @@ async function renderExploreOverlay() {
             <div class="p-4"><h3 class="font-extrabold text-gray-800 text-sm mb-1">${getLF(b,'name')}</h3>
             <p class="text-xs text-gray-400 line-clamp-2">${getLF(b,'description')||''}</p>
             <div class="flex flex-wrap gap-1 mt-2">
-            ${b.is_supervised?`<span class="inline-flex items-center gap-1 text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold"><span class="iconify" data-icon="lucide:shield-check"></span>${t('supervised-badge')}</span>`:''}
+            ${b.is_supervised
+            ?`<span class="inline-flex items-center gap-1 text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold"><span class="iconify" data-icon="lucide:shield-check"></span>${t('supervised-badge')}</span>`
+            :`<span class="inline-flex items-center gap-1 text-[10px] bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-bold"><span class="iconify" data-icon="lucide:shield-x"></span>${t('unsupervised-badge')}</span>`}
             ${b.season?`<span class="inline-flex items-center gap-1 text-[10px] bg-sky-100 text-sky-700 px-2 py-0.5 rounded-full font-bold">${b.season==='صخري'?'🪨':'🏖️'} ${b.season==='صخري'?t('beach-type-rocky'):t('beach-type-sandy')}</span>`:''}
             </div></div></div>`).join('');
         if(totalPages>1){ let h=''; for(let p=1;p<=totalPages;p++){ const a=p===explorePage?'bg-sky-600 text-white':'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'; h+=`<button onclick="explorePage=${p};renderExploreOverlay()" class="${a} w-10 h-10 rounded-xl font-bold text-sm">${p}</button>`; } pag.innerHTML=h; }
@@ -3296,7 +3304,9 @@ async function openBeachModalFromExplore(id) {
         document.getElementById("bm-name").textContent = getLF(b,"name");
         document.getElementById("bm-desc").textContent = getLF(b,"description")||"";
         document.getElementById('bm-badges').innerHTML =
-            (b.is_supervised?`<span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-check"></span>${t('supervised-badge')}</span>`:'')+
+            (b.is_supervised
+            ?`<span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-check"></span>${t('supervised-badge')}</span>`
+            :`<span class="text-xs bg-orange-100 text-orange-700 px-3 py-1 rounded-full font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-x"></span>${t('unsupervised-badge')}</span>`)+
             (b.season?`<span class="text-xs bg-sky-100 text-sky-700 px-3 py-1 rounded-full font-bold flex items-center gap-1">${b.season==='صخري'?'🪨':'🏖️'} ${b.season==='صخري'?t('beach-type-rocky'):t('beach-type-sandy')}</span>`:'');
         if(b.albums?.length){
             document.getElementById('bm-album').innerHTML =
@@ -3920,6 +3930,13 @@ function createCircleMarker(lat, lng, color, item, type) {
                     : type === 'tourism'  ? t('map-type-tourism')
                     : type === 'facility' ? t('map-type-facility')
                     : '';
+    // بادجات الشاطئ في popup الخريطة
+    const beachBadges = type === 'beach' ? (
+        (item.is_supervised
+            ? `<span style="display:inline-flex;align-items:center;gap:3px;background:#dcfce7;color:#15803d;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;margin:1px;">✔ ${t('supervised-badge')}</span>`
+            : `<span style="display:inline-flex;align-items:center;gap:3px;background:#ffedd5;color:#c2410c;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;margin:1px;">✗ ${t('unsupervised-badge')}</span>`) +
+        (item.season ? `<span style="display:inline-flex;align-items:center;gap:3px;background:#e0f2fe;color:#0369a1;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;margin:1px;">${item.season==='صخري'?'🪨':'🏖️'} ${item.season==='صخري'?t('beach-type-rocky'):t('beach-type-sandy')}</span>` : '')
+    ) : '';
 
     // الـ popup يحتوي زر يغلق popup ثم يفتح الـ modal المناسب
     const modalCall = type === 'beach'    ? `openBeachModal(${item.id})`
@@ -3940,7 +3957,8 @@ function createCircleMarker(lat, lng, color, item, type) {
     marker.bindPopup(
         `<div class="map-popup" style="text-align:center;position:relative;">${closeBtn}${imgHtml}` +
         `<div class="map-popup-name" style="text-align:center;">${name}</div>` +
-        `<div class="map-popup-type" style="text-align:center;">${subtype || typeLabel}</div>` +
+        `<div class="map-popup-type" style="text-align:center;">${subtype || (type !== 'beach' ? typeLabel : '')}</div>` +
+        (beachBadges ? `<div style="text-align:center;margin:4px 0;">${beachBadges}</div>` : '') +
         `<div style="text-align:center;">${btnHtml}</div>` +
         `</div>`,
         { maxWidth: 220, className: 'chetaibi-popup' }
