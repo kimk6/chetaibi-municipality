@@ -1632,7 +1632,7 @@ html[dir="ltr"] article {
             <div id="all-tourism-wrap" class="text-center mt-2 mb-2 hidden">
                 <button onclick="openExploreOverlay('tourism')"
                         class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white/80 hover:text-white border border-white/20 px-6 py-2 rounded-2xl font-semibold text-xs transition-all backdrop-blur-sm">
-                    <span class="iconify" data-icon="lucide:layout-list"></span> جميع المعالم
+                    <span class="iconify" data-icon="lucide:layout-list"></span> <span data-i18n="all-tourism-btn">جميع المعالم</span>
                 </button>
             </div>
         </div>
@@ -2778,7 +2778,7 @@ async function openBeachModal(id){
         document.getElementById("bm-name").textContent = getLF(b,"name");
         document.getElementById("bm-desc").textContent = getLF(b,"description")||"";
         document.getElementById('bm-badges').innerHTML =
-            (b.is_supervised?'<span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-check"></span>مراقب</span>':'')+
+            (b.is_supervised?'<span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-check"></span>'+t('supervised-badge')+'</span>':'')+
             (b.season?`<span class="text-xs bg-sky-100 text-sky-700 px-3 py-1 rounded-full font-bold">${b.season}</span>`:'');
         if(b.albums?.length){
             document.getElementById('bm-album').innerHTML =
@@ -3307,7 +3307,7 @@ async function openBeachModalFromExplore(id) {
         document.getElementById("bm-name").textContent = getLF(b,"name");
         document.getElementById("bm-desc").textContent = getLF(b,"description")||"";
         document.getElementById('bm-badges').innerHTML =
-            (b.is_supervised?'<span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-check"></span>مراقب</span>':'')+
+            (b.is_supervised?'<span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-check"></span>'+t('supervised-badge')+'</span>':'')+
             (b.season?`<span class="text-xs bg-sky-100 text-sky-700 px-3 py-1 rounded-full font-bold">${b.season}</span>`:'');
         if(b.albums?.length){
             document.getElementById('bm-album').innerHTML =
@@ -3405,7 +3405,9 @@ async function openFacModal(id, tab) {
             f = _facCache[id];
         }
         if (!f) { closeFacModal(); return; }
-        const tags   = Array.isArray(f.tags)   ? f.tags   : [];
+        const tagsAr = Array.isArray(f.tags) ? f.tags : [];
+        const tagsFrRaw = f.tags_fr ? f.tags_fr.split(/[,،]/).map(tg=>tg.trim()).filter(Boolean) : [];
+        const tags   = (currentLang==='fr' && tagsFrRaw.length) ? tagsFrRaw : tagsAr;
         const albums = Array.isArray(f.albums) ? f.albums : [];
         // تحديد ألوان وأيقونة بناءً على التصنيف
         const catConf = {

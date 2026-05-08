@@ -698,7 +698,13 @@
                             <input id="beaches-supervised" type="checkbox" checked class="w-4 h-4 accent-sky-600">
                             <label for="beaches-supervised" class="text-xs font-bold text-sky-700 cursor-pointer">🛡️ شاطئ مراقب رسمياً</label>
                         </div>
-                        <div><label class="text-xs font-bold text-gray-500 mb-1 block">الموسم</label><input id="beaches-season" type="text" value="صيف" placeholder="صيف"></div>
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">نوع الشاطئ</label>
+                            <select id="beaches-season" class="text-sm">
+                                <option value="رملي">🏖️ رملي</option>
+                                <option value="صخري">🪨 صخري</option>
+                            </select>
+                        </div>
                         <!-- إحداثيات الخريطة -->
                         <div class="bg-sky-50 border border-sky-200 rounded-xl p-3 space-y-2">
                             <p class="text-xs font-bold text-sky-700 flex items-center gap-1"><span class="iconify" data-icon="lucide:map-pin"></span> إحداثيات الخريطة</p>
@@ -1656,7 +1662,7 @@ async function loadBeaches_admin(){
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center gap-2 mb-1">
                             ${b.is_supervised?'<span class="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold">مراقب</span>':''}
-                            <span class="text-[10px] text-gray-400">${b.season||'صيف'}</span>
+                            <span class="text-[10px] bg-sky-50 text-sky-600 px-2 py-0.5 rounded-full font-bold">${b.season==='صخري'?'🪨 صخري':'🏖️ رملي'}</span>
                         </div>
                         <h4 class="font-bold text-gray-800 text-sm truncate mb-1">${b.name}</h4>
                         <p class="text-xs text-gray-500 line-clamp-2">${(b.description||'').substring(0,80)}</p>
@@ -1715,7 +1721,7 @@ async function editBeach(id){
     document.getElementById('beaches-image').value=b.image_url||'';
     document.getElementById('beaches-image-manual').value=b.image_url||'';
     document.getElementById('beaches-supervised').checked=b.is_supervised==1;
-    document.getElementById('beaches-season').value=b.season||'صيف';
+    document.getElementById('beaches-season').value=b.season||'رملي';
     if(b.image_url){document.getElementById('beaches-img-placeholder').classList.add('hidden');document.getElementById('beaches-img-img').src=b.image_url;document.getElementById('beaches-img-preview').classList.remove('hidden');document.getElementById('beaches-img-widget').classList.add('has-image');}
     document.getElementById('beaches-lat').value=b.lat||'';
     document.getElementById('beaches-lng').value=b.lng||'';
@@ -1725,10 +1731,10 @@ async function editBeach(id){
 }
 
 function cancelBeachEdit(){
-    ['beaches-edit-id','beaches-name','beaches-desc','beaches-season','beaches-lat','beaches-lng'].forEach(id=>document.getElementById(id).value='');
+    ['beaches-edit-id','beaches-name','beaches-desc','beaches-lat','beaches-lng'].forEach(id=>document.getElementById(id).value='');
     if(document.getElementById('beaches-name-fr')) document.getElementById('beaches-name-fr').value='';
     if(document.getElementById('beaches-desc-fr')) document.getElementById('beaches-desc-fr').value='';
-    document.getElementById('beaches-season').value='صيف';
+    document.getElementById('beaches-season').value='رملي';
     document.getElementById('beaches-supervised').checked=true;
     clearWidget('beaches-img','beaches-image','beaches-image-manual');
     document.getElementById('beaches-form-title').textContent='إضافة شاطئ'; toggleFormPanel('beaches', false);
