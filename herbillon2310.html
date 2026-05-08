@@ -180,6 +180,7 @@
             <button onclick="switchTab('mayors')" id="tab-mayors" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1"><span class="iconify" data-icon="lucide:users"></span> الرؤساء</button>
             <button onclick="switchTab('beaches')" id="tab-beaches" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1"><span class="iconify" data-icon="lucide:waves"></span> الشواطئ</button>
             <button onclick="switchTab('facilities')" id="tab-facilities" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1"><span class="iconify" data-icon="lucide:building-2"></span> المرافق</button>
+            <button onclick="switchTab('municipality')" id="tab-municipality" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1"><span class="iconify" data-icon="lucide:landmark"></span> مقر البلدية</button>
         </div>
 
         <!-- NEWS -->
@@ -835,12 +836,101 @@
             </div>
         </div>
 
+        <!-- ══ قسم مقر البلدية ══ -->
+        <div id="section-municipality" class="content-section hidden fade-in">
+            <div class="grid grid-cols-1 gap-6">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                    <h3 class="font-extrabold text-gray-700 text-sm mb-4 flex items-center gap-2">
+                        <span class="iconify text-emerald-500" data-icon="lucide:landmark"></span>
+                        معلومات مقر البلدية
+                    </h3>
+                    <div class="space-y-4">
+                        <!-- وصف عربي -->
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">الوصف (عربي)</label>
+                            <textarea id="muni-desc-ar" rows="5" placeholder="أدخل وصفاً تعريفياً بالبلدية..."></textarea>
+                        </div>
+                        <!-- 🇫🇷 وصف فرنسي -->
+                        <div class="border-r-2 border-blue-400 pr-3 bg-blue-50 rounded-lg py-2 px-2">
+                            <label class="text-xs font-bold text-blue-600 mb-1 block">🇫🇷 Description — Français <span class="text-gray-400 font-normal">(اختياري)</span></label>
+                            <textarea id="muni-desc-fr" rows="5" placeholder="Description de la commune en français..." class="border-blue-200"></textarea>
+                        </div>
+                        <!-- ألبوم صور -->
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-2 block">📸 ألبوم الصور</label>
+                            <div id="muni-album-grid-admin" class="grid grid-cols-3 gap-2 mb-2"></div>
+                            <div class="upload-widget p-2 cursor-pointer" onclick="triggerUpload('muni-album-input')">
+                                <div class="flex flex-col items-center gap-1 py-2">
+                                    <span class="iconify text-2xl text-gray-200" data-icon="lucide:image-plus"></span>
+                                    <span class="text-xs text-gray-400">إضافة صورة للألبوم</span>
+                                </div>
+                            </div>
+                            <input type="file" id="muni-album-input" accept="image/*" class="hidden" onchange="handleMuniAlbumUpload(this)">
+                        </div>
+                        <!-- زر الحفظ -->
+                        <button onclick="saveMunicipality()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2">
+                            <span class="iconify" data-icon="lucide:save"></span> حفظ المعلومات
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
 <script>
 let token = localStorage.getItem('admin_token') || '';
 let activeTab = 'news';
+let muniAlbumUrls = [];
+
+// ── مقر البلدية ──
+async function loadMunicipality() {
+    try {
+        const res  = await fetch('/api/municipality', { headers: authHeaders() });
+        const data = await res.json();
+        const info = data.data || {};
+        document.getElementById('muni-desc-ar').value = info.description    || '';
+        document.getElementById('muni-desc-fr').value = info.description_fr || '';
+        muniAlbumUrls = Array.isArray(info.albums) ? info.albums : [];
+        renderMuniAlbum();
+    } catch(e) { adminToast('تعذر تحميل بيانات البلدية'); }
+}
+function renderMuniAlbum() {
+    const grid = document.getElementById('muni-album-grid-admin');
+    if (!grid) return;
+    grid.innerHTML = muniAlbumUrls.length
+        ? muniAlbumUrls.map((u,i) =>
+            `<div class="relative group">
+                <img src="${u}" class="w-full h-16 object-cover rounded-lg">
+                <button onclick="muniAlbumUrls.splice(${i},1);renderMuniAlbum()" class="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white rounded-full text-[9px] flex items-center justify-center opacity-0 group-hover:opacity-100">✕</button>
+            </div>`).join('')
+        : '<p class="col-span-3 text-xs text-gray-400 text-center py-2">لا توجد صور بعد</p>';
+}
+async function handleMuniAlbumUpload(input) {
+    const file = input.files[0]; if (!file) return; input.value = '';
+    try {
+        adminToast('⏳ جاري رفع الصورة...');
+        const url = await uploadFile(file, 'municipality');
+        muniAlbumUrls.push(url);
+        renderMuniAlbum();
+        loadRepoSize();
+        adminToast('✅ تمت إضافة الصورة');
+    } catch(e) { adminToast('❌ ' + e.message); }
+}
+async function saveMunicipality() {
+    const body = {
+        description:    document.getElementById('muni-desc-ar').value,
+        description_fr: document.getElementById('muni-desc-fr').value,
+        albums:         muniAlbumUrls,
+    };
+    try {
+        const res  = await fetch('/api/municipality', { method: 'PUT', headers: authHeaders(), body: JSON.stringify(body) });
+        const data = await res.json();
+        if (data.success) adminToast('✅ تم الحفظ');
+        else adminToast('❌ ' + (data.error || 'فشل الحفظ'));
+    } catch(e) { adminToast('❌ ' + e.message); }
+}
 let newsAlbumUrls = [];
 
 if (token) showDashboard(); else showLogin();
@@ -870,7 +960,7 @@ function switchTab(tab){
     loadTab(tab);
 }
 function loadTab(tab){
-    const m={news:loadNews,services:loadServices,archives:loadArchives,tourism:loadTourism,mayors:loadMayors,beaches:loadBeaches_admin,facilities:loadFacilitiesAdmin};
+    const m={news:loadNews,services:loadServices,archives:loadArchives,tourism:loadTourism,mayors:loadMayors,beaches:loadBeaches_admin,facilities:loadFacilitiesAdmin,municipality:loadMunicipality};
     if(m[tab]) m[tab]();
 }
 

@@ -35,6 +35,16 @@
         .chetaibi-popup .leaflet-popup-content { margin: 0; }
         .chetaibi-popup .map-popup { padding: 10px 12px; }
         .chetaibi-popup .map-popup img { margin: -0px -0px 8px -0px; width: calc(100% + 0px); border-radius: 0; }
+        .chetaibi-popup .leaflet-popup-close-button {
+            width: 26px !important; height: 26px !important;
+            background: #1f2937 !important; color: white !important;
+            border-radius: 50% !important; top: 8px !important; right: 8px !important;
+            font-size: 16px !important; font-weight: 700 !important;
+            display: flex !important; align-items: center !important; justify-content: center !important;
+            box-shadow: 0 2px 6px rgba(0,0,0,.3) !important;
+            line-height: 1 !important; padding: 0 !important;
+        }
+        .chetaibi-popup .leaflet-popup-close-button:hover { background: #374151 !important; }
     </style>
     <script>tailwind.config={theme:{extend:{fontFamily:{cairo:['Cairo','sans-serif']}}}}</script>
     <!-- PWA -->
@@ -225,6 +235,7 @@
             'map-drag-hint':      'اسحب داخل الخريطة للتنقل',
             'map-popup-details':  'عرض التفاصيل',
             'map-municipality-name': 'مقر بلدية شطايبي',
+            'map-municipality-sub':  'المجلس الشعبي البلدي لبلدية شطايبي',
             'map-municipality-sub':  'المجلس الشعبي البلدي لبلدية شطايبي',
             /* ─── TOURISM ─── */
             'tourism-title':      'السياحة في شطايبي',
@@ -3865,9 +3876,53 @@ window.addEventListener('appinstalled', () => {
     if (wrap) wrap.classList.add('hidden');
     _pwaPrompt = null;
 });
-// ══════════════════════════════════════════════════════
-// 🌐 تطبيق اللغة المحفوظة عند التحميل
-// ══════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════
+// 🏛️ Modal مقر البلدية
+// ══════════════════════════════════════════════════
+async function openMunicipalityModal() {
+    const modal = document.getElementById('municipality-modal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('muni-loading').classList.remove('hidden');
+    document.getElementById('muni-content').classList.add('hidden');
+    try {
+        const res  = await fetch('/api/municipality');
+        const data = await res.json();
+        const info = data.data || {};
+        document.getElementById('muni-loading').classList.add('hidden');
+        document.getElementById('muni-content').classList.remove('hidden');
+        // وصف
+        const desc = (currentLang === 'fr' && info.description_fr) ? info.description_fr : (info.description || '');
+        document.getElementById('muni-desc').textContent = desc;
+        // ألبوم
+        const albums = Array.isArray(info.albums) ? info.albums : [];
+        const albumWrap = document.getElementById('muni-album-wrap');
+        const albumGrid = document.getElementById('muni-album-grid');
+        if (albums.length) {
+            albumGrid.innerHTML = albums.map(u =>
+                `<div class="cursor-pointer rounded-xl overflow-hidden aspect-square" onclick="openModalLightbox('${u}','')">
+                    <img src="${u}" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+                </div>`
+            ).join('');
+            albumWrap.classList.remove('hidden');
+        } else {
+            albumWrap.classList.add('hidden');
+        }
+    } catch(e) {
+        document.getElementById('muni-loading').classList.add('hidden');
+        document.getElementById('muni-content').classList.remove('hidden');
+        document.getElementById('muni-desc').textContent = t('error') || 'تعذر تحميل البيانات';
+    }
+}
+function closeMunicipalityModal() {
+    const modal = document.getElementById('municipality-modal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = '';
+}
+
+// ══════════════════════════════════════════════════
 (function(){
     const saved = localStorage.getItem('lang') || 'ar';
     if (saved !== 'ar') {
@@ -3955,7 +4010,7 @@ function createCircleMarker(lat, lng, color, item, type) {
         style="position:absolute;top:6px;left:6px;background:rgba(0,0,0,0.15);color:#555;border:none;width:22px;height:22px;border-radius:50%;font-size:13px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>`;
 
     marker.bindPopup(
-        `<div class="map-popup" style="text-align:center;position:relative;">${closeBtn}${imgHtml}` +
+        `<div class="map-popup" style="text-align:center;position:relative;">${imgHtml}` +
         `<div class="map-popup-name" style="text-align:center;">${name}</div>` +
         `<div class="map-popup-type" style="text-align:center;">${subtype || (type !== 'beach' ? typeLabel : '')}</div>` +
         (beachBadges ? `<div style="text-align:center;margin:4px 0;">${beachBadges}</div>` : '') +
@@ -4057,7 +4112,8 @@ async function initMap() {
                         ' style="width:100%;height:120px;object-fit:cover;display:block;">' +
                     '<div style="padding:10px 12px;text-align:center;">' +
                         '<div style="font-weight:800;font-size:14px;color:#1a1a1a;margin-bottom:4px;font-family:Cairo,sans-serif;text-align:center;">'+t('map-municipality-name')+'</div>' +
-                        '<div style="font-size:11px;color:#6b7280;font-family:Cairo,sans-serif;text-align:center;">'+t('map-municipality-sub')+'</div>' +
+                        '<div style="font-size:11px;color:#6b7280;font-family:Cairo,sans-serif;text-align:center;margin-bottom:8px;">'+t('map-municipality-sub')+'</div>' +
+                        '<button onclick="chetaibiMap.closePopup();setTimeout(openMunicipalityModal,80);" style="background:#059669;color:#fff;border:none;padding:5px 16px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:Cairo,sans-serif;">'+t('map-popup-details')+'</button>' +
                     '</div>' +
                 '</div>',
                 { maxWidth: 230, className: 'chetaibi-popup', offset: [0, -5] }
@@ -4106,7 +4162,8 @@ function reloadMapMarkers() {
                     ' style="width:100%;height:120px;object-fit:cover;display:block;">' +
                 '<div style="padding:10px 12px;text-align:center;">' +
                     '<div style="font-weight:800;font-size:14px;color:#1a1a1a;margin-bottom:4px;font-family:Cairo,sans-serif;text-align:center;">' + t('map-municipality-name') + '</div>' +
-                    '<div style="font-size:11px;color:#6b7280;font-family:Cairo,sans-serif;text-align:center;">' + t('map-municipality-sub') + '</div>' +
+                    '<div style="font-size:11px;color:#6b7280;font-family:Cairo,sans-serif;text-align:center;margin-bottom:8px;">' + t('map-municipality-sub') + '</div>' +
+                    '<button onclick="chetaibiMap.closePopup();setTimeout(openMunicipalityModal,80);" style="background:#059669;color:#fff;border:none;padding:5px 16px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:Cairo,sans-serif;">' + t('map-popup-details') + '</button>' +
                 '</div>' +
             '</div>',
             { maxWidth: 230, className: 'chetaibi-popup', offset: [0, -5] }
@@ -4181,5 +4238,43 @@ document.addEventListener('DOMContentLoaded', () => {
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['dir', 'lang'] });
 })();
 </script>
+<!-- ══ Modal مقر البلدية ══ -->
+<div id="municipality-modal" class="fixed inset-0 z-[500] hidden items-center justify-center p-4" style="background:rgba(0,0,0,0.7);" onclick="if(event.target===this)closeMunicipalityModal()">
+    <div class="bg-white rounded-3xl overflow-hidden w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl">
+        <!-- هيدر -->
+        <div class="relative h-48 flex-shrink-0">
+            <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/Chetaibi-Town-Hall.webp" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <button onclick="closeMunicipalityModal()" class="absolute top-3 right-3 w-8 h-8 bg-black/40 hover:bg-black/60 text-white rounded-full flex items-center justify-center transition-colors">
+                <span class="iconify text-lg" data-icon="lucide:x"></span>
+            </button>
+            <div class="absolute bottom-4 right-4">
+                <h2 class="text-white font-extrabold text-xl drop-shadow" data-i18n="map-municipality-name">مقر بلدية شطايبي</h2>
+                <p class="text-white/80 text-xs" data-i18n="map-municipality-sub"></p>
+            </div>
+        </div>
+        <!-- محتوى قابل للتمرير -->
+        <div class="overflow-y-auto flex-1 p-5">
+            <!-- loading -->
+            <div id="muni-loading" class="flex flex-col items-center justify-center py-10 gap-3">
+                <span class="iconify text-4xl text-emerald-500 animate-spin" data-icon="lucide:loader-2"></span>
+                <p class="text-sm text-gray-400" data-i18n="loading">جاري التحميل...</p>
+            </div>
+            <!-- محتوى -->
+            <div id="muni-content" class="hidden space-y-4">
+                <p id="muni-desc" class="text-sm text-gray-600 leading-relaxed"></p>
+                <!-- ألبوم -->
+                <div id="muni-album-wrap" class="hidden">
+                    <h4 class="font-bold text-gray-700 text-sm mb-3 flex items-center gap-2">
+                        <span class="iconify text-emerald-500" data-icon="lucide:images"></span>
+                        <span data-i18n="album-gallery">معرض الصور</span>
+                    </h4>
+                    <div id="muni-album-grid" class="grid grid-cols-3 gap-2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
