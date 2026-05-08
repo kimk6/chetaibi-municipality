@@ -3009,7 +3009,7 @@ async function loadGuidePanel(tab) {
                 +   '</div>'
                 +   (f.description ? '<p class="text-sm text-gray-600 leading-relaxed mb-3 line-clamp-2">' + getLF(f,'description') + '</p>' : '')
                 +   (tags.length ? '<div class="flex flex-wrap gap-1.5 mb-3">' + tags.map(tg => '<span class="text-xs bg-gray-50 text-gray-600 border border-gray-200 px-2.5 py-0.5 rounded-full font-semibold">' + tg + '</span>').join('') + '</div>' : '')
-                +   '<div class="pt-2 border-t border-gray-50 mt-auto"><span class="text-xs font-bold text-emerald-600 flex items-center gap-1"><span class="iconify" data-icon="lucide:arrow-left-right"></span>' + t('show-more') + '</span></div>'
+                +   '<div class="pt-2 border-t border-gray-50 mt-auto"><span class="text-xs font-bold text-emerald-600 flex items-center gap-1"><span class="iconify" data-icon="lucide:chevrons-right"></span>' + t('details-btn') + '</span></div>'
                 + '</div>'
                 + '</div>';
         };
@@ -3194,7 +3194,7 @@ function facSetCat(cat) {
                     +   '</div>'
                     +   (f.description ? '<p class="text-sm text-gray-600 leading-relaxed mb-3 line-clamp-2">' + getLF(f,'description') + '</p>' : '')
                     +   (tags.length ? '<div class="flex flex-wrap gap-1.5 mb-3">' + tags.map(tg => '<span class="text-xs bg-' + m.col + '-50 text-' + m.col + '-700 border border-' + m.col + '-200 px-2.5 py-0.5 rounded-full font-semibold">' + tg + '</span>').join('') + '</div>' : '')
-                    +   '<div class="pt-2 border-t border-gray-50 mt-auto"><span class="text-xs font-bold text-emerald-600 flex items-center gap-1"><span class="iconify" data-icon="lucide:arrow-left-right"></span>' + t('show-more') + '</span></div>'
+                    +   '<div class="pt-2 border-t border-gray-50 mt-auto"><span class="text-xs font-bold text-emerald-600 flex items-center gap-1"><span class="iconify" data-icon="lucide:chevrons-right"></span>' + t('details-btn') + '</span></div>'
                     + '</div>'
                     + '</div>';
             }).join('');
@@ -3629,15 +3629,16 @@ async function renderArchives() {
             const lblOld = t('archive-yesterday'); const lblNew = t('archive-today');
             const aTitle = getLF(a,'title') || '';
             const aDesc  = getLF(a,'description') || '';
+            const safeTitle = encodeURIComponent(aTitle);
             if(archCat === 'compare' && hasOld && hasNew) {
                 return `<div class="bg-gray-800 rounded-xl overflow-hidden shadow-lg">
                     <div class="grid grid-cols-2 gap-0.5">
-                        <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_old_url}','${lblOld} — ${aTitle.replace(/'/g,"\\'")}')">
+                        <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_old_url}',decodeURIComponent('${encodeURIComponent(lblOld+' — '+aTitle)}'))">
                             <img src="${a.image_old_url}" class="w-full h-36 object-cover group-hover:scale-105 transition-transform duration-500">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                             <span class="absolute bottom-2 right-2 text-white text-[10px] font-bold bg-black/50 px-2 py-0.5 rounded-full">${lblOld}</span>
                         </div>
-                        <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_new_url}','${lblNew} — ${aTitle.replace(/'/g,"\\'")}')">
+                        <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_new_url}',decodeURIComponent('${encodeURIComponent(lblNew+' — '+aTitle)}'))">
                             <img src="${a.image_new_url}" class="w-full h-36 object-cover group-hover:scale-105 transition-transform duration-500">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                             <span class="absolute bottom-2 right-2 text-white text-[10px] font-bold bg-black/50 px-2 py-0.5 rounded-full">${lblNew}</span>
@@ -3650,7 +3651,7 @@ async function renderArchives() {
                 </div>`;
             } else {
                 const src = a.image_new_url || a.image_old_url || '';
-                return `<div class="cursor-pointer group relative overflow-hidden rounded-xl bg-gray-800 shadow-lg" onclick="openModalLightbox('${src}','${aTitle.replace(/'/g,"\\'")}')">
+                return `<div class="cursor-pointer group relative overflow-hidden rounded-xl bg-gray-800 shadow-lg" onclick="openModalLightbox('${src}',decodeURIComponent('${encodeURIComponent(aTitle)}'))">
                     <img src="${src}" alt="${aTitle}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                     <div class="absolute bottom-3 right-3 left-3">
@@ -3826,12 +3827,12 @@ async function loadArchivePreview() {
             return `
             <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100">
                 <div class="grid grid-cols-2">
-                    <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_old_url}','${lblOld} — ${aTitle.replace(/'/g,"\\'")}')">
+                    <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_old_url}',decodeURIComponent('${encodeURIComponent(lblOld+' — '+aTitle)}'))">
                         <img src="${a.image_old_url}" alt="${lblOld}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                         <span class="absolute bottom-2 right-2 text-white text-xs font-bold px-2 py-0.5 rounded-full bg-black/50">${lblOld}</span>
                     </div>
-                    <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_new_url}','${lblNew} — ${aTitle.replace(/'/g,"\\'")}')">
+                    <div class="relative cursor-pointer group overflow-hidden" onclick="openModalLightbox('${a.image_new_url}',decodeURIComponent('${encodeURIComponent(lblNew+' — '+aTitle)}'))">
                         <img src="${a.image_new_url}" alt="${lblNew}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                         <span class="absolute bottom-2 right-2 text-white text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-600/80">${lblNew}</span>
