@@ -12,16 +12,28 @@
   "dir": "rtl",
   "icons": [
     {
-      "src": "https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/192.png",
+      "src": "https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/192_any.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/512.png",
+      "src": "https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/512_any.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/192_maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/512_maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "categories": ["government", "utilities"],
