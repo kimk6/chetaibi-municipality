@@ -815,20 +815,20 @@
 ══════════════════════════════════════════ */
 @media (min-width: 768px) {
     .mayor-card-wrapper {
-        padding-left: 4%;
-        padding-right: 4%;
+        padding-left: 2%;
+        padding-right: 2%;
     }
 }
 @media (min-width: 1024px) {
     .mayor-card-wrapper {
-        padding-left: 7%;
-        padding-right: 7%;
+        padding-left: 4%;
+        padding-right: 4%;
     }
 }
 @media (min-width: 1280px) {
     .mayor-card-wrapper {
-        padding-left: 10%;
-        padding-right: 10%;
+        padding-left: 6%;
+        padding-right: 6%;
     }
 }
 /* تحسين الصورة الشخصية على الديسكتوب */
@@ -2145,8 +2145,7 @@ function toggleMoreNews(tab){
             const _lbl=(n.custom_label&&n.custom_label.trim())?(currentLang==='fr'&&n.custom_label_fr?n.custom_label_fr:n.custom_label):(currentLang==='fr'?_catFr[n.category]:_catAr[n.category])||'';
             const labelHtml=(n.category!=='official'&&_lbl)?`<span class="inline-block ${s.badge} text-xs font-bold px-3 py-1 rounded-full">${_lbl}</span>`:'';
             const showGrad=n.category!=='official';
-            const showImg=img&&n.category!=='official';
-            const card=`<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border ${pinBorder} relative cursor-pointer" onclick="openNewsModal(${n.id})">${showImg?`<div class="h-44 overflow-hidden relative">${pinBadge}<img src="${img}" alt="${nTitle}" class="w-full h-full object-cover">${showGrad?'<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>':''}</div>`:`<div class="h-44 bg-gradient-to-bl ${s.grad} flex items-center justify-center relative">${pinBadge}<span class="iconify text-white text-6xl" data-icon="${s.icon}"></span></div>`}<div class="p-4"><div class="flex items-center gap-2 mb-2 flex-wrap">${labelHtml}${pinLabel}</div><h4 class="font-bold text-gray-800 mb-2 leading-snug text-sm">${nTitle}</h4><p class="text-xs text-gray-500 mb-3 leading-relaxed">${(nContent||'').substring(0,90)}...</p><div class="flex items-center justify-between"><span class="text-xs text-gray-400 flex items-center gap-1"><span class="iconify" data-icon="lucide:calendar"></span>${n.date}</span><button onclick="openNewsModal(${n.id})" class="text-emerald-600 text-xs font-bold hover:text-emerald-700">${(currentLang==='fr' ? t('read-more')+' <span style="font-size:11px;">\u00bb</span>' : t('read-more')+' <span style="font-size:11px;">\u00bb</span>')}</button></div></div></article>`;
+            const card=`<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border ${pinBorder} relative cursor-pointer" onclick="openNewsModal(${n.id})">${img?`<div class="h-44 overflow-hidden relative">${pinBadge}<img src="${img}" alt="${nTitle}" class="w-full h-full object-cover">${showGrad?'<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>':''}</div>`:`<div class="h-44 bg-gradient-to-bl ${s.grad} flex items-center justify-center relative">${pinBadge}<span class="iconify text-white text-6xl" data-icon="${s.icon}"></span></div>`}<div class="p-4"><div class="flex items-center gap-2 mb-2 flex-wrap">${labelHtml}${pinLabel}</div><h4 class="font-bold text-gray-800 mb-2 leading-snug text-sm">${nTitle}</h4><p class="text-xs text-gray-500 mb-3 leading-relaxed">${(nContent||'').substring(0,90)}...</p><div class="flex items-center justify-between"><span class="text-xs text-gray-400 flex items-center gap-1"><span class="iconify" data-icon="lucide:calendar"></span>${n.date}</span><button onclick="openNewsModal(${n.id})" class="text-emerald-600 text-xs font-bold hover:text-emerald-700">${(currentLang==='fr' ? t('read-more')+' <span style="font-size:11px;">\u00bb</span>' : t('read-more')+' <span style="font-size:11px;">\u00bb</span>')}</button></div></div></article>`;
             grid.insertAdjacentHTML('beforeend', card);
         });
         grid.dataset.page = String(nextPage);
@@ -2695,13 +2694,11 @@ async function loadNews(){
                 const _cAr={official:'إعلان رسمي',activity:'نشاط بلدي',social:'ركن المجتمع'};
                 const _cFr={official:'Annonce officielle',activity:'Activité communale',social:'Coin citoyen'};
                 const _lb=(n.custom_label&&n.custom_label.trim())?(currentLang==='fr'&&n.custom_label_fr?n.custom_label_fr:n.custom_label):(currentLang==='fr'?_cFr[n.category]:_cAr[n.category])||'';
-                // إخفاء اسم التصنيف من بطاقات الإعلانات الرسمية
+                // إخفاء اسم التصنيف من بطاقات الإعلانات الرسمية فقط
                 const labelHtml=(n.category!=='official'&&_lb)?`<span class="inline-block ${s.badge} text-xs font-bold px-3 py-1 rounded-full">${_lb}</span>`:'';
                 const showGrad = n.category !== 'official';
-                // للإعلانات الرسمية: لا نعرض الصورة المميزة، نعرض الأيقونة بدلاً منها
-                const showImg = img && n.category !== 'official';
                 return `<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border ${pinBorder} relative cursor-pointer" onclick="openNewsModal(${n.id})">
-                    ${showImg?`<div class="h-44 overflow-hidden relative">${pinBadge}<img src="${img}" alt="${nTitle}" class="w-full h-full object-cover">${showGrad?'<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>':''}</div>`:`<div class="h-44 bg-gradient-to-bl ${s.grad} flex items-center justify-center relative">${pinBadge}<span class="iconify text-white text-6xl" data-icon="${s.icon}"></span></div>`}
+                    ${img?`<div class="h-44 overflow-hidden relative">${pinBadge}<img src="${img}" alt="${nTitle}" class="w-full h-full object-cover">${showGrad?'<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>':''}</div>`:`<div class="h-44 bg-gradient-to-bl ${s.grad} flex items-center justify-center relative">${pinBadge}<span class="iconify text-white text-6xl" data-icon="${s.icon}"></span></div>`}
                     <div class="p-4">
                         <div class="flex items-center gap-2 mb-2 flex-wrap">${labelHtml}${pinLabel}</div>
                         <h4 class="font-bold text-gray-800 mb-2 leading-snug text-sm">${nTitle}</h4>
@@ -3856,8 +3853,7 @@ async function renderOverlay() {
 
             // ── official / social: بطاقة بسيطة (بدون badge للإعلانات ولا صورة مميزة) ──
             const showGrad2 = overlayCat !== 'official';
-            const showImg2 = imgSrc && overlayCat !== 'official';
-            const imgHtml = showImg2
+            const imgHtml = imgSrc
                 ? `<div class="h-44 overflow-hidden relative"><img src="${imgSrc}" alt="${displayTitle}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">${showGrad2?'<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>':''}</div>`
                 : `<div class="h-44 bg-gradient-to-bl ${m.grad} flex items-center justify-center"><span class="iconify text-white text-6xl" data-icon="${m.icon}"></span></div>`;
             return `<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100 cursor-pointer" onclick="openNewsModal(${n.id})">
