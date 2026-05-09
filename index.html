@@ -248,6 +248,8 @@
             'tourism-more-btn':   'عرض المزيد من المعالم',
             'all-beaches-btn':    'جميع الشواطئ',
             'all-tourism-btn':    'جميع المعالم',
+            'tourism-more-show':  'عرض المزيد من المعالم',
+            'tourism-more-hide':  'إخفاء',
             'supervised-badge':   'مراقب',
             'unsupervised-badge': 'غير مراقب',
             'beach-type-sandy':   'رملي',
@@ -500,6 +502,8 @@
             'tourism-more-btn':   'Voir plus de sites',
             'all-beaches-btn':    'Toutes les plages',
             'all-tourism-btn':    'Tous les sites',
+            'tourism-more-show':  'Voir plus de sites',
+            'tourism-more-hide':  'Réduire',
             'supervised-badge':   'Surveillée',
             'unsupervised-badge': 'Non surveillée',
             'beach-type-sandy':   'Sableux',
@@ -2858,7 +2862,7 @@ function toggleMoreTourism(){
     tourismExpanded = !tourismExpanded;
     extra.classList.toggle('hidden', !tourismExpanded);
     icon.setAttribute('data-icon', tourismExpanded?'lucide:chevrons-up':'lucide:chevrons-down');
-    text.textContent = tourismExpanded?'إخفاء':'عرض المزيد من المعالم';
+    text.textContent = tourismExpanded ? t('tourism-more-hide') : t('tourism-more-show');
     const w=document.getElementById('all-tourism-wrap'); if(w) w.classList.remove('hidden');
 }
 
@@ -4333,13 +4337,13 @@ document.addEventListener('DOMContentLoaded', () => {
     ">
         <!-- أيقونة التطبيق -->
         <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/512_any.png"
-             style="width:48px;height:48px;border-radius:12px;flex-shrink:0;background:#fff;"
+             style="width:52px;height:52px;flex-shrink:0;background:transparent;"
              onerror="this.style.display='none'">
 
         <!-- النص -->
         <div style="flex:1;min-width:0;">
-            <p style="margin:0;font-size:13px;font-weight:800;color:#ffffff;line-height:1.3;">حمّل تطبيق بلدية شطايبي</p>
-            <p style="margin:2px 0 0 0;font-size:11px;color:rgba(255,255,255,0.75);line-height:1.3;">وصول سريع لجميع خدمات البلدية</p>
+            <p style="margin:0;font-size:13px;font-weight:800;color:#ffffff;line-height:1.3;">تطبيق بلدية شطايبي</p>
+            <p style="margin:2px 0 0 0;font-size:11px;color:rgba(255,255,255,0.75);line-height:1.3;">تابع جديدنا، اكتشف مدينتنا، وكن على تواصل دائم</p>
         </div>
 
         <!-- زر التثبيت -->
