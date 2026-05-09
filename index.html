@@ -687,22 +687,29 @@
         if (window._currentMayor && typeof applyMayorLang === 'function') applyMayorLang(window._currentMayor);
 
 function applyTimelineLang() {
-    if (window.innerWidth < 768) return;
     const isFr = currentLang === 'fr';
+    const isDesktop = window.innerWidth >= 768;
+
     document.querySelectorAll('.tl-row').forEach(row => {
         const cols = Array.from(row.children).filter(el => !el.classList.contains('timeline-dot-mobile'));
         if (cols.length !== 2) return;
         const [first, second] = cols;
+
         if (isFr) {
+            // عكس الترتيب على الديسكتوب والموبايل
             row.insertBefore(second, first);
-            first.style.paddingLeft  = '3rem';
-            first.style.paddingRight = '0';
-            second.style.paddingLeft  = '0';
-            second.style.paddingRight = '3rem';
+            if (isDesktop) {
+                // padding من جهة الخط = 3rem (48px = md:pl-12 في Tailwind)
+                first.style.paddingLeft   = '0';
+                first.style.paddingRight  = '3rem';
+                second.style.paddingLeft  = '3rem';
+                second.style.paddingRight = '0';
+            }
         } else {
+            // إعادة للأصل
             row.insertBefore(first, second);
-            first.style.paddingLeft  = '';
-            first.style.paddingRight = '';
+            first.style.paddingLeft   = '';
+            first.style.paddingRight  = '';
             second.style.paddingLeft  = '';
             second.style.paddingRight = '';
         }
