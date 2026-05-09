@@ -3005,7 +3005,9 @@ async function loadGuidePanel(tab) {
         }
 
         const renderCard = f => {
-            const tags   = Array.isArray(f.tags)   ? f.tags   : [];
+            const tags    = Array.isArray(f.tags)    ? f.tags    : [];
+            const tagsFr  = Array.isArray(f.tags_fr) ? f.tags_fr : (typeof f.tags_fr === 'string' && f.tags_fr ? f.tags_fr.split(',').map(x=>x.trim()).filter(Boolean) : []);
+            const displayTags = (currentLang === 'fr' && tagsFr.length) ? tagsFr : tags;
             const albums = Array.isArray(f.albums) ? f.albums : [];
             const hasImg = !!f.image_url;
             const hasAlbum = albums.length > 0;
@@ -3190,7 +3192,9 @@ function facSetCat(cat) {
             const items = data.success && data.data && data.data.length ? data.data : null;
             if (!items) { grid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-8 text-sm">لا توجد مرافق في هذا التصنيف بعد</p>'; return; }
             grid.innerHTML = items.map(f => {
-                const tags   = Array.isArray(f.tags)   ? f.tags   : [];
+                const tags    = Array.isArray(f.tags)    ? f.tags    : [];
+                const tagsFr  = Array.isArray(f.tags_fr) ? f.tags_fr : (typeof f.tags_fr === 'string' && f.tags_fr ? f.tags_fr.split(',').map(x=>x.trim()).filter(Boolean) : []);
+                const displayTags = (currentLang === 'fr' && tagsFr.length) ? tagsFr : tags;
                 const albums = Array.isArray(f.albums) ? f.albums : [];
                 const hasImg   = !!f.image_url;
                 const hasAlbum = albums.length > 0;
