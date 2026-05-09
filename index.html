@@ -686,6 +686,30 @@
         // ─── تحديث اسم واتجاه رئيس المجلس ───
         if (window._currentMayor && typeof applyMayorLang === 'function') applyMayorLang(window._currentMayor);
 
+function applyTimelineLang() {
+    if (window.innerWidth < 768) return;
+    const isFr = currentLang === 'fr';
+    document.querySelectorAll('.tl-row').forEach(row => {
+        const cols = Array.from(row.children).filter(el => !el.classList.contains('timeline-dot-mobile'));
+        if (cols.length !== 2) return;
+        const [first, second] = cols;
+        if (isFr) {
+            row.insertBefore(second, first);
+            first.style.paddingLeft  = '3rem';
+            first.style.paddingRight = '0';
+            second.style.paddingLeft  = '0';
+            second.style.paddingRight = '3rem';
+        } else {
+            row.insertBefore(first, second);
+            first.style.paddingLeft  = '';
+            first.style.paddingRight = '';
+            second.style.paddingLeft  = '';
+            second.style.paddingRight = '';
+        }
+    });
+}
+        applyTimelineLang();
+
         // ─── إعادة رسم العناصر الديناميكية ───
         reloadDynamicTranslations();
     }
@@ -782,19 +806,7 @@
         /* FR mobile: نقاط في اليسار */
         html[lang="fr"] .timeline-dot-mobile{right:auto!important;left:14px}
         @media(min-width:768px){html[lang="fr"] .timeline-dot-mobile{left:50%!important;right:auto!important;transform:translateX(-50%)!important;top:1.5rem!important;margin-top:0!important}}
-        /* FR desktop: عكس ترتيب البطاقات بدقة */
-        @media(min-width:768px){
-            html[lang="fr"] .tl-row { flex-direction: row-reverse; }
-            /* البطاقة الحقيقية: كانت تأخذ padding من الخط، تبقى كذلك بعد العكس */
-            html[lang="fr"] .tl-row .tl-card.md\:pl-12 {
-                padding-left: 0 !important;
-                padding-right: 3rem !important;
-            }
-            html[lang="fr"] .tl-row .tl-card.md\:pr-12 {
-                padding-right: 0 !important;
-                padding-left: 3rem !important;
-            }
-        }
+
         html[lang="fr"] #fac-modal-name,
         html[lang="fr"] #fac-modal-sub,
         html[lang="fr"] #fac-modal-desc { direction: ltr; text-align: left; }
@@ -1425,7 +1437,7 @@ html[dir="ltr"] article {
 
             <!-- بطاقة 1: العصر الروماني -->
             <div class="tl-row relative flex flex-col md:flex-row items-start mb-12 md:mb-16">
-                <div class="tl-card md:w-1/2 md:pl-12 pl-14 mb-4 md:mb-0 md:text-left">
+                <div class="md:w-1/2 md:pl-12 pl-14 mb-4 md:mb-0 md:text-left">
                     <div class="bg-white rounded-2xl p-6 shadow-lg border border-amber-100">
                         <div class="flex flex-wrap items-center gap-2 mb-3">
                             <span class="inline-block bg-amber-100 text-amber-700 text-xs font-bold px-3 py-1 rounded-full" data-i18n="era-roman-badge">العهد القديم — العصر الروماني</span>
@@ -1436,7 +1448,7 @@ html[dir="ltr"] article {
                     </div>
                 </div>
                 <div class="timeline-dot-mobile absolute right-[14px] md:right-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-amber-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
-                <div class="tl-ghost md:w-1/2 md:pr-12 hidden md:flex md:items-center md:justify-center">
+                <div class="md:w-1/2 md:pr-12 hidden md:flex md:items-center md:justify-center">
                     <div class="tl-era-label select-none text-center" style="opacity:0.10;line-height:1.15;font-family:'Cairo',sans-serif;" aria-hidden="true">
                         <div style="font-size:clamp(2.2rem,3.8vw,3.2rem);font-weight:900;color:#b45309;letter-spacing:-0.02em;" data-i18n="era-roman-title-short">تاكاتوا</div>
                         <div style="font-size:clamp(1.4rem,2.5vw,2rem);font-weight:800;color:#b45309;margin-top:0.15em;" data-i18n="era-roman-dates">القرن 1 — 5 م</div>
@@ -1446,14 +1458,14 @@ html[dir="ltr"] article {
 
             <!-- بطاقة 2: العهد الإسلامي والعثماني -->
             <div class="tl-row relative flex flex-col md:flex-row items-start mb-12 md:mb-16">
-                <div class="tl-ghost md:w-1/2 md:pl-12 hidden md:flex md:items-center md:justify-center">
+                <div class="md:w-1/2 md:pl-12 hidden md:flex md:items-center md:justify-center">
                     <div class="tl-era-label select-none text-center" style="opacity:0.10;line-height:1.15;font-family:'Cairo',sans-serif;" aria-hidden="true">
                         <div style="font-size:clamp(2.2rem,3.8vw,3.2rem);font-weight:900;color:#0f766e;letter-spacing:-0.02em;" data-i18n="era-ottoman-title-short">تكوش</div>
                         <div style="font-size:clamp(1.4rem,2.5vw,2rem);font-weight:800;color:#0f766e;margin-top:0.15em;" data-i18n="era-ottoman-dates">القرن 11 — 1830 م</div>
                     </div>
                 </div>
                 <div class="timeline-dot-mobile absolute right-[14px] md:right-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-teal-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
-                <div class="tl-card md:w-1/2 md:pr-12 pr-14 pl-0 md:pl-0">
+                <div class="md:w-1/2 md:pr-12 pr-14 pl-0 md:pl-0">
                     <div class="bg-white rounded-2xl p-6 shadow-lg border border-teal-100">
                         <div class="flex flex-wrap items-center gap-2 mb-3">
                             <span class="inline-block bg-teal-100 text-teal-700 text-xs font-bold px-3 py-1 rounded-full" data-i18n="era-ottoman-badge">العهد الإسلامي والعثماني</span>
@@ -1467,7 +1479,7 @@ html[dir="ltr"] article {
 
             <!-- بطاقة 3: العهد الاستعماري -->
             <div class="tl-row relative flex flex-col md:flex-row items-start mb-12 md:mb-16">
-                <div class="tl-card md:w-1/2 md:pl-12 pl-14 mb-4 md:mb-0 md:text-left">
+                <div class="md:w-1/2 md:pl-12 pl-14 mb-4 md:mb-0 md:text-left">
                     <div class="bg-white rounded-2xl p-6 shadow-lg border border-red-100">
                         <div class="flex flex-wrap items-center gap-2 mb-3">
                             <span class="inline-block bg-red-100 text-red-700 text-xs font-bold px-3 py-1 rounded-full" data-i18n="era-colonial-badge">العهد الاستعماري الفرنسي</span>
@@ -1478,7 +1490,7 @@ html[dir="ltr"] article {
                     </div>
                 </div>
                 <div class="timeline-dot-mobile absolute right-[14px] md:right-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-red-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
-                <div class="tl-ghost md:w-1/2 md:pr-12 hidden md:flex md:items-center md:justify-center">
+                <div class="md:w-1/2 md:pr-12 hidden md:flex md:items-center md:justify-center">
                     <div class="tl-era-label select-none text-center" style="opacity:0.10;line-height:1.15;font-family:'Cairo',sans-serif;" aria-hidden="true">
                         <div style="font-size:clamp(2.2rem,3.8vw,3.2rem);font-weight:900;color:#be123c;letter-spacing:-0.02em;" data-i18n="era-colonial-title-short">هيربيون</div>
                         <div style="font-size:clamp(1.4rem,2.5vw,2rem);font-weight:800;color:#be123c;margin-top:0.15em;" data-i18n="era-colonial-dates">1869 — 1962</div>
@@ -1488,14 +1500,14 @@ html[dir="ltr"] article {
 
             <!-- بطاقة 4: عهد الاستقلال -->
             <div class="tl-row relative flex flex-col md:flex-row items-start">
-                <div class="tl-ghost md:w-1/2 md:pl-12 hidden md:flex md:items-center md:justify-center">
+                <div class="md:w-1/2 md:pl-12 hidden md:flex md:items-center md:justify-center">
                     <div class="tl-era-label select-none text-center" style="opacity:0.10;line-height:1.15;font-family:'Cairo',sans-serif;" aria-hidden="true">
                         <div style="font-size:clamp(2.2rem,3.8vw,3.2rem);font-weight:900;color:#065f46;letter-spacing:-0.02em;" data-i18n="era-modern-title-short">شطايبي</div>
                         <div style="font-size:clamp(1.4rem,2.5vw,2rem);font-weight:800;color:#065f46;margin-top:0.15em;" data-i18n="era-modern-dates">منذ 1962 م</div>
                     </div>
                 </div>
                 <div class="timeline-dot-mobile absolute right-[14px] md:right-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-emerald-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
-                <div class="tl-card md:w-1/2 md:pr-12 pr-14 pl-0 md:pl-0">
+                <div class="md:w-1/2 md:pr-12 pr-14 pl-0 md:pl-0">
                     <div class="bg-white rounded-2xl p-6 shadow-lg border border-emerald-100">
                         <div class="flex flex-wrap items-center gap-2 mb-3">
                             <span class="inline-block bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full" data-i18n="era-modern-badge">عهد الاستقلال والجزائر الحديثة</span>
