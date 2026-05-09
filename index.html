@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
     <style>
-        #chetaibi-map { height: 420px; border-radius: 16px; z-index: 1; }
+        #chetaibi-map { height: 500px; border-radius: 16px; z-index: 1; }
         .leaflet-control-attribution { display: none !important; }
         .leaflet-control-attribution.leaflet-control { display: none !important; }
         .map-popup img { width: 100%; height: 80px; object-fit: cover; border-radius: 8px; margin-bottom: 6px; }
@@ -47,150 +47,6 @@
         .chetaibi-popup .leaflet-popup-close-button:hover { background: #374151 !important; }
     </style>
     <script>tailwind.config={theme:{extend:{fontFamily:{cairo:['Cairo','sans-serif']}}}}</script>
-    <style>
-    /* ═══════════════════════════════════════════════════
-       🎨 المرحلة الأولى — تحسينات بصرية احترافية
-       Typography · Color Accents · Cards · Sections
-    ═══════════════════════════════════════════════════ */
-
-    /* ── 1. وسم تعريفي خفيف فوق عناوين الأقسام ── */
-    .section-label {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 0.72rem;
-        font-weight: 800;
-        letter-spacing: 0.08em;
-        color: #059669;
-        background: #d1fae5;
-        padding: 4px 12px;
-        border-radius: 999px;
-        margin-bottom: 10px;
-    }
-
-    /* ── 2. خط تأكيد لوني أسفل عناوين الأقسام ── */
-    .accent-divider {
-        width: 52px;
-        height: 4px;
-        border-radius: 2px;
-        background: linear-gradient(90deg, #059669, #34d399);
-        margin: 10px auto 0;
-    }
-
-    /* ── 3. بطاقات الإحصائيات — نبضة خفيفة عند الحوم ── */
-    .stat-card { position: relative; overflow: hidden; }
-    .stat-card::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        opacity: 0;
-        border-radius: inherit;
-        background: radial-gradient(circle at 50% 0%, rgba(5,150,105,.09), transparent 70%);
-        transition: opacity .3s ease;
-    }
-    .stat-card:hover::before { opacity: 1; }
-
-    /* ── 4. بطاقات الطقس والبحر — أكثر نظافة ── */
-    .glass-card {
-        background: #ffffff !important;
-        border: 1px solid #e8f5f0 !important;
-        box-shadow: 0 4px 20px rgba(5,150,105,.08), 0 1px 4px rgba(0,0,0,.04) !important;
-    }
-
-    /* ── 5. tabs الأخبار — تحسين ── */
-    .news-tab { border-radius: 14px !important; transition: all .2s ease !important; }
-    .news-tab.active { box-shadow: 0 4px 16px rgba(5,150,105,.28) !important; }
-
-    /* ── 6. بطاقات الخدمات — حدود لونية خفية ── */
-    .service-card { border: 1.5px solid #f0fdf4 !important; border-radius: 20px !important; }
-    .service-card:hover { border-color: #a7f3d0 !important; }
-
-    /* ── 7. hero overlay — عمق أكبر ── */
-    .hero-overlay {
-        background: linear-gradient(160deg,
-            rgba(4,47,35,.90) 0%,
-            rgba(6,78,59,.70) 50%,
-            rgba(5,150,105,.48) 100%) !important;
-    }
-
-    /* ── 8. شريط التنقل — ظل أعمق ── */
-    #main-nav { box-shadow: 0 4px 20px rgba(4,47,35,.25) !important; }
-
-    /* ── 9. footer — خط علوي لوني ── */
-    #contact-footer { border-top: 3px solid #059669; }
-
-    /* ── 10. الخريطة — إطار أنيق ── */
-    #chetaibi-map {
-        border-radius: 20px !important;
-        box-shadow: 0 8px 32px rgba(4,47,35,.15) !important;
-        border: 2px solid #d1fae5 !important;
-    }
-
-    /* ── 11. popup الخريطة ── */
-    .chetaibi-popup .leaflet-popup-content-wrapper {
-        border: 1px solid #d1fae5 !important;
-    }
-
-    /* ── 12. بطاقات السياحة والشواطئ ── */
-    .tourism-card {
-        border-radius: 20px !important;
-        overflow: hidden;
-        box-shadow: 0 4px 16px rgba(0,0,0,.08) !important;
-        transition: transform .25s ease, box-shadow .25s ease !important;
-    }
-    .tourism-card:hover {
-        transform: translateY(-6px) !important;
-        box-shadow: 0 16px 40px rgba(5,150,105,.15) !important;
-    }
-
-    /* ── 12b. بطاقات الأخبار الديناميكية — ارتفاع موحد ── */
-    .news-dyn-card {
-        border-radius: 18px;
-        overflow: hidden;
-        background: #fff;
-        border: 1px solid #f0fdf4;
-        box-shadow: 0 2px 14px rgba(5,150,105,.07);
-        transition: transform .22s ease, box-shadow .22s ease;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-    }
-    .news-dyn-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 14px 36px rgba(5,150,105,.13);
-    }
-    .news-dyn-card .card-img-wrap {
-        height: 175px;
-        overflow: hidden;
-        flex-shrink: 0;
-        background: #f0fdf4;
-    }
-    .news-dyn-card .card-img-wrap img {
-        width: 100%; height: 100%;
-        object-fit: cover;
-        transition: transform .4s ease;
-    }
-    .news-dyn-card:hover .card-img-wrap img { transform: scale(1.06); }
-    .news-dyn-card .card-body {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        padding: 16px 18px 18px;
-    }
-
-    /* ── 13. scrollbar أنيق ── */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #f8fffe; }
-    ::-webkit-scrollbar-thumb {
-        background: linear-gradient(to bottom, #059669, #34d399);
-        border-radius: 3px;
-    }
-
-    /* ── 14. موبايل ── */
-    @media (max-width: 767px) {
-        .accent-divider { margin: 8px auto 0; }
-    }
-    </style>
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#059669">
@@ -290,11 +146,6 @@
             'tab-posters':        'صور وملصقات',
             'news-loading':       'جاري تحميل الأخبار...',
             'show-more':          'عرض المزيد',
-            'services-note-short':'بوابة الخدمات الرقمية',
-            'guide-label-short':  'مرافق وخدمات',
-            'map-label-short':    'استكشف تفاعلياً',
-            'tourism-label-short':'شواطئ ومعالم',
-            'era-roman-badge-short':'عبر العصور',
             'show-less':          'إخفاء',
             'all-announcements':  'جميع الإعلانات',
             'all-activities':     'جميع النشاطات',
@@ -560,11 +411,6 @@
             'tab-posters':        'Photos & Affiches',
             'news-loading':       'Chargement des actualités...',
             'show-more':          'Voir plus',
-            'services-note-short':'Portail numérique',
-            'guide-label-short':  'Équipements & services',
-            'map-label-short':    'Explorer la carte',
-            'tourism-label-short':'Plages & sites',
-            'era-roman-badge-short':'À travers les âges',
             'show-less':          'Masquer',
             'all-announcements':  'Toutes les annonces',
             'all-activities':     'Toutes les activités',
@@ -939,6 +785,13 @@
         /* FR desktop: عكس ترتيب البطاقات مع الحفاظ على التباعد */
         @media(min-width:768px){
             html[lang="fr"] .tl-row { flex-direction: row-reverse; }
+            /* صفوف 1 و3: البطاقة كانت pl-12 تصبح pr-12 بعد العكس */
+            html[lang="fr"] .tl-row > .tl-card:first-child { padding-left: 0 !important; padding-right: 3rem !important; }
+            /* صفوف 2 و4: البطاقة كانت pr-12 تصبح pl-12 بعد العكس */
+            html[lang="fr"] .tl-row > .tl-card:last-child  { padding-right: 0 !important; padding-left: 3rem !important; }
+            /* نفس الشيء للـ ghost */
+            html[lang="fr"] .tl-row > .tl-ghost:first-child { padding-left: 0 !important; padding-right: 3rem !important; }
+            html[lang="fr"] .tl-row > .tl-ghost:last-child  { padding-right: 0 !important; padding-left: 3rem !important; }
         }
         html[lang="fr"] #fac-modal-name,
         html[lang="fr"] #fac-modal-sub,
@@ -1107,7 +960,7 @@ html[dir="ltr"] article {
 </div>
 
 <!-- HEADER -->
-<header class="text-white py-3 relative overflow-hidden" style="background:linear-gradient(135deg,#042f1e 0%,#064e3b 50%,#042f1e 100%);border-bottom:2px solid rgba(251,191,36,0.4);">
+<header class="bg-gradient-to-l from-emerald-800 via-emerald-700 to-emerald-900 text-white py-3 relative overflow-hidden">
     <div class="absolute inset-0 opacity-10"><div class="absolute top-1 right-10 w-20 h-20 border border-white/30 rounded-full"></div><div class="absolute bottom-0 left-20 w-16 h-16 border border-white/20 rounded-full"></div></div>
     <div class="max-w-7xl mx-auto px-4 flex flex-col items-center justify-center relative z-10 text-center">
         <h1 class="text-sm md:text-lg font-bold tracking-wide whitespace-nowrap" data-i18n="republic-name">الجمهورية الجزائرية الديمقراطية الشعبية</h1>
@@ -1116,7 +969,7 @@ html[dir="ltr"] article {
 </header>
 
 <!-- ✅ 7: لوجو بدون حلقة خضراء -->
-<div style="background:#ffffff;border-bottom:1px solid #d1fae5;padding:16px 0;box-shadow:0 2px 12px rgba(5,150,105,0.06);">
+<div class="bg-white border-b border-emerald-100 py-4 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 flex items-center justify-center gap-3">
         <div class="w-[88px] h-[88px] md:w-[108px] md:h-[108px] rounded-full overflow-hidden shadow-lg flex-shrink-0">
             <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo.webp" alt="شعار البلدية" class="w-full h-full object-cover">
@@ -1129,7 +982,7 @@ html[dir="ltr"] article {
 </div>
 
 <!-- NAV -->
-<nav id="main-nav" class="sticky top-0 z-50" style="background:linear-gradient(90deg,#064e3b 0%,#059669 50%,#064e3b 100%);box-shadow:0 4px 20px rgba(4,47,35,.3),0 2px 0 rgba(251,191,36,.3);">
+<nav id="main-nav" class="bg-emerald-700 sticky top-0 z-50 shadow-lg">
     <div class="max-w-7xl mx-auto px-4">
         <div class="flex items-center justify-between h-14">
             <div class="hidden md:flex items-center justify-center flex-1 gap-1">
@@ -1180,24 +1033,23 @@ html[dir="ltr"] article {
 </nav>
 
 <!-- HERO -->
-<section id="home" class="relative min-h-[72vh] md:min-h-[78vh] flex items-center overflow-hidden">
+<section id="home" class="relative min-h-[65vh] md:min-h-[70vh] flex items-end overflow-hidden">
     <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/APC-Chetaibi.webp" alt="بلدية شطايبي" class="absolute inset-0 w-full h-full object-cover">
     <div class="hero-overlay absolute inset-0"></div>
-    <div class="relative z-10 max-w-7xl mx-auto px-4 pt-8 pb-12 text-white text-center w-full">
+    <div class="relative z-10 max-w-7xl mx-auto px-4 pt-16 pb-10 text-white text-center w-full">
         <div class="animate-fadeInUp">
-            <span class="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm text-sm md:text-base px-5 py-2 rounded-full mb-5 border border-white/25 shadow-lg">
-                <span class="iconify" data-icon="lucide:map-pin"></span>
-                <span data-i18n="hero-badge">ولاية عنابة - الجزائر</span>
+            <span class="inline-block bg-white/15 backdrop-blur-sm text-sm md:text-base px-5 py-2 rounded-full mb-5 border border-white/20">
+                <span class="iconify inline-block ml-1" data-icon="lucide:map-pin"></span> <span data-i18n="hero-badge">ولاية عنابة - الجزائر</span>
             </span>
         </div>
-        <h2 class="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-4 leading-tight animate-fadeInUp anim-delay-1" style="text-shadow:0 2px 20px rgba(0,0,0,.3);"><span data-i18n="hero-welcome">مرحباً بكم في</span><br><span class="text-amber-300 drop-shadow-lg" data-i18n="hero-city">شطايبي</span></h2>
-        <p class="text-xl md:text-2xl font-bold mb-1 max-w-2xl mx-auto text-white/95 animate-fadeInUp anim-delay-2" data-i18n="hero-tagline1">جوهرة الساحل الشرقي الجزائري</p>
-        <p class="text-base md:text-lg font-medium mb-8 max-w-xl mx-auto animate-fadeInUp anim-delay-2" style="color:rgba(255,255,255,0.65);" data-i18n="hero-tagline2">حيث تمتزج الطبيعة بالتاريخ</p>
+        <h2 class="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-4 leading-tight animate-fadeInUp anim-delay-1"><span data-i18n="hero-welcome">مرحباً بكم في</span><br><span class="text-amber-300 drop-shadow-lg" data-i18n="hero-city">شطايبي</span></h2>
+        <p class="text-xl md:text-3xl font-bold mb-2 max-w-2xl mx-auto text-white/95 animate-fadeInUp anim-delay-2" data-i18n="hero-tagline1">جوهرة الساحل الشرقي الجزائري</p>
+        <p class="text-lg md:text-xl font-bold mb-8 max-w-xl mx-auto text-white/85 animate-fadeInUp anim-delay-2" data-i18n="hero-tagline2">حيث تمتزج الطبيعة بالتاريخ</p>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3 animate-fadeInUp anim-delay-3 max-w-2xl mx-auto w-full">
-            <a href="#admin" onclick="setTimeout(()=>document.getElementById('admin').scrollIntoView({behavior:'smooth'}),100)" class="bg-white/80 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white transition-all text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-lg hover:shadow-xl hover:-translate-y-0.5 text-center"><span class="iconify text-base md:text-lg" data-icon="lucide:file-text"></span><span data-i18n="hero-btn-services">الخدمات الإدارية</span></a>
-            <a href="#beaches" class="bg-white/80 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white transition-all text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-lg hover:shadow-xl hover:-translate-y-0.5 text-center"><span class="iconify text-base md:text-lg" data-icon="lucide:compass"></span><span data-i18n="hero-btn-tourism">اكتشف السياحة</span></a>
-            <a href="#news" class="bg-white/80 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white transition-all text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-lg hover:shadow-xl hover:-translate-y-0.5 text-center"><span class="iconify text-base md:text-lg" data-icon="lucide:newspaper"></span><span data-i18n="hero-btn-news">آخر المستجدات</span></a>
-            <a href="#guide" class="bg-white/80 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white transition-all text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-lg hover:shadow-xl hover:-translate-y-0.5 text-center"><span class="iconify text-base md:text-lg" data-icon="lucide:map"></span><span data-i18n="hero-btn-guide">دليل شطايبي</span></a>
+            <a href="#admin" onclick="setTimeout(()=>document.getElementById('admin').scrollIntoView({behavior:'smooth'}),100)" class="bg-white/75 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white/85 transition-colors text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-md text-center"><span class="iconify text-base md:text-lg" data-icon="lucide:file-text"></span><span data-i18n="hero-btn-services">الخدمات الإدارية</span></a>
+            <a href="#beaches" class="bg-white/75 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white/85 transition-colors text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-md text-center"><span class="iconify text-base md:text-lg" data-icon="lucide:compass"></span><span data-i18n="hero-btn-tourism">اكتشف السياحة</span></a>
+            <a href="#news" class="bg-white/75 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white/85 transition-colors text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-md text-center"><span class="iconify text-base md:text-lg" data-icon="lucide:newspaper"></span><span data-i18n="hero-btn-news">آخر المستجدات</span></a>
+            <a href="#guide" class="bg-white/75 backdrop-blur-sm text-emerald-800 px-4 py-3 rounded-xl font-bold hover:bg-white/85 transition-colors text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-md text-center"><span class="iconify text-base md:text-lg" data-icon="lucide:map"></span><span data-i18n="hero-btn-guide">دليل شطايبي</span></a>
         </div>
     </div>
 </section>
@@ -1205,27 +1057,9 @@ html[dir="ltr"] article {
 <!-- WIDGETS & STATS -->
 <section class="relative z-20 max-w-7xl mx-auto px-4 mt-8 mb-10">
     <div class="grid grid-cols-3 gap-3 sm:gap-5 mb-6">
-        <div class="stat-card bg-gradient-to-br from-emerald-50 to-white rounded-2xl p-3 sm:p-6 shadow-lg border-2 border-emerald-200 text-center hover:shadow-xl hover:border-emerald-300 transition-all">
-            <div class="w-10 h-10 sm:w-16 sm:h-16 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-2 sm:mb-4 shadow-md">
-                <span class="iconify text-white text-xl sm:text-3xl" data-icon="lucide:maximize-2"></span>
-            </div>
-            <p class="text-xl sm:text-3xl font-extrabold text-emerald-700">134</p>
-            <p class="text-[11px] sm:text-sm text-gray-500 font-semibold mt-1" data-i18n="stat-area">كم² المساحة</p>
-        </div>
-        <div class="stat-card bg-gradient-to-br from-blue-50 to-white rounded-2xl p-3 sm:p-6 shadow-lg border-2 border-blue-200 text-center hover:shadow-xl hover:border-blue-300 transition-all">
-            <div class="w-10 h-10 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-2 sm:mb-4 shadow-md">
-                <span class="iconify text-white text-xl sm:text-3xl" data-icon="lucide:users"></span>
-            </div>
-            <p class="text-xl sm:text-3xl font-extrabold text-blue-700">8,767</p>
-            <p class="text-[11px] sm:text-sm text-gray-500 font-semibold mt-1" data-i18n="stat-pop">نسمة السكان</p>
-        </div>
-        <div class="stat-card bg-gradient-to-br from-amber-50 to-white rounded-2xl p-3 sm:p-6 shadow-lg border-2 border-amber-200 text-center hover:shadow-xl hover:border-amber-300 transition-all">
-            <div class="w-10 h-10 sm:w-16 sm:h-16 bg-gradient-to-br from-amber-400 to-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-2 sm:mb-4 shadow-md">
-                <span class="iconify text-white text-xl sm:text-3xl" data-icon="lucide:mail"></span>
-            </div>
-            <p class="text-xl sm:text-3xl font-extrabold text-amber-700">23014</p>
-            <p class="text-[11px] sm:text-sm text-gray-500 font-semibold mt-1" data-i18n="stat-postal">الرمز البريدي</p>
-        </div>
+        <div class="stat-card bg-emerald-50 rounded-2xl p-3 sm:p-6 shadow-lg border border-emerald-200 text-center hover:shadow-xl"><div class="w-10 h-10 sm:w-16 sm:h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-2 sm:mb-4"><span class="iconify text-emerald-600 text-xl sm:text-3xl" data-icon="lucide:maximize-2"></span></div><p class="text-xl sm:text-3xl font-extrabold text-emerald-700">134</p><p class="text-[11px] sm:text-sm text-gray-500 font-semibold mt-1" data-i18n="stat-area">كم² المساحة</p></div>
+        <div class="stat-card bg-blue-50 rounded-2xl p-3 sm:p-6 shadow-lg border border-blue-200 text-center hover:shadow-xl"><div class="w-10 h-10 sm:w-16 sm:h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-2 sm:mb-4"><span class="iconify text-blue-600 text-xl sm:text-3xl" data-icon="lucide:users"></span></div><p class="text-xl sm:text-3xl font-extrabold text-blue-700">8,767</p><p class="text-[11px] sm:text-sm text-gray-500 font-semibold mt-1" data-i18n="stat-pop">نسمة السكان</p></div>
+        <div class="stat-card bg-amber-50 rounded-2xl p-3 sm:p-6 shadow-lg border border-amber-200 text-center hover:shadow-xl"><div class="w-10 h-10 sm:w-16 sm:h-16 bg-amber-100 rounded-2xl flex items-center justify-center mx-auto mb-2 sm:mb-4"><span class="iconify text-amber-600 text-xl sm:text-3xl" data-icon="lucide:mail"></span></div><p class="text-xl sm:text-3xl font-extrabold text-amber-700">23014</p><p class="text-[11px] sm:text-sm text-gray-500 font-semibold mt-1" data-i18n="stat-postal">الرمز البريدي</p></div>
     </div>
 
     <!-- ✅ 1: WEATHER — ذكي نهار/ليل -->
@@ -1382,8 +1216,8 @@ html[dir="ltr"] article {
 
     <!-- رئيس المجلس -->
     <div class="mayor-card-wrapper">
-    <div id="mayor-card" class="rounded-2xl p-6 md:p-10 text-white flex flex-col md:flex-row items-center gap-6 md:gap-10" style="background:linear-gradient(135deg,#064e3b 0%,#065f46 40%,#047857 100%);box-shadow:0 20px 60px rgba(4,47,35,.35),0 0 0 1px rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);">
-        <div id="mayor-photo-wrap" class="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden" style="border:4px solid rgba(251,191,36,.5);box-shadow:0 0 0 2px rgba(251,191,36,.15),0 8px 24px rgba(0,0,0,.2);">
+    <div id="mayor-card" class="bg-gradient-to-l from-emerald-700 to-emerald-800 rounded-2xl p-6 md:p-10 shadow-xl text-white flex flex-col md:flex-row items-center gap-6 md:gap-10">
+        <div id="mayor-photo-wrap" class="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border-4 border-white/30">
             <span id="mayor-photo-placeholder" class="iconify text-4xl text-white" data-icon="lucide:user-circle"></span>
             <img id="mayor-photo" src="" alt="" class="hidden w-full h-full object-cover">
         </div>
@@ -1403,13 +1237,11 @@ html[dir="ltr"] article {
 </section>
 
 <!-- NEWS -->
-<section id="news" class="pt-10 pb-6" style="background:linear-gradient(180deg,#f0fdf4 0%,#ecfdf5 100%);border-top:4px solid #10b981;">
+<section id="news" class="pt-10 pb-6" style="background-color:#f0fdf4;">
     <div class="max-w-7xl mx-auto px-4">
         <div class="text-center mb-12">
-            <span class="section-label"><span class="iconify" data-icon="lucide:newspaper"></span><span data-i18n="nav-news">أخبار وإعلانات</span></span>
-            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3" data-i18n="news-section-title">آخر المستجدات</h2>
-            <div class="accent-divider mb-4"></div>
-            <p class="text-gray-500 max-w-xl mx-auto text-base" data-i18n="news-section-sub">أحدث الأخبار والإعلانات الرسمية ونشاطات البلدية</p>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 flex items-center justify-center gap-3"><span class="iconify text-emerald-600" data-icon="lucide:newspaper"></span><span data-i18n="news-section-title">آخر المستجدات</span></h2>
+            <p class="text-gray-500 max-w-xl mx-auto" data-i18n="news-section-sub">أحدث الأخبار والإعلانات الرسمية ونشاطات البلدية</p>
         </div>
         <div class="grid grid-cols-2 md:flex md:flex-wrap md:justify-center gap-3 mb-10">
             <button onclick="switchNewsTab('announcements')" id="tab-announcements" class="news-tab active py-2.5 px-3 md:px-5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-1.5 min-w-0 flex-shrink-0"><span class="iconify text-base flex-shrink-0" data-icon="lucide:megaphone"></span><span class="whitespace-nowrap text-[11px] md:text-sm" data-i18n="tab-announcements"> إعلانات رسمية</span></button>
@@ -1460,21 +1292,18 @@ html[dir="ltr"] article {
         </div>
     </div>
 </section>
-<!-- فاصل موجي: المستجدات → الخدمات -->
-<div aria-hidden="true" style="background:#f0fdf4;line-height:0;margin:0;padding:0;">
-    <svg viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="display:block;width:100%;height:40px;">
-        <path d="M0,20 C240,40 480,0 720,20 C960,40 1200,0 1440,20 L1440,40 L0,40 Z" fill="#ffffff"/>
-    </svg>
-</div>
+<!-- فاصل تلاشي: المستجدات → الخدمات الإدارية -->
+<div aria-hidden="true" style="height:32px;background:linear-gradient(to bottom,#f0fdf4,#ffffff);display:block;margin:0;padding:0;line-height:0;"></div>
 
 <!-- ADMIN / SERVICES -->
-<section id="admin" class="pt-0 pb-14 bg-white relative fade-into-archive" style="border-top:4px solid #059669;">
+<section id="admin" class="pt-6 pb-14 bg-white relative fade-into-archive">
     <div class="max-w-7xl mx-auto px-4 relative z-10">
         <div class="text-center mb-4">
-            <span class="section-label"><span class="iconify" data-icon="lucide:landmark"></span><span data-i18n="services-note-short">بوابة الخدمات الرقمية</span></span>
-            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2" data-i18n="services-title">الخدمات الإدارية</h2>
-            <div class="accent-divider mb-4"></div>
-            <p class="text-gray-500 max-w-xl mx-auto text-base" data-i18n="services-sub">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 flex items-center justify-center gap-3">
+                <span class="iconify text-emerald-600" data-icon="lucide:landmark"></span>
+                <span data-i18n="services-title">الخدمات الإدارية</span>
+            </h2>
+            <p class="text-gray-500 max-w-xl mx-auto" data-i18n="services-sub">
                 بوابة الخدمات الإلكترونية والوثائق الإدارية
             </p>
         </div>
@@ -1563,7 +1392,7 @@ html[dir="ltr"] article {
 </style>
 
 <!-- ARCHIVE -->
-<section id="archive" style="border-top:4px solid #d97706;" class="py-14 relative archive-top-fade fade-into-guide" style="background-color:#f5ede0;">
+<section id="archive" class="py-14 relative archive-top-fade fade-into-guide" style="background-color:#f5ede0;">
     <!-- أيقونات باهتة تاريخية في الخلفية -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none z-0" aria-hidden="true">
         <!-- صف علوي -->
@@ -1586,9 +1415,7 @@ html[dir="ltr"] article {
     </div>
     <div class="max-w-7xl mx-auto px-4 relative z-10">
         <div class="text-center mb-16">
-            <span class="section-label" style="color:#92400e;background:#fef3c7;border:1px solid #fde68a;"><span class="iconify" data-icon="lucide:scroll-text"></span><span data-i18n="era-roman-badge-short">عبر العصور</span></span>
-            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2" data-i18n="archive-title">تاريخ شطايبي</h2>
-            <div class="accent-divider mb-4" style="background:linear-gradient(90deg,#d97706,#fbbf24);"></div>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 flex items-center justify-center gap-3"><span class="iconify text-amber-500" data-icon="lucide:scroll-text"></span><span data-i18n="archive-title">تاريخ شطايبي</span></h2>
             <p class="text-gray-500 max-w-2xl mx-auto" data-i18n="archive-sub">استعراض للمحطات التاريخية الكبرى التي شكلت مسار المنطقة عبر العصور</p>
         </div>
         <div class="relative max-w-4xl mx-auto mb-20">
@@ -1596,7 +1423,7 @@ html[dir="ltr"] article {
 
             <!-- بطاقة 1: العصر الروماني -->
             <div class="tl-row relative flex flex-col md:flex-row items-start mb-12 md:mb-16">
-                <div class="md:w-1/2 md:pl-12 pl-14 mb-4 md:mb-0 md:text-left">
+                <div class="tl-card md:w-1/2 md:pl-12 pl-14 mb-4 md:mb-0 md:text-left">
                     <div class="bg-white rounded-2xl p-6 shadow-lg border border-amber-100">
                         <div class="flex flex-wrap items-center gap-2 mb-3">
                             <span class="inline-block bg-amber-100 text-amber-700 text-xs font-bold px-3 py-1 rounded-full" data-i18n="era-roman-badge">العهد القديم — العصر الروماني</span>
@@ -1607,7 +1434,7 @@ html[dir="ltr"] article {
                     </div>
                 </div>
                 <div class="timeline-dot-mobile absolute right-[14px] md:right-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-amber-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
-                <div class="md:w-1/2 md:pr-12 hidden md:flex md:items-center md:justify-center">
+                <div class="tl-ghost md:w-1/2 md:pr-12 hidden md:flex md:items-center md:justify-center">
                     <div class="tl-era-label select-none text-center" style="opacity:0.10;line-height:1.15;font-family:'Cairo',sans-serif;" aria-hidden="true">
                         <div style="font-size:clamp(2.2rem,3.8vw,3.2rem);font-weight:900;color:#b45309;letter-spacing:-0.02em;" data-i18n="era-roman-title-short">تاكاتوا</div>
                         <div style="font-size:clamp(1.4rem,2.5vw,2rem);font-weight:800;color:#b45309;margin-top:0.15em;" data-i18n="era-roman-dates">القرن 1 — 5 م</div>
@@ -1617,14 +1444,14 @@ html[dir="ltr"] article {
 
             <!-- بطاقة 2: العهد الإسلامي والعثماني -->
             <div class="tl-row relative flex flex-col md:flex-row items-start mb-12 md:mb-16">
-                <div class="md:w-1/2 md:pl-12 hidden md:flex md:items-center md:justify-center">
+                <div class="tl-ghost md:w-1/2 md:pl-12 hidden md:flex md:items-center md:justify-center">
                     <div class="tl-era-label select-none text-center" style="opacity:0.10;line-height:1.15;font-family:'Cairo',sans-serif;" aria-hidden="true">
                         <div style="font-size:clamp(2.2rem,3.8vw,3.2rem);font-weight:900;color:#0f766e;letter-spacing:-0.02em;" data-i18n="era-ottoman-title-short">تكوش</div>
                         <div style="font-size:clamp(1.4rem,2.5vw,2rem);font-weight:800;color:#0f766e;margin-top:0.15em;" data-i18n="era-ottoman-dates">القرن 11 — 1830 م</div>
                     </div>
                 </div>
                 <div class="timeline-dot-mobile absolute right-[14px] md:right-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-teal-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
-                <div class="md:w-1/2 md:pr-12 pr-14 pl-0 md:pl-0">
+                <div class="tl-card md:w-1/2 md:pr-12 pr-14 pl-0 md:pl-0">
                     <div class="bg-white rounded-2xl p-6 shadow-lg border border-teal-100">
                         <div class="flex flex-wrap items-center gap-2 mb-3">
                             <span class="inline-block bg-teal-100 text-teal-700 text-xs font-bold px-3 py-1 rounded-full" data-i18n="era-ottoman-badge">العهد الإسلامي والعثماني</span>
@@ -1638,7 +1465,7 @@ html[dir="ltr"] article {
 
             <!-- بطاقة 3: العهد الاستعماري -->
             <div class="tl-row relative flex flex-col md:flex-row items-start mb-12 md:mb-16">
-                <div class="md:w-1/2 md:pl-12 pl-14 mb-4 md:mb-0 md:text-left">
+                <div class="tl-card md:w-1/2 md:pl-12 pl-14 mb-4 md:mb-0 md:text-left">
                     <div class="bg-white rounded-2xl p-6 shadow-lg border border-red-100">
                         <div class="flex flex-wrap items-center gap-2 mb-3">
                             <span class="inline-block bg-red-100 text-red-700 text-xs font-bold px-3 py-1 rounded-full" data-i18n="era-colonial-badge">العهد الاستعماري الفرنسي</span>
@@ -1649,7 +1476,7 @@ html[dir="ltr"] article {
                     </div>
                 </div>
                 <div class="timeline-dot-mobile absolute right-[14px] md:right-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-red-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
-                <div class="md:w-1/2 md:pr-12 hidden md:flex md:items-center md:justify-center">
+                <div class="tl-ghost md:w-1/2 md:pr-12 hidden md:flex md:items-center md:justify-center">
                     <div class="tl-era-label select-none text-center" style="opacity:0.10;line-height:1.15;font-family:'Cairo',sans-serif;" aria-hidden="true">
                         <div style="font-size:clamp(2.2rem,3.8vw,3.2rem);font-weight:900;color:#be123c;letter-spacing:-0.02em;" data-i18n="era-colonial-title-short">هيربيون</div>
                         <div style="font-size:clamp(1.4rem,2.5vw,2rem);font-weight:800;color:#be123c;margin-top:0.15em;" data-i18n="era-colonial-dates">1869 — 1962</div>
@@ -1659,14 +1486,14 @@ html[dir="ltr"] article {
 
             <!-- بطاقة 4: عهد الاستقلال -->
             <div class="tl-row relative flex flex-col md:flex-row items-start">
-                <div class="md:w-1/2 md:pl-12 hidden md:flex md:items-center md:justify-center">
+                <div class="tl-ghost md:w-1/2 md:pl-12 hidden md:flex md:items-center md:justify-center">
                     <div class="tl-era-label select-none text-center" style="opacity:0.10;line-height:1.15;font-family:'Cairo',sans-serif;" aria-hidden="true">
                         <div style="font-size:clamp(2.2rem,3.8vw,3.2rem);font-weight:900;color:#065f46;letter-spacing:-0.02em;" data-i18n="era-modern-title-short">شطايبي</div>
                         <div style="font-size:clamp(1.4rem,2.5vw,2rem);font-weight:800;color:#065f46;margin-top:0.15em;" data-i18n="era-modern-dates">منذ 1962 م</div>
                     </div>
                 </div>
                 <div class="timeline-dot-mobile absolute right-[14px] md:right-auto md:left-1/2 md:-translate-x-1/2 w-[20px] h-[20px] bg-emerald-500 rounded-full border-4 border-white shadow-md z-10 mt-6"></div>
-                <div class="md:w-1/2 md:pr-12 pr-14 pl-0 md:pl-0">
+                <div class="tl-card md:w-1/2 md:pr-12 pr-14 pl-0 md:pl-0">
                     <div class="bg-white rounded-2xl p-6 shadow-lg border border-emerald-100">
                         <div class="flex flex-wrap items-center gap-2 mb-3">
                             <span class="inline-block bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full" data-i18n="era-modern-badge">عهد الاستقلال والجزائر الحديثة</span>
@@ -1703,12 +1530,10 @@ html[dir="ltr"] article {
 </section>
 
 <!-- GUIDE + MAP unified section with icon pattern background -->
-<section id="guide" style="border-top:4px solid #059669;" class="py-14 city-index-bg relative">
+<section id="guide" class="py-14 city-index-bg relative">
     <div class="max-w-7xl mx-auto px-4 relative z-10">
         <div class="text-center mb-10">
-            <span class="section-label"><span class="iconify" data-icon="lucide:map-pin"></span><span data-i18n="guide-label-short">مرافق وخدمات</span></span>
-            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3" data-i18n="guide-title">دليل شطايبي</h2>
-            <div class="accent-divider mb-4"></div>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 flex items-center justify-center gap-3"><span class="iconify text-emerald-600" data-icon="lucide:map-pin"></span><span data-i18n="guide-title">دليل شطايبي</span></h2>
             <p class="text-gray-500 max-w-2xl mx-auto" data-i18n="guide-sub">دليل شامل يضم الفروع الإدارية والمؤسسات التعليمية والصحية والخدماتية، إلى جانب مختلف المرافق الاجتماعية في شطايبي</p>
         </div>
         <!-- تبويبات الدليل -->
@@ -1779,10 +1604,11 @@ html[dir="ltr"] article {
 <section id="map-section" class="pb-0 pt-0 city-index-bg">
     <div class="max-w-7xl mx-auto px-4 pb-14 relative z-10">
         <div class="text-center mb-10">
-            <span class="section-label"><span class="iconify" data-icon="lucide:map"></span><span data-i18n="map-label-short">استكشف تفاعلياً</span></span>
-            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2" data-i18n="map-title">خريطة شطايبي</h2>
-            <div class="accent-divider mb-4"></div>
-            <p class="text-gray-500 max-w-2xl mx-auto text-base" data-i18n="map-sub">استكشف مرافق وشواطئ ومعالم شطايبي على الخريطة التفاعلية</p>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 flex items-center justify-center gap-3">
+                <span class="iconify text-emerald-600" data-icon="lucide:map"></span>
+                <span data-i18n="map-title">خريطة شطايبي</span>
+            </h2>
+            <p class="text-gray-500 max-w-2xl mx-auto" data-i18n="map-sub">استكشف مرافق وشواطئ ومعالم شطايبي على الخريطة التفاعلية</p>
         </div>
         <!-- مفتاح الألوان -->
         <div class="text-center mb-3">
@@ -1818,7 +1644,7 @@ html[dir="ltr"] article {
     </div>
 </section>
 
-<section id="beaches" style="border-top:4px solid #0ea5e9;" class="pt-0 pb-14 bg-gradient-to-b from-sky-900 via-emerald-900 to-teal-900 relative overflow-hidden">
+<section id="beaches" class="pt-0 pb-14 bg-gradient-to-b from-sky-900 via-emerald-900 to-teal-900 relative overflow-hidden">
     <!-- موجة فاصلة في الأعلى — لونها يطابق city-index-bg -->
     <div class="w-full overflow-hidden leading-[0] -mt-1">
         <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="block w-full" style="height:60px;">
@@ -1834,10 +1660,11 @@ html[dir="ltr"] article {
     <div class="max-w-7xl mx-auto px-4 relative z-10 pt-4">
         <!-- العنوان الكبير -->
         <div class="text-center mb-12">
-            <span class="section-label" style="color:#fff;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);"><span class="iconify" data-icon="lucide:sun"></span><span data-i18n="tourism-label-short">شواطئ ومعالم</span></span>
-            <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-2" data-i18n="tourism-title">السياحة في شطايبي</h2>
-            <div class="accent-divider mb-4" style="background:linear-gradient(90deg,#fbbf24,#f59e0b);"></div>
-            <p class="text-white/70 max-w-2xl mx-auto text-base" data-i18n="tourism-sub">نافذة على التنوع الطبيعي والإرث السياحي المتميز لمنطقة شطايبي</p>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-3 flex items-center justify-center gap-3">
+                <span class="iconify text-amber-300" data-icon="lucide:sun"></span>
+                <span data-i18n="tourism-title">السياحة في شطايبي</span>
+            </h2>
+            <p class="text-white/70 max-w-2xl mx-auto" data-i18n="tourism-sub">نافذة على التنوع الطبيعي والإرث السياحي المتميز لمنطقة شطايبي</p>
         </div>
 
         <!-- ── الشواطئ ── -->
@@ -2905,21 +2732,15 @@ async function loadNews(){
                 // إخفاء اسم التصنيف من بطاقات الإعلانات الرسمية فقط
                 const labelHtml=(n.category!=='official'&&_lb)?`<span class="inline-block ${s.badge} text-xs font-bold px-3 py-1 rounded-full">${_lb}</span>`:'';
                 const showGrad = n.category !== 'official';
-                return `<article class="news-dyn-card ${pinBorder==='border-emerald-300 ring-1 ring-emerald-200'?'ring-1 ring-emerald-200':''} relative cursor-pointer" onclick="openNewsModal(${n.id})">
-                    <div class="card-img-wrap relative">
-                        ${pinBadge}
-                        ${img
-                            ? `<img src="${img}" alt="${nTitle}" loading="lazy">${showGrad?'<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.35),transparent);"></div>':''}`
-                            : `<div style="height:100%;background:linear-gradient(135deg,var(--g1,#064e3b),var(--g2,#059669));display:flex;align-items:center;justify-content:center;"><span class="iconify text-white" style="font-size:3.5rem;" data-icon="${s.icon}"></span></div>`
-                        }
-                    </div>
-                    <div class="card-body">
+                return `<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border ${pinBorder} relative cursor-pointer" onclick="openNewsModal(${n.id})">
+                    ${img?`<div class="h-44 overflow-hidden relative">${pinBadge}<img src="${img}" alt="${nTitle}" class="w-full h-full object-cover">${showGrad?'<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>':''}</div>`:`<div class="h-44 bg-gradient-to-bl ${s.grad} flex items-center justify-center relative">${pinBadge}<span class="iconify text-white text-6xl" data-icon="${s.icon}"></span></div>`}
+                    <div class="p-4">
                         <div class="flex items-center gap-2 mb-2 flex-wrap">${labelHtml}${pinLabel}</div>
-                        <h4 class="font-bold text-gray-800 mb-2 leading-snug" style="font-size:0.875rem;line-height:1.45;">${nTitle}</h4>
-                        <p class="text-xs text-gray-500 leading-relaxed" style="flex:1;margin-bottom:12px;">${(nContent||'').substring(0,95)}…</p>
-                        <div class="flex items-center justify-between" style="margin-top:auto;padding-top:10px;border-top:1px solid #f0fdf4;">
+                        <h4 class="font-bold text-gray-800 mb-2 leading-snug text-sm">${nTitle}</h4>
+                        <p class="text-xs text-gray-500 mb-3 leading-relaxed">${(nContent||'').substring(0,90)}...</p>
+                        <div class="flex items-center justify-between">
                             <span class="text-xs text-gray-400 flex items-center gap-1"><span class="iconify" data-icon="lucide:calendar"></span>${n.date}</span>
-                            <span class="text-emerald-600 text-xs font-bold">${t('read-more')} »</span>
+                            <button onclick="openNewsModal(${n.id})" class="text-emerald-600 text-xs font-bold hover:text-emerald-700">${(currentLang==='fr' ? t('read-more')+' <span style="font-size:11px;">\u00bb</span>' : t('read-more')+' <span style="font-size:11px;">\u00bb</span>')}</button>
                         </div>
                     </div>
                 </article>`;
@@ -4595,60 +4416,55 @@ document.addEventListener('DOMContentLoaded', () => {
         margin: 0 12px 12px 12px;
         background: linear-gradient(135deg, #064e3b 0%, #065f46 60%, #059669 100%);
         border-radius: 20px;
-        padding: 10px 14px 14px 14px;
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
         box-shadow: 0 -2px 40px rgba(6,78,59,0.25), 0 8px 32px rgba(0,0,0,0.15);
         animation: bannerSlideUp 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards;
-        position: relative;
     ">
-        <!-- زر الإغلاق: أعلى اليسار -->
+        <!-- أيقونة التطبيق -->
+        <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/512_any.png"
+             style="width:52px;height:52px;flex-shrink:0;background:transparent;"
+             onerror="this.style.display='none'">
+
+        <!-- النص -->
+        <div style="flex:1;min-width:0;">
+            <p style="margin:0;font-size:13px;font-weight:800;color:#ffffff;line-height:1.3;" id="banner-title">تطبيق بلدية شطايبي</p>
+            <p style="margin:2px 0 0 0;font-size:11px;color:rgba(255,255,255,0.75);line-height:1.3;" id="banner-sub">تابع جديدنا، اكتشف مدينتنا، وكن على تواصل دائم</p>
+        </div>
+
+        <!-- زر التثبيت -->
+        <button id="install-btn" style="
+            background: #ffffff;
+            color: #064e3b;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            white-space: nowrap;
+            font-family: 'Cairo', sans-serif;
+            flex-shrink: 0;
+            transition: transform 0.1s;
+        " onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">
+            <span id="banner-btn">حمّله الآن</span>
+        </button>
+
+        <!-- زر الإغلاق -->
         <button onclick="dismissBanner()" style="
-            position: absolute;
-            top: 6px;
-            left: 6px;
             background: rgba(255,255,255,0.15);
             border: none;
-            color: rgba(255,255,255,0.85);
-            width: 17px; height: 17px;
+            color: rgba(255,255,255,0.8);
+            width: 28px; height: 28px;
             border-radius: 50%;
-            font-size: 9px;
+            font-size: 14px;
             cursor: pointer;
             display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
             line-height: 1;
         ">✕</button>
-
-        <!-- صف: أيقونة + نص + زر -->
-        <div style="display:flex; align-items:center; gap:12px; padding-top:6px;">
-
-            <!-- أيقونة التطبيق -->
-            <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/512_any.png"
-                 style="width:50px;height:50px;flex-shrink:0;background:transparent;border-radius:12px;"
-                 onerror="this.style.display='none'">
-
-            <!-- النص -->
-            <div style="flex:1;min-width:0;">
-                <p style="margin:0;font-size:13px;font-weight:800;color:#ffffff;line-height:1.3;" id="banner-title">تطبيق بلدية شطايبي</p>
-                <p style="margin:2px 0 0 0;font-size:12.5px;color:rgba(255,255,255,0.75);line-height:1.4;" id="banner-sub">تابِع جديدنا، اكتشِف مدينتنا، وابقَ على تواصل</p>
-            </div>
-
-            <!-- زر التثبيت — جهة اليسار وسط البانر -->
-            <button id="install-btn" style="
-                background: #ffffff;
-                color: #064e3b;
-                border: none;
-                padding: 8px 16px;
-                border-radius: 10px;
-                font-size: 12px;
-                font-weight: 800;
-                cursor: pointer;
-                white-space: nowrap;
-                font-family: 'Cairo', sans-serif;
-                transition: transform 0.1s;
-                flex-shrink: 0;
-            " onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">
-                <span id="banner-btn">حمّله الآن</span>
-            </button>
-
-        </div>
     </div>
 </div>
 
@@ -4717,7 +4533,7 @@ document.addEventListener('DOMContentLoaded', () => {
         var subEl   = document.getElementById('banner-sub');
         var btnEl   = document.getElementById('banner-btn');
         if (titleEl) titleEl.textContent = isFr ? 'Application Commune de Chetaïbi' : 'تطبيق بلدية شطايبي';
-        if (subEl)   subEl.textContent   = isFr ? 'Suivez nos actualités, découvrez notre ville' : 'تابِع جديدنا، اكتشِف مدينتنا، وابقَ على تواصل';
+        if (subEl)   subEl.textContent   = isFr ? 'Suivez nos actualités, découvrez notre ville' : 'تابع جديدنا، اكتشف مدينتنا، وكن على تواصل دائم';
         if (btnEl)   btnEl.textContent   = isFr ? 'Installer' : 'حمّله الآن';
     }
     // استدعاء عند التحميل وعند تغيير اللغة
