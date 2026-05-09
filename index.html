@@ -782,9 +782,21 @@
         /* FR mobile: نقاط في اليسار */
         html[lang="fr"] .timeline-dot-mobile{right:auto!important;left:14px}
         @media(min-width:768px){html[lang="fr"] .timeline-dot-mobile{left:50%!important;right:auto!important;transform:translateX(-50%)!important;top:1.5rem!important;margin-top:0!important}}
-        /* FR desktop: عكس ترتيب البطاقات مع الحفاظ على التباعد */
+        /* FR desktop: عكس ترتيب البطاقات مع تصحيح التباعد */
         @media(min-width:768px){
             html[lang="fr"] .tl-row { flex-direction: row-reverse; }
+            /* البطاقة التي كانت يساراً (pl-12) تصبح يميناً → تحتاج pr-12 */
+            html[lang="fr"] .tl-row > div.md\:pl-12:not(.hidden) {
+                padding-left: 0 !important;
+                padding-right: 3rem !important;
+            }
+            /* البطاقة التي كانت يميناً (pr-12) تصبح يساراً → تحتاج pl-12 */
+            html[lang="fr"] .tl-row > div.md\:pr-12:not(.hidden) {
+                padding-right: 0 !important;
+                padding-left: 3rem !important;
+            }
+            /* النص الشفاف (tl-era-label) يبقى في وسط عموده */
+            html[lang="fr"] .tl-era-label { text-align: center !important; }
         }
         html[lang="fr"] #fac-modal-name,
         html[lang="fr"] #fac-modal-sub,
