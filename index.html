@@ -2649,8 +2649,10 @@ async function loadNews(){
                 const pinBorder=isPinned?'border-emerald-300 ring-1 ring-emerald-200':'border-gray-100';
                 const nTitle = getLF(n,'title');
                 const nContent = getLF(n,'content');
-                const labelHtml=n.custom_label&&n.custom_label.trim()
-                    ?`<span class="inline-block ${s.badge} text-xs font-bold px-3 py-1 rounded-full">${n.custom_label}</span>`:'';
+                const _cAr={official:'إعلان رسمي',activity:'نشاط بلدي',social:'ركن المجتمع'};
+                const _cFr={official:'Annonce officielle',activity:'Activité communale',social:'Coin citoyen'};
+                const _lb=(n.custom_label&&n.custom_label.trim())?(currentLang==='fr'&&n.custom_label_fr?n.custom_label_fr:n.custom_label):(currentLang==='fr'?_cFr[n.category]:_cAr[n.category])||'';
+                const labelHtml=_lb?`<span class="inline-block ${s.badge} text-xs font-bold px-3 py-1 rounded-full">${_lb}</span>`:'';
                 const showGrad = n.category !== 'official';
                 return `<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border ${pinBorder} relative cursor-pointer" onclick="openNewsModal(${n.id})">
                     ${img?`<div class="h-44 overflow-hidden relative">${pinBadge}<img src="${img}" alt="${nTitle}" class="w-full h-full object-cover">${showGrad?'<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>':''}</div>`:`<div class="h-44 bg-gradient-to-bl ${s.grad} flex items-center justify-center relative">${pinBadge}<span class="iconify text-white text-6xl" data-icon="${s.icon}"></span></div>`}
@@ -4346,8 +4348,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         <!-- النص -->
         <div style="flex:1;min-width:0;">
-            <p style="margin:0;font-size:13px;font-weight:800;color:#ffffff;line-height:1.3;">تطبيق بلدية شطايبي</p>
-            <p style="margin:2px 0 0 0;font-size:11px;color:rgba(255,255,255,0.75);line-height:1.3;">تابع جديدنا، اكتشف مدينتنا، وكن على تواصل دائم</p>
+            <p style="margin:0;font-size:13px;font-weight:800;color:#ffffff;line-height:1.3;" id="banner-title">تطبيق بلدية شطايبي</p>
+            <p style="margin:2px 0 0 0;font-size:11px;color:rgba(255,255,255,0.75);line-height:1.3;" id="banner-sub">تابع جديدنا، اكتشف مدينتنا، وكن على تواصل دائم</p>
         </div>
 
         <!-- زر التثبيت -->
@@ -4365,7 +4367,7 @@ document.addEventListener('DOMContentLoaded', () => {
             flex-shrink: 0;
             transition: transform 0.1s;
         " onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">
-            تثبيت
+            <span id="banner-btn">حمّله الآن</span>
         </button>
 
         <!-- زر الإغلاق -->
@@ -4441,6 +4443,21 @@ document.addEventListener('DOMContentLoaded', () => {
         banner.style.display = 'none';
         localStorage.setItem('install-banner-dismissed', '1');
     };
+
+    // ترجمة البانر حسب اللغة
+    function updateBannerLang() {
+        var isFr = document.documentElement.lang === 'fr';
+        var titleEl = document.getElementById('banner-title');
+        var subEl   = document.getElementById('banner-sub');
+        var btnEl   = document.getElementById('banner-btn');
+        if (titleEl) titleEl.textContent = isFr ? 'Application Commune de Chetaïbi' : 'تطبيق بلدية شطايبي';
+        if (subEl)   subEl.textContent   = isFr ? 'Suivez nos actualités, découvrez notre ville' : 'تابع جديدنا، اكتشف مدينتنا، وكن على تواصل دائم';
+        if (btnEl)   btnEl.textContent   = isFr ? 'Installer' : 'حمّله الآن';
+    }
+    // استدعاء عند التحميل وعند تغيير اللغة
+    updateBannerLang();
+    var _bannerLangObserver = new MutationObserver(updateBannerLang);
+    _bannerLangObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
 })();
 </script>
 
