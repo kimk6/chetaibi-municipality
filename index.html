@@ -252,6 +252,7 @@
             'unsupervised-badge': 'غير مراقب',
             'beach-type-sandy':   'رملي',
             'beach-type-rocky':   'صخري',
+            'fac-tags-label':      'الكلمات الدلالية',
             'details-btn':        'عرض التفاصيل',
             'beach-loading':      'جاري تحميل الشواطئ...',
             'tourism-loading':    'جاري تحميل المعالم...',
@@ -503,6 +504,7 @@
             'unsupervised-badge': 'Non surveillée',
             'beach-type-sandy':   'Sableux',
             'beach-type-rocky':   'Rocheux',
+            'fac-tags-label':      'Mots-clés',
             'details-btn':        'Voir les détails',
             'beach-loading':      'Chargement des plages...',
             'tourism-loading':    'Chargement des sites...',
@@ -1180,10 +1182,10 @@ html[dir="ltr"] article {
             <p class="text-gray-500 max-w-xl mx-auto" data-i18n="news-section-sub">أحدث الأخبار والإعلانات الرسمية ونشاطات البلدية</p>
         </div>
         <div class="grid grid-cols-2 md:flex md:flex-wrap md:justify-center gap-3 mb-10">
-            <button onclick="switchNewsTab('announcements')" id="tab-announcements" class="news-tab active py-2.5 px-4 md:px-5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 min-w-0"><span class="iconify text-base flex-shrink-0" data-icon="lucide:megaphone"></span><span class="truncate md:whitespace-nowrap" data-i18n="tab-announcements"> إعلانات رسمية</span></button>
-            <button onclick="switchNewsTab('activities')" id="tab-activities" class="news-tab py-2.5 px-4 md:px-5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 min-w-0"><span class="iconify text-base flex-shrink-0" data-icon="lucide:clipboard-list"></span><span class="truncate md:whitespace-nowrap" data-i18n="tab-activities"> نشاطات البلدية</span></button>
-            <button onclick="switchNewsTab('community')" id="tab-community" class="news-tab py-2.5 px-4 md:px-5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 min-w-0"><span class="iconify text-base flex-shrink-0" data-icon="lucide:handshake"></span><span class="truncate md:whitespace-nowrap" data-i18n="tab-community"> ركن المجتمع</span></button>
-            <button onclick="switchNewsTab('posters')" id="tab-posters" class="news-tab py-2.5 px-4 md:px-5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 min-w-0"><span class="iconify text-base flex-shrink-0" data-icon="lucide:image"></span><span class="truncate md:whitespace-nowrap" data-i18n="tab-posters"> معرض الملصقات</span></button>
+            <button onclick="switchNewsTab('announcements')" id="tab-announcements" class="news-tab active py-2.5 px-3 md:px-5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-1.5 min-w-0 flex-shrink-0"><span class="iconify text-base flex-shrink-0" data-icon="lucide:megaphone"></span><span class="whitespace-nowrap text-[11px] md:text-sm" data-i18n="tab-announcements"> إعلانات رسمية</span></button>
+            <button onclick="switchNewsTab('activities')" id="tab-activities" class="news-tab py-2.5 px-3 md:px-5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-1.5 min-w-0 flex-shrink-0"><span class="iconify text-base flex-shrink-0" data-icon="lucide:clipboard-list"></span><span class="whitespace-nowrap text-[11px] md:text-sm" data-i18n="tab-activities"> نشاطات البلدية</span></button>
+            <button onclick="switchNewsTab('community')" id="tab-community" class="news-tab py-2.5 px-3 md:px-5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-1.5 min-w-0 flex-shrink-0"><span class="iconify text-base flex-shrink-0" data-icon="lucide:handshake"></span><span class="whitespace-nowrap text-[11px] md:text-sm" data-i18n="tab-community"> ركن المجتمع</span></button>
+            <button onclick="switchNewsTab('posters')" id="tab-posters" class="news-tab py-2.5 px-3 md:px-5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-1.5 min-w-0 flex-shrink-0"><span class="iconify text-base flex-shrink-0" data-icon="lucide:image"></span><span class="whitespace-nowrap text-[11px] md:text-sm" data-i18n="tab-posters"> معرض الملصقات</span></button>
         </div>
         <div id="news-loading" class="text-center py-16"><span class="iconify text-5xl animate-spin inline-block text-emerald-500" data-icon="lucide:newspaper"></span><p class="mt-3 text-sm font-semibold text-gray-400">جاري تحميل الأخبار...</p></div>
         <!-- كل tab له grid + extra + أزرار -->
@@ -1642,7 +1644,7 @@ html[dir="ltr"] article {
             <div id="all-tourism-wrap" class="text-center mt-2 mb-2 hidden">
                 <button onclick="openExploreOverlay('tourism')"
                         class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white/80 hover:text-white border border-white/20 px-6 py-2 rounded-2xl font-semibold text-xs transition-all backdrop-blur-sm">
-                    <span class="iconify" data-icon="lucide:layout-list"></span> جميع المعالم
+                    <span class="iconify" data-icon="lucide:layout-list"></span> <span data-i18n="all-tourism-btn">جميع المعالم</span>
                 </button>
             </div>
         </div>
@@ -1784,7 +1786,7 @@ html[dir="ltr"] article {
                 </button>
             </div>
             <p id="fac-modal-desc" class="text-sm text-gray-600 leading-relaxed mb-4"></p>
-            <div id="fac-modal-tags" class="flex flex-wrap gap-1.5 mb-5"></div>
+            <p class="text-xs font-bold text-gray-400 mb-1.5 flex items-center gap-1"><span class="iconify" data-icon="lucide:hash"></span><span data-i18n="fac-tags-label">الكلمات الدلالية</span></p><div id="fac-modal-tags" class="flex flex-wrap gap-1.5 mb-5"></div>
             <!-- ألبوم الصور -->
             <div id="fac-modal-album-wrap" class="hidden">
                 <h4 class="font-bold text-gray-800 text-sm mb-3 flex items-center gap-2">
@@ -2742,7 +2744,7 @@ function beachCard(b){
             ${b.is_supervised
                 ?`<span class="absolute top-2 left-2 bg-green-500/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-check"></span>${t('supervised-badge')}</span>`
                 :`<span class="absolute top-2 left-2 bg-orange-400/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-x"></span>${t('unsupervised-badge')}</span>`}
-            ${b.season?`<span class="absolute top-2 right-2 bg-sky-500/80 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">${b.season==='صخري'?'🪨':' 🏖️'} ${b.season==='صخري'?t('beach-type-rocky'):t('beach-type-sandy')}</span>`:''}
+            ${b.season?`<span class="absolute top-2 right-2 bg-sky-500/80 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1"><span class="iconify text-xs" data-icon="${b.season==='صخري'?'lucide:mountain':'lucide:waves'}"></span> ${b.season==='صخري'?t('beach-type-rocky'):t('beach-type-sandy')}</span>`:''}
         </div>
         <div class="p-4">
             <p class="text-xs text-white/70 line-clamp-2 leading-relaxed">${bDesc||t('details-btn')}</p>
@@ -2791,7 +2793,7 @@ async function openBeachModal(id){
             (b.is_supervised
             ?`<span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-check"></span>${t('supervised-badge')}</span>`
             :`<span class="text-xs bg-orange-100 text-orange-700 px-3 py-1 rounded-full font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-x"></span>${t('unsupervised-badge')}</span>`)+
-            (b.season?`<span class="text-xs bg-sky-100 text-sky-700 px-3 py-1 rounded-full font-bold flex items-center gap-1">${b.season==='صخري'?'🪨':'🏖️'} ${b.season==='صخري'?t('beach-type-rocky'):t('beach-type-sandy')}</span>`:'');
+            (b.season?`<span class="text-xs bg-sky-100 text-sky-700 px-3 py-1 rounded-full font-bold flex items-center gap-1"><span class="iconify" data-icon="${b.season==='صخري'?'lucide:mountain':'lucide:waves'}"></span> ${b.season==='صخري'?t('beach-type-rocky'):t('beach-type-sandy')}</span>`:'');
         if(b.albums?.length){
             document.getElementById('bm-album').innerHTML =
                 '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-sky-500" data-icon="lucide:images"></span>' + window.t('album-gallery') + ' (' + b.albums.length + ')</h4>' +
@@ -2888,7 +2890,7 @@ async function openTourismModal(id){
         document.getElementById('tm-badges').innerHTML=
             (t.badge_text?`<span class="text-xs bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full font-bold">${getLF(t,'badge_text')}</span>`:'')+
             (t.rating?`<span class="text-xs bg-amber-100 text-amber-700 px-3 py-1 rounded-full font-bold">⭐ ${t.rating}/5</span>`:'')+
-            (t.distance_info?`<span class="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-bold">${getLF(t,'distance_info')}</span>`:'');
+            (t.distance_info?`<span class="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-bold flex items-center gap-1"><span class="iconify text-gray-500" data-icon="lucide:map-pin-check"></span>${getLF(t,'distance_info')}</span>`:'');
         if(t.albums?.length){
             document.getElementById('tm-album').innerHTML=
                 '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:images"></span>' + window.t('album-gallery') + ' (' + t.albums.length + ')</h4>' +
@@ -3106,7 +3108,7 @@ async function renderExploreOverlay() {
             ${b.is_supervised
             ?`<span class="inline-flex items-center gap-1 text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold"><span class="iconify" data-icon="lucide:shield-check"></span>${t('supervised-badge')}</span>`
             :`<span class="inline-flex items-center gap-1 text-[10px] bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-bold"><span class="iconify" data-icon="lucide:shield-x"></span>${t('unsupervised-badge')}</span>`}
-            ${b.season?`<span class="inline-flex items-center gap-1 text-[10px] bg-sky-100 text-sky-700 px-2 py-0.5 rounded-full font-bold">${b.season==='صخري'?'🪨':'🏖️'} ${b.season==='صخري'?t('beach-type-rocky'):t('beach-type-sandy')}</span>`:''}
+            ${b.season?`<span class="inline-flex items-center gap-1 text-[10px] bg-sky-100 text-sky-700 px-2 py-0.5 rounded-full font-bold"><span class="iconify" data-icon="${b.season==='صخري'?'lucide:mountain':'lucide:waves'}"></span> ${b.season==='صخري'?t('beach-type-rocky'):t('beach-type-sandy')}</span>`:''}
             </div></div></div>`).join('');
         if(totalPages>1){ let h=''; for(let p=1;p<=totalPages;p++){ const a=p===explorePage?'bg-sky-600 text-white':'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'; h+=`<button onclick="explorePage=${p};renderExploreOverlay()" class="${a} w-10 h-10 rounded-xl font-bold text-sm">${p}</button>`; } pag.innerHTML=h; }
     } else {
@@ -3325,7 +3327,7 @@ async function openBeachModalFromExplore(id) {
             (b.is_supervised
             ?`<span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-check"></span>${t('supervised-badge')}</span>`
             :`<span class="text-xs bg-orange-100 text-orange-700 px-3 py-1 rounded-full font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-x"></span>${t('unsupervised-badge')}</span>`)+
-            (b.season?`<span class="text-xs bg-sky-100 text-sky-700 px-3 py-1 rounded-full font-bold flex items-center gap-1">${b.season==='صخري'?'🪨':'🏖️'} ${b.season==='صخري'?t('beach-type-rocky'):t('beach-type-sandy')}</span>`:'');
+            (b.season?`<span class="text-xs bg-sky-100 text-sky-700 px-3 py-1 rounded-full font-bold flex items-center gap-1"><span class="iconify" data-icon="${b.season==='صخري'?'lucide:mountain':'lucide:waves'}"></span> ${b.season==='صخري'?t('beach-type-rocky'):t('beach-type-sandy')}</span>`:'');
         if(b.albums?.length){
             document.getElementById('bm-album').innerHTML =
                 '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-sky-500" data-icon="lucide:images"></span>' + window.t('album-gallery') + ' (' + b.albums.length + ')</h4>' +
@@ -3355,7 +3357,7 @@ async function openTourismModalFromExplore(id) {
         document.getElementById('tm-badges').innerHTML=
             (t.badge_text?`<span class="text-xs bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full font-bold">${getLF(t,'badge_text')}</span>`:'')+
             (t.rating?`<span class="text-xs bg-amber-100 text-amber-700 px-3 py-1 rounded-full font-bold">⭐ ${t.rating}/5</span>`:'')+
-            (t.distance_info?`<span class="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-bold">${getLF(t,'distance_info')}</span>`:'');
+            (t.distance_info?`<span class="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-bold flex items-center gap-1"><span class="iconify text-gray-500" data-icon="lucide:map-pin-check"></span>${getLF(t,'distance_info')}</span>`:'');
         if(t.albums?.length){
             document.getElementById('tm-album').innerHTML=
                 '<h4 class="col-span-3 font-bold text-gray-700 text-sm mb-3 flex items-center gap-2"><span class="iconify text-emerald-500" data-icon="lucide:images"></span>' + window.t('album-gallery') + ' (' + t.albums.length + ')</h4>' +
@@ -4017,7 +4019,7 @@ function createCircleMarker(lat, lng, color, item, type) {
         (item.is_supervised
             ? `<span style="display:inline-flex;align-items:center;gap:3px;background:#dcfce7;color:#15803d;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;margin:1px;">✔ ${t('supervised-badge')}</span>`
             : `<span style="display:inline-flex;align-items:center;gap:3px;background:#ffedd5;color:#c2410c;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;margin:1px;">✗ ${t('unsupervised-badge')}</span>`) +
-        (item.season ? `<span style="display:inline-flex;align-items:center;gap:3px;background:#e0f2fe;color:#0369a1;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;margin:1px;">${item.season==='صخري'?'🪨':'🏖️'} ${item.season==='صخري'?t('beach-type-rocky'):t('beach-type-sandy')}</span>` : '')
+        (item.season ? `<span style="display:inline-flex;align-items:center;gap:3px;background:#e0f2fe;color:#0369a1;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;margin:1px;"><span class="iconify" data-icon="${item.season==='صخري'?'lucide:mountain':'lucide:waves'}"></span> ${item.season==='صخري'?t('beach-type-rocky'):t('beach-type-sandy')}</span>` : '')
     ) : '';
 
     // الـ popup يحتوي زر يغلق popup ثم يفتح الـ modal المناسب
