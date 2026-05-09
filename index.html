@@ -686,37 +686,6 @@
         // ─── تحديث اسم واتجاه رئيس المجلس ───
         if (window._currentMayor && typeof applyMayorLang === 'function') applyMayorLang(window._currentMayor);
 
-function applyTimelineLang() {
-    const isFr = currentLang === 'fr';
-    const isDesktop = window.innerWidth >= 768;
-
-    document.querySelectorAll('.tl-row').forEach(row => {
-        const cols = Array.from(row.children).filter(el => !el.classList.contains('timeline-dot-mobile'));
-        if (cols.length !== 2) return;
-        const [first, second] = cols;
-
-        if (isFr) {
-            // عكس الترتيب على الديسكتوب والموبايل
-            row.insertBefore(second, first);
-            if (isDesktop) {
-                // padding من جهة الخط = 3rem (48px = md:pl-12 في Tailwind)
-                first.style.paddingLeft   = '0';
-                first.style.paddingRight  = '3rem';
-                second.style.paddingLeft  = '3rem';
-                second.style.paddingRight = '0';
-            }
-        } else {
-            // إعادة للأصل
-            row.insertBefore(first, second);
-            first.style.paddingLeft   = '';
-            first.style.paddingRight  = '';
-            second.style.paddingLeft  = '';
-            second.style.paddingRight = '';
-        }
-    });
-}
-        applyTimelineLang();
-
         // ─── إعادة رسم العناصر الديناميكية ───
         reloadDynamicTranslations();
     }
@@ -813,7 +782,10 @@ function applyTimelineLang() {
         /* FR mobile: نقاط في اليسار */
         html[lang="fr"] .timeline-dot-mobile{right:auto!important;left:14px}
         @media(min-width:768px){html[lang="fr"] .timeline-dot-mobile{left:50%!important;right:auto!important;transform:translateX(-50%)!important;top:1.5rem!important;margin-top:0!important}}
-
+        /* FR desktop: عكس ترتيب البطاقات مع الحفاظ على التباعد */
+        @media(min-width:768px){
+            html[lang="fr"] .tl-row { flex-direction: row-reverse; }
+        }
         html[lang="fr"] #fac-modal-name,
         html[lang="fr"] #fac-modal-sub,
         html[lang="fr"] #fac-modal-desc { direction: ltr; text-align: left; }
