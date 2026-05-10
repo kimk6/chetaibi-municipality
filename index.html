@@ -775,7 +775,7 @@
         .nav-link{position:relative}
         .nav-link::after{content:'';position:absolute;bottom:-4px;right:0;width:0;height:2px;background:white;transition:width .3s ease}
         .nav-link:hover::after,.nav-link.active-link::after{width:100%}
-        .timeline-line{position:absolute;right:23px;top:0;bottom:0;width:4px;background:linear-gradient(to bottom,#064e3b,#059669,#34d399,#6ee7b7,#34d399,#059669,#064e3b);box-shadow:0 0 8px rgba(5,150,105,0.35),0 0 2px rgba(52,211,153,0.2);border-radius:2px}
+        .timeline-line{position:absolute;right:23px;top:0;bottom:0;width:4px;background:linear-gradient(to bottom,transparent 0%,#a7f3d0 5%,#6ee7b7 20%,#34d399 40%,#10b981 60%,#059669 80%,#a7f3d0 95%,transparent 100%);border-radius:2px}
         @media(min-width:768px){.timeline-line{right:50%;transform:translateX(50%)}}
         html[lang="fr"] .timeline-line{right:auto;left:23px}
         @media(min-width:768px){html[lang="fr"] .timeline-line{left:50%;right:auto;transform:translateX(-50%)}}
@@ -942,6 +942,11 @@ html[dir="ltr"] .item-card,
 html[dir="ltr"] article {
     text-align: left;
 }
+/* فاصل الأقسام — خط متلاشٍ + نقطة مركزية */
+.section-divider{display:flex;align-items:center;justify-content:center;margin:10px auto 16px;width:100%;max-width:280px}
+.section-divider::before{content:'';flex:1;height:1px;background:linear-gradient(to left,currentColor,transparent);opacity:0.45}
+.section-divider::after{content:'';flex:1;height:1px;background:linear-gradient(to right,currentColor,transparent);opacity:0.45}
+.section-divider span{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0;margin:0 8px;opacity:0.75}
 </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -975,7 +980,7 @@ html[dir="ltr"] article {
 </div>
 
 <!-- NAV -->
-<nav id="main-nav" class="bg-emerald-700 sticky top-0 z-50 shadow-lg" style="box-shadow:0 2px 0 rgba(5,150,105,0.5),0 4px 12px rgba(0,0,0,0.15)">
+<nav id="main-nav" class="bg-emerald-700 sticky top-0 z-50 shadow-lg" style="box-shadow:0 1px 0 rgba(52,211,153,0.15),0 4px 16px rgba(0,0,0,0.18)">
     <div class="max-w-7xl mx-auto px-4">
         <div class="flex items-center justify-between h-14">
             <div class="hidden md:flex items-center justify-center flex-1 gap-1">
@@ -1024,6 +1029,7 @@ html[dir="ltr"] article {
         </div>
     </div>
 </nav>
+<div style="height:2px;background:linear-gradient(90deg,transparent 0%,#34d399 20%,#10b981 50%,#34d399 80%,transparent 100%);opacity:0.6"></div>
 
 <!-- HERO -->
 <section id="home" class="relative min-h-[65vh] md:min-h-[70vh] flex items-end overflow-hidden">
@@ -1050,9 +1056,9 @@ html[dir="ltr"] article {
 <!-- WIDGETS & STATS -->
 <section class="relative z-20 max-w-7xl mx-auto px-4 mt-8 mb-10">
     <div class="grid grid-cols-3 gap-3 sm:gap-5 mb-6">
-        <div class="stat-card bg-emerald-50 rounded-2xl p-3 sm:p-6 shadow-lg border border-emerald-200 text-center hover:shadow-xl"><div class="w-10 h-10 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center mx-auto mb-2 sm:mb-4" style="background:linear-gradient(135deg,#059669,#34d399);box-shadow:0 4px 12px rgba(5,150,105,0.35)"><span class="iconify text-white text-xl sm:text-3xl" data-icon="lucide:maximize-2"></span></div><p class="text-xl sm:text-3xl font-extrabold text-emerald-700">134</p><p class="text-[11px] sm:text-sm text-gray-500 font-semibold mt-1" data-i18n="stat-area">كم² المساحة</p></div>
+        <div class="stat-card bg-emerald-50 rounded-2xl p-3 sm:p-6 shadow-lg border border-emerald-200 text-center hover:shadow-xl"><div class="w-10 h-10 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center mx-auto mb-2 sm:mb-4" style="background:linear-gradient(135deg,#059669,#34d399);box-shadow:0 4px 12px rgba(5,150,105,0.35)"><span class="iconify text-white text-xl sm:text-3xl" data-icon="lucide:map"></span></div><p class="text-xl sm:text-3xl font-extrabold text-emerald-700">134</p><p class="text-[11px] sm:text-sm text-gray-500 font-semibold mt-1" data-i18n="stat-area">كم² المساحة</p></div>
         <div class="stat-card bg-blue-50 rounded-2xl p-3 sm:p-6 shadow-lg border border-blue-200 text-center hover:shadow-xl"><div class="w-10 h-10 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center mx-auto mb-2 sm:mb-4" style="background:linear-gradient(135deg,#2563eb,#60a5fa);box-shadow:0 4px 12px rgba(37,99,235,0.35)"><span class="iconify text-white text-xl sm:text-3xl" data-icon="lucide:users"></span></div><p class="text-xl sm:text-3xl font-extrabold text-blue-700">8,767</p><p class="text-[11px] sm:text-sm text-gray-500 font-semibold mt-1" data-i18n="stat-pop">نسمة السكان</p></div>
-        <div class="stat-card bg-amber-50 rounded-2xl p-3 sm:p-6 shadow-lg border border-amber-200 text-center hover:shadow-xl"><div class="w-10 h-10 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center mx-auto mb-2 sm:mb-4" style="background:linear-gradient(135deg,#d97706,#fbbf24);box-shadow:0 4px 12px rgba(217,119,6,0.35)"><span class="iconify text-white text-xl sm:text-3xl" data-icon="lucide:mail"></span></div><p class="text-xl sm:text-3xl font-extrabold text-amber-700">23014</p><p class="text-[11px] sm:text-sm text-gray-500 font-semibold mt-1" data-i18n="stat-postal">الرمز البريدي</p></div>
+        <div class="stat-card bg-amber-50 rounded-2xl p-3 sm:p-6 shadow-lg border border-amber-200 text-center hover:shadow-xl"><div class="w-10 h-10 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center mx-auto mb-2 sm:mb-4" style="background:linear-gradient(135deg,#d97706,#fbbf24);box-shadow:0 4px 12px rgba(217,119,6,0.35)"><span class="iconify text-white text-xl sm:text-3xl" data-icon="lucide:hash"></span></div><p class="text-xl sm:text-3xl font-extrabold text-amber-700">23014</p><p class="text-[11px] sm:text-sm text-gray-500 font-semibold mt-1" data-i18n="stat-postal">الرمز البريدي</p></div>
     </div>
 
     <!-- ✅ 1: WEATHER — ذكي نهار/ليل -->
@@ -1210,7 +1216,7 @@ html[dir="ltr"] article {
     <!-- رئيس المجلس -->
     <div class="mayor-card-wrapper">
     <div id="mayor-card" class="bg-gradient-to-l from-emerald-800 via-emerald-700 to-emerald-900 rounded-2xl p-6 md:p-10 shadow-xl text-white flex flex-col md:flex-row items-center gap-6 md:gap-10">
-        <div id="mayor-photo-wrap" class="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border-4 border-white/30" style="border-color:#fbd24d;box-shadow:0 0 0 3px rgba(251,210,77,0.25)">
+        <div id="mayor-photo-wrap" class="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border-2 border-white/30" style="border-color:#fbd24d;border-width:2px;box-shadow:0 0 0 2px rgba(251,210,77,0.2)">
             <span id="mayor-photo-placeholder" class="iconify text-4xl text-white" data-icon="lucide:user-circle"></span>
             <img id="mayor-photo" src="" alt="" class="hidden w-full h-full object-cover">
         </div>
