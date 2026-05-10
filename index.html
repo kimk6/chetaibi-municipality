@@ -980,7 +980,8 @@ html[dir="ltr"] article {
 </div>
 
 <!-- NAV -->
-<nav id="main-nav" class="bg-emerald-700 sticky top-0 z-50 shadow-lg" style="box-shadow:0 1px 0 rgba(52,211,153,0.15),0 4px 16px rgba(0,0,0,0.18)">
+<div style="height:2px;background:linear-gradient(90deg,transparent 0%,#34d399 20%,#10b981 50%,#34d399 80%,transparent 100%);opacity:0.65"></div>
+<nav id="main-nav" class="bg-emerald-700 sticky top-0 z-50 shadow-lg" style="box-shadow:0 4px 16px rgba(0,0,0,0.18)">
     <div class="max-w-7xl mx-auto px-4">
         <div class="flex items-center justify-between h-14">
             <div class="hidden md:flex items-center justify-center flex-1 gap-1">
@@ -1029,7 +1030,6 @@ html[dir="ltr"] article {
         </div>
     </div>
 </nav>
-<div style="height:2px;background:linear-gradient(90deg,transparent 0%,#34d399 20%,#10b981 50%,#34d399 80%,transparent 100%);opacity:0.6"></div>
 
 <!-- HERO -->
 <section id="home" class="relative min-h-[65vh] md:min-h-[70vh] flex items-end overflow-hidden">
@@ -1216,7 +1216,7 @@ html[dir="ltr"] article {
     <!-- رئيس المجلس -->
     <div class="mayor-card-wrapper">
     <div id="mayor-card" class="bg-gradient-to-l from-emerald-800 via-emerald-700 to-emerald-900 rounded-2xl p-6 md:p-10 shadow-xl text-white flex flex-col md:flex-row items-center gap-6 md:gap-10">
-        <div id="mayor-photo-wrap" class="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border-2 border-white/30" style="border-color:#fbd24d;border-width:2px;box-shadow:0 0 0 2px rgba(251,210,77,0.2)">
+        <div id="mayor-photo-wrap" class="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border-2 border-white/30" style="border-color:#10b981;border-width:2px;box-shadow:0 0 0 2px rgba(16,185,129,0.2)">
             <span id="mayor-photo-placeholder" class="iconify text-4xl text-white" data-icon="lucide:user-circle"></span>
             <img id="mayor-photo" src="" alt="" class="hidden w-full h-full object-cover">
         </div>
@@ -1299,10 +1299,11 @@ html[dir="ltr"] article {
 <section id="admin" class="pt-6 pb-14 bg-white relative fade-into-archive">
     <div class="max-w-7xl mx-auto px-4 relative z-10">
         <div class="text-center mb-4">
-            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 flex items-center justify-center gap-3">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2 flex items-center justify-center gap-3">
                 <span class="iconify text-emerald-600" data-icon="lucide:landmark"></span>
                 <span data-i18n="services-title">الخدمات الإدارية</span>
             </h2>
+            <div class="section-divider text-emerald-500 mt-1 mb-2"><span></span></div>
             <p class="text-gray-500 max-w-xl mx-auto" data-i18n="services-sub">
                 بوابة الخدمات الإلكترونية والوثائق الإدارية
             </p>
@@ -1507,11 +1508,17 @@ html[dir="ltr"] article {
             </div>
                     </div>
         <div>
-            <h3 class="text-2xl font-extrabold text-gray-900 text-center mb-10">
-                <span class="iconify inline-block text-emerald-500 align-middle" data-icon="lucide:images"></span>
-                &nbsp;<span data-i18n="archive-photos-title" class="align-middle">أرشيف الصور</span>
-                <span class="block text-base font-semibold text-gray-500 mt-1" data-i18n="archive-photos-sub">شطايبي بين الأمس واليوم</span>
-            </h3>
+            <div class="flex items-center gap-3 mb-10 justify-center">
+                <div class="h-px flex-1 bg-amber-200"></div>
+                <h3 class="text-2xl font-extrabold text-gray-900 text-center flex flex-col items-center gap-1">
+                    <span class="flex items-center gap-2">
+                        <span class="iconify text-amber-500 align-middle" data-icon="lucide:scroll-text"></span>
+                        <span data-i18n="archive-photos-title" class="align-middle">أرشيف الصور</span>
+                    </span>
+                    <span class="text-base font-semibold text-gray-500" data-i18n="archive-photos-sub">شطايبي بين الأمس واليوم</span>
+                </h3>
+                <div class="h-px flex-1 bg-amber-200"></div>
+            </div>
             <!-- بطاقات ديناميكية من DB -->
             <div id="archive-preview-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
                 <div class="col-span-full text-center py-10 text-gray-300">
@@ -1606,10 +1613,14 @@ html[dir="ltr"] article {
 <section id="map-section" class="pb-0 pt-0 city-index-bg">
     <div class="max-w-7xl mx-auto px-4 pb-14 relative z-10">
         <div class="text-center mb-10">
-            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 flex items-center justify-center gap-3">
-                <span class="iconify text-emerald-600" data-icon="lucide:map"></span>
-                <span data-i18n="map-title">خريطة شطايبي</span>
-            </h2>
+            <div class="flex items-center gap-4 mb-3">
+                <div class="h-px flex-1 bg-emerald-200"></div>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 flex items-center gap-3 flex-shrink-0">
+                    <span class="iconify text-emerald-600" data-icon="lucide:map"></span>
+                    <span data-i18n="map-title">خريطة شطايبي</span>
+                </h2>
+                <div class="h-px flex-1 bg-emerald-200"></div>
+            </div>
             <p class="text-gray-500 max-w-2xl mx-auto" data-i18n="map-sub">استكشف مرافق وشواطئ ومعالم شطايبي على الخريطة التفاعلية</p>
         </div>
         <!-- مفتاح الألوان -->
@@ -1662,10 +1673,11 @@ html[dir="ltr"] article {
     <div class="max-w-7xl mx-auto px-4 relative z-10 pt-4">
         <!-- العنوان الكبير -->
         <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-3 flex items-center justify-center gap-3">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-2 flex items-center justify-center gap-3">
                 <span class="iconify text-amber-300" data-icon="lucide:sun"></span>
                 <span data-i18n="tourism-title">السياحة في شطايبي</span>
             </h2>
+            <div class="section-divider text-amber-300 mt-1 mb-2"><span></span></div>
             <p class="text-white/70 max-w-2xl mx-auto" data-i18n="tourism-sub">نافذة على التنوع الطبيعي والإرث السياحي المتميز لمنطقة شطايبي</p>
         </div>
 
