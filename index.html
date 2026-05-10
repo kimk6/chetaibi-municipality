@@ -250,8 +250,8 @@
             'beaches-more-btn':   'عرض بقية الشواطئ',
             'beaches-intro':      'تتميز شطايبي بشواطئها الرائعة ذات المياه الصافية والرمال الذهبية، وتضم شريطاً ساحلياً من الشواطئ المسموحة للسباحة، والمجهزة لضمان راحة وسلامة المصطافين والعائلات',
             'tourism-more-btn':   'عرض المزيد من المعالم',
-            'all-beaches-btn':    'عرض جميع الشواطئ',
-            'all-tourism-btn':    'عرض جميع المعالم',
+            'all-beaches-btn':    'جميع الشواطئ',
+            'all-tourism-btn':    'جميع المعالم',
             'tourism-more-show':  'عرض المزيد من المعالم',
             'tourism-more-hide':  'إخفاء',
             'supervised-badge':   'مراقب',
@@ -508,8 +508,8 @@
             'beaches-more-btn':   'Voir toutes les plages',
             'beaches-intro':      'Chetaïbi se distingue par ses plages remarquables aux eaux cristallines et au sable doré. Elle dispose d\'un littoral de plages autorisées à la baignade, aménagées pour garantir le confort et la sécurité des estivants et des familles.',
             'tourism-more-btn':   'Voir plus de sites',
-            'all-beaches-btn':    'Voir toutes les plages',
-            'all-tourism-btn':    'Voir tous les sites',
+            'all-beaches-btn':    'Toutes les plages',
+            'all-tourism-btn':    'Tous les sites',
             'tourism-more-show':  'Voir plus de sites',
             'tourism-more-hide':  'Réduire',
             'supervised-badge':   'Surveillée',
@@ -760,8 +760,8 @@
         .animate-fadeIn{animation:fadeIn .5s ease-out forwards}
         .anim-delay-1{animation-delay:.1s;opacity:0}.anim-delay-2{animation-delay:.2s;opacity:0}.anim-delay-3{animation-delay:.3s;opacity:0}
         .vintage-filter{filter:sepia(.7) contrast(1.1) brightness(.9)}
-        .news-tab.active{background:#059669;color:white;box-shadow:0 4px 14px rgba(5,150,105,.25);}
-        .news-tab:not(.active){background:white;color:#374151;border:1px solid #e5e7eb;box-shadow:0 1px 4px rgba(0,0,0,0.07);}
+        .news-tab.active{background:#059669;color:white;box-shadow:0 4px 14px rgba(5,150,105,.3)}
+        .news-tab:not(.active){background:white;color:#374151;border:1px solid #e5e7eb}
         html[lang="ar"] .news-tab span[data-i18n]{font-size:13px}
         .service-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(5,150,105,.12)}
         .service-card{transition:all .3s ease}
@@ -856,8 +856,8 @@
         opacity: 0.85;
     }
 }
-    .guide-tab{background:#ffffff;color:#475569;border:1px solid #e5e7eb;box-shadow:0 1px 4px rgba(0,0,0,0.07);}
-.guide-tab.active{background:#059669;color:#fff;box-shadow:0 4px 14px rgba(5,150,105,.25);}
+    .guide-tab{background:#f1f5f9;color:#475569;}
+.guide-tab.active{background:#059669;color:#fff;box-shadow:0 4px 14px rgba(5,150,105,.35);}
 .guide-tab:hover:not(.active){background:#e2e8f0;}
 
 /* ══════════════════════════════════════════
@@ -967,7 +967,7 @@ html[dir="ltr"] article {
 </header>
 
 <!-- ✅ 7: لوجو بدون حلقة خضراء -->
-<div class="bg-white border-b border-emerald-100 py-4 shadow-sm" style="border-top:1px solid transparent;background-image:linear-gradient(white,white),linear-gradient(90deg,transparent,#fbd24d 30%,#fbd24d 70%,transparent);background-origin:border-box;background-clip:padding-box,border-box;border-top-width:1px">
+<div class="bg-white border-b border-emerald-100 py-4 shadow-sm" style="border-top:1px solid transparent;background-image:linear-gradient(white,white),linear-gradient(90deg,transparent,#fbd24d 20%,#fbd24d 50%,#fbd24d 80%,transparent);background-origin:border-box;background-clip:padding-box,border-box;border-top-width:2px">
     <div class="max-w-7xl mx-auto px-4 flex items-center justify-center gap-3">
         <div class="w-[88px] h-[88px] md:w-[108px] md:h-[108px] rounded-full overflow-hidden shadow-lg flex-shrink-0">
             <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo.webp" alt="شعار البلدية" class="w-full h-full object-cover">
@@ -980,7 +980,7 @@ html[dir="ltr"] article {
 </div>
 
 <!-- NAV -->
-<div style="height:1px;background:linear-gradient(90deg,transparent 0%,#34d399 20%,#10b981 50%,#34d399 80%,transparent 100%);opacity:0.55"></div>
+<div style="height:2px;background:linear-gradient(90deg,transparent 0%,#34d399 20%,#10b981 50%,#34d399 80%,transparent 100%);opacity:0.65"></div>
 <nav id="main-nav" class="bg-emerald-700 sticky top-0 z-50 shadow-lg" style="box-shadow:0 4px 16px rgba(0,0,0,0.18)">
     <div class="max-w-7xl mx-auto px-4">
         <div class="flex items-center justify-between h-14">
@@ -1240,8 +1240,8 @@ html[dir="ltr"] article {
     <div class="max-w-7xl mx-auto px-4">
         <div class="text-center mb-12">
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2 flex items-center justify-center gap-3"><span class="iconify text-emerald-600" data-icon="lucide:newspaper"></span><span data-i18n="news-section-title">آخر المستجدات</span></h2>
-            <p class="text-gray-500 max-w-xl mx-auto" data-i18n="news-section-sub">أحدث الأخبار والإعلانات الرسمية ونشاطات البلدية</p>
             <div class="section-divider text-emerald-500"><span></span></div>
+            <p class="text-gray-500 max-w-xl mx-auto" data-i18n="news-section-sub">أحدث الأخبار والإعلانات الرسمية ونشاطات البلدية</p>
         </div>
         <div class="grid grid-cols-2 md:flex md:flex-wrap md:justify-center gap-3 mb-10">
             <button onclick="switchNewsTab('announcements')" id="tab-announcements" class="news-tab active py-2.5 px-3 md:px-5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-1.5 min-w-0 flex-shrink-0"><span class="iconify text-base flex-shrink-0" data-icon="lucide:megaphone"></span><span class="whitespace-nowrap text-[11px] md:text-sm" data-i18n="tab-announcements"> إعلانات رسمية</span></button>
@@ -1256,7 +1256,7 @@ html[dir="ltr"] article {
             <div id="extra-announcements" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 hidden"></div>
             <div id="more-wrap-announcements" class="flex flex-wrap items-center justify-center gap-3 mb-4 hidden">
                 <button onclick="openNewsPage('official')" id="more-btn-announcements"
-                        class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
+                        class="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all">
                     <span class="iconify" data-icon="lucide:layout-list"></span>
                     <span data-i18n="all-announcements">جميع الإعلانات</span>
                 </button>
@@ -1267,7 +1267,7 @@ html[dir="ltr"] article {
             <div id="extra-activities" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 hidden"></div>
             <div id="more-wrap-activities" class="flex flex-wrap items-center justify-center gap-3 mb-4 hidden">
                 <button onclick="openNewsPage('activity')" id="more-btn-activities"
-                        class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
+                        class="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all">
                     <span class="iconify" data-icon="lucide:layout-list"></span>
                     <span data-i18n="all-activities">جميع النشاطات</span>
                 </button>
@@ -1278,7 +1278,7 @@ html[dir="ltr"] article {
             <div id="extra-community" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 hidden"></div>
             <div id="more-wrap-community" class="flex flex-wrap items-center justify-center gap-3 mb-4 hidden">
                 <button onclick="openNewsPage('social')" id="more-btn-community"
-                        class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
+                        class="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all">
                     <span class="iconify" data-icon="lucide:layout-list"></span>
                     <span data-i18n="all-community">جميع المنشورات</span>
                 </button>
@@ -1303,10 +1303,10 @@ html[dir="ltr"] article {
                 <span class="iconify text-emerald-600" data-icon="lucide:landmark"></span>
                 <span data-i18n="services-title">الخدمات الإدارية</span>
             </h2>
+            <div class="section-divider text-emerald-500 mt-1 mb-2"><span></span></div>
             <p class="text-gray-500 max-w-xl mx-auto" data-i18n="services-sub">
                 بوابة الخدمات الإلكترونية والوثائق الإدارية
             </p>
-            <div class="section-divider text-emerald-500 mt-1 mb-2"><span></span></div>
         </div>
         <!-- ملاحظة موثوقية -->
         <div class="flex justify-center mb-10">
@@ -1328,9 +1328,10 @@ html[dir="ltr"] article {
 
         <!-- زر عرض المزيد يفتح Overlay -->
         <div class="text-center mt-10">
-            <button onclick="openServicesOverlay()" class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
-                <span class="iconify" data-icon="lucide:layout-list"></span>
+            <button onclick="openServicesOverlay()" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-2xl font-bold text-sm transition-all shadow-md">
+                <span class="iconify text-lg" data-icon="lucide:layout-grid"></span>
                 <span data-i18n="services-more-btn">عرض المزيد من الخدمات</span>
+                <span class="iconify text-lg" data-icon="lucide:chevron-left"></span>
             </button>
         </div>
     </div>
@@ -1416,8 +1417,8 @@ html[dir="ltr"] article {
     <div class="max-w-7xl mx-auto px-4 relative z-10">
         <div class="text-center mb-16">
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2 flex items-center justify-center gap-3"><span class="iconify text-amber-500" data-icon="lucide:scroll-text"></span><span data-i18n="archive-title">تاريخ شطايبي</span></h2>
-            <p class="text-gray-500 max-w-2xl mx-auto" data-i18n="archive-sub">استعراض للمحطات التاريخية الكبرى التي شكلت مسار المنطقة عبر العصور</p>
             <div class="section-divider text-amber-400 mt-1 mb-3"><span></span></div>
+            <p class="text-gray-500 max-w-2xl mx-auto" data-i18n="archive-sub">استعراض للمحطات التاريخية الكبرى التي شكلت مسار المنطقة عبر العصور</p>
         </div>
         <div class="relative max-w-4xl mx-auto mb-20">
             <div class="timeline-line"></div>
@@ -1507,16 +1508,16 @@ html[dir="ltr"] article {
             </div>
                     </div>
         <div>
-            <div class="text-center mb-10">
-                <div class="flex items-center gap-3 justify-center mb-1">
-                    <div class="h-px flex-1 bg-amber-200 max-w-[80px]"></div>
-                    <h3 class="text-2xl font-extrabold text-gray-900 flex items-center gap-2 flex-shrink-0">
-                        <span class="iconify text-amber-500" data-icon="lucide:scroll-text"></span>
-                        <span data-i18n="archive-photos-title">أرشيف الصور</span>
-                    </h3>
-                    <div class="h-px flex-1 bg-amber-200 max-w-[80px]"></div>
-                </div>
-                <span class="text-base font-semibold text-gray-500" data-i18n="archive-photos-sub">شطايبي بين الأمس واليوم</span>
+            <div class="flex items-center gap-3 mb-10 justify-center">
+                <div class="h-px flex-1 bg-amber-200"></div>
+                <h3 class="text-2xl font-extrabold text-gray-900 text-center flex flex-col items-center gap-1">
+                    <span class="flex items-center gap-2">
+                        <span class="iconify text-amber-500 align-middle" data-icon="lucide:scroll-text"></span>
+                        <span data-i18n="archive-photos-title" class="align-middle">أرشيف الصور</span>
+                    </span>
+                    <span class="text-base font-semibold text-gray-500" data-i18n="archive-photos-sub">شطايبي بين الأمس واليوم</span>
+                </h3>
+                <div class="h-px flex-1 bg-amber-200"></div>
             </div>
             <!-- بطاقات ديناميكية من DB -->
             <div id="archive-preview-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
@@ -1526,9 +1527,10 @@ html[dir="ltr"] article {
             </div>
             <!-- ✅ 6: زر صفحة الأرشيف الكاملة -->
             <div class="text-center">
-                <button onclick="openArchivesOverlay()" class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-amber-700 border border-amber-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
-                    <span class="iconify" data-icon="lucide:layout-list"></span>
+                <button onclick="openArchivesOverlay()" class="inline-flex items-center gap-2 text-white px-8 py-4 rounded-2xl font-bold text-sm transition-all shadow-lg hover:shadow-xl hover:opacity-90" style="background-color:#d87706;">
+                    <span class="iconify text-xl" data-icon="lucide:images"></span>
                     <span data-i18n="archive-btn">استعراض الأرشيف الكامل</span>
+                    <span class="iconify text-sm" data-icon="lucide:arrow-left"></span>
                 </button>
             </div>
         </div>
@@ -1540,8 +1542,8 @@ html[dir="ltr"] article {
     <div class="max-w-7xl mx-auto px-4 relative z-10">
         <div class="text-center mb-10">
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2 flex items-center justify-center gap-3"><span class="iconify text-emerald-600" data-icon="lucide:map-pin"></span><span data-i18n="guide-title">دليل شطايبي</span></h2>
-            <p class="text-gray-500 max-w-2xl mx-auto" data-i18n="guide-sub">دليل شامل يضم الفروع الإدارية والمؤسسات التعليمية والصحية والخدماتية، إلى جانب مختلف المرافق الاجتماعية في شطايبي</p>
             <div class="section-divider text-emerald-500 mt-1 mb-3"><span></span></div>
+            <p class="text-gray-500 max-w-2xl mx-auto" data-i18n="guide-sub">دليل شامل يضم الفروع الإدارية والمؤسسات التعليمية والصحية والخدماتية، إلى جانب مختلف المرافق الاجتماعية في شطايبي</p>
         </div>
         <!-- تبويبات الدليل -->
         <div class="flex flex-wrap justify-center gap-3 mb-10">
@@ -1563,24 +1565,43 @@ html[dir="ltr"] article {
             <p class="text-gray-500 text-sm mb-6 text-center" data-i18n="guide-branches-sub">ملحقات إدارية تهدف لتقريب المرفق العام من المواطن، وتسهيل استخراج الوثائق والحالة المدنية</p>
             <div id="gpanel-admin-branches-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
             <div id="gpanel-admin-branches-extra" class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 hidden"></div>
-            
+            <div id="gpanel-admin-branches-more" class="text-center mt-6 hidden">
+                <button onclick="toggleGuideMore('admin-branches')" id="gbtn-admin-branches" class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
+                    <span class="iconify" data-icon="lucide:chevrons-down" id="gicon-admin-branches"></span>
+                    <span id="gtxt-admin-branches" data-i18n="guide-more-branches">عرض المزيد من الفروع الإدارية</span>
+                </button>
+            </div>
+        </div>
         <!-- لوحة: المؤسسات التعليمية -->
         <div id="gpanel-education" class="guide-panel hidden">
             <p class="text-gray-500 text-sm mb-6 text-center" data-i18n="guide-education-sub">مؤسسات التعليم العام في بلدية شطايبي من الابتدائي إلى الثانوي</p>
             <div id="gpanel-education-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
             <div id="gpanel-education-extra" class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 hidden"></div>
-            
+            <div id="gpanel-education-more" class="text-center mt-6 hidden">
+                <button onclick="toggleGuideMore('education')" id="gbtn-education" class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-indigo-700 border border-indigo-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
+                    <span class="iconify" data-icon="lucide:chevrons-down" id="gicon-education"></span>
+                    <span id="gtxt-education" data-i18n="guide-more-edu">عرض المزيد من المؤسسات التعليمية</span>
+                </button>
+            </div>
+        </div>
         <!-- لوحة: المرافق الصحية -->
         <div id="gpanel-health" class="guide-panel hidden">
             <p class="text-gray-500 text-sm mb-6 text-center" data-i18n="guide-health-sub">المؤسسات الصحية العمومية التي تخدم سكان بلدية شطايبي والمناطق المجاورة</p>
             <div id="gpanel-health-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
             <div id="gpanel-health-extra" class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 hidden"></div>
-            
+            <div id="gpanel-health-more" class="text-center mt-6 hidden">
+                <button onclick="toggleGuideMore('health')" id="gbtn-health" class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-red-700 border border-red-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
+                    <span class="iconify" data-icon="lucide:chevrons-down" id="gicon-health"></span>
+                    <span id="gtxt-health" data-i18n="guide-more-health">عرض المزيد من المرافق الصحية</span>
+                </button>
+            </div>
+        </div>
         <!-- زر المزيد من المرافق -->
         <div class="text-center mt-10">
-            <button onclick="openFacilitiesOverlay()" class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
-                <span class="iconify" data-icon="lucide:layout-list"></span>
+            <button onclick="openFacilitiesOverlay()" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-2xl font-bold text-sm transition-all shadow-md">
+                <span class="iconify text-lg" data-icon="lucide:building-2"></span>
                 <span data-i18n="facilities-btn">تصفح بقية المرافق والخدمات</span>
+                <span class="iconify text-lg" data-icon="lucide:chevron-left"></span>
             </button>
         </div>
     </div>
@@ -1656,8 +1677,8 @@ html[dir="ltr"] article {
                 <span class="iconify text-amber-300" data-icon="lucide:sun"></span>
                 <span data-i18n="tourism-title">السياحة في شطايبي</span>
             </h2>
-            <p class="text-white/70 max-w-2xl mx-auto" data-i18n="tourism-sub">نافذة على التنوع الطبيعي والإرث السياحي المتميز لمنطقة شطايبي</p>
             <div class="section-divider text-amber-300 mt-1 mb-2"><span></span></div>
+            <p class="text-white/70 max-w-2xl mx-auto" data-i18n="tourism-sub">نافذة على التنوع الطبيعي والإرث السياحي المتميز لمنطقة شطايبي</p>
         </div>
 
         <!-- ── الشواطئ ── -->
@@ -1677,11 +1698,17 @@ html[dir="ltr"] article {
                 </div>
             </div>
             <div id="beaches-extra" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-5 hidden"></div>
-            <div id="all-beaches-wrap" class="text-center mt-4 mb-2">
+            <div id="beaches-more-wrap" class="text-center mb-4 hidden">
+                <button id="beaches-more-btn" onclick="toggleMoreBeaches()"
+                        class="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 text-white border border-white/30 px-8 py-3 rounded-2xl font-bold text-sm transition-all backdrop-blur-sm">
+                    <span class="iconify text-lg" data-icon="lucide:chevrons-down" id="beaches-more-icon"></span>
+                    <span id="beaches-more-text" data-i18n="beaches-more-btn">عرض بقية الشواطئ</span>
+                </button>
+            </div>
+            <div id="all-beaches-wrap" class="text-center mt-2 mb-2 hidden" data-show-after-more="true">
                 <button onclick="openExploreOverlay('beaches')"
-                        class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
-                    <span class="iconify" data-icon="lucide:layout-list"></span>
-                    <span data-i18n="all-beaches-btn">عرض جميع الشواطئ</span>
+                        class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white/80 hover:text-white border border-white/20 px-6 py-2 rounded-2xl font-semibold text-xs transition-all backdrop-blur-sm">
+                    <span class="iconify" data-icon="lucide:layout-list"></span> <span data-i18n="all-beaches-btn">جميع الشواطئ</span>
                 </button>
             </div>
         </div>
@@ -1703,11 +1730,17 @@ html[dir="ltr"] article {
                 </div>
             </div>
             <div id="tourism-extra" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-5 hidden"></div>
-            <div id="all-tourism-wrap" class="text-center mt-4 mb-2">
+            <div id="tourism-more-wrap" class="text-center mb-4 hidden">
+                <button id="tourism-more-btn" onclick="toggleMoreTourism()"
+                        class="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 text-white border border-white/30 px-8 py-3 rounded-2xl font-bold text-sm transition-all backdrop-blur-sm">
+                    <span class="iconify text-lg" data-icon="lucide:chevrons-down" id="tourism-more-icon"></span>
+                    <span id="tourism-more-text" data-i18n="tourism-more-btn">عرض المزيد من المعالم</span>
+                </button>
+            </div>
+            <div id="all-tourism-wrap" class="text-center mt-2 mb-2 hidden">
                 <button onclick="openExploreOverlay('tourism')"
-                        class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
-                    <span class="iconify" data-icon="lucide:layout-list"></span>
-                    <span data-i18n="all-tourism-btn">عرض جميع المعالم</span>
+                        class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white/80 hover:text-white border border-white/20 px-6 py-2 rounded-2xl font-semibold text-xs transition-all backdrop-blur-sm">
+                    <span class="iconify" data-icon="lucide:layout-list"></span> <span data-i18n="all-tourism-btn">جميع المعالم</span>
                 </button>
             </div>
         </div>
@@ -3070,7 +3103,7 @@ async function loadGuidePanel(tab) {
             const albums = Array.isArray(f.albums) ? f.albums : [];
             const hasImg = !!f.image_url;
             const hasAlbum = albums.length > 0;
-            return '<div class="bg-white rounded-2xl border border-gray-100 hover:shadow-xl transition-all shadow-md overflow-hidden cursor-pointer group" onclick="openFacModal(' + f.id + ',\'' + tab + '\')">'
+            return '<div class="bg-white rounded-2xl border border-gray-100 hover:shadow-lg transition-all shadow-sm overflow-hidden cursor-pointer group" onclick="openFacModal(' + f.id + ',\'' + tab + '\')">'
                 + (hasImg
                     ? '<div class="h-44 overflow-hidden relative"><img src="' + f.image_url + '" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-400"><div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>'
                       + (hasAlbum ? '<span class="absolute top-2 left-2 bg-black/60 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1"><span class="iconify text-xs" data-icon="lucide:images"></span>' + albums.length + '</span>' : '')
