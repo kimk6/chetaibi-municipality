@@ -3867,6 +3867,10 @@ async function renderOverlay() {
         const countEl = document.getElementById('news-overlay-count');
         if(countEl) countEl.textContent = total + (currentLang==='fr' ? ' article(s)' : ' خبر');
         const m = CAT_META[overlayCat] || CAT_META.official;
+        // ضبط grid حسب التصنيف
+        grid.className = overlayCat === 'poster'
+            ? 'flex flex-wrap justify-center gap-5 mb-8'
+            : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8';
         if(!items.length){ grid.innerHTML='<p class="col-span-full text-center text-gray-400 py-16">'+(currentLang==='fr'?'Aucun article dans cette catégorie':'لا توجد أخبار في هذا الصنف')+'</p>'; return; }
         grid.innerHTML = items.map(n => {
             const displayTitle   = getLF(n,'title')   || n.title   || '';
@@ -3882,14 +3886,12 @@ async function renderOverlay() {
             const pin = n.is_pinned ? '<span class="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full border border-emerald-200 font-bold">'+(currentLang==='fr'?'Épinglé':'مثبت')+'</span>' : '';
             const snippet = displayContent.replace(/\n/g,' ').substring(0,90)+(displayContent.length>90?'...':'');
 
-            // ── poster: صورة كاملة بدون نص ──
+            // ── poster: صورة كاملة فقط بدون أي نص ──
             if (overlayCat === 'poster') {
-                return `<article class="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow cursor-pointer relative group" onclick="openNewsModal(${n.id})">
-                    ${imgSrc
-                        ? `<img src="${imgSrc}" alt="${displayTitle}" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500">`
-                        : `<div class="h-64 bg-gradient-to-bl ${m.grad} flex items-center justify-center"><span class="iconify text-white text-7xl" data-icon="${m.icon}"></span></div>`}
-                    ${displayTitle ? `<div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent p-4"><p class="text-white font-extrabold text-sm line-clamp-2">${displayTitle}</p></div>` : ''}
-                </article>`;
+                if (!imgSrc) return '';
+                return `<div class="poster-card cursor-pointer rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all hover:scale-[1.02]" onclick="openPosterLightbox('${imgSrc.replace(/'/g,"\\'")}')">
+                    <img src="${imgSrc}" alt="${displayTitle||'ملصق'}" class="block w-full h-auto" style="max-width:320px;">
+                </div>`;
             }
 
             // ── activity + social: بطاقة كاملة مع badge ──
