@@ -2185,7 +2185,7 @@ function toggleMoreNews(tab){
     if(newItems.length > 0){
         newItems.forEach(n => {
             const s=catStyles[n.category]||catStyles.official;
-            const img=n.image_url||'';
+            const img=(currentLang==='fr' && n.image_url_fr) ? n.image_url_fr : (n.image_url||'');
             const isPinned=n.is_pinned==1;
             const pinBadge=isPinned?'<div class="pin-badge"><span class="iconify text-sm" data-icon="lucide:pin"></span></div>':'<div></div>';
             const pinLabel=isPinned?`<span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-600 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-200"><span class="iconify" data-icon="lucide:pin"></span>${t('pinned-badge').replace('\u{1F4CC} ','')}</span>`:'';
@@ -3872,7 +3872,13 @@ async function renderOverlay() {
             const displayTitle   = getLF(n,'title')   || n.title   || '';
             const displayContent = getLF(n,'content') || n.content || '';
             const imgSrc = (currentLang==='fr' && n.image_url_fr && n.image_url_fr.trim()) ? n.image_url_fr : (n.image_url||'');
-            const label = (n.custom_label&&n.custom_label.trim()) ? n.custom_label : catLabel;
+            // label مع دعم الترجمة
+            const _cAr2={official:'إعلان رسمي',activity:'نشاط بلدي',social:'ركن المجتمع',poster:'صور وملصقات'};
+            const _cFr2={official:'Annonce officielle',activity:'Activité communale',social:'Coin citoyen',poster:'Photos & Affiches'};
+            const defaultLabel = currentLang==='fr' ? _cFr2[n.category] : _cAr2[n.category];
+            const label = (n.custom_label&&n.custom_label.trim())
+                ? (currentLang==='fr'&&n.custom_label_fr&&n.custom_label_fr.trim() ? n.custom_label_fr : n.custom_label)
+                : defaultLabel || '';
             const pin = n.is_pinned ? '<span class="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full border border-emerald-200 font-bold">'+(currentLang==='fr'?'Épinglé':'مثبت')+'</span>' : '';
             const snippet = displayContent.replace(/\n/g,' ').substring(0,90)+(displayContent.length>90?'...':'');
 
@@ -3886,8 +3892,8 @@ async function renderOverlay() {
                 </article>`;
             }
 
-            // ── activity: بطاقة كاملة مثل الواجهة ──
-            if (overlayCat === 'activity') {
+            // ── activity + social: بطاقة كاملة مع badge ──
+            if (overlayCat === 'activity' || overlayCat === 'social') {
                 const img2 = imgSrc
                     ? `<div class="h-44 overflow-hidden relative"><img src="${imgSrc}" alt="${displayTitle}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"><div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div></div>`
                     : `<div class="h-44 bg-gradient-to-bl ${m.grad} flex items-center justify-center"><span class="iconify text-white text-6xl" data-icon="${m.icon}"></span></div>`;
@@ -3899,7 +3905,7 @@ async function renderOverlay() {
                         <p class="text-xs text-gray-500 mb-3 leading-relaxed">${snippet}</p>
                         <div class="flex items-center justify-between">
                             <span class="text-xs text-gray-400 flex items-center gap-1"><span class="iconify" data-icon="lucide:calendar"></span>${n.date||''}</span>
-                            <span class="text-emerald-600 text-xs font-bold">${(currentLang==='fr' ? t('read-more')+' <span style="font-size:11px;">\u00bb</span>' : t('read-more')+' <span style="font-size:11px;">\u00bb</span>')}</span>
+                            <button onclick="openNewsModal(${n.id})" class="text-emerald-600 text-xs font-bold hover:text-emerald-700">${t('read-more')} <span style="font-size:11px;">»</span></button>
                         </div>
                     </div>
                 </article>`;
