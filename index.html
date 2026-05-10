@@ -953,31 +953,31 @@ html[dir="ltr"] article {
 </div>
 
 <!-- HEADER -->
-<header class="bg-gradient-to-l from-emerald-800 via-emerald-700 to-emerald-900 text-white relative overflow-hidden">
+<header class="bg-gradient-to-l from-emerald-800 via-emerald-700 to-emerald-900 text-white py-2.5 relative overflow-hidden">
     <div class="absolute inset-0 opacity-10" aria-hidden="true">
         <div class="absolute top-1 right-10 w-20 h-20 border border-white/30 rounded-full"></div>
         <div class="absolute bottom-0 left-20 w-16 h-16 border border-white/20 rounded-full"></div>
     </div>
-    <div class="max-w-7xl mx-auto px-4 py-4 md:py-5 flex flex-col items-center justify-center text-center relative z-10 gap-3">
-        <!-- الترتيب القانوني الرسمي -->
-        <div>
-            <h1 class="text-sm md:text-base font-bold tracking-wide" data-i18n="republic-name">الجمهورية الجزائرية الديمقراطية الشعبية</h1>
-            <p class="text-[11px] md:text-sm text-emerald-200 mt-0.5 font-medium" data-i18n="ministry-name">وزارة الداخلية والجماعات المحلية والنقل</p>
-        </div>
-        <!-- فاصل -->
-        <div class="w-px h-3 bg-white/20 hidden md:block"></div>
-        <!-- اللوجو + اسم البلدية -->
-        <div class="flex items-center justify-center gap-4">
-            <div class="w-[80px] h-[80px] md:w-[100px] md:h-[100px] rounded-full overflow-hidden shadow-lg flex-shrink-0 border-2 border-white/20">
-                <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo.webp" alt="شعار البلدية" class="w-full h-full object-cover">
-            </div>
-            <div class="text-center">
-                <h2 class="text-2xl md:text-3xl font-extrabold text-white" data-i18n="municipality-name">بلدية شطايبي</h2>
-                <p class="text-sm md:text-base text-emerald-200 font-medium" data-i18n="wilaya-name">ولاية عنابة — الجزائر</p>
-            </div>
-        </div>
+    <div class="max-w-7xl mx-auto px-4 flex flex-col items-center justify-center relative z-10 text-center">
+        <h1 class="text-sm md:text-base font-bold tracking-wide" data-i18n="republic-name">الجمهورية الجزائرية الديمقراطية الشعبية</h1>
+        <p class="text-[11px] md:text-sm text-emerald-200 mt-0.5 font-medium" data-i18n="ministry-name">وزارة الداخلية والجماعات المحلية والنقل</p>
     </div>
 </header>
+<!-- خط فاصل ذهبي متدرج -->
+<div aria-hidden="true" style="height:2px;background:linear-gradient(to left, transparent 0%, rgba(251,191,36,0.15) 15%, rgba(251,191,36,0.85) 40%, rgba(251,191,36,1) 50%, rgba(251,191,36,0.85) 60%, rgba(251,191,36,0.15) 85%, transparent 100%);"></div>
+
+<!-- شريط اللوجو -->
+<div class="bg-white border-b border-emerald-100 py-4 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 flex items-center justify-center gap-3">
+        <div class="w-[88px] h-[88px] md:w-[108px] md:h-[108px] rounded-full overflow-hidden shadow-lg flex-shrink-0">
+            <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo.webp" alt="شعار البلدية" class="w-full h-full object-cover">
+        </div>
+        <div class="text-center">
+            <h2 class="text-2xl md:text-3xl font-extrabold text-emerald-800" data-i18n="municipality-name">بلدية شطايبي</h2>
+            <p class="text-sm md:text-base text-emerald-600 font-medium" data-i18n="wilaya-name">ولاية عنابة — الجزائر</p>
+        </div>
+    </div>
+</div>
 
 <!-- NAV -->
 <nav id="main-nav" class="bg-emerald-700 sticky top-0 z-50 shadow-lg">
