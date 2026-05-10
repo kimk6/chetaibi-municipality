@@ -1677,15 +1677,9 @@ html[dir="ltr"] article {
                 </div>
             </div>
             <div id="beaches-extra" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-5 hidden"></div>
-            <div id="beaches-more-wrap" class="text-center mt-2 mb-4 hidden">
-                <button onclick="toggleMoreBeaches()" class="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 backdrop-blur-sm text-white border border-white/30 px-6 py-2 rounded-2xl font-bold text-sm transition-all">
-                    <span class="iconify" id="beaches-more-icon" data-icon="lucide:chevrons-down"></span>
-                    <span id="beaches-more-text" data-i18n="beaches-more-btn">عرض بقية الشواطئ</span>
-                </button>
-            </div>
-            <div id="all-beaches-wrap" class="text-center mt-4 mb-2 hidden">
+            <div id="all-beaches-wrap" class="text-center mt-4 mb-2">
                 <button onclick="openExploreOverlay('beaches')"
-                        class="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 backdrop-blur-sm text-white border border-white/30 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
+                        class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
                     <span class="iconify" data-icon="lucide:layout-list"></span>
                     <span data-i18n="all-beaches-btn">عرض جميع الشواطئ</span>
                 </button>
@@ -1709,15 +1703,9 @@ html[dir="ltr"] article {
                 </div>
             </div>
             <div id="tourism-extra" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-5 hidden"></div>
-            <div id="tourism-more-wrap" class="text-center mt-2 mb-4 hidden">
-                <button onclick="toggleMoreTourism()" class="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 backdrop-blur-sm text-white border border-white/30 px-6 py-2 rounded-2xl font-bold text-sm transition-all">
-                    <span class="iconify" id="tourism-more-icon" data-icon="lucide:chevrons-down"></span>
-                    <span id="tourism-more-text" data-i18n="tourism-more-show">عرض المزيد من المعالم</span>
-                </button>
-            </div>
-            <div id="all-tourism-wrap" class="text-center mt-4 mb-2 hidden">
+            <div id="all-tourism-wrap" class="text-center mt-4 mb-2">
                 <button onclick="openExploreOverlay('tourism')"
-                        class="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 backdrop-blur-sm text-white border border-white/30 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
+                        class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
                     <span class="iconify" data-icon="lucide:layout-list"></span>
                     <span data-i18n="all-tourism-btn">عرض جميع المعالم</span>
                 </button>
@@ -2916,7 +2904,7 @@ async function loadTourism(){
                     ${getLF(item,'badge_text')?`<span class="absolute top-2 left-2 ${bcColors[item.badge_color]||'bg-emerald-500'} text-white text-[10px] font-bold px-2 py-0.5 rounded-full">${getLF(item,'badge_text')}</span>`:''}
                 </div>
                 <div class="p-4">
-                    <p class="text-xs text-white/70 line-clamp-2 leading-relaxed">${(tDesc||t('details-btn')).substring(0,100)}</p>
+                    <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed">${(tDesc||t('details-btn')).substring(0,100)}</p>
                     <div class="mt-2 flex items-center justify-between">
                         ${item.rating?`<span class="text-xs text-amber-500 font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:star"></span>${item.rating}/5</span>`:'<span></span>'}
                         <span class="inline-flex items-center gap-1 text-emerald-300 text-xs font-bold"><span class="iconify text-xs" data-icon="lucide:images"></span> ${t('details-btn')}</span>
