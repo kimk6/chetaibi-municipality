@@ -760,7 +760,7 @@
         .animate-fadeIn{animation:fadeIn .5s ease-out forwards}
         .anim-delay-1{animation-delay:.1s;opacity:0}.anim-delay-2{animation-delay:.2s;opacity:0}.anim-delay-3{animation-delay:.3s;opacity:0}
         .vintage-filter{filter:sepia(.7) contrast(1.1) brightness(.9)}
-        .news-tab.active{background:#059669;color:white;box-shadow:0 4px 14px rgba(5,150,105,.3);border:1px solid rgba(167,243,208,0.4);}
+        .news-tab.active{background:#059669;color:white;box-shadow:0 4px 14px rgba(5,150,105,.25);}
         .news-tab:not(.active){background:white;color:#374151;border:1px solid #e5e7eb}
         html[lang="ar"] .news-tab span[data-i18n]{font-size:13px}
         .service-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(5,150,105,.12)}
@@ -856,8 +856,8 @@
         opacity: 0.85;
     }
 }
-    .guide-tab{background:#f1f5f9;color:#475569;}
-.guide-tab.active{background:#059669;color:#fff;box-shadow:0 4px 14px rgba(5,150,105,.35);border:1px solid rgba(167,243,208,0.4);}
+    .guide-tab{background:#f1f5f9;color:#475569;border:1px solid #e5e7eb;}
+.guide-tab.active{background:#059669;color:#fff;box-shadow:0 4px 14px rgba(5,150,105,.25);}
 .guide-tab:hover:not(.active){background:#e2e8f0;}
 
 /* ══════════════════════════════════════════
@@ -1328,10 +1328,9 @@ html[dir="ltr"] article {
 
         <!-- زر عرض المزيد يفتح Overlay -->
         <div class="text-center mt-10">
-            <button onclick="openServicesOverlay()" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-2xl font-bold text-sm transition-all shadow-md">
-                <span class="iconify text-lg" data-icon="lucide:layout-grid"></span>
+            <button onclick="openServicesOverlay()" class="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all">
+                <span class="iconify" data-icon="lucide:layout-list"></span>
                 <span data-i18n="services-more-btn">عرض المزيد من الخدمات</span>
-                <span class="iconify text-lg" data-icon="lucide:chevron-left"></span>
             </button>
         </div>
     </div>
@@ -1527,10 +1526,9 @@ html[dir="ltr"] article {
             </div>
             <!-- ✅ 6: زر صفحة الأرشيف الكاملة -->
             <div class="text-center">
-                <button onclick="openArchivesOverlay()" class="inline-flex items-center gap-2 text-white px-8 py-4 rounded-2xl font-bold text-sm transition-all shadow-lg hover:shadow-xl hover:opacity-90" style="background-color:#d87706;">
-                    <span class="iconify text-xl" data-icon="lucide:images"></span>
+                <button onclick="openArchivesOverlay()" class="inline-flex items-center gap-2 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all">
+                    <span class="iconify" data-icon="lucide:layout-list"></span>
                     <span data-i18n="archive-btn">استعراض الأرشيف الكامل</span>
-                    <span class="iconify text-sm" data-icon="lucide:arrow-left"></span>
                 </button>
             </div>
         </div>
@@ -1598,10 +1596,9 @@ html[dir="ltr"] article {
         </div>
         <!-- زر المزيد من المرافق -->
         <div class="text-center mt-10">
-            <button onclick="openFacilitiesOverlay()" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-2xl font-bold text-sm transition-all shadow-md">
-                <span class="iconify text-lg" data-icon="lucide:building-2"></span>
+            <button onclick="openFacilitiesOverlay()" class="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all">
+                <span class="iconify" data-icon="lucide:layout-list"></span>
                 <span data-i18n="facilities-btn">تصفح بقية المرافق والخدمات</span>
-                <span class="iconify text-lg" data-icon="lucide:chevron-left"></span>
             </button>
         </div>
     </div>
