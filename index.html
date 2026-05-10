@@ -1240,8 +1240,8 @@ html[dir="ltr"] article {
     <div class="max-w-7xl mx-auto px-4">
         <div class="text-center mb-12">
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2 flex items-center justify-center gap-3"><span class="iconify text-emerald-600" data-icon="lucide:newspaper"></span><span data-i18n="news-section-title">آخر المستجدات</span></h2>
-            <div class="section-divider text-emerald-500"><span></span></div>
             <p class="text-gray-500 max-w-xl mx-auto" data-i18n="news-section-sub">أحدث الأخبار والإعلانات الرسمية ونشاطات البلدية</p>
+            <div class="section-divider text-emerald-500"><span></span></div>
         </div>
         <div class="grid grid-cols-2 md:flex md:flex-wrap md:justify-center gap-3 mb-10">
             <button onclick="switchNewsTab('announcements')" id="tab-announcements" class="news-tab active py-2.5 px-3 md:px-5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-1.5 min-w-0 flex-shrink-0"><span class="iconify text-base flex-shrink-0" data-icon="lucide:megaphone"></span><span class="whitespace-nowrap text-[11px] md:text-sm" data-i18n="tab-announcements"> إعلانات رسمية</span></button>
@@ -1303,10 +1303,10 @@ html[dir="ltr"] article {
                 <span class="iconify text-emerald-600" data-icon="lucide:landmark"></span>
                 <span data-i18n="services-title">الخدمات الإدارية</span>
             </h2>
-            <div class="section-divider text-emerald-500 mt-1 mb-2"><span></span></div>
             <p class="text-gray-500 max-w-xl mx-auto" data-i18n="services-sub">
                 بوابة الخدمات الإلكترونية والوثائق الإدارية
             </p>
+            <div class="section-divider text-emerald-500 mt-1 mb-2"><span></span></div>
         </div>
         <!-- ملاحظة موثوقية -->
         <div class="flex justify-center mb-10">
@@ -1417,8 +1417,8 @@ html[dir="ltr"] article {
     <div class="max-w-7xl mx-auto px-4 relative z-10">
         <div class="text-center mb-16">
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2 flex items-center justify-center gap-3"><span class="iconify text-amber-500" data-icon="lucide:scroll-text"></span><span data-i18n="archive-title">تاريخ شطايبي</span></h2>
-            <div class="section-divider text-amber-400 mt-1 mb-3"><span></span></div>
             <p class="text-gray-500 max-w-2xl mx-auto" data-i18n="archive-sub">استعراض للمحطات التاريخية الكبرى التي شكلت مسار المنطقة عبر العصور</p>
+            <div class="section-divider text-amber-400 mt-1 mb-3"><span></span></div>
         </div>
         <div class="relative max-w-4xl mx-auto mb-20">
             <div class="timeline-line"></div>
@@ -1508,16 +1508,16 @@ html[dir="ltr"] article {
             </div>
                     </div>
         <div>
-            <div class="flex items-center gap-3 mb-10 justify-center">
-                <div class="h-px flex-1 bg-amber-200"></div>
-                <h3 class="text-2xl font-extrabold text-gray-900 text-center flex flex-col items-center gap-1">
-                    <span class="flex items-center gap-2">
-                        <span class="iconify text-amber-500 align-middle" data-icon="lucide:scroll-text"></span>
-                        <span data-i18n="archive-photos-title" class="align-middle">أرشيف الصور</span>
-                    </span>
-                    <span class="text-base font-semibold text-gray-500" data-i18n="archive-photos-sub">شطايبي بين الأمس واليوم</span>
-                </h3>
-                <div class="h-px flex-1 bg-amber-200"></div>
+            <div class="text-center mb-10">
+                <div class="flex items-center gap-3 justify-center mb-1">
+                    <div class="h-px flex-1 bg-amber-200 max-w-[80px]"></div>
+                    <h3 class="text-2xl font-extrabold text-gray-900 flex items-center gap-2 flex-shrink-0">
+                        <span class="iconify text-amber-500" data-icon="lucide:scroll-text"></span>
+                        <span data-i18n="archive-photos-title">أرشيف الصور</span>
+                    </h3>
+                    <div class="h-px flex-1 bg-amber-200 max-w-[80px]"></div>
+                </div>
+                <span class="text-base font-semibold text-gray-500" data-i18n="archive-photos-sub">شطايبي بين الأمس واليوم</span>
             </div>
             <!-- بطاقات ديناميكية من DB -->
             <div id="archive-preview-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
@@ -1542,20 +1542,20 @@ html[dir="ltr"] article {
     <div class="max-w-7xl mx-auto px-4 relative z-10">
         <div class="text-center mb-10">
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2 flex items-center justify-center gap-3"><span class="iconify text-emerald-600" data-icon="lucide:map-pin"></span><span data-i18n="guide-title">دليل شطايبي</span></h2>
-            <div class="section-divider text-emerald-500 mt-1 mb-3"><span></span></div>
             <p class="text-gray-500 max-w-2xl mx-auto" data-i18n="guide-sub">دليل شامل يضم الفروع الإدارية والمؤسسات التعليمية والصحية والخدماتية، إلى جانب مختلف المرافق الاجتماعية في شطايبي</p>
+            <div class="section-divider text-emerald-500 mt-1 mb-3"><span></span></div>
         </div>
         <!-- تبويبات الدليل -->
         <div class="flex flex-wrap justify-center gap-3 mb-10">
-            <button onclick="switchGuideTab('admin-branches')" id="gtab-admin-branches" class="guide-tab active px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2">
+            <button onclick="switchGuideTab('admin-branches')" id="gtab-admin-branches" class="guide-tab active px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2 border">
                 <span class="iconify" data-icon="lucide:landmark"></span>
                 <span data-i18n="gtab-branches">الفروع الإدارية</span>
             </button>
-            <button onclick="switchGuideTab('education')" id="gtab-education" class="guide-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2">
+            <button onclick="switchGuideTab('education')" id="gtab-education" class="guide-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2 border">
                 <span class="iconify" data-icon="lucide:graduation-cap"></span>
                 <span data-i18n="gtab-education">المؤسسات التعليمية</span>
             </button>
-            <button onclick="switchGuideTab('health')" id="gtab-health" class="guide-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2">
+            <button onclick="switchGuideTab('health')" id="gtab-health" class="guide-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2 border">
                 <span class="iconify" data-icon="lucide:heart-pulse"></span>
                 <span data-i18n="gtab-health">المرافق الصحية</span>
             </button>
@@ -1677,8 +1677,8 @@ html[dir="ltr"] article {
                 <span class="iconify text-amber-300" data-icon="lucide:sun"></span>
                 <span data-i18n="tourism-title">السياحة في شطايبي</span>
             </h2>
-            <div class="section-divider text-amber-300 mt-1 mb-2"><span></span></div>
             <p class="text-white/70 max-w-2xl mx-auto" data-i18n="tourism-sub">نافذة على التنوع الطبيعي والإرث السياحي المتميز لمنطقة شطايبي</p>
+            <div class="section-divider text-amber-300 mt-1 mb-2"><span></span></div>
         </div>
 
         <!-- ── الشواطئ ── -->
@@ -3103,7 +3103,7 @@ async function loadGuidePanel(tab) {
             const albums = Array.isArray(f.albums) ? f.albums : [];
             const hasImg = !!f.image_url;
             const hasAlbum = albums.length > 0;
-            return '<div class="bg-white rounded-2xl border border-gray-100 hover:shadow-lg transition-all shadow-sm overflow-hidden cursor-pointer group" onclick="openFacModal(' + f.id + ',\'' + tab + '\')">'
+            return '<div class="bg-white rounded-2xl border border-gray-100 hover:shadow-xl transition-all shadow-md overflow-hidden cursor-pointer group" onclick="openFacModal(' + f.id + ',\'' + tab + '\')">'
                 + (hasImg
                     ? '<div class="h-44 overflow-hidden relative"><img src="' + f.image_url + '" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-400"><div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>'
                       + (hasAlbum ? '<span class="absolute top-2 left-2 bg-black/60 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1"><span class="iconify text-xs" data-icon="lucide:images"></span>' + albums.length + '</span>' : '')
