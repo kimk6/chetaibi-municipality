@@ -760,8 +760,8 @@
         .animate-fadeIn{animation:fadeIn .5s ease-out forwards}
         .anim-delay-1{animation-delay:.1s;opacity:0}.anim-delay-2{animation-delay:.2s;opacity:0}.anim-delay-3{animation-delay:.3s;opacity:0}
         .vintage-filter{filter:sepia(.7) contrast(1.1) brightness(.9)}
-        .news-tab.active{background:#059669;color:white;box-shadow:0 4px 14px rgba(5,150,105,.3)}
-        .news-tab:not(.active){background:white;color:#374151;border:1px solid #e5e7eb}
+        .news-tab.active{background:#059669;color:white;box-shadow:0 2px 8px rgba(0,0,0,0.10);}
+        .news-tab:not(.active){background:white;color:#374151;border:1px solid #e5e7eb;box-shadow:0 1px 4px rgba(0,0,0,0.07);}
         html[lang="ar"] .news-tab span[data-i18n]{font-size:13px}
         .service-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(5,150,105,.12)}
         .service-card{transition:all .3s ease}
@@ -856,9 +856,9 @@
         opacity: 0.85;
     }
 }
-    .guide-tab{background:#f1f5f9;color:#475569;}
-.guide-tab.active{background:#059669;color:#fff;box-shadow:0 4px 14px rgba(5,150,105,.35);}
-.guide-tab:hover:not(.active){background:#e2e8f0;}
+    .guide-tab{background:#ffffff;color:#374151;border:1px solid #e5e7eb;box-shadow:0 1px 4px rgba(0,0,0,0.07);}
+    .guide-tab.active{background:#059669;color:#fff;border-color:#059669;box-shadow:0 2px 8px rgba(0,0,0,0.10);}
+    .guide-tab:hover:not(.active){background:#f8fafc;}
 
 /* ══════════════════════════════════════════
    City Index Background — دليل + خريطة
@@ -1256,9 +1256,10 @@ html[dir="ltr"] article {
             <div id="extra-announcements" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 hidden"></div>
             <div id="more-wrap-announcements" class="flex flex-wrap items-center justify-center gap-3 mb-4 hidden">
                 <button onclick="openNewsPage('official')" id="more-btn-announcements"
-                        class="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all">
-                    <span class="iconify" data-icon="lucide:layout-list"></span>
+                        class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-md">
+                    <span class="iconify text-lg" data-icon="lucide:megaphone"></span>
                     <span data-i18n="all-announcements">جميع الإعلانات</span>
+                    <span class="iconify text-lg" data-icon="lucide:chevron-left"></span>
                 </button>
             </div>
         </div>
@@ -1267,9 +1268,10 @@ html[dir="ltr"] article {
             <div id="extra-activities" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 hidden"></div>
             <div id="more-wrap-activities" class="flex flex-wrap items-center justify-center gap-3 mb-4 hidden">
                 <button onclick="openNewsPage('activity')" id="more-btn-activities"
-                        class="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all">
-                    <span class="iconify" data-icon="lucide:layout-list"></span>
+                        class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-md">
+                    <span class="iconify text-lg" data-icon="lucide:clipboard-list"></span>
                     <span data-i18n="all-activities">جميع النشاطات</span>
+                    <span class="iconify text-lg" data-icon="lucide:chevron-left"></span>
                 </button>
             </div>
         </div>
@@ -1278,9 +1280,10 @@ html[dir="ltr"] article {
             <div id="extra-community" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 hidden"></div>
             <div id="more-wrap-community" class="flex flex-wrap items-center justify-center gap-3 mb-4 hidden">
                 <button onclick="openNewsPage('social')" id="more-btn-community"
-                        class="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all">
-                    <span class="iconify" data-icon="lucide:layout-list"></span>
+                        class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-md">
+                    <span class="iconify text-lg" data-icon="lucide:handshake"></span>
                     <span data-i18n="all-community">جميع المنشورات</span>
+                    <span class="iconify text-lg" data-icon="lucide:chevron-left"></span>
                 </button>
             </div>
         </div>
