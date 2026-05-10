@@ -3106,7 +3106,7 @@ async function loadGuidePanel(tab) {
             const albums = Array.isArray(f.albums) ? f.albums : [];
             const hasImg = !!f.image_url;
             const hasAlbum = albums.length > 0;
-            return '<div class="bg-white rounded-2xl border border-gray-100 hover:shadow-lg transition-all shadow-sm overflow-hidden cursor-pointer group" onclick="openFacModal(' + f.id + ',\'' + tab + '\')">'
+            return '<div class="bg-white rounded-2xl border border-gray-100 hover:shadow-xl transition-all shadow-md overflow-hidden cursor-pointer group" onclick="openFacModal(' + f.id + ',\'' + tab + '\')">'
                 + (hasImg
                     ? '<div class="h-44 overflow-hidden relative"><img src="' + f.image_url + '" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-400"><div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>'
                       + (hasAlbum ? '<span class="absolute top-2 left-2 bg-black/60 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1"><span class="iconify text-xs" data-icon="lucide:images"></span>' + albums.length + '</span>' : '')
