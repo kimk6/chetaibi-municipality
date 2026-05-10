@@ -1511,16 +1511,16 @@ html[dir="ltr"] article {
             </div>
                     </div>
         <div>
-            <div class="flex items-center gap-3 mb-10 justify-center">
-                <div class="h-px flex-1 bg-amber-200"></div>
-                <h3 class="text-2xl font-extrabold text-gray-900 text-center flex flex-col items-center gap-1">
-                    <span class="flex items-center gap-2">
-                        <span class="iconify text-amber-500 align-middle" data-icon="lucide:scroll-text"></span>
-                        <span data-i18n="archive-photos-title" class="align-middle">أرشيف الصور</span>
-                    </span>
-                    <span class="text-base font-semibold text-gray-500" data-i18n="archive-photos-sub">شطايبي بين الأمس واليوم</span>
-                </h3>
-                <div class="h-px flex-1 bg-amber-200"></div>
+            <div class="flex flex-col items-center mb-10">
+                <div class="flex items-center gap-3 w-full">
+                    <div class="h-px flex-1 bg-amber-200"></div>
+                    <h3 class="text-2xl font-extrabold text-gray-900 flex items-center gap-2 flex-shrink-0">
+                        <span class="iconify text-amber-500" data-icon="lucide:scroll-text"></span>
+                        <span data-i18n="archive-photos-title">أرشيف الصور</span>
+                    </h3>
+                    <div class="h-px flex-1 bg-amber-200"></div>
+                </div>
+                <span class="text-base font-semibold text-gray-500 mt-1.5" data-i18n="archive-photos-sub">شطايبي بين الأمس واليوم</span>
             </div>
             <!-- بطاقات ديناميكية من DB -->
             <div id="archive-preview-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
@@ -3533,7 +3533,9 @@ async function openFacModal(id, tab) {
             f = _facCache[id];
         }
         if (!f) { closeFacModal(); return; }
-        const tags   = Array.isArray(f.tags)   ? f.tags   : [];
+        const tags    = Array.isArray(f.tags)    ? f.tags    : [];
+        const tagsFr  = Array.isArray(f.tags_fr) ? f.tags_fr : (typeof f.tags_fr === 'string' && f.tags_fr ? f.tags_fr.split(',').map(x=>x.trim()).filter(Boolean) : []);
+        const displayTags = (currentLang === 'fr' && tagsFr.length) ? tagsFr : tags;
         const albums = Array.isArray(f.albums) ? f.albums : [];
         // تحديد ألوان وأيقونة بناءً على التصنيف
         const catConf = {
@@ -3565,8 +3567,8 @@ async function openFacModal(id, tab) {
         document.getElementById('fac-modal-name').textContent = getLF(f,'name');
         document.getElementById('fac-modal-desc').textContent = getLF(f,'description') || '';
         // tags
-        document.getElementById('fac-modal-tags').innerHTML = tags.map(t =>
-            `<span class="text-xs bg-gray-100 text-gray-700 border border-gray-200 px-2.5 py-0.5 rounded-full font-semibold flex items-center gap-0.5"><span class="iconify text-gray-400 text-[10px]" data-icon="lucide:hash"></span>${t}</span>`
+        document.getElementById('fac-modal-tags').innerHTML = displayTags.map(tg =>
+            `<span class="text-xs bg-gray-100 text-gray-700 border border-gray-200 px-2.5 py-0.5 rounded-full font-semibold flex items-center gap-0.5"><span class="iconify text-gray-400 text-[10px]" data-icon="lucide:hash"></span>${tg}</span>`
         ).join('');
         // ألبوم
         if (albums.length) {
