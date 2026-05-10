@@ -973,18 +973,18 @@ html[dir="ltr"] article {
         <p class="text-[11px] md:text-sm text-emerald-200 mt-0.5 font-medium" data-i18n="ministry-name">وزارة الداخلية والجماعات المحلية والنقل</p>
     </div>
 </header>
-<!-- خط فاصل ذهبي متدرج -->
-<div aria-hidden="true" style="height:2px;background:linear-gradient(to left, transparent 0%, rgba(251,191,36,0.15) 15%, rgba(251,191,36,0.85) 40%, rgba(251,191,36,1) 50%, rgba(251,191,36,0.85) 60%, rgba(251,191,36,0.15) 85%, transparent 100%);"></div>
+<!-- خط فاصل ذهبي رفيف متلاشٍ -->
+<div aria-hidden="true" style="height:1px;background:linear-gradient(to left, transparent 5%, rgba(251,191,36,0.5) 30%, rgba(251,191,36,0.95) 50%, rgba(251,191,36,0.5) 70%, transparent 95%);"></div>
 
-<!-- شريط اللوجو -->
-<div class="py-4 shadow-md border-b-2 border-emerald-950/30" style="background:linear-gradient(to bottom, #065f46, #047857);">
-    <div class="max-w-7xl mx-auto px-4 flex items-center justify-center gap-3">
+<!-- شريط اللوجو — نفس تدرج الهيدر -->
+<div class="py-4 shadow-sm" style="background:linear-gradient(to bottom, #065f46 0%, #047857 60%, #059669 100%);">
+    <div class="max-w-7xl mx-auto px-4 flex items-center justify-center gap-4">
         <div class="w-[88px] h-[88px] md:w-[108px] md:h-[108px] rounded-full overflow-hidden shadow-lg flex-shrink-0 border-2 border-white/20">
             <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo.webp" alt="شعار البلدية" class="w-full h-full object-cover">
         </div>
         <div class="text-center">
             <h2 class="text-2xl md:text-3xl font-extrabold text-white" data-i18n="municipality-name">بلدية شطايبي</h2>
-            <p class="text-sm md:text-base text-emerald-200 font-medium" data-i18n="wilaya-name">ولاية عنابة — الجزائر</p>
+            <p class="text-sm md:text-base text-emerald-100/80 font-medium" data-i18n="wilaya-name">ولاية عنابة — الجزائر</p>
         </div>
     </div>
 </div>
@@ -1274,27 +1274,27 @@ html[dir="ltr"] article {
                 <div style="height:1px;width:60px;background:linear-gradient(to right,#059669,transparent);"></div>
             </div>
         </div>
-        <div class="flex justify-center gap-2 mb-4">
-            <button onclick="switchNewsTab('announcements')" id="tab-announcements" class="news-tab active py-2 px-3 md:px-5 rounded-xl font-bold transition-all flex items-center justify-center gap-1.5 flex-shrink-0">
+        <div class="flex flex-wrap justify-center gap-2 mb-4 px-2">
+            <button onclick="switchNewsTab('announcements')" id="tab-announcements" class="news-tab active py-2 px-3 md:px-5 rounded-xl font-bold transition-all flex items-center justify-center gap-1.5">
                 <span class="iconify text-base flex-shrink-0" data-icon="lucide:megaphone"></span>
-                <span class="whitespace-nowrap text-xs md:text-sm" data-i18n="tab-announcements">إعلانات رسمية</span>
+                <span class="text-xs md:text-sm" data-i18n="tab-announcements">إعلانات رسمية</span>
             </button>
-            <button onclick="switchNewsTab('activities')" id="tab-activities" class="news-tab py-2 px-3 md:px-5 rounded-xl font-bold transition-all flex items-center justify-center gap-1.5 flex-shrink-0">
+            <button onclick="switchNewsTab('activities')" id="tab-activities" class="news-tab py-2 px-3 md:px-5 rounded-xl font-bold transition-all flex items-center justify-center gap-1.5">
                 <span class="iconify text-base flex-shrink-0" data-icon="lucide:clipboard-list"></span>
-                <span class="whitespace-nowrap text-xs md:text-sm" data-i18n="tab-activities">نشاطات</span>
+                <span class="text-xs md:text-sm" data-i18n="tab-activities">نشاطات</span>
             </button>
-            <button onclick="switchNewsTab('community')" id="tab-community" class="news-tab py-2 px-3 md:px-5 rounded-xl font-bold transition-all flex items-center justify-center gap-1.5 flex-shrink-0">
+            <button onclick="switchNewsTab('community')" id="tab-community" class="news-tab py-2 px-3 md:px-5 rounded-xl font-bold transition-all flex items-center justify-center gap-1.5">
                 <span class="iconify text-base flex-shrink-0" data-icon="lucide:handshake"></span>
-                <span class="whitespace-nowrap text-xs md:text-sm" data-i18n="tab-community">ركن المجتمع</span>
+                <span class="text-xs md:text-sm" data-i18n="tab-community">ركن المجتمع</span>
             </button>
-            <button onclick="switchNewsTab('posters')" id="tab-posters" class="news-tab py-2 px-3 md:px-5 rounded-xl font-bold transition-all flex items-center justify-center gap-1.5 flex-shrink-0">
+            <button onclick="switchNewsTab('posters')" id="tab-posters" class="news-tab py-2 px-3 md:px-5 rounded-xl font-bold transition-all flex items-center justify-center gap-1.5">
                 <span class="iconify text-base flex-shrink-0" data-icon="lucide:image"></span>
-                <span class="whitespace-nowrap text-xs md:text-sm" data-i18n="tab-posters">ملصقات</span>
+                <span class="text-xs md:text-sm" data-i18n="tab-posters">ملصقات</span>
             </button>
         </div>
         <!-- وصف التبويب النشط -->
-        <div class="text-center mb-8 min-h-[1.5rem]">
-            <p id="news-tab-desc" class="text-xs md:text-sm text-gray-400 max-w-xl mx-auto transition-opacity duration-300"></p>
+        <div class="text-center mb-8 px-4 min-h-[2rem]">
+            <p id="news-tab-desc" class="text-xs md:text-sm text-gray-400 max-w-xl mx-auto" style="transition:opacity 0.3s ease;opacity:1;"></p>
         </div>
         <div id="news-loading" class="text-center py-16"><span class="iconify text-5xl animate-spin inline-block text-emerald-500" data-icon="lucide:newspaper"></span><p class="mt-3 text-sm font-semibold text-gray-400">جاري تحميل الأخبار...</p></div>
         <!-- كل tab له grid + extra + أزرار -->
@@ -2223,17 +2223,16 @@ document.addEventListener('DOMContentLoaded', () => {
 // ── NEWS TABS & SHOW MORE ──
 const newsExpanded={announcements:false,activities:false,community:false,posters:false};
 
-function switchNewsTab(t){
+function switchNewsTab(tab){
     document.querySelectorAll('.news-panel').forEach(p=>p.classList.add('hidden'));
     document.querySelectorAll('.news-tab').forEach(b=>b.classList.remove('active'));
-    document.getElementById('tab-panel-'+t).classList.remove('hidden');
-    document.getElementById('tab-'+t).classList.add('active');
-    // تحديث الوصف مع fade
+    document.getElementById('tab-panel-'+tab).classList.remove('hidden');
+    document.getElementById('tab-'+tab).classList.add('active');
     const descEl = document.getElementById('news-tab-desc');
     if(descEl){
         descEl.style.opacity='0';
         setTimeout(()=>{
-            descEl.textContent = t('tab-desc-'+t);
+            descEl.textContent = translations[currentLang]?.['tab-desc-'+tab] || translations['ar']?.['tab-desc-'+tab] || '';
             descEl.style.opacity='1';
         },150);
     }
@@ -2849,9 +2848,8 @@ async function loadNews(){
             if(g) g.innerHTML='<p class="text-red-400 text-sm text-center py-8 col-span-full">تعذر تحميل الأخبار</p>';
         });
         switchNewsTab('announcements');
-        // تهيئة الوصف الابتدائي
         const descEl = document.getElementById('news-tab-desc');
-        if(descEl) descEl.textContent = t('tab-desc-announcements');
+        if(descEl) descEl.textContent = translations[currentLang]?.['tab-desc-announcements'] || translations['ar']?.['tab-desc-announcements'] || '';
     }
 }
 
