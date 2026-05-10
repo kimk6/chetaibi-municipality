@@ -250,8 +250,8 @@
             'beaches-more-btn':   'عرض بقية الشواطئ',
             'beaches-intro':      'تتميز شطايبي بشواطئها الرائعة ذات المياه الصافية والرمال الذهبية، وتضم شريطاً ساحلياً من الشواطئ المسموحة للسباحة، والمجهزة لضمان راحة وسلامة المصطافين والعائلات',
             'tourism-more-btn':   'عرض المزيد من المعالم',
-            'all-beaches-btn':    'جميع الشواطئ',
-            'all-tourism-btn':    'جميع المعالم',
+            'all-beaches-btn':    'عرض جميع الشواطئ',
+            'all-tourism-btn':    'عرض جميع المعالم',
             'tourism-more-show':  'عرض المزيد من المعالم',
             'tourism-more-hide':  'إخفاء',
             'supervised-badge':   'مراقب',
@@ -508,8 +508,8 @@
             'beaches-more-btn':   'Voir toutes les plages',
             'beaches-intro':      'Chetaïbi se distingue par ses plages remarquables aux eaux cristallines et au sable doré. Elle dispose d\'un littoral de plages autorisées à la baignade, aménagées pour garantir le confort et la sécurité des estivants et des familles.',
             'tourism-more-btn':   'Voir plus de sites',
-            'all-beaches-btn':    'Toutes les plages',
-            'all-tourism-btn':    'Tous les sites',
+            'all-beaches-btn':    'Voir toutes les plages',
+            'all-tourism-btn':    'Voir tous les sites',
             'tourism-more-show':  'Voir plus de sites',
             'tourism-more-hide':  'Réduire',
             'supervised-badge':   'Surveillée',
@@ -761,7 +761,7 @@
         .anim-delay-1{animation-delay:.1s;opacity:0}.anim-delay-2{animation-delay:.2s;opacity:0}.anim-delay-3{animation-delay:.3s;opacity:0}
         .vintage-filter{filter:sepia(.7) contrast(1.1) brightness(.9)}
         .news-tab.active{background:#059669;color:white;box-shadow:0 4px 14px rgba(5,150,105,.25);}
-        .news-tab:not(.active){background:white;color:#374151;border:1px solid #e5e7eb}
+        .news-tab:not(.active){background:white;color:#374151;border:1px solid #e5e7eb;box-shadow:0 1px 4px rgba(0,0,0,0.07);}
         html[lang="ar"] .news-tab span[data-i18n]{font-size:13px}
         .service-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(5,150,105,.12)}
         .service-card{transition:all .3s ease}
@@ -856,7 +856,7 @@
         opacity: 0.85;
     }
 }
-    .guide-tab{background:#f1f5f9;color:#475569;border:1px solid #e5e7eb;}
+    .guide-tab{background:#ffffff;color:#475569;border:1px solid #e5e7eb;box-shadow:0 1px 4px rgba(0,0,0,0.07);}
 .guide-tab.active{background:#059669;color:#fff;box-shadow:0 4px 14px rgba(5,150,105,.25);}
 .guide-tab:hover:not(.active){background:#e2e8f0;}
 
@@ -1256,7 +1256,7 @@ html[dir="ltr"] article {
             <div id="extra-announcements" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 hidden"></div>
             <div id="more-wrap-announcements" class="flex flex-wrap items-center justify-center gap-3 mb-4 hidden">
                 <button onclick="openNewsPage('official')" id="more-btn-announcements"
-                        class="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all">
+                        class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
                     <span class="iconify" data-icon="lucide:layout-list"></span>
                     <span data-i18n="all-announcements">جميع الإعلانات</span>
                 </button>
@@ -1267,7 +1267,7 @@ html[dir="ltr"] article {
             <div id="extra-activities" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 hidden"></div>
             <div id="more-wrap-activities" class="flex flex-wrap items-center justify-center gap-3 mb-4 hidden">
                 <button onclick="openNewsPage('activity')" id="more-btn-activities"
-                        class="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all">
+                        class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
                     <span class="iconify" data-icon="lucide:layout-list"></span>
                     <span data-i18n="all-activities">جميع النشاطات</span>
                 </button>
@@ -1278,7 +1278,7 @@ html[dir="ltr"] article {
             <div id="extra-community" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 hidden"></div>
             <div id="more-wrap-community" class="flex flex-wrap items-center justify-center gap-3 mb-4 hidden">
                 <button onclick="openNewsPage('social')" id="more-btn-community"
-                        class="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all">
+                        class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
                     <span class="iconify" data-icon="lucide:layout-list"></span>
                     <span data-i18n="all-community">جميع المنشورات</span>
                 </button>
@@ -1328,7 +1328,7 @@ html[dir="ltr"] article {
 
         <!-- زر عرض المزيد يفتح Overlay -->
         <div class="text-center mt-10">
-            <button onclick="openServicesOverlay()" class="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all">
+            <button onclick="openServicesOverlay()" class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
                 <span class="iconify" data-icon="lucide:layout-list"></span>
                 <span data-i18n="services-more-btn">عرض المزيد من الخدمات</span>
             </button>
@@ -1526,7 +1526,7 @@ html[dir="ltr"] article {
             </div>
             <!-- ✅ 6: زر صفحة الأرشيف الكاملة -->
             <div class="text-center">
-                <button onclick="openArchivesOverlay()" class="inline-flex items-center gap-2 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all">
+                <button onclick="openArchivesOverlay()" class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-amber-700 border border-amber-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
                     <span class="iconify" data-icon="lucide:layout-list"></span>
                     <span data-i18n="archive-btn">استعراض الأرشيف الكامل</span>
                 </button>
@@ -1563,40 +1563,22 @@ html[dir="ltr"] article {
             <p class="text-gray-500 text-sm mb-6 text-center" data-i18n="guide-branches-sub">ملحقات إدارية تهدف لتقريب المرفق العام من المواطن، وتسهيل استخراج الوثائق والحالة المدنية</p>
             <div id="gpanel-admin-branches-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
             <div id="gpanel-admin-branches-extra" class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 hidden"></div>
-            <div id="gpanel-admin-branches-more" class="text-center mt-6 hidden">
-                <button onclick="toggleGuideMore('admin-branches')" id="gbtn-admin-branches" class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
-                    <span class="iconify" data-icon="lucide:chevrons-down" id="gicon-admin-branches"></span>
-                    <span id="gtxt-admin-branches" data-i18n="guide-more-branches">عرض المزيد من الفروع الإدارية</span>
-                </button>
-            </div>
-        </div>
+            
         <!-- لوحة: المؤسسات التعليمية -->
         <div id="gpanel-education" class="guide-panel hidden">
             <p class="text-gray-500 text-sm mb-6 text-center" data-i18n="guide-education-sub">مؤسسات التعليم العام في بلدية شطايبي من الابتدائي إلى الثانوي</p>
             <div id="gpanel-education-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
             <div id="gpanel-education-extra" class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 hidden"></div>
-            <div id="gpanel-education-more" class="text-center mt-6 hidden">
-                <button onclick="toggleGuideMore('education')" id="gbtn-education" class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-indigo-700 border border-indigo-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
-                    <span class="iconify" data-icon="lucide:chevrons-down" id="gicon-education"></span>
-                    <span id="gtxt-education" data-i18n="guide-more-edu">عرض المزيد من المؤسسات التعليمية</span>
-                </button>
-            </div>
-        </div>
+            
         <!-- لوحة: المرافق الصحية -->
         <div id="gpanel-health" class="guide-panel hidden">
             <p class="text-gray-500 text-sm mb-6 text-center" data-i18n="guide-health-sub">المؤسسات الصحية العمومية التي تخدم سكان بلدية شطايبي والمناطق المجاورة</p>
             <div id="gpanel-health-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
             <div id="gpanel-health-extra" class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 hidden"></div>
-            <div id="gpanel-health-more" class="text-center mt-6 hidden">
-                <button onclick="toggleGuideMore('health')" id="gbtn-health" class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-red-700 border border-red-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
-                    <span class="iconify" data-icon="lucide:chevrons-down" id="gicon-health"></span>
-                    <span id="gtxt-health" data-i18n="guide-more-health">عرض المزيد من المرافق الصحية</span>
-                </button>
-            </div>
-        </div>
+            
         <!-- زر المزيد من المرافق -->
         <div class="text-center mt-10">
-            <button onclick="openFacilitiesOverlay()" class="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all">
+            <button onclick="openFacilitiesOverlay()" class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
                 <span class="iconify" data-icon="lucide:layout-list"></span>
                 <span data-i18n="facilities-btn">تصفح بقية المرافق والخدمات</span>
             </button>
@@ -1695,17 +1677,11 @@ html[dir="ltr"] article {
                 </div>
             </div>
             <div id="beaches-extra" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-5 hidden"></div>
-            <div id="beaches-more-wrap" class="text-center mb-4 hidden">
-                <button id="beaches-more-btn" onclick="toggleMoreBeaches()"
-                        class="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 text-white border border-white/30 px-8 py-3 rounded-2xl font-bold text-sm transition-all backdrop-blur-sm">
-                    <span class="iconify text-lg" data-icon="lucide:chevrons-down" id="beaches-more-icon"></span>
-                    <span id="beaches-more-text" data-i18n="beaches-more-btn">عرض بقية الشواطئ</span>
-                </button>
-            </div>
-            <div id="all-beaches-wrap" class="text-center mt-2 mb-2 hidden" data-show-after-more="true">
+            <div id="all-beaches-wrap" class="text-center mt-4 mb-2">
                 <button onclick="openExploreOverlay('beaches')"
-                        class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white/80 hover:text-white border border-white/20 px-6 py-2 rounded-2xl font-semibold text-xs transition-all backdrop-blur-sm">
-                    <span class="iconify" data-icon="lucide:layout-list"></span> <span data-i18n="all-beaches-btn">جميع الشواطئ</span>
+                        class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
+                    <span class="iconify" data-icon="lucide:layout-list"></span>
+                    <span data-i18n="all-beaches-btn">عرض جميع الشواطئ</span>
                 </button>
             </div>
         </div>
@@ -1727,17 +1703,11 @@ html[dir="ltr"] article {
                 </div>
             </div>
             <div id="tourism-extra" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-5 hidden"></div>
-            <div id="tourism-more-wrap" class="text-center mb-4 hidden">
-                <button id="tourism-more-btn" onclick="toggleMoreTourism()"
-                        class="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 text-white border border-white/30 px-8 py-3 rounded-2xl font-bold text-sm transition-all backdrop-blur-sm">
-                    <span class="iconify text-lg" data-icon="lucide:chevrons-down" id="tourism-more-icon"></span>
-                    <span id="tourism-more-text" data-i18n="tourism-more-btn">عرض المزيد من المعالم</span>
-                </button>
-            </div>
-            <div id="all-tourism-wrap" class="text-center mt-2 mb-2 hidden">
+            <div id="all-tourism-wrap" class="text-center mt-4 mb-2">
                 <button onclick="openExploreOverlay('tourism')"
-                        class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white/80 hover:text-white border border-white/20 px-6 py-2 rounded-2xl font-semibold text-xs transition-all backdrop-blur-sm">
-                    <span class="iconify" data-icon="lucide:layout-list"></span> <span data-i18n="all-tourism-btn">جميع المعالم</span>
+                        class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-emerald-700 border border-emerald-200 px-7 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-sm">
+                    <span class="iconify" data-icon="lucide:layout-list"></span>
+                    <span data-i18n="all-tourism-btn">عرض جميع المعالم</span>
                 </button>
             </div>
         </div>
