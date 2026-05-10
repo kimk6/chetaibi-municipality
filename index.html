@@ -144,6 +144,10 @@
             'tab-activities':     'نشاطات البلدية',
             'tab-community':      'ركن المجتمع',
             'tab-posters':        'صور وملصقات',
+            'tab-desc-announcements': 'القرارات الإدارية، والاستشارات العامة، والبيانات الرسمية الصادرة عن البلدية',
+            'tab-desc-activities':    'التغطية الشاملة للحملات الميدانية، وأعمال الصيانة الدورية، والمبادرات التنموية',
+            'tab-desc-community':     'المبادرات المجتمعية، والتهاني، والتعازي، وتكريم الكفاءات، وتغطية المناسبات المحلية',
+            'tab-desc-posters':       'المعرض الرقمي للملصقات الرسمية، والمنشورات التوعوية، والحملات التحسيسية',
             'news-loading':       'جاري تحميل الأخبار...',
             'show-more':          'عرض المزيد',
             'show-less':          'إخفاء',
@@ -409,6 +413,10 @@
             'tab-activities':     'Activités municipales',
             'tab-community':      'Coin communauté',
             'tab-posters':        'Photos & Affiches',
+            'tab-desc-announcements': 'Décisions administratives, consultations publiques et communiqués officiels de la commune',
+            'tab-desc-activities':    'Campagnes de terrain, travaux de maintenance périodiques et initiatives de développement local',
+            'tab-desc-community':     'Initiatives citoyennes, félicitations, condoléances, distinction des compétences et couverture des événements locaux',
+            'tab-desc-posters':       'Galerie numérique des affiches officielles, publications de sensibilisation et campagnes d\'information',
             'news-loading':       'Chargement des actualités...',
             'show-more':          'Voir plus',
             'show-less':          'Masquer',
@@ -1266,23 +1274,27 @@ html[dir="ltr"] article {
                 <div style="height:1px;width:60px;background:linear-gradient(to right,#059669,transparent);"></div>
             </div>
         </div>
-        <div class="flex justify-center gap-2 mb-10">
+        <div class="flex justify-center gap-2 mb-4">
             <button onclick="switchNewsTab('announcements')" id="tab-announcements" class="news-tab active py-2 px-3 md:px-5 rounded-xl font-bold transition-all flex items-center justify-center gap-1.5 flex-shrink-0">
                 <span class="iconify text-base flex-shrink-0" data-icon="lucide:megaphone"></span>
-                <span class="hidden md:inline whitespace-nowrap text-sm" data-i18n="tab-announcements">إعلانات رسمية</span>
+                <span class="whitespace-nowrap text-xs md:text-sm" data-i18n="tab-announcements">إعلانات رسمية</span>
             </button>
             <button onclick="switchNewsTab('activities')" id="tab-activities" class="news-tab py-2 px-3 md:px-5 rounded-xl font-bold transition-all flex items-center justify-center gap-1.5 flex-shrink-0">
                 <span class="iconify text-base flex-shrink-0" data-icon="lucide:clipboard-list"></span>
-                <span class="hidden md:inline whitespace-nowrap text-sm" data-i18n="tab-activities">نشاطات البلدية</span>
+                <span class="whitespace-nowrap text-xs md:text-sm" data-i18n="tab-activities">نشاطات</span>
             </button>
             <button onclick="switchNewsTab('community')" id="tab-community" class="news-tab py-2 px-3 md:px-5 rounded-xl font-bold transition-all flex items-center justify-center gap-1.5 flex-shrink-0">
                 <span class="iconify text-base flex-shrink-0" data-icon="lucide:handshake"></span>
-                <span class="hidden md:inline whitespace-nowrap text-sm" data-i18n="tab-community">ركن المجتمع</span>
+                <span class="whitespace-nowrap text-xs md:text-sm" data-i18n="tab-community">ركن المجتمع</span>
             </button>
             <button onclick="switchNewsTab('posters')" id="tab-posters" class="news-tab py-2 px-3 md:px-5 rounded-xl font-bold transition-all flex items-center justify-center gap-1.5 flex-shrink-0">
                 <span class="iconify text-base flex-shrink-0" data-icon="lucide:image"></span>
-                <span class="hidden md:inline whitespace-nowrap text-sm" data-i18n="tab-posters">معرض الملصقات</span>
+                <span class="whitespace-nowrap text-xs md:text-sm" data-i18n="tab-posters">ملصقات</span>
             </button>
+        </div>
+        <!-- وصف التبويب النشط -->
+        <div class="text-center mb-8 min-h-[1.5rem]">
+            <p id="news-tab-desc" class="text-xs md:text-sm text-gray-400 max-w-xl mx-auto transition-opacity duration-300"></p>
         </div>
         <div id="news-loading" class="text-center py-16"><span class="iconify text-5xl animate-spin inline-block text-emerald-500" data-icon="lucide:newspaper"></span><p class="mt-3 text-sm font-semibold text-gray-400">جاري تحميل الأخبار...</p></div>
         <!-- كل tab له grid + extra + أزرار -->
@@ -2216,6 +2228,15 @@ function switchNewsTab(t){
     document.querySelectorAll('.news-tab').forEach(b=>b.classList.remove('active'));
     document.getElementById('tab-panel-'+t).classList.remove('hidden');
     document.getElementById('tab-'+t).classList.add('active');
+    // تحديث الوصف مع fade
+    const descEl = document.getElementById('news-tab-desc');
+    if(descEl){
+        descEl.style.opacity='0';
+        setTimeout(()=>{
+            descEl.textContent = t('tab-desc-'+t);
+            descEl.style.opacity='1';
+        },150);
+    }
 }
 
 function toggleMoreNews(tab){
@@ -2828,6 +2849,9 @@ async function loadNews(){
             if(g) g.innerHTML='<p class="text-red-400 text-sm text-center py-8 col-span-full">تعذر تحميل الأخبار</p>';
         });
         switchNewsTab('announcements');
+        // تهيئة الوصف الابتدائي
+        const descEl = document.getElementById('news-tab-desc');
+        if(descEl) descEl.textContent = t('tab-desc-announcements');
     }
 }
 
