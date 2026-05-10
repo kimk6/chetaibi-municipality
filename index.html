@@ -760,7 +760,7 @@
         .animate-fadeIn{animation:fadeIn .5s ease-out forwards}
         .anim-delay-1{animation-delay:.1s;opacity:0}.anim-delay-2{animation-delay:.2s;opacity:0}.anim-delay-3{animation-delay:.3s;opacity:0}
         .vintage-filter{filter:sepia(.7) contrast(1.1) brightness(.9)}
-        .news-tab.active{background:#059669;color:white;box-shadow:0 4px 14px rgba(5,150,105,.3);outline:2px solid #047857;outline-offset:-3px;}
+        .news-tab.active{background:#059669;color:white;box-shadow:0 4px 14px rgba(5,150,105,.3);border:1px solid rgba(167,243,208,0.4);}
         .news-tab:not(.active){background:white;color:#374151;border:1px solid #e5e7eb}
         html[lang="ar"] .news-tab span[data-i18n]{font-size:13px}
         .service-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(5,150,105,.12)}
@@ -857,7 +857,7 @@
     }
 }
     .guide-tab{background:#f1f5f9;color:#475569;}
-.guide-tab.active{background:#059669;color:#fff;box-shadow:0 4px 14px rgba(5,150,105,.35);outline:2px solid #047857;outline-offset:-3px;}
+.guide-tab.active{background:#059669;color:#fff;box-shadow:0 4px 14px rgba(5,150,105,.35);border:1px solid rgba(167,243,208,0.4);}
 .guide-tab:hover:not(.active){background:#e2e8f0;}
 
 /* ══════════════════════════════════════════
@@ -1547,15 +1547,15 @@ html[dir="ltr"] article {
         </div>
         <!-- تبويبات الدليل -->
         <div class="flex flex-wrap justify-center gap-3 mb-10">
-            <button onclick="switchGuideTab('admin-branches')" id="gtab-admin-branches" class="guide-tab active px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2 border">
+            <button onclick="switchGuideTab('admin-branches')" id="gtab-admin-branches" class="guide-tab active px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2">
                 <span class="iconify" data-icon="lucide:landmark"></span>
                 <span data-i18n="gtab-branches">الفروع الإدارية</span>
             </button>
-            <button onclick="switchGuideTab('education')" id="gtab-education" class="guide-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2 border">
+            <button onclick="switchGuideTab('education')" id="gtab-education" class="guide-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2">
                 <span class="iconify" data-icon="lucide:graduation-cap"></span>
                 <span data-i18n="gtab-education">المؤسسات التعليمية</span>
             </button>
-            <button onclick="switchGuideTab('health')" id="gtab-health" class="guide-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2 border">
+            <button onclick="switchGuideTab('health')" id="gtab-health" class="guide-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2">
                 <span class="iconify" data-icon="lucide:heart-pulse"></span>
                 <span data-i18n="gtab-health">المرافق الصحية</span>
             </button>
