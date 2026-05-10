@@ -3207,16 +3207,29 @@ async function renderExploreOverlay() {
         explorePage = Math.min(explorePage,totalPages);
         const items = all.slice((explorePage-1)*EXPLORE_PER, explorePage*EXPLORE_PER);
         if(!items.length){ grid.innerHTML='<p class="col-span-full text-center text-gray-400 py-16">لا توجد شواطئ</p>'; return; }
-        grid.innerHTML = items.map(b => `<div class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100 cursor-pointer" onclick="openBeachInExplore(${b.id})">
-            ${b.image_url?`<img src="${b.image_url}" class="w-full h-40 object-cover">`:`<div class="h-40 bg-gradient-to-bl from-sky-400 to-blue-600 flex items-center justify-center"><span class="iconify text-white text-5xl" data-icon="lucide:waves"></span></div>`}
-            <div class="p-4"><h3 class="font-extrabold text-gray-800 text-sm mb-1">${getLF(b,'name')}</h3>
-            <p class="text-xs text-gray-400 line-clamp-2">${getLF(b,'description')||''}</p>
-            <div class="flex flex-wrap gap-1 mt-2">
-            ${b.is_supervised
-            ?`<span class="inline-flex items-center gap-1 text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold"><span class="iconify" data-icon="lucide:shield-check"></span>${t('supervised-badge')}</span>`
-            :`<span class="inline-flex items-center gap-1 text-[10px] bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-bold"><span class="iconify" data-icon="lucide:shield-x"></span>${t('unsupervised-badge')}</span>`}
-            ${b.season?`<span class="inline-flex items-center gap-1 text-[10px] bg-sky-100 text-sky-700 px-2 py-0.5 rounded-full font-bold"><span class="iconify" data-icon="${b.season==='صخري'?'lucide:mountain':'lucide:waves'}"></span> ${b.season==='صخري'?t('beach-type-rocky'):t('beach-type-sandy')}</span>`:''}
-            </div></div></div>`).join('');
+        grid.innerHTML = items.map(b => {
+            const bName = getLF(b,'name');
+            const bDesc = getLF(b,'description');
+            return `<div class="bg-white/10 backdrop-blur-sm rounded-2xl overflow-hidden shadow-md border border-white/20 hover:bg-white/15 hover:shadow-xl transition-all group cursor-pointer" onclick="openBeachInExplore(${b.id})">
+                <div class="relative h-40 overflow-hidden">
+                    ${b.image_url
+                        ?`<img src="${b.image_url}" alt="${bName}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">`
+                        :`<div class="w-full h-full bg-gradient-to-bl from-sky-500/60 to-blue-700/60 flex items-center justify-center"><span class="iconify text-white text-5xl opacity-70" data-icon="lucide:waves"></span></div>`}
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                    <div class="absolute bottom-3 right-3 text-white"><h4 class="font-extrabold text-base drop-shadow">${bName}</h4></div>
+                    ${b.is_supervised
+                        ?`<span class="absolute top-2 left-2 bg-green-500/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-check"></span>${t('supervised-badge')}</span>`
+                        :`<span class="absolute top-2 left-2 bg-orange-400/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1"><span class="iconify" data-icon="lucide:shield-x"></span>${t('unsupervised-badge')}</span>`}
+                    ${b.season?`<span class="absolute top-2 right-2 bg-sky-500/80 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1"><span class="iconify text-xs" data-icon="${b.season==='صخري'?'lucide:mountain':'lucide:waves'}"></span> ${b.season==='صخري'?t('beach-type-rocky'):t('beach-type-sandy')}</span>`:''}
+                </div>
+                <div class="p-4">
+                    <p class="text-xs text-white/70 line-clamp-2 leading-relaxed">${bDesc||t('details-btn')}</p>
+                    <span class="mt-2 inline-flex items-center gap-1 text-sky-300 text-xs font-bold">
+                        <span class="iconify text-xs" data-icon="lucide:images"></span> ${t('details-btn')}
+                    </span>
+                </div>
+            </div>`;
+        }).join('');
         if(totalPages>1){ let h=''; for(let p=1;p<=totalPages;p++){ const a=p===explorePage?'bg-sky-600 text-white':'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'; h+=`<button onclick="explorePage=${p};renderExploreOverlay()" class="${a} w-10 h-10 rounded-xl font-bold text-sm">${p}</button>`; } pag.innerHTML=h; }
     } else {
         hdr.style.background = 'linear-gradient(135deg,#064e3b,#065f46)';
@@ -3229,13 +3242,28 @@ async function renderExploreOverlay() {
         const items = all.slice((explorePage-1)*EXPLORE_PER, explorePage*EXPLORE_PER);
         if(!items.length){ grid.innerHTML='<p class="col-span-full text-center text-gray-400 py-16">لا توجد معالم</p>'; return; }
         const bcColors={emerald:'bg-emerald-500',amber:'bg-amber-500',purple:'bg-purple-500',teal:'bg-teal-500',blue:'bg-blue-500'};
-        grid.innerHTML = items.map(t => `<div class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100 cursor-pointer" onclick="openTourismInExplore(${t.id})">
-            <div class="relative h-40 overflow-hidden">
-            ${t.image_url?`<img src="${t.image_url}" class="w-full h-full object-cover">`:`<div class="w-full h-full bg-gradient-to-bl from-emerald-400 to-emerald-700 flex items-center justify-center"><span class="iconify text-white text-5xl" data-icon="lucide:compass"></span></div>`}
-            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-            <div class="absolute bottom-3 right-3 text-white"><p class="font-extrabold text-sm drop-shadow">${t.name}</p></div>
-            ${t.badge_text?`<span class="absolute top-2 left-2 ${bcColors[t.badge_color]||'bg-emerald-500'} text-white text-[10px] font-bold px-2 py-0.5 rounded-full">${t.badge_text}</span>`:''}</div>
-            <div class="p-4"><p class="text-xs text-gray-500 line-clamp-2">${t.description||''}</p></div></div>`).join('');
+        grid.innerHTML = items.map(item => {
+            const tName = getLF(item,'name');
+            const tDesc = getLF(item,'description');
+            const tSub  = getLF(item,'subtitle');
+            return `<div class="tourism-card bg-white/10 backdrop-blur-sm rounded-2xl overflow-hidden shadow-md border border-white/20 hover:shadow-xl hover:bg-white/15 transition-all group cursor-pointer" onclick="openTourismInExplore(${item.id})">
+                <div class="relative h-40 overflow-hidden">
+                    ${item.image_url
+                        ?`<img src="${item.image_url}" alt="${tName}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">`
+                        :`<div class="w-full h-full bg-gradient-to-bl from-emerald-400 to-emerald-700 flex items-center justify-center"><span class="iconify text-white text-5xl opacity-70" data-icon="lucide:compass"></span></div>`}
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                    <div class="absolute bottom-3 right-3 text-white"><h4 class="font-extrabold text-base drop-shadow">${tName}</h4>${tSub?`<p class="text-xs text-white/80">${tSub}</p>`:''}</div>
+                    ${getLF(item,'badge_text')?`<span class="absolute top-2 left-2 ${bcColors[item.badge_color]||'bg-emerald-500'} text-white text-[10px] font-bold px-2 py-0.5 rounded-full">${getLF(item,'badge_text')}</span>`:''}
+                </div>
+                <div class="p-4">
+                    <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed">${(tDesc||t('details-btn')).substring(0,100)}</p>
+                    <div class="mt-2 flex items-center justify-between">
+                        ${item.rating?`<span class="text-xs text-amber-500 font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:star"></span>${item.rating}/5</span>`:'<span></span>'}
+                        <span class="inline-flex items-center gap-1 text-emerald-300 text-xs font-bold"><span class="iconify text-xs" data-icon="lucide:images"></span> ${t('details-btn')}</span>
+                    </div>
+                </div>
+            </div>`;
+        }).join('');
         if(totalPages>1){ let h=''; for(let p=1;p<=totalPages;p++){ const a=p===explorePage?'bg-emerald-600 text-white':'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'; h+=`<button onclick="explorePage=${p};renderExploreOverlay()" class="${a} w-10 h-10 rounded-xl font-bold text-sm">${p}</button>`; } pag.innerHTML=h; }
     }
 }
