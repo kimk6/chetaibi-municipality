@@ -2197,7 +2197,7 @@ function toggleMoreNews(tab){
             const _lbl=(n.custom_label&&n.custom_label.trim())?(currentLang==='fr'&&n.custom_label_fr?n.custom_label_fr:n.custom_label):(currentLang==='fr'?_catFr[n.category]:_catAr[n.category])||'';
             const labelHtml=(n.category!=='official'&&_lbl)?`<span class="inline-block ${s.badge} text-xs font-bold px-3 py-1 rounded-full">${_lbl}</span>`:'';
             const showGrad=n.category!=='official';
-            const card=`<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border ${pinBorder} relative cursor-pointer flex flex-col" style="min-height:360px" onclick="openNewsModal(${n.id})">${img?`<div class="overflow-hidden relative flex-shrink-0" style="height:175px">${pinBadge}<img src="${img}" alt="${nTitle}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">${showGrad?'<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>':''}</div>`:`<div class="bg-gradient-to-bl ${s.grad} flex items-center justify-center relative flex-shrink-0" style="height:175px">${pinBadge}<span class="iconify text-white text-6xl" data-icon="${s.icon}"></span></div>`}<div class="p-4"><div class="flex items-center gap-2 mb-2 flex-wrap">${labelHtml}${pinLabel}</div><h4 class="font-bold text-gray-800 mb-2 leading-snug text-sm">${nTitle}</h4><p class="text-xs text-gray-500 mb-3 leading-relaxed">${(nContent||'').substring(0,90)}...</p><div class="flex items-center justify-between pt-2 mt-auto border-t border-gray-100"><span class="text-xs text-gray-400 flex items-center gap-1"><span class="iconify" data-icon="lucide:calendar"></span>${n.date}</span><button onclick="openNewsModal(${n.id})" class="text-emerald-600 text-xs font-bold hover:text-emerald-700">${(currentLang==='fr' ? t('read-more')+' <span style="font-size:11px;">\u00bb</span>' : t('read-more')+' <span style="font-size:11px;">\u00bb</span>')}</button></div></div></article>`;
+            const card=`<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border ${pinBorder} relative cursor-pointer" onclick="openNewsModal(${n.id})">${img?`<div class="h-44 overflow-hidden relative">${pinBadge}<img src="${img}" alt="${nTitle}" class="w-full h-full object-cover">${showGrad?'<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>':''}</div>`:`<div class="h-44 bg-gradient-to-bl ${s.grad} flex items-center justify-center relative">${pinBadge}<span class="iconify text-white text-6xl" data-icon="${s.icon}"></span></div>`}<div class="p-4"><div class="flex items-center gap-2 mb-2 flex-wrap">${labelHtml}${pinLabel}</div><h4 class="font-bold text-gray-800 mb-2 leading-snug text-sm">${nTitle}</h4><p class="text-xs text-gray-500 mb-3 leading-relaxed">${(nContent||'').substring(0,90)}...</p><div class="flex items-center justify-between"><span class="text-xs text-gray-400 flex items-center gap-1"><span class="iconify" data-icon="lucide:calendar"></span>${n.date}</span><button onclick="openNewsModal(${n.id})" class="text-emerald-600 text-xs font-bold hover:text-emerald-700">${t('read-more')} <span style="font-size:11px;">»</span></button></div></div></article>`;
             grid.insertAdjacentHTML('beforeend', card);
         });
         grid.dataset.page = String(nextPage);
@@ -3913,14 +3913,12 @@ async function renderOverlay() {
             return `<article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100 cursor-pointer" onclick="openNewsModal(${n.id})">
                 ${imgHtml}
                 <div class="p-4">
-                    <p class="text-xs text-gray-500 leading-relaxed line-clamp-2 mb-3">${snippet}</p>
+                    <div class="flex items-center gap-2 mb-2 flex-wrap">${pin}</div>
+                    <h4 class="font-bold text-gray-800 mb-2 leading-snug text-sm">${displayTitle}</h4>
+                    <p class="text-xs text-gray-500 mb-3 leading-relaxed">${snippet}</p>
                     <div class="flex items-center justify-between">
-                        <span class="flex items-center gap-1 text-[11px] text-gray-400"><span class="iconify" data-icon="lucide:calendar-days"></span>${n.date||''}</span>
-                        ${pin}
-                    </div>
-                    <div class="mt-2 pt-2 border-t border-gray-50 flex items-center justify-between">
-                        <h3 class="font-extrabold text-gray-800 text-sm leading-snug line-clamp-1">${displayTitle}</h3>
-                        <span class="text-emerald-600 text-xs font-bold flex-shrink-0 mr-2">${(currentLang==='fr' ? t('read-more')+' <span style="font-size:11px;">\u00bb</span>' : t('read-more')+' <span style="font-size:11px;">\u00bb</span>')}</span>
+                        <span class="text-xs text-gray-400 flex items-center gap-1"><span class="iconify" data-icon="lucide:calendar"></span>${n.date||''}</span>
+                        <button onclick="openNewsModal(${n.id})" class="text-emerald-600 text-xs font-bold hover:text-emerald-700">${t('read-more')} <span style="font-size:11px;">»</span></button>
                     </div>
                 </div>
             </article>`;
