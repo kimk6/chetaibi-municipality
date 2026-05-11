@@ -1124,6 +1124,30 @@ async function loadRepoSize(){
     } catch{ icon.classList.remove('spin'); }
 }
 
+
+// ═══════════════════════════════════════════════════════
+// حذف صورة من GitHub عند حذف السجل
+// image_url: رابط الصورة (cdn.jsdelivr.net)
+// ═══════════════════════════════════════════════════════
+async function deleteFromGitHub(image_url) {
+    if (!image_url || !image_url.includes('jsdelivr.net')) return;
+    try {
+        await fetch('/api/github-delete', {
+            method: 'DELETE',
+            headers: { ...authHeaders(), 'Content-Type': 'application/json' },
+            body: JSON.stringify({ image_url })
+        });
+    } catch(e) {
+        console.warn('تعذر حذف الصورة من GitHub:', e.message);
+    }
+}
+
+// حذف مصفوفة من الصور من GitHub دفعة واحدة
+async function deleteMultipleFromGitHub(urls = []) {
+    const validUrls = urls.filter(u => u && u.includes('jsdelivr.net'));
+    await Promise.allSettled(validUrls.map(u => deleteFromGitHub(u)));
+}
+
 // ═══════════════════════════════
 // NEWS
 // ═══════════════════════════════
@@ -1291,6 +1315,18 @@ function cancelNewsEdit(){
 }
 async function deleteNews(id){
     if(!confirm('حذف هذا الخبر؟')) return;
+    // جلب بيانات الخبر لاسترجاع الصور قبل الحذف
+    try {
+        const r = await fetch('/api/news', {headers:authHeaders()});
+        const d = await r.json();
+        const n = (d.data||[]).find(x=>x.id==id);
+        if (n) {
+            const urls = [n.image_url, n.image_url_fr].filter(Boolean);
+            // حذف صور الألبوم أيضاً
+            try { const ab=JSON.parse(n.albums||'[]'); ab.forEach(a=>urls.push(a.image_url)); } catch{}
+            await deleteMultipleFromGitHub(urls);
+        }
+    } catch(e) { console.warn('deleteNews GitHub:', e); }
     await fetch('/api/news?id='+id,{method:'DELETE',headers:authHeaders()});
     adminToast('تم الحذف'); loadNews();
 }
@@ -1521,6 +1557,12 @@ function cancelServiceEdit(){
 async function deleteService(id){
     if (!confirm('حذف هذا العنصر؟')) return;
     try {
+        const r=await fetch('/api/services',{headers:authHeaders()});
+        const d=await r.json();
+        const s=(d.data||[]).find(x=>x.id==id);
+        if(s) await deleteFromGitHub(s.image_url);
+    } catch(e){ console.warn('deleteService GitHub:', e); }
+    try {
         await fetch('/api/services?id=' + id, {method:'DELETE', headers: authHeaders()});
         adminToast('✅ تم الحذف'); loadServices();
     } catch { adminToast('❌ تعذر الحذف'); }
@@ -1591,7 +1633,16 @@ function cancelArchiveEdit(){
     clearWidget('archives-old','archives-old','archives-old-url-manual');clearWidget('archives-new','archives-new','archives-new-url-manual');
     document.getElementById('archives-form-title').textContent='إضافة صورة أرشيفية'; toggleFormPanel('archives', false);document.getElementById('archives-cancel-btn').classList.add('hidden');
 }
-async function deleteArchive(id){if(!confirm('حذف؟'))return;try{await fetch('/api/archives?id='+id,{method:'DELETE',headers:authHeaders()});adminToast('تم الحذف');loadArchives();}catch{adminToast('تعذر الحذف');}}
+async function deleteArchive(id){
+    if(!confirm('حذف؟'))return;
+    try{
+        const r=await fetch('/api/archives',{headers:authHeaders()});
+        const d=await r.json();
+        const a=(d.data||[]).find(x=>x.id==id);
+        if(a) await deleteMultipleFromGitHub([a.image_old_url,a.image_new_url].filter(Boolean));
+    }catch(e){console.warn('deleteArchive GitHub:',e);}
+    try{await fetch('/api/archives?id='+id,{method:'DELETE',headers:authHeaders()});adminToast('تم الحذف');loadArchives();}catch{adminToast('تعذر الحذف');}
+}
 
 // ═══════════════════════════════
 // TOURISM
@@ -1679,7 +1730,20 @@ function cancelTourismEdit(){
     clearWidget('tourism-img','tourism-image','tourism-image-manual');
     document.getElementById('tourism-form-title').textContent='إضافة معلم سياحي'; toggleFormPanel('tourism', false);document.getElementById('tourism-cancel-btn').classList.add('hidden');
 }
-async function deleteTourism(id){if(!confirm('حذف؟'))return;try{await fetch('/api/tourism?id='+id,{method:'DELETE',headers:authHeaders()});adminToast('تم الحذف');loadTourism();}catch{adminToast('تعذر الحذف');}}
+async function deleteTourism(id){
+    if(!confirm('حذف؟'))return;
+    try{
+        const r=await fetch('/api/tourism',{headers:authHeaders()});
+        const d=await r.json();
+        const t=(d.data||[]).find(x=>x.id==id);
+        if(t){
+            const urls=[t.image_url].filter(Boolean);
+            try{const ab=JSON.parse(t.albums||'[]');ab.forEach(a=>urls.push(a.image_url));}catch{}
+            await deleteMultipleFromGitHub(urls);
+        }
+    }catch(e){console.warn('deleteTourism GitHub:',e);}
+    try{await fetch('/api/tourism?id='+id,{method:'DELETE',headers:authHeaders()});adminToast('تم الحذف');loadTourism();}catch{adminToast('تعذر الحذف');}
+}
 
 // ═══════════════════════════════
 // MAYORS
@@ -1735,7 +1799,16 @@ function cancelMayorEdit(){
     clearWidget('mayors-img','mayors-image','mayors-image-manual');
     document.getElementById('mayors-form-title').textContent='إضافة رئيس'; toggleFormPanel('mayors', false);document.getElementById('mayors-cancel-btn').classList.add('hidden');
 }
-async function deleteMayor(id){if(!confirm('حذف؟'))return;try{await fetch('/api/mayors?id='+id,{method:'DELETE',headers:authHeaders()});adminToast('تم الحذف');loadMayors();}catch{adminToast('تعذر الحذف');}}
+async function deleteMayor(id){
+    if(!confirm('حذف؟'))return;
+    try{
+        const r=await fetch('/api/mayors',{headers:authHeaders()});
+        const d=await r.json();
+        const m=(d.data||[]).find(x=>x.id==id);
+        if(m) await deleteFromGitHub(m.image_url);
+    }catch(e){console.warn('deleteMayor GitHub:',e);}
+    try{await fetch('/api/mayors?id='+id,{method:'DELETE',headers:authHeaders()});adminToast('تم الحذف');loadMayors();}catch{adminToast('تعذر الحذف');}
+}
 
 // ═══════════════════════════════
 // 🏖️ BEACHES ADMIN
@@ -1833,6 +1906,16 @@ function cancelBeachEdit(){
 
 async function deleteBeach(id){
     if(!confirm('حذف الشاطئ وكل صوره؟')) return;
+    try{
+        const r=await fetch('/api/beaches',{headers:authHeaders()});
+        const d=await r.json();
+        const b=(d.data||[]).find(x=>x.id==id);
+        if(b){
+            const urls=[b.image_url].filter(Boolean);
+            try{const ab=JSON.parse(b.albums||'[]');ab.forEach(a=>urls.push(a.image_url));}catch{}
+            await deleteMultipleFromGitHub(urls);
+        }
+    }catch(e){console.warn('deleteBeach GitHub:',e);}
     try{await fetch('/api/beaches?id='+id,{method:'DELETE',headers:authHeaders()});adminToast('تم الحذف');loadBeaches_admin();}
     catch{adminToast('تعذر الحذف');}
 }
@@ -1878,6 +1961,14 @@ async function handleBeachAlbumUpload(input, beachId){
 
 async function deleteBeachAlbumImg(albumId, beachId){
     if(!confirm('حذف الصورة؟')) return;
+    try{
+        // جلب رابط الصورة من API قبل الحذف
+        const r=await fetch('/api/beaches?id='+beachId,{headers:authHeaders()});
+        const d=await r.json();
+        const albums=d.data?.albums||[];
+        const alb=albums.find(a=>a.id==albumId);
+        if(alb) await deleteFromGitHub(alb.image_url);
+    }catch(e){console.warn('deleteBeachAlbumImg GitHub:',e);}
     try{await fetch('/api/beaches?action=album&album_id='+albumId,{method:'DELETE',headers:authHeaders()});loadBeachAlbum(beachId);}
     catch{adminToast('تعذر الحذف');}
 }
@@ -1917,6 +2008,13 @@ async function handleTourismAlbumUpload_admin(input, tourismId){
 
 async function deleteTourismAlbumImg(albumId, tourismId){
     if(!confirm('حذف الصورة؟')) return;
+    try{
+        const r=await fetch('/api/tourism?id='+tourismId,{headers:authHeaders()});
+        const d=await r.json();
+        const albums=d.data?.albums||[];
+        const alb=albums.find(a=>a.id==albumId);
+        if(alb) await deleteFromGitHub(alb.image_url);
+    }catch(e){console.warn('deleteTourismAlbumImg GitHub:',e);}
     try{await fetch('/api/tourism?action=album&album_id='+albumId,{method:'DELETE',headers:authHeaders()});loadTourismAlbum_admin(tourismId);}
     catch{adminToast('تعذر الحذف');}
 }
@@ -2126,6 +2224,16 @@ async function saveFacility() {
 
 async function deleteFacility(id) {
     if(!confirm('حذف هذا المرفق؟')) return;
+    try {
+        const r=await fetch('/api/facilities',{headers:authHeaders()});
+        const d=await r.json();
+        const f=(d.data||[]).find(x=>x.id==id);
+        if(f){
+            const urls=[f.image_url].filter(Boolean);
+            try{const ab=JSON.parse(f.albums||'[]');ab.forEach(a=>urls.push(a.image_url));}catch{}
+            await deleteMultipleFromGitHub(urls);
+        }
+    }catch(e){console.warn('deleteFacility GitHub:',e);}
     try {
         await fetch('/api/facilities?id='+id, {method:'DELETE', headers:authHeaders()});
         adminToast('✅ تم الحذف'); loadFacilitiesAdmin();
