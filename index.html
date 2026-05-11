@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
     <!-- تطبيق اللغة المحفوظة فوراً قبل رسم أي شيء لتجنب وميض الاتجاه الخاطئ -->
     <script>
     (function(){
@@ -799,6 +799,76 @@
         html[lang="fr"] #fac-modal-tags { direction: ltr; }
         html[lang="fr"] #fac-modal .flex.items-start { flex-direction: row; }
         html[lang="fr"] .news-tab .iconify{font-size:0.85rem}
+        /* ══ Bottom Navigation Bar (PWA) ══ */
+        #bottom-nav {
+            display: none;
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 60;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+            box-shadow: 0 -4px 20px rgba(0,0,0,.08);
+        }
+        @media (max-width: 767px) {
+            #bottom-nav { display: flex; }
+            body { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
+            #main-nav { display: none !important; }
+            #back-top { bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
+            /* padding للـ offline banner */
+            body.is-offline { padding-top: 40px; }
+        }
+        .bnav-item {
+            flex: 1; display: flex; flex-direction: column; align-items: center;
+            justify-content: center; gap: 3px; padding: 8px 4px 6px;
+            color: #9ca3af; font-size: 10px; font-weight: 600;
+            cursor: pointer; transition: color .2s, transform .15s;
+            -webkit-tap-highlight-color: transparent;
+            font-family: 'Cairo', sans-serif;
+        }
+        .bnav-item.active { color: #059669; }
+        .bnav-item:active { transform: scale(.9); }
+        .bnav-item { min-height: 56px; min-width: 44px; }
+        /* Active indicator */
+        .bnav-item.active .bnav-icon::after {
+            content: '';
+            position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
+            width: 4px; height: 4px; border-radius: 50%; background: #059669;
+        }
+        .bnav-item .bnav-icon { font-size: 22px; line-height: 1; position: relative; }
+        .bnav-item .bnav-badge {
+            position: absolute; top: -4px; right: -6px;
+            background: #ef4444; color: white; font-size: 9px; font-weight: 700;
+            border-radius: 99px; padding: 1px 4px; min-width: 16px; text-align: center;
+            border: 1.5px solid white;
+        }
+        /* ══ Skeleton Loading ══ */
+        .skeleton { background: linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 8px; }
+        @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+        .skeleton-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+        /* ══ Offline Banner ══ */
+        #offline-banner {
+            display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+            background: #1f2937; color: white; text-align: center;
+            padding: 8px 16px; font-size: 13px; font-family: 'Cairo', sans-serif;
+            font-weight: 600; align-items: center; justify-content: center; gap: 8px;
+        }
+        #offline-banner.show { display: flex; }
+        /* ══ Pull to Refresh ══ */
+        #ptr-indicator {
+            position: fixed; top: -60px; left: 50%; transform: translateX(-50%);
+            z-index: 100; transition: top .3s ease;
+            background: white; border-radius: 99px;
+            box-shadow: 0 4px 16px rgba(0,0,0,.12);
+            padding: 8px 20px; display: flex; align-items: center; gap: 8px;
+            font-family: 'Cairo', sans-serif; font-size: 13px; font-weight: 600;
+            color: #059669;
+        }
+        #ptr-indicator.visible { top: 16px; }
+        #ptr-indicator .ptr-spin { animation: spin .8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        /* Hero على الموبايل في PWA */
+        @media(max-width:767px) and (display-mode:standalone) {
+            section#home { min-height: 55vh; }
+        }
         @media(max-width:767px){#main-nav{position:fixed;top:0;left:0;right:0;transform:translateY(-100%);opacity:0;transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .35s ease;pointer-events:none;z-index:50}#main-nav.nav-visible{transform:translateY(0);opacity:1;pointer-events:auto}}
         /* ── زر تغيير اللغة — موبايل ── */
         #lang-btn-mobile{transition:background .2s,transform .15s;letter-spacing:.05em}
@@ -961,6 +1031,18 @@ html[dir="ltr"] article {
 </head>
 <body class="bg-gray-50 text-gray-800">
 
+
+<!-- ══ Offline Banner ══ -->
+<div id="offline-banner">
+    <span class="iconify text-lg" data-icon="lucide:wifi-off"></span>
+    <span id="offline-text">أنت غير متصل بالإنترنت — يتم عرض البيانات المحفوظة</span>
+</div>
+
+<!-- ══ Pull to Refresh Indicator ══ -->
+<div id="ptr-indicator">
+    <span class="iconify ptr-spin text-lg" data-icon="lucide:loader-2"></span>
+    <span id="ptr-text">جاري التحديث...</span>
+</div>
 
 <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-[100] bg-emerald-600 text-white px-6 py-3 rounded-xl shadow-2xl flex items-center gap-3">
     <span class="iconify text-xl" data-icon="lucide:check-circle"></span>
@@ -1226,7 +1308,7 @@ html[dir="ltr"] article {
 
     <!-- رئيس المجلس -->
     <div class="mayor-card-wrapper">
-    <div id="mayor-card" class="bg-gradient-to-l from-emerald-800 via-emerald-700 to-emerald-900 rounded-2xl p-6 md:p-10 shadow-xl text-white flex flex-col md:flex-row items-center gap-6 md:gap-10">
+    <div id="mayor-card" class="bg-gradient-to-l from-emerald-800 via-emerald-700 to-emerald-900 rounded-2xl p-5 md:p-10 shadow-xl text-white flex flex-col md:flex-row items-center gap-5 md:gap-10">
         <div id="mayor-photo-wrap" class="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border-2 border-white/30" style="border-color:#10b981;border-width:2px;box-shadow:0 0 0 2px rgba(16,185,129,0.2)">
             <span id="mayor-photo-placeholder" class="iconify text-4xl text-white" data-icon="lucide:user-circle"></span>
             <img id="mayor-photo" src="" alt="" class="hidden w-full h-full object-cover">
@@ -2111,7 +2193,7 @@ html[dir="ltr"] article {
     <div class="border-t border-gray-800"><div class="max-w-7xl mx-auto px-4 py-5"><div class="flex flex-col md:flex-row items-center justify-between gap-1"><p class="text-xs text-gray-500">© <span id="footer-year"></span> <span data-i18n="footer-rights">بلدية شطايبي — جميع الحقوق محفوظة</span></p><p class="text-xs text-gray-600 italic" data-i18n="footer-dev">تم التطوير بجهود الكفاءات الداخلية لبلدية شطايبي</p></div></div></div>
 </footer>
 
-<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 left-6 z-50 w-12 h-12 bg-emerald-600/70 hover:bg-emerald-700/80 text-white rounded-full shadow-xl flex items-center justify-center transition-all opacity-0 translate-y-4 pointer-events-none backdrop-blur-sm">
+<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="العودة للأعلى" class="fixed bottom-6 left-6 z-50 w-12 h-12 bg-emerald-600/70 hover:bg-emerald-700/80 text-white rounded-full shadow-xl flex items-center justify-center transition-all opacity-0 translate-y-4 pointer-events-none backdrop-blur-sm">
     <span class="iconify text-xl" data-icon="lucide:arrow-up"></span>
 </button>
 
@@ -2181,6 +2263,8 @@ function switchNewsTab(t){
     document.querySelectorAll('.news-tab').forEach(b=>b.classList.remove('active'));
     document.getElementById('tab-panel-'+t).classList.remove('hidden');
     document.getElementById('tab-'+t).classList.add('active');
+    // Skeleton أثناء التبديل
+    if (typeof showNewsSkeleton === 'function') showNewsSkeleton(t);
 }
 
 function toggleMoreNews(tab){
@@ -2703,6 +2787,18 @@ const catStyles={
 
 async function loadNews(){
     const loading=document.getElementById('news-loading');
+    // Skeleton فوري
+    ['announcements','activities','community'].forEach(tab => {
+        const g = document.getElementById('grid-'+tab);
+        if (g) g.innerHTML = [1,2,3].map(()=>`
+            <div class="skeleton-card p-4">
+                <div class="skeleton h-44 mb-4 rounded-xl"></div>
+                <div class="skeleton h-4 w-1/3 mb-2 rounded"></div>
+                <div class="skeleton h-5 w-3/4 mb-2 rounded"></div>
+                <div class="skeleton h-3 w-full mb-1 rounded"></div>
+                <div class="skeleton h-3 w-2/3 rounded"></div>
+            </div>`).join('');
+    });
     try{
         const r=await fetch('/api/news');
         const d=await r.json();
@@ -2786,6 +2882,13 @@ async function loadNews(){
         const fa=grouped.announcements.length>0?'announcements':grouped.activities.length>0?'activities':grouped.community.length>0?'community':grouped.posters.length>0?'posters':'announcements';
         switchNewsTab(fa);
         if(window.Iconify) Iconify.scan();
+        // badge الـ Bottom Nav — عدد الإعلانات الجديدة منذ آخر زيارة
+        try {
+            const lastVisit = localStorage.getItem('_chetaibi_last_visit') || '';
+            const newCount  = (grouped.announcements||[]).filter(n => (n.date||'') > lastVisit).length;
+            if (typeof _setBnavNewsBadge === 'function') _setBnavNewsBadge(newCount);
+            localStorage.setItem('_chetaibi_last_visit', new Date().toISOString().slice(0,10));
+        } catch {}
     } catch(e){
         document.getElementById('news-loading').classList.add('hidden');
         ['announcements','activities','community'].forEach(tab=>{
@@ -3856,6 +3959,7 @@ const CAT_META = {
     poster:   { label: 'صور وملصقات',    badge: 'bg-indigo-100 text-indigo-700',   grad: 'from-indigo-500 to-indigo-700',  icon: 'lucide:image'         },
 };
 let overlayAllNews = [], overlayCat = 'official', overlayPage = 1;
+window._allNews = overlayAllNews;
 const OVERLAY_PER = 12;
 
 function openNewsPage(cat) {
@@ -4035,6 +4139,187 @@ fetchWeather(); fetchSeaState(); loadNews(); loadTourism(); loadBeaches(); loadC
 setInterval(()=>{fetchWeather();fetchSeaState();},900000);
 // ✅ سنة تلقائية
 document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+// ══════════════════════════════════════════════════════
+// 📱 PWA — Bottom Navigation
+// ══════════════════════════════════════════════════════
+const _bnavSections = ['home','news','guide','map-section','beaches'];
+let _bnavActive = 'home';
+
+function bnavGo(sectionId) {
+    const el = document.getElementById(sectionId);
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    _bnavSetActive(sectionId);
+    // تحميل الخريطة عند الضغط
+    if (sectionId === 'map-section' && typeof initMap === 'function') {
+        setTimeout(() => initMap(), 400);
+    }
+}
+
+function _bnavSetActive(id) {
+    _bnavActive = id;
+    document.querySelectorAll('.bnav-item').forEach(b => b.classList.remove('active'));
+    const activeBtn = document.getElementById('bnav-' + id.replace('-section',''));
+    if (activeBtn) activeBtn.classList.add('active');
+}
+
+// تحديث الـ Bottom Nav عند التمرير
+const _bnavObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.3) {
+            _bnavSetActive(entry.target.id);
+        }
+    });
+}, { threshold: 0.3, rootMargin: '-10% 0px -60% 0px' });
+
+_bnavSections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) _bnavObserver.observe(el);
+});
+
+// ترجمة labels الـ Bottom Nav
+function _bnavTranslate() {
+    const labels = {
+        ar: { home: 'الرئيسية', news: 'الأخبار', guide: 'الدليل', map: 'الخريطة', beaches: 'الشواطئ' },
+        fr: { home: 'Accueil', news: 'Actualités', guide: 'Guide', map: 'Carte', beaches: 'Plages' }
+    };
+    const l = labels[currentLang] || labels.ar;
+    const m = { home:'home', news:'news', guide:'guide', map:'map', beaches:'beaches' };
+    Object.entries(m).forEach(([k,v]) => {
+        const lbl = document.getElementById('bnav-'+k+'-label');
+        if (lbl) lbl.textContent = l[v];
+    });
+    // dir الـ Bottom Nav
+    document.getElementById('bottom-nav').dir = currentLang === 'fr' ? 'ltr' : 'rtl';
+}
+
+// استدعاء عند تغيير اللغة
+const _origSwitchLang = typeof switchLang === 'function' ? switchLang : null;
+if (_origSwitchLang) {
+    window.switchLang = function(lang) {
+        _origSwitchLang(lang);
+        setTimeout(_bnavTranslate, 50);
+    };
+}
+_bnavTranslate();
+
+// Badge الأخبار — يظهر عدد الأخبار الجديدة
+function _setBnavNewsBadge(count) {
+    const badge = document.getElementById('bnav-news-badge');
+    if (!badge) return;
+    if (count > 0) {
+        badge.textContent = count > 9 ? '9+' : count;
+        badge.classList.remove('hidden');
+    } else {
+        badge.classList.add('hidden');
+    }
+}
+
+// ══════════════════════════════════════════════════════
+// 📴 Offline / Online detection
+// ══════════════════════════════════════════════════════
+function _updateOnlineStatus() {
+    const banner = document.getElementById('offline-banner');
+    const txt    = document.getElementById('offline-text');
+    if (!navigator.onLine) {
+        if (txt) txt.textContent = currentLang === 'fr'
+            ? 'Hors ligne — données en cache affichées'
+            : 'أنت غير متصل بالإنترنت — يتم عرض البيانات المحفوظة';
+        banner.classList.add('show');
+        document.body.classList.add('is-offline');
+    } else {
+        banner.classList.remove('show');
+        document.body.classList.remove('is-offline');
+    }
+}
+window.addEventListener('online',  _updateOnlineStatus);
+window.addEventListener('offline', _updateOnlineStatus);
+_updateOnlineStatus();
+
+// ══════════════════════════════════════════════════════
+// ↕️ Pull to Refresh
+// ══════════════════════════════════════════════════════
+(function() {
+    let startY = 0, pulling = false, threshold = 80;
+    const indicator = document.getElementById('ptr-indicator');
+    const txt = document.getElementById('ptr-text');
+
+    document.addEventListener('touchstart', e => {
+        if (window.scrollY === 0) startY = e.touches[0].clientY;
+    }, { passive: true });
+
+    document.addEventListener('touchmove', e => {
+        if (!startY) return;
+        const dy = e.touches[0].clientY - startY;
+        if (dy > 20 && window.scrollY === 0) {
+            pulling = true;
+            if (txt) txt.textContent = dy > threshold
+                ? (currentLang === 'fr' ? 'Relâchez pour actualiser' : 'ارفع للتحديث')
+                : (currentLang === 'fr' ? 'Tirez pour actualiser'   : 'اسحب للتحديث');
+            indicator.classList.add('visible');
+        }
+    }, { passive: true });
+
+    document.addEventListener('touchend', () => {
+        if (!pulling) return;
+        pulling = false;
+        startY = 0;
+        if (txt) txt.textContent = currentLang === 'fr' ? 'Actualisation...' : 'جاري التحديث...';
+        setTimeout(() => {
+            indicator.classList.remove('visible');
+            if (typeof loadNews === 'function')      loadNews();
+            if (typeof fetchWeather === 'function')  fetchWeather();
+            if (typeof fetchSeaState === 'function') fetchSeaState();
+            if (typeof loadTourism === 'function')   loadTourism();
+            if (typeof loadBeaches === 'function')   loadBeaches();
+        }, 800);
+    }, { passive: true });
+})();
+
+// ══════════════════════════════════════════════════════
+// 💀 Skeleton Loading للأخبار
+// ══════════════════════════════════════════════════════
+function showNewsSkeleton(tabId) {
+    const grid = document.getElementById('grid-' + tabId);
+    if (!grid) return;
+    grid.innerHTML = [1,2,3].map(() => `
+        <div class="skeleton-card p-4">
+            <div class="skeleton h-44 mb-4 rounded-xl"></div>
+            <div class="skeleton h-4 w-1/3 mb-2 rounded"></div>
+            <div class="skeleton h-5 w-3/4 mb-2 rounded"></div>
+            <div class="skeleton h-3 w-full mb-1 rounded"></div>
+            <div class="skeleton h-3 w-2/3 rounded"></div>
+        </div>`).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// ⚙️ Service Worker
+// ══════════════════════════════════════════════════════
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').then(reg => {
+        window._swReg = reg;
+        // تفعيل SW الجديد فوراً
+        if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+        reg.addEventListener('updatefound', () => {
+            const sw = reg.installing;
+            if (sw) sw.addEventListener('statechange', () => {
+                if (sw.state === 'installed' && navigator.serviceWorker.controller)
+                    sw.postMessage({ type: 'SKIP_WAITING' });
+            });
+        });
+        // Push Notifications
+        if ('PushManager' in window) {
+            if (Notification.permission === 'granted') {
+                subscribePush(reg);
+            } else if (Notification.permission === 'default') {
+                setTimeout(() => Notification.requestPermission().then(p => {
+                    if (p === 'granted') subscribePush(reg);
+                }), 3000);
+            }
+        }
+    }).catch(() => {});
+}
 
 // ══════════════════════════════════════════════════════
 // 📱 PWA — تثبيت التطبيق
@@ -4612,6 +4897,33 @@ document.addEventListener('DOMContentLoaded', () => {
     _bannerLangObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
 })();
 </script>
+
+<!-- ══ Bottom Navigation Bar ══ -->
+<nav id="bottom-nav" dir="rtl">
+    <button class="bnav-item active" id="bnav-home" onclick="bnavGo('home')" aria-label="الرئيسية">
+        <span class="bnav-icon"><span class="iconify" data-icon="lucide:home"></span></span>
+        <span id="bnav-home-label">الرئيسية</span>
+    </button>
+    <button class="bnav-item" id="bnav-news" onclick="bnavGo('news')" aria-label="الأخبار">
+        <span class="bnav-icon">
+            <span class="iconify" data-icon="lucide:newspaper"></span>
+            <span class="bnav-badge hidden" id="bnav-news-badge">0</span>
+        </span>
+        <span id="bnav-news-label">الأخبار</span>
+    </button>
+    <button class="bnav-item" id="bnav-guide" onclick="bnavGo('guide')" aria-label="الدليل">
+        <span class="bnav-icon"><span class="iconify" data-icon="lucide:map-pin"></span></span>
+        <span id="bnav-guide-label">الدليل</span>
+    </button>
+    <button class="bnav-item" id="bnav-map" onclick="bnavGo('map-section')" aria-label="الخريطة">
+        <span class="bnav-icon"><span class="iconify" data-icon="lucide:map"></span></span>
+        <span id="bnav-map-label">الخريطة</span>
+    </button>
+    <button class="bnav-item" id="bnav-beaches" onclick="bnavGo('beaches')" aria-label="الشواطئ">
+        <span class="bnav-icon"><span class="iconify" data-icon="lucide:umbrella"></span></span>
+        <span id="bnav-beaches-label">الشواطئ</span>
+    </button>
+</nav>
 
 </body>
 </html>
