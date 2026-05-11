@@ -236,12 +236,74 @@
                             <label class="text-xs font-bold text-blue-600 mb-2 block">🇫🇷 Étiquette — Français <span class="text-gray-400 font-normal">(اختياري)</span></label>
                             <input id="news-custom-label-fr" type="text" placeholder="Ex: Campagne propreté, Événement sportif..." class="border-blue-200">
                         </div>
+                        <!-- الصورة المميزة — مع خيارات جاهزة للإعلانات الرسمية -->
                         <div>
-                            <label class="text-xs font-bold text-gray-500 mb-1 block">🖼️ الصورة المميزة</label>
+                            <label class="text-xs font-bold text-gray-500 mb-2 block">🖼️ الصورة المميزة</label>
+
+                            <!-- ✅ خيارات الصور الجاهزة — تظهر فقط للإعلانات الرسمية -->
+                            <div id="news-preset-wrap" class="hidden mb-3">
+                                <p class="text-[11px] text-gray-400 mb-2 font-semibold">اختر نوع الإعلان (صورة جاهزة):</p>
+                                <div class="grid grid-cols-2 gap-2" id="news-preset-grid">
+                                    <!-- إعلان -->
+                                    <button type="button" onclick="selectPresetImage('announcement')"
+                                        class="preset-img-btn border-2 border-gray-200 rounded-xl overflow-hidden hover:border-emerald-400 transition-all text-right group"
+                                        data-ar="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/APC-Announcement.webp"
+                                        data-fr="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/annonce.webp">
+                                        <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/APC-Announcement.webp"
+                                             class="w-full h-16 object-cover group-hover:scale-105 transition-transform">
+                                        <p class="text-[10px] font-bold text-gray-600 px-2 py-1">📢 إعلان</p>
+                                    </button>
+                                    <!-- استشارة -->
+                                    <button type="button" onclick="selectPresetImage('consultation')"
+                                        class="preset-img-btn border-2 border-gray-200 rounded-xl overflow-hidden hover:border-emerald-400 transition-all text-right group"
+                                        data-ar="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/APC-Consultation.webp"
+                                        data-fr="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/consultation.webp">
+                                        <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/APC-Consultation.webp"
+                                             class="w-full h-16 object-cover group-hover:scale-105 transition-transform">
+                                        <p class="text-[10px] font-bold text-gray-600 px-2 py-1">📋 استشارة</p>
+                                    </button>
+                                    <!-- مزايدة -->
+                                    <button type="button" onclick="selectPresetImage('auction')"
+                                        class="preset-img-btn border-2 border-gray-200 rounded-xl overflow-hidden hover:border-emerald-400 transition-all text-right group"
+                                        data-ar="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/APC-Auction.webp"
+                                        data-fr="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/ench%C3%A8re.webp">
+                                        <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/APC-Auction.webp"
+                                             class="w-full h-16 object-cover group-hover:scale-105 transition-transform">
+                                        <p class="text-[10px] font-bold text-gray-600 px-2 py-1">🔨 مزايدة</p>
+                                    </button>
+                                    <!-- دعوة -->
+                                    <button type="button" onclick="selectPresetImage('invitation')"
+                                        class="preset-img-btn border-2 border-gray-200 rounded-xl overflow-hidden hover:border-emerald-400 transition-all text-right group"
+                                        data-ar="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/APC-Invitation.webp"
+                                        data-fr="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/Invitation-apc.webp">
+                                        <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/APC-Invitation.webp"
+                                             class="w-full h-16 object-cover group-hover:scale-105 transition-transform">
+                                        <p class="text-[10px] font-bold text-gray-600 px-2 py-1">✉️ دعوة</p>
+                                    </button>
+                                </div>
+                                <!-- معاينة الصورة المختارة -->
+                                <div id="news-preset-preview" class="hidden mt-2 p-2 bg-emerald-50 border border-emerald-200 rounded-xl">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <span class="text-[10px] font-bold text-emerald-700">✅ تم اختيار الصورة</span>
+                                        <button type="button" onclick="clearPresetImage()" class="text-[10px] text-red-500 font-bold">✕ إلغاء</button>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-1">
+                                        <div><p class="text-[9px] text-gray-400 mb-0.5">🇩🇿 عربية</p><img id="news-preset-ar-thumb" src="" class="w-full h-10 object-cover rounded-lg"></div>
+                                        <div><p class="text-[9px] text-gray-400 mb-0.5">🇫🇷 فرنسية</p><img id="news-preset-fr-thumb" src="" class="w-full h-10 object-cover rounded-lg"></div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2 mt-3 mb-1">
+                                    <div class="flex-1 h-px bg-gray-200"></div>
+                                    <span class="text-[10px] text-gray-400 font-semibold">أو صورة مخصصة</span>
+                                    <div class="flex-1 h-px bg-gray-200"></div>
+                                </div>
+                            </div>
+
+                            <!-- widget رفع الصورة المخصصة -->
                             <div id="news-featured-widget" class="upload-widget p-3 cursor-pointer" onclick="triggerUpload('news-featured-input')">
                                 <div id="news-featured-placeholder" class="flex flex-col items-center gap-1 py-3">
                                     <span class="iconify text-3xl text-gray-200" data-icon="lucide:image-plus"></span>
-                                    <span class="text-xs text-gray-400 font-semibold">اضغط لرفع صورة</span>
+                                    <span class="text-xs text-gray-400 font-semibold">اضغط لرفع صورة مخصصة</span>
                                     <span class="text-[10px] text-gray-300">JPG, PNG, WEBP — max 25MB</span>
                                 </div>
                                 <div id="news-featured-preview" class="hidden">
@@ -1222,6 +1284,11 @@ async function editNews(id){
         document.getElementById('news-pinned').checked=n.is_pinned==1;
         document.getElementById('news-image').value=n.image_url||'';
         document.getElementById('news-image-url-manual').value=n.image_url||'';
+        // تحقق إذا كانت الصورة الحالية preset — أظهر التمييز المناسب
+        if(n.image_url && typeof PRESET_IMAGES!=='undefined'){
+            const matchKey = Object.keys(PRESET_IMAGES).find(k=>PRESET_IMAGES[k].ar===n.image_url||PRESET_IMAGES[k].fr===n.image_url);
+            if(matchKey){ selectPresetImage(matchKey); }
+        }
         // الصورة الفرنسية — للإعلانات الرسمية فقط
         if(document.getElementById('news-image-fr')){
             document.getElementById('news-image-fr').value=n.image_url_fr||'';
@@ -1288,8 +1355,66 @@ document.addEventListener('DOMContentLoaded', function(){
             if(contentLabel) contentLabel.textContent = 'المحتوى';
         }
     }
-    if(catSel){ catSel.addEventListener('change', updateTitleRequired); updateTitleRequired(); }
+    if(catSel){
+        catSel.addEventListener('change', updateTitleRequired);
+        catSel.addEventListener('change', function(){
+            const isOfficial = catSel.value === 'official';
+            const wrap = document.getElementById('news-preset-wrap');
+            if (wrap) { isOfficial ? wrap.classList.remove('hidden') : wrap.classList.add('hidden'); }
+            if (!isOfficial && typeof clearPresetImage === 'function') clearPresetImage();
+            // FR image wrap
+            const frWrap = document.getElementById('news-image-fr-wrap');
+            if (frWrap) { isOfficial ? frWrap.classList.remove('hidden') : frWrap.classList.add('hidden'); }
+        });
+        updateTitleRequired();
+        // init on load
+        const initOfficial = catSel.value === 'official';
+        const pw = document.getElementById('news-preset-wrap');
+        if(pw && initOfficial) pw.classList.remove('hidden');
+        const fw = document.getElementById('news-image-fr-wrap');
+        if(fw && initOfficial) fw.classList.remove('hidden');
+    }
 });
+// ── دوال الصور الجاهزة للإعلانات ──
+const PRESET_IMAGES = {
+    announcement: { ar:'https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/APC-Announcement.webp', fr:'https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/annonce.webp' },
+    consultation:  { ar:'https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/APC-Consultation.webp', fr:'https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/consultation.webp' },
+    auction:       { ar:'https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/APC-Auction.webp', fr:'https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/ench%C3%A8re.webp' },
+    invitation:    { ar:'https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/APC-Invitation.webp', fr:'https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/Invitation-apc.webp' }
+};
+function selectPresetImage(key){
+    const p=PRESET_IMAGES[key]; if(!p) return;
+    document.getElementById('news-image').value=p.ar;
+    document.getElementById('news-image-url-manual').value=p.ar;
+    const frEl=document.getElementById('news-image-fr');
+    const frUrl=document.getElementById('news-image-fr-url-manual');
+    if(frEl) frEl.value=p.fr;
+    if(frUrl) frUrl.value=p.fr;
+    // معاينة
+    document.getElementById('news-preset-ar-thumb').src=p.ar;
+    document.getElementById('news-preset-fr-thumb').src=p.fr;
+    document.getElementById('news-preset-preview').classList.remove('hidden');
+    // تمييز الزر
+    document.querySelectorAll('.preset-img-btn').forEach(b=>b.classList.remove('border-emerald-500','ring-2','ring-emerald-300'));
+    const btn=document.querySelector(`.preset-img-btn[onclick="selectPresetImage('${key}')"]`);
+    if(btn) btn.classList.add('border-emerald-500','ring-2','ring-emerald-300');
+    // إخفاء preview الرفع المخصص
+    document.getElementById('news-featured-preview').classList.add('hidden');
+    document.getElementById('news-featured-placeholder').classList.remove('hidden');
+}
+function clearPresetImage(){
+    const img=document.getElementById('news-image');
+    const url=document.getElementById('news-image-url-manual');
+    // فقط نمسح إذا كانت القيمة الحالية هي صورة preset
+    const isPreset=Object.values(PRESET_IMAGES).some(p=>img&&(img.value===p.ar||img.value===p.fr));
+    if(isPreset){ if(img) img.value=''; if(url) url.value=''; }
+    const frEl=document.getElementById('news-image-fr');
+    const frUrl=document.getElementById('news-image-fr-url-manual');
+    if(frEl) frEl.value=''; if(frUrl) frUrl.value='';
+    document.getElementById('news-preset-preview').classList.add('hidden');
+    document.querySelectorAll('.preset-img-btn').forEach(b=>b.classList.remove('border-emerald-500','ring-2','ring-emerald-300'));
+}
+
 function cancelNewsEdit(){
     document.getElementById('news-edit-id').value='';
     document.getElementById('news-title').value='';
@@ -1299,6 +1424,10 @@ function cancelNewsEdit(){
     document.getElementById('news-date').value='';
     document.getElementById('news-pinned').checked=false;
     clearWidget('news-featured','news-image','news-image-url-manual');
+    // reset الصورة الجاهزة
+    if(typeof clearPresetImage==='function') clearPresetImage();
+    const presetPrev=document.getElementById('news-preset-preview');
+    if(presetPrev) presetPrev.classList.add('hidden');
     // reset الصورة الفرنسية
     if(document.getElementById('news-image-fr')){
         clearWidget('news-featured-fr','news-image-fr','news-image-fr-url-manual');
