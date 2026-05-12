@@ -2951,7 +2951,7 @@ async function loadTourism(){
                     ${getLF(item,'badge_text')?`<span class="absolute top-2 left-2 ${bcColors[item.badge_color]||'bg-emerald-500'} text-white text-[10px] font-bold px-2 py-0.5 rounded-full">${getLF(item,'badge_text')}</span>`:''}
                 </div>
                 <div class="p-4">
-                    <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed">${(tDesc||t('details-btn')).substring(0,100)}</p>
+                    <p class="text-xs text-white/70 line-clamp-2 leading-relaxed">${(tDesc||t('details-btn')).substring(0,100)}</p>
                     <div class="mt-2 flex items-center justify-between">
                         ${item.rating?`<span class="text-xs text-amber-500 font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:star"></span>${item.rating}/5</span>`:'<span></span>'}
                         <span class="inline-flex items-center gap-1 text-emerald-300 text-xs font-bold"><span class="iconify text-xs" data-icon="lucide:images"></span> ${t('details-btn')}</span>
@@ -3162,15 +3162,21 @@ function toggleGuideMore(tab) {
     const extra = document.getElementById('gpanel-'+tab+'-extra');
     const icon  = document.getElementById('gicon-'+tab);
     const txt   = document.getElementById('gtxt-'+tab);
-    const labels = {
+    const labelsAR = {
         'admin-branches': ['عرض المزيد من الفروع الإدارية',    'إخفاء الفروع الإدارية'],
         'education':      ['عرض المزيد من المؤسسات التعليمية', 'إخفاء المؤسسات التعليمية'],
         'health':         ['عرض المزيد من المرافق الصحية',     'إخفاء المرافق الصحية'],
     };
+    const labelsFR = {
+        'admin-branches': ['Voir plus de succursales',       'Masquer les succursales'],
+        'education':      ["Voir plus d'établissements",     "Masquer les établissements"],
+        'health':         ["Voir plus d'équipements",        "Masquer les équipements"],
+    };
+    const labels = (typeof currentLang !== 'undefined' && currentLang === 'fr') ? labelsFR : labelsAR;
     const expanded = guideExpanded[tab];
     if (extra) extra.classList.toggle('hidden', !expanded);
     if (icon)  icon.setAttribute('data-icon', expanded ? 'lucide:chevrons-up' : 'lucide:chevrons-down');
-    if (txt)   txt.textContent = (labels[tab] || ['عرض المزيد','إخفاء'])[expanded ? 1 : 0];
+    if (txt)   txt.textContent = (labels[tab] || (currentLang==='fr'?['Voir plus','Masquer']:['عرض المزيد','إخفاء']))[expanded ? 1 : 0];
     if (window.Iconify) Iconify.scan();
 }
 
@@ -3267,7 +3273,7 @@ async function renderExploreOverlay() {
                     ${getLF(item,'badge_text')?`<span class="absolute top-2 left-2 ${bcColors[item.badge_color]||'bg-emerald-500'} text-white text-[10px] font-bold px-2 py-0.5 rounded-full">${getLF(item,'badge_text')}</span>`:''}
                 </div>
                 <div class="p-4">
-                    <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed">${(tDesc||t('details-btn')).substring(0,100)}</p>
+                    <p class="text-xs text-white/70 line-clamp-2 leading-relaxed">${(tDesc||t('details-btn')).substring(0,100)}</p>
                     <div class="mt-2 flex items-center justify-between">
                         ${item.rating?`<span class="text-xs text-amber-500 font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:star"></span>${item.rating}/5</span>`:'<span></span>'}
                         <span class="inline-flex items-center gap-1 text-emerald-300 text-xs font-bold"><span class="iconify text-xs" data-icon="lucide:images"></span> ${t('details-btn')}</span>
@@ -3303,8 +3309,14 @@ function closeFacilitiesOverlay() {
     document.getElementById('facilities-overlay').classList.remove('flex');
     document.body.style.overflow = '';
 }
-function facSetCat(cat) {
+// ── FACILITIES OVERLAY PAGINATION ──
+var facPage = 1;
+var FAC_PER = 9;
+var facAllItems = [];
+
+function facSetCat(cat, pageNum) {
     facCat = cat;
+    facPage = pageNum || 1;
     document.querySelectorAll('.fcat-btn').forEach(b=>{ b.classList.remove('bg-white','text-slate-800'); b.classList.add('bg-white/20','text-white'); });
     const ab = document.getElementById('fcat-'+cat);
     if(ab){ ab.classList.remove('bg-white/20','text-white'); ab.classList.add('bg-white','text-slate-800'); }
@@ -3323,8 +3335,12 @@ function facSetCat(cat) {
     fetch('/api/facilities?cat=' + cat)
         .then(r => r.json())
         .then(data => {
-            const items = data.success && data.data && data.data.length ? data.data : null;
-            if (!items) { grid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-8 text-sm">لا توجد مرافق في هذا التصنيف بعد</p>'; return; }
+            const allItems = data.success && data.data && data.data.length ? data.data : null;
+            if (!allItems) { grid.innerHTML = '<p class="col-span-full text-center text-gray-400 py-8 text-sm">لا توجد مرافق في هذا التصنيف بعد</p>'; return; }
+            facAllItems = allItems;
+            const totalPages = Math.ceil(allItems.length / FAC_PER) || 1;
+            facPage = Math.min(facPage, totalPages);
+            const items = allItems.slice((facPage-1)*FAC_PER, facPage*FAC_PER);
             grid.innerHTML = items.map(f => {
                 const tags    = Array.isArray(f.tags)    ? f.tags    : [];
                 const tagsFr  = Array.isArray(f.tags_fr) ? f.tags_fr : (typeof f.tags_fr === 'string' && f.tags_fr ? f.tags_fr.split(',').map(x=>x.trim()).filter(Boolean) : []);
@@ -3353,7 +3369,23 @@ function facSetCat(cat) {
                     + '</div>'
                     + '</div>';
             }).join('');
+            // ── ترقيم الصفحات ──
+            let pagHtml = '';
+            if (totalPages > 1) {
+                pagHtml = '<div class="col-span-full flex flex-wrap justify-center gap-2 mt-6 pt-4 border-t border-gray-100">';
+                for (let p = 1; p <= totalPages; p++) {
+                    const active = p === facPage
+                        ? 'bg-emerald-600 text-white shadow-md'
+                        : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50';
+                    pagHtml += '<button onclick="facSetCat(\'' + cat + '\',' + p + ')" class="' + active + ' w-9 h-9 rounded-xl font-bold text-sm transition-all">' + p + '</button>';
+                }
+                pagHtml += '</div>';
+            }
+            grid.innerHTML += pagHtml;
             if (window.Iconify) Iconify.scan();
+            // scroll to top of overlay
+            const ov = document.getElementById('facilities-overlay');
+            if (ov) ov.scrollTo({ top: 0, behavior: 'smooth' });
         })
         .catch(() => { grid.innerHTML = '<p class="col-span-full text-center text-red-400 py-8 text-sm">حدث خطأ في التحميل</p>'; });
 }
@@ -3856,7 +3888,7 @@ const CAT_META = {
     poster:   { label: 'صور وملصقات',    badge: 'bg-indigo-100 text-indigo-700',   grad: 'from-indigo-500 to-indigo-700',  icon: 'lucide:image'         },
 };
 let overlayAllNews = [], overlayCat = 'official', overlayPage = 1;
-const OVERLAY_PER = 12;
+const OVERLAY_PER = 9;
 
 function openNewsPage(cat) {
     overlayCat = cat; overlayPage = 1;
