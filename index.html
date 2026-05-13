@@ -1869,7 +1869,7 @@ html[dir="ltr"] article {
     </div>
     <div class="flex-1 overflow-y-auto" style="background-color:#fdf6ec;">
         <div class="max-w-7xl mx-auto px-4 py-8">
-            <div id="arch-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"></div>
+            <div id="arch-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8"></div>
             <div id="arch-pagination" class="flex flex-wrap justify-center gap-2 mt-4"></div>
         </div>
     </div>
@@ -1966,7 +1966,7 @@ html[dir="ltr"] article {
     </div>
     <div class="flex-1 overflow-y-auto bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 py-8">
-            <div id="explore-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"></div>
+            <div id="explore-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"></div>
             <div id="explore-pagination" class="flex flex-wrap justify-center gap-2 mt-6"></div>
         </div>
     </div>
@@ -2863,7 +2863,7 @@ function beachCard(b){
             ${b.season?`<span class="absolute top-2 right-2 bg-sky-500/80 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1"><span class="iconify text-xs" data-icon="${b.season==='صخري'?'lucide:mountain':'lucide:waves'}"></span> ${b.season==='صخري'?t('beach-type-rocky'):t('beach-type-sandy')}</span>`:''}
         </div>
         <div class="p-4">
-            <p class="text-xs text-white/70 line-clamp-2 leading-relaxed">${bDesc||t('details-btn')}</p>
+            <p class="text-xs line-clamp-2 leading-relaxed" style="color:#4D5562">${bDesc||''}</p>
             <span class="mt-2 inline-flex items-center gap-1 text-sky-300 text-xs font-bold">
                 <span class="iconify text-xs" data-icon="lucide:images"></span> ${t('details-btn')}
             </span>
@@ -2951,7 +2951,7 @@ async function loadTourism(){
                     ${getLF(item,'badge_text')?`<span class="absolute top-2 left-2 ${bcColors[item.badge_color]||'bg-emerald-500'} text-white text-[10px] font-bold px-2 py-0.5 rounded-full">${getLF(item,'badge_text')}</span>`:''}
                 </div>
                 <div class="p-4">
-                    <p class="text-xs text-white/70 line-clamp-2 leading-relaxed">${(tDesc||t('details-btn')).substring(0,100)}</p>
+                    <p class="text-xs line-clamp-2 leading-relaxed" style="color:#4D5562">${(tDesc||'').substring(0,100)}</p>
                     <div class="mt-2 flex items-center justify-between">
                         ${item.rating?`<span class="text-xs text-amber-500 font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:star"></span>${item.rating}/5</span>`:'<span></span>'}
                         <span class="inline-flex items-center gap-1 text-emerald-300 text-xs font-bold"><span class="iconify text-xs" data-icon="lucide:images"></span> ${t('details-btn')}</span>
@@ -3240,7 +3240,7 @@ async function renderExploreOverlay() {
                     ${b.season?`<span class="absolute top-2 right-2 bg-sky-500/80 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1"><span class="iconify text-xs" data-icon="${b.season==='صخري'?'lucide:mountain':'lucide:waves'}"></span> ${b.season==='صخري'?t('beach-type-rocky'):t('beach-type-sandy')}</span>`:''}
                 </div>
                 <div class="p-4">
-                    <p class="text-xs text-white/70 line-clamp-2 leading-relaxed">${bDesc||t('details-btn')}</p>
+                    <p class="text-xs line-clamp-2 leading-relaxed" style="color:#4D5562">${bDesc||''}</p>
                     <span class="mt-2 inline-flex items-center gap-1 text-sky-300 text-xs font-bold">
                         <span class="iconify text-xs" data-icon="lucide:images"></span> ${t('details-btn')}
                     </span>
@@ -3273,7 +3273,7 @@ async function renderExploreOverlay() {
                     ${getLF(item,'badge_text')?`<span class="absolute top-2 left-2 ${bcColors[item.badge_color]||'bg-emerald-500'} text-white text-[10px] font-bold px-2 py-0.5 rounded-full">${getLF(item,'badge_text')}</span>`:''}
                 </div>
                 <div class="p-4">
-                    <p class="text-xs text-white/70 line-clamp-2 leading-relaxed">${(tDesc||t('details-btn')).substring(0,100)}</p>
+                    <p class="text-xs line-clamp-2 leading-relaxed" style="color:#4D5562">${(tDesc||'').substring(0,100)}</p>
                     <div class="mt-2 flex items-center justify-between">
                         ${item.rating?`<span class="text-xs text-amber-500 font-bold flex items-center gap-1"><span class="iconify" data-icon="lucide:star"></span>${item.rating}/5</span>`:'<span></span>'}
                         <span class="inline-flex items-center gap-1 text-emerald-300 text-xs font-bold"><span class="iconify text-xs" data-icon="lucide:images"></span> ${t('details-btn')}</span>
