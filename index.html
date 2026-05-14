@@ -299,6 +299,7 @@
             'fac-title-branches': 'الفروع الإدارية',
             'fac-title-education':  'التعليم والتكوين',
             'fac-title-public-bodies':'الهيئات العمومية',
+            'fac-title-public_bodies':'الهيئات العمومية',
             'fac-title-health':   'المرافق الصحية',
             'fac-desc-religious': 'الشؤون الدينية والأوقاف المساجد والزوايا',
             'fac-desc-cultural':  'الفضاءات الثقافية والمرافق الشبانية',
@@ -309,6 +310,7 @@
             'fac-desc-branches':  'فروع بلدية شطايبي الإدارية لتقريب الخدمات من المواطن',
             'fac-desc-education': 'مؤسسات التعليم العام والتكوين المهني',
             'fac-desc-public-bodies':'الهيئات والمنظمات العمومية في شطايبي',
+            'fac-desc-public_bodies':'الهيئات والمنظمات العمومية في شطايبي',
             'guide-more-edu':     'عرض المزيد من مؤسسات التعليم والتكوين',
             'guide-more-public-bodies':'عرض المزيد من الهيئات العمومية',
             'fac-desc-health':    'الهياكل الصحية والمرفق الطبي العام',
@@ -579,6 +581,7 @@
             'fac-desc-branches':  'Annexes administratives de la commune de Chetaïbi',
             'fac-desc-education': 'Enseignement public et formation professionnelle',
             'fac-desc-public-bodies':'Organismes et institutions publics',
+            'fac-desc-public_bodies':'Organismes et institutions publics',
             'guide-more-edu':     "Voir plus d'établissements d'enseignement",
             'guide-more-public-bodies':'Voir plus d\'organismes publics',
             'fac-desc-health':    'Structures sanitaires et établissements médicaux',
@@ -591,6 +594,7 @@
             'fac-title-branches': 'Annexes administratives',
             'fac-title-education':   'Enseignement & Formation',
             'fac-title-public-bodies':'Organismes publics',
+            'fac-title-public_bodies':'Organismes publics',
             'fac-title-health':   'Équipements sanitaires',
             /* ─── FOOTER ─── */
             'footer-about':       'Portail officiel de la commune de Chetaïbi : services publics modernes, valorisation du patrimoine touristique et historique.',
@@ -1587,22 +1591,22 @@ html[dir="ltr"] article {
             <p class="text-gray-500 max-w-2xl mx-auto" data-i18n="guide-sub">دليل شامل يضم الفروع الإدارية والمؤسسات التعليمية والصحية والخدماتية، إلى جانب مختلف المرافق الاجتماعية في شطايبي</p>
         </div>
         <!-- تبويبات الدليل -->
-        <div class="flex flex-wrap justify-center gap-3 mb-10">
-            <button onclick="switchGuideTab('admin-branches')" id="gtab-admin-branches" class="guide-tab active px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2">
-                <span class="iconify" data-icon="lucide:landmark"></span>
-                <span data-i18n="gtab-branches">الفروع الإدارية</span>
+        <div class="grid grid-cols-2 md:flex md:flex-wrap md:justify-center gap-3 mb-10">
+            <button onclick="switchGuideTab('admin-branches')" id="gtab-admin-branches" class="guide-tab active py-2.5 px-3 md:px-5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-1.5 min-w-0 flex-shrink-0">
+                <span class="iconify text-base flex-shrink-0" data-icon="lucide:landmark"></span>
+                <span class="whitespace-nowrap text-[11px] md:text-sm" data-i18n="gtab-branches">الفروع الإدارية</span>
             </button>
-            <button onclick="switchGuideTab('education')" id="gtab-education" class="guide-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2">
-                <span class="iconify" data-icon="lucide:graduation-cap"></span>
-                <span data-i18n="gtab-education">التعليم والتكوين</span>
+            <button onclick="switchGuideTab('education')" id="gtab-education" class="guide-tab py-2.5 px-3 md:px-5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-1.5 min-w-0 flex-shrink-0">
+                <span class="iconify text-base flex-shrink-0" data-icon="lucide:graduation-cap"></span>
+                <span class="whitespace-nowrap text-[11px] md:text-sm" data-i18n="gtab-education">التعليم والتكوين</span>
             </button>
-            <button onclick="switchGuideTab('health')" id="gtab-health" class="guide-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2">
-                <span class="iconify" data-icon="lucide:heart-pulse"></span>
-                <span data-i18n="gtab-health">المرافق الصحية</span>
+            <button onclick="switchGuideTab('health')" id="gtab-health" class="guide-tab py-2.5 px-3 md:px-5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-1.5 min-w-0 flex-shrink-0">
+                <span class="iconify text-base flex-shrink-0" data-icon="lucide:heart-pulse"></span>
+                <span class="whitespace-nowrap text-[11px] md:text-sm" data-i18n="gtab-health">المرافق الصحية</span>
             </button>
-            <button onclick="switchGuideTab('public-bodies')" id="gtab-public-bodies" class="guide-tab px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2">
-                <span class="iconify" data-icon="lucide:building-2"></span>
-                <span data-i18n="gtab-public-bodies">الهيئات العمومية</span>
+            <button onclick="switchGuideTab('public-bodies')" id="gtab-public-bodies" class="guide-tab py-2.5 px-3 md:px-5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-1.5 min-w-0 flex-shrink-0">
+                <span class="iconify text-base flex-shrink-0" data-icon="lucide:building-2"></span>
+                <span class="whitespace-nowrap text-[11px] md:text-sm" data-i18n="gtab-public-bodies">الهيئات العمومية</span>
             </button>
         </div>
         <!-- لوحة: الفروع الإدارية -->
