@@ -1,67 +1,1273 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#ffffff">
-    <title>بلدية شطايبي</title>
-    <!-- هذا الملف هو بيئة التطبيق المنفصلة — يُحرَّر بشكل مستقل تماماً عن index.html الرئيسي -->
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Cairo', 'Segoe UI', sans-serif;
-            background: #ffffff;
-            min-height: 100dvh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-        }
-        .logo {
-            width: 96px;
-            height: 96px;
-            border-radius: 22px;
-            margin-bottom: 24px;
-        }
-        h1 {
-            font-size: 22px;
-            font-weight: 900;
-            color: #064e3b;
-            margin-bottom: 8px;
-        }
-        p {
-            font-size: 13px;
-            color: #6b7280;
-        }
-        .spinner {
-            width: 32px;
-            height: 32px;
-            border: 3px solid #d1fae5;
-            border-top-color: #059669;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 32px auto 0;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a2540">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>شطايبي</title>
+<link rel="icon" href="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/new_logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://code.iconify.design/3/3.1.1/iconify.min.js" defer></script>
+<style>
+/* ════════════════════════════════════════
+   TOKENS
+════════════════════════════════════════ */
+:root{
+  --ocean:    #0a2540;
+  --ocean-m:  #0d3461;
+  --sea:      #1a6fa8;
+  --sky:      #4da8d4;
+  --sky-l:    #e8f4fb;
+  --forest:   #1a5c3a;
+  --leaf:     #2d9c5c;
+  --leaf-l:   #e8f6ef;
+  --sand:     #f0e6d3;
+  --sand-d:   #c8a97a;
+  --white:    #ffffff;
+  --surface:  #f7f9fc;
+  --card:     #ffffff;
+  --border:   rgba(10,37,64,.08);
+  --text-1:   #0a2540;
+  --text-2:   #4d5562;
+  --text-3:   #9ba5b4;
+  --r-sm:     12px;
+  --r-md:     18px;
+  --r-lg:     24px;
+  --r-xl:     32px;
+  --shadow-sm:0 2px 8px rgba(10,37,64,.06);
+  --shadow-md:0 6px 20px rgba(10,37,64,.10);
+  --shadow-lg:0 16px 48px rgba(10,37,64,.14);
+  --nav-h:    68px;
+  --safe-b:   env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--surface);font-family:'Tajawal',sans-serif;color:var(--text-1);overflow:hidden}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+
+/* ════════════════════════════════════════
+   SCROLL CONTAINER
+════════════════════════════════════════ */
+#app{
+  position:fixed;inset:0;
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+#page-wrap{
+  flex:1;overflow-y:auto;
+  scroll-behavior:smooth;
+  -webkit-overflow-scrolling:touch;
+  padding-bottom:calc(var(--nav-h) + var(--safe-b) + 8px);
+}
+
+/* ════════════════════════════════════════
+   TOP STATUS BAR SPACE
+════════════════════════════════════════ */
+.status-space{height:env(safe-area-inset-top,0px)}
+
+/* ════════════════════════════════════════
+   HERO — HOME
+════════════════════════════════════════ */
+.hero{
+  position:relative;
+  background:linear-gradient(165deg, var(--ocean) 0%, #0d3d6e 55%, #1a6fa8 100%);
+  padding:20px 20px 36px;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'%3E%3Cpath d='M0,120 C60,80 120,160 180,120 C240,80 300,160 360,120 C390,100 400,110 400,110 L400,200 L0,200 Z' fill='rgba(255,255,255,0.04)'/%3E%3Cpath d='M0,140 C80,100 160,170 240,130 C320,90 380,140 400,130 L400,200 L0,200 Z' fill='rgba(255,255,255,0.03)'/%3E%3C/svg%3E") bottom/cover no-repeat;
+  pointer-events:none;
+}
+.hero-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;position:relative;z-index:1}
+.hero-logo{display:flex;align-items:center;gap:10px}
+.hero-logo img{width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.25)}
+.hero-logo-text{line-height:1.1}
+.hero-logo-text .city{font-size:16px;font-weight:700;color:#fff;letter-spacing:.3px}
+.hero-logo-text .sub{font-size:10px;color:rgba(255,255,255,.6);font-weight:400}
+.hero-lang{
+  width:34px;height:34px;border-radius:10px;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
+  color:#fff;font-size:11px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  backdrop-filter:blur(8px);
+}
+.hero-greeting{position:relative;z-index:1;margin-bottom:20px}
+.hero-greeting .date-label{font-size:11px;color:rgba(255,255,255,.55);font-weight:400;margin-bottom:4px;letter-spacing:.5px}
+.hero-greeting .city-title{font-size:26px;font-weight:900;color:#fff;line-height:1.1;letter-spacing:-.3px}
+.hero-greeting .city-sub{font-size:13px;color:rgba(255,255,255,.65);margin-top:4px;font-weight:400}
+
+/* Weather mini card in hero */
+.hero-weather{
+  position:relative;z-index:1;
+  background:rgba(255,255,255,.1);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:var(--r-md);
+  padding:14px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.hw-left{display:flex;align-items:center;gap:12px}
+.hw-temp{font-size:28px;font-weight:800;color:#fff;line-height:1}
+.hw-info .hw-desc{font-size:12px;color:rgba(255,255,255,.75);font-weight:500}
+.hw-info .hw-loc{font-size:10px;color:rgba(255,255,255,.45);margin-top:2px}
+.hw-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.hw-stat{font-size:10px;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:4px}
+
+/* ════════════════════════════════════════
+   SEARCH BAR
+════════════════════════════════════════ */
+.search-wrap{padding:16px 20px 0}
+.search-bar{
+  display:flex;align-items:center;gap:10px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--r-md);
+  padding:12px 16px;
+  box-shadow:var(--shadow-sm);
+}
+.search-bar .iconify{color:var(--text-3);font-size:18px;flex-shrink:0}
+.search-bar input{
+  flex:1;border:none;outline:none;font-family:'Tajawal',sans-serif;
+  font-size:14px;color:var(--text-1);background:none;
+}
+.search-bar input::placeholder{color:var(--text-3)}
+
+/* ════════════════════════════════════════
+   SECTION
+════════════════════════════════════════ */
+.section{padding:24px 20px 0}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.section-title{font-size:17px;font-weight:800;color:var(--text-1)}
+.section-more{font-size:12px;font-weight:600;color:var(--sea);display:flex;align-items:center;gap:3px}
+
+/* ════════════════════════════════════════
+   BENTO GRID — NEWS
+════════════════════════════════════════ */
+.news-bento{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.news-card{
+  background:var(--card);border-radius:var(--r-md);
+  box-shadow:var(--shadow-sm);border:1px solid var(--border);
+  overflow:hidden;cursor:pointer;
+  transition:transform .2s ease,box-shadow .2s ease;
+  active:transform:scale(.98);
+}
+.news-card:active{transform:scale(.97);box-shadow:var(--shadow-sm)}
+.news-card.featured{grid-column:span 2}
+.nc-img{width:100%;height:120px;object-fit:cover;display:block}
+.nc-img-placeholder{
+  width:100%;height:120px;
+  display:flex;align-items:center;justify-content:center;
+}
+.nc-body{padding:10px 12px 12px}
+.nc-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;
+  margin-bottom:6px;
+}
+.nc-badge.official{background:#fef2f2;color:#dc2626}
+.nc-badge.activity{background:#f0fdf4;color:#16a34a}
+.nc-badge.social{background:#faf5ff;color:#9333ea}
+.nc-badge.poster{background:#eef2ff;color:#4f46e5}
+.nc-title{font-size:12px;font-weight:700;color:var(--text-1);line-height:1.4;margin-bottom:4px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.nc-date{font-size:10px;color:var(--text-3);display:flex;align-items:center;gap:3px}
+.nc-featured .nc-img{height:170px}
+.nc-featured .nc-title{font-size:14px;-webkit-line-clamp:2}
+
+/* ════════════════════════════════════════
+   HORIZONTAL SCROLL — BEACHES & TOURISM
+════════════════════════════════════════ */
+.hscroll-wrap{
+  display:flex;gap:12px;
+  overflow-x:auto;padding-bottom:6px;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.hscroll-wrap::-webkit-scrollbar{display:none}
+.place-card{
+  flex:0 0 200px;scroll-snap-align:start;
+  background:var(--card);border-radius:var(--r-md);
+  box-shadow:var(--shadow-sm);border:1px solid var(--border);
+  overflow:hidden;cursor:pointer;
+  transition:transform .2s;
+}
+.place-card:active{transform:scale(.97)}
+.pc-img{width:100%;height:130px;object-fit:cover;display:block}
+.pc-img-placeholder{
+  width:100%;height:130px;
+  display:flex;align-items:center;justify-content:center;
+}
+.pc-body{padding:10px 12px}
+.pc-badge{font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;
+  margin-bottom:6px;display:inline-block}
+.pc-badge.beach{background:#e0f2fe;color:#0284c7}
+.pc-badge.tourism{background:#f0fdf4;color:#16a34a}
+.pc-name{font-size:13px;font-weight:700;color:var(--text-1);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc-type{font-size:10px;color:var(--text-3);margin-top:2px}
+
+/* ════════════════════════════════════════
+   BENTO — STATS
+════════════════════════════════════════ */
+.stats-bento{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.stat-bento-card{
+  background:var(--card);border-radius:var(--r-md);
+  border:1px solid var(--border);box-shadow:var(--shadow-sm);
+  padding:14px 10px;text-align:center;
+}
+.sbc-icon{font-size:22px;margin-bottom:6px}
+.sbc-val{font-size:18px;font-weight:900;color:var(--text-1);line-height:1}
+.sbc-label{font-size:9px;color:var(--text-3);margin-top:3px;font-weight:500}
+
+/* ════════════════════════════════════════
+   BENTO — SERVICES
+════════════════════════════════════════ */
+.services-bento{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.svc-card{
+  background:var(--card);border-radius:var(--r-md);
+  border:1px solid var(--border);box-shadow:var(--shadow-sm);
+  padding:16px 14px;cursor:pointer;
+  transition:transform .2s;
+  display:flex;flex-direction:column;align-items:flex-start;gap:8px;
+}
+.svc-card:active{transform:scale(.97)}
+.svc-icon-wrap{
+  width:40px;height:40px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;
+}
+.svc-name{font-size:12px;font-weight:700;color:var(--text-1);line-height:1.3}
+.svc-desc{font-size:10px;color:var(--text-2);margin-top:2px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.svc-arrow{font-size:14px;color:var(--text-3);align-self:flex-end;margin-top:auto}
+
+/* Color variants */
+.svc-blue .svc-icon-wrap{background:#e0f2fe;color:#0284c7}
+.svc-green .svc-icon-wrap{background:#f0fdf4;color:#16a34a}
+.svc-amber .svc-icon-wrap{background:#fffbeb;color:#d97706}
+.svc-purple .svc-icon-wrap{background:#faf5ff;color:#9333ea}
+.svc-indigo .svc-icon-wrap{background:#eef2ff;color:#4f46e5}
+.svc-rose .svc-icon-wrap{background:#fff1f2;color:#e11d48}
+
+/* ════════════════════════════════════════
+   MAYOR CARD
+════════════════════════════════════════ */
+.mayor-card{
+  background:linear-gradient(135deg,var(--ocean) 0%,var(--sea) 100%);
+  border-radius:var(--r-lg);padding:20px;
+  display:flex;align-items:center;gap:14px;
+  cursor:pointer;
+}
+.mayor-photo{
+  width:60px;height:60px;border-radius:50%;
+  object-fit:cover;border:3px solid rgba(255,255,255,.3);
+  flex-shrink:0;
+}
+.mayor-photo-ph{
+  width:60px;height:60px;border-radius:50%;
+  background:rgba(255,255,255,.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;color:rgba(255,255,255,.6);flex-shrink:0;
+}
+.mayor-info{flex:1;min-width:0}
+.mayor-role{font-size:10px;color:rgba(255,255,255,.65);margin-bottom:4px;font-weight:500}
+.mayor-name{font-size:16px;font-weight:800;color:#fff;line-height:1.2}
+.mayor-bio{font-size:11px;color:rgba(255,255,255,.6);margin-top:4px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* ════════════════════════════════════════
+   SEA CONDITIONS CARD
+════════════════════════════════════════ */
+.sea-card{
+  background:linear-gradient(135deg,#0d4f8c 0%,var(--sky) 100%);
+  border-radius:var(--r-lg);padding:18px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.sea-left .sea-title{font-size:11px;color:rgba(255,255,255,.65);font-weight:500;margin-bottom:4px}
+.sea-left .sea-state{font-size:18px;font-weight:800;color:#fff}
+.sea-left .sea-tip{font-size:10px;color:rgba(255,255,255,.6);margin-top:3px}
+.sea-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.sea-stat{font-size:10px;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:4px}
+.sea-icon{font-size:32px;color:rgba(255,255,255,.4);margin-left:8px}
+
+/* ════════════════════════════════════════
+   BOTTOM NAV
+════════════════════════════════════════ */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;
+  height:calc(var(--nav-h) + var(--safe-b));
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);
+  display:flex;align-items:flex-start;justify-content:space-around;
+  padding-top:10px;
+  z-index:1000;
+}
+.nav-item{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  min-width:52px;padding:4px 8px;border-radius:12px;
+  transition:background .15s;cursor:pointer;
+  color:var(--text-3);
+}
+.nav-item.active{color:var(--ocean)}
+.nav-item:active{background:var(--sky-l)}
+.nav-item .iconify{font-size:22px;transition:transform .2s}
+.nav-item.active .iconify{transform:scale(1.1)}
+.nav-item span.label{font-size:9px;font-weight:600;letter-spacing:.2px}
+
+/* ════════════════════════════════════════
+   PAGES
+════════════════════════════════════════ */
+.page{display:none}
+.page.active{display:block}
+
+/* ════════════════════════════════════════
+   SKELETON
+════════════════════════════════════════ */
+.skel{
+  background:linear-gradient(90deg,#f0f4f8 25%,#e8ecf0 50%,#f0f4f8 75%);
+  background-size:200% 100%;
+  animation:skel-shine 1.4s infinite;
+  border-radius:8px;
+}
+@keyframes skel-shine{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ════════════════════════════════════════
+   MODAL / SHEET
+════════════════════════════════════════ */
+.sheet-overlay{
+  position:fixed;inset:0;z-index:900;
+  background:rgba(10,37,64,.5);backdrop-filter:blur(4px);
+  display:none;align-items:flex-end;
+}
+.sheet-overlay.open{display:flex}
+.sheet{
+  width:100%;max-height:90vh;
+  background:var(--white);border-radius:var(--r-xl) var(--r-xl) 0 0;
+  overflow-y:auto;
+  animation:sheet-up .3s cubic-bezier(.25,.8,.25,1);
+}
+@keyframes sheet-up{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.sheet-handle{
+  width:36px;height:4px;background:#d1d5db;border-radius:2px;
+  margin:12px auto 0;
+}
+.sheet-header{padding:14px 20px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.sheet-title{font-size:16px;font-weight:800;color:var(--text-1)}
+.sheet-close{width:32px;height:32px;border-radius:50%;background:var(--surface);display:flex;align-items:center;justify-content:center;color:var(--text-2)}
+.sheet-body{padding:20px}
+
+/* ════════════════════════════════════════
+   DETAIL SHEET — image hero
+════════════════════════════════════════ */
+.ds-img{width:100%;height:220px;object-fit:cover;border-radius:var(--r-lg);margin-bottom:16px}
+.ds-title{font-size:20px;font-weight:900;color:var(--text-1);margin-bottom:8px}
+.ds-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;
+  padding:4px 12px;border-radius:20px;margin-bottom:12px}
+.ds-desc{font-size:13px;color:var(--text-2);line-height:1.7;margin-bottom:16px}
+.ds-album{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.ds-album-img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;cursor:pointer}
+.ds-url-btn{
+  width:100%;padding:14px;border-radius:var(--r-md);
+  background:var(--ocean);color:#fff;
+  font-size:14px;font-weight:700;font-family:'Tajawal',sans-serif;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  margin-top:16px;
+}
+.ds-docs{margin-top:16px;padding:14px;background:var(--surface);border-radius:var(--r-md)}
+.ds-docs-title{font-size:12px;font-weight:700;color:var(--text-2);margin-bottom:8px}
+.ds-docs-item{font-size:12px;color:var(--text-2);padding:4px 0;display:flex;align-items:flex-start;gap:6px}
+
+/* Search results */
+.search-result{padding:12px;border-bottom:1px solid var(--border);cursor:pointer;display:flex;gap:12px;align-items:flex-start}
+.search-result-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
+.search-result-text .sr-title{font-size:13px;font-weight:700;color:var(--text-1)}
+.search-result-text .sr-cat{font-size:10px;color:var(--text-3);margin-top:2px}
+
+/* Lang FR overrides */
+html[lang="fr"]{direction:ltr}
+html[lang="fr"] .hero,.html[lang="fr"] .mayor-card,.html[lang="fr"] .sea-card{direction:ltr}
+
+/* Scroll padding for pages */
+#home-page,.news-page,.beaches-page,.tourism-page,.services-page{padding-bottom:0}
+
+/* ════════════════════════════════════════
+   PHOTO LIGHTBOX
+════════════════════════════════════════ */
+#lightbox{
+  position:fixed;inset:0;z-index:2000;
+  background:rgba(0,0,0,.95);
+  display:none;align-items:center;justify-content:center;
+  padding:20px;
+}
+#lightbox.open{display:flex}
+#lightbox img{max-width:100%;max-height:85vh;border-radius:12px;object-fit:contain}
+#lightbox-close{position:absolute;top:16px;right:16px;width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px}
+</style>
 </head>
 <body>
-    <img
-        class="logo"
-        src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/new_512_any.png"
-        alt="شعار بلدية شطايبي"
-    >
-    <h1>بلدية شطايبي</h1>
-    <p>ولاية عنابة — الجزائر</p>
-    <div class="spinner"></div>
-    <!--
-    ════════════════════════════════════════════════════
-     هذا الملف هو نقطة البداية للتطبيق PWA
-     ابنِ تصميم التطبيق العصري هنا بشكل مستقل تماماً
-     دون الحاجة للتعديل على index.html الرئيسي
-    ════════════════════════════════════════════════════
-    -->
+
+<div id="app">
+  <div class="status-space"></div>
+  <div id="page-wrap">
+
+    <!-- ══ HOME PAGE ══ -->
+    <div id="home-page" class="page active">
+
+      <!-- Hero -->
+      <div class="hero">
+        <div class="hero-top">
+          <div class="hero-logo">
+            <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/new_logo.png" alt="شطايبي">
+            <div class="hero-logo-text">
+              <div class="city" id="h-city-name">بلدية شطايبي</div>
+              <div class="sub" id="h-wilaya">ولاية عنابة</div>
+            </div>
+          </div>
+          <button class="hero-lang" id="app-lang-btn" onclick="toggleLang()">FR</button>
+        </div>
+        <div class="hero-greeting">
+          <div class="date-label" id="h-date"></div>
+          <div class="city-title" id="h-title">شطايبي</div>
+          <div class="city-sub" id="h-sub">حيث تمتزج الطبيعة بالتاريخ</div>
+        </div>
+        <div class="hero-weather">
+          <div class="hw-left">
+            <span class="iconify" style="font-size:36px;color:rgba(255,255,255,.85)" id="h-weather-icon" data-icon="lucide:sun"></span>
+            <div class="hw-info">
+              <div class="hw-temp" id="h-temp">—°</div>
+              <div class="hw-desc" id="h-weather-desc">جاري التحميل...</div>
+              <div class="hw-loc">شطايبي — عنابة</div>
+            </div>
+          </div>
+          <div class="hw-right">
+            <div class="hw-stat"><span class="iconify" data-icon="lucide:droplets"></span><span id="h-humidity">—%</span></div>
+            <div class="hw-stat"><span class="iconify" data-icon="lucide:wind"></span><span id="h-wind">— كم/س</span></div>
+            <div class="hw-stat"><span class="iconify" data-icon="lucide:thermometer"></span><span id="h-feels">— / —</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search -->
+      <div class="search-wrap">
+        <div class="search-bar" onclick="openSearch()">
+          <span class="iconify" data-icon="lucide:search"></span>
+          <input id="search-input" readonly placeholder="ابحث عن خدمة، شاطئ، معلم..." data-i18n-ph="search-placeholder">
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title" data-i18n="stats-title">نبذة عن البلدية</div>
+        </div>
+        <div class="stats-bento">
+          <div class="stat-bento-card"><div class="sbc-icon">📐</div><div class="sbc-val">134</div><div class="sbc-label" data-i18n="stat-area">كم²</div></div>
+          <div class="stat-bento-card"><div class="sbc-icon">👥</div><div class="sbc-val">8,767</div><div class="sbc-label" data-i18n="stat-pop">نسمة</div></div>
+          <div class="stat-bento-card"><div class="sbc-icon">📮</div><div class="sbc-val">23014</div><div class="sbc-label" data-i18n="stat-postal">بريدي</div></div>
+        </div>
+      </div>
+
+      <!-- Mayor -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title" data-i18n="mayor-section">رئيس المجلس</div>
+        </div>
+        <div class="mayor-card" onclick="goTab('home')">
+          <div class="mayor-photo-ph" id="app-mayor-ph"><span class="iconify" data-icon="lucide:user-circle"></span></div>
+          <img id="app-mayor-photo" class="mayor-photo" src="" alt="" style="display:none">
+          <div class="mayor-info">
+            <div class="mayor-role" data-i18n="mayor-role">رئيس المجلس الشعبي البلدي</div>
+            <div class="mayor-name" id="app-mayor-name">السيد عثماني سليمان</div>
+            <div class="mayor-bio" id="app-mayor-bio"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sea conditions -->
+      <div class="section">
+        <div class="sea-card">
+          <div class="sea-left">
+            <div class="sea-title" data-i18n="sea-title">حالة البحر</div>
+            <div class="sea-state" id="app-sea-state">—</div>
+            <div class="sea-tip" id="app-sea-tip"></div>
+          </div>
+          <span class="iconify sea-icon" data-icon="lucide:waves"></span>
+          <div class="sea-right">
+            <div class="sea-stat"><span class="iconify" data-icon="lucide:ruler"></span><span id="app-sea-height">—</span></div>
+            <div class="sea-stat"><span class="iconify" data-icon="lucide:thermometer"></span><span id="app-sea-temp">—</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Latest News -->
+      <div class="section" style="padding-bottom:0">
+        <div class="section-header">
+          <div class="section-title" data-i18n="news-section">آخر الأخبار</div>
+          <div class="section-more" onclick="goTab('news')"><span data-i18n="see-all">عرض الكل</span><span class="iconify" data-icon="lucide:chevron-left"></span></div>
+        </div>
+        <div class="news-bento" id="home-news-grid">
+          <!-- skeletons -->
+          <div class="news-card"><div class="skel" style="height:120px"></div><div style="padding:10px 12px"><div class="skel" style="height:10px;width:50%;margin-bottom:6px"></div><div class="skel" style="height:30px"></div></div></div>
+          <div class="news-card"><div class="skel" style="height:120px"></div><div style="padding:10px 12px"><div class="skel" style="height:10px;width:50%;margin-bottom:6px"></div><div class="skel" style="height:30px"></div></div></div>
+          <div class="news-card featured"><div class="skel" style="height:140px"></div><div style="padding:10px 12px"><div class="skel" style="height:10px;width:40%;margin-bottom:6px"></div><div class="skel" style="height:36px"></div></div></div>
+        </div>
+      </div>
+
+      <!-- Quick links to beaches & tourism -->
+      <div class="section" style="padding-bottom:0">
+        <div class="section-header">
+          <div class="section-title" data-i18n="beaches-section">الشواطئ</div>
+          <div class="section-more" onclick="goTab('tourism')"><span data-i18n="see-all">عرض الكل</span><span class="iconify" data-icon="lucide:chevron-left"></span></div>
+        </div>
+        <div class="hscroll-wrap" id="home-beaches-scroll">
+          <div class="place-card"><div class="skel" style="height:130px"></div><div style="padding:10px 12px"><div class="skel" style="height:30px"></div></div></div>
+          <div class="place-card"><div class="skel" style="height:130px"></div><div style="padding:10px 12px"><div class="skel" style="height:30px"></div></div></div>
+          <div class="place-card"><div class="skel" style="height:130px"></div><div style="padding:10px 12px"><div class="skel" style="height:30px"></div></div></div>
+        </div>
+      </div>
+
+      <!-- Services quick grid -->
+      <div class="section" style="padding-bottom:20px">
+        <div class="section-header">
+          <div class="section-title" data-i18n="services-section">الخدمات</div>
+          <div class="section-more" onclick="goTab('services')"><span data-i18n="see-all">عرض الكل</span><span class="iconify" data-icon="lucide:chevron-left"></span></div>
+        </div>
+        <div class="services-bento" id="home-services-grid">
+          <div class="svc-card skel" style="height:100px"></div>
+          <div class="svc-card skel" style="height:100px"></div>
+          <div class="svc-card skel" style="height:100px"></div>
+          <div class="svc-card skel" style="height:100px"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ NEWS PAGE ══ -->
+    <div id="news-page" class="page">
+      <div style="padding:20px 20px 0">
+        <div class="section-title" style="font-size:20px;margin-bottom:14px" data-i18n="news-section">آخر الأخبار</div>
+        <!-- Category filter -->
+        <div style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:12px">
+          <button class="nc-badge active" style="font-size:11px;padding:6px 14px;border-radius:20px;white-space:nowrap;background:var(--ocean);color:#fff;cursor:pointer" onclick="filterNews('all')" data-i18n="all">الكل</button>
+          <button class="nc-badge" style="font-size:11px;padding:6px 14px;border-radius:20px;white-space:nowrap;background:#fef2f2;color:#dc2626;cursor:pointer" onclick="filterNews('official')" data-i18n="news-cat-official">إعلانات</button>
+          <button class="nc-badge" style="font-size:11px;padding:6px 14px;border-radius:20px;white-space:nowrap;background:#f0fdf4;color:#16a34a;cursor:pointer" onclick="filterNews('activity')" data-i18n="news-cat-activity">نشاطات</button>
+          <button class="nc-badge" style="font-size:11px;padding:6px 14px;border-radius:20px;white-space:nowrap;background:#faf5ff;color:#9333ea;cursor:pointer" onclick="filterNews('social')" data-i18n="news-cat-social">مجتمع</button>
+        </div>
+        <div class="news-bento" id="news-full-grid">
+          <div class="news-card"><div class="skel" style="height:120px"></div><div style="padding:10px 12px"><div class="skel" style="height:40px"></div></div></div>
+          <div class="news-card"><div class="skel" style="height:120px"></div><div style="padding:10px 12px"><div class="skel" style="height:40px"></div></div></div>
+          <div class="news-card featured"><div class="skel" style="height:140px"></div><div style="padding:10px 12px"><div class="skel" style="height:50px"></div></div></div>
+          <div class="news-card featured"><div class="skel" style="height:140px"></div><div style="padding:10px 12px"><div class="skel" style="height:50px"></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TOURISM PAGE ══ -->
+    <div id="tourism-page" class="page">
+      <div style="padding:20px 20px 0">
+        <!-- Beaches -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <div class="section-title" style="font-size:20px" data-i18n="beaches-section">الشواطئ</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px" id="beaches-full-grid">
+          <div class="place-card"><div class="skel" style="height:130px"></div><div style="padding:10px 12px"><div class="skel" style="height:36px"></div></div></div>
+          <div class="place-card"><div class="skel" style="height:130px"></div><div style="padding:10px 12px"><div class="skel" style="height:36px"></div></div></div>
+          <div class="place-card"><div class="skel" style="height:130px"></div><div style="padding:10px 12px"><div class="skel" style="height:36px"></div></div></div>
+        </div>
+        <!-- Tourism -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <div class="section-title" style="font-size:20px" data-i18n="tourism-section">المعالم السياحية</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding-bottom:20px" id="tourism-full-grid">
+          <div class="place-card"><div class="skel" style="height:130px"></div><div style="padding:10px 12px"><div class="skel" style="height:36px"></div></div></div>
+          <div class="place-card"><div class="skel" style="height:130px"></div><div style="padding:10px 12px"><div class="skel" style="height:36px"></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SERVICES PAGE ══ -->
+    <div id="services-page" class="page">
+      <div style="padding:20px 20px 0">
+        <div class="section-title" style="font-size:20px;margin-bottom:14px" data-i18n="services-section">الخدمات والتطبيقات</div>
+        <div style="display:flex;gap:8px;margin-bottom:16px">
+          <button id="svc-tab-services" style="padding:8px 18px;border-radius:20px;font-size:12px;font-weight:700;background:var(--ocean);color:#fff;cursor:pointer;font-family:'Tajawal',sans-serif" onclick="switchSvcTab('services')" data-i18n="tab-services">خدمات</button>
+          <button id="svc-tab-apps" style="padding:8px 18px;border-radius:20px;font-size:12px;font-weight:700;background:var(--surface);color:var(--text-2);cursor:pointer;font-family:'Tajawal',sans-serif;border:1px solid var(--border)" onclick="switchSvcTab('apps')" data-i18n="tab-apps">تطبيقات</button>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;padding-bottom:20px" id="services-full-list">
+          <div class="skel" style="height:80px;border-radius:16px"></div>
+          <div class="skel" style="height:80px;border-radius:16px"></div>
+          <div class="skel" style="height:80px;border-radius:16px"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PROFILE / MORE PAGE ══ -->
+    <div id="more-page" class="page">
+      <div style="padding:20px">
+        <div class="section-title" style="font-size:20px;margin-bottom:20px" data-i18n="more-title">أكثر</div>
+        <!-- Quick links -->
+        <div style="display:flex;flex-direction:column;gap:2px;background:var(--card);border-radius:var(--r-lg);border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow-sm)">
+          <div class="search-result" onclick="goTab('tourism')">
+            <div class="search-result-icon" style="background:#e0f2fe;color:#0284c7"><span class="iconify" data-icon="lucide:waves"></span></div>
+            <div class="search-result-text"><div class="sr-title" data-i18n="beaches-section">الشواطئ</div><div class="sr-cat" data-i18n="more-beaches-sub">استكشف شواطئ شطايبي</div></div>
+          </div>
+          <div class="search-result" onclick="goTab('tourism')">
+            <div class="search-result-icon" style="background:#f0fdf4;color:#16a34a"><span class="iconify" data-icon="lucide:compass"></span></div>
+            <div class="search-result-text"><div class="sr-title" data-i18n="tourism-section">المعالم السياحية</div><div class="sr-cat" data-i18n="more-tourism-sub">اكتشف المعالم والوجهات</div></div>
+          </div>
+          <div class="search-result" onclick="openExternalLink('https://chetaibi.pages.dev')">
+            <div class="search-result-icon" style="background:#fffbeb;color:#d97706"><span class="iconify" data-icon="lucide:globe"></span></div>
+            <div class="search-result-text"><div class="sr-title" data-i18n="more-website">الموقع الرسمي</div><div class="sr-cat">chetaibi.pages.dev</div></div>
+          </div>
+          <div class="search-result" onclick="openExternalLink('mailto:apc.chetaibi.officiel@gmail.com')">
+            <div class="search-result-icon" style="background:#f0fdf4;color:#16a34a"><span class="iconify" data-icon="lucide:mail"></span></div>
+            <div class="search-result-text"><div class="sr-title" data-i18n="contact-email">البريد الإلكتروني</div><div class="sr-cat">apc.chetaibi.officiel@gmail.com</div></div>
+          </div>
+          <div class="search-result" onclick="openExternalLink('https://facebook.com/apc.chetaibi.page.officielle')">
+            <div class="search-result-icon" style="background:#eff6ff;color:#2563eb"><span class="iconify" data-icon="lucide:facebook"></span></div>
+            <div class="search-result-text"><div class="sr-title">Facebook</div><div class="sr-cat">apc.chetaibi.page.officielle</div></div>
+          </div>
+        </div>
+
+        <!-- Lang switch -->
+        <div style="margin-top:20px;background:var(--card);border-radius:var(--r-lg);border:1px solid var(--border);padding:16px;box-shadow:var(--shadow-sm)">
+          <div style="font-size:13px;font-weight:700;color:var(--text-2);margin-bottom:12px" data-i18n="lang-label">اللغة</div>
+          <div style="display:flex;gap:10px">
+            <button id="more-lang-ar" onclick="setLang('ar')" style="flex:1;padding:10px;border-radius:12px;font-size:13px;font-weight:700;font-family:'Tajawal',sans-serif;background:var(--ocean);color:#fff;cursor:pointer">🇩🇿 العربية</button>
+            <button id="more-lang-fr" onclick="setLang('fr')" style="flex:1;padding:10px;border-radius:12px;font-size:13px;font-weight:700;font-family:'Tajawal',sans-serif;background:var(--surface);color:var(--text-2);cursor:pointer;border:1px solid var(--border)">🇫🇷 Français</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page-wrap -->
+</div><!-- /app -->
+
+<!-- ══ BOTTOM NAV ══ -->
+<nav class="bottom-nav">
+  <div class="nav-item active" id="nav-home" onclick="goTab('home')">
+    <span class="iconify" data-icon="lucide:home"></span>
+    <span class="label" data-i18n="nav-home">الرئيسية</span>
+  </div>
+  <div class="nav-item" id="nav-news" onclick="goTab('news')">
+    <span class="iconify" data-icon="lucide:newspaper"></span>
+    <span class="label" data-i18n="nav-news">الأخبار</span>
+  </div>
+  <div class="nav-item" id="nav-tourism" onclick="goTab('tourism')">
+    <span class="iconify" data-icon="lucide:sailboat"></span>
+    <span class="label" data-i18n="nav-tourism">السياحة</span>
+  </div>
+  <div class="nav-item" id="nav-services" onclick="goTab('services')">
+    <span class="iconify" data-icon="lucide:layout-grid"></span>
+    <span class="label" data-i18n="nav-services">الخدمات</span>
+  </div>
+  <div class="nav-item" id="nav-more" onclick="goTab('more')">
+    <span class="iconify" data-icon="lucide:menu"></span>
+    <span class="label" data-i18n="nav-more">أكثر</span>
+  </div>
+</nav>
+
+<!-- ══ DETAIL SHEET ══ -->
+<div class="sheet-overlay" id="detail-sheet" onclick="closeSheet()">
+  <div class="sheet" onclick="event.stopPropagation()">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div class="sheet-title" id="sheet-title"></div>
+      <button class="sheet-close" onclick="closeSheet()"><span class="iconify" data-icon="lucide:x"></span></button>
+    </div>
+    <div class="sheet-body" id="sheet-body"></div>
+  </div>
+</div>
+
+<!-- ══ SEARCH SHEET ══ -->
+<div class="sheet-overlay" id="search-sheet" onclick="closeSearch()">
+  <div class="sheet" style="max-height:95vh" onclick="event.stopPropagation()">
+    <div class="sheet-handle"></div>
+    <div style="padding:12px 20px 0">
+      <div class="search-bar" style="border:1.5px solid var(--sea)">
+        <span class="iconify" data-icon="lucide:search" style="color:var(--sea)"></span>
+        <input id="search-live-input" placeholder="ابحث..." style="pointer-events:all" oninput="doSearch(this.value)" autofocus>
+        <button onclick="closeSearch()" style="color:var(--text-3);display:flex;align-items:center"><span class="iconify" data-icon="lucide:x"></span></button>
+      </div>
+    </div>
+    <div id="search-results" style="padding:8px 0;max-height:70vh;overflow-y:auto"></div>
+  </div>
+</div>
+
+<!-- ══ LIGHTBOX ══ -->
+<div id="lightbox" onclick="closeLightbox()">
+  <button id="lightbox-close"><span class="iconify" data-icon="lucide:x"></span></button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+'use strict';
+
+// ════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════
+let currentLang = localStorage.getItem('app_lang') || 'ar';
+let allNews     = [];
+let allBeaches  = [];
+let allTourism  = [];
+let allServices = [];
+let currentNewsFilter = 'all';
+let currentSvcTab = 'services';
+let _searchData = [];
+
+// ════════════════════════════════════════
+// I18N
+// ════════════════════════════════════════
+const I18N = {
+  ar:{
+    'nav-home':'الرئيسية','nav-news':'الأخبار','nav-tourism':'السياحة','nav-services':'الخدمات','nav-more':'أكثر',
+    'stats-title':'نبذة عن البلدية','stat-area':'كم²','stat-pop':'نسمة','stat-postal':'رمز بريدي',
+    'mayor-section':'رئيس المجلس','mayor-role':'رئيس المجلس الشعبي البلدي',
+    'sea-title':'حالة البحر','news-section':'آخر الأخبار','beaches-section':'الشواطئ',
+    'tourism-section':'المعالم السياحية','services-section':'الخدمات والتطبيقات',
+    'see-all':'عرض الكل','more-title':'أكثر','all':'الكل',
+    'news-cat-official':'إعلانات','news-cat-activity':'نشاطات','news-cat-social':'مجتمع',
+    'tab-services':'خدمات','tab-apps':'تطبيقات',
+    'more-website':'الموقع الرسمي','contact-email':'البريد الإلكتروني',
+    'more-beaches-sub':'استكشف شواطئ شطايبي','more-tourism-sub':'اكتشف المعالم والوجهات',
+    'lang-label':'اللغة','search-placeholder':'ابحث عن خدمة، شاطئ، معلم...',
+    'h-title':'شطايبي','h-sub':'حيث تمتزج الطبيعة بالتاريخ',
+    'h-city-name':'بلدية شطايبي','h-wilaya':'ولاية عنابة',
+    'read-more':'اقرأ المزيد','service-visit':'زيارة الرابط',
+    'badge-beach':'شاطئ','badge-tourism':'معلم سياحي',
+    'desc-label':'الوصف','docs-label':'الوثائق المطلوبة','forms-label':'الاستمارات',
+  },
+  fr:{
+    'nav-home':'Accueil','nav-news':'Actualités','nav-tourism':'Tourisme','nav-services':'Services','nav-more':'Plus',
+    'stats-title':'La commune','stat-area':'km²','stat-pop':'hab.','stat-postal':'Code postal',
+    'mayor-section':'Président de l\'APC','mayor-role':'Président de l\'Assemblée Populaire Communale',
+    'sea-title':'État de la mer','news-section':'Dernières actualités','beaches-section':'Plages',
+    'tourism-section':'Sites touristiques','services-section':'Services & Applications',
+    'see-all':'Voir tout','more-title':'Plus','all':'Tout',
+    'news-cat-official':'Annonces','news-cat-activity':'Activités','news-cat-social':'Communauté',
+    'tab-services':'Services','tab-apps':'Applications',
+    'more-website':'Site officiel','contact-email':'Email',
+    'more-beaches-sub':'Découvrez les plages de Chetaïbi','more-tourism-sub':'Explorez les sites et destinations',
+    'lang-label':'Langue','search-placeholder':'Rechercher un service, une plage...',
+    'h-title':'Chetaïbi','h-sub':'Là où la nature rencontre l\'histoire',
+    'h-city-name':'Commune de Chetaïbi','h-wilaya':'Wilaya d\'Annaba',
+    'read-more':'Lire plus','service-visit':'Visiter le lien',
+    'badge-beach':'Plage','badge-tourism':'Site touristique',
+    'desc-label':'Description','docs-label':'Documents requis','forms-label':'Formulaires',
+  }
+};
+
+function t(k){ return (I18N[currentLang]&&I18N[currentLang][k])||I18N.ar[k]||k; }
+function getLF(obj,field){
+  if(!obj) return '';
+  if(currentLang==='fr'){const v=obj[field+'_fr'];if(v&&v.trim())return v.trim();}
+  return obj[field]||'';
+}
+
+function applyLang(){
+  const isAr=currentLang==='ar';
+  document.documentElement.setAttribute('lang',currentLang);
+  document.documentElement.setAttribute('dir',isAr?'rtl':'ltr');
+  // update all data-i18n
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');const v=t(k);if(v)el.textContent=v;
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{
+    el.placeholder=t(el.getAttribute('data-i18n-ph'));
+  });
+  document.getElementById('app-lang-btn').textContent=isAr?'FR':'ع';
+  // re-render dynamic content
+  renderHomeNews();
+  renderHomeBeaches();
+  renderHomeServices();
+  renderNewsPage();
+  renderBeachesPage();
+  renderTourismPage();
+  renderServicesPage();
+  renderMayor();
+}
+
+function toggleLang(){ setLang(currentLang==='ar'?'fr':'ar'); }
+function setLang(lang){
+  if(lang===currentLang)return;
+  currentLang=lang;
+  localStorage.setItem('app_lang',lang);
+  applyLang();
+  // update lang buttons in more page
+  document.getElementById('more-lang-ar').style.background=lang==='ar'?'var(--ocean)':'var(--surface)';
+  document.getElementById('more-lang-ar').style.color=lang==='ar'?'#fff':'var(--text-2)';
+  document.getElementById('more-lang-fr').style.background=lang==='fr'?'var(--ocean)':'var(--surface)';
+  document.getElementById('more-lang-fr').style.color=lang==='fr'?'#fff':'var(--text-2)';
+}
+
+// ════════════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════════════
+const TABS=['home','news','tourism','services','more'];
+
+function goTab(tab){
+  TABS.forEach(id=>{
+    document.getElementById(id+'-page').classList.toggle('active',id===tab);
+    const ni=document.getElementById('nav-'+id);
+    if(ni)ni.classList.toggle('active',id===tab);
+  });
+  document.getElementById('page-wrap').scrollTop=0;
+  if(tab==='news'&&!document.getElementById('news-full-grid').dataset.loaded)renderNewsPage();
+  if(tab==='tourism'&&!document.getElementById('beaches-full-grid').dataset.loaded)renderBeachesPage();
+  if(tab==='tourism'&&!document.getElementById('tourism-full-grid').dataset.loaded)renderTourismPage();
+  if(tab==='services'&&!document.getElementById('services-full-list').dataset.loaded)renderServicesPage();
+}
+
+// ════════════════════════════════════════
+// API
+// ════════════════════════════════════════
+async function api(path){
+  try{const r=await fetch(path);return await r.json();}catch{return{success:false,data:[]};}
+}
+
+// ════════════════════════════════════════
+// WEATHER
+// ════════════════════════════════════════
+const WEATHER_ICONS={
+  0:'lucide:sun',1:'lucide:sun',2:'lucide:cloud-sun',3:'lucide:cloud',
+  45:'lucide:cloud-fog',48:'lucide:cloud-fog',
+  51:'lucide:cloud-drizzle',53:'lucide:cloud-drizzle',55:'lucide:cloud-drizzle',
+  61:'lucide:cloud-rain',63:'lucide:cloud-rain',65:'lucide:cloud-rain',
+  71:'lucide:cloud-snow',73:'lucide:cloud-snow',75:'lucide:cloud-snow',
+  80:'lucide:cloud-rain',81:'lucide:cloud-rain',82:'lucide:cloud-rain',
+  95:'lucide:cloud-lightning',
+};
+const WEATHER_DESC_AR={0:'مشمس',1:'صافي',2:'غائم جزئياً',3:'غائم',45:'ضبابي',48:'ضبابي',
+  51:'رذاذ خفيف',53:'رذاذ',55:'رذاذ كثيف',61:'أمطار خفيفة',63:'أمطار',65:'أمطار غزيرة',
+  71:'ثلج خفيف',73:'ثلج',75:'ثلج كثيف',80:'زخات خفيفة',81:'زخات',82:'زخات غزيرة',95:'عاصفة رعدية'};
+const WEATHER_DESC_FR={0:'Ensoleillé',1:'Dégagé',2:'Partiellement nuageux',3:'Nuageux',45:'Brouillard',
+  51:'Bruine',61:'Pluie légère',63:'Pluie',65:'Forte pluie',80:'Averses',95:'Orage'};
+
+async function loadWeather(){
+  try{
+    const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=37.02&longitude=7.17&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code,apparent_temperature&daily=temperature_2m_max,temperature_2m_min&timezone=Africa%2FAlgiers&forecast_days=1');
+    const d=await r.json();
+    const c=d.current;
+    document.getElementById('h-temp').textContent=Math.round(c.temperature_2m)+'°';
+    document.getElementById('h-humidity').textContent=c.relative_humidity_2m+'%';
+    document.getElementById('h-wind').textContent=Math.round(c.wind_speed_10m)+' كم/س';
+    document.getElementById('h-feels').textContent=Math.round(d.daily.temperature_2m_max[0])+'° / '+Math.round(d.daily.temperature_2m_min[0])+'°';
+    const desc=currentLang==='fr'?(WEATHER_DESC_FR[c.weather_code]||'Variable'):(WEATHER_DESC_AR[c.weather_code]||'متغير');
+    document.getElementById('h-weather-desc').textContent=desc;
+    const iconEl=document.getElementById('h-weather-icon');
+    iconEl.setAttribute('data-icon',WEATHER_ICONS[c.weather_code]||'lucide:sun');
+    if(window.Iconify)Iconify.scan(iconEl.parentElement);
+  }catch{}
+}
+
+async function loadSeaConditions(){
+  try{
+    const r=await fetch('https://marine-api.open-meteo.com/v1/marine?latitude=37.02&longitude=7.17&current=wave_height,sea_surface_temperature&timezone=Africa%2FAlgiers');
+    const d=await r.json();const c=d.current;
+    const h=parseFloat(c.wave_height||0);
+    const isFr=currentLang==='fr';
+    let state,tip;
+    if(h<0.5){state=isFr?'Calme':'هادئ';tip=isFr?'Baignade possible':'مناسب للسباحة';}
+    else if(h<1.5){state=isFr?'Agité':'متوسط';tip=isFr?'Prudence recommandée':'توخ الحذر';}
+    else{state=isFr?'Fort':'مضطرب';tip=isFr?'Baignade déconseillée':'غير مناسب للسباحة';}
+    document.getElementById('app-sea-state').textContent=state;
+    document.getElementById('app-sea-tip').textContent=tip;
+    document.getElementById('app-sea-height').textContent=h.toFixed(1)+(isFr?' m':' م');
+    document.getElementById('app-sea-temp').textContent=Math.round(c.sea_surface_temperature)+(isFr?'°C':'°م');
+  }catch{}
+}
+
+// ════════════════════════════════════════
+// MAYOR
+// ════════════════════════════════════════
+let _mayorData=null;
+async function loadMayor(){
+  const d=await api('/api/mayors');
+  if(!d.success||!d.data?.length)return;
+  _mayorData=d.data[0];renderMayor();
+}
+function renderMayor(){
+  if(!_mayorData)return;
+  const m=_mayorData;
+  const isFr=currentLang==='fr';
+  document.getElementById('app-mayor-name').textContent=(isFr?'M. ':'السيد ')+getLF(m,'name');
+  document.getElementById('app-mayor-bio').textContent=getLF(m,'bio')||'';
+  if(m.image_url){
+    document.getElementById('app-mayor-ph').style.display='none';
+    const img=document.getElementById('app-mayor-photo');
+    img.style.display='block';img.src=m.image_url;img.alt=getLF(m,'name');
+  }
+}
+
+// ════════════════════════════════════════
+// NEWS
+// ════════════════════════════════════════
+const CAT_STYLE={
+  official:{cls:'official',grad:'linear-gradient(135deg,#dc2626,#991b1b)',icon:'lucide:megaphone'},
+  activity:{cls:'activity',grad:'linear-gradient(135deg,#16a34a,#166534)',icon:'lucide:clipboard-list'},
+  social:  {cls:'social',  grad:'linear-gradient(135deg,#9333ea,#6b21a8)',icon:'lucide:handshake'},
+  poster:  {cls:'poster',  grad:'linear-gradient(135deg,#4f46e5,#312e81)',icon:'lucide:image'},
+};
+const CAT_LABEL_AR={official:'إعلان',activity:'نشاط',social:'مجتمع',poster:'ملصق'};
+const CAT_LABEL_FR={official:'Annonce',activity:'Activité',social:'Communauté',poster:'Affiche'};
+
+async function loadNews(){
+  const d=await api('/api/news');
+  allNews=(d.data||[]).filter(n=>n.category!=='poster');
+  renderHomeNews();renderNewsPage();
+  buildSearchData();
+}
+
+function newsCard(n,featured=false){
+  const s=CAT_STYLE[n.category]||CAT_STYLE.official;
+  const img=(currentLang==='fr'&&n.image_url_fr)||n.image_url||'';
+  const title=getLF(n,'title')||'';
+  const label=(currentLang==='fr'?CAT_LABEL_FR:CAT_LABEL_AR)[n.category]||'';
+  const imgHtml=img
+    ?`<img class="nc-img${featured?' nc-featured':''}" src="${img}" alt="${title}" loading="lazy">`
+    :`<div class="nc-img-placeholder${featured?' nc-featured':''}" style="background:${s.grad}"><span class="iconify" style="font-size:36px;color:rgba(255,255,255,.5)" data-icon="${s.icon}"></span></div>`;
+  return `<div class="news-card${featured?' featured':''}" onclick="openNewsDetail(${n.id})">
+    ${imgHtml}
+    <div class="nc-body">
+      <div class="nc-badge ${s.cls}">${label}</div>
+      <div class="nc-title">${title}</div>
+      <div class="nc-date"><span class="iconify" data-icon="lucide:calendar"></span>${n.date||''}</div>
+    </div>
+  </div>`;
+}
+
+function renderHomeNews(){
+  const g=document.getElementById('home-news-grid');
+  if(!allNews.length){g.innerHTML='';return;}
+  const top=allNews.slice(0,4);
+  g.innerHTML=top.map((n,i)=>newsCard(n,i===0||i===3)).join('');
+  if(window.Iconify)Iconify.scan(g);
+}
+
+function filterNews(cat){
+  currentNewsFilter=cat;
+  document.querySelectorAll('#news-page .nc-badge[onclick]').forEach(b=>{
+    const isActive=b.getAttribute('onclick').includes(`'${cat}'`);
+    b.style.background=isActive?'var(--ocean)':'';
+    b.style.color=isActive?'#fff':'';
+  });
+  renderNewsPage();
+}
+
+function renderNewsPage(){
+  const g=document.getElementById('news-full-grid');g.dataset.loaded='1';
+  const filtered=currentNewsFilter==='all'?allNews:allNews.filter(n=>n.category===currentNewsFilter);
+  if(!filtered.length){g.innerHTML='<div style="grid-column:span 2;text-align:center;padding:40px;color:var(--text-3)">لا توجد أخبار</div>';return;}
+  g.innerHTML=filtered.map((n,i)=>newsCard(n,i%3===0)).join('');
+  if(window.Iconify)Iconify.scan(g);
+}
+
+async function openNewsDetail(id){
+  const n=allNews.find(x=>x.id==id);if(!n)return;
+  const s=CAT_STYLE[n.category]||CAT_STYLE.official;
+  const img=(currentLang==='fr'&&n.image_url_fr)||n.image_url||'';
+  const title=getLF(n,'title')||'';
+  const content=getLF(n,'content')||'';
+  const label=(currentLang==='fr'?CAT_LABEL_FR:CAT_LABEL_AR)[n.category]||'';
+  let albums=[];try{albums=JSON.parse(n.album_urls||'[]');}catch{}
+  const albumHtml=albums.length?`<div class="ds-album">${albums.map(u=>`<img class="ds-album-img" src="${u}" onclick="openLightbox('${u}')" loading="lazy">`).join('')}</div>`:'';
+  document.getElementById('sheet-title').textContent=title||label;
+  document.getElementById('sheet-body').innerHTML=`
+    ${img?`<img class="ds-img" src="${img}" alt="${title}">`:''}
+    <div class="nc-badge ${s.cls}" style="margin-bottom:10px">${label}</div>
+    ${title?`<div class="ds-title">${title}</div>`:''}
+    ${content?`<div class="ds-desc" style="margin-top:8px">${content}</div>`:''}
+    ${n.date?`<div style="font-size:11px;color:var(--text-3);margin-top:8px;display:flex;align-items:center;gap:4px"><span class="iconify" data-icon="lucide:calendar"></span>${n.date}</div>`:''}
+    ${albumHtml}
+  `;
+  openSheet();
+}
+
+// ════════════════════════════════════════
+// BEACHES
+// ════════════════════════════════════════
+async function loadBeaches(){
+  const d=await api('/api/beaches');
+  allBeaches=d.data||[];
+  renderHomeBeaches();renderBeachesPage();buildSearchData();
+}
+
+function beachCard(b,wide=false){
+  const name=getLF(b,'name')||b.name||'';
+  const type=getLF(b,'sub_type')||b.sub_type||'';
+  const img=b.image_url||'';
+  return `<div class="place-card" onclick="openBeachDetail(${b.id})" style="${wide?'flex:0 0 240px':'' }">
+    ${img?`<img class="pc-img" src="${img}" alt="${name}" loading="lazy">`:`<div class="pc-img-placeholder" style="background:linear-gradient(135deg,#0d4f8c,#4da8d4)"><span class="iconify" style="font-size:32px;color:rgba(255,255,255,.5)" data-icon="lucide:waves"></span></div>`}
+    <div class="pc-body">
+      <div class="pc-badge beach">${t('badge-beach')}</div>
+      <div class="pc-name">${name}</div>
+      ${type?`<div class="pc-type">${type}</div>`:''}
+    </div>
+  </div>`;
+}
+
+function renderHomeBeaches(){
+  const g=document.getElementById('home-beaches-scroll');
+  if(!allBeaches.length){g.innerHTML='';return;}
+  g.innerHTML=allBeaches.slice(0,6).map(b=>beachCard(b,true)).join('');
+  if(window.Iconify)Iconify.scan(g);
+}
+
+function renderBeachesPage(){
+  const g=document.getElementById('beaches-full-grid');g.dataset.loaded='1';
+  if(!allBeaches.length){g.innerHTML='<div style="grid-column:span 2;text-align:center;padding:40px;color:var(--text-3)">لا توجد شواطئ</div>';return;}
+  g.innerHTML=allBeaches.map(b=>beachCard(b)).join('');
+  if(window.Iconify)Iconify.scan(g);
+}
+
+async function openBeachDetail(id){
+  const res=await api('/api/beaches?id='+id);
+  const b=res.data||res;if(!b)return;
+  const name=getLF(b,'name')||b.name||'';
+  const desc=getLF(b,'description')||b.description||'';
+  let albums=[];try{albums=JSON.parse(b.album_urls||'[]');}catch{}
+  const albumHtml=albums.length?`<div style="margin-top:14px"><div style="font-size:12px;font-weight:700;color:var(--text-2);margin-bottom:8px">${t('desc-label')} الألبوم</div><div class="ds-album">${albums.map(u=>`<img class="ds-album-img" src="${u}" onclick="openLightbox('${u}')" loading="lazy">`).join('')}</div></div>`:'';
+  document.getElementById('sheet-title').textContent=name;
+  document.getElementById('sheet-body').innerHTML=`
+    ${b.image_url?`<img class="ds-img" src="${b.image_url}" alt="${name}">`:''}
+    <div class="nc-badge beach" style="margin-bottom:10px">${t('badge-beach')}</div>
+    <div class="ds-title">${name}</div>
+    ${desc?`<div class="ds-desc" style="margin-top:8px">${desc}</div>`:''}
+    ${albumHtml}
+  `;
+  openSheet();
+}
+
+// ════════════════════════════════════════
+// TOURISM
+// ════════════════════════════════════════
+async function loadTourism(){
+  const d=await api('/api/tourism');
+  allTourism=d.data||[];
+  renderTourismPage();buildSearchData();
+}
+
+function tourismCard(item){
+  const name=getLF(item,'name')||item.name||'';
+  const type=getLF(item,'sub_type')||item.sub_type||'';
+  const img=item.image_url||'';
+  return `<div class="place-card" onclick="openTourismDetail(${item.id})">
+    ${img?`<img class="pc-img" src="${img}" alt="${name}" loading="lazy">`:`<div class="pc-img-placeholder" style="background:linear-gradient(135deg,#166534,#4ade80)"><span class="iconify" style="font-size:32px;color:rgba(255,255,255,.5)" data-icon="lucide:compass"></span></div>`}
+    <div class="pc-body">
+      <div class="pc-badge tourism">${t('badge-tourism')}</div>
+      <div class="pc-name">${name}</div>
+      ${type?`<div class="pc-type">${type}</div>`:''}
+    </div>
+  </div>`;
+}
+
+function renderTourismPage(){
+  const g=document.getElementById('tourism-full-grid');g.dataset.loaded='1';
+  if(!allTourism.length){g.innerHTML='';return;}
+  g.innerHTML=allTourism.map(tourismCard).join('');
+  if(window.Iconify)Iconify.scan(g);
+}
+
+async function openTourismDetail(id){
+  const res=await api('/api/tourism?id='+id);
+  const item=res.data||res;if(!item)return;
+  const name=getLF(item,'name')||item.name||'';
+  const desc=getLF(item,'description')||item.description||'';
+  let albums=[];try{albums=JSON.parse(item.album_urls||'[]');}catch{}
+  const albumHtml=albums.length?`<div style="margin-top:14px"><div class="ds-album">${albums.map(u=>`<img class="ds-album-img" src="${u}" onclick="openLightbox('${u}')" loading="lazy">`).join('')}</div></div>`:'';
+  document.getElementById('sheet-title').textContent=name;
+  document.getElementById('sheet-body').innerHTML=`
+    ${item.image_url?`<img class="ds-img" src="${item.image_url}" alt="${name}">`:''}
+    <div class="nc-badge tourism" style="margin-bottom:10px">${t('badge-tourism')}</div>
+    <div class="ds-title">${name}</div>
+    ${desc?`<div class="ds-desc" style="margin-top:8px">${desc}</div>`:''}
+    ${albumHtml}
+  `;
+  openSheet();
+}
+
+// ════════════════════════════════════════
+// SERVICES
+// ════════════════════════════════════════
+const SVC_COLORS=['blue','green','amber','purple','indigo','rose'];
+async function loadServices(){
+  const d=await api('/api/services');
+  allServices=d.data||[];
+  renderHomeServices();renderServicesPage();buildSearchData();
+}
+
+function svcListCard(s){
+  const name=getLF(s,'service_name')||s.service_name||'';
+  const desc=(currentLang==='fr'&&s.description_fr)||s.description||'';
+  const color=SVC_COLORS[allServices.indexOf(s)%SVC_COLORS.length];
+  return `<div style="background:var(--card);border-radius:var(--r-md);border:1px solid var(--border);box-shadow:var(--shadow-sm);padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:transform .15s" onclick="openServiceDetail('${s.id}')" onactive="this.style.transform='scale(.98)'">
+    <div style="width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px" class="svc-${color}">
+      ${s.image_url?`<img src="${s.image_url}" style="width:100%;height:100%;object-fit:cover;border-radius:14px">`:
+      `<span class="svc-icon-wrap svc-${color}"><span class="iconify" data-icon="lucide:${s.icon||'file-text'}"></span></span>`}
+    </div>
+    <div style="flex:1;min-width:0">
+      <div style="font-size:13px;font-weight:700;color:var(--text-1)">${name}</div>
+      ${desc?`<div style="font-size:11px;color:var(--text-2);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${desc}</div>`:''}
+    </div>
+    <span class="iconify" style="color:var(--text-3);flex-shrink:0" data-icon="lucide:chevron-left"></span>
+  </div>`;
+}
+
+function renderHomeServices(){
+  const g=document.getElementById('home-services-grid');
+  const items=allServices.filter(s=>s.type==='service').slice(0,4);
+  if(!items.length){g.innerHTML='';return;}
+  const colMap=['blue','green','amber','purple'];
+  g.innerHTML=items.map((s,i)=>{
+    const name=getLF(s,'service_name')||s.service_name||'';
+    const desc=(currentLang==='fr'&&s.description_fr)||s.description||'';
+    const c=colMap[i%4];
+    return `<div class="svc-card svc-${c}" onclick="openServiceDetail('${s.id}')">
+      <div class="svc-icon-wrap"><span class="iconify" data-icon="lucide:${s.icon||'file-text'}"></span></div>
+      <div class="svc-name">${name}</div>
+      ${desc?`<div class="svc-desc">${desc}</div>`:''}
+      <span class="iconify svc-arrow" data-icon="lucide:arrow-left"></span>
+    </div>`;
+  }).join('');
+  if(window.Iconify)Iconify.scan(g);
+}
+
+function switchSvcTab(tab){
+  currentSvcTab=tab;
+  document.getElementById('svc-tab-services').style.background=tab==='services'?'var(--ocean)':'var(--surface)';
+  document.getElementById('svc-tab-services').style.color=tab==='services'?'#fff':'var(--text-2)';
+  document.getElementById('svc-tab-apps').style.background=tab==='apps'?'var(--ocean)':'var(--surface)';
+  document.getElementById('svc-tab-apps').style.color=tab==='apps'?'#fff':'var(--text-2)';
+  renderServicesPage();
+}
+
+function renderServicesPage(){
+  const g=document.getElementById('services-full-list');g.dataset.loaded='1';
+  const items=allServices.filter(s=>s.type===(currentSvcTab==='apps'?'app':'service'));
+  if(!items.length){g.innerHTML='<div style="text-align:center;padding:40px;color:var(--text-3)">لا توجد عناصر</div>';return;}
+  g.innerHTML=items.map(svcListCard).join('');
+  if(window.Iconify)Iconify.scan(g);
+}
+
+async function openServiceDetail(id){
+  const s=allServices.find(x=>String(x.id)===String(id));if(!s)return;
+  const name=getLF(s,'service_name')||s.service_name||'';
+  const desc=(currentLang==='fr'&&s.description_fr)||s.description||'';
+  let formLinks=[];try{formLinks=JSON.parse(s.form_links||'[]');}catch{}
+  const docsHtml=s.required_docs?`<div class="ds-docs"><div class="ds-docs-title">${t('docs-label')}</div>${s.required_docs.split('\n').filter(l=>l.trim()).map(l=>`<div class="ds-docs-item"><span class="iconify" data-icon="lucide:check-circle" style="color:var(--leaf);flex-shrink:0;margin-top:2px"></span>${l.trim()}</div>`).join('')}</div>`:'';
+  const formsHtml=formLinks.length?`<div style="margin-top:12px"><div class="ds-docs-title">${t('forms-label')}</div>${formLinks.map(f=>`<a href="${f}" target="_blank" style="display:flex;align-items:center;gap:6px;padding:8px 0;border-bottom:1px solid var(--border);color:var(--sea);font-size:12px;font-weight:600;text-decoration:none"><span class="iconify" data-icon="lucide:download"></span>${f.split('/').pop()||f}</a>`).join('')}</div>`:'';
+  document.getElementById('sheet-title').textContent=name;
+  document.getElementById('sheet-body').innerHTML=`
+    ${s.image_url?`<img class="ds-img" src="${s.image_url}" alt="${name}">`:''}
+    <div class="ds-title">${name}</div>
+    ${desc?`<div class="ds-desc" style="margin-top:8px">${desc}</div>`:''}
+    ${docsHtml}${formsHtml}
+    ${s.service_url?`<button class="ds-url-btn" onclick="openExternalLink('${s.service_url}')"><span class="iconify" data-icon="lucide:external-link"></span>${t('service-visit')}</button>`:''}
+  `;
+  openSheet();
+}
+
+// ════════════════════════════════════════
+// SHEET
+// ════════════════════════════════════════
+function openSheet(){
+  document.getElementById('detail-sheet').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeSheet(){
+  document.getElementById('detail-sheet').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+// ════════════════════════════════════════
+// SEARCH
+// ════════════════════════════════════════
+function buildSearchData(){
+  _searchData=[
+    ...allNews.map(n=>({type:'news',id:n.id,title:getLF(n,'title')||n.title||'',cat:CAT_LABEL_AR[n.category]||'خبر'})),
+    ...allBeaches.map(b=>({type:'beach',id:b.id,title:getLF(b,'name')||b.name||'',cat:'شاطئ'})),
+    ...allTourism.map(item=>({type:'tourism',id:item.id,title:getLF(item,'name')||item.name||'',cat:'معلم سياحي'})),
+    ...allServices.map(s=>({type:'service',id:s.id,title:getLF(s,'service_name')||s.service_name||'',cat:'خدمة'})),
+  ];
+}
+
+function openSearch(){
+  document.getElementById('search-sheet').classList.add('open');
+  setTimeout(()=>document.getElementById('search-live-input').focus(),200);
+}
+function closeSearch(){
+  document.getElementById('search-sheet').classList.remove('open');
+  document.getElementById('search-live-input').value='';
+  document.getElementById('search-results').innerHTML='';
+}
+
+const SEARCH_ICONS={news:'lucide:newspaper',beach:'lucide:waves',tourism:'lucide:compass',service:'lucide:landmark'};
+const SEARCH_COLORS={news:'#fef2f2',beach:'#e0f2fe',tourism:'#f0fdf4',service:'#fffbeb'};
+const SEARCH_TEXT_COLORS={news:'#dc2626',beach:'#0284c7',tourism:'#16a34a',service:'#d97706'};
+
+function doSearch(q){
+  const g=document.getElementById('search-results');
+  if(!q.trim()){g.innerHTML='';return;}
+  const lower=q.toLowerCase();
+  const results=_searchData.filter(item=>item.title.toLowerCase().includes(lower)).slice(0,15);
+  if(!results.length){g.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-3)">لا نتائج</div>';return;}
+  g.innerHTML=results.map(r=>`<div class="search-result" onclick="openSearchResult('${r.type}',${r.id})">
+    <div class="search-result-icon" style="background:${SEARCH_COLORS[r.type]};color:${SEARCH_TEXT_COLORS[r.type]}"><span class="iconify" data-icon="${SEARCH_ICONS[r.type]}"></span></div>
+    <div class="search-result-text"><div class="sr-title">${r.title}</div><div class="sr-cat">${r.cat}</div></div>
+  </div>`).join('');
+  if(window.Iconify)Iconify.scan(g);
+}
+
+function openSearchResult(type,id){
+  closeSearch();
+  if(type==='news')openNewsDetail(id);
+  else if(type==='beach')openBeachDetail(id);
+  else if(type==='tourism')openTourismDetail(id);
+  else if(type==='service')openServiceDetail(String(id));
+}
+
+// ════════════════════════════════════════
+// LIGHTBOX
+// ════════════════════════════════════════
+function openLightbox(src){
+  document.getElementById('lightbox-img').src=src;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
+
+// ════════════════════════════════════════
+// UTILS
+// ════════════════════════════════════════
+function openExternalLink(url){window.open(url,'_blank');}
+
+function setDate(){
+  const now=new Date();
+  const opts={weekday:'long',day:'numeric',month:'long',year:'numeric'};
+  document.getElementById('h-date').textContent=now.toLocaleDateString(currentLang==='fr'?'fr-DZ':'ar-DZ',opts);
+}
+
+// ════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  // apply lang immediately
+  const saved=localStorage.getItem('app_lang')||'ar';
+  currentLang=saved;
+  applyLang();
+  setDate();
+  // update lang buttons
+  document.getElementById('more-lang-ar').style.background=saved==='ar'?'var(--ocean)':'var(--surface)';
+  document.getElementById('more-lang-ar').style.color=saved==='ar'?'#fff':'var(--text-2)';
+  document.getElementById('more-lang-fr').style.background=saved==='fr'?'var(--ocean)':'var(--surface)';
+  document.getElementById('more-lang-fr').style.color=saved==='fr'?'#fff':'var(--text-2)';
+  // fetch data in parallel
+  Promise.all([loadWeather(),loadSeaConditions(),loadMayor(),loadNews(),loadBeaches(),loadTourism(),loadServices()]);
+});
+</script>
 </body>
 </html>
