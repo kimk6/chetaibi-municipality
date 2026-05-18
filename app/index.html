@@ -688,6 +688,8 @@ document.querySelectorAll('.modal-sheet').forEach(sheet=>{
     },{passive:true});
   });
 })();
+
+function album(elId,albums){
   const el=document.getElementById(elId);const a=Array.isArray(albums)?albums:[];
   if(!a.length){el.innerHTML='';return;}
   el.innerHTML=`<div class="album-title"><iconify-icon icon="lucide:images" style="color:var(--green)"></iconify-icon>معرض الصور (${a.length})</div><div class="album-grid">${a.map(x=>`<img src="${x.image_url}" alt="" onclick="openLightbox('${x.image_url}')" loading="lazy">`).join('')}</div>`;
