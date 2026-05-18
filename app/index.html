@@ -484,9 +484,36 @@ async function api(u){if(C[u])return C[u];const r=await fetch(u);const d=await r
 let curTab='home',mapDone=false,allNews=[],facCat='admin-branches';
 
 function switchTab(t){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
+  const prev=document.getElementById('screen-'+curTab);
+  const next=document.getElementById('screen-'+t);
+  if(!next||t===curTab)return;
+
+  // حركة الخروج على الصفحة الحالية
+  if(prev){
+    prev.style.transition='opacity .18s ease,transform .22s ease';
+    prev.style.opacity='0';
+    prev.style.transform='translateY(8px)';
+    setTimeout(()=>{
+      prev.classList.add('hidden');
+      prev.style.cssText='';
+    },200);
+  }
+
+  // حركة الدخول على الصفحة الجديدة
+  next.classList.remove('hidden');
+  next.style.opacity='0';
+  next.style.transform='translateY(12px)';
+  next.style.transition='none';
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
+      next.style.transition='opacity .22s ease,transform .25s ease';
+      next.style.opacity='1';
+      next.style.transform='translateY(0)';
+      setTimeout(()=>next.style.cssText='',260);
+    });
+  });
+
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('screen-'+t).classList.remove('hidden');
   const nb=document.getElementById('nav-'+t);if(nb)nb.classList.add('active');
   curTab=t;
   if(t==='map'&&!mapDone)initMap2();
@@ -601,9 +628,10 @@ function renderNews(items){
     return `<div class="announce-card fade-in" onclick="openNewsModal(${n.id})">
       ${imgW}
       <div class="announce-body">
-        <div style="display:flex;align-items:center;gap:7px;margin-bottom:7px">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:${isOff?'4px':'7px'}">
           <span class="news-badge ${s.badge}">${lbl}</span>${pin}
         </div>
+        ${isOff?'':` <div class="announce-title">${t}</div>`}
         <div class="announce-footer">
           <span style="font-size:11px;color:var(--muted);display:flex;align-items:center;gap:4px"><iconify-icon icon="lucide:calendar-days"></iconify-icon>${n.date||''}</span>
           <button class="read-more" onclick="event.stopPropagation();openNewsModal(${n.id})">اقرأ المزيد »</button>
@@ -696,13 +724,16 @@ function album(elId,albums){
 }
 
 async function openNewsModal(id){
-  // جلب من API دائماً لضمان وجود الألبوم
+  // البحث في الكاش أولاً
   let n = allNews.find(x=>x.id==id);
-  try{
-    delete C['/api/news?id='+id];
-    const d=await api('/api/news?id='+id);
-    if(d.data) n=d.data;
-  }catch{}
+  // إذا لم يوجد نحاول تحميل كل الأخبار أولاً ثم نبحث
+  if(!n){
+    try{
+      const d=await api('/api/news');
+      allNews=d.data||[];
+      n=allNews.find(x=>x.id==id);
+    }catch{}
+  }
   if(!n)return;
   const img=document.getElementById('mn-img');
   if(n.image_url){img.src=n.image_url;img.style.display='block';}else img.style.display='none';
@@ -711,10 +742,15 @@ async function openNewsModal(id){
   document.getElementById('mn-name').textContent=n.title||'';
   document.getElementById('mn-desc').textContent=n.content||'';
   document.getElementById('mn-meta').innerHTML=n.date?`<span class="modal-chip"><iconify-icon icon="lucide:calendar-days"></iconify-icon>${n.date}</span>`:'';
-  const albums = Array.isArray(n.albums) ? n.albums : (Array.isArray(n.album_urls) ? n.album_urls.map((u,i)=>({id:i,image_url:u,caption:''})) : []);
-  album('mn-album', albums);
+  // ألبوم: نحاول جلبه من albums_urls إذا لم يكن في الكاش
+  let albums=[];
+  if(Array.isArray(n.albums)&&n.albums.length) albums=n.albums;
+  else if(n.album_urls){
+    try{const arr=typeof n.album_urls==='string'?JSON.parse(n.album_urls):n.album_urls;albums=(arr||[]).map((u,i)=>({id:i,image_url:u,caption:''}));}catch{}
+  }
+  album('mn-album',albums);
   const closeBtn=document.getElementById('mn-close-btn');
-  if(closeBtn) closeBtn.style.display = n.image_url ? 'flex' : 'none';
+  if(closeBtn)closeBtn.style.display=n.image_url?'flex':'none';
   om('m-news');
 }
 async function openBeachModal(id){
