@@ -46,6 +46,10 @@ html,body{height:100%;overflow:hidden;font-family:'Cairo',sans-serif;background:
   position:relative;
 }
 .nav-btn iconify-icon{font-size:23px;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+.nav-btn .icon-on{display:none}
+.nav-btn .icon-off{display:inline-flex}
+.nav-btn.active .icon-on{display:inline-flex}
+.nav-btn.active .icon-off{display:none}
 .nav-btn::before{
   content:'';position:absolute;top:-8px;left:50%;transform:translateX(-50%) scaleX(0);
   width:32px;height:3px;border-radius:0 0 3px 3px;background:var(--green);
@@ -289,10 +293,10 @@ html,body{height:100%;overflow:hidden;font-family:'Cairo',sans-serif;background:
 <div class="screen" id="screen-home">
   <div class="home-header">
     <div class="home-header-inner">
-      <img class="home-logo" src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/512_any.png" alt="logo" onerror="this.style.display='none'">
+      <img class="home-logo" src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/new_512_any.png" alt="logo" onerror="this.style.display='none'" style="background:transparent">
       <div class="home-greeting" style="flex:1">
-        <p id="greeting-sub" style="display:flex;align-items:center;gap:0"><span class="online-dot"></span>مرحباً بك</p>
         <h1>بلدية شطايبي</h1>
+        <p style="font-size:11px;color:rgba(255,255,255,.65);margin-top:2px;font-weight:600">ولاية عنابة - الجزائر</p>
       </div>
       <div style="display:flex;flex-direction:column;align-items:center;gap:3px;opacity:.85">
         <div style="width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.2)">
@@ -301,25 +305,18 @@ html,body{height:100%;overflow:hidden;font-family:'Cairo',sans-serif;background:
       </div>
     </div>
   </div>
-  <div class="section" style="padding-top:20px">
-    <div class="stat-strip">
-      <div class="stat-chip"><div class="stat-chip-icon" style="background:#d1fae5"><iconify-icon icon="lucide:map" style="color:#059669"></iconify-icon></div><div><div class="stat-chip-val">134</div><div class="stat-chip-lbl">المساحة كم²</div></div></div>
-      <div class="stat-chip"><div class="stat-chip-icon" style="background:#dbeafe"><iconify-icon icon="lucide:users" style="color:#2563eb"></iconify-icon></div><div><div class="stat-chip-val">8,767</div><div class="stat-chip-lbl">السكان</div></div></div>
-      <div class="stat-chip"><div class="stat-chip-icon" style="background:#fef3c7"><iconify-icon icon="lucide:hash" style="color:#d97706"></iconify-icon></div><div><div class="stat-chip-val">23014</div><div class="stat-chip-lbl">الرمز البريدي</div></div></div>
+  <!-- الإعلانات الرسمية -->
+  <div class="section" style="padding-top:18px">
+    <div class="section-header">
+      <span class="section-title"><iconify-icon icon="lucide:megaphone" style="color:#dc2626"></iconify-icon> الإعلانات</span>
+      <button class="see-all" onclick="switchTab('news')">عرض الكل</button>
     </div>
+    <div class="h-scroll" id="h-official"><div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div></div>
   </div>
-  <div class="section">
-    <div class="section-header"><span class="section-title"><iconify-icon icon="lucide:zap"></iconify-icon> وصول سريع</span></div>
-    <div class="quick-grid">
-      <div class="quick-btn" onclick="switchTab('news')"><div class="quick-btn-icon" style="background:#fee2e2"><iconify-icon icon="lucide:newspaper" style="color:#dc2626;font-size:21px"></iconify-icon></div><span>الأخبار</span></div>
-      <div class="quick-btn" onclick="switchTab('guide')"><div class="quick-btn-icon" style="background:#d1fae5"><iconify-icon icon="lucide:map-pin" style="color:#059669;font-size:21px"></iconify-icon></div><span>الدليل</span></div>
-      <div class="quick-btn" onclick="switchTab('map')"><div class="quick-btn-icon" style="background:#dbeafe"><iconify-icon icon="lucide:map" style="color:#2563eb;font-size:21px"></iconify-icon></div><span>الخريطة</span></div>
-      <div class="quick-btn" onclick="switchTab('more')"><div class="quick-btn-icon" style="background:#ede9fe"><iconify-icon icon="lucide:grid-3x3" style="color:#7c3aed;font-size:21px"></iconify-icon></div><span>المزيد</span></div>
-    </div>
-  </div>
+  <!-- آخر المستجدات — كل التصنيفات ماعدا الإعلانات -->
   <div class="section">
     <div class="section-header">
-      <span class="section-title"><iconify-icon icon="lucide:newspaper" style="color:#dc2626"></iconify-icon> آخر الأخبار</span>
+      <span class="section-title"><iconify-icon icon="lucide:newspaper" style="color:#059669"></iconify-icon> آخر المستجدات</span>
       <button class="see-all" onclick="switchTab('news')">عرض الكل</button>
     </div>
     <div class="h-scroll" id="h-news"><div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div></div>
@@ -375,7 +372,7 @@ html,body{height:100%;overflow:hidden;font-family:'Cairo',sans-serif;background:
 
   <!-- بطاقة هوية التطبيق -->
   <div style="margin:16px 18px;background:linear-gradient(145deg,#042f1e,#059669);border-radius:20px;padding:20px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 24px rgba(5,150,105,.25)">
-    <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/512_any.png" style="width:56px;height:56px;border-radius:14px;background:#fff;object-fit:contain;box-shadow:0 4px 12px rgba(0,0,0,.2);flex-shrink:0" alt="">
+    <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/new_512_any.png" style="width:56px;height:56px;border-radius:14px;background:transparent;object-fit:contain;box-shadow:0 4px 12px rgba(0,0,0,.2);flex-shrink:0" alt="">
     <div>
       <p style="font-size:16px;font-weight:900;color:#fff;letter-spacing:-.2px">بلدية شطايبي</p>
       <p style="font-size:11px;color:rgba(255,255,255,.65);margin-top:3px">ولاية عنابة · الإصدار 1.0</p>
@@ -412,11 +409,31 @@ html,body{height:100%;overflow:hidden;font-family:'Cairo',sans-serif;background:
 
 <!-- BOTTOM NAV -->
 <nav id="bottom-nav">
-  <button class="nav-btn active" id="nav-home" onclick="switchTab('home')"><iconify-icon icon="lucide:home"></iconify-icon><span>الرئيسية</span></button>
-  <button class="nav-btn" id="nav-news" onclick="switchTab('news')"><iconify-icon icon="lucide:newspaper"></iconify-icon><span>الأخبار</span></button>
-  <button class="nav-btn" id="nav-guide" onclick="switchTab('guide')"><iconify-icon icon="lucide:map-pin"></iconify-icon><span>الدليل</span></button>
-  <button class="nav-btn" id="nav-map" onclick="switchTab('map')"><iconify-icon icon="lucide:map"></iconify-icon><span>الخريطة</span></button>
-  <button class="nav-btn" id="nav-more" onclick="switchTab('more')"><iconify-icon icon="lucide:grid-3x3"></iconify-icon><span>المزيد</span></button>
+  <button class="nav-btn active" id="nav-home" onclick="switchTab('home')">
+    <iconify-icon class="icon-off" icon="lucide:home"></iconify-icon>
+    <iconify-icon class="icon-on" icon="material-symbols:home-rounded"></iconify-icon>
+    <span>الرئيسية</span>
+  </button>
+  <button class="nav-btn" id="nav-news" onclick="switchTab('news')">
+    <iconify-icon class="icon-off" icon="lucide:newspaper"></iconify-icon>
+    <iconify-icon class="icon-on" icon="material-symbols:newspaper-rounded"></iconify-icon>
+    <span>الأخبار</span>
+  </button>
+  <button class="nav-btn" id="nav-guide" onclick="switchTab('guide')">
+    <iconify-icon class="icon-off" icon="lucide:map-pin"></iconify-icon>
+    <iconify-icon class="icon-on" icon="material-symbols:location-on-rounded"></iconify-icon>
+    <span>الدليل</span>
+  </button>
+  <button class="nav-btn" id="nav-map" onclick="switchTab('map')">
+    <iconify-icon class="icon-off" icon="lucide:map"></iconify-icon>
+    <iconify-icon class="icon-on" icon="material-symbols:map-rounded"></iconify-icon>
+    <span>الخريطة</span>
+  </button>
+  <button class="nav-btn" id="nav-more" onclick="switchTab('more')">
+    <iconify-icon class="icon-off" icon="lucide:grid-3x3"></iconify-icon>
+    <iconify-icon class="icon-on" icon="material-symbols:grid-view-rounded"></iconify-icon>
+    <span>المزيد</span>
+  </button>
 </nav>
 </div>
 
@@ -476,18 +493,41 @@ function switchTab(t){
 
 const NS={official:{badge:'bg-red-100 text-red-700',grad:'linear-gradient(135deg,#ef4444,#b91c1c)',lbl:'إعلان رسمي'},activity:{badge:'bg-emerald-100 text-emerald-700',grad:'linear-gradient(135deg,#059669,#065f46)',lbl:'نشاط بلدي'},social:{badge:'bg-purple-100 text-purple-700',grad:'linear-gradient(135deg,#7c3aed,#4c1d95)',lbl:'ركن المجتمع'}};
 
-async function loadHome(){loadHNews();loadHBeaches();loadHTourism();}
+async function loadHome(){loadHOfficial();loadHNews();loadHBeaches();loadHTourism();}
+
+async function loadHOfficial(){
+  const el=document.getElementById('h-official');
+  try{
+    const d=await api('/api/news');
+    if(d.data) allNews=d.data;
+    const items=(d.data||[]).filter(n=>n.category==='official').slice(0,10);
+    if(!items.length){el.innerHTML='';return;}
+    el.innerHTML=items.map(n=>{
+      const s=NS.official;const t=n.title||'';
+      const img=n.image_url
+        ?`<img class="news-card-img" src="${n.image_url}" alt="" style="object-fit:cover">`
+        :`<div class="news-card-img-ph" style="background:${s.grad}"><iconify-icon icon="lucide:megaphone" style="color:rgba(255,255,255,.7);font-size:2.5rem"></iconify-icon></div>`;
+      return `<div class="news-card" onclick="openNewsModal(${n.id})">${img}<div class="news-card-body"><div class="news-card-title">${t}</div><div style="font-size:10px;color:var(--muted);display:flex;align-items:center;gap:4px"><iconify-icon icon="lucide:calendar-days"></iconify-icon>${n.date||''}</div></div><div class="news-card-footer"><span style="font-size:10px;color:var(--muted)">${(n.content||'').substring(0,35)}...</span><button class="read-more" onclick="event.stopPropagation();openNewsModal(${n.id})">المزيد »</button></div></div>`;
+    }).join('');
+  }catch{el.innerHTML='';}
+}
 
 async function loadHNews(){
   const el=document.getElementById('h-news');
-  try{const d=await api('/api/news');const items=(d.data||[]).slice(0,10);
-  if(d.data) allNews=d.data; // حفظ في الكاش العام
-  if(!items.length){el.innerHTML='';return;}
-  el.innerHTML=items.map(n=>{
-    const s=NS[n.category]||NS.official;const t=n.title||'';
-    const img=n.image_url?`<img class="news-card-img" src="${n.image_url}" alt="">`:`<div class="news-card-img-ph" style="background:${s.grad}"><iconify-icon icon="lucide:newspaper" style="color:rgba(255,255,255,.7);font-size:2.5rem"></iconify-icon></div>`;
-    return `<div class="news-card" onclick="openNewsModal(${n.id})">${img}<div class="news-card-body"><div class="news-card-title">${t}</div><div style="font-size:10px;color:var(--muted);display:flex;align-items:center;gap:4px"><iconify-icon icon="lucide:calendar-days"></iconify-icon>${n.date||''}</div></div><div class="news-card-footer"><span style="font-size:10px;color:var(--muted)">${(n.content||'').substring(0,35)}...</span><button class="read-more" onclick="event.stopPropagation();openNewsModal(${n.id})">المزيد »</button></div></div>`;
-  }).join('');}catch{el.innerHTML='';}
+  try{
+    const d=await api('/api/news');
+    if(d.data) allNews=d.data;
+    // كل التصنيفات ماعدا الإعلانات الرسمية
+    const items=(d.data||[]).filter(n=>n.category!=='official').slice(0,10);
+    if(!items.length){el.innerHTML='';return;}
+    el.innerHTML=items.map(n=>{
+      const s=NS[n.category]||NS.activity;const t=n.title||'';
+      const img=n.image_url
+        ?`<img class="news-card-img" src="${n.image_url}" alt="" style="object-fit:cover">`
+        :`<div class="news-card-img-ph" style="background:${s.grad}"><iconify-icon icon="lucide:newspaper" style="color:rgba(255,255,255,.7);font-size:2.5rem"></iconify-icon></div>`;
+      return `<div class="news-card" onclick="openNewsModal(${n.id})">${img}<div class="news-card-body"><div class="news-card-title">${t}</div><div style="font-size:10px;color:var(--muted);display:flex;align-items:center;gap:4px"><iconify-icon icon="lucide:calendar-days"></iconify-icon>${n.date||''}</div></div><div class="news-card-footer"><span style="font-size:10px;color:var(--muted)">${(n.content||'').substring(0,35)}...</span><button class="read-more" onclick="event.stopPropagation();openNewsModal(${n.id})">المزيد »</button></div></div>`;
+    }).join('');
+  }catch{el.innerHTML='';}
 }
 
 async function loadHBeaches(){
