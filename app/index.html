@@ -15,9 +15,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
-/* ══════════════════════════════════════════
-   NATIVE APP RESET & BASE
-══════════════════════════════════════════ */
+/* ══ VARIABLES ══ */
 :root{
   --green:#059669;--green-d:#064e3b;--green-m:#047857;--green-l:#d1fae5;
   --surface:#f2f4f7;--card:#ffffff;--text:#111827;--muted:#6b7280;
@@ -25,18 +23,12 @@
   --nav-h:62px;
   --safe-b:env(safe-area-inset-bottom,0px);
   --safe-t:env(safe-area-inset-top,0px);
-  --safe-l:env(safe-area-inset-left,0px);
-  --safe-r:env(safe-area-inset-right,0px);
-  --header-h:72px;
   --shadow-sm:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
   --shadow-md:0 4px 16px rgba(0,0,0,.10),0 1px 4px rgba(0,0,0,.06);
   --shadow-lg:0 8px 32px rgba(0,0,0,.13),0 2px 8px rgba(0,0,0,.07);
-  --radius-sm:12px;--radius-md:16px;--radius-lg:22px;
-  --anim-dur:240ms;
-  --anim-ease:cubic-bezier(.4,0,.2,1);
 }
 
-/* منع كل ما يجعله يبدو كمتصفح */
+/* ══ NATIVE RESET ══ */
 *{
   margin:0;padding:0;box-sizing:border-box;
   -webkit-tap-highlight-color:transparent;
@@ -46,51 +38,50 @@
   user-select:none;
   outline:none !important;
   -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
 }
 
-/* السماح بتحديد النص في المحتوى النصي فقط */
-.modal-desc, .modal-name, .fac-card-desc, .announce-body p{
-  -webkit-user-select:text;
-  user-select:text;
-}
-
-html{
-  height:100%;
-  overflow:hidden;
-  overscroll-behavior:none;
-  -webkit-overflow-scrolling:touch;
-}
-
-body{
+html,body{
   height:100%;height:100dvh;
   overflow:hidden;
   overscroll-behavior:none;
   font-family:'Cairo',sans-serif;
   background:var(--surface);
   color:var(--text);
+}
+body{
   position:fixed;
   width:100%;
-  /* منع pull-to-refresh */
-  overscroll-behavior-y:none;
+  top:0;left:0;
 }
 
-/* ── App Shell ── */
+/* منع حفظ الصور ونسخها */
+img{
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  user-select:none;
+  -webkit-touch-callout:none;
+  pointer-events:none; /* سيُعاد تفعيله عند الحاجة للنقر */
+}
+/* الصور القابلة للنقر (lightbox) */
+img.clickable{
+  pointer-events:auto;
+}
+
+/* ══ APP SHELL ══ */
 #app{
   display:flex;
   flex-direction:column;
   height:100%;height:100dvh;
   overflow:hidden;
-  position:relative;
 }
 
-/* ── الهيدر الثابت خارج الصفحات ── */
+/* ══ GLOBAL HEADER ══ */
 #global-header{
+  flex-shrink:0;
   background:linear-gradient(145deg,#042f1e 0%,var(--green-d) 40%,var(--green-m) 75%,#059669 100%);
-  padding:calc(var(--safe-t) + 10px) 18px 22px;
+  padding:calc(var(--safe-t) + 16px) 18px 26px;
   position:relative;
   z-index:50;
-  flex-shrink:0;
   overflow:hidden;
 }
 #global-header::before{
@@ -104,77 +95,70 @@ body{
   pointer-events:none;
 }
 .header-inner{
-  display:flex;align-items:center;gap:12px;
+  display:flex;align-items:center;gap:14px;
   position:relative;z-index:1;
 }
 .header-logo{
-  width:46px;height:46px;border-radius:13px;
+  width:52px;height:52px;border-radius:15px;
   background:#fff;object-fit:contain;flex-shrink:0;
+  pointer-events:none;
+  -webkit-touch-callout:none;
 }
 .header-text{flex:1}
 .header-text h1{
-  font-size:19px;font-weight:900;color:#fff;letter-spacing:-.3px;
-  line-height:1.2;
+  font-size:21px;font-weight:900;color:#fff;letter-spacing:-.3px;line-height:1.2;
 }
 .header-text p{
-  font-size:11px;color:rgba(255,255,255,.65);
-  font-weight:600;margin-top:1px;
-}
-.header-actions{
-  display:flex;gap:8px;align-items:center;
+  font-size:11px;color:rgba(255,255,255,.65);font-weight:600;margin-top:2px;
 }
 .header-btn{
   width:36px;height:36px;border-radius:10px;
   background:rgba(255,255,255,.15);
   border:1px solid rgba(255,255,255,.2);
   display:flex;align-items:center;justify-content:center;
-  cursor:pointer;transition:background .15s;
+  cursor:pointer;
   touch-action:manipulation;
+  transition:background .15s;
+  flex-shrink:0;
 }
-.header-btn:active{background:rgba(255,255,255,.25)}
+.header-btn:active{background:rgba(255,255,255,.28)}
 
-/* ── Screen Container ── */
+/* ══ SCREEN CONTAINER ══ */
 #screen-container{
   flex:1;
   overflow:hidden;
   position:relative;
-  /* منع الارتداد */
   overscroll-behavior:none;
 }
 
-/* ── Screens ── */
+/* ══ SCREENS ══ */
 .screen{
   position:absolute;inset:0;
   overflow-y:auto;overflow-x:hidden;
   padding-bottom:calc(var(--nav-h) + var(--safe-b) + 8px);
   -webkit-overflow-scrolling:touch;
-  overscroll-behavior:none;
+  overscroll-behavior-y:contain;
   will-change:transform,opacity;
-  backface-visibility:hidden;
-  -webkit-backface-visibility:hidden;
 }
 .screen.hidden{
   display:none;
   pointer-events:none;
 }
-
-/* الخريطة بدون padding */
 #screen-map{
-  padding-bottom:0;
-  overflow:hidden;
+  padding-bottom:0 !important;
+  overflow:hidden !important;
 }
 
-/* ── Bottom Nav ── */
+/* ══ BOTTOM NAV ══ */
 #bottom-nav{
+  flex-shrink:0;
   height:calc(var(--nav-h) + var(--safe-b));
   padding-bottom:var(--safe-b);
-  padding-left:var(--safe-l);
-  padding-right:var(--safe-r);
   background:rgba(255,255,255,0.97);
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   border-top:1px solid var(--border-light);
   display:flex;align-items:flex-start;padding-top:8px;
-  z-index:100;flex-shrink:0;
+  z-index:100;
   box-shadow:0 -1px 0 rgba(0,0,0,.06),0 -4px 16px rgba(0,0,0,.04);
 }
 .nav-btn{
@@ -185,11 +169,12 @@ body{
   position:relative;
   touch-action:manipulation;
   transition:color .2s;
+  -webkit-tap-highlight-color:transparent;
 }
 .nav-btn iconify-icon{
   font-size:24px;
   transition:transform .3s cubic-bezier(.34,1.56,.64,1);
-  display:block;
+  display:block;pointer-events:none;
 }
 .nav-btn .icon-on{display:none}
 .nav-btn .icon-off{display:block}
@@ -205,10 +190,9 @@ body{
 .nav-btn.active{color:var(--green)}
 .nav-btn.active::before{transform:translateX(-50%) scaleX(1)}
 .nav-btn.active iconify-icon{transform:scale(1.15)}
+.nav-btn span{pointer-events:none}
 
-/* ══════════════════════════════════════════
-   SECTIONS & CARDS
-══════════════════════════════════════════ */
+/* ══ SECTIONS ══ */
 .section{padding:16px 0 4px}
 .section-header{
   display:flex;align-items:center;justify-content:space-between;
@@ -223,10 +207,11 @@ body{
   background:var(--green-l);padding:4px 11px;border-radius:99px;
   cursor:pointer;font-family:'Cairo',sans-serif;
   touch-action:manipulation;
+  transition:opacity .15s;
 }
-.see-all:active{opacity:.7}
+.see-all:active{opacity:.6}
 
-/* ── Horizontal Scroll ── */
+/* ══ HORIZONTAL SCROLL ══ */
 .h-scroll{
   display:flex;gap:12px;overflow-x:auto;
   padding:2px 18px 14px;
@@ -237,7 +222,7 @@ body{
 }
 .h-scroll::-webkit-scrollbar{display:none}
 
-/* ── News Card ── */
+/* ══ NEWS CARD ══ */
 .news-card{
   min-width:210px;max-width:210px;
   background:var(--card);border-radius:18px;
@@ -247,10 +232,11 @@ body{
   cursor:pointer;
   display:flex;flex-direction:column;
   touch-action:manipulation;
-  transition:transform .15s var(--anim-ease),opacity .15s;
+  transition:transform .15s ease,opacity .15s;
+  -webkit-tap-highlight-color:transparent;
 }
-.news-card:active{transform:scale(.95);opacity:.85}
-.news-card-img{width:100%;height:125px;object-fit:cover;display:block;flex-shrink:0}
+.news-card:active{transform:scale(.95);opacity:.8}
+.news-card-img{width:100%;height:125px;object-fit:cover;display:block;flex-shrink:0;pointer-events:none}
 .news-card-img-ph{width:100%;height:125px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .news-card-body{padding:10px 12px 6px;flex:1;display:flex;flex-direction:column;gap:4px}
 .news-card-excerpt{
@@ -268,28 +254,27 @@ body{
   font-family:'Cairo',sans-serif;touch-action:manipulation;
 }
 
-/* ── Place Card ── */
+/* ══ PLACE CARD ══ */
 .place-card{
   min-width:158px;max-width:158px;border-radius:18px;overflow:hidden;
   box-shadow:var(--shadow-md);scroll-snap-align:start;flex-shrink:0;
   cursor:pointer;position:relative;height:210px;
   touch-action:manipulation;
-  transition:transform .15s var(--anim-ease),opacity .15s;
+  transition:transform .15s ease,opacity .15s;
+  -webkit-tap-highlight-color:transparent;
 }
-.place-card:active{transform:scale(.95);opacity:.85}
-.place-card img{width:100%;height:100%;object-fit:cover;display:block}
+.place-card:active{transform:scale(.95);opacity:.8}
+.place-card img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
 .place-card-grad{
   position:absolute;inset:0;
   background:linear-gradient(0deg,rgba(0,0,0,.78) 0%,rgba(0,0,0,.1) 55%,transparent 80%);
+  pointer-events:none;
 }
-.place-card-body{position:absolute;bottom:0;left:0;right:0;padding:10px}
-.place-card-name{
-  font-size:12px;font-weight:900;color:#fff;
-  text-shadow:0 1px 6px rgba(0,0,0,.6);line-height:1.3;
-}
+.place-card-body{position:absolute;bottom:0;left:0;right:0;padding:10px;pointer-events:none}
+.place-card-name{font-size:12px;font-weight:900;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.6);line-height:1.3}
 .place-card-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
 
-/* ── Cat Tabs ── */
+/* ══ CAT TABS ══ */
 .cat-tabs{
   display:flex;gap:8px;overflow-x:auto;padding:10px 18px;
   scrollbar-width:none;
@@ -303,39 +288,40 @@ body{
   flex-shrink:0;padding:7px 14px;border-radius:99px;font-size:11px;
   font-weight:800;font-family:'Cairo',sans-serif;
   border:1.5px solid var(--border);background:var(--card);
-  color:var(--muted);cursor:pointer;transition:all .2s;
+  color:var(--muted);cursor:pointer;
   display:flex;align-items:center;gap:5px;
-  box-shadow:var(--shadow-sm);touch-action:manipulation;
+  box-shadow:var(--shadow-sm);
+  touch-action:manipulation;
+  transition:all .2s;
+  -webkit-tap-highlight-color:transparent;
 }
-.cat-tab.active{
-  background:var(--green);color:#fff;
-  border-color:var(--green);
-  box-shadow:0 4px 14px rgba(5,150,105,.3);
-}
-.cat-tab:active:not(.active){opacity:.7}
+.cat-tab.active{background:var(--green);color:#fff;border-color:var(--green);box-shadow:0 4px 14px rgba(5,150,105,.3)}
+.cat-tab:active:not(.active){opacity:.6}
 
-/* ── Announce Card ── */
+/* ══ ANNOUNCE CARD ══ */
 .announce-card{
   background:var(--card);border-radius:18px;
   border:1px solid var(--border-light);
   overflow:hidden;box-shadow:var(--shadow-sm);cursor:pointer;
-  margin:0 18px 12px;touch-action:manipulation;
-  transition:transform .15s var(--anim-ease),opacity .15s;
+  margin:0 18px 12px;
+  touch-action:manipulation;
+  transition:transform .15s ease,opacity .15s;
+  -webkit-tap-highlight-color:transparent;
 }
-.announce-card:active{transform:scale(.98);opacity:.85}
+.announce-card:active{transform:scale(.98);opacity:.8}
 .announce-img-wrap{
   width:100%;height:165px;
   display:flex;align-items:center;justify-content:center;
   background:#f0fdf4;overflow:hidden;
 }
-.announce-img-wrap img{width:100%;height:100%;object-fit:cover}
+.announce-img-wrap img{width:100%;height:100%;object-fit:cover;pointer-events:none}
 .announce-body{padding:11px 14px 13px}
 .announce-footer{
-  display:flex;justify-content:flex-end;align-items:center;
+  display:flex;justify-content:flex-end;
   padding-top:8px;border-top:1px solid var(--border-light);margin-top:7px;
 }
 
-/* ── Guide Tabs ── */
+/* ══ GUIDE TABS ══ */
 .guide-tabs{
   display:grid;grid-template-columns:repeat(2,1fr);gap:8px;
   padding:12px 18px 10px;
@@ -345,51 +331,50 @@ body{
 .guide-tab{
   padding:10px 8px;border-radius:14px;font-size:11px;font-weight:800;
   font-family:'Cairo',sans-serif;border:1.5px solid var(--border);
-  background:var(--card);color:var(--muted);cursor:pointer;transition:all .2s;
+  background:var(--card);color:var(--muted);cursor:pointer;
   display:flex;align-items:center;justify-content:center;gap:6px;
-  box-shadow:var(--shadow-sm);touch-action:manipulation;
+  box-shadow:var(--shadow-sm);
+  touch-action:manipulation;
+  transition:all .2s;
+  -webkit-tap-highlight-color:transparent;
 }
-.guide-tab iconify-icon{font-size:15px}
-.guide-tab.active{
-  background:var(--green);color:#fff;
-  border-color:var(--green);
-  box-shadow:0 4px 14px rgba(5,150,105,.28);
-}
-.guide-tab:active:not(.active){opacity:.7}
+.guide-tab iconify-icon{font-size:15px;pointer-events:none}
+.guide-tab.active{background:var(--green);color:#fff;border-color:var(--green);box-shadow:0 4px 14px rgba(5,150,105,.28)}
+.guide-tab:active:not(.active){opacity:.6}
 
-/* ── Fac Card ── */
+/* ══ FAC CARD ══ */
 .fac-card{
   background:var(--card);border-radius:16px;
   border:1px solid var(--border-light);
   overflow:hidden;box-shadow:var(--shadow-sm);cursor:pointer;
   margin:0 18px 10px;display:flex;align-items:center;
   touch-action:manipulation;
-  transition:transform .15s var(--anim-ease),opacity .15s;
+  transition:transform .15s ease,opacity .15s;
+  -webkit-tap-highlight-color:transparent;
 }
-.fac-card:active{transform:scale(.97);opacity:.85}
-.fac-card-img{width:80px;height:80px;object-fit:cover;flex-shrink:0}
+.fac-card:active{transform:scale(.97);opacity:.8}
+.fac-card-img{width:80px;height:80px;object-fit:cover;flex-shrink:0;pointer-events:none}
 .fac-card-ph{width:80px;height:80px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .fac-card-body{padding:10px 12px;flex:1;min-width:0}
 .fac-card-badge{font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px;display:inline-block;margin-bottom:4px}
 .fac-card-name{font-size:13px;font-weight:800;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .fac-card-desc{font-size:11px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:2px}
 
-/* ── More screen ── */
+/* ══ MORE ══ */
 .more-item{
   display:flex;align-items:center;gap:14px;padding:14px 16px;
   border-bottom:1px solid var(--border-light);cursor:pointer;
   touch-action:manipulation;
-  transition:opacity .15s;
+  transition:background .15s,opacity .15s;
+  -webkit-tap-highlight-color:transparent;
 }
-.more-item:active{opacity:.5;background:var(--surface)}
+.more-item:active{background:var(--surface);opacity:.7}
 .more-item:last-child{border-bottom:none}
 .more-icon{width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .more-item-title{font-size:14px;font-weight:800;color:var(--text)}
 .more-item-sub{font-size:11px;color:var(--muted);margin-top:1px}
 
-/* ══════════════════════════════════════════
-   MODAL
-══════════════════════════════════════════ */
+/* ══ MODAL ══ */
 .modal-overlay{
   position:fixed;inset:0;z-index:200;
   background:rgba(0,0,0,.55);
@@ -412,51 +397,51 @@ body{
   -webkit-overflow-scrolling:touch;
 }
 .modal-overlay.open .modal-sheet{transform:translateY(0)}
-.modal-drag{
-  width:40px;height:4px;background:#d1d5db;
-  border-radius:99px;margin:10px auto 0;flex-shrink:0;
-}
-.modal-img{width:100%;height:220px;object-fit:cover;display:block}
+.modal-drag{width:40px;height:4px;background:#d1d5db;border-radius:99px;margin:10px auto 0;flex-shrink:0}
+.modal-img{width:100%;height:220px;object-fit:cover;display:block;pointer-events:none}
 .modal-body{padding:16px 20px}
 .modal-badge{font-size:11px;font-weight:800;padding:3px 12px;border-radius:99px;display:inline-block;margin-bottom:8px}
-.modal-name{font-size:19px;font-weight:900;color:var(--text);margin-bottom:8px;line-height:1.3;letter-spacing:-.3px;-webkit-user-select:text;user-select:text}
-.modal-desc{font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:14px;-webkit-user-select:text;user-select:text}
+.modal-name{font-size:19px;font-weight:900;color:var(--text);margin-bottom:8px;line-height:1.3;letter-spacing:-.3px}
+.modal-desc{font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:14px}
 .modal-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
-.modal-chip{
-  font-size:11px;padding:5px 12px;background:var(--surface);
-  border:1px solid var(--border);border-radius:99px;color:var(--text);
-  font-weight:600;display:flex;align-items:center;gap:5px;
-}
+.modal-chip{font-size:11px;padding:5px 12px;background:var(--surface);border:1px solid var(--border);border-radius:99px;color:var(--text);font-weight:600;display:flex;align-items:center;gap:5px}
 .album-title{font-size:13px;font-weight:800;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:6px}
 .album-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
-.album-grid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;cursor:pointer;touch-action:manipulation}
+.album-grid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;cursor:pointer;pointer-events:auto;touch-action:manipulation}
 
-/* ── وضع الإعلانات والملصقات: صور فقط ── */
-#mn-announce-album img,
-#mn-sticker-album img{
+/* صور الألبوم الكبيرة (إعلانات/ملصقات) */
+.big-album-img{
   width:100%;display:block;
-  cursor:pointer;touch-action:manipulation;
+  cursor:pointer;
+  touch-action:manipulation;
+  pointer-events:auto;
+  margin-bottom:3px;
+  line-height:0;
 }
 
-/* ── Lightbox ── */
+/* ══ LIGHTBOX ══ */
 #lightbox{
   position:fixed;inset:0;z-index:500;
   background:rgba(0,0,0,.97);
   display:none;align-items:center;justify-content:center;
-  padding:16px;
-  overscroll-behavior:none;
+  padding:16px;overscroll-behavior:none;
 }
 #lightbox.open{display:flex}
-#lightbox img{max-width:100%;max-height:90dvh;object-fit:contain;border-radius:10px}
+#lightbox img{
+  max-width:100%;max-height:90dvh;
+  object-fit:contain;border-radius:10px;
+  pointer-events:none;
+}
 #lb-close{
   position:absolute;top:calc(var(--safe-t) + 14px);left:14px;
   width:36px;height:36px;background:rgba(255,255,255,.18);
   border:none;border-radius:50%;color:#fff;font-size:16px;
   cursor:pointer;display:flex;align-items:center;justify-content:center;
   backdrop-filter:blur(4px);touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
 }
 
-/* ── Loading / Empty ── */
+/* ══ LOADING / EMPTY ══ */
 .loading{display:flex;align-items:center;justify-content:center;padding:40px;gap:10px;color:var(--muted);font-size:13px}
 .loading iconify-icon{font-size:28px;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -466,38 +451,23 @@ body{
 .fade-in{animation:fadeUp .25s ease both}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── Leaflet: إخفاء نسب الاستخدام ── */
+/* ══ LEAFLET: إخفاء نسب الاستخدام ══ */
 .leaflet-control-attribution{display:none !important}
-.leaflet-control-container .leaflet-bottom{display:none !important}
 
-/* ── الخريطة بحجم كامل ── */
-#app-map{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-}
+/* ══ MAP FULL SCREEN ══ */
+#app-map{position:absolute;inset:0;width:100%;height:100%}
 
-/* ── Online dot ── */
-.online-dot{
-  width:7px;height:7px;border-radius:50%;background:#34d399;
-  display:inline-block;margin-left:4px;
-  box-shadow:0 0 0 2px rgba(52,211,153,.3);
-  animation:pulse 2s infinite;
-}
-@keyframes pulse{
-  0%,100%{box-shadow:0 0 0 2px rgba(52,211,153,.3)}
-  50%{box-shadow:0 0 0 5px rgba(52,211,153,.1)}
-}
+/* ══ ONLINE DOT ══ */
+.online-dot{width:7px;height:7px;border-radius:50%;background:#34d399;display:inline-block;margin-left:4px;box-shadow:0 0 0 2px rgba(52,211,153,.3);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 2px rgba(52,211,153,.3)}50%{box-shadow:0 0 0 5px rgba(52,211,153,.1)}}
 
-/* ── News badge ── */
 .news-badge{font-size:10px;font-weight:800;padding:2px 9px;border-radius:99px;display:inline-block}
 </style>
 </head>
 <body>
 <div id="app">
 
-  <!-- ══ GLOBAL HEADER (ثابت دائماً) ══ -->
+  <!-- ══ GLOBAL HEADER — ثابت لا يتحرك ══ -->
   <header id="global-header">
     <div class="header-inner">
       <img class="header-logo"
@@ -509,10 +479,8 @@ body{
         <h1>بلدية شطايبي</h1>
         <p>ولاية عنابة - الجزائر</p>
       </div>
-      <div class="header-actions">
-        <div class="header-btn">
-          <iconify-icon icon="lucide:bell" style="color:#fff;font-size:18px"></iconify-icon>
-        </div>
+      <div class="header-btn" onclick="void(0)">
+        <iconify-icon icon="lucide:bell" style="color:#fff;font-size:18px"></iconify-icon>
       </div>
     </div>
   </header>
@@ -522,11 +490,10 @@ body{
 
     <!-- HOME -->
     <div class="screen" id="screen-home">
-
       <div class="section" style="padding-top:16px">
         <div class="section-header">
           <span class="section-title">
-            <iconify-icon icon="lucide:megaphone" style="color:#dc2626"></iconify-icon>
+            <iconify-icon icon="lucide:megaphone" style="color:#dc2626;pointer-events:none"></iconify-icon>
             الإعلانات
           </span>
           <button class="see-all" onclick="switchTab('news')">عرض الكل</button>
@@ -539,7 +506,7 @@ body{
       <div class="section">
         <div class="section-header">
           <span class="section-title">
-            <iconify-icon icon="lucide:newspaper" style="color:#059669"></iconify-icon>
+            <iconify-icon icon="lucide:newspaper" style="color:#059669;pointer-events:none"></iconify-icon>
             آخر المستجدات
           </span>
           <button class="see-all" onclick="switchTab('news')">عرض الكل</button>
@@ -552,7 +519,7 @@ body{
       <div class="section">
         <div class="section-header">
           <span class="section-title">
-            <iconify-icon icon="lucide:waves" style="color:#0ea5e9"></iconify-icon>
+            <iconify-icon icon="lucide:waves" style="color:#0ea5e9;pointer-events:none"></iconify-icon>
             شواطئ شطايبي
           </span>
           <button class="see-all" onclick="switchTab('map')">على الخريطة</button>
@@ -565,7 +532,7 @@ body{
       <div class="section">
         <div class="section-header">
           <span class="section-title">
-            <iconify-icon icon="lucide:sun" style="color:#f59e0b"></iconify-icon>
+            <iconify-icon icon="lucide:sun" style="color:#f59e0b;pointer-events:none"></iconify-icon>
             معالم سياحية
           </span>
           <button class="see-all" onclick="switchTab('map')">على الخريطة</button>
@@ -574,23 +541,23 @@ body{
           <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
         </div>
       </div>
-
-    </div><!-- /HOME -->
+    </div>
+    <!-- /HOME -->
 
     <!-- NEWS -->
     <div class="screen hidden" id="screen-news">
       <div class="cat-tabs">
         <button class="cat-tab active" onclick="filterNews('all',this)">
-          <iconify-icon icon="lucide:list"></iconify-icon>الكل
+          <iconify-icon icon="lucide:list" style="pointer-events:none"></iconify-icon>الكل
         </button>
         <button class="cat-tab" onclick="filterNews('official',this)">
-          <iconify-icon icon="lucide:megaphone"></iconify-icon>إعلانات
+          <iconify-icon icon="lucide:megaphone" style="pointer-events:none"></iconify-icon>إعلانات
         </button>
         <button class="cat-tab" onclick="filterNews('activity',this)">
-          <iconify-icon icon="lucide:clipboard-list"></iconify-icon>نشاطات
+          <iconify-icon icon="lucide:clipboard-list" style="pointer-events:none"></iconify-icon>نشاطات
         </button>
         <button class="cat-tab" onclick="filterNews('social',this)">
-          <iconify-icon icon="lucide:handshake"></iconify-icon>مجتمع
+          <iconify-icon icon="lucide:handshake" style="pointer-events:none"></iconify-icon>مجتمع
         </button>
       </div>
       <div id="news-list" style="padding:10px 0">
@@ -599,22 +566,23 @@ body{
           <span>جاري التحميل</span>
         </div>
       </div>
-    </div><!-- /NEWS -->
+    </div>
+    <!-- /NEWS -->
 
     <!-- GUIDE -->
     <div class="screen hidden" id="screen-guide">
       <div class="guide-tabs">
         <button class="guide-tab active" onclick="loadFacTab('admin-branches',this)">
-          <iconify-icon icon="lucide:landmark"></iconify-icon> الفروع الإدارية
+          <iconify-icon icon="lucide:landmark" style="pointer-events:none"></iconify-icon>الفروع الإدارية
         </button>
         <button class="guide-tab" onclick="loadFacTab('education',this)">
-          <iconify-icon icon="lucide:graduation-cap"></iconify-icon>التعليم والتكوين
+          <iconify-icon icon="lucide:graduation-cap" style="pointer-events:none"></iconify-icon>التعليم والتكوين
         </button>
         <button class="guide-tab" onclick="loadFacTab('health',this)">
-          <iconify-icon icon="lucide:heart-pulse"></iconify-icon>المرافق الصحية
+          <iconify-icon icon="lucide:heart-pulse" style="pointer-events:none"></iconify-icon>المرافق الصحية
         </button>
         <button class="guide-tab" onclick="loadFacTab('public-bodies',this)">
-          <iconify-icon icon="lucide:building-2"></iconify-icon> الهيئات العمومية
+          <iconify-icon icon="lucide:building-2" style="pointer-events:none"></iconify-icon>الهيئات العمومية
         </button>
       </div>
       <div id="fac-list" style="padding:6px 0">
@@ -623,61 +591,64 @@ body{
           <span>جاري التحميل</span>
         </div>
       </div>
-    </div><!-- /GUIDE -->
+    </div>
+    <!-- /GUIDE -->
 
-    <!-- MAP — بدون هيدر، الخريطة بحجم كامل -->
-    <div class="screen hidden" id="screen-map" style="padding-bottom:0;overflow:hidden">
+    <!-- MAP — بدون هيدر، خريطة كاملة -->
+    <div class="screen hidden" id="screen-map">
       <div id="app-map"></div>
-    </div><!-- /MAP -->
+    </div>
+    <!-- /MAP -->
 
     <!-- MORE -->
     <div class="screen hidden" id="screen-more">
       <div style="margin:18px 18px 0;background:var(--card);border-radius:18px;overflow:hidden;box-shadow:var(--shadow-sm);border:1px solid var(--border-light)">
         <div class="more-item" onclick="window.location.href='/'">
           <div class="more-icon" style="background:#d1fae5">
-            <iconify-icon icon="lucide:globe" style="color:#059669;font-size:20px"></iconify-icon>
+            <iconify-icon icon="lucide:globe" style="color:#059669;font-size:20px;pointer-events:none"></iconify-icon>
           </div>
           <div style="flex:1">
             <div class="more-item-title">الموقع الرسمي</div>
             <div class="more-item-sub">النسخة الكاملة للمتصفح</div>
           </div>
-          <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px"></iconify-icon>
+          <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
         </div>
         <div class="more-item" onclick="switchTab('guide')">
           <div class="more-icon" style="background:#ede9fe">
-            <iconify-icon icon="lucide:building" style="color:#7c3aed;font-size:20px"></iconify-icon>
+            <iconify-icon icon="lucide:building" style="color:#7c3aed;font-size:20px;pointer-events:none"></iconify-icon>
           </div>
           <div style="flex:1">
             <div class="more-item-title">دليل المرافق</div>
             <div class="more-item-sub">المؤسسات والخدمات العمومية</div>
           </div>
-          <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px"></iconify-icon>
+          <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
         </div>
         <div class="more-item">
           <div class="more-icon" style="background:#fef3c7">
-            <iconify-icon icon="lucide:scroll-text" style="color:#d97706;font-size:20px"></iconify-icon>
+            <iconify-icon icon="lucide:scroll-text" style="color:#d97706;font-size:20px;pointer-events:none"></iconify-icon>
           </div>
           <div style="flex:1">
             <div class="more-item-title">أرشيف شطايبي</div>
             <div class="more-item-sub">صور الأمس واليوم</div>
           </div>
-          <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px"></iconify-icon>
+          <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
         </div>
         <div class="more-item" onclick="switchTab('map')">
           <div class="more-icon" style="background:#dbeafe">
-            <iconify-icon icon="lucide:map-pin" style="color:#2563eb;font-size:20px"></iconify-icon>
+            <iconify-icon icon="lucide:map-pin" style="color:#2563eb;font-size:20px;pointer-events:none"></iconify-icon>
           </div>
           <div style="flex:1">
             <div class="more-item-title">الخريطة التفاعلية</div>
             <div class="more-item-sub">مرافق وشواطئ ومعالم شطايبي</div>
           </div>
-          <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px"></iconify-icon>
+          <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
         </div>
       </div>
       <p style="text-align:center;font-size:11px;color:var(--muted);padding:20px 0 8px">
         صُنع بـ ❤️ لخدمة مواطني شطايبي
       </p>
-    </div><!-- /MORE -->
+    </div>
+    <!-- /MORE -->
 
   </div><!-- /screen-container -->
 
@@ -718,18 +689,18 @@ body{
 <div class="modal-overlay" id="m-news" onclick="cm('m-news')">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
-    <!-- وضع الإعلانات والملصقات: صور الألبوم فقط -->
+    <!-- إعلانات رسمية: صور الألبوم فقط -->
     <div id="mn-announce-view" style="display:none;position:relative">
       <button onclick="cm('m-news')"
-        style="position:absolute;top:10px;left:12px;z-index:10;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.5);border:none;color:#fff;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);touch-action:manipulation">✕</button>
+        style="position:absolute;top:10px;left:12px;z-index:10;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.5);border:none;color:#fff;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);touch-action:manipulation;-webkit-tap-highlight-color:transparent">✕</button>
       <div id="mn-announce-album"></div>
     </div>
-    <!-- وضع الأخبار العادية -->
+    <!-- أخبار عادية -->
     <div id="mn-normal-view">
       <div style="position:relative">
         <img id="mn-img" class="modal-img" src="" style="display:none">
         <button onclick="cm('m-news')" id="mn-close-btn"
-          style="position:absolute;top:10px;left:12px;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.45);border:none;color:#fff;font-size:14px;cursor:pointer;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);touch-action:manipulation">✕</button>
+          style="position:absolute;top:10px;left:12px;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.45);border:none;color:#fff;font-size:14px;cursor:pointer;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);touch-action:manipulation;-webkit-tap-highlight-color:transparent">✕</button>
       </div>
       <div class="modal-body">
         <div id="mn-badge" class="modal-badge" style="display:none"></div>
@@ -756,17 +727,17 @@ body{
   </div>
 </div>
 
-<!-- Modal السياحة -->
+<!-- Modal السياحة / الملصقات -->
 <div class="modal-overlay" id="m-tour" onclick="cm('m-tour')">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
-    <!-- وضع الملصقات: صور فقط -->
+    <!-- ملصقات: صور فقط -->
     <div id="mt-sticker-view" style="display:none;position:relative">
       <button onclick="cm('m-tour')"
-        style="position:absolute;top:10px;left:12px;z-index:10;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.5);border:none;color:#fff;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);touch-action:manipulation">✕</button>
+        style="position:absolute;top:10px;left:12px;z-index:10;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.5);border:none;color:#fff;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);touch-action:manipulation;-webkit-tap-highlight-color:transparent">✕</button>
       <div id="mt-sticker-album"></div>
     </div>
-    <!-- وضع السياحة العادي -->
+    <!-- سياحة عادية -->
     <div id="mt-normal-view">
       <div style="position:relative">
         <img id="mt-img" class="modal-img" src="" style="display:none">
@@ -806,15 +777,19 @@ body{
 <script>
 'use strict';
 
-/* ══ منع pull-to-refresh وسحب المتصفح ══ */
-document.addEventListener('touchmove', e => {
-  if(e.touches.length > 1) e.preventDefault();
+/* ══ منع حفظ الصور ونسخها — شامل ══ */
+document.addEventListener('contextmenu', function(e){ e.preventDefault(); return false; });
+document.addEventListener('dragstart', function(e){ e.preventDefault(); return false; });
+document.addEventListener('selectstart', function(e){ e.preventDefault(); return false; });
+/* منع الضغط المطول على الصور في iOS */
+document.addEventListener('touchstart', function(e){
+  if(e.target.tagName === 'IMG') e.preventDefault();
 }, {passive: false});
 
-let lastTouchY = 0;
-document.addEventListener('touchstart', e => {
-  lastTouchY = e.touches[0].clientY;
-}, {passive: true});
+/* ══ منع pull-to-refresh ══ */
+document.addEventListener('touchmove', function(e){
+  if(e.touches.length > 1) e.preventDefault();
+}, {passive: false});
 
 /* ══ Cache & API ══ */
 const C = {};
@@ -827,379 +802,351 @@ async function api(u){
 }
 
 /* ══ State ══ */
-let curTab = 'home', mapDone = false, allNews = [], facCat = 'admin-branches';
+let curTab = 'home';
+let mapDone = false;
+let allNews = [];
+let facCat  = 'admin-branches';
 
-/* ترتيب الأيقونات (RTL: home=يمين، more=يسار) */
+/* ترتيب الأيقونات — يُحدّد اتجاه الانتقال */
 const TAB_ORDER = ['home','news','guide','map','more'];
 
-/* ══ switchTab مع انيميشن أفقي ══ */
+/* ══ switchTab ══ */
 function switchTab(t){
-  const prev = document.getElementById('screen-' + curTab);
-  const next = document.getElementById('screen-' + t);
-  if(!next || t === curTab) return;
+  if(t === curTab) return;
+  const prevEl = document.getElementById('screen-' + curTab);
+  const nextEl = document.getElementById('screen-' + t);
+  if(!nextEl) return;
 
   const prevIdx = TAB_ORDER.indexOf(curTab);
   const nextIdx = TAB_ORDER.indexOf(t);
-  const goingForward = nextIdx > prevIdx;
+  const forward = nextIdx > prevIdx;
 
-  /* في RTL:
-     forward (index أكبر = أيقونة على اليسار) → المحتوى يدخل من اليسار
-     backward → يدخل من اليمين
-  */
-  const enterFrom = goingForward ? '-100%' : '100%';
-  const exitTo    = goingForward ? '100%'  : '-100%';
+  /* في RTL: forward → يدخل من اليسار */
+  const enterFrom = forward ? '-100%' : '100%';
+  const exitTo    = forward ? '100%'  : '-100%';
+  const DUR = 230; /* ms */
+  const EASE = 'cubic-bezier(.4,0,.2,1)';
 
   /* خروج الصفحة الحالية */
-  if(prev){
-    prev.style.cssText = `
-      transition: opacity ${this.dur||220}ms ease, transform ${this.dur||230}ms cubic-bezier(.4,0,.2,1);
-      opacity: 0;
-      transform: translateX(${exitTo});
-    `;
-    setTimeout(() => {
-      prev.classList.add('hidden');
-      prev.style.cssText = '';
-    }, 250);
+  if(prevEl){
+    prevEl.style.transition = 'opacity '+DUR+'ms ease, transform '+DUR+'ms '+EASE;
+    prevEl.style.opacity    = '0';
+    prevEl.style.transform  = 'translateX('+exitTo+')';
+    setTimeout(function(){
+      prevEl.classList.add('hidden');
+      prevEl.style.cssText = '';
+    }, DUR + 20);
   }
 
   /* دخول الصفحة الجديدة */
-  next.classList.remove('hidden');
-  next.style.cssText = `opacity:0;transform:translateX(${enterFrom});transition:none`;
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      next.style.cssText = `
-        transition: opacity 220ms ease, transform 230ms cubic-bezier(.4,0,.2,1);
-        opacity: 1;
-        transform: translateX(0);
-      `;
-      setTimeout(() => { next.style.cssText = ''; }, 250);
+  nextEl.classList.remove('hidden');
+  nextEl.style.cssText = 'opacity:0;transform:translateX('+enterFrom+');transition:none';
+
+  /* double rAF لضمان تطبيق الـ transition */
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      nextEl.style.transition = 'opacity '+DUR+'ms ease, transform '+DUR+'ms '+EASE;
+      nextEl.style.opacity    = '1';
+      nextEl.style.transform  = 'translateX(0)';
+      setTimeout(function(){ nextEl.style.cssText = ''; }, DUR + 20);
     });
   });
 
-  /* Nav */
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  const nb = document.getElementById('nav-' + t);
+  /* تحديث شريط التنقل */
+  document.querySelectorAll('.nav-btn').forEach(function(b){ b.classList.remove('active'); });
+  var nb = document.getElementById('nav-' + t);
   if(nb) nb.classList.add('active');
 
   curTab = t;
 
-  /* Lazy init */
-  if(t === 'map' && !mapDone) initMap2();
-  if(t === 'news' && !allNews.length) loadNewsScreen();
-  if(t === 'guide') loadFacTab(facCat);
-  if(t === 'home') loadHome();
+  /* تهيئة كسول */
+  if(t === 'map'   && !mapDone)        initMap2();
+  if(t === 'news'  && !allNews.length) loadNewsScreen();
+  if(t === 'guide')                    loadFacTab(facCat);
+  if(t === 'home')                     loadHome();
 }
 
 /* ══ News Styles ══ */
 const NS = {
-  official: {badge:'', grad:'linear-gradient(135deg,#ef4444,#b91c1c)', lbl:'إعلان رسمي'},
-  activity: {badge:'bg-emerald', grad:'linear-gradient(135deg,#059669,#065f46)', lbl:'نشاط بلدي'},
-  social:   {badge:'bg-purple',  grad:'linear-gradient(135deg,#7c3aed,#4c1d95)', lbl:'ركن المجتمع'}
+  official: {grad:'linear-gradient(135deg,#ef4444,#b91c1c)', lbl:'إعلان رسمي',  bs:'background:rgba(239,68,68,.12);color:#dc2626'},
+  activity: {grad:'linear-gradient(135deg,#059669,#065f46)', lbl:'نشاط بلدي',   bs:'background:rgba(5,150,105,.12);color:#059669'},
+  social:   {grad:'linear-gradient(135deg,#7c3aed,#4c1d95)', lbl:'ركن المجتمع', bs:'background:rgba(124,58,237,.12);color:#7c3aed'}
 };
 
-const BADGE_STYLE = {
-  official: 'background:rgba(239,68,68,.12);color:#dc2626',
-  activity: 'background:rgba(5,150,105,.12);color:#059669',
-  social:   'background:rgba(124,58,237,.12);color:#7c3aed'
-};
-
-/* ══ بطاقة الخبر الأفقية (بدون عنوان، فقط وصف) ══ */
+/* ══ بطاقة الخبر الأفقية (بدون عنوان) ══ */
 function makeNewsCard(n){
-  const s = NS[n.category] || NS.official;
-  const excerpt = (n.content || '').substring(0, 90) + '...';
-  const img = n.image_url
-    ? `<img class="news-card-img" src="${n.image_url}" alt="" loading="lazy">`
-    : `<div class="news-card-img-ph" style="background:${s.grad}">
-         <iconify-icon icon="${n.category==='official'?'lucide:megaphone':'lucide:newspaper'}"
-           style="color:rgba(255,255,255,.75);font-size:2rem"></iconify-icon>
-       </div>`;
-  return `<div class="news-card" onclick="openNewsModal(${n.id})">
-    ${img}
-    <div class="news-card-body">
-      <div class="news-card-excerpt">${excerpt}</div>
-    </div>
-    <div class="news-card-footer">
-      <button class="read-more" onclick="event.stopPropagation();openNewsModal(${n.id})">« المزيد</button>
-    </div>
-  </div>`;
+  var s       = NS[n.category] || NS.official;
+  var excerpt = (n.content||'').substring(0,90)+'...';
+  var icon    = n.category==='official' ? 'lucide:megaphone' : 'lucide:newspaper';
+  var img     = n.image_url
+    ? '<img class="news-card-img" src="'+n.image_url+'" alt="" loading="lazy">'
+    : '<div class="news-card-img-ph" style="background:'+s.grad+'"><iconify-icon icon="'+icon+'" style="color:rgba(255,255,255,.75);font-size:2rem;pointer-events:none"></iconify-icon></div>';
+  return '<div class="news-card" onclick="openNewsModal('+n.id+')">'
+    +img
+    +'<div class="news-card-body"><div class="news-card-excerpt">'+excerpt+'</div></div>'
+    +'<div class="news-card-footer"><button class="read-more" onclick="event.stopPropagation();openNewsModal('+n.id+')">« المزيد</button></div>'
+    +'</div>';
 }
 
-/* ══ Home loaders ══ */
-async function loadHome(){
-  loadHOfficial(); loadHNews(); loadHBeaches(); loadHTourism();
+/* ══ Home ══ */
+function loadHome(){
+  loadHOfficial();
+  loadHNews();
+  loadHBeaches();
+  loadHTourism();
 }
 
 async function loadHOfficial(){
-  const el = document.getElementById('h-official');
+  var el = document.getElementById('h-official');
   try{
-    const d = await api('/api/news');
+    var d = await api('/api/news');
     if(d.data) allNews = d.data;
-    const items = (d.data||[]).filter(n => n.category === 'official').slice(0,10);
-    if(!items.length){ el.innerHTML = ''; return; }
-    el.innerHTML = items.map(makeNewsCard).join('');
-  }catch{ el.innerHTML = ''; }
+    var items = (d.data||[]).filter(function(n){ return n.category==='official'; }).slice(0,10);
+    el.innerHTML = items.length ? items.map(makeNewsCard).join('') : '';
+  }catch(e){ el.innerHTML=''; }
 }
 
 async function loadHNews(){
-  const el = document.getElementById('h-news');
+  var el = document.getElementById('h-news');
   try{
-    const d = await api('/api/news');
+    var d = await api('/api/news');
     if(d.data) allNews = d.data;
-    const items = (d.data||[]).filter(n => n.category !== 'official').slice(0,10);
-    if(!items.length){ el.innerHTML = ''; return; }
-    el.innerHTML = items.map(makeNewsCard).join('');
-  }catch{ el.innerHTML = ''; }
+    var items = (d.data||[]).filter(function(n){ return n.category!=='official'; }).slice(0,10);
+    el.innerHTML = items.length ? items.map(makeNewsCard).join('') : '';
+  }catch(e){ el.innerHTML=''; }
 }
 
 async function loadHBeaches(){
-  const el = document.getElementById('h-beaches');
+  var el = document.getElementById('h-beaches');
   try{
-    const d = await api('/api/beaches');
-    const items = (d.data||[]).slice(0,8);
-    if(!items.length){ el.innerHTML = ''; return; }
-    el.innerHTML = items.map(b => placeCard(b,'beach')).join('');
-  }catch{ el.innerHTML = ''; }
+    var d = await api('/api/beaches');
+    var items = (d.data||[]).slice(0,8);
+    el.innerHTML = items.length ? items.map(function(b){ return placeCard(b,'beach'); }).join('') : '';
+  }catch(e){ el.innerHTML=''; }
 }
 
 async function loadHTourism(){
-  const el = document.getElementById('h-tourism');
+  var el = document.getElementById('h-tourism');
   try{
-    const d = await api('/api/tourism');
-    const items = (d.data||[]).slice(0,8);
-    if(!items.length){ el.innerHTML = ''; return; }
-    el.innerHTML = items.map(t => placeCard(t,'tourism')).join('');
-  }catch{ el.innerHTML = ''; }
+    var d = await api('/api/tourism');
+    var items = (d.data||[]).slice(0,8);
+    el.innerHTML = items.length ? items.map(function(t){ return placeCard(t,'tourism'); }).join('') : '';
+  }catch(e){ el.innerHTML=''; }
 }
 
 function placeCard(item, type){
-  const n = item.name || '';
-  const fn = type === 'beach'
-    ? `openBeachModal(${item.id})`
-    : `openTourismModal(${item.id})`;
-  const ph = type === 'beach'
-    ? `<div class="place-card-ph" style="background:linear-gradient(135deg,#0ea5e9,#0284c7)">
-         <iconify-icon icon="lucide:waves" style="color:rgba(255,255,255,.8);font-size:2.2rem"></iconify-icon>
-       </div>`
-    : `<div class="place-card-ph" style="background:linear-gradient(135deg,#059669,#065f46)">
-         <iconify-icon icon="lucide:compass" style="color:rgba(255,255,255,.8);font-size:2.2rem"></iconify-icon>
-       </div>`;
-  const img = item.image_url
-    ? `<img src="${item.image_url}" alt="${n}" style="width:100%;height:100%;object-fit:cover;display:block">`
+  var n  = item.name || '';
+  var fn = type==='beach' ? 'openBeachModal('+item.id+')' : 'openTourismModal('+item.id+')';
+  var ph = type==='beach'
+    ? '<div class="place-card-ph" style="background:linear-gradient(135deg,#0ea5e9,#0284c7)"><iconify-icon icon="lucide:waves" style="color:rgba(255,255,255,.8);font-size:2.2rem;pointer-events:none"></iconify-icon></div>'
+    : '<div class="place-card-ph" style="background:linear-gradient(135deg,#059669,#065f46)"><iconify-icon icon="lucide:compass" style="color:rgba(255,255,255,.8);font-size:2.2rem;pointer-events:none"></iconify-icon></div>';
+  var imgH = item.image_url
+    ? '<img src="'+item.image_url+'" alt="'+n+'" style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none">'
     : ph;
-  return `<div class="place-card" onclick="${fn}">
-    ${img}
-    <div class="place-card-grad"></div>
-    <div class="place-card-body"><div class="place-card-name">${n}</div></div>
-  </div>`;
+  return '<div class="place-card" onclick="'+fn+'">'
+    +imgH
+    +'<div class="place-card-grad"></div>'
+    +'<div class="place-card-body"><div class="place-card-name">'+n+'</div></div>'
+    +'</div>';
 }
 
 /* ══ News Screen ══ */
 async function loadNewsScreen(){
-  const el = document.getElementById('news-list');
+  var el = document.getElementById('news-list');
   try{
-    const d = await api('/api/news');
+    var d = await api('/api/news');
     allNews = d.data || [];
     renderNews(allNews);
-  }catch{
+  }catch(e){
     el.innerHTML = '<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';
   }
 }
 
 function filterNews(cat, btn){
-  document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.cat-tab').forEach(function(t){ t.classList.remove('active'); });
   btn.classList.add('active');
-  renderNews(cat === 'all' ? allNews : allNews.filter(n => n.category === cat));
+  renderNews(cat==='all' ? allNews : allNews.filter(function(n){ return n.category===cat; }));
 }
 
-/* قائمة الأخبار: بدون عنوان، فقط الوصف */
 function renderNews(items){
-  const el = document.getElementById('news-list');
+  var el = document.getElementById('news-list');
   if(!items.length){
     el.innerHTML = '<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>لا توجد أخبار</p></div>';
     return;
   }
-  el.innerHTML = items.map(n => {
-    const s   = NS[n.category] || NS.official;
-    const bs  = BADGE_STYLE[n.category] || BADGE_STYLE.official;
-    const lbl = n.custom_label || s.lbl || '';
-    const pin = n.is_pinned
-      ? `<span style="font-size:10px;font-weight:800;color:#f59e0b;display:flex;align-items:center;gap:2px">
-           <iconify-icon icon="lucide:pin"></iconify-icon>مثبت
-         </span>` : '';
-    const desc = (n.content || '').substring(0, 130) + '...';
-    const imgW = n.image_url
-      ? `<div class="announce-img-wrap"><img src="${n.image_url}" alt="" loading="lazy"></div>`
-      : `<div class="announce-img-wrap" style="background:${s.grad};height:90px">
-           <iconify-icon icon="${n.category==='official'?'lucide:megaphone':'lucide:clipboard-list'}"
-             style="color:rgba(255,255,255,.65);font-size:2.2rem"></iconify-icon>
-         </div>`;
-    return `<div class="announce-card fade-in" onclick="openNewsModal(${n.id})">
-      ${imgW}
-      <div class="announce-body">
-        <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px">
-          <span class="news-badge" style="${bs}">${lbl}</span>${pin}
-        </div>
-        <div style="font-size:13px;color:var(--muted);line-height:1.65">${desc}</div>
-        <div class="announce-footer">
-          <button class="read-more" onclick="event.stopPropagation();openNewsModal(${n.id})">« اقرأ المزيد</button>
-        </div>
-      </div>
-    </div>`;
+  el.innerHTML = items.map(function(n){
+    var s    = NS[n.category] || NS.official;
+    var lbl  = n.custom_label || s.lbl || '';
+    var pin  = n.is_pinned
+      ? '<span style="font-size:10px;font-weight:800;color:#f59e0b;display:flex;align-items:center;gap:2px"><iconify-icon icon="lucide:pin" style="pointer-events:none"></iconify-icon>مثبت</span>'
+      : '';
+    var desc = (n.content||'').substring(0,130)+'...';
+    var imgW = n.image_url
+      ? '<div class="announce-img-wrap"><img src="'+n.image_url+'" alt="" loading="lazy"></div>'
+      : '<div class="announce-img-wrap" style="background:'+s.grad+';height:90px"><iconify-icon icon="'+(n.category==='official'?'lucide:megaphone':'lucide:clipboard-list')+'" style="color:rgba(255,255,255,.65);font-size:2.2rem;pointer-events:none"></iconify-icon></div>';
+    return '<div class="announce-card fade-in" onclick="openNewsModal('+n.id+')">'
+      +imgW
+      +'<div class="announce-body">'
+      +'<div style="display:flex;align-items:center;gap:7px;margin-bottom:6px"><span class="news-badge" style="'+s.bs+'">'+lbl+'</span>'+pin+'</div>'
+      +'<div style="font-size:13px;color:var(--muted);line-height:1.65">'+desc+'</div>'
+      +'<div class="announce-footer"><button class="read-more" onclick="event.stopPropagation();openNewsModal('+n.id+')">« اقرأ المزيد</button></div>'
+      +'</div>'
+      +'</div>';
   }).join('');
 }
 
-/* ══ Guide / Facilities ══ */
+/* ══ Facilities ══ */
 const FM = {
-  'admin-branches': {cat:'branches',     icon:'lucide:landmark',      color:'#059669', bg:'#d1fae5'},
-  'education':      {cat:'education',    icon:'lucide:graduation-cap',color:'#2563eb', bg:'#dbeafe'},
-  'health':         {cat:'health',       icon:'lucide:heart-pulse',   color:'#dc2626', bg:'#fee2e2'},
-  'public-bodies':  {cat:'public_bodies',icon:'lucide:building-2',    color:'#7c3aed', bg:'#ede9fe'},
+  'admin-branches': {cat:'branches',      icon:'lucide:landmark',       color:'#059669', bg:'#d1fae5'},
+  'education':      {cat:'education',     icon:'lucide:graduation-cap', color:'#2563eb', bg:'#dbeafe'},
+  'health':         {cat:'health',        icon:'lucide:heart-pulse',    color:'#dc2626', bg:'#fee2e2'},
+  'public-bodies':  {cat:'public_bodies', icon:'lucide:building-2',     color:'#7c3aed', bg:'#ede9fe'}
 };
 
 async function loadFacTab(tab, btn){
   facCat = tab;
-  document.querySelectorAll('.guide-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.guide-tab').forEach(function(t){ t.classList.remove('active'); });
   if(btn) btn.classList.add('active');
-  const el = document.getElementById('fac-list');
+  var el = document.getElementById('fac-list');
   el.innerHTML = '<div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>';
-  const m = FM[tab];
+  var m = FM[tab];
   try{
-    const d = await api('/api/facilities?cat=' + m.cat);
-    const items = d.data || [];
+    var d = await api('/api/facilities?cat='+m.cat);
+    var items = d.data || [];
     if(!items.length){
       el.innerHTML = '<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>لا توجد عناصر</p></div>';
       return;
     }
-    el.innerHTML = items.map(f => {
-      const img = f.image_url
-        ? `<img class="fac-card-img" src="${f.image_url}" alt=""
-             onerror="this.outerHTML='<div class=fac-card-ph style=background:${m.bg}><iconify-icon icon=${m.icon} style=color:${m.color};font-size:1.8rem></iconify-icon></div>'">`
-        : `<div class="fac-card-ph" style="background:${m.bg}">
-             <iconify-icon icon="${m.icon}" style="color:${m.color};font-size:1.8rem"></iconify-icon>
-           </div>`;
-      return `<div class="fac-card fade-in" onclick="openFacModal(${f.id},'${tab}')">
-        ${img}
-        <div class="fac-card-body">
-          ${f.sub_type ? `<span class="fac-card-badge" style="background:${m.bg};color:${m.color}">${f.sub_type}</span>` : ''}
-          <div class="fac-card-name">${f.name||''}</div>
-          ${f.description ? `<div class="fac-card-desc">${f.description}</div>` : ''}
-        </div>
-        <iconify-icon icon="lucide:chevron-left" style="font-size:18px;color:var(--muted);padding-left:10px;flex-shrink:0"></iconify-icon>
-      </div>`;
+    el.innerHTML = items.map(function(f){
+      var img = f.image_url
+        ? '<img class="fac-card-img" src="'+f.image_url+'" alt="" onerror="this.outerHTML=\'<div class=fac-card-ph style=background:'+m.bg+'><iconify-icon icon='+m.icon+' style=color:'+m.color+';font-size:1.8rem></iconify-icon></div>\'">'
+        : '<div class="fac-card-ph" style="background:'+m.bg+'"><iconify-icon icon="'+m.icon+'" style="color:'+m.color+';font-size:1.8rem;pointer-events:none"></iconify-icon></div>';
+      return '<div class="fac-card fade-in" onclick="openFacModal('+f.id+',\''+tab+'\')">'
+        +img
+        +'<div class="fac-card-body">'
+        +(f.sub_type?'<span class="fac-card-badge" style="background:'+m.bg+';color:'+m.color+'">'+f.sub_type+'</span>':'')
+        +'<div class="fac-card-name">'+(f.name||'')+'</div>'
+        +(f.description?'<div class="fac-card-desc">'+f.description+'</div>':'')
+        +'</div>'
+        +'<iconify-icon icon="lucide:chevron-left" style="font-size:18px;color:var(--muted);padding-left:10px;flex-shrink:0;pointer-events:none"></iconify-icon>'
+        +'</div>';
     }).join('');
-  }catch{
+  }catch(e){
     el.innerHTML = '<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';
   }
 }
 
-/* ══ Modal helpers ══ */
-function om(id){ document.getElementById(id).classList.add('open'); document.body.style.overflow = 'hidden'; }
-function cm(id){ document.getElementById(id).classList.remove('open'); document.body.style.overflow = ''; }
+/* ══ Modal Helpers ══ */
+function om(id){
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function cm(id){
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow = '';
+}
 
 /* Swipe-to-dismiss */
-document.querySelectorAll('.modal-sheet').forEach(sheet => {
-  let startY = 0, startScroll = 0, dragging = false;
-  sheet.addEventListener('touchstart', e => {
-    startY = e.touches[0].clientY;
+document.querySelectorAll('.modal-sheet').forEach(function(sheet){
+  var startY=0, startScroll=0, dragging=false;
+  sheet.addEventListener('touchstart', function(e){
+    startY      = e.touches[0].clientY;
     startScroll = sheet.scrollTop;
-    dragging = true;
+    dragging    = true;
   }, {passive:true});
-  sheet.addEventListener('touchmove', e => {
+  sheet.addEventListener('touchmove', function(e){
     if(!dragging) return;
-    const dy = e.touches[0].clientY - startY;
+    var dy = e.touches[0].clientY - startY;
     if(dy > 0 && startScroll <= 0){
-      sheet.style.transform = `translateY(${dy}px)`;
+      sheet.style.transform  = 'translateY('+dy+'px)';
       sheet.style.transition = 'none';
     }
   }, {passive:true});
-  sheet.addEventListener('touchend', e => {
+  sheet.addEventListener('touchend', function(e){
     if(!dragging) return;
     dragging = false;
-    const dy = e.changedTouches[0].clientY - startY;
+    var dy = e.changedTouches[0].clientY - startY;
     sheet.style.transition = '';
     if(dy > 80 && startScroll <= 0){
-      const overlay = sheet.closest('.modal-overlay');
+      var overlay = sheet.closest('.modal-overlay');
       if(overlay) cm(overlay.id);
     }
     sheet.style.transform = '';
   }, {passive:true});
 });
 
-/* ══ Album helpers ══ */
+/* ══ Album: شبكة مصغرة ══ */
 function album(elId, albums){
-  const el = document.getElementById(elId);
-  const a = Array.isArray(albums) ? albums : [];
-  if(!a.length){ el.innerHTML = ''; return; }
-  el.innerHTML = `
-    <div class="album-title">
-      <iconify-icon icon="lucide:images" style="color:var(--green)"></iconify-icon>
-      معرض الصور (${a.length})
-    </div>
-    <div class="album-grid">
-      ${a.map(x => `<img src="${x.image_url}" alt="" onclick="openLightbox('${x.image_url}')" loading="lazy">`).join('')}
-    </div>`;
+  var el = document.getElementById(elId);
+  var a  = Array.isArray(albums) ? albums : [];
+  if(!a.length){ el.innerHTML=''; return; }
+  el.innerHTML = '<div class="album-title"><iconify-icon icon="lucide:images" style="color:var(--green);pointer-events:none"></iconify-icon>معرض الصور ('+a.length+')</div>'
+    +'<div class="album-grid">'
+    +a.map(function(x){
+      return '<img src="'+x.image_url+'" alt="" class="clickable" onclick="openLightbox(\''+x.image_url+'\')" loading="lazy">';
+    }).join('')
+    +'</div>';
 }
 
-/* صور الألبوم الكبيرة فقط — للإعلانات والملصقات */
+/* ══ Album: صور كبيرة (إعلانات/ملصقات) ══ */
 function albumBig(elId, albums){
-  const el = document.getElementById(elId);
-  const a = Array.isArray(albums) ? albums : [];
-  if(!a.length){ el.innerHTML = ''; return; }
-  el.innerHTML = a.map(x => `
-    <div style="width:100%;margin-bottom:3px;overflow:hidden;line-height:0">
-      <img src="${x.image_url}" alt=""
-        style="width:100%;display:block;object-fit:cover;cursor:pointer"
-        onclick="openLightbox('${x.image_url}')" loading="lazy">
-    </div>`).join('');
+  var el = document.getElementById(elId);
+  var a  = Array.isArray(albums) ? albums : [];
+  if(!a.length){ el.innerHTML=''; return; }
+  el.innerHTML = a.map(function(x){
+    return '<div style="line-height:0;margin-bottom:3px">'
+      +'<img src="'+x.image_url+'" alt="" class="big-album-img" onclick="openLightbox(\''+x.image_url+'\')" loading="lazy">'
+      +'</div>';
+  }).join('');
 }
 
 /* ══ Open News Modal ══ */
 async function openNewsModal(id){
-  let n = allNews.find(x => x.id == id);
+  var n = allNews.find(function(x){ return x.id==id; });
   if(!n){
     try{
-      const d = await api('/api/news');
+      var d  = await api('/api/news');
       allNews = d.data || [];
-      n = allNews.find(x => x.id == id);
-    }catch{}
+      n       = allNews.find(function(x){ return x.id==id; });
+    }catch(e){}
   }
   if(!n) return;
 
-  /* جمع الألبومات */
-  let albums = [];
-  if(Array.isArray(n.albums) && n.albums.length) albums = n.albums;
-  else if(n.album_urls){
+  /* جمع الألبوم */
+  var albums = [];
+  if(Array.isArray(n.albums) && n.albums.length){
+    albums = n.albums;
+  } else if(n.album_urls){
     try{
-      const arr = typeof n.album_urls === 'string' ? JSON.parse(n.album_urls) : n.album_urls;
-      albums = (arr||[]).map((u,i) => ({id:i, image_url:u, caption:''}));
-    }catch{}
+      var arr = typeof n.album_urls==='string' ? JSON.parse(n.album_urls) : n.album_urls;
+      albums  = (arr||[]).map(function(u,i){ return {id:i, image_url:u, caption:''}; });
+    }catch(e){}
   }
 
-  /* الإعلانات الرسمية: صور الألبوم فقط */
   if(n.category === 'official'){
-    document.getElementById('mn-normal-view').style.display = 'none';
-    const av = document.getElementById('mn-announce-view');
-    av.style.display = 'block';
-    const allImgs = albums.length ? albums : (n.image_url ? [{image_url: n.image_url}] : []);
-    albumBig('mn-announce-album', allImgs);
+    /* إعلان رسمي: صور فقط */
+    document.getElementById('mn-normal-view').style.display  = 'none';
+    document.getElementById('mn-announce-view').style.display = 'block';
+    var imgs = albums.length ? albums : (n.image_url ? [{image_url:n.image_url}] : []);
+    albumBig('mn-announce-album', imgs);
   } else {
-    /* أخبار عادية */
+    /* خبر عادي */
     document.getElementById('mn-announce-view').style.display = 'none';
-    document.getElementById('mn-normal-view').style.display = 'block';
-    const img = document.getElementById('mn-img');
-    if(n.image_url){ img.src = n.image_url; img.style.display = 'block'; }
-    else img.style.display = 'none';
-    const badge = document.getElementById('mn-badge');
+    document.getElementById('mn-normal-view').style.display   = 'block';
+    var imgEl = document.getElementById('mn-img');
+    if(n.image_url){ imgEl.src=n.image_url; imgEl.style.display='block'; }
+    else imgEl.style.display = 'none';
+    var badgeEl = document.getElementById('mn-badge');
     if(n.custom_label){
-      badge.textContent = n.custom_label;
-      badge.style.cssText = 'background:rgba(5,150,105,.1);color:#059669;display:inline-block';
-    } else badge.style.display = 'none';
-    document.getElementById('mn-name').textContent = n.title || '';
+      badgeEl.textContent = n.custom_label;
+      badgeEl.style.cssText = 'background:rgba(5,150,105,.1);color:#059669;display:inline-block';
+    } else badgeEl.style.display = 'none';
+    document.getElementById('mn-name').textContent = n.title   || '';
     document.getElementById('mn-desc').textContent = n.content || '';
-    document.getElementById('mn-meta').innerHTML = n.date
-      ? `<span class="modal-chip"><iconify-icon icon="lucide:calendar-days"></iconify-icon>${n.date}</span>` : '';
+    document.getElementById('mn-meta').innerHTML   = n.date
+      ? '<span class="modal-chip"><iconify-icon icon="lucide:calendar-days" style="pointer-events:none"></iconify-icon>'+n.date+'</span>' : '';
     album('mn-album', albums);
-    const closeBtn = document.getElementById('mn-close-btn');
+    var closeBtn = document.getElementById('mn-close-btn');
     if(closeBtn) closeBtn.style.display = n.image_url ? 'flex' : 'none';
   }
   om('m-news');
@@ -1209,89 +1156,88 @@ async function openNewsModal(id){
 async function openBeachModal(id){
   try{
     delete C['/api/beaches?id='+id];
-    const d = await api('/api/beaches?id='+id);
-    const b = d.data; if(!b) return;
-    const img = document.getElementById('mb-img');
-    if(b.image_url){ img.src = b.image_url; img.style.display = 'block'; }
-    else img.style.display = 'none';
-    document.getElementById('mb-name').textContent = b.name || '';
+    var d = await api('/api/beaches?id='+id);
+    var b = d.data; if(!b) return;
+    var img = document.getElementById('mb-img');
+    if(b.image_url){ img.src=b.image_url; img.style.display='block'; }
+    else img.style.display='none';
+    document.getElementById('mb-name').textContent = b.name        || '';
     document.getElementById('mb-desc').textContent = b.description || '';
-    let m = '';
-    if(b.is_supervised) m += `<span class="modal-chip"><iconify-icon icon="lucide:shield-check" style="color:#059669"></iconify-icon>مراقب</span>`;
-    if(b.season) m += `<span class="modal-chip">${b.season}</span>`;
+    var m='';
+    if(b.is_supervised) m+='<span class="modal-chip"><iconify-icon icon="lucide:shield-check" style="color:#059669;pointer-events:none"></iconify-icon>مراقب</span>';
+    if(b.season)        m+='<span class="modal-chip">'+b.season+'</span>';
     document.getElementById('mb-meta').innerHTML = m;
     album('mb-album', b.albums);
     om('m-beach');
-  }catch{}
+  }catch(e){}
 }
 
 /* ══ Open Tourism Modal ══ */
 async function openTourismModal(id){
   try{
     delete C['/api/tourism?id='+id];
-    const d = await api('/api/tourism?id='+id);
-    const t = d.data; if(!t) return;
+    var d = await api('/api/tourism?id='+id);
+    var t = d.data; if(!t) return;
 
-    /* جمع الألبومات */
-    let albums = [];
-    if(Array.isArray(t.albums) && t.albums.length) albums = t.albums;
-    else if(t.album_urls){
+    var albums = [];
+    if(Array.isArray(t.albums) && t.albums.length){
+      albums = t.albums;
+    } else if(t.album_urls){
       try{
-        const arr = typeof t.album_urls === 'string' ? JSON.parse(t.album_urls) : t.album_urls;
-        albums = (arr||[]).map((u,i) => ({id:i, image_url:u, caption:''}));
-      }catch{}
+        var arr = typeof t.album_urls==='string' ? JSON.parse(t.album_urls) : t.album_urls;
+        albums  = (arr||[]).map(function(u,i){ return {id:i, image_url:u, caption:''}; });
+      }catch(e){}
     }
 
-    /* الملصقات (sticker): صور فقط */
-    if(t.badge_text === 'ملصق' || t.type === 'sticker'){
-      document.getElementById('mt-normal-view').style.display = 'none';
-      const sv = document.getElementById('mt-sticker-view');
-      sv.style.display = 'block';
-      const allImgs = albums.length ? albums : (t.image_url ? [{image_url: t.image_url}] : []);
-      albumBig('mt-sticker-album', allImgs);
+    /* ملصق: صور فقط */
+    if(t.badge_text==='ملصق' || t.type==='sticker'){
+      document.getElementById('mt-normal-view').style.display  = 'none';
+      document.getElementById('mt-sticker-view').style.display = 'block';
+      var imgs = albums.length ? albums : (t.image_url ? [{image_url:t.image_url}] : []);
+      albumBig('mt-sticker-album', imgs);
     } else {
       document.getElementById('mt-sticker-view').style.display = 'none';
-      document.getElementById('mt-normal-view').style.display = 'block';
-      const img = document.getElementById('mt-img');
-      if(t.image_url){ img.src = t.image_url; img.style.display = 'block'; }
-      else img.style.display = 'none';
-      const badge = document.getElementById('mt-badge');
-      if(t.badge_text){ badge.textContent = t.badge_text; badge.style.display = 'inline-block'; }
-      else badge.style.display = 'none';
-      document.getElementById('mt-name').textContent = t.name || '';
+      document.getElementById('mt-normal-view').style.display  = 'block';
+      var imgEl = document.getElementById('mt-img');
+      if(t.image_url){ imgEl.src=t.image_url; imgEl.style.display='block'; }
+      else imgEl.style.display='none';
+      var badgeEl = document.getElementById('mt-badge');
+      if(t.badge_text){ badgeEl.textContent=t.badge_text; badgeEl.style.display='inline-block'; }
+      else badgeEl.style.display='none';
+      document.getElementById('mt-name').textContent = t.name        || '';
       document.getElementById('mt-desc').textContent = t.description || '';
-      let m = '';
-      if(t.rating) m += `<span class="modal-chip"><iconify-icon icon="lucide:star" style="color:#f59e0b"></iconify-icon>${t.rating}/5</span>`;
-      if(t.distance_info) m += `<span class="modal-chip">${t.distance_info}</span>`;
+      var m='';
+      if(t.rating)        m+='<span class="modal-chip"><iconify-icon icon="lucide:star" style="color:#f59e0b;pointer-events:none"></iconify-icon>'+t.rating+'/5</span>';
+      if(t.distance_info) m+='<span class="modal-chip">'+t.distance_info+'</span>';
       document.getElementById('mt-meta').innerHTML = m;
       album('mt-album', albums);
     }
     om('m-tour');
-  }catch{}
+  }catch(e){}
 }
 
 /* ══ Open Facility Modal ══ */
 async function openFacModal(id, tab){
   try{
-    const m = FM[tab] || FM['admin-branches'];
+    var m = FM[tab] || FM['admin-branches'];
     delete C['/api/facilities?id='+id];
-    const d = await api('/api/facilities?id='+id);
-    const f = d.data; if(!f) return;
-    const img = document.getElementById('mf-img');
-    if(f.image_url){ img.src = f.image_url; img.style.display = 'block'; }
-    else img.style.display = 'none';
-    const badge = document.getElementById('mf-badge');
+    var d = await api('/api/facilities?id='+id);
+    var f = d.data; if(!f) return;
+    var img = document.getElementById('mf-img');
+    if(f.image_url){ img.src=f.image_url; img.style.display='block'; }
+    else img.style.display='none';
+    var badgeEl = document.getElementById('mf-badge');
     if(f.sub_type){
-      badge.textContent = f.sub_type;
-      badge.style.cssText = `background:${m.bg};color:${m.color};display:inline-block`;
-    } else badge.style.display = 'none';
-    document.getElementById('mf-name').textContent = f.name || '';
+      badgeEl.textContent  = f.sub_type;
+      badgeEl.style.cssText = 'background:'+m.bg+';color:'+m.color+';display:inline-block';
+    } else badgeEl.style.display='none';
+    document.getElementById('mf-name').textContent = f.name        || '';
     document.getElementById('mf-desc').textContent = f.description || '';
-    const tags = Array.isArray(f.tags) ? f.tags : [];
-    document.getElementById('mf-meta').innerHTML = tags.map(tg => `<span class="modal-chip">#${tg}</span>`).join('');
+    var tags = Array.isArray(f.tags) ? f.tags : [];
+    document.getElementById('mf-meta').innerHTML = tags.map(function(tg){ return '<span class="modal-chip">#'+tg+'</span>'; }).join('');
     album('mf-album', f.albums);
     om('m-fac');
-  }catch{}
+  }catch(e){}
 }
 
 /* ══ Lightbox ══ */
@@ -1304,20 +1250,20 @@ function closeLightbox(){
 }
 
 /* ══ Map ══ */
-let appMap = null;
+var appMap = null;
 function initMap2(){
   mapDone = true;
-  setTimeout(() => {
+  setTimeout(function(){
     appMap = L.map('app-map', {
       center:[37.067177, 7.380601],
       zoom:13,
       zoomControl:true,
-      attributionControl:false   /* ← إخفاء Leaflet + علم أوكرانيا */
+      attributionControl:false  /* إخفاء Leaflet + علم أوكرانيا */
     });
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom:19
     }).addTo(appMap);
-    setTimeout(() => appMap.invalidateSize(), 200);
+    setTimeout(function(){ appMap.invalidateSize(); }, 200);
     loadMapData();
   }, 100);
 }
@@ -1325,33 +1271,37 @@ function initMap2(){
 async function loadMapData(){
   if(!appMap) return;
   try{
-    const mIcon = L.divIcon({
+    var mIcon = L.divIcon({
       className:'',
-      html:`<div style="width:34px;height:34px;background:#059669;border:2.5px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.3);font-size:15px">🏛️</div>`,
+      html:'<div style="width:34px;height:34px;background:#059669;border:2.5px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.3);font-size:15px">🏛️</div>',
       iconSize:[34,34], iconAnchor:[17,17]
     });
-    L.marker([37.067177, 7.380601], {icon:mIcon})
+    L.marker([37.067177,7.380601], {icon:mIcon})
       .addTo(appMap)
       .bindPopup('<b style="font-family:Cairo">مقر بلدية شطايبي</b>', {maxWidth:180});
 
-    const [br, tr, fr] = await Promise.all([
-      api('/api/beaches'), api('/api/tourism'), api('/api/facilities')
+    var results = await Promise.all([
+      api('/api/beaches'),
+      api('/api/tourism'),
+      api('/api/facilities')
     ]);
-    const mk = (item, color, icon) => {
+    var br = results[0], tr = results[1], fr = results[2];
+
+    function mk(item, color, icon){
       if(!item.lat || !item.lng) return;
-      const ic = L.divIcon({
+      var ic = L.divIcon({
         className:'',
-        html:`<div style="width:28px;height:28px;background:${color};border:2px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 5px rgba(0,0,0,.25)"><iconify-icon icon="${icon}" style="font-size:13px;color:#fff"></iconify-icon></div>`,
+        html:'<div style="width:28px;height:28px;background:'+color+';border:2px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 5px rgba(0,0,0,.25)"><iconify-icon icon="'+icon+'" style="font-size:13px;color:#fff;pointer-events:none"></iconify-icon></div>',
         iconSize:[28,28], iconAnchor:[14,14]
       });
-      L.marker([item.lat, item.lng], {icon:ic})
+      L.marker([item.lat,item.lng], {icon:ic})
         .addTo(appMap)
-        .bindPopup(`<b style="font-family:Cairo;font-size:12px">${item.name||''}</b>`, {maxWidth:160});
-    };
-    (br.data||[]).forEach(b => mk(b,'#0ea5e9','lucide:waves'));
-    (tr.data||[]).forEach(t => mk(t,'#059669','lucide:compass'));
-    (fr.data||[]).forEach(f => mk(f,'#7c3aed','lucide:building'));
-  }catch{}
+        .bindPopup('<b style="font-family:Cairo;font-size:12px">'+(item.name||'')+'</b>', {maxWidth:160});
+    }
+    (br.data||[]).forEach(function(b){ mk(b,'#0ea5e9','lucide:waves'); });
+    (tr.data||[]).forEach(function(t){ mk(t,'#059669','lucide:compass'); });
+    (fr.data||[]).forEach(function(f){ mk(f,'#7c3aed','lucide:building'); });
+  }catch(e){}
 }
 
 /* ══ Init ══ */
