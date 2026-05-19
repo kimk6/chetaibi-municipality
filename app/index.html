@@ -285,21 +285,29 @@ img.clickable{pointer-events:auto;}
 
 /* ══ GUIDE TABS ══ */
 .guide-tabs{
-  display:grid;grid-template-columns:repeat(2,1fr);gap:8px;
-  padding:12px 18px 10px;
+  display:grid;grid-template-columns:repeat(2,1fr);gap:10px;
+  padding:14px 18px 10px;
   position:sticky;top:0;z-index:3;
   background:var(--surface);
 }
 .guide-tab{
-  padding:10px 8px;border-radius:14px;font-size:11px;font-weight:800;
-  font-family:'Cairo',sans-serif;border:1.5px solid var(--border);
-  background:var(--card);color:var(--muted);cursor:pointer;
-  display:flex;align-items:center;justify-content:center;gap:6px;
+  padding:12px 8px 10px;border-radius:16px;font-size:10.5px;font-weight:800;
+  font-family:'Cairo',sans-serif;border:1.5px solid var(--border-light);
+  background:var(--card);color:var(--text);cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;
   box-shadow:var(--shadow-sm);touch-action:manipulation;transition:all .2s;
+  min-height:78px;
 }
-.guide-tab iconify-icon{font-size:15px;pointer-events:none;}
-.guide-tab.active{background:var(--green);color:#fff;border-color:var(--green);box-shadow:0 4px 14px rgba(5,150,105,.28);}
-.guide-tab:active:not(.active){opacity:.6;}
+.gt-icon{
+  width:38px;height:38px;border-radius:11px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.gt-icon iconify-icon{font-size:19px;pointer-events:none;}
+.guide-tab span{line-height:1.25;text-align:center;}
+.guide-tab.active{background:var(--green);color:#fff;border-color:var(--green);box-shadow:0 4px 16px rgba(5,150,105,.3);}
+.guide-tab.active .gt-icon{background:rgba(255,255,255,.2)!important;}
+.guide-tab.active .gt-icon iconify-icon{color:#fff!important;}
+.guide-tab:active:not(.active){transform:scale(.95);opacity:.8;}
 
 /* ══ FAC CARD ══ */
 .fac-card{
@@ -462,10 +470,10 @@ img.clickable{pointer-events:auto;}
       <div class="scroll-area" id="scroll-news">
         <div class="content-block">
           <div class="cat-tabs">
-            <button class="cat-tab active" onclick="filterNews('all',this)"><iconify-icon icon="lucide:list" style="pointer-events:none"></iconify-icon>الكل</button>
-            <button class="cat-tab" onclick="filterNews('official',this)"><iconify-icon icon="lucide:megaphone" style="pointer-events:none"></iconify-icon>إعلانات</button>
+            <button class="cat-tab active" onclick="filterNews('official',this)"><iconify-icon icon="lucide:megaphone" style="pointer-events:none"></iconify-icon>إعلانات</button>
             <button class="cat-tab" onclick="filterNews('activity',this)"><iconify-icon icon="lucide:clipboard-list" style="pointer-events:none"></iconify-icon>نشاطات</button>
             <button class="cat-tab" onclick="filterNews('social',this)"><iconify-icon icon="lucide:handshake" style="pointer-events:none"></iconify-icon>مجتمع</button>
+            <button class="cat-tab" onclick="filterNews('poster',this)"><iconify-icon icon="lucide:image" style="pointer-events:none"></iconify-icon>الملصقات</button>
           </div>
           <div id="news-list" style="padding:10px 0">
             <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span>جاري التحميل</span></div>
@@ -491,10 +499,34 @@ img.clickable{pointer-events:auto;}
       <div class="scroll-area" id="scroll-guide">
         <div class="content-block">
           <div class="guide-tabs">
-            <button class="guide-tab active" onclick="loadFacTab('admin-branches',this)"><iconify-icon icon="lucide:landmark" style="pointer-events:none"></iconify-icon>الفروع الإدارية</button>
-            <button class="guide-tab" onclick="loadFacTab('education',this)"><iconify-icon icon="lucide:graduation-cap" style="pointer-events:none"></iconify-icon>التعليم والتكوين</button>
-            <button class="guide-tab" onclick="loadFacTab('health',this)"><iconify-icon icon="lucide:heart-pulse" style="pointer-events:none"></iconify-icon>المرافق الصحية</button>
-            <button class="guide-tab" onclick="loadFacTab('public-bodies',this)"><iconify-icon icon="lucide:building-2" style="pointer-events:none"></iconify-icon>الهيئات العمومية</button>
+            <button class="guide-tab active" onclick="loadFacTab('admin-branches',this)">
+              <div class="gt-icon" style="background:#d1fae5"><iconify-icon icon="lucide:landmark" style="color:#059669;pointer-events:none"></iconify-icon></div>
+              <span>الفروع الإدارية</span>
+            </button>
+            <button class="guide-tab" onclick="loadFacTab('education',this)">
+              <div class="gt-icon" style="background:#dbeafe"><iconify-icon icon="lucide:graduation-cap" style="color:#2563eb;pointer-events:none"></iconify-icon></div>
+              <span>التعليم والتكوين</span>
+            </button>
+            <button class="guide-tab" onclick="loadFacTab('health',this)">
+              <div class="gt-icon" style="background:#fee2e2"><iconify-icon icon="lucide:heart-pulse" style="color:#dc2626;pointer-events:none"></iconify-icon></div>
+              <span>المرافق الصحية</span>
+            </button>
+            <button class="guide-tab" onclick="loadFacTab('public-bodies',this)">
+              <div class="gt-icon" style="background:#ede9fe"><iconify-icon icon="lucide:building-2" style="color:#7c3aed;pointer-events:none"></iconify-icon></div>
+              <span>الهيئات العمومية</span>
+            </button>
+            <button class="guide-tab" onclick="loadFacTab('religious',this)">
+              <div class="gt-icon" style="background:#fef3c7"><iconify-icon icon="lucide:moon-star" style="color:#b45309;pointer-events:none"></iconify-icon></div>
+              <span>المرافق الدينية</span>
+            </button>
+            <button class="guide-tab" onclick="loadFacTab('cultural',this)">
+              <div class="gt-icon" style="background:#cffafe"><iconify-icon icon="lucide:palette" style="color:#0891b2;pointer-events:none"></iconify-icon></div>
+              <span>المرافق الثقافية</span>
+            </button>
+            <button class="guide-tab" onclick="loadFacTab('sports',this)">
+              <div class="gt-icon" style="background:#ffedd5"><iconify-icon icon="lucide:trophy" style="color:#ea580c;pointer-events:none"></iconify-icon></div>
+              <span>المرافق الرياضية</span>
+            </button>
           </div>
           <div id="fac-list" style="padding:6px 0">
             <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span>جاري التحميل</span></div>
@@ -846,10 +878,13 @@ function renderNews(items){
 }
 
 var FM={
-  'admin-branches':{cat:'branches',icon:'lucide:landmark',color:'#059669',bg:'#d1fae5'},
-  'education':{cat:'education',icon:'lucide:graduation-cap',color:'#2563eb',bg:'#dbeafe'},
-  'health':{cat:'health',icon:'lucide:heart-pulse',color:'#dc2626',bg:'#fee2e2'},
-  'public-bodies':{cat:'public_bodies',icon:'lucide:building-2',color:'#7c3aed',bg:'#ede9fe'}
+  'admin-branches':{cat:'branches',     icon:'lucide:landmark',      color:'#059669',bg:'#d1fae5'},
+  'education':     {cat:'education',    icon:'lucide:graduation-cap',color:'#2563eb',bg:'#dbeafe'},
+  'health':        {cat:'health',       icon:'lucide:heart-pulse',   color:'#dc2626',bg:'#fee2e2'},
+  'public-bodies': {cat:'public_bodies',icon:'lucide:building-2',   color:'#7c3aed',bg:'#ede9fe'},
+  'religious':     {cat:'religious',    icon:'lucide:moon-star',     color:'#b45309',bg:'#fef3c7'},
+  'cultural':      {cat:'cultural',     icon:'lucide:palette',       color:'#0891b2',bg:'#cffafe'},
+  'sports':        {cat:'sports',       icon:'lucide:trophy',        color:'#ea580c',bg:'#ffedd5'}
 };
 
 async function loadFacTab(tab,btn){
