@@ -25,7 +25,6 @@
   --shadow-sm:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
   --shadow-md:0 4px 16px rgba(0,0,0,.10),0 1px 4px rgba(0,0,0,.06);
 }
-
 *{
   margin:0;padding:0;box-sizing:border-box;
   -webkit-tap-highlight-color:transparent;
@@ -74,11 +73,11 @@ img.clickable{pointer-events:auto;}
 }
 .screen.hidden{display:none;pointer-events:none;}
 
-/* ══ HEADER — absolute، لا يأخذ مساحة في layout ══ */
+/* ══ HEADER ══ */
 .app-header{
   position:absolute;
   top:0;left:0;right:0;
-  z-index:1; /* أقل من scroll-area */
+  z-index:1;
   background:linear-gradient(145deg,#042f1e 0%,var(--green-d) 40%,var(--green-m) 75%,#059669 100%);
   overflow:hidden;
 }
@@ -87,13 +86,11 @@ img.clickable{pointer-events:auto;}
   background:radial-gradient(ellipse at 85% 20%,rgba(255,255,255,.07) 0%,transparent 60%);
   pointer-events:none;
 }
-/* لا ::after — حذف القوس الأبيض نهائياً */
 .app-header-inner{
   display:flex;
   align-items:center;
   gap:14px;
   position:relative;z-index:1;
-  /* padding متساوٍ أعلى وأسفل لتوسيط اللوجو */
   padding:calc(var(--safe-t) + 16px) 18px 16px;
 }
 .header-logo{
@@ -124,19 +121,18 @@ img.clickable{pointer-events:auto;}
 }
 .header-btn:active{background:rgba(255,255,255,.28);}
 
-/* ══ SCROLL AREA — z-index أعلى من الهيدر ══ */
+/* ══ SCROLL AREA ══ */
 .scroll-area{
   position:absolute;
   inset:0;
-  z-index:2; /* فوق الهيدر — يغطيه عند السكرول */
+  z-index:2;
   overflow-y:auto;
   overflow-x:hidden;
   -webkit-overflow-scrolling:touch;
   overscroll-behavior-y:contain;
-  /* padding-top يُضبط بـ JS حسب ارتفاع الهيدر الفعلي */
 }
 
-/* ══ CONTENT BLOCK — الخلفية البيضاء التي تغطي الهيدر ══ */
+/* ══ CONTENT BLOCK ══ */
 .content-block{
   background:var(--surface);
   border-radius:20px 20px 0 0;
@@ -144,7 +140,7 @@ img.clickable{pointer-events:auto;}
   position:relative;
 }
 
-/* ══ MAP SCREEN — بدون هيدر ══ */
+/* ══ MAP SCREEN ══ */
 #screen-map .scroll-area{
   overflow:hidden;
   padding-top:0 !important;
@@ -249,25 +245,69 @@ img.clickable{pointer-events:auto;}
 .place-card-name{font-size:12px;font-weight:900;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.6);line-height:1.3;}
 .place-card-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
 
-/* ══ CAT TABS ══ */
-.cat-tabs{
-  display:flex;gap:8px;overflow-x:auto;padding:10px 18px;
+/* ══ SEGMENT TABS — مشترك للدليل والأخبار ══ */
+/* الحاوية الخارجية التي تظهر تحت الهيدر مباشرة */
+.seg-bar-wrap{
+  /* تُضبط padding-top بواسطة JS مثل بقية المحتوى */
+  position:sticky;
+  top:0;
+  z-index:3;
+  background:var(--surface);
+  padding:10px 14px 0;
+  /* خط فاصل خفيف */
+  border-bottom:1px solid var(--border-light);
+}
+
+/* الشريط نفسه */
+.seg-bar{
+  display:flex;
+  gap:6px;
+  overflow-x:auto;
   scrollbar-width:none;
-  position:sticky;top:0;z-index:3;
-  background:var(--surface);border-bottom:1px solid var(--border-light);
+  -webkit-overflow-scrolling:touch;
   overscroll-behavior-x:contain;
+  padding-bottom:10px;
+  /* نمنع التمرير العمودي غير المرغوب */
+  scroll-snap-type:x mandatory;
 }
-.cat-tabs::-webkit-scrollbar{display:none;}
-.cat-tab{
-  flex-shrink:0;padding:7px 14px;border-radius:99px;font-size:11px;
-  font-weight:800;font-family:'Cairo',sans-serif;
-  border:1.5px solid var(--border);background:var(--card);
-  color:var(--muted);cursor:pointer;
-  display:flex;align-items:center;gap:5px;
-  box-shadow:var(--shadow-sm);touch-action:manipulation;transition:all .2s;
+.seg-bar::-webkit-scrollbar{display:none;}
+
+/* زر التصنيف الواحد */
+.seg-btn{
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:0 14px;
+  height:36px;
+  border-radius:99px;
+  border:1.5px solid var(--border);
+  background:var(--card);
+  color:var(--muted);
+  font-family:'Cairo',sans-serif;
+  font-size:11.5px;
+  font-weight:800;
+  cursor:pointer;
+  touch-action:manipulation;
+  transition:background .18s,color .18s,border-color .18s,box-shadow .18s;
+  scroll-snap-align:start;
+  white-space:nowrap;
+  box-shadow:var(--shadow-sm);
 }
-.cat-tab.active{background:var(--green);color:#fff;border-color:var(--green);box-shadow:0 4px 14px rgba(5,150,105,.3);}
-.cat-tab:active:not(.active){opacity:.6;}
+.seg-btn iconify-icon{
+  font-size:15px;
+  pointer-events:none;
+  flex-shrink:0;
+  transition:color .18s;
+}
+.seg-btn.active{
+  background:var(--green);
+  color:#fff;
+  border-color:var(--green);
+  box-shadow:0 4px 14px rgba(5,150,105,.3);
+}
+.seg-btn.active iconify-icon{color:#fff;}
+.seg-btn:active:not(.active){opacity:.6;transform:scale(.96);}
 
 /* ══ ANNOUNCE CARD ══ */
 .announce-card{
@@ -282,32 +322,6 @@ img.clickable{pointer-events:auto;}
 .announce-img-wrap img{width:100%;height:100%;object-fit:cover;pointer-events:none;}
 .announce-body{padding:11px 14px 13px;}
 .announce-footer{display:flex;justify-content:flex-end;padding-top:8px;border-top:1px solid var(--border-light);margin-top:7px;}
-
-/* ══ GUIDE TABS ══ */
-.guide-tabs{
-  display:grid;grid-template-columns:repeat(2,1fr);gap:10px;
-  padding:14px 18px 10px;
-  position:sticky;top:0;z-index:3;
-  background:var(--surface);
-}
-.guide-tab{
-  padding:12px 8px 10px;border-radius:16px;font-size:10.5px;font-weight:800;
-  font-family:'Cairo',sans-serif;border:1.5px solid var(--border-light);
-  background:var(--card);color:var(--text);cursor:pointer;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;
-  box-shadow:var(--shadow-sm);touch-action:manipulation;transition:all .2s;
-  min-height:78px;
-}
-.gt-icon{
-  width:38px;height:38px;border-radius:11px;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
-.gt-icon iconify-icon{font-size:19px;pointer-events:none;}
-.guide-tab span{line-height:1.25;text-align:center;}
-.guide-tab.active{background:var(--green);color:#fff;border-color:var(--green);box-shadow:0 4px 16px rgba(5,150,105,.3);}
-.guide-tab.active .gt-icon{background:rgba(255,255,255,.2)!important;}
-.guide-tab.active .gt-icon iconify-icon{color:#fff!important;}
-.guide-tab:active:not(.active){transform:scale(.95);opacity:.8;}
 
 /* ══ FAC CARD ══ */
 .fac-card{
@@ -469,11 +483,22 @@ img.clickable{pointer-events:auto;}
       </div>
       <div class="scroll-area" id="scroll-news">
         <div class="content-block">
-          <div class="cat-tabs">
-            <button class="cat-tab active" onclick="filterNews('official',this)"><iconify-icon icon="lucide:megaphone" style="pointer-events:none"></iconify-icon>إعلانات</button>
-            <button class="cat-tab" onclick="filterNews('activity',this)"><iconify-icon icon="lucide:clipboard-list" style="pointer-events:none"></iconify-icon>نشاطات</button>
-            <button class="cat-tab" onclick="filterNews('social',this)"><iconify-icon icon="lucide:handshake" style="pointer-events:none"></iconify-icon>مجتمع</button>
-            <button class="cat-tab" onclick="filterNews('poster',this)"><iconify-icon icon="lucide:image" style="pointer-events:none"></iconify-icon>الملصقات</button>
+          <!-- شريط التصنيفات الموحّد -->
+          <div class="seg-bar-wrap" id="news-seg-wrap">
+            <div class="seg-bar">
+              <button class="seg-btn active" onclick="filterNews('official',this)">
+                <iconify-icon icon="lucide:megaphone"></iconify-icon>إعلانات
+              </button>
+              <button class="seg-btn" onclick="filterNews('activity',this)">
+                <iconify-icon icon="lucide:clipboard-list"></iconify-icon>نشاطات
+              </button>
+              <button class="seg-btn" onclick="filterNews('social',this)">
+                <iconify-icon icon="lucide:handshake"></iconify-icon>مجتمع
+              </button>
+              <button class="seg-btn" onclick="filterNews('poster',this)">
+                <iconify-icon icon="lucide:image"></iconify-icon>الملصقات
+              </button>
+            </div>
           </div>
           <div id="news-list" style="padding:10px 0">
             <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span>جاري التحميل</span></div>
@@ -498,35 +523,31 @@ img.clickable{pointer-events:auto;}
       </div>
       <div class="scroll-area" id="scroll-guide">
         <div class="content-block">
-          <div class="guide-tabs">
-            <button class="guide-tab active" onclick="loadFacTab('admin-branches',this)">
-              <div class="gt-icon" style="background:#d1fae5"><iconify-icon icon="lucide:landmark" style="color:#059669;pointer-events:none"></iconify-icon></div>
-              <span>الفروع الإدارية</span>
-            </button>
-            <button class="guide-tab" onclick="loadFacTab('education',this)">
-              <div class="gt-icon" style="background:#dbeafe"><iconify-icon icon="lucide:graduation-cap" style="color:#2563eb;pointer-events:none"></iconify-icon></div>
-              <span>التعليم والتكوين</span>
-            </button>
-            <button class="guide-tab" onclick="loadFacTab('health',this)">
-              <div class="gt-icon" style="background:#fee2e2"><iconify-icon icon="lucide:heart-pulse" style="color:#dc2626;pointer-events:none"></iconify-icon></div>
-              <span>المرافق الصحية</span>
-            </button>
-            <button class="guide-tab" onclick="loadFacTab('public-bodies',this)">
-              <div class="gt-icon" style="background:#ede9fe"><iconify-icon icon="lucide:building-2" style="color:#7c3aed;pointer-events:none"></iconify-icon></div>
-              <span>الهيئات العمومية</span>
-            </button>
-            <button class="guide-tab" onclick="loadFacTab('religious',this)">
-              <div class="gt-icon" style="background:#fef3c7"><iconify-icon icon="lucide:moon-star" style="color:#b45309;pointer-events:none"></iconify-icon></div>
-              <span>المرافق الدينية</span>
-            </button>
-            <button class="guide-tab" onclick="loadFacTab('cultural',this)">
-              <div class="gt-icon" style="background:#cffafe"><iconify-icon icon="lucide:palette" style="color:#0891b2;pointer-events:none"></iconify-icon></div>
-              <span>المرافق الثقافية</span>
-            </button>
-            <button class="guide-tab" onclick="loadFacTab('sports',this)">
-              <div class="gt-icon" style="background:#ffedd5"><iconify-icon icon="lucide:trophy" style="color:#ea580c;pointer-events:none"></iconify-icon></div>
-              <span>المرافق الرياضية</span>
-            </button>
+          <!-- شريط التصنيفات الموحّد للدليل -->
+          <div class="seg-bar-wrap" id="guide-seg-wrap">
+            <div class="seg-bar">
+              <button class="seg-btn active" onclick="loadFacTab('admin-branches',this)">
+                <iconify-icon icon="lucide:landmark" style="color:inherit"></iconify-icon>الإدارية
+              </button>
+              <button class="seg-btn" onclick="loadFacTab('education',this)">
+                <iconify-icon icon="lucide:graduation-cap" style="color:inherit"></iconify-icon>التعليم
+              </button>
+              <button class="seg-btn" onclick="loadFacTab('health',this)">
+                <iconify-icon icon="lucide:heart-pulse" style="color:inherit"></iconify-icon>الصحة
+              </button>
+              <button class="seg-btn" onclick="loadFacTab('public-bodies',this)">
+                <iconify-icon icon="lucide:building-2" style="color:inherit"></iconify-icon>الهيئات
+              </button>
+              <button class="seg-btn" onclick="loadFacTab('religious',this)">
+                <iconify-icon icon="lucide:moon-star" style="color:inherit"></iconify-icon>الدينية
+              </button>
+              <button class="seg-btn" onclick="loadFacTab('cultural',this)">
+                <iconify-icon icon="lucide:palette" style="color:inherit"></iconify-icon>الثقافية
+              </button>
+              <button class="seg-btn" onclick="loadFacTab('sports',this)">
+                <iconify-icon icon="lucide:trophy" style="color:inherit"></iconify-icon>الرياضية
+              </button>
+            </div>
           </div>
           <div id="fac-list" style="padding:6px 0">
             <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span>جاري التحميل</span></div>
@@ -535,7 +556,7 @@ img.clickable{pointer-events:auto;}
       </div>
     </div>
 
-    <!-- ══ MAP — بدون هيدر ══ -->
+    <!-- ══ MAP ══ -->
     <div class="screen hidden" id="screen-map">
       <div class="scroll-area">
         <div id="app-map"></div>
@@ -698,7 +719,6 @@ img.clickable{pointer-events:auto;}
 
 <script>
 'use strict';
-
 /* ══ منع حفظ الصور ══ */
 document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
 document.addEventListener('dragstart',function(e){e.preventDefault();return false;});
@@ -717,17 +737,15 @@ async function api(u){
 var curTab='home',mapDone=false,allNews=[],facCat='admin-branches';
 var TAB_ORDER=['home','news','guide','map','more'];
 
-/* ══ ضبط padding-top لـ scroll-area بحسب ارتفاع الهيدر ══ */
+/* ══ ضبط padding-top لـ scroll-area ══ */
 function initScrollPadding(screenId){
   var header=document.querySelector('#'+screenId+' .app-header');
   var scroll=document.querySelector('#'+screenId+' .scroll-area');
   if(!header||!scroll)return;
-  /* نستخدم offsetHeight بعد render الفعلي */
   var h=header.offsetHeight;
   if(h>0){
     scroll.style.paddingTop=h+'px';
   } else {
-    /* إذا لم يُرسم بعد، ننتظر */
     requestAnimationFrame(function(){
       scroll.style.paddingTop=header.offsetHeight+'px';
     });
@@ -746,7 +764,6 @@ function switchTab(t){
   var prevEl=document.getElementById('screen-'+curTab);
   var nextEl=document.getElementById('screen-'+t);
   if(!nextEl)return;
-
   var prevIdx=TAB_ORDER.indexOf(curTab);
   var nextIdx=TAB_ORDER.indexOf(t);
   var forward=nextIdx>prevIdx;
@@ -755,7 +772,6 @@ function switchTab(t){
   var DUR=230;
   var EASE='cubic-bezier(.4,0,.2,1)';
   var prev=curTab;
-
   if(prevEl){
     prevEl.style.transition='opacity '+DUR+'ms ease,transform '+DUR+'ms '+EASE;
     prevEl.style.opacity='0';
@@ -766,12 +782,10 @@ function switchTab(t){
       resetScroll('screen-'+prev);
     },DUR+20);
   }
-
   nextEl.classList.remove('hidden');
   nextEl.style.cssText='opacity:0;transform:translateX('+enterFrom+');transition:none';
   requestAnimationFrame(function(){
     requestAnimationFrame(function(){
-      /* ضبط padding قبل الظهور */
       initScrollPadding('screen-'+t);
       nextEl.style.transition='opacity '+DUR+'ms ease,transform '+DUR+'ms '+EASE;
       nextEl.style.opacity='1';
@@ -779,12 +793,10 @@ function switchTab(t){
       setTimeout(function(){nextEl.style.cssText='';},DUR+20);
     });
   });
-
   document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');});
   var nb=document.getElementById('nav-'+t);
   if(nb)nb.classList.add('active');
   curTab=t;
-
   if(t==='map'&&!mapDone)initMap2();
   if(t==='news'&&!allNews.length)loadNewsScreen();
   if(t==='guide')loadFacTab(facCat);
@@ -797,7 +809,6 @@ var NS={
   activity:{grad:'linear-gradient(135deg,#059669,#065f46)',lbl:'نشاط بلدي',bs:'background:rgba(5,150,105,.12);color:#059669'},
   social:{grad:'linear-gradient(135deg,#7c3aed,#4c1d95)',lbl:'ركن المجتمع',bs:'background:rgba(124,58,237,.12);color:#7c3aed'}
 };
-
 function makeNewsCard(n){
   var s=NS[n.category]||NS.official;
   var excerpt=(n.content||'').substring(0,90)+'...';
@@ -813,7 +824,6 @@ function makeNewsCard(n){
 }
 
 function loadHome(){loadHOfficial();loadHNews();loadHBeaches();loadHTourism();}
-
 async function loadHOfficial(){
   var el=document.getElementById('h-official');
   try{var d=await api('/api/news');if(d.data)allNews=d.data;var items=(d.data||[]).filter(function(n){return n.category==='official';}).slice(0,10);el.innerHTML=items.length?items.map(makeNewsCard).join(''):'';}
@@ -852,7 +862,7 @@ async function loadNewsScreen(){
 }
 
 function filterNews(cat,btn){
-  document.querySelectorAll('.cat-tab').forEach(function(t){t.classList.remove('active');});
+  document.querySelectorAll('#screen-news .seg-btn').forEach(function(t){t.classList.remove('active');});
   btn.classList.add('active');
   renderNews(cat==='all'?allNews:allNews.filter(function(n){return n.category===cat;}));
 }
@@ -878,18 +888,18 @@ function renderNews(items){
 }
 
 var FM={
-  'admin-branches':{cat:'branches',     icon:'lucide:landmark',      color:'#059669',bg:'#d1fae5'},
-  'education':     {cat:'education',    icon:'lucide:graduation-cap',color:'#2563eb',bg:'#dbeafe'},
-  'health':        {cat:'health',       icon:'lucide:heart-pulse',   color:'#dc2626',bg:'#fee2e2'},
-  'public-bodies': {cat:'public_bodies',icon:'lucide:building-2',   color:'#7c3aed',bg:'#ede9fe'},
-  'religious':     {cat:'religious',    icon:'lucide:moon-star',     color:'#b45309',bg:'#fef3c7'},
-  'cultural':      {cat:'cultural',     icon:'lucide:palette',       color:'#0891b2',bg:'#cffafe'},
-  'sports':        {cat:'sports',       icon:'lucide:trophy',        color:'#ea580c',bg:'#ffedd5'}
+  'admin-branches':{cat:'branches',      icon:'lucide:landmark',       color:'#059669',bg:'#d1fae5'},
+  'education':     {cat:'education',      icon:'lucide:graduation-cap', color:'#2563eb',bg:'#dbeafe'},
+  'health':        {cat:'health',         icon:'lucide:heart-pulse',    color:'#dc2626',bg:'#fee2e2'},
+  'public-bodies': {cat:'public_bodies',  icon:'lucide:building-2',     color:'#7c3aed',bg:'#ede9fe'},
+  'religious':     {cat:'religious',      icon:'lucide:moon-star',      color:'#b45309',bg:'#fef3c7'},
+  'cultural':      {cat:'cultural',       icon:'lucide:palette',        color:'#0891b2',bg:'#cffafe'},
+  'sports':        {cat:'sports',         icon:'lucide:trophy',         color:'#ea580c',bg:'#ffedd5'}
 };
 
 async function loadFacTab(tab,btn){
   facCat=tab;
-  document.querySelectorAll('.guide-tab').forEach(function(t){t.classList.remove('active');});
+  document.querySelectorAll('#screen-guide .seg-btn').forEach(function(t){t.classList.remove('active');});
   if(btn)btn.classList.add('active');
   var el=document.getElementById('fac-list');
   el.innerHTML='<div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>';
@@ -935,7 +945,6 @@ function album(elId,albums){
   el.innerHTML='<div class="album-title"><iconify-icon icon="lucide:images" style="color:var(--green);pointer-events:none"></iconify-icon>معرض الصور ('+a.length+')</div>'
     +'<div class="album-grid">'+a.map(function(x){return '<img src="'+x.image_url+'" alt="" class="clickable" onclick="openLightbox(\''+x.image_url+'\')" loading="lazy">';}).join('')+'</div>';
 }
-
 function albumBig(elId,albums){
   var el=document.getElementById(elId);var a=Array.isArray(albums)?albums:[];
   if(!a.length){el.innerHTML='';return;}
@@ -1051,20 +1060,16 @@ async function loadMapData(){
 }
 
 /* ══ Init ══ */
-/* ضبط padding-top لجميع الصفحات عند التحميل */
 window.addEventListener('load',function(){
   ['home','news','guide','more'].forEach(function(id){
     initScrollPadding('screen-'+id);
   });
 });
-
-/* احتياط إضافي بعد رسم الخطوط */
 document.fonts.ready.then(function(){
   ['home','news','guide','more'].forEach(function(id){
     initScrollPadding('screen-'+id);
   });
 });
-
 loadHome();
 </script>
 </body>
