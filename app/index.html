@@ -199,7 +199,7 @@ img.clickable{pointer-events:auto;}
 }
 .card-date iconify-icon{font-size:12px;pointer-events:none;flex-shrink:0;}
 
-/* ══ زر اقرأ المزيد: النص ثم السهم على اليسار ══ */
+/* ══ زر اقرأ المزيد ══ */
 .read-more{
   font-size:11px;font-weight:800;color:var(--green);
   border:none;background:none;cursor:pointer;
@@ -492,16 +492,16 @@ img.clickable{pointer-events:auto;}
         <div class="content-block">
           <div class="seg-bar-wrap" id="seg-news">
             <div class="seg-bar">
-              <button class="seg-btn active" onclick="filterNews('official',this)">
+              <button class="seg-btn active" data-cat="official" onclick="filterNews('official',this)">
                 <iconify-icon icon="lucide:megaphone"></iconify-icon>إعلانات
               </button>
-              <button class="seg-btn" onclick="filterNews('activity',this)">
+              <button class="seg-btn" data-cat="activity" onclick="filterNews('activity',this)">
                 <iconify-icon icon="lucide:clipboard-list"></iconify-icon>نشاطات
               </button>
-              <button class="seg-btn" onclick="filterNews('social',this)">
+              <button class="seg-btn" data-cat="social" onclick="filterNews('social',this)">
                 <iconify-icon icon="lucide:handshake"></iconify-icon>مجتمع
               </button>
-              <button class="seg-btn" onclick="filterNews('poster',this)">
+              <button class="seg-btn" data-cat="poster" onclick="filterNews('poster',this)">
                 <iconify-icon icon="lucide:image"></iconify-icon>الملصقات
               </button>
             </div>
@@ -763,6 +763,8 @@ async function api(u){
 
 /* ══ State ══ */
 var curTab='home',mapDone=false,allNews=[],facCat='admin-branches';
+/* ← الإصلاح الجوهري: متغير منفصل لتتبع رسم شاشة الأخبار */
+var newsScreenLoaded=false;
 var TAB_ORDER=['home','news','guide','map','more'];
 
 /* ══ ضبط top-padding ══ */
@@ -825,7 +827,8 @@ function switchTab(t){
   if(nb) nb.classList.add('active');
   curTab=t;
   if(t==='map'&&!mapDone) initMap2();
-  if(t==='news'&&!allNews.length) loadNewsScreen();
+  /* ← الإصلاح: استخدام newsScreenLoaded بدلاً من allNews.length */
+  if(t==='news'&&!newsScreenLoaded) loadNewsScreen();
   if(t==='guide') loadFacTab(facCat);
   if(t==='home') loadHome();
 }
@@ -861,13 +864,14 @@ function makeNewsCard(n){
     +'</div>';
 }
 
+/* ══ loadHome ══ */
 function loadHome(){loadHOfficial();loadHNews();loadHBeaches();loadHTourism();}
 
 async function loadHOfficial(){
   var el=document.getElementById('h-official');
   try{
     var d=await api('/api/news');
-    if(d.data)allNews=d.data;
+    if(d.data) allNews=d.data;
     var items=(d.data||[]).filter(function(n){return n.category==='official';}).slice(0,10);
     el.innerHTML=items.length?items.map(makeNewsCard).join(''):'';
   }catch(e){el.innerHTML='';}
@@ -877,7 +881,7 @@ async function loadHNews(){
   var el=document.getElementById('h-news');
   try{
     var d=await api('/api/news');
-    if(d.data)allNews=d.data;
+    if(d.data) allNews=d.data;
     var items=(d.data||[]).filter(function(n){return n.category!=='official'&&n.category!=='poster';}).slice(0,10);
     el.innerHTML=items.length?items.map(makeNewsCard).join(''):'';
   }catch(e){el.innerHTML='';}
@@ -917,21 +921,29 @@ function placeCard(item,type){
     +'</div>';
 }
 
+/* ══ loadNewsScreen: الإصلاح الجوهري ══ */
 async function loadNewsScreen(){
   var el=document.getElementById('news-list');
   try{
     var d=await api('/api/news');
     allNews=d.data||[];
-    renderNews(allNews);
+    /* ← تحديد التصنيف النشط حالياً ثم العرض بتصفية صحيحة */
+    var activeBtn=document.querySelector('#screen-news .seg-btn.active');
+    var activeCat=activeBtn?activeBtn.getAttribute('data-cat'):'official';
+    newsScreenLoaded=true;
+    renderNews(allNews.filter(function(n){return n.category===activeCat;}));
   }catch(e){
     el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';
   }
 }
 
+/* ══ filterNews ══ */
 function filterNews(cat,btn){
   document.querySelectorAll('#screen-news .seg-btn').forEach(function(t){t.classList.remove('active');});
   btn.classList.add('active');
-  renderNews(cat==='all'?allNews:allNews.filter(function(n){return n.category===cat;}));
+  /* إذا لم تكن البيانات محملة بعد، انتظر loadNewsScreen */
+  if(!newsScreenLoaded) return;
+  renderNews(allNews.filter(function(n){return n.category===cat;}));
 }
 
 /* ══ renderNews ══ */
@@ -949,7 +961,7 @@ function renderNews(items){
       :'';
     var desc=(n.content||'').substring(0,130)+'...';
 
-    /* ══ بطاقة الملصق: صورة فقط تفتح lightbox عند الضغط ══ */
+    /* ══ بطاقة الملصق: صورة فقط تفتح lightbox ══ */
     if(n.category==='poster'){
       var posterSrc=n.image_url||'';
       if(posterSrc){
@@ -965,7 +977,7 @@ function renderNews(items){
       }
     }
 
-    /* ══ بطاقات عادية مع تاريخ وزر اقرأ المزيد ══ */
+    /* ══ بطاقات عادية ══ */
     var imgW=n.image_url
       ?'<div class="announce-img-wrap"><img src="'+n.image_url+'" alt="" loading="lazy"></div>'
       :'<div class="announce-img-wrap" style="background:'+s.grad+';height:90px"><iconify-icon icon="'+(n.category==='official'?'lucide:megaphone':'lucide:clipboard-list')+'" style="color:rgba(255,255,255,.65);font-size:2.2rem;pointer-events:none"></iconify-icon></div>';
