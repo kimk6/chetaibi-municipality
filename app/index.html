@@ -56,7 +56,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 #shared-header{
   position:absolute;
   top:0;left:0;right:0;
-  z-index:10;
+  z-index:1;
   background:linear-gradient(145deg,#042f1e 0%,var(--green-d) 40%,var(--green-m) 75%,#059669 100%);
   overflow:hidden;
   pointer-events:none;
@@ -70,7 +70,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   pointer-events:auto;
 }
 
-/* ══ HEADER INNER (مشترك) ══ */
+/* ══ HEADER INNER ══ */
 .app-header-inner{
   display:flex;align-items:center;gap:14px;
   position:relative;z-index:1;
@@ -397,7 +397,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 <body>
 <div id="app">
 
-  <!-- ══ SHARED HEADER (ثابت لجميع الصفحات) ══ -->
+  <!-- ══ SHARED HEADER ══ -->
   <div id="shared-header">
     <div class="app-header-inner">
       <img class="header-logo"
@@ -745,7 +745,7 @@ var curTab='home',mapDone=false,allNews=[],facCat='admin-branches';
 var newsScreenLoaded=false;
 var TAB_ORDER=['home','news','guide','map','more'];
 
-/* ══ initScrollPadding - يستخدم الهيدر المشترك ══ */
+/* ══ initScrollPadding ══ */
 function initScrollPadding(screenId){
   var header=document.getElementById('shared-header');
   var scroll=document.querySelector('#'+screenId+' .scroll-area');
@@ -762,7 +762,7 @@ function resetScroll(screenId){
   if(scroll) scroll.scrollTop=0;
 }
 
-/* ══ switchTab - التأثير الحركي على المحتوى فقط ══ */
+/* ══ switchTab ══ */
 function switchTab(t){
   if(t===curTab) return;
   var prevEl=document.getElementById('screen-'+curTab);
@@ -948,13 +948,13 @@ function renderNews(items){
 }
 
 var FM={
-  'admin-branches':{cat:'branches',      icon:'lucide:landmark',        color:'#059669',bg:'#d1fae5'},
-  'education':     {cat:'education',     icon:'lucide:graduation-cap',  color:'#2563eb',bg:'#dbeafe'},
-  'health':        {cat:'health',        icon:'lucide:heart-pulse',     color:'#dc2626',bg:'#fee2e2'},
-  'public-bodies': {cat:'public_bodies', icon:'lucide:building-2',      color:'#7c3aed',bg:'#ede9fe'},
-  'religious':     {cat:'religious',     icon:'lucide:moon-star',       color:'#b45309',bg:'#fef3c7'},
-  'cultural':      {cat:'cultural',      icon:'lucide:palette',         color:'#0891b2',bg:'#cffafe'},
-  'sports':        {cat:'sports',        icon:'lucide:trophy',          color:'#ea580c',bg:'#ffedd5'}
+  'admin-branches':{cat:'branches',      icon:'lucide:landmark',       color:'#059669',bg:'#d1fae5'},
+  'education':     {cat:'education',     icon:'lucide:graduation-cap', color:'#2563eb',bg:'#dbeafe'},
+  'health':        {cat:'health',        icon:'lucide:heart-pulse',    color:'#dc2626',bg:'#fee2e2'},
+  'public-bodies': {cat:'public_bodies', icon:'lucide:building-2',     color:'#7c3aed',bg:'#ede9fe'},
+  'religious':     {cat:'religious',     icon:'lucide:moon-star',      color:'#b45309',bg:'#fef3c7'},
+  'cultural':      {cat:'cultural',      icon:'lucide:palette',        color:'#0891b2',bg:'#cffafe'},
+  'sports':        {cat:'sports',        icon:'lucide:trophy',         color:'#ea580c',bg:'#ffedd5'}
 };
 
 async function loadFacTab(tab,btn){
