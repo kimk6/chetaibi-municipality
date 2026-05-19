@@ -47,13 +47,12 @@ img{
   pointer-events:none;-webkit-user-drag:none;
 }
 img.clickable{pointer-events:auto;}
-
 #app{display:flex;flex-direction:column;height:100%;height:100dvh;overflow:hidden;}
 #screen-container{flex:1;min-height:0;position:relative;overflow:hidden;}
 .screen{position:absolute;inset:0;overflow:hidden;will-change:transform,opacity;}
 .screen.hidden{display:none;pointer-events:none;}
 
-/* ══ HEADER — أصلي لا يُمس ══ */
+/* ══ HEADER ══ */
 .app-header{
   position:absolute;
   top:0;left:0;right:0;
@@ -87,7 +86,7 @@ img.clickable{pointer-events:auto;}
 }
 .header-btn:active{background:rgba(255,255,255,.28);}
 
-/* ══ SCROLL AREA — z-index:2 يغطي الهيدر عند السكرول ══ */
+/* ══ SCROLL AREA ══ */
 .scroll-area{
   position:absolute;inset:0;
   z-index:2;
@@ -179,8 +178,36 @@ img.clickable{pointer-events:auto;}
 .news-card-img-ph{width:100%;height:125px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .news-card-body{padding:10px 12px 6px;flex:1;display:flex;flex-direction:column;gap:4px;}
 .news-card-excerpt{font-size:11px;color:var(--muted);line-height:1.45;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;flex:1;}
-.news-card-footer{display:flex;justify-content:flex-end;padding:6px 12px;border-top:1px solid var(--border-light);margin-top:auto;}
-.read-more{font-size:11px;font-weight:800;color:var(--green);border:none;background:none;cursor:pointer;font-family:'Cairo',sans-serif;touch-action:manipulation;}
+
+/* ══ تعديل 2: السهم على اليسار يشير لليسار + تاريخ على اليمين ══ */
+.news-card-footer{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:6px 12px;
+  border-top:1px solid var(--border-light);
+  margin-top:auto;
+}
+/* ══ تعديل 3: تاريخ البطاقة الصغيرة ══ */
+.card-date{
+  display:flex;
+  align-items:center;
+  gap:3px;
+  font-size:10px;
+  color:var(--muted);
+  font-weight:600;
+}
+.card-date iconify-icon{font-size:12px;pointer-events:none;}
+
+/* ══ تعديل 2: زر اقرأ المزيد مع السهم على اليسار ══ */
+.read-more{
+  font-size:11px;font-weight:800;color:var(--green);
+  border:none;background:none;cursor:pointer;
+  font-family:'Cairo',sans-serif;touch-action:manipulation;
+  display:flex;align-items:center;gap:4px;
+  flex-direction:row-reverse; /* السهم على اليسار */
+}
+.read-more iconify-icon{font-size:13px;pointer-events:none;}
 
 /* ══ PLACE CARD ══ */
 .place-card{
@@ -196,9 +223,8 @@ img.clickable{pointer-events:auto;}
 .place-card-name{font-size:12px;font-weight:900;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.6);line-height:1.3;}
 .place-card-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
 
-/* ══ SEG BAR — يتحرك مع المحتوى تماماً ══ */
+/* ══ SEG BAR ══ */
 .seg-bar-wrap{
-  /* بدون sticky — جزء طبيعي من تدفق المحتوى */
   background:var(--surface);
   border-bottom:1px solid var(--border-light);
 }
@@ -245,7 +271,46 @@ img.clickable{pointer-events:auto;}
 .announce-img-wrap{width:100%;height:165px;display:flex;align-items:center;justify-content:center;background:#f0fdf4;overflow:hidden;}
 .announce-img-wrap img{width:100%;height:100%;object-fit:cover;pointer-events:none;}
 .announce-body{padding:11px 14px 13px;}
-.announce-footer{display:flex;justify-content:flex-end;padding-top:8px;border-top:1px solid var(--border-light);margin-top:7px;}
+
+/* ══ تعديل 2+3: footer الإعلان مع تاريخ وسهم ══ */
+.announce-footer{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding-top:8px;
+  border-top:1px solid var(--border-light);
+  margin-top:7px;
+}
+
+/* ══ بطاقة الملصق (poster) في صفحة الأخبار ══ */
+.poster-card{
+  background:var(--card);
+  border-radius:18px;
+  border:1px solid var(--border-light);
+  overflow:hidden;
+  box-shadow:var(--shadow-md);
+  cursor:pointer;
+  margin:0 18px 12px;
+  touch-action:manipulation;
+  transition:transform .15s ease,opacity .15s;
+  position:relative;
+}
+.poster-card:active{transform:scale(.98);opacity:.8;}
+.poster-card-img{
+  width:100%;
+  display:block;
+  object-fit:cover;
+  pointer-events:none;
+  border-radius:18px;
+}
+.poster-card-ph{
+  width:100%;
+  height:220px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:18px;
+}
 
 /* ══ FAC CARD ══ */
 .fac-card{
@@ -400,7 +465,6 @@ img.clickable{pointer-events:auto;}
       </div>
       <div class="scroll-area" id="scroll-news">
         <div class="content-block">
-          <!-- شريط التصنيفات — يتحرك مع المحتوى -->
           <div class="seg-bar-wrap" id="seg-news">
             <div class="seg-bar">
               <button class="seg-btn active" onclick="filterNews('official',this)">
@@ -439,7 +503,6 @@ img.clickable{pointer-events:auto;}
       </div>
       <div class="scroll-area" id="scroll-guide">
         <div class="content-block">
-          <!-- شريط التصنيفات — يتحرك مع المحتوى -->
           <div class="seg-bar-wrap" id="seg-guide">
             <div class="seg-bar">
               <button class="seg-btn active" onclick="loadFacTab('admin-branches',this)">
@@ -517,7 +580,7 @@ img.clickable{pointer-events:auto;}
             </div>
           </div>
           <div class="app-footer">
-            <div class="app-footer-main">© 2026 بلدية شطايبي - جميع الحقوق محفوظة</div>
+            <div class="app-footer-main">بلدية شطايبي © 2026 - جميع الحقوق محفوظة</div>
             <div class="app-footer-sub">تم التطوير بجهود الكفاءات الداخلية لبلدية شطايبي</div>
           </div>
         </div>
@@ -578,6 +641,7 @@ img.clickable{pointer-events:auto;}
     </div>
   </div>
 </div>
+
 <div class="modal-overlay" id="m-beach" onclick="cm('m-beach')">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
@@ -590,6 +654,7 @@ img.clickable{pointer-events:auto;}
     </div>
   </div>
 </div>
+
 <div class="modal-overlay" id="m-tour" onclick="cm('m-tour')">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
@@ -609,6 +674,7 @@ img.clickable{pointer-events:auto;}
     </div>
   </div>
 </div>
+
 <div class="modal-overlay" id="m-fac" onclick="cm('m-fac')">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
@@ -622,6 +688,7 @@ img.clickable{pointer-events:auto;}
     </div>
   </div>
 </div>
+
 <div id="lightbox">
   <button id="lb-close" onclick="closeLightbox()">✕</button>
   <img id="lb-img" src="" alt="">
@@ -648,7 +715,7 @@ async function api(u){
 var curTab='home',mapDone=false,allNews=[],facCat='admin-branches';
 var TAB_ORDER=['home','news','guide','map','more'];
 
-/* ══ ضبط padding-top — نفس المنطق الأصلي ══ */
+/* ══ ضبط top-padding ══ */
 function initScrollPadding(screenId){
   var header=document.querySelector('#'+screenId+' .app-header');
   var scroll=document.querySelector('#'+screenId+' .scroll-area');
@@ -675,7 +742,6 @@ function switchTab(t){
   var prevEl=document.getElementById('screen-'+curTab);
   var nextEl=document.getElementById('screen-'+t);
   if(!nextEl) return;
-
   var prevIdx=TAB_ORDER.indexOf(curTab);
   var nextIdx=TAB_ORDER.indexOf(t);
   var forward=nextIdx>prevIdx;
@@ -683,7 +749,6 @@ function switchTab(t){
   var exitTo=forward?'100%':'-100%';
   var DUR=230,EASE='cubic-bezier(.4,0,.2,1)';
   var prev=curTab;
-
   if(prevEl){
     prevEl.style.transition='opacity '+DUR+'ms ease,transform '+DUR+'ms '+EASE;
     prevEl.style.opacity='0';
@@ -694,7 +759,6 @@ function switchTab(t){
       resetScroll('screen-'+prev);
     },DUR+20);
   }
-
   nextEl.classList.remove('hidden');
   nextEl.style.cssText='opacity:0;transform:translateX('+enterFrom+');transition:none';
   requestAnimationFrame(function(){
@@ -706,12 +770,10 @@ function switchTab(t){
       setTimeout(function(){nextEl.style.cssText='';},DUR+20);
     });
   });
-
   document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');});
   var nb=document.getElementById('nav-'+t);
   if(nb) nb.classList.add('active');
   curTab=t;
-
   if(t==='map'&&!mapDone) initMap2();
   if(t==='news'&&!allNews.length) loadNewsScreen();
   if(t==='guide') loadFacTab(facCat);
@@ -725,6 +787,13 @@ var NS={
   social:  {grad:'linear-gradient(135deg,#7c3aed,#4c1d95)',lbl:'ركن المجتمع',bs:'background:rgba(124,58,237,.12);color:#7c3aed'}
 };
 
+/* ══ دالة مساعدة لعرض التاريخ ══ */
+function makeDateBadge(dateStr){
+  if(!dateStr) return '';
+  return '<span class="card-date"><iconify-icon icon="lucide:calendar-days"></iconify-icon>'+dateStr+'</span>';
+}
+
+/* ══ بطاقة الخبر الصغيرة (h-scroll) مع التاريخ والسهم ══ */
 function makeNewsCard(n){
   var s=NS[n.category]||NS.official;
   var excerpt=(n.content||'').substring(0,90)+'...';
@@ -735,11 +804,18 @@ function makeNewsCard(n){
   return '<div class="news-card" onclick="openNewsModal('+n.id+')">'
     +img
     +'<div class="news-card-body"><div class="news-card-excerpt">'+excerpt+'</div></div>'
-    +'<div class="news-card-footer"><button class="read-more" onclick="event.stopPropagation();openNewsModal('+n.id+')">« المزيد</button></div>'
+    +'<div class="news-card-footer">'
+    +makeDateBadge(n.date)
+    +'<button class="read-more" onclick="event.stopPropagation();openNewsModal('+n.id+')">'
+    +'اقرأ المزيد'
+    +'<iconify-icon icon="lucide:chevron-left"></iconify-icon>'
+    +'</button>'
+    +'</div>'
     +'</div>';
 }
 
 function loadHome(){loadHOfficial();loadHNews();loadHBeaches();loadHTourism();}
+
 async function loadHOfficial(){
   var el=document.getElementById('h-official');
   try{var d=await api('/api/news');if(d.data)allNews=d.data;
@@ -747,19 +823,22 @@ async function loadHOfficial(){
     el.innerHTML=items.length?items.map(makeNewsCard).join(''):'';}
   catch(e){el.innerHTML='';}
 }
+
 async function loadHNews(){
   var el=document.getElementById('h-news');
   try{var d=await api('/api/news');if(d.data)allNews=d.data;
-    var items=(d.data||[]).filter(function(n){return n.category!=='official';}).slice(0,10);
+    var items=(d.data||[]).filter(function(n){return n.category!=='official'&&n.category!=='poster';}).slice(0,10);
     el.innerHTML=items.length?items.map(makeNewsCard).join(''):'';}
   catch(e){el.innerHTML='';}
 }
+
 async function loadHBeaches(){
   var el=document.getElementById('h-beaches');
   try{var d=await api('/api/beaches');var items=(d.data||[]).slice(0,8);
     el.innerHTML=items.length?items.map(function(b){return placeCard(b,'beach');}).join(''):'';}
   catch(e){el.innerHTML='';}
 }
+
 async function loadHTourism(){
   var el=document.getElementById('h-tourism');
   try{var d=await api('/api/tourism');var items=(d.data||[]).slice(0,8);
@@ -789,34 +868,59 @@ function filterNews(cat,btn){
   renderNews(cat==='all'?allNews:allNews.filter(function(n){return n.category===cat;}));
 }
 
+/* ══ renderNews مع التعديلات الثلاثة ══ */
 function renderNews(items){
   var el=document.getElementById('news-list');
-  if(!items.length){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>لا توجد أخبار</p></div>';return;}
+  if(!items.length){
+    el.innerHTML='<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>لا توجد أخبار</p></div>';
+    return;
+  }
   el.innerHTML=items.map(function(n){
     var s=NS[n.category]||NS.official;
     var lbl=n.custom_label||s.lbl||'';
     var pin=n.is_pinned?'<span style="font-size:10px;font-weight:800;color:#f59e0b;display:flex;align-items:center;gap:2px"><iconify-icon icon="lucide:pin" style="pointer-events:none"></iconify-icon>مثبت</span>':'';
     var desc=(n.content||'').substring(0,130)+'...';
+
+    /* ══ تعديل 1: بطاقة الملصق صورة فقط ══ */
+    if(n.category==='poster'){
+      var posterSrc=n.image_url||'';
+      var posterImg=posterSrc
+        ?'<img class="poster-card-img clickable" src="'+posterSrc+'" alt="" loading="lazy" onclick="event.stopPropagation();openLightbox(\''+posterSrc+'\')">'
+        :'<div class="poster-card-ph" style="background:linear-gradient(135deg,#7c3aed,#4c1d95)"><iconify-icon icon="lucide:image" style="color:rgba(255,255,255,.7);font-size:3rem;pointer-events:none"></iconify-icon></div>';
+      return '<div class="poster-card fade-in" onclick="openLightbox(\''+posterSrc+'\')">'
+        +posterImg
+        +'</div>';
+    }
+
+    /* ══ بطاقات عادية مع تعديل 2 (سهم يسار) + تعديل 3 (تاريخ) ══ */
     var imgW=n.image_url
       ?'<div class="announce-img-wrap"><img src="'+n.image_url+'" alt="" loading="lazy"></div>'
       :'<div class="announce-img-wrap" style="background:'+s.grad+';height:90px"><iconify-icon icon="'+(n.category==='official'?'lucide:megaphone':'lucide:clipboard-list')+'" style="color:rgba(255,255,255,.65);font-size:2.2rem;pointer-events:none"></iconify-icon></div>';
+
     return '<div class="announce-card fade-in" onclick="openNewsModal('+n.id+')">'
-      +imgW+'<div class="announce-body">'
+      +imgW
+      +'<div class="announce-body">'
       +'<div style="display:flex;align-items:center;gap:7px;margin-bottom:6px"><span class="news-badge" style="'+s.bs+'">'+lbl+'</span>'+pin+'</div>'
       +'<div style="font-size:13px;color:var(--muted);line-height:1.65">'+desc+'</div>'
-      +'<div class="announce-footer"><button class="read-more" onclick="event.stopPropagation();openNewsModal('+n.id+')">« اقرأ المزيد</button></div>'
+      +'<div class="announce-footer">'
+      +makeDateBadge(n.date)
+      +'<button class="read-more" onclick="event.stopPropagation();openNewsModal('+n.id+')">'
+      +'اقرأ المزيد'
+      +'<iconify-icon icon="lucide:chevron-left"></iconify-icon>'
+      +'</button>'
+      +'</div>'
       +'</div></div>';
   }).join('');
 }
 
 var FM={
-  'admin-branches':{cat:'branches',     icon:'lucide:landmark',      color:'#059669',bg:'#d1fae5'},
-  'education':     {cat:'education',     icon:'lucide:graduation-cap',color:'#2563eb',bg:'#dbeafe'},
-  'health':        {cat:'health',        icon:'lucide:heart-pulse',   color:'#dc2626',bg:'#fee2e2'},
-  'public-bodies': {cat:'public_bodies', icon:'lucide:building-2',    color:'#7c3aed',bg:'#ede9fe'},
-  'religious':     {cat:'religious',     icon:'lucide:moon-star',     color:'#b45309',bg:'#fef3c7'},
-  'cultural':      {cat:'cultural',      icon:'lucide:palette',       color:'#0891b2',bg:'#cffafe'},
-  'sports':        {cat:'sports',        icon:'lucide:trophy',        color:'#ea580c',bg:'#ffedd5'}
+  'admin-branches':{cat:'branches',     icon:'lucide:landmark',       color:'#059669',bg:'#d1fae5'},
+  'education':     {cat:'education',    icon:'lucide:graduation-cap', color:'#2563eb',bg:'#dbeafe'},
+  'health':        {cat:'health',       icon:'lucide:heart-pulse',    color:'#dc2626',bg:'#fee2e2'},
+  'public-bodies': {cat:'public_bodies',icon:'lucide:building-2',     color:'#7c3aed',bg:'#ede9fe'},
+  'religious':     {cat:'religious',    icon:'lucide:moon-star',      color:'#b45309',bg:'#fef3c7'},
+  'cultural':      {cat:'cultural',     icon:'lucide:palette',        color:'#0891b2',bg:'#cffafe'},
+  'sports':        {cat:'sports',       icon:'lucide:trophy',         color:'#ea580c',bg:'#ffedd5'}
 };
 
 async function loadFacTab(tab,btn){
@@ -867,6 +971,7 @@ function album(elId,albums){
   el.innerHTML='<div class="album-title"><iconify-icon icon="lucide:images" style="color:var(--green);pointer-events:none"></iconify-icon>معرض الصور ('+a.length+')</div>'
     +'<div class="album-grid">'+a.map(function(x){return '<img src="'+x.image_url+'" alt="" class="clickable" onclick="openLightbox(\''+x.image_url+'\')" loading="lazy">';}).join('')+'</div>';
 }
+
 function albumBig(elId,albums){
   var el=document.getElementById(elId);var a=Array.isArray(albums)?albums:[];
   if(!a.length){el.innerHTML='';return;}
@@ -879,8 +984,17 @@ async function openNewsModal(id){
   if(!n)return;
   var albums=[];
   if(Array.isArray(n.albums)&&n.albums.length)albums=n.albums;
-  else if(n.album_urls){try{var arr=typeof n.album_urls==='string'?JSON.parse(n.album_urls):n.album_urls;albums=(arr||[]).map(function(u,i){return {id:i,image_url:u,caption:''};});}catch(e){}}
-  if(n.category==='official'){
+  else if(n.album_urls){try{var arr=typeof n.album_urls==='string'?JSON.parse(n.album_urls):n.album_urls;albums=(arr||[]).map(function(u,i){return{id:i,image_url:u,caption:''};});}catch(e){}}
+
+  if(n.category==='poster'){
+    /* ملصق: صورة فقط بالحجم الكامل */
+    document.getElementById('mn-normal-view').style.display='none';
+    document.getElementById('mn-announce-view').style.display='block';
+    var posterSrc=n.image_url||(albums.length?albums[0].image_url:'');
+    document.getElementById('mn-announce-album').innerHTML=posterSrc
+      ?'<img src="'+posterSrc+'" style="width:100%;display:block;pointer-events:none" alt="">'
+      :'';
+  }else if(n.category==='official'){
     document.getElementById('mn-normal-view').style.display='none';
     document.getElementById('mn-announce-view').style.display='block';
     albumBig('mn-announce-album',albums.length?albums:(n.image_url?[{image_url:n.image_url}]:[]));
@@ -919,7 +1033,7 @@ async function openTourismModal(id){
     delete C['/api/tourism?id='+id];var d=await api('/api/tourism?id='+id);var t=d.data;if(!t)return;
     var albums=[];
     if(Array.isArray(t.albums)&&t.albums.length)albums=t.albums;
-    else if(t.album_urls){try{var arr=typeof t.album_urls==='string'?JSON.parse(t.album_urls):t.album_urls;albums=(arr||[]).map(function(u,i){return {id:i,image_url:u,caption:''};});}catch(e){}}
+    else if(t.album_urls){try{var arr=typeof t.album_urls==='string'?JSON.parse(t.album_urls):t.album_urls;albums=(arr||[]).map(function(u,i){return{id:i,image_url:u,caption:''};});}catch(e){}}
     if(t.badge_text==='ملصق'||t.type==='sticker'){
       document.getElementById('mt-normal-view').style.display='none';
       document.getElementById('mt-sticker-view').style.display='block';
@@ -954,12 +1068,9 @@ async function openFacModal(id,tab){
     document.getElementById('mf-desc').textContent=f.description||'';
     var tags=Array.isArray(f.tags)?f.tags:[];
     document.getElementById('mf-meta').innerHTML=tags.map(function(tg){return '<span class="modal-chip">#'+tg+'</span>';}).join('');
-    /* ── تطبيع albums: يدعم [string] و [{image_url}] و album_urls ── */
     var albums=[];
     if(Array.isArray(f.albums)&&f.albums.length){
-      albums=f.albums.map(function(x){
-        return (typeof x==='string')?{id:x,image_url:x,caption:''}:x;
-      });
+      albums=f.albums.map(function(x){return(typeof x==='string')?{id:x,image_url:x,caption:''}:x;});
     }else if(f.album_urls){
       try{var arr=typeof f.album_urls==='string'?JSON.parse(f.album_urls):f.album_urls;
         albums=(arr||[]).map(function(u,i){return{id:i,image_url:u,caption:''};});}catch(e){}
