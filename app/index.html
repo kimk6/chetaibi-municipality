@@ -66,50 +66,54 @@ img.clickable{pointer-events:auto;}
   overflow:hidden;
 }
 
-/* ══ SCREEN — flex column ══ */
+/* ══ SCREEN ══ */
 .screen{
   position:absolute;inset:0;
-  display:flex;flex-direction:column;
   overflow:hidden;
   will-change:transform,opacity;
 }
 .screen.hidden{display:none;pointer-events:none;}
 
-/* ══ HEADER — خارج منطقة السكرول، flex-shrink:0 ══ */
+/* ══ HEADER — absolute، لا يأخذ مساحة في layout ══ */
 .app-header{
-  flex-shrink:0;
-  position:relative;
-  z-index:2;
+  position:absolute;
+  top:0;left:0;right:0;
+  z-index:1; /* أقل من scroll-area */
   background:linear-gradient(145deg,#042f1e 0%,var(--green-d) 40%,var(--green-m) 75%,#059669 100%);
   overflow:hidden;
-  will-change:opacity,transform,filter;
-  transform-origin:top center;
 }
 .app-header::before{
   content:'';position:absolute;inset:0;
   background:radial-gradient(ellipse at 85% 20%,rgba(255,255,255,.07) 0%,transparent 60%);
   pointer-events:none;
 }
-.app-header::after{
-  content:'';position:absolute;
-  bottom:-1px;left:0;right:0;height:22px;
-  background:var(--surface);
-  border-radius:22px 22px 0 0;
-  pointer-events:none;
-}
+/* لا ::after — حذف القوس الأبيض نهائياً */
 .app-header-inner{
-  display:flex;align-items:center;gap:14px;
+  display:flex;
+  align-items:center;
+  gap:14px;
   position:relative;z-index:1;
-  padding:calc(var(--safe-t) + 14px) 18px 14px;
+  /* padding متساوٍ أعلى وأسفل لتوسيط اللوجو */
+  padding:calc(var(--safe-t) + 16px) 18px 16px;
 }
 .header-logo{
-  width:50px;height:50px;border-radius:14px;
-  background:#fff;object-fit:contain;flex-shrink:0;
-  pointer-events:none;display:block;
+  width:52px;height:52px;
+  border-radius:14px;
+  background:#fff;
+  object-fit:contain;
+  flex-shrink:0;
+  pointer-events:none;
+  display:block;
 }
 .header-text{flex:1;}
-.header-text h1{font-size:20px;font-weight:900;color:#fff;letter-spacing:-.3px;line-height:1.15;}
-.header-text p{font-size:11px;color:rgba(255,255,255,.65);font-weight:600;margin-top:3px;}
+.header-text h1{
+  font-size:20px;font-weight:900;
+  color:#fff;letter-spacing:-.3px;line-height:1.2;
+}
+.header-text p{
+  font-size:11px;color:rgba(255,255,255,.65);
+  font-weight:600;margin-top:2px;
+}
 .header-btn{
   width:36px;height:36px;border-radius:10px;
   background:rgba(255,255,255,.15);
@@ -120,22 +124,35 @@ img.clickable{pointer-events:auto;}
 }
 .header-btn:active{background:rgba(255,255,255,.28);}
 
-/* ══ SCROLL AREA — فقط هذا يتحرك ══ */
+/* ══ SCROLL AREA — z-index أعلى من الهيدر ══ */
 .scroll-area{
-  flex:1;min-height:0;
-  overflow-y:auto;overflow-x:hidden;
+  position:absolute;
+  inset:0;
+  z-index:2; /* فوق الهيدر — يغطيه عند السكرول */
+  overflow-y:auto;
+  overflow-x:hidden;
   -webkit-overflow-scrolling:touch;
   overscroll-behavior-y:contain;
-  padding-bottom:8px;
+  /* padding-top يُضبط بـ JS حسب ارتفاع الهيدر الفعلي */
 }
 
-/* ══ MAP SCREEN ══ */
-#screen-map .scroll-area{
-  padding-bottom:0;
-  overflow:hidden;
-  display:flex;flex-direction:column;
+/* ══ CONTENT BLOCK — الخلفية البيضاء التي تغطي الهيدر ══ */
+.content-block{
+  background:var(--surface);
+  border-radius:20px 20px 0 0;
+  min-height:100%;
+  position:relative;
 }
-#app-map{flex:1;min-height:0;width:100%;}
+
+/* ══ MAP SCREEN — بدون هيدر ══ */
+#screen-map .scroll-area{
+  overflow:hidden;
+  padding-top:0 !important;
+}
+#app-map{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+}
 
 /* ══ BOTTOM NAV ══ */
 #bottom-nav{
@@ -175,7 +192,10 @@ img.clickable{pointer-events:auto;}
 
 /* ══ SECTIONS ══ */
 .section{padding:16px 0 4px;}
-.section-header{display:flex;align-items:center;justify-content:space-between;padding:0 18px;margin-bottom:12px;}
+.section-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 18px;margin-bottom:12px;
+}
 .section-title{font-size:14px;font-weight:900;color:var(--text);display:flex;align-items:center;gap:7px;}
 .see-all{
   font-size:11px;font-weight:800;color:var(--green);border:none;
@@ -236,7 +256,6 @@ img.clickable{pointer-events:auto;}
   position:sticky;top:0;z-index:3;
   background:var(--surface);border-bottom:1px solid var(--border-light);
   overscroll-behavior-x:contain;
-  flex-shrink:0;
 }
 .cat-tabs::-webkit-scrollbar{display:none;}
 .cat-tab{
@@ -270,7 +289,6 @@ img.clickable{pointer-events:auto;}
   padding:12px 18px 10px;
   position:sticky;top:0;z-index:3;
   background:var(--surface);
-  flex-shrink:0;
 }
 .guide-tab{
   padding:10px 8px;border-radius:14px;font-size:11px;font-weight:800;
@@ -318,17 +336,8 @@ img.clickable{pointer-events:auto;}
   border-top:1px solid var(--border-light);
   margin-top:8px;
 }
-.app-footer-main{
-  font-size:12px;font-weight:700;
-  color:var(--muted);
-  margin-bottom:6px;
-}
-.app-footer-sub{
-  font-size:11px;
-  color:#9ca3af;
-  font-style:italic;
-  line-height:1.5;
-}
+.app-footer-main{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;}
+.app-footer-sub{font-size:11px;color:#9ca3af;font-style:italic;line-height:1.5;}
 
 /* ══ MODAL ══ */
 .modal-overlay{
@@ -387,7 +396,6 @@ img.clickable{pointer-events:auto;}
 
     <!-- ══ HOME ══ -->
     <div class="screen" id="screen-home">
-      <!-- الهيدر خارج منطقة السكرول -->
       <div class="app-header" id="header-home">
         <div class="app-header-inner">
           <img class="header-logo"
@@ -403,35 +411,36 @@ img.clickable{pointer-events:auto;}
           </div>
         </div>
       </div>
-      <!-- منطقة السكرول -->
       <div class="scroll-area" id="scroll-home">
-        <div class="section" style="padding-top:16px">
-          <div class="section-header">
-            <span class="section-title"><iconify-icon icon="lucide:megaphone" style="color:#dc2626;pointer-events:none"></iconify-icon>الإعلانات</span>
-            <button class="see-all" onclick="switchTab('news')">عرض الكل</button>
+        <div class="content-block">
+          <div class="section" style="padding-top:16px">
+            <div class="section-header">
+              <span class="section-title"><iconify-icon icon="lucide:megaphone" style="color:#dc2626;pointer-events:none"></iconify-icon>الإعلانات</span>
+              <button class="see-all" onclick="switchTab('news')">عرض الكل</button>
+            </div>
+            <div class="h-scroll" id="h-official"><div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div></div>
           </div>
-          <div class="h-scroll" id="h-official"><div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div></div>
-        </div>
-        <div class="section">
-          <div class="section-header">
-            <span class="section-title"><iconify-icon icon="lucide:newspaper" style="color:#059669;pointer-events:none"></iconify-icon>آخر المستجدات</span>
-            <button class="see-all" onclick="switchTab('news')">عرض الكل</button>
+          <div class="section">
+            <div class="section-header">
+              <span class="section-title"><iconify-icon icon="lucide:newspaper" style="color:#059669;pointer-events:none"></iconify-icon>آخر المستجدات</span>
+              <button class="see-all" onclick="switchTab('news')">عرض الكل</button>
+            </div>
+            <div class="h-scroll" id="h-news"><div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div></div>
           </div>
-          <div class="h-scroll" id="h-news"><div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div></div>
-        </div>
-        <div class="section">
-          <div class="section-header">
-            <span class="section-title"><iconify-icon icon="lucide:waves" style="color:#0ea5e9;pointer-events:none"></iconify-icon>شواطئ شطايبي</span>
-            <button class="see-all" onclick="switchTab('map')">على الخريطة</button>
+          <div class="section">
+            <div class="section-header">
+              <span class="section-title"><iconify-icon icon="lucide:waves" style="color:#0ea5e9;pointer-events:none"></iconify-icon>شواطئ شطايبي</span>
+              <button class="see-all" onclick="switchTab('map')">على الخريطة</button>
+            </div>
+            <div class="h-scroll" id="h-beaches"><div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div></div>
           </div>
-          <div class="h-scroll" id="h-beaches"><div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div></div>
-        </div>
-        <div class="section">
-          <div class="section-header">
-            <span class="section-title"><iconify-icon icon="lucide:sun" style="color:#f59e0b;pointer-events:none"></iconify-icon>معالم سياحية</span>
-            <button class="see-all" onclick="switchTab('map')">على الخريطة</button>
+          <div class="section">
+            <div class="section-header">
+              <span class="section-title"><iconify-icon icon="lucide:sun" style="color:#f59e0b;pointer-events:none"></iconify-icon>معالم سياحية</span>
+              <button class="see-all" onclick="switchTab('map')">على الخريطة</button>
+            </div>
+            <div class="h-scroll" id="h-tourism"><div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div></div>
           </div>
-          <div class="h-scroll" id="h-tourism"><div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div></div>
         </div>
       </div>
     </div>
@@ -451,14 +460,16 @@ img.clickable{pointer-events:auto;}
         </div>
       </div>
       <div class="scroll-area" id="scroll-news">
-        <div class="cat-tabs">
-          <button class="cat-tab active" onclick="filterNews('all',this)"><iconify-icon icon="lucide:list" style="pointer-events:none"></iconify-icon>الكل</button>
-          <button class="cat-tab" onclick="filterNews('official',this)"><iconify-icon icon="lucide:megaphone" style="pointer-events:none"></iconify-icon>إعلانات</button>
-          <button class="cat-tab" onclick="filterNews('activity',this)"><iconify-icon icon="lucide:clipboard-list" style="pointer-events:none"></iconify-icon>نشاطات</button>
-          <button class="cat-tab" onclick="filterNews('social',this)"><iconify-icon icon="lucide:handshake" style="pointer-events:none"></iconify-icon>مجتمع</button>
-        </div>
-        <div id="news-list" style="padding:10px 0">
-          <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span>جاري التحميل</span></div>
+        <div class="content-block">
+          <div class="cat-tabs">
+            <button class="cat-tab active" onclick="filterNews('all',this)"><iconify-icon icon="lucide:list" style="pointer-events:none"></iconify-icon>الكل</button>
+            <button class="cat-tab" onclick="filterNews('official',this)"><iconify-icon icon="lucide:megaphone" style="pointer-events:none"></iconify-icon>إعلانات</button>
+            <button class="cat-tab" onclick="filterNews('activity',this)"><iconify-icon icon="lucide:clipboard-list" style="pointer-events:none"></iconify-icon>نشاطات</button>
+            <button class="cat-tab" onclick="filterNews('social',this)"><iconify-icon icon="lucide:handshake" style="pointer-events:none"></iconify-icon>مجتمع</button>
+          </div>
+          <div id="news-list" style="padding:10px 0">
+            <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span>جاري التحميل</span></div>
+          </div>
         </div>
       </div>
     </div>
@@ -478,14 +489,16 @@ img.clickable{pointer-events:auto;}
         </div>
       </div>
       <div class="scroll-area" id="scroll-guide">
-        <div class="guide-tabs">
-          <button class="guide-tab active" onclick="loadFacTab('admin-branches',this)"><iconify-icon icon="lucide:landmark" style="pointer-events:none"></iconify-icon>الفروع الإدارية</button>
-          <button class="guide-tab" onclick="loadFacTab('education',this)"><iconify-icon icon="lucide:graduation-cap" style="pointer-events:none"></iconify-icon>التعليم والتكوين</button>
-          <button class="guide-tab" onclick="loadFacTab('health',this)"><iconify-icon icon="lucide:heart-pulse" style="pointer-events:none"></iconify-icon>المرافق الصحية</button>
-          <button class="guide-tab" onclick="loadFacTab('public-bodies',this)"><iconify-icon icon="lucide:building-2" style="pointer-events:none"></iconify-icon>الهيئات العمومية</button>
-        </div>
-        <div id="fac-list" style="padding:6px 0">
-          <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span>جاري التحميل</span></div>
+        <div class="content-block">
+          <div class="guide-tabs">
+            <button class="guide-tab active" onclick="loadFacTab('admin-branches',this)"><iconify-icon icon="lucide:landmark" style="pointer-events:none"></iconify-icon>الفروع الإدارية</button>
+            <button class="guide-tab" onclick="loadFacTab('education',this)"><iconify-icon icon="lucide:graduation-cap" style="pointer-events:none"></iconify-icon>التعليم والتكوين</button>
+            <button class="guide-tab" onclick="loadFacTab('health',this)"><iconify-icon icon="lucide:heart-pulse" style="pointer-events:none"></iconify-icon>المرافق الصحية</button>
+            <button class="guide-tab" onclick="loadFacTab('public-bodies',this)"><iconify-icon icon="lucide:building-2" style="pointer-events:none"></iconify-icon>الهيئات العمومية</button>
+          </div>
+          <div id="fac-list" style="padding:6px 0">
+            <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span>جاري التحميل</span></div>
+          </div>
         </div>
       </div>
     </div>
@@ -512,32 +525,33 @@ img.clickable{pointer-events:auto;}
         </div>
       </div>
       <div class="scroll-area" id="scroll-more">
-        <div style="margin:18px 18px 0;background:var(--card);border-radius:18px;overflow:hidden;box-shadow:var(--shadow-sm);border:1px solid var(--border-light)">
-          <div class="more-item" onclick="window.location.href='/'">
-            <div class="more-icon" style="background:#d1fae5"><iconify-icon icon="lucide:globe" style="color:#059669;font-size:20px;pointer-events:none"></iconify-icon></div>
-            <div style="flex:1"><div class="more-item-title">الموقع الرسمي</div><div class="more-item-sub">النسخة الكاملة للمتصفح</div></div>
-            <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
+        <div class="content-block">
+          <div style="margin:18px 18px 0;background:var(--card);border-radius:18px;overflow:hidden;box-shadow:var(--shadow-sm);border:1px solid var(--border-light)">
+            <div class="more-item" onclick="window.location.href='/'">
+              <div class="more-icon" style="background:#d1fae5"><iconify-icon icon="lucide:globe" style="color:#059669;font-size:20px;pointer-events:none"></iconify-icon></div>
+              <div style="flex:1"><div class="more-item-title">الموقع الرسمي</div><div class="more-item-sub">النسخة الكاملة للمتصفح</div></div>
+              <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
+            </div>
+            <div class="more-item" onclick="switchTab('guide')">
+              <div class="more-icon" style="background:#ede9fe"><iconify-icon icon="lucide:building" style="color:#7c3aed;font-size:20px;pointer-events:none"></iconify-icon></div>
+              <div style="flex:1"><div class="more-item-title">دليل المرافق</div><div class="more-item-sub">المؤسسات والخدمات العمومية</div></div>
+              <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
+            </div>
+            <div class="more-item">
+              <div class="more-icon" style="background:#fef3c7"><iconify-icon icon="lucide:scroll-text" style="color:#d97706;font-size:20px;pointer-events:none"></iconify-icon></div>
+              <div style="flex:1"><div class="more-item-title">أرشيف شطايبي</div><div class="more-item-sub">صور الأمس واليوم</div></div>
+              <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
+            </div>
+            <div class="more-item" onclick="switchTab('map')">
+              <div class="more-icon" style="background:#dbeafe"><iconify-icon icon="lucide:map-pin" style="color:#2563eb;font-size:20px;pointer-events:none"></iconify-icon></div>
+              <div style="flex:1"><div class="more-item-title">الخريطة التفاعلية</div><div class="more-item-sub">مرافق وشواطئ ومعالم شطايبي</div></div>
+              <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
+            </div>
           </div>
-          <div class="more-item" onclick="switchTab('guide')">
-            <div class="more-icon" style="background:#ede9fe"><iconify-icon icon="lucide:building" style="color:#7c3aed;font-size:20px;pointer-events:none"></iconify-icon></div>
-            <div style="flex:1"><div class="more-item-title">دليل المرافق</div><div class="more-item-sub">المؤسسات والخدمات العمومية</div></div>
-            <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
+          <div class="app-footer">
+            <div class="app-footer-main">© 2026 بلدية شطايبي - جميع الحقوق محفوظة</div>
+            <div class="app-footer-sub">تم التطوير بجهود الكفاءات الداخلية لبلدية شطايبي</div>
           </div>
-          <div class="more-item">
-            <div class="more-icon" style="background:#fef3c7"><iconify-icon icon="lucide:scroll-text" style="color:#d97706;font-size:20px;pointer-events:none"></iconify-icon></div>
-            <div style="flex:1"><div class="more-item-title">أرشيف شطايبي</div><div class="more-item-sub">صور الأمس واليوم</div></div>
-            <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
-          </div>
-          <div class="more-item" onclick="switchTab('map')">
-            <div class="more-icon" style="background:#dbeafe"><iconify-icon icon="lucide:map-pin" style="color:#2563eb;font-size:20px;pointer-events:none"></iconify-icon></div>
-            <div style="flex:1"><div class="more-item-title">الخريطة التفاعلية</div><div class="more-item-sub">مرافق وشواطئ ومعالم شطايبي</div></div>
-            <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
-          </div>
-        </div>
-        <!-- Footer -->
-        <div class="app-footer">
-          <div class="app-footer-main">© 2026 بلدية شطايبي - جميع الحقوق محفوظة</div>
-          <div class="app-footer-sub">تم التطوير بجهود الكفاءات الداخلية لبلدية شطايبي</div>
         </div>
       </div>
     </div>
@@ -671,55 +685,27 @@ async function api(u){
 var curTab='home',mapDone=false,allNews=[],facCat='admin-branches';
 var TAB_ORDER=['home','news','guide','map','more'];
 
-/* ══ تأثير Parallax Fade+Blur+Scale ══
-   يستمع لـ scroll-area وليس للـ screen كله
-*/
-function setupHeaderEffect(scrollAreaId, headerId){
-  var scrollEl=document.getElementById(scrollAreaId);
-  var headerEl=document.getElementById(headerId);
-  if(!scrollEl||!headerEl)return;
-
-  var ticking=false;
-
-  scrollEl.addEventListener('scroll',function(){
-    if(ticking)return;
-    ticking=true;
+/* ══ ضبط padding-top لـ scroll-area بحسب ارتفاع الهيدر ══ */
+function initScrollPadding(screenId){
+  var header=document.querySelector('#'+screenId+' .app-header');
+  var scroll=document.querySelector('#'+screenId+' .scroll-area');
+  if(!header||!scroll)return;
+  /* نستخدم offsetHeight بعد render الفعلي */
+  var h=header.offsetHeight;
+  if(h>0){
+    scroll.style.paddingTop=h+'px';
+  } else {
+    /* إذا لم يُرسم بعد، ننتظر */
     requestAnimationFrame(function(){
-      var scrollY   = scrollEl.scrollTop;
-      var headerH   = headerEl.offsetHeight;
-      /* progress: 0 عند الأعلى → 1 عند اكتمال إخفاء الهيدر */
-      var progress  = Math.min(scrollY / headerH, 1);
-
-      var opacity    = 1 - progress;
-      var blur       = progress * 8;
-      var scale      = 1 - (progress * 0.06);
-      var translateY = -(progress * headerH * 0.25);
-
-      headerEl.style.opacity   = opacity;
-      headerEl.style.transform = 'translateY('+translateY+'px) scale('+scale+')';
-      headerEl.style.filter    = 'blur('+blur+'px)';
-      /* pointer-events: none عندما يختفي الهيدر */
-      headerEl.style.pointerEvents = progress >= 1 ? 'none' : '';
-
-      ticking=false;
+      scroll.style.paddingTop=header.offsetHeight+'px';
     });
-  },{passive:true});
+  }
 }
 
-/* ══ إعادة ضبط الهيدر عند مغادرة الصفحة ══ */
-function resetHeader(headerId){
-  var h=document.getElementById(headerId);
-  if(!h)return;
-  h.style.opacity='';
-  h.style.transform='';
-  h.style.filter='';
-  h.style.pointerEvents='';
-}
-
-/* ══ إعادة scroll للأعلى عند مغادرة الصفحة ══ */
-function resetScroll(scrollAreaId){
-  var el=document.getElementById(scrollAreaId);
-  if(el)el.scrollTop=0;
+/* ══ إعادة ضبط scroll ══ */
+function resetScroll(screenId){
+  var scroll=document.querySelector('#'+screenId+' .scroll-area');
+  if(scroll)scroll.scrollTop=0;
 }
 
 /* ══ switchTab ══ */
@@ -736,9 +722,8 @@ function switchTab(t){
   var exitTo=forward?'100%':'-100%';
   var DUR=230;
   var EASE='cubic-bezier(.4,0,.2,1)';
-  var prevTab=curTab;
+  var prev=curTab;
 
-  /* خروج */
   if(prevEl){
     prevEl.style.transition='opacity '+DUR+'ms ease,transform '+DUR+'ms '+EASE;
     prevEl.style.opacity='0';
@@ -746,16 +731,16 @@ function switchTab(t){
     setTimeout(function(){
       prevEl.classList.add('hidden');
       prevEl.style.cssText='';
-      resetHeader('header-'+prevTab);
-      resetScroll('scroll-'+prevTab);
+      resetScroll('screen-'+prev);
     },DUR+20);
   }
 
-  /* دخول */
   nextEl.classList.remove('hidden');
   nextEl.style.cssText='opacity:0;transform:translateX('+enterFrom+');transition:none';
   requestAnimationFrame(function(){
     requestAnimationFrame(function(){
+      /* ضبط padding قبل الظهور */
+      initScrollPadding('screen-'+t);
       nextEl.style.transition='opacity '+DUR+'ms ease,transform '+DUR+'ms '+EASE;
       nextEl.style.opacity='1';
       nextEl.style.transform='translateX(0)';
@@ -763,7 +748,6 @@ function switchTab(t){
     });
   });
 
-  /* nav */
   document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');});
   var nb=document.getElementById('nav-'+t);
   if(nb)nb.classList.add('active');
@@ -853,8 +837,7 @@ function renderNews(items){
       ?'<div class="announce-img-wrap"><img src="'+n.image_url+'" alt="" loading="lazy"></div>'
       :'<div class="announce-img-wrap" style="background:'+s.grad+';height:90px"><iconify-icon icon="'+(n.category==='official'?'lucide:megaphone':'lucide:clipboard-list')+'" style="color:rgba(255,255,255,.65);font-size:2.2rem;pointer-events:none"></iconify-icon></div>';
     return '<div class="announce-card fade-in" onclick="openNewsModal('+n.id+')">'
-      +imgW
-      +'<div class="announce-body">'
+      +imgW+'<div class="announce-body">'
       +'<div style="display:flex;align-items:center;gap:7px;margin-bottom:6px"><span class="news-badge" style="'+s.bs+'">'+lbl+'</span>'+pin+'</div>'
       +'<div style="font-size:13px;color:var(--muted);line-height:1.65">'+desc+'</div>'
       +'<div class="announce-footer"><button class="read-more" onclick="event.stopPropagation();openNewsModal('+n.id+')">« اقرأ المزيد</button></div>'
@@ -884,14 +867,11 @@ async function loadFacTab(tab,btn){
         ?'<img class="fac-card-img" src="'+f.image_url+'" alt="" onerror="this.outerHTML=\'<div class=fac-card-ph style=background:'+m.bg+'><iconify-icon icon='+m.icon+' style=color:'+m.color+';font-size:1.8rem></iconify-icon></div>\'">'
         :'<div class="fac-card-ph" style="background:'+m.bg+'"><iconify-icon icon="'+m.icon+'" style="color:'+m.color+';font-size:1.8rem;pointer-events:none"></iconify-icon></div>';
       return '<div class="fac-card fade-in" onclick="openFacModal('+f.id+',\''+tab+'\')">'
-        +img
-        +'<div class="fac-card-body">'
+        +img+'<div class="fac-card-body">'
         +(f.sub_type?'<span class="fac-card-badge" style="background:'+m.bg+';color:'+m.color+'">'+f.sub_type+'</span>':'')
         +'<div class="fac-card-name">'+(f.name||'')+'</div>'
         +(f.description?'<div class="fac-card-desc">'+f.description+'</div>':'')
-        +'</div>'
-        +'<iconify-icon icon="lucide:chevron-left" style="font-size:18px;color:var(--muted);padding-left:10px;flex-shrink:0;pointer-events:none"></iconify-icon>'
-        +'</div>';
+        +'</div><iconify-icon icon="lucide:chevron-left" style="font-size:18px;color:var(--muted);padding-left:10px;flex-shrink:0;pointer-events:none"></iconify-icon></div>';
     }).join('');
   }catch(e){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';}
 }
@@ -1035,11 +1015,20 @@ async function loadMapData(){
   }catch(e){}
 }
 
-/* ══ Init: تفعيل التأثير ══ */
-setupHeaderEffect('scroll-home',  'header-home');
-setupHeaderEffect('scroll-news',  'header-news');
-setupHeaderEffect('scroll-guide', 'header-guide');
-setupHeaderEffect('scroll-more',  'header-more');
+/* ══ Init ══ */
+/* ضبط padding-top لجميع الصفحات عند التحميل */
+window.addEventListener('load',function(){
+  ['home','news','guide','more'].forEach(function(id){
+    initScrollPadding('screen-'+id);
+  });
+});
+
+/* احتياط إضافي بعد رسم الخطوط */
+document.fonts.ready.then(function(){
+  ['home','news','guide','more'].forEach(function(id){
+    initScrollPadding('screen-'+id);
+  });
+});
 
 loadHome();
 </script>
