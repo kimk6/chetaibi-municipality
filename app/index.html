@@ -47,22 +47,30 @@ img{
   pointer-events:none;-webkit-user-drag:none;
 }
 img.clickable{pointer-events:auto !important;cursor:pointer;}
-#app{display:flex;flex-direction:column;height:100%;height:100dvh;overflow:hidden;}
+#app{display:flex;flex-direction:column;height:100%;height:100dvh;overflow:hidden;position:relative;}
 #screen-container{flex:1;min-height:0;position:relative;overflow:hidden;}
 .screen{position:absolute;inset:0;overflow:hidden;will-change:transform,opacity;}
 .screen.hidden{display:none;pointer-events:none;}
 
-/* ══ HEADER ══ */
-.app-header{
-  position:absolute;top:0;left:0;right:0;z-index:1;
+/* ══ SHARED HEADER ══ */
+#shared-header{
+  position:absolute;
+  top:0;left:0;right:0;
+  z-index:10;
   background:linear-gradient(145deg,#042f1e 0%,var(--green-d) 40%,var(--green-m) 75%,#059669 100%);
   overflow:hidden;
+  pointer-events:none;
 }
-.app-header::before{
+#shared-header::before{
   content:'';position:absolute;inset:0;
   background:radial-gradient(ellipse at 85% 20%,rgba(255,255,255,.07) 0%,transparent 60%);
   pointer-events:none;
 }
+#shared-header .app-header-inner{
+  pointer-events:auto;
+}
+
+/* ══ HEADER INNER (مشترك) ══ */
 .app-header-inner{
   display:flex;align-items:center;gap:14px;
   position:relative;z-index:1;
@@ -313,8 +321,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   opacity:0;pointer-events:none;transition:opacity .25s ease;
 }
 .modal-overlay.open{opacity:1;pointer-events:auto;}
-
-/* ← الإصلاح الجوهري: position:relative على modal-sheet */
 .modal-sheet{
   width:100%;background:#fff;border-radius:24px 24px 0 0;
   max-height:94dvh;overflow-y:auto;overflow-x:hidden;
@@ -326,8 +332,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   position:relative;
 }
 .modal-overlay.open .modal-sheet{transform:translateY(0);}
-
-/* ← الإصلاح الجوهري: modal-drag يطفو فوق الصورة */
 .modal-drag{
   width:40px;height:4px;
   background:rgba(255,255,255,.65);
@@ -337,10 +341,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   transform:translateX(-50%);
   z-index:20;
   pointer-events:none;
-  /* shadow خفيف لتمييزه على الصور الفاتحة */
   box-shadow:0 1px 3px rgba(0,0,0,.25);
 }
-
 .modal-img{width:100%;height:220px;object-fit:cover;display:block;pointer-events:none;}
 .modal-body{padding:16px 20px;}
 .modal-badge{font-size:11px;font-weight:800;padding:3px 12px;border-radius:99px;display:inline-block;margin-bottom:8px;}
@@ -394,24 +396,28 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 </head>
 <body>
 <div id="app">
+
+  <!-- ══ SHARED HEADER (ثابت لجميع الصفحات) ══ -->
+  <div id="shared-header">
+    <div class="app-header-inner">
+      <img class="header-logo"
+        src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo-mobile.png"
+        alt="logo" onerror="this.style.display='none'"
+        style="background:transparent">
+      <div class="header-text">
+        <h1>بلدية شطايبي</h1>
+        <p>والية عنابة - الجزائر</p>
+      </div>
+      <div class="header-btn">
+        <iconify-icon icon="lucide:bell" style="color:#fff;font-size:18px;pointer-events:none"></iconify-icon>
+      </div>
+    </div>
+  </div>
+
   <div id="screen-container">
 
     <!-- ══ HOME ══ -->
     <div class="screen" id="screen-home">
-      <div class="app-header" id="header-home">
-        <div class="app-header-inner">
-          <img class="header-logo"
-            src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo-mobile.png"
-            alt="logo" onerror="this.style.display='none'" style="background:transparent">
-          <div class="header-text">
-            <h1>بلدية شطايبي</h1>
-            <p>ولاية عنابة - الجزائر</p>
-          </div>
-          <div class="header-btn">
-            <iconify-icon icon="lucide:bell" style="color:#fff;font-size:18px;pointer-events:none"></iconify-icon>
-          </div>
-        </div>
-      </div>
       <div class="scroll-area" id="scroll-home">
         <div class="content-block">
           <div class="section" style="padding-top:16px">
@@ -464,17 +470,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 
     <!-- ══ NEWS ══ -->
     <div class="screen hidden" id="screen-news">
-      <div class="app-header" id="header-news">
-        <div class="app-header-inner">
-          <img class="header-logo"
-            src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo-mobile.png"
-            alt="logo" onerror="this.style.display='none'" style="background:transparent">
-          <div class="header-text">
-            <h1>بلدية شطايبي</h1>
-            <p>ولاية عنابة - الجزائر</p>
-          </div>
-        </div>
-      </div>
       <div class="scroll-area" id="scroll-news">
         <div class="content-block">
           <div class="seg-bar-wrap" id="seg-news">
@@ -502,17 +497,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 
     <!-- ══ GUIDE ══ -->
     <div class="screen hidden" id="screen-guide">
-      <div class="app-header" id="header-guide">
-        <div class="app-header-inner">
-          <img class="header-logo"
-            src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo-mobile.png"
-            alt="logo" onerror="this.style.display='none'" style="background:transparent">
-          <div class="header-text">
-            <h1>بلدية شطايبي</h1>
-            <p>ولاية عنابة - الجزائر</p>
-          </div>
-        </div>
-      </div>
       <div class="scroll-area" id="scroll-guide">
         <div class="content-block">
           <div class="seg-bar-wrap" id="seg-guide">
@@ -556,17 +540,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 
     <!-- ══ MORE ══ -->
     <div class="screen hidden" id="screen-more">
-      <div class="app-header" id="header-more">
-        <div class="app-header-inner">
-          <img class="header-logo"
-            src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo-mobile.png"
-            alt="logo" onerror="this.style.display='none'" style="background:transparent">
-          <div class="header-text">
-            <h1>بلدية شطايبي</h1>
-            <p>ولاية عنابة - الجزائر</p>
-          </div>
-        </div>
-      </div>
       <div class="scroll-area" id="scroll-more">
         <div class="content-block">
           <div style="margin:18px 18px 0;background:var(--card);border-radius:18px;overflow:hidden;box-shadow:var(--shadow-sm);border:1px solid var(--border-light)">
@@ -612,53 +585,54 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </div>
           </div>
           <div class="app-footer">
-            <div class="app-footer-main">بلدية شطايبي © 2026 - جميع الحقوق محفوظة</div>
+            <div class="app-footer-main">© 2026 بلدية شطايبي - جميع الحقوق محفوظة</div>
             <div class="app-footer-sub">تم التطوير بجهود الكفاءات الداخلية لبلدية شطايبي</div>
           </div>
         </div>
       </div>
     </div>
 
-  </div>
+  </div><!-- end screen-container -->
 
   <nav id="bottom-nav">
     <button class="nav-btn active" id="nav-home" onclick="switchTab('home')">
       <div class="nav-icon-wrap">
         <iconify-icon class="icon-off" icon="ph:house" style="font-size:24px"></iconify-icon>
-        <iconify-icon class="icon-on"  icon="ph:house-fill" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-on" icon="ph:house-fill" style="font-size:24px"></iconify-icon>
       </div>
       <span>الرئيسية</span>
     </button>
     <button class="nav-btn" id="nav-news" onclick="switchTab('news')">
       <div class="nav-icon-wrap">
         <iconify-icon class="icon-off" icon="ph:newspaper" style="font-size:24px"></iconify-icon>
-        <iconify-icon class="icon-on"  icon="ph:newspaper-fill" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-on" icon="ph:newspaper-fill" style="font-size:24px"></iconify-icon>
       </div>
       <span>الأخبار</span>
     </button>
     <button class="nav-btn" id="nav-guide" onclick="switchTab('guide')">
       <div class="nav-icon-wrap">
         <iconify-icon class="icon-off" icon="ph:map-pin" style="font-size:24px"></iconify-icon>
-        <iconify-icon class="icon-on"  icon="ph:map-pin-fill" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-on" icon="ph:map-pin-fill" style="font-size:24px"></iconify-icon>
       </div>
       <span>الدليل</span>
     </button>
     <button class="nav-btn" id="nav-map" onclick="switchTab('map')">
       <div class="nav-icon-wrap">
         <iconify-icon class="icon-off" icon="ph:map-trifold" style="font-size:24px"></iconify-icon>
-        <iconify-icon class="icon-on"  icon="ph:map-trifold-fill" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-on" icon="ph:map-trifold-fill" style="font-size:24px"></iconify-icon>
       </div>
       <span>الخريطة</span>
     </button>
     <button class="nav-btn" id="nav-more" onclick="switchTab('more')">
       <div class="nav-icon-wrap">
         <iconify-icon class="icon-off" icon="ph:squares-four" style="font-size:24px"></iconify-icon>
-        <iconify-icon class="icon-on"  icon="ph:squares-four-fill" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-on" icon="ph:squares-four-fill" style="font-size:24px"></iconify-icon>
       </div>
       <span>المزيد</span>
     </button>
   </nav>
-</div>
+
+</div><!-- end app -->
 
 <!-- ══ MODALS ══ -->
 <div class="modal-overlay" id="m-news" onclick="cm('m-news')">
@@ -747,10 +721,10 @@ document.addEventListener('dragstart',function(e){e.preventDefault();return fals
 document.addEventListener('selectstart',function(e){e.preventDefault();return false;});
 document.addEventListener('touchstart',function(e){
   if(e.target.tagName==='IMG'
-     &&!e.target.closest('.album-grid')
-     &&!e.target.closest('#mn-announce-album')
-     &&!e.target.closest('#mt-sticker-album')
-     &&!e.target.closest('#lightbox')){
+    &&!e.target.closest('.album-grid')
+    &&!e.target.closest('#mn-announce-album')
+    &&!e.target.closest('#mt-sticker-album')
+    &&!e.target.closest('#lightbox')){
     e.preventDefault();
   }
 },{passive:false});
@@ -771,13 +745,16 @@ var curTab='home',mapDone=false,allNews=[],facCat='admin-branches';
 var newsScreenLoaded=false;
 var TAB_ORDER=['home','news','guide','map','more'];
 
+/* ══ initScrollPadding - يستخدم الهيدر المشترك ══ */
 function initScrollPadding(screenId){
-  var header=document.querySelector('#'+screenId+' .app-header');
+  var header=document.getElementById('shared-header');
   var scroll=document.querySelector('#'+screenId+' .scroll-area');
   if(!header||!scroll) return;
   var h=header.offsetHeight;
   if(h>0){scroll.style.paddingTop=h+'px';}
-  else{requestAnimationFrame(function(){scroll.style.paddingTop=header.offsetHeight+'px';});}
+  else{requestAnimationFrame(function(){
+    scroll.style.paddingTop=header.offsetHeight+'px';
+  });}
 }
 
 function resetScroll(screenId){
@@ -785,6 +762,7 @@ function resetScroll(screenId){
   if(scroll) scroll.scrollTop=0;
 }
 
+/* ══ switchTab - التأثير الحركي على المحتوى فقط ══ */
 function switchTab(t){
   if(t===curTab) return;
   var prevEl=document.getElementById('screen-'+curTab);
@@ -831,7 +809,7 @@ function switchTab(t){
 var NS={
   official:{grad:'linear-gradient(135deg,#ef4444,#b91c1c)',lbl:'إعلان رسمي',bs:'background:rgba(239,68,68,.12);color:#dc2626'},
   activity:{grad:'linear-gradient(135deg,#059669,#065f46)',lbl:'نشاط بلدي',bs:'background:rgba(5,150,105,.12);color:#059669'},
-  social:  {grad:'linear-gradient(135deg,#7c3aed,#4c1d95)',lbl:'ركن المجتمع',bs:'background:rgba(124,58,237,.12);color:#7c3aed'}
+  social:{grad:'linear-gradient(135deg,#7c3aed,#4c1d95)',lbl:'ركن المجتمع',bs:'background:rgba(124,58,237,.12);color:#7c3aed'}
 };
 
 function makeDateBadge(dateStr){
@@ -970,13 +948,13 @@ function renderNews(items){
 }
 
 var FM={
-  'admin-branches':{cat:'branches',      icon:'lucide:landmark',       color:'#059669',bg:'#d1fae5'},
-  'education':     {cat:'education',     icon:'lucide:graduation-cap', color:'#2563eb',bg:'#dbeafe'},
-  'health':        {cat:'health',        icon:'lucide:heart-pulse',    color:'#dc2626',bg:'#fee2e2'},
-  'public-bodies': {cat:'public_bodies', icon:'lucide:building-2',     color:'#7c3aed',bg:'#ede9fe'},
-  'religious':     {cat:'religious',     icon:'lucide:moon-star',      color:'#b45309',bg:'#fef3c7'},
-  'cultural':      {cat:'cultural',      icon:'lucide:palette',        color:'#0891b2',bg:'#cffafe'},
-  'sports':        {cat:'sports',        icon:'lucide:trophy',         color:'#ea580c',bg:'#ffedd5'}
+  'admin-branches':{cat:'branches',      icon:'lucide:landmark',        color:'#059669',bg:'#d1fae5'},
+  'education':     {cat:'education',     icon:'lucide:graduation-cap',  color:'#2563eb',bg:'#dbeafe'},
+  'health':        {cat:'health',        icon:'lucide:heart-pulse',     color:'#dc2626',bg:'#fee2e2'},
+  'public-bodies': {cat:'public_bodies', icon:'lucide:building-2',      color:'#7c3aed',bg:'#ede9fe'},
+  'religious':     {cat:'religious',     icon:'lucide:moon-star',       color:'#b45309',bg:'#fef3c7'},
+  'cultural':      {cat:'cultural',      icon:'lucide:palette',         color:'#0891b2',bg:'#cffafe'},
+  'sports':        {cat:'sports',        icon:'lucide:trophy',          color:'#ea580c',bg:'#ffedd5'}
 };
 
 async function loadFacTab(tab,btn){
@@ -1209,11 +1187,22 @@ async function loadMapData(){
 }
 
 window.addEventListener('load',function(){
-  ['home','news','guide','more'].forEach(function(id){initScrollPadding('screen-'+id);});
+  ['home','news','guide','more'].forEach(function(id){
+    initScrollPadding('screen-'+id);
+  });
+  window.addEventListener('resize',function(){
+    ['home','news','guide','more'].forEach(function(id){
+      initScrollPadding('screen-'+id);
+    });
+  });
 });
+
 document.fonts.ready.then(function(){
-  ['home','news','guide','more'].forEach(function(id){initScrollPadding('screen-'+id);});
+  ['home','news','guide','more'].forEach(function(id){
+    initScrollPadding('screen-'+id);
+  });
 });
+
 loadHome();
 </script>
 </body>
