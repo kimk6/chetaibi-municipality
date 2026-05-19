@@ -53,11 +53,11 @@ img.clickable{pointer-events:auto;}
 .screen{position:absolute;inset:0;overflow:hidden;will-change:transform,opacity;}
 .screen.hidden{display:none;pointer-events:none;}
 
-/* ══ HEADER — أصلي تماماً لا يتغير ══ */
+/* ══ HEADER — أصلي لا يُمس ══ */
 .app-header{
   position:absolute;
   top:0;left:0;right:0;
-  z-index:1; /* أقل من scroll-area */
+  z-index:1;
   background:linear-gradient(145deg,#042f1e 0%,var(--green-d) 40%,var(--green-m) 75%,#059669 100%);
   overflow:hidden;
 }
@@ -87,16 +87,16 @@ img.clickable{pointer-events:auto;}
 }
 .header-btn:active{background:rgba(255,255,255,.28);}
 
-/* ══ SCROLL AREA — z-index أعلى من الهيدر يغطيه عند السكرول ══ */
+/* ══ SCROLL AREA — z-index:2 يغطي الهيدر عند السكرول ══ */
 .scroll-area{
   position:absolute;inset:0;
-  z-index:2; /* يغطي الهيدر عند السكرول */
+  z-index:2;
   overflow-y:auto;overflow-x:hidden;
   -webkit-overflow-scrolling:touch;
   overscroll-behavior-y:contain;
 }
 
-/* ══ CONTENT BLOCK — الخلفية البيضاء التي تغطي الهيدر ══ */
+/* ══ CONTENT BLOCK ══ */
 .content-block{
   background:var(--surface);
   border-radius:20px 20px 0 0;
@@ -196,29 +196,11 @@ img.clickable{pointer-events:auto;}
 .place-card-name{font-size:12px;font-weight:900;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.6);line-height:1.3;}
 .place-card-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
 
-/* ══ SEG BAR — شريط التصنيفات ══ */
-/*
-  يجلس داخل content-block مع sticky
-  لكن top يُضبط بـ JS ليكون = 0 داخل scroll-area
-  (لأن scroll-area هو الـ scroll container)
-  فيثبت عند أعلى منطقة المحتوى المرئية
-  ويختفي طبيعياً عند السكرول للأسفل لأن الهيدر اختفى
-*/
+/* ══ SEG BAR — يتحرك مع المحتوى تماماً ══ */
 .seg-bar-wrap{
-  position:sticky;
-  top:0;           /* يلتصق بأعلى scroll-area */
-  z-index:3;       /* فوق content-block وتحت أي modal */
+  /* بدون sticky — جزء طبيعي من تدفق المحتوى */
   background:var(--surface);
   border-bottom:1px solid var(--border-light);
-  /* انتقال الإخفاء عند السكرول */
-  transition:transform .28s cubic-bezier(.4,0,.2,1),
-             opacity   .28s cubic-bezier(.4,0,.2,1);
-  will-change:transform,opacity;
-}
-.seg-bar-wrap.seg-hidden{
-  transform:translateY(-100%);
-  opacity:0;
-  pointer-events:none;
 }
 .seg-bar{
   display:flex;gap:8px;
@@ -418,7 +400,7 @@ img.clickable{pointer-events:auto;}
       </div>
       <div class="scroll-area" id="scroll-news">
         <div class="content-block">
-          <!-- شريط التصنيفات داخل content-block مع sticky -->
+          <!-- شريط التصنيفات — يتحرك مع المحتوى -->
           <div class="seg-bar-wrap" id="seg-news">
             <div class="seg-bar">
               <button class="seg-btn active" onclick="filterNews('official',this)">
@@ -457,7 +439,7 @@ img.clickable{pointer-events:auto;}
       </div>
       <div class="scroll-area" id="scroll-guide">
         <div class="content-block">
-          <!-- شريط التصنيفات داخل content-block مع sticky -->
+          <!-- شريط التصنيفات — يتحرك مع المحتوى -->
           <div class="seg-bar-wrap" id="seg-guide">
             <div class="seg-bar">
               <button class="seg-btn active" onclick="loadFacTab('admin-branches',this)">
@@ -666,10 +648,7 @@ async function api(u){
 var curTab='home',mapDone=false,allNews=[],facCat='admin-branches';
 var TAB_ORDER=['home','news','guide','map','more'];
 
-/* ══════════════════════════════════════════════
-   ضبط padding-top بحسب ارتفاع الهيدر
-   — نفس المنطق الأصلي تماماً —
-   ══════════════════════════════════════════════ */
+/* ══ ضبط padding-top — نفس المنطق الأصلي ══ */
 function initScrollPadding(screenId){
   var header=document.querySelector('#'+screenId+' .app-header');
   var scroll=document.querySelector('#'+screenId+' .scroll-area');
@@ -684,63 +663,10 @@ function initScrollPadding(screenId){
   }
 }
 
-/* ══ إعادة ضبط scroll عند مغادرة الصفحة ══ */
+/* ══ إعادة ضبط scroll ══ */
 function resetScroll(screenId){
   var scroll=document.querySelector('#'+screenId+' .scroll-area');
   if(scroll) scroll.scrollTop=0;
-  /* أعد شريط التصنيفات للظهور عند العودة */
-  var segId=screenId==='screen-news'?'seg-news':screenId==='screen-guide'?'seg-guide':null;
-  if(segId){
-    var seg=document.getElementById(segId);
-    if(seg) seg.classList.remove('seg-hidden');
-  }
-}
-
-/* ══════════════════════════════════════════════
-   SEG BAR — إخفاء/إظهار عند السكرول
-   الشريط داخل content-block بـ sticky:top=0
-   يختفي عند السكرول بعد مسافة معينة
-   ══════════════════════════════════════════════ */
-var segState={
-  news: {lastY:0,hidden:false,ticking:false},
-  guide:{lastY:0,hidden:false,ticking:false}
-};
-
-function attachSegScroll(tabKey){
-  var scrollEl=document.getElementById('scroll-'+tabKey);
-  var segEl   =document.getElementById('seg-'+tabKey);
-  if(!scrollEl||!segEl) return;
-
-  var st=segState[tabKey];
-  st.lastY=scrollEl.scrollTop;
-  st.hidden=false;
-  segEl.classList.remove('seg-hidden');
-
-  function onScroll(){
-    if(st.ticking) return;
-    st.ticking=true;
-    requestAnimationFrame(function(){
-      var y =scrollEl.scrollTop;
-      var dy=y-st.lastY;
-      var TH=8;
-      if(y<=2){
-        segEl.classList.remove('seg-hidden');
-        st.hidden=false;
-      } else if(dy>TH && !st.hidden){
-        segEl.classList.add('seg-hidden');
-        st.hidden=true;
-      } else if(dy<-TH && st.hidden){
-        segEl.classList.remove('seg-hidden');
-        st.hidden=false;
-      }
-      st.lastY=y;
-      st.ticking=false;
-    });
-  }
-
-  if(scrollEl._segH) scrollEl.removeEventListener('scroll',scrollEl._segH);
-  scrollEl._segH=onScroll;
-  scrollEl.addEventListener('scroll',onScroll,{passive:true});
 }
 
 /* ══ switchTab ══ */
@@ -773,10 +699,7 @@ function switchTab(t){
   nextEl.style.cssText='opacity:0;transform:translateX('+enterFrom+');transition:none';
   requestAnimationFrame(function(){
     requestAnimationFrame(function(){
-      /* ضبط padding — نفس المنطق الأصلي */
       initScrollPadding('screen-'+t);
-      /* تفعيل منطق الشريط إن وُجد */
-      if(t==='news'||t==='guide') attachSegScroll(t);
       nextEl.style.transition='opacity '+DUR+'ms ease,transform '+DUR+'ms '+EASE;
       nextEl.style.opacity='1';
       nextEl.style.transform='translateX(0)';
