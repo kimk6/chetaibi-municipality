@@ -24,6 +24,7 @@
   --safe-t:env(safe-area-inset-top,0px);
   --shadow-sm:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
   --shadow-md:0 4px 16px rgba(0,0,0,.10),0 1px 4px rgba(0,0,0,.06);
+  --header-h:0px; /* تُحسب بالجافاسكريبت */
 }
 *{
   margin:0;padding:0;box-sizing:border-box;
@@ -47,23 +48,27 @@ img{
   pointer-events:none;-webkit-user-drag:none;
 }
 img.clickable{pointer-events:auto !important;cursor:pointer;}
+
 #app{display:flex;flex-direction:column;height:100%;height:100dvh;overflow:hidden;}
 #screen-container{flex:1;min-height:0;position:relative;overflow:hidden;}
 .screen{position:absolute;inset:0;overflow:hidden;will-change:transform,opacity;}
 .screen.hidden{display:none;pointer-events:none;}
 
-/* ══ HEADER ══ */
-.app-header{
-  position:absolute;top:0;left:0;right:0;z-index:1;
+/* ══ SHARED HEADER — ثابت فوق الكل ══ */
+#shared-header{
+  position:absolute;
+  top:0;left:0;right:0;
+  z-index:50; /* فوق المحتوى تماماً */
   background:linear-gradient(145deg,#042f1e 0%,var(--green-d) 40%,var(--green-m) 75%,#059669 100%);
   overflow:hidden;
+  /* لا transition ولا animation هنا — يبقى ثابتاً دائماً */
 }
-.app-header::before{
+#shared-header::before{
   content:'';position:absolute;inset:0;
   background:radial-gradient(ellipse at 85% 20%,rgba(255,255,255,.07) 0%,transparent 60%);
   pointer-events:none;
 }
-.app-header-inner{
+.shared-header-inner{
   display:flex;align-items:center;gap:14px;
   position:relative;z-index:1;
   padding:calc(var(--safe-t) + 16px) 18px 16px;
@@ -84,9 +89,15 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 }
 .header-btn:active{background:rgba(255,255,255,.28);}
 
+/* أزرار الهيدر الخاصة بكل شاشة — تُخفى/تُظهر حسب التاب */
+.header-actions{display:flex;align-items:center;gap:8px;}
+.header-action{display:none;}
+.header-action.visible{display:flex;}
+
 /* ══ SCROLL AREA ══ */
 .scroll-area{
-  position:absolute;inset:0;z-index:2;
+  position:absolute;inset:0;
+  z-index:1;
   overflow-y:auto;overflow-x:hidden;
   -webkit-overflow-scrolling:touch;
   overscroll-behavior-y:contain;
@@ -120,10 +131,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   border:none;background:none;cursor:pointer;
   font-family:'Cairo',sans-serif;font-size:10px;font-weight:700;
   color:var(--muted);padding:0 4px;position:relative;
-  touch-action:manipulation;
-  transition:color .2s ease;
+  touch-action:manipulation;transition:color .2s ease;
 }
-.nav-btn iconify-icon{font-size:24px;display:block;pointer-events:none;}
 .nav-icon-wrap{
   position:relative;width:24px;height:24px;
   display:flex;align-items:center;justify-content:center;flex-shrink:0;
@@ -266,10 +275,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 }
 .poster-card:active{transform:scale(.98);opacity:.8;}
 .poster-card img{width:100%;display:block;object-fit:cover;pointer-events:none;}
-.poster-card-ph{
-  width:100%;height:220px;
-  display:flex;align-items:center;justify-content:center;line-height:normal;
-}
+.poster-card-ph{width:100%;height:220px;display:flex;align-items:center;justify-content:center;line-height:normal;}
 
 /* ══ FAC CARD ══ */
 .fac-card{
@@ -313,8 +319,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   opacity:0;pointer-events:none;transition:opacity .25s ease;
 }
 .modal-overlay.open{opacity:1;pointer-events:auto;}
-
-/* ← الإصلاح الجوهري: position:relative على modal-sheet */
 .modal-sheet{
   width:100%;background:#fff;border-radius:24px 24px 0 0;
   max-height:94dvh;overflow-y:auto;overflow-x:hidden;
@@ -326,8 +330,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   position:relative;
 }
 .modal-overlay.open .modal-sheet{transform:translateY(0);}
-
-/* ← الإصلاح الجوهري: modal-drag يطفو فوق الصورة */
 .modal-drag{
   width:40px;height:4px;
   background:rgba(255,255,255,.65);
@@ -337,10 +339,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   transform:translateX(-50%);
   z-index:20;
   pointer-events:none;
-  /* shadow خفيف لتمييزه على الصور الفاتحة */
   box-shadow:0 1px 3px rgba(0,0,0,.25);
 }
-
 .modal-img{width:100%;height:220px;object-fit:cover;display:block;pointer-events:none;}
 .modal-body{padding:16px 20px;}
 .modal-badge{font-size:11px;font-weight:800;padding:3px 12px;border-radius:99px;display:inline-block;margin-bottom:8px;}
@@ -396,22 +396,29 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 <div id="app">
   <div id="screen-container">
 
-    <!-- ══ HOME ══ -->
-    <div class="screen" id="screen-home">
-      <div class="app-header" id="header-home">
-        <div class="app-header-inner">
-          <img class="header-logo"
-            src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo-mobile.png"
-            alt="logo" onerror="this.style.display='none'" style="background:transparent">
-          <div class="header-text">
-            <h1>بلدية شطايبي</h1>
-            <p>ولاية عنابة - الجزائر</p>
-          </div>
-          <div class="header-btn">
-            <iconify-icon icon="lucide:bell" style="color:#fff;font-size:18px;pointer-events:none"></iconify-icon>
+    <!-- ══ SHARED HEADER الهيدر المشترك الثابت ══ -->
+    <div id="shared-header">
+      <div class="shared-header-inner">
+        <img class="header-logo"
+          src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo-mobile.png"
+          alt="logo" onerror="this.style.display='none'" style="background:transparent">
+        <div class="header-text">
+          <h1>بلدية شطايبي</h1>
+          <p>ولاية عنابة - الجزائر</p>
+        </div>
+        <div class="header-actions">
+          <!-- زر الإشعارات — يظهر فقط في الرئيسية -->
+          <div class="header-action visible" id="ha-bell">
+            <div class="header-btn">
+              <iconify-icon icon="lucide:bell" style="color:#fff;font-size:18px;pointer-events:none"></iconify-icon>
+            </div>
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- ══ HOME ══ -->
+    <div class="screen" id="screen-home">
       <div class="scroll-area" id="scroll-home">
         <div class="content-block">
           <div class="section" style="padding-top:16px">
@@ -464,17 +471,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 
     <!-- ══ NEWS ══ -->
     <div class="screen hidden" id="screen-news">
-      <div class="app-header" id="header-news">
-        <div class="app-header-inner">
-          <img class="header-logo"
-            src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo-mobile.png"
-            alt="logo" onerror="this.style.display='none'" style="background:transparent">
-          <div class="header-text">
-            <h1>بلدية شطايبي</h1>
-            <p>ولاية عنابة - الجزائر</p>
-          </div>
-        </div>
-      </div>
       <div class="scroll-area" id="scroll-news">
         <div class="content-block">
           <div class="seg-bar-wrap" id="seg-news">
@@ -502,17 +498,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 
     <!-- ══ GUIDE ══ -->
     <div class="screen hidden" id="screen-guide">
-      <div class="app-header" id="header-guide">
-        <div class="app-header-inner">
-          <img class="header-logo"
-            src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo-mobile.png"
-            alt="logo" onerror="this.style.display='none'" style="background:transparent">
-          <div class="header-text">
-            <h1>بلدية شطايبي</h1>
-            <p>ولاية عنابة - الجزائر</p>
-          </div>
-        </div>
-      </div>
       <div class="scroll-area" id="scroll-guide">
         <div class="content-block">
           <div class="seg-bar-wrap" id="seg-guide">
@@ -556,17 +541,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 
     <!-- ══ MORE ══ -->
     <div class="screen hidden" id="screen-more">
-      <div class="app-header" id="header-more">
-        <div class="app-header-inner">
-          <img class="header-logo"
-            src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo-mobile.png"
-            alt="logo" onerror="this.style.display='none'" style="background:transparent">
-          <div class="header-text">
-            <h1>بلدية شطايبي</h1>
-            <p>ولاية عنابة - الجزائر</p>
-          </div>
-        </div>
-      </div>
       <div class="scroll-area" id="scroll-more">
         <div class="content-block">
           <div style="margin:18px 18px 0;background:var(--card);border-radius:18px;overflow:hidden;box-shadow:var(--shadow-sm);border:1px solid var(--border-light)">
@@ -741,7 +715,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 <script>
 'use strict';
 
-/* ══ منع حفظ الصور ══ */
 document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
 document.addEventListener('dragstart',function(e){e.preventDefault();return false;});
 document.addEventListener('selectstart',function(e){e.preventDefault();return false;});
@@ -756,28 +729,35 @@ document.addEventListener('touchstart',function(e){
 },{passive:false});
 document.addEventListener('touchmove',function(e){if(e.touches.length>1)e.preventDefault();},{passive:false});
 
-/* ══ Cache & API ══ */
 var C={};
 async function api(u){
   if(C[u])return C[u];
-  var r=await fetch(u);
-  var d=await r.json();
-  C[u]=d;
-  return d;
+  var r=await fetch(u);var d=await r.json();C[u]=d;return d;
 }
 
-/* ══ State ══ */
 var curTab='home',mapDone=false,allNews=[],facCat='admin-branches';
 var newsScreenLoaded=false;
 var TAB_ORDER=['home','news','guide','map','more'];
 
+/* ══ ضبط padding-top للمحتوى بناءً على ارتفاع الهيدر المشترك ══ */
 function initScrollPadding(screenId){
-  var header=document.querySelector('#'+screenId+' .app-header');
+  var header=document.getElementById('shared-header');
   var scroll=document.querySelector('#'+screenId+' .scroll-area');
   if(!header||!scroll) return;
   var h=header.offsetHeight;
-  if(h>0){scroll.style.paddingTop=h+'px';}
-  else{requestAnimationFrame(function(){scroll.style.paddingTop=header.offsetHeight+'px';});}
+  if(h>0){
+    scroll.style.paddingTop=h+'px';
+  } else {
+    requestAnimationFrame(function(){
+      scroll.style.paddingTop=header.offsetHeight+'px';
+    });
+  }
+}
+
+function initAllScrollPaddings(){
+  ['home','news','guide','more'].forEach(function(id){
+    initScrollPadding('screen-'+id);
+  });
 }
 
 function resetScroll(screenId){
@@ -785,11 +765,13 @@ function resetScroll(screenId){
   if(scroll) scroll.scrollTop=0;
 }
 
+/* ══ switchTab — الهيدر لا يتحرك، المحتوى فقط يتحرك ══ */
 function switchTab(t){
   if(t===curTab) return;
   var prevEl=document.getElementById('screen-'+curTab);
   var nextEl=document.getElementById('screen-'+t);
   if(!nextEl) return;
+
   var prevIdx=TAB_ORDER.indexOf(curTab);
   var nextIdx=TAB_ORDER.indexOf(t);
   var forward=nextIdx>prevIdx;
@@ -797,6 +779,8 @@ function switchTab(t){
   var exitTo=forward?'100%':'-100%';
   var DUR=230,EASE='cubic-bezier(.4,0,.2,1)';
   var prev=curTab;
+
+  /* ← تحريك المحتوى فقط — الهيدر لا يتأثر */
   if(prevEl){
     prevEl.style.transition='opacity '+DUR+'ms ease,transform '+DUR+'ms '+EASE;
     prevEl.style.opacity='0';
@@ -807,6 +791,7 @@ function switchTab(t){
       resetScroll('screen-'+prev);
     },DUR+20);
   }
+
   nextEl.classList.remove('hidden');
   nextEl.style.cssText='opacity:0;transform:translateX('+enterFrom+');transition:none';
   requestAnimationFrame(function(){
@@ -818,9 +803,16 @@ function switchTab(t){
       setTimeout(function(){nextEl.style.cssText='';},DUR+20);
     });
   });
+
+  /* تحديث nav */
   document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');});
   var nb=document.getElementById('nav-'+t);
   if(nb) nb.classList.add('active');
+
+  /* إظهار/إخفاء زر الجرس حسب التاب */
+  var bell=document.getElementById('ha-bell');
+  if(bell) bell.className='header-action'+(t==='home'?' visible':'');
+
   curTab=t;
   if(t==='map'&&!mapDone) initMap2();
   if(t==='news'&&!newsScreenLoaded) loadNewsScreen();
@@ -860,8 +852,7 @@ function loadHome(){loadHOfficial();loadHNews();loadHBeaches();loadHTourism();}
 async function loadHOfficial(){
   var el=document.getElementById('h-official');
   try{
-    var d=await api('/api/news');
-    if(d.data) allNews=d.data;
+    var d=await api('/api/news');if(d.data)allNews=d.data;
     var items=(d.data||[]).filter(function(n){return n.category==='official';}).slice(0,10);
     el.innerHTML=items.length?items.map(makeNewsCard).join(''):'';
   }catch(e){el.innerHTML='';}
@@ -870,8 +861,7 @@ async function loadHOfficial(){
 async function loadHNews(){
   var el=document.getElementById('h-news');
   try{
-    var d=await api('/api/news');
-    if(d.data) allNews=d.data;
+    var d=await api('/api/news');if(d.data)allNews=d.data;
     var items=(d.data||[]).filter(function(n){return n.category!=='official'&&n.category!=='poster';}).slice(0,10);
     el.innerHTML=items.length?items.map(makeNewsCard).join(''):'';
   }catch(e){el.innerHTML='';}
@@ -880,8 +870,7 @@ async function loadHNews(){
 async function loadHBeaches(){
   var el=document.getElementById('h-beaches');
   try{
-    var d=await api('/api/beaches');
-    var items=(d.data||[]).slice(0,8);
+    var d=await api('/api/beaches');var items=(d.data||[]).slice(0,8);
     el.innerHTML=items.length?items.map(function(b){return placeCard(b,'beach');}).join(''):'';
   }catch(e){el.innerHTML='';}
 }
@@ -889,8 +878,7 @@ async function loadHBeaches(){
 async function loadHTourism(){
   var el=document.getElementById('h-tourism');
   try{
-    var d=await api('/api/tourism');
-    var items=(d.data||[]).slice(0,8);
+    var d=await api('/api/tourism');var items=(d.data||[]).slice(0,8);
     el.innerHTML=items.length?items.map(function(t){return placeCard(t,'tourism');}).join(''):'';
   }catch(e){el.innerHTML='';}
 }
@@ -902,18 +890,16 @@ function placeCard(item,type){
     ?'<div class="place-card-ph" style="background:linear-gradient(135deg,#0ea5e9,#0284c7)"><iconify-icon icon="lucide:waves" style="color:rgba(255,255,255,.8);font-size:2.2rem;pointer-events:none"></iconify-icon></div>'
     :'<div class="place-card-ph" style="background:linear-gradient(135deg,#059669,#065f46)"><iconify-icon icon="lucide:compass" style="color:rgba(255,255,255,.8);font-size:2.2rem;pointer-events:none"></iconify-icon></div>';
   var imgH=item.image_url
-    ?'<img src="'+item.image_url+'" alt="'+n+'" style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none">'
-    :ph;
-  return '<div class="place-card" onclick="'+fn+'">'
-    +imgH+'<div class="place-card-grad"></div>'
+    ?'<img src="'+item.image_url+'" alt="'+n+'" style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none">':ph;
+  return '<div class="place-card" onclick="'+fn+'">'+imgH
+    +'<div class="place-card-grad"></div>'
     +'<div class="place-card-body"><div class="place-card-name">'+n+'</div></div></div>';
 }
 
 async function loadNewsScreen(){
   var el=document.getElementById('news-list');
   try{
-    var d=await api('/api/news');
-    allNews=d.data||[];
+    var d=await api('/api/news');allNews=d.data||[];
     var activeBtn=document.querySelector('#screen-news .seg-btn.active');
     var activeCat=activeBtn?activeBtn.getAttribute('data-cat'):'official';
     newsScreenLoaded=true;
@@ -939,9 +925,7 @@ function renderNews(items){
   el.innerHTML=items.map(function(n){
     var s=NS[n.category]||NS.official;
     var lbl=n.custom_label||s.lbl||'';
-    var pin=n.is_pinned
-      ?'<span style="font-size:10px;font-weight:800;color:#f59e0b;display:flex;align-items:center;gap:2px"><iconify-icon icon="lucide:pin" style="pointer-events:none"></iconify-icon>مثبت</span>'
-      :'';
+    var pin=n.is_pinned?'<span style="font-size:10px;font-weight:800;color:#f59e0b;display:flex;align-items:center;gap:2px"><iconify-icon icon="lucide:pin" style="pointer-events:none"></iconify-icon>مثبت</span>':'';
     var desc=(n.content||'').substring(0,130)+'...';
     if(n.category==='poster'){
       var posterSrc=n.image_url||'';
@@ -987,12 +971,8 @@ async function loadFacTab(tab,btn){
   el.innerHTML='<div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>';
   var m=FM[tab];
   try{
-    var d=await api('/api/facilities?cat='+m.cat);
-    var items=d.data||[];
-    if(!items.length){
-      el.innerHTML='<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>لا توجد عناصر</p></div>';
-      return;
-    }
+    var d=await api('/api/facilities?cat='+m.cat);var items=d.data||[];
+    if(!items.length){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>لا توجد عناصر</p></div>';return;}
     el.innerHTML=items.map(function(f){
       var img=f.image_url
         ?'<img class="fac-card-img" src="'+f.image_url+'" alt="" onerror="this.outerHTML=\'<div class=fac-card-ph style=background:'+m.bg+'><iconify-icon icon='+m.icon+' style=color:'+m.color+';font-size:1.8rem></iconify-icon></div>\'">'
@@ -1016,18 +996,13 @@ function cm(id){document.getElementById(id).classList.remove('open');document.bo
 
 document.querySelectorAll('.modal-sheet').forEach(function(sheet){
   var startY=0,startScroll=0,dragging=false;
-  sheet.addEventListener('touchstart',function(e){
-    startY=e.touches[0].clientY;startScroll=sheet.scrollTop;dragging=true;
-  },{passive:true});
+  sheet.addEventListener('touchstart',function(e){startY=e.touches[0].clientY;startScroll=sheet.scrollTop;dragging=true;},{passive:true});
   sheet.addEventListener('touchmove',function(e){
-    if(!dragging)return;
-    var dy=e.touches[0].clientY-startY;
+    if(!dragging)return;var dy=e.touches[0].clientY-startY;
     if(dy>0&&startScroll<=0){sheet.style.transform='translateY('+dy+'px)';sheet.style.transition='none';}
   },{passive:true});
   sheet.addEventListener('touchend',function(e){
-    if(!dragging)return;
-    dragging=false;
-    var dy=e.changedTouches[0].clientY-startY;
+    if(!dragging)return;dragging=false;var dy=e.changedTouches[0].clientY-startY;
     sheet.style.transition='';
     if(dy>80&&startScroll<=0){var o=sheet.closest('.modal-overlay');if(o)cm(o.id);}
     sheet.style.transform='';
@@ -1035,50 +1010,39 @@ document.querySelectorAll('.modal-sheet').forEach(function(sheet){
 });
 
 function album(elId,albums){
-  var el=document.getElementById(elId);
-  var a=Array.isArray(albums)?albums:[];
+  var el=document.getElementById(elId);var a=Array.isArray(albums)?albums:[];
   if(!a.length){el.innerHTML='';return;}
   el.innerHTML='<div class="album-title"><iconify-icon icon="lucide:images" style="color:var(--green);pointer-events:none"></iconify-icon>معرض الصور ('+a.length+')</div>'
     +'<div class="album-grid">'
-    +a.map(function(x){
-      return '<img src="'+x.image_url+'" alt="" loading="lazy" onclick="openLightbox(\''+x.image_url+'\')" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;cursor:pointer;pointer-events:auto;display:block;touch-action:manipulation">';
-    }).join('')+'</div>';
+    +a.map(function(x){return '<img src="'+x.image_url+'" alt="" loading="lazy" onclick="openLightbox(\''+x.image_url+'\')" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;cursor:pointer;pointer-events:auto;display:block;touch-action:manipulation">';}).join('')
+    +'</div>';
 }
 
 function albumBig(elId,albums){
-  var el=document.getElementById(elId);
-  var a=Array.isArray(albums)?albums:[];
+  var el=document.getElementById(elId);var a=Array.isArray(albums)?albums:[];
   if(!a.length){el.innerHTML='';return;}
   el.innerHTML=a.map(function(x){
-    return '<div style="line-height:0;margin-bottom:3px">'
-      +'<img src="'+x.image_url+'" alt="" loading="lazy" onclick="openLightbox(\''+x.image_url+'\')" style="width:100%;display:block;cursor:pointer;pointer-events:auto;touch-action:manipulation">'
-      +'</div>';
+    return '<div style="line-height:0;margin-bottom:3px"><img src="'+x.image_url+'" alt="" loading="lazy" onclick="openLightbox(\''+x.image_url+'\')" style="width:100%;display:block;cursor:pointer;pointer-events:auto;touch-action:manipulation"></div>';
   }).join('');
 }
 
 async function openNewsModal(id){
   var n=allNews.find(function(x){return x.id==id;});
-  if(!n){
-    try{var d=await api('/api/news');allNews=d.data||[];n=allNews.find(function(x){return x.id==id;});}catch(e){}
-  }
+  if(!n){try{var d=await api('/api/news');allNews=d.data||[];n=allNews.find(function(x){return x.id==id;});}catch(e){}}
   if(!n)return;
   var albums=[];
   if(Array.isArray(n.albums)&&n.albums.length){albums=n.albums;}
-  else if(n.album_urls){
-    try{var arr=typeof n.album_urls==='string'?JSON.parse(n.album_urls):n.album_urls;
-      albums=(arr||[]).map(function(u,i){return{id:i,image_url:u,caption:''};});}catch(e){}
-  }
+  else if(n.album_urls){try{var arr=typeof n.album_urls==='string'?JSON.parse(n.album_urls):n.album_urls;albums=(arr||[]).map(function(u,i){return{id:i,image_url:u,caption:''};});}catch(e){}}
   if(n.category==='poster'){
     document.getElementById('mn-normal-view').style.display='none';
     document.getElementById('mn-announce-view').style.display='block';
     var posterSrc=n.image_url||(albums.length?albums[0].image_url:'');
-    document.getElementById('mn-announce-album').innerHTML=posterSrc
-      ?'<img src="'+posterSrc+'" style="width:100%;display:block;pointer-events:none" alt="">':'';
-  } else if(n.category==='official'){
+    document.getElementById('mn-announce-album').innerHTML=posterSrc?'<img src="'+posterSrc+'" style="width:100%;display:block;pointer-events:none" alt="">':'';
+  }else if(n.category==='official'){
     document.getElementById('mn-normal-view').style.display='none';
     document.getElementById('mn-announce-view').style.display='block';
     albumBig('mn-announce-album',albums.length?albums:(n.image_url?[{image_url:n.image_url}]:[]));
-  } else {
+  }else{
     document.getElementById('mn-announce-view').style.display='none';
     document.getElementById('mn-normal-view').style.display='block';
     var imgEl=document.getElementById('mn-img');
@@ -1088,46 +1052,38 @@ async function openNewsModal(id){
     else badgeEl.style.display='none';
     document.getElementById('mn-name').textContent=n.title||'';
     document.getElementById('mn-desc').textContent=n.content||'';
-    document.getElementById('mn-meta').innerHTML=n.date
-      ?'<span class="modal-chip"><iconify-icon icon="lucide:calendar-days" style="pointer-events:none"></iconify-icon>'+n.date+'</span>':'';
+    document.getElementById('mn-meta').innerHTML=n.date?'<span class="modal-chip"><iconify-icon icon="lucide:calendar-days" style="pointer-events:none"></iconify-icon>'+n.date+'</span>':'';
     album('mn-album',albums);
-    var cb=document.getElementById('mn-close-btn');
-    if(cb) cb.style.display=n.image_url?'flex':'none';
+    var cb=document.getElementById('mn-close-btn');if(cb)cb.style.display=n.image_url?'flex':'none';
   }
   om('m-news');
 }
 
 async function openBeachModal(id){
   try{
-    delete C['/api/beaches?id='+id];
-    var d=await api('/api/beaches?id='+id);var b=d.data;if(!b)return;
+    delete C['/api/beaches?id='+id];var d=await api('/api/beaches?id='+id);var b=d.data;if(!b)return;
     var img=document.getElementById('mb-img');
     if(b.image_url){img.src=b.image_url;img.style.display='block';}else img.style.display='none';
     document.getElementById('mb-name').textContent=b.name||'';
     document.getElementById('mb-desc').textContent=b.description||'';
     var m='';
-    if(b.is_supervised) m+='<span class="modal-chip"><iconify-icon icon="lucide:shield-check" style="color:#059669;pointer-events:none"></iconify-icon>مراقب</span>';
-    if(b.season) m+='<span class="modal-chip">'+b.season+'</span>';
-    document.getElementById('mb-meta').innerHTML=m;
-    album('mb-album',b.albums);om('m-beach');
+    if(b.is_supervised)m+='<span class="modal-chip"><iconify-icon icon="lucide:shield-check" style="color:#059669;pointer-events:none"></iconify-icon>مراقب</span>';
+    if(b.season)m+='<span class="modal-chip">'+b.season+'</span>';
+    document.getElementById('mb-meta').innerHTML=m;album('mb-album',b.albums);om('m-beach');
   }catch(e){}
 }
 
 async function openTourismModal(id){
   try{
-    delete C['/api/tourism?id='+id];
-    var d=await api('/api/tourism?id='+id);var t=d.data;if(!t)return;
+    delete C['/api/tourism?id='+id];var d=await api('/api/tourism?id='+id);var t=d.data;if(!t)return;
     var albums=[];
     if(Array.isArray(t.albums)&&t.albums.length){albums=t.albums;}
-    else if(t.album_urls){
-      try{var arr=typeof t.album_urls==='string'?JSON.parse(t.album_urls):t.album_urls;
-        albums=(arr||[]).map(function(u,i){return{id:i,image_url:u,caption:''};});}catch(e){}
-    }
+    else if(t.album_urls){try{var arr=typeof t.album_urls==='string'?JSON.parse(t.album_urls):t.album_urls;albums=(arr||[]).map(function(u,i){return{id:i,image_url:u,caption:''};});}catch(e){}}
     if(t.badge_text==='ملصق'||t.type==='sticker'){
       document.getElementById('mt-normal-view').style.display='none';
       document.getElementById('mt-sticker-view').style.display='block';
       albumBig('mt-sticker-album',albums.length?albums:(t.image_url?[{image_url:t.image_url}]:[]));
-    } else {
+    }else{
       document.getElementById('mt-sticker-view').style.display='none';
       document.getElementById('mt-normal-view').style.display='block';
       var imgEl=document.getElementById('mt-img');
@@ -1137,8 +1093,8 @@ async function openTourismModal(id){
       document.getElementById('mt-name').textContent=t.name||'';
       document.getElementById('mt-desc').textContent=t.description||'';
       var m='';
-      if(t.rating) m+='<span class="modal-chip"><iconify-icon icon="lucide:star" style="color:#f59e0b;pointer-events:none"></iconify-icon>'+t.rating+'/5</span>';
-      if(t.distance_info) m+='<span class="modal-chip">'+t.distance_info+'</span>';
+      if(t.rating)m+='<span class="modal-chip"><iconify-icon icon="lucide:star" style="color:#f59e0b;pointer-events:none"></iconify-icon>'+t.rating+'/5</span>';
+      if(t.distance_info)m+='<span class="modal-chip">'+t.distance_info+'</span>';
       document.getElementById('mt-meta').innerHTML=m;album('mt-album',albums);
     }
     om('m-tour');
@@ -1148,8 +1104,7 @@ async function openTourismModal(id){
 async function openFacModal(id,tab){
   try{
     var m=FM[tab]||FM['admin-branches'];
-    delete C['/api/facilities?id='+id];
-    var d=await api('/api/facilities?id='+id);var f=d.data;if(!f)return;
+    delete C['/api/facilities?id='+id];var d=await api('/api/facilities?id='+id);var f=d.data;if(!f)return;
     var img=document.getElementById('mf-img');
     if(f.image_url){img.src=f.image_url;img.style.display='block';}else img.style.display='none';
     var badgeEl=document.getElementById('mf-badge');
@@ -1160,24 +1115,14 @@ async function openFacModal(id,tab){
     var tags=Array.isArray(f.tags)?f.tags:[];
     document.getElementById('mf-meta').innerHTML=tags.map(function(tg){return '<span class="modal-chip">#'+tg+'</span>';}).join('');
     var albums=[];
-    if(Array.isArray(f.albums)&&f.albums.length){
-      albums=f.albums.map(function(x){return(typeof x==='string')?{id:x,image_url:x,caption:''}:x;});
-    } else if(f.album_urls){
-      try{var arr=typeof f.album_urls==='string'?JSON.parse(f.album_urls):f.album_urls;
-        albums=(arr||[]).map(function(u,i){return{id:i,image_url:u,caption:''};});}catch(e){}
-    }
+    if(Array.isArray(f.albums)&&f.albums.length){albums=f.albums.map(function(x){return(typeof x==='string')?{id:x,image_url:x,caption:''}:x;});}
+    else if(f.album_urls){try{var arr=typeof f.album_urls==='string'?JSON.parse(f.album_urls):f.album_urls;albums=(arr||[]).map(function(u,i){return{id:i,image_url:u,caption:''};});}catch(e){}}
     album('mf-album',albums);om('m-fac');
   }catch(e){}
 }
 
-function openLightbox(src){
-  if(!src)return;
-  document.getElementById('lb-img').src=src;
-  document.getElementById('lightbox').classList.add('open');
-}
-function closeLightbox(){
-  document.getElementById('lightbox').classList.remove('open');
-}
+function openLightbox(src){if(!src)return;document.getElementById('lb-img').src=src;document.getElementById('lightbox').classList.add('open');}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
 
 var appMap=null;
 function initMap2(){
@@ -1208,11 +1153,12 @@ async function loadMapData(){
   }catch(e){}
 }
 
+/* ══ Init ══ */
 window.addEventListener('load',function(){
-  ['home','news','guide','more'].forEach(function(id){initScrollPadding('screen-'+id);});
+  initAllScrollPaddings();
 });
 document.fonts.ready.then(function(){
-  ['home','news','guide','more'].forEach(function(id){initScrollPadding('screen-'+id);});
+  initAllScrollPaddings();
 });
 loadHome();
 </script>
