@@ -24,8 +24,6 @@
   --safe-t:env(safe-area-inset-top,0px);
   --shadow-sm:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
   --shadow-md:0 4px 16px rgba(0,0,0,.10),0 1px 4px rgba(0,0,0,.06);
-  /* ارتفاع شريط التصنيفات */
-  --seg-h:57px;
 }
 *{
   margin:0;padding:0;box-sizing:border-box;
@@ -50,21 +48,27 @@ img{
 }
 img.clickable{pointer-events:auto;}
 
-/* ══ APP ══ */
 #app{display:flex;flex-direction:column;height:100%;height:100dvh;overflow:hidden;}
-
-/* ══ SCREEN CONTAINER ══ */
 #screen-container{flex:1;min-height:0;position:relative;overflow:hidden;}
-
-/* ══ SCREEN ══ */
 .screen{position:absolute;inset:0;overflow:hidden;will-change:transform,opacity;}
 .screen.hidden{display:none;pointer-events:none;}
 
 /* ══ HEADER ══ */
 .app-header{
-  position:absolute;top:0;left:0;right:0;z-index:10;
+  position:absolute;top:0;left:0;right:0;
+  z-index:10;
   background:linear-gradient(145deg,#042f1e 0%,var(--green-d) 40%,var(--green-m) 75%,#059669 100%);
   overflow:hidden;
+  /* انتقال سلس للإخفاء */
+  transition:transform .3s cubic-bezier(.4,0,.2,1),
+             opacity   .3s cubic-bezier(.4,0,.2,1);
+  will-change:transform,opacity;
+}
+/* حالة الإخفاء للهيدر */
+.app-header.header-hidden{
+  transform:translateY(-100%);
+  opacity:0;
+  pointer-events:none;
 }
 .app-header::before{
   content:'';position:absolute;inset:0;
@@ -99,8 +103,6 @@ img.clickable{pointer-events:auto;}
   -webkit-overflow-scrolling:touch;
   overscroll-behavior-y:contain;
 }
-
-/* ══ CONTENT BLOCK ══ */
 .content-block{
   background:var(--surface);
   border-radius:20px 20px 0 0;
@@ -163,7 +165,6 @@ img.clickable{pointer-events:auto;}
 .h-scroll{
   display:flex;gap:12px;overflow-x:auto;
   padding:2px 18px 14px;
-  /* بدون snap لسلاسة أفضل */
   -webkit-overflow-scrolling:touch;
   overscroll-behavior-x:contain;
   scrollbar-width:none;
@@ -201,41 +202,31 @@ img.clickable{pointer-events:auto;}
 .place-card-name{font-size:12px;font-weight:900;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.6);line-height:1.3;}
 .place-card-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
 
-/* ══ SEG BAR — شريط التصنيفات الموحّد ══ */
-/*
-  الشريط يجلس بعد الهيدر مباشرة ويكون fixed بالنسبة للشاشة
-  وليس sticky داخل content-block — هذا يضمن الإخفاء الحقيقي
-*/
+/* ══ SEG BAR ══ */
 .seg-bar-wrap{
-  position:absolute;   /* absolute داخل الـ screen */
+  position:absolute;
   left:0;right:0;
-  z-index:9;           /* تحت الهيدر (z:10) وفوق المحتوى */
+  z-index:9;
   background:var(--surface);
   border-bottom:1px solid var(--border-light);
-  /* الانتقال عند الإخفاء/الإظهار */
-  transition:transform .28s cubic-bezier(.4,0,.2,1),
-             opacity   .28s cubic-bezier(.4,0,.2,1);
+  /* الانتقال — يتحرك مع الهيدر */
+  transition:transform .3s cubic-bezier(.4,0,.2,1),
+             opacity   .3s cubic-bezier(.4,0,.2,1);
   will-change:transform,opacity;
-  /* top يُضبط بواسطة JS بعد معرفة ارتفاع الهيدر */
 }
 .seg-bar-wrap.seg-hidden{
-  transform:translateY(-110%);
   opacity:0;
   pointer-events:none;
 }
 .seg-bar{
-  display:flex;
-  gap:8px;
+  display:flex;gap:8px;
   overflow-x:auto;
-  /* تمرير سلس بدون snap */
   -webkit-overflow-scrolling:touch;
   overscroll-behavior-x:contain;
   scrollbar-width:none;
   padding:10px 14px;
 }
 .seg-bar::-webkit-scrollbar{display:none;}
-
-/* زر التصنيف */
 .seg-btn{
   flex-shrink:0;
   display:flex;align-items:center;gap:6px;
@@ -248,7 +239,6 @@ img.clickable{pointer-events:auto;}
   cursor:pointer;touch-action:manipulation;
   white-space:nowrap;
   box-shadow:var(--shadow-sm);
-  /* انتقال لون فقط — بدون أي transform على الزر نفسه */
   transition:background .2s,color .2s,border-color .2s,box-shadow .2s;
 }
 .seg-btn iconify-icon{font-size:15px;pointer-events:none;flex-shrink:0;}
@@ -434,7 +424,6 @@ img.clickable{pointer-events:auto;}
           </div>
         </div>
       </div>
-      <!-- شريط التصنيفات — absolute داخل الـ screen وليس داخل scroll -->
       <div class="seg-bar-wrap" id="seg-news">
         <div class="seg-bar">
           <button class="seg-btn active" onclick="filterNews('official',this)">
@@ -474,7 +463,6 @@ img.clickable{pointer-events:auto;}
           </div>
         </div>
       </div>
-      <!-- شريط التصنيفات — absolute داخل الـ screen وليس داخل scroll -->
       <div class="seg-bar-wrap" id="seg-guide">
         <div class="seg-bar">
           <button class="seg-btn active" onclick="loadFacTab('admin-branches',this)">
@@ -584,7 +572,6 @@ img.clickable{pointer-events:auto;}
 
   </div><!-- /screen-container -->
 
-  <!-- ══ BOTTOM NAV ══ -->
   <nav id="bottom-nav">
     <button class="nav-btn active" id="nav-home" onclick="switchTab('home')">
       <iconify-icon class="icon-off" icon="ph:house"></iconify-icon>
@@ -637,7 +624,6 @@ img.clickable{pointer-events:auto;}
     </div>
   </div>
 </div>
-
 <div class="modal-overlay" id="m-beach" onclick="cm('m-beach')">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
@@ -650,7 +636,6 @@ img.clickable{pointer-events:auto;}
     </div>
   </div>
 </div>
-
 <div class="modal-overlay" id="m-tour" onclick="cm('m-tour')">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
@@ -672,7 +657,6 @@ img.clickable{pointer-events:auto;}
     </div>
   </div>
 </div>
-
 <div class="modal-overlay" id="m-fac" onclick="cm('m-fac')">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
@@ -686,7 +670,6 @@ img.clickable{pointer-events:auto;}
     </div>
   </div>
 </div>
-
 <div id="lightbox">
   <button id="lb-close" onclick="closeLightbox()">✕</button>
   <img id="lb-img" src="" alt="">
@@ -713,121 +696,113 @@ async function api(u){
 var curTab='home',mapDone=false,allNews=[],facCat='admin-branches';
 var TAB_ORDER=['home','news','guide','map','more'];
 
-/* ══════════════════════════════════════════
-   SEG BAR — وضع الشريط وإخفاؤه عند السكرول
-   ══════════════════════════════════════════ */
-
-/*
-  كل شاشة لها:
-    - headerEl  : .app-header
-    - segEl     : .seg-bar-wrap
-    - scrollEl  : .scroll-area
-
-  الشريط يجلس مباشرة تحت الهيدر (top = headerEl.offsetHeight)
-  والمحتوى يبدأ بعد الهيدر + الشريط (paddingTop = header + seg)
-
-  عند السكرول للأسفل  → نخفي الشريط (seg-hidden)
-  عند السكرول للأعلى  → نظهر الشريط
-  عند العودة للقمة    → نظهر الشريط دائماً
-*/
-
-/* سجل حالة كل صفحة */
-var segState = {
-  news:  { lastY:0, hidden:false, ticking:false },
-  guide: { lastY:0, hidden:false, ticking:false }
+/* ══════════════════════════════════════════════════════
+   SEG BAR + HEADER — إخفاء / إظهار عند السكرول
+   الفكرة: الهيدر والشريط يتحركان كوحدة واحدة
+   ══════════════════════════════════════════════════════ */
+var segState={
+  news: {lastY:0,hidden:false,ticking:false},
+  guide:{lastY:0,hidden:false,ticking:false}
 };
 
 function initSegBar(screenId){
-  var segId   = screenId === 'screen-news'  ? 'seg-news'  : 'seg-guide';
-  var scrollId= screenId === 'screen-news'  ? 'scroll-news': 'scroll-guide';
-  var tabKey  = screenId === 'screen-news'  ? 'news'       : 'guide';
+  var tabKey   = screenId==='screen-news' ? 'news' : 'guide';
+  var segId    = 'seg-'+tabKey;
+  var scrollId = 'scroll-'+tabKey;
 
-  var headerEl= document.querySelector('#'+screenId+' .app-header');
-  var segEl   = document.getElementById(segId);
-  var scrollEl= document.getElementById(scrollId);
+  var headerEl = document.querySelector('#'+screenId+' .app-header');
+  var segEl    = document.getElementById(segId);
+  var scrollEl = document.getElementById(scrollId);
   if(!headerEl||!segEl||!scrollEl) return;
 
-  /* --- موضع الشريط تحت الهيدر مباشرة --- */
-  function placeSegBar(){
+  /* ── وضع الشريط مباشرة تحت الهيدر ── */
+  function place(){
     var hh = headerEl.offsetHeight;
-    segEl.style.top = hh + 'px';
-    /* padding للمحتوى = هيدر + شريط */
     var sh = segEl.offsetHeight;
-    scrollEl.style.paddingTop = (hh + sh) + 'px';
+    segEl.style.top = hh+'px';
+    scrollEl.style.paddingTop = (hh+sh)+'px';
   }
-  placeSegBar();
+  place();
 
-  /* --- منطق الإخفاء/الإظهار عند السكرول --- */
   var st = segState[tabKey];
-  st.lastY  = 0;
+  st.lastY = scrollEl.scrollTop;
   st.hidden = false;
+
+  /* ── منطق الإخفاء ── */
+  function hideAll(){
+    if(st.hidden) return;
+    st.hidden=true;
+    var hh=headerEl.offsetHeight;
+    var sh=segEl.offsetHeight;
+    var total=hh+sh;
+    /* الهيدر يرتفع بمقدار ارتفاعه */
+    headerEl.style.transform='translateY(-'+hh+'px)';
+    headerEl.style.opacity='0';
+    /* الشريط يرتفع بمقدار المجموع ليختفي خلف الأعلى */
+    segEl.style.transform='translateY(-'+total+'px)';
+    segEl.style.opacity='0';
+    segEl.style.pointerEvents='none';
+  }
+  function showAll(){
+    if(!st.hidden) return;
+    st.hidden=false;
+    headerEl.style.transform='';
+    headerEl.style.opacity='';
+    segEl.style.transform='';
+    segEl.style.opacity='';
+    segEl.style.pointerEvents='';
+  }
 
   function onScroll(){
     if(st.ticking) return;
-    st.ticking = true;
+    st.ticking=true;
     requestAnimationFrame(function(){
-      var y   = scrollEl.scrollTop;
-      var dy  = y - st.lastY;
-      var THRESHOLD = 6;   /* بكسل — نتجاهل الاهتزازات الصغيرة */
-
-      if(y <= 4){
-        /* القمة — أظهر دائماً */
-        showSeg();
-      } else if(dy > THRESHOLD && !st.hidden){
-        /* نزول → أخفِ */
-        hideSeg();
-      } else if(dy < -THRESHOLD && st.hidden){
-        /* صعود → أظهر */
-        showSeg();
+      var y  = scrollEl.scrollTop;
+      var dy = y - st.lastY;
+      var TH = 8;
+      if(y<=2){
+        showAll();
+      } else if(dy>TH && !st.hidden){
+        hideAll();
+      } else if(dy<-TH && st.hidden){
+        showAll();
       }
-
-      st.lastY = y;
-      st.ticking = false;
+      st.lastY=y;
+      st.ticking=false;
     });
   }
 
-  function hideSeg(){
-    st.hidden = true;
-    segEl.classList.add('seg-hidden');
-  }
-  function showSeg(){
-    st.hidden = false;
-    segEl.classList.remove('seg-hidden');
-  }
-
-  /* أزل المستمع القديم إن وُجد ثم أضف جديداً */
-  scrollEl.removeEventListener('scroll', scrollEl._segHandler||null);
-  scrollEl._segHandler = onScroll;
-  scrollEl.addEventListener('scroll', onScroll, {passive:true});
+  /* أزل المستمع القديم */
+  if(scrollEl._segH) scrollEl.removeEventListener('scroll',scrollEl._segH);
+  scrollEl._segH=onScroll;
+  scrollEl.addEventListener('scroll',onScroll,{passive:true});
 }
 
-/* ══ ضبط padding-top للصفحات بدون شريط تصنيفات ══ */
+/* ══ ضبط padding للصفحات بدون شريط ══ */
 function initScrollPadding(screenId){
   var header=document.querySelector('#'+screenId+' .app-header');
   var scroll=document.querySelector('#'+screenId+' .scroll-area');
   if(!header||!scroll) return;
   var h=header.offsetHeight;
-  if(h>0){
-    scroll.style.paddingTop=h+'px';
-  } else {
-    requestAnimationFrame(function(){
-      scroll.style.paddingTop=header.offsetHeight+'px';
-    });
-  }
+  if(h>0){scroll.style.paddingTop=h+'px';}
+  else{requestAnimationFrame(function(){scroll.style.paddingTop=header.offsetHeight+'px';});}
 }
 
-/* ══ إعادة ضبط scroll ══ */
+/* ══ إعادة ضبط عند مغادرة الصفحة ══ */
 function resetScroll(screenId){
   var scroll=document.querySelector('#'+screenId+' .scroll-area');
   if(scroll) scroll.scrollTop=0;
-  /* أظهر الشريط عند العودة للصفحة */
-  var tabKey = screenId==='screen-news'?'news':screenId==='screen-guide'?'guide':null;
+
+  /* أعد الهيدر والشريط للظهور */
+  var headerEl=document.querySelector('#'+screenId+' .app-header');
+  if(headerEl){headerEl.style.transform='';headerEl.style.opacity='';}
+
+  var tabKey=screenId==='screen-news'?'news':screenId==='screen-guide'?'guide':null;
   if(tabKey){
     var st=segState[tabKey];
-    if(st){ st.hidden=false; st.lastY=0; }
-    var segId=screenId==='screen-news'?'seg-news':'seg-guide';
-    var el=document.getElementById(segId);
-    if(el) el.classList.remove('seg-hidden');
+    if(st){st.hidden=false;st.lastY=0;}
+    var segEl=document.getElementById('seg-'+tabKey);
+    if(segEl){segEl.style.transform='';segEl.style.opacity='';segEl.style.pointerEvents='';}
   }
 }
 
@@ -843,7 +818,7 @@ function switchTab(t){
   var forward=nextIdx>prevIdx;
   var enterFrom=forward?'-100%':'100%';
   var exitTo=forward?'100%':'-100%';
-  var DUR=230, EASE='cubic-bezier(.4,0,.2,1)';
+  var DUR=230,EASE='cubic-bezier(.4,0,.2,1)';
   var prev=curTab;
 
   if(prevEl){
@@ -861,7 +836,6 @@ function switchTab(t){
   nextEl.style.cssText='opacity:0;transform:translateX('+enterFrom+');transition:none';
   requestAnimationFrame(function(){
     requestAnimationFrame(function(){
-      /* ضبط الأبعاد حسب نوع الصفحة */
       if(t==='news'||t==='guide'){
         initSegBar('screen-'+t);
       } else {
@@ -907,38 +881,31 @@ function makeNewsCard(n){
 }
 
 function loadHome(){loadHOfficial();loadHNews();loadHBeaches();loadHTourism();}
-
 async function loadHOfficial(){
   var el=document.getElementById('h-official');
-  try{
-    var d=await api('/api/news');if(d.data)allNews=d.data;
+  try{var d=await api('/api/news');if(d.data)allNews=d.data;
     var items=(d.data||[]).filter(function(n){return n.category==='official';}).slice(0,10);
-    el.innerHTML=items.length?items.map(makeNewsCard).join(''):'';
-  }catch(e){el.innerHTML='';}
+    el.innerHTML=items.length?items.map(makeNewsCard).join(''):'';}
+  catch(e){el.innerHTML='';}
 }
 async function loadHNews(){
   var el=document.getElementById('h-news');
-  try{
-    var d=await api('/api/news');if(d.data)allNews=d.data;
+  try{var d=await api('/api/news');if(d.data)allNews=d.data;
     var items=(d.data||[]).filter(function(n){return n.category!=='official';}).slice(0,10);
-    el.innerHTML=items.length?items.map(makeNewsCard).join(''):'';
-  }catch(e){el.innerHTML='';}
+    el.innerHTML=items.length?items.map(makeNewsCard).join(''):'';}
+  catch(e){el.innerHTML='';}
 }
 async function loadHBeaches(){
   var el=document.getElementById('h-beaches');
-  try{
-    var d=await api('/api/beaches');
-    var items=(d.data||[]).slice(0,8);
-    el.innerHTML=items.length?items.map(function(b){return placeCard(b,'beach');}).join(''):'';
-  }catch(e){el.innerHTML='';}
+  try{var d=await api('/api/beaches');var items=(d.data||[]).slice(0,8);
+    el.innerHTML=items.length?items.map(function(b){return placeCard(b,'beach');}).join(''):'';}
+  catch(e){el.innerHTML='';}
 }
 async function loadHTourism(){
   var el=document.getElementById('h-tourism');
-  try{
-    var d=await api('/api/tourism');
-    var items=(d.data||[]).slice(0,8);
-    el.innerHTML=items.length?items.map(function(t){return placeCard(t,'tourism');}).join(''):'';
-  }catch(e){el.innerHTML='';}
+  try{var d=await api('/api/tourism');var items=(d.data||[]).slice(0,8);
+    el.innerHTML=items.length?items.map(function(t){return placeCard(t,'tourism');}).join(''):'';}
+  catch(e){el.innerHTML='';}
 }
 
 function placeCard(item,type){
@@ -953,11 +920,8 @@ function placeCard(item,type){
 
 async function loadNewsScreen(){
   var el=document.getElementById('news-list');
-  try{
-    var d=await api('/api/news');allNews=d.data||[];renderNews(allNews);
-  }catch(e){
-    el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';
-  }
+  try{var d=await api('/api/news');allNews=d.data||[];renderNews(allNews);}
+  catch(e){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';}
 }
 
 function filterNews(cat,btn){
@@ -968,10 +932,7 @@ function filterNews(cat,btn){
 
 function renderNews(items){
   var el=document.getElementById('news-list');
-  if(!items.length){
-    el.innerHTML='<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>لا توجد أخبار</p></div>';
-    return;
-  }
+  if(!items.length){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>لا توجد أخبار</p></div>';return;}
   el.innerHTML=items.map(function(n){
     var s=NS[n.category]||NS.official;
     var lbl=n.custom_label||s.lbl||'';
@@ -1008,10 +969,7 @@ async function loadFacTab(tab,btn){
   var m=FM[tab];
   try{
     var d=await api('/api/facilities?cat='+m.cat);var items=d.data||[];
-    if(!items.length){
-      el.innerHTML='<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>لا توجد عناصر</p></div>';
-      return;
-    }
+    if(!items.length){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>لا توجد عناصر</p></div>';return;}
     el.innerHTML=items.map(function(f){
       var img=f.image_url
         ?'<img class="fac-card-img" src="'+f.image_url+'" alt="" onerror="this.outerHTML=\'<div class=fac-card-ph style=background:'+m.bg+'><iconify-icon icon='+m.icon+' style=color:'+m.color+';font-size:1.8rem></iconify-icon></div>\'">'
@@ -1023,9 +981,7 @@ async function loadFacTab(tab,btn){
         +(f.description?'<div class="fac-card-desc">'+f.description+'</div>':'')
         +'</div><iconify-icon icon="lucide:chevron-left" style="font-size:18px;color:var(--muted);padding-left:10px;flex-shrink:0;pointer-events:none"></iconify-icon></div>';
     }).join('');
-  }catch(e){
-    el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';
-  }
+  }catch(e){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';}
 }
 
 function om(id){document.getElementById(id).classList.add('open');document.body.style.overflow='hidden';}
@@ -1063,7 +1019,7 @@ async function openNewsModal(id){
   if(!n){try{var d=await api('/api/news');allNews=d.data||[];n=allNews.find(function(x){return x.id==id;});}catch(e){}}
   if(!n)return;
   var albums=[];
-  if(Array.isArray(n.albums)&&n.albums.length) albums=n.albums;
+  if(Array.isArray(n.albums)&&n.albums.length)albums=n.albums;
   else if(n.album_urls){try{var arr=typeof n.album_urls==='string'?JSON.parse(n.album_urls):n.album_urls;albums=(arr||[]).map(function(u,i){return {id:i,image_url:u,caption:''};});}catch(e){}}
   if(n.category==='official'){
     document.getElementById('mn-normal-view').style.display='none';
@@ -1103,7 +1059,7 @@ async function openTourismModal(id){
   try{
     delete C['/api/tourism?id='+id];var d=await api('/api/tourism?id='+id);var t=d.data;if(!t)return;
     var albums=[];
-    if(Array.isArray(t.albums)&&t.albums.length) albums=t.albums;
+    if(Array.isArray(t.albums)&&t.albums.length)albums=t.albums;
     else if(t.album_urls){try{var arr=typeof t.album_urls==='string'?JSON.parse(t.album_urls):t.album_urls;albums=(arr||[]).map(function(u,i){return {id:i,image_url:u,caption:''};});}catch(e){}}
     if(t.badge_text==='ملصق'||t.type==='sticker'){
       document.getElementById('mt-normal-view').style.display='none';
@@ -1182,20 +1138,11 @@ async function loadMapData(){
 
 /* ══ Init ══ */
 window.addEventListener('load',function(){
-  /* الصفحات بدون شريط تصنيفات */
-  ['home','more'].forEach(function(id){
-    initScrollPadding('screen-'+id);
-  });
-  /* الصفحات التي تحتوي شريط تصنيفات */
-  /* لا نشغّلها هنا لأنها مخفية — ستُشغَّل عند فتحها في switchTab */
+  ['home','more'].forEach(function(id){initScrollPadding('screen-'+id);});
 });
-
 document.fonts.ready.then(function(){
-  ['home','more'].forEach(function(id){
-    initScrollPadding('screen-'+id);
-  });
+  ['home','more'].forEach(function(id){initScrollPadding('screen-'+id);});
 });
-
 loadHome();
 </script>
 </body>
