@@ -22,7 +22,6 @@
   --nav-h:62px;
   --safe-b:env(safe-area-inset-bottom,0px);
   --safe-t:env(safe-area-inset-top,0px);
-  --header-h:88px; /* ارتفاع الهيدر المرئي تقريباً */
   --shadow-sm:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
   --shadow-md:0 4px 16px rgba(0,0,0,.10),0 1px 4px rgba(0,0,0,.06);
 }
@@ -56,63 +55,51 @@ img.clickable{pointer-events:auto;}
 /* ══ APP ══ */
 #app{
   display:flex;flex-direction:column;
-  height:100%;height:100dvh;overflow:hidden;
+  height:100%;height:100dvh;
+  overflow:hidden;
 }
 
 /* ══ SCREEN CONTAINER ══ */
 #screen-container{
   flex:1;min-height:0;
-  position:relative;overflow:hidden;
-  overscroll-behavior:none;
+  position:relative;
+  overflow:hidden;
 }
 
-/* ══ SCREENS ══ */
+/* ══ SCREEN — flex column ══ */
 .screen{
   position:absolute;inset:0;
-  overflow-y:auto;overflow-x:hidden;
-  -webkit-overflow-scrolling:touch;
-  overscroll-behavior-y:contain;
+  display:flex;flex-direction:column;
+  overflow:hidden;
   will-change:transform,opacity;
-  padding-bottom:calc(var(--nav-h) + var(--safe-b) + 8px);
 }
 .screen.hidden{display:none;pointer-events:none;}
 
-/* ══ MAP SCREEN ══ */
-#screen-map{
-  padding-bottom:0 !important;
-  overflow:hidden !important;
-  display:flex;flex-direction:column;
-}
-#screen-map.hidden{display:none !important;}
-#app-map{flex:1;min-height:0;width:100%;}
-
-/* ══ HEADER — absolute خلف المحتوى ══ */
+/* ══ HEADER — خارج منطقة السكرول، flex-shrink:0 ══ */
 .app-header{
-  position:absolute;
-  top:0;left:0;right:0;
-  z-index:1; /* أقل من المحتوى */
+  flex-shrink:0;
+  position:relative;
+  z-index:2;
   background:linear-gradient(145deg,#042f1e 0%,var(--green-d) 40%,var(--green-m) 75%,#059669 100%);
   overflow:hidden;
-  /* GPU acceleration للتأثيرات */
   will-change:opacity,transform,filter;
   transform-origin:top center;
 }
 .app-header::before{
   content:'';position:absolute;inset:0;
   background:radial-gradient(ellipse at 85% 20%,rgba(255,255,255,.07) 0%,transparent 60%);
-  pointer-events:none;z-index:0;
+  pointer-events:none;
 }
 .app-header::after{
   content:'';position:absolute;
   bottom:-1px;left:0;right:0;height:22px;
   background:var(--surface);
   border-radius:22px 22px 0 0;
-  pointer-events:none;z-index:1;
+  pointer-events:none;
 }
 .app-header-inner{
   display:flex;align-items:center;gap:14px;
-  position:relative;z-index:2;
-  /* padding-top: safe-area + هامش متساوٍ بصرياً */
+  position:relative;z-index:1;
   padding:calc(var(--safe-t) + 14px) 18px 14px;
 }
 .header-logo{
@@ -133,24 +120,22 @@ img.clickable{pointer-events:auto;}
 }
 .header-btn:active{background:rgba(255,255,255,.28);}
 
-/* ══ CONTENT WRAPPER — فوق الهيدر ══ */
-/* يبدأ من أسفل الهيدر ويمر فوقه عند السكرول */
-.screen-content{
-  position:relative;
-  z-index:2; /* فوق الهيدر */
-  background:var(--surface);
-  border-radius:22px 22px 0 0;
-  /* padding-top = ارتفاع الهيدر الكامل */
-  padding-top:calc(var(--safe-t) + var(--header-h));
-  min-height:100%;
+/* ══ SCROLL AREA — فقط هذا يتحرك ══ */
+.scroll-area{
+  flex:1;min-height:0;
+  overflow-y:auto;overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior-y:contain;
+  padding-bottom:8px;
 }
 
-/* للصفحات التي تحتوي cat-tabs أو guide-tabs */
-.screen-content .cat-tabs,
-.screen-content .guide-tabs{
-  position:sticky;
-  top:0;z-index:3;
+/* ══ MAP SCREEN ══ */
+#screen-map .scroll-area{
+  padding-bottom:0;
+  overflow:hidden;
+  display:flex;flex-direction:column;
 }
+#app-map{flex:1;min-height:0;width:100%;}
 
 /* ══ BOTTOM NAV ══ */
 #bottom-nav{
@@ -172,10 +157,10 @@ img.clickable{pointer-events:auto;}
   touch-action:manipulation;transition:color .2s;
 }
 .nav-btn iconify-icon{font-size:24px;transition:transform .3s cubic-bezier(.34,1.56,.64,1);display:block;pointer-events:none;}
-.nav-btn .icon-on{display:none}
-.nav-btn .icon-off{display:block}
-.nav-btn.active .icon-on{display:block}
-.nav-btn.active .icon-off{display:none}
+.nav-btn .icon-on{display:none;}
+.nav-btn .icon-off{display:block;}
+.nav-btn.active .icon-on{display:block;}
+.nav-btn.active .icon-off{display:none;}
 .nav-btn::before{
   content:'';position:absolute;top:-8px;left:50%;
   transform:translateX(-50%) scaleX(0);
@@ -248,8 +233,10 @@ img.clickable{pointer-events:auto;}
 .cat-tabs{
   display:flex;gap:8px;overflow-x:auto;padding:10px 18px;
   scrollbar-width:none;
+  position:sticky;top:0;z-index:3;
   background:var(--surface);border-bottom:1px solid var(--border-light);
   overscroll-behavior-x:contain;
+  flex-shrink:0;
 }
 .cat-tabs::-webkit-scrollbar{display:none;}
 .cat-tab{
@@ -281,7 +268,9 @@ img.clickable{pointer-events:auto;}
 .guide-tabs{
   display:grid;grid-template-columns:repeat(2,1fr);gap:8px;
   padding:12px 18px 10px;
+  position:sticky;top:0;z-index:3;
   background:var(--surface);
+  flex-shrink:0;
 }
 .guide-tab{
   padding:10px 8px;border-radius:14px;font-size:11px;font-weight:800;
@@ -321,6 +310,25 @@ img.clickable{pointer-events:auto;}
 .more-icon{width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .more-item-title{font-size:14px;font-weight:800;color:var(--text);}
 .more-item-sub{font-size:11px;color:var(--muted);margin-top:1px;}
+
+/* ══ FOOTER ══ */
+.app-footer{
+  text-align:center;
+  padding:24px 20px 12px;
+  border-top:1px solid var(--border-light);
+  margin-top:8px;
+}
+.app-footer-main{
+  font-size:12px;font-weight:700;
+  color:var(--muted);
+  margin-bottom:6px;
+}
+.app-footer-sub{
+  font-size:11px;
+  color:#9ca3af;
+  font-style:italic;
+  line-height:1.5;
+}
 
 /* ══ MODAL ══ */
 .modal-overlay{
@@ -379,7 +387,7 @@ img.clickable{pointer-events:auto;}
 
     <!-- ══ HOME ══ -->
     <div class="screen" id="screen-home">
-      <!-- الهيدر خلف المحتوى -->
+      <!-- الهيدر خارج منطقة السكرول -->
       <div class="app-header" id="header-home">
         <div class="app-header-inner">
           <img class="header-logo"
@@ -395,8 +403,8 @@ img.clickable{pointer-events:auto;}
           </div>
         </div>
       </div>
-      <!-- المحتوى فوق الهيدر -->
-      <div class="screen-content">
+      <!-- منطقة السكرول -->
+      <div class="scroll-area" id="scroll-home">
         <div class="section" style="padding-top:16px">
           <div class="section-header">
             <span class="section-title"><iconify-icon icon="lucide:megaphone" style="color:#dc2626;pointer-events:none"></iconify-icon>الإعلانات</span>
@@ -442,7 +450,7 @@ img.clickable{pointer-events:auto;}
           </div>
         </div>
       </div>
-      <div class="screen-content">
+      <div class="scroll-area" id="scroll-news">
         <div class="cat-tabs">
           <button class="cat-tab active" onclick="filterNews('all',this)"><iconify-icon icon="lucide:list" style="pointer-events:none"></iconify-icon>الكل</button>
           <button class="cat-tab" onclick="filterNews('official',this)"><iconify-icon icon="lucide:megaphone" style="pointer-events:none"></iconify-icon>إعلانات</button>
@@ -469,7 +477,7 @@ img.clickable{pointer-events:auto;}
           </div>
         </div>
       </div>
-      <div class="screen-content">
+      <div class="scroll-area" id="scroll-guide">
         <div class="guide-tabs">
           <button class="guide-tab active" onclick="loadFacTab('admin-branches',this)"><iconify-icon icon="lucide:landmark" style="pointer-events:none"></iconify-icon>الفروع الإدارية</button>
           <button class="guide-tab" onclick="loadFacTab('education',this)"><iconify-icon icon="lucide:graduation-cap" style="pointer-events:none"></iconify-icon>التعليم والتكوين</button>
@@ -482,9 +490,11 @@ img.clickable{pointer-events:auto;}
       </div>
     </div>
 
-    <!-- ══ MAP ══ -->
+    <!-- ══ MAP — بدون هيدر ══ -->
     <div class="screen hidden" id="screen-map">
-      <div id="app-map"></div>
+      <div class="scroll-area">
+        <div id="app-map"></div>
+      </div>
     </div>
 
     <!-- ══ MORE ══ -->
@@ -501,7 +511,7 @@ img.clickable{pointer-events:auto;}
           </div>
         </div>
       </div>
-      <div class="screen-content">
+      <div class="scroll-area" id="scroll-more">
         <div style="margin:18px 18px 0;background:var(--card);border-radius:18px;overflow:hidden;box-shadow:var(--shadow-sm);border:1px solid var(--border-light)">
           <div class="more-item" onclick="window.location.href='/'">
             <div class="more-icon" style="background:#d1fae5"><iconify-icon icon="lucide:globe" style="color:#059669;font-size:20px;pointer-events:none"></iconify-icon></div>
@@ -524,7 +534,11 @@ img.clickable{pointer-events:auto;}
             <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
           </div>
         </div>
-        <p style="text-align:center;font-size:11px;color:var(--muted);padding:20px 0 8px">صُنع بـ ❤️ لخدمة مواطني شطايبي</p>
+        <!-- Footer -->
+        <div class="app-footer">
+          <div class="app-footer-main">© 2026 بلدية شطايبي - جميع الحقوق محفوظة</div>
+          <div class="app-footer-sub">تم التطوير بجهود الكفاءات الداخلية لبلدية شطايبي</div>
+        </div>
       </div>
     </div>
 
@@ -657,54 +671,55 @@ async function api(u){
 var curTab='home',mapDone=false,allNews=[],facCat='admin-branches';
 var TAB_ORDER=['home','news','guide','map','more'];
 
-/* ══ حساب ارتفاع الهيدر الفعلي ══ */
-function getHeaderH(screenId){
-  var h=document.querySelector('#'+screenId+' .app-header');
-  return h ? h.offsetHeight : 88;
-}
-
-/* ══ تأثير Parallax Fade+Blur+Scale على الهيدر ══ */
-function setupHeaderEffect(screenId){
-  var screen=document.getElementById(screenId);
-  var header=screen?screen.querySelector('.app-header'):null;
-  if(!screen||!header)return;
+/* ══ تأثير Parallax Fade+Blur+Scale ══
+   يستمع لـ scroll-area وليس للـ screen كله
+*/
+function setupHeaderEffect(scrollAreaId, headerId){
+  var scrollEl=document.getElementById(scrollAreaId);
+  var headerEl=document.getElementById(headerId);
+  if(!scrollEl||!headerEl)return;
 
   var ticking=false;
 
-  screen.addEventListener('scroll',function(){
+  scrollEl.addEventListener('scroll',function(){
     if(ticking)return;
     ticking=true;
     requestAnimationFrame(function(){
-      var scrollY=screen.scrollTop;
-      var headerH=header.offsetHeight;
-      /* العتبة: التأثير يكتمل عند scrollY = headerH */
-      var progress=Math.min(scrollY/headerH,1); /* 0 → 1 */
+      var scrollY   = scrollEl.scrollTop;
+      var headerH   = headerEl.offsetHeight;
+      /* progress: 0 عند الأعلى → 1 عند اكتمال إخفاء الهيدر */
+      var progress  = Math.min(scrollY / headerH, 1);
 
-      var opacity  = 1 - progress;                        /* 1 → 0   */
-      var blur     = progress * 8;                        /* 0 → 8px */
-      var scale    = 1 - (progress * 0.06);              /* 1 → 0.94*/
-      var translateY = -(progress * headerH * 0.3);      /* parallax خفيف */
+      var opacity    = 1 - progress;
+      var blur       = progress * 8;
+      var scale      = 1 - (progress * 0.06);
+      var translateY = -(progress * headerH * 0.25);
 
-      header.style.opacity   = opacity;
-      header.style.transform = 'translateY('+translateY+'px) scale('+scale+')';
-      header.style.filter    = 'blur('+blur+'px)';
+      headerEl.style.opacity   = opacity;
+      headerEl.style.transform = 'translateY('+translateY+'px) scale('+scale+')';
+      headerEl.style.filter    = 'blur('+blur+'px)';
+      /* pointer-events: none عندما يختفي الهيدر */
+      headerEl.style.pointerEvents = progress >= 1 ? 'none' : '';
 
       ticking=false;
     });
   },{passive:true});
 }
 
-/* ══ ضبط padding-top للـ screen-content حسب الهيدر الفعلي ══ */
-function fixContentPadding(screenId){
-  var screen=document.getElementById(screenId);
-  if(!screen)return;
-  var header=screen.querySelector('.app-header');
-  var content=screen.querySelector('.screen-content');
-  if(!header||!content)return;
-  /* نستخدم offsetHeight بعد render */
-  requestAnimationFrame(function(){
-    content.style.paddingTop=header.offsetHeight+'px';
-  });
+/* ══ إعادة ضبط الهيدر عند مغادرة الصفحة ══ */
+function resetHeader(headerId){
+  var h=document.getElementById(headerId);
+  if(!h)return;
+  h.style.opacity='';
+  h.style.transform='';
+  h.style.filter='';
+  h.style.pointerEvents='';
+}
+
+/* ══ إعادة scroll للأعلى عند مغادرة الصفحة ══ */
+function resetScroll(scrollAreaId){
+  var el=document.getElementById(scrollAreaId);
+  if(el)el.scrollTop=0;
 }
 
 /* ══ switchTab ══ */
@@ -721,7 +736,9 @@ function switchTab(t){
   var exitTo=forward?'100%':'-100%';
   var DUR=230;
   var EASE='cubic-bezier(.4,0,.2,1)';
+  var prevTab=curTab;
 
+  /* خروج */
   if(prevEl){
     prevEl.style.transition='opacity '+DUR+'ms ease,transform '+DUR+'ms '+EASE;
     prevEl.style.opacity='0';
@@ -729,29 +746,24 @@ function switchTab(t){
     setTimeout(function(){
       prevEl.classList.add('hidden');
       prevEl.style.cssText='';
-      /* إعادة ضبط الهيدر عند الإخفاء */
-      var ph=prevEl.querySelector('.app-header');
-      if(ph){ph.style.opacity='';ph.style.transform='';ph.style.filter='';}
-      /* إعادة scroll للأعلى */
-      prevEl.scrollTop=0;
+      resetHeader('header-'+prevTab);
+      resetScroll('scroll-'+prevTab);
     },DUR+20);
   }
 
+  /* دخول */
   nextEl.classList.remove('hidden');
   nextEl.style.cssText='opacity:0;transform:translateX('+enterFrom+');transition:none';
-
   requestAnimationFrame(function(){
     requestAnimationFrame(function(){
       nextEl.style.transition='opacity '+DUR+'ms ease,transform '+DUR+'ms '+EASE;
       nextEl.style.opacity='1';
       nextEl.style.transform='translateX(0)';
-      setTimeout(function(){
-        nextEl.style.cssText='';
-        fixContentPadding('screen-'+t);
-      },DUR+20);
+      setTimeout(function(){nextEl.style.cssText='';},DUR+20);
     });
   });
 
+  /* nav */
   document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');});
   var nb=document.getElementById('nav-'+t);
   if(nb)nb.classList.add('active');
@@ -788,19 +800,23 @@ function loadHome(){loadHOfficial();loadHNews();loadHBeaches();loadHTourism();}
 
 async function loadHOfficial(){
   var el=document.getElementById('h-official');
-  try{var d=await api('/api/news');if(d.data)allNews=d.data;var items=(d.data||[]).filter(function(n){return n.category==='official';}).slice(0,10);el.innerHTML=items.length?items.map(makeNewsCard).join(''):'';}catch(e){el.innerHTML='';}
+  try{var d=await api('/api/news');if(d.data)allNews=d.data;var items=(d.data||[]).filter(function(n){return n.category==='official';}).slice(0,10);el.innerHTML=items.length?items.map(makeNewsCard).join(''):'';}
+  catch(e){el.innerHTML='';}
 }
 async function loadHNews(){
   var el=document.getElementById('h-news');
-  try{var d=await api('/api/news');if(d.data)allNews=d.data;var items=(d.data||[]).filter(function(n){return n.category!=='official';}).slice(0,10);el.innerHTML=items.length?items.map(makeNewsCard).join(''):'';}catch(e){el.innerHTML='';}
+  try{var d=await api('/api/news');if(d.data)allNews=d.data;var items=(d.data||[]).filter(function(n){return n.category!=='official';}).slice(0,10);el.innerHTML=items.length?items.map(makeNewsCard).join(''):'';}
+  catch(e){el.innerHTML='';}
 }
 async function loadHBeaches(){
   var el=document.getElementById('h-beaches');
-  try{var d=await api('/api/beaches');var items=(d.data||[]).slice(0,8);el.innerHTML=items.length?items.map(function(b){return placeCard(b,'beach');}).join(''):'';}catch(e){el.innerHTML='';}
+  try{var d=await api('/api/beaches');var items=(d.data||[]).slice(0,8);el.innerHTML=items.length?items.map(function(b){return placeCard(b,'beach');}).join(''):'';}
+  catch(e){el.innerHTML='';}
 }
 async function loadHTourism(){
   var el=document.getElementById('h-tourism');
-  try{var d=await api('/api/tourism');var items=(d.data||[]).slice(0,8);el.innerHTML=items.length?items.map(function(t){return placeCard(t,'tourism');}).join(''):'';}catch(e){el.innerHTML='';}
+  try{var d=await api('/api/tourism');var items=(d.data||[]).slice(0,8);el.innerHTML=items.length?items.map(function(t){return placeCard(t,'tourism');}).join(''):'';}
+  catch(e){el.innerHTML='';}
 }
 
 function placeCard(item,type){
@@ -942,7 +958,8 @@ async function openBeachModal(id){
   try{
     delete C['/api/beaches?id='+id];var d=await api('/api/beaches?id='+id);var b=d.data;if(!b)return;
     var img=document.getElementById('mb-img');if(b.image_url){img.src=b.image_url;img.style.display='block';}else img.style.display='none';
-    document.getElementById('mb-name').textContent=b.name||'';document.getElementById('mb-desc').textContent=b.description||'';
+    document.getElementById('mb-name').textContent=b.name||'';
+    document.getElementById('mb-desc').textContent=b.description||'';
     var m='';if(b.is_supervised)m+='<span class="modal-chip"><iconify-icon icon="lucide:shield-check" style="color:#059669;pointer-events:none"></iconify-icon>مراقب</span>';if(b.season)m+='<span class="modal-chip">'+b.season+'</span>';
     document.getElementById('mb-meta').innerHTML=m;album('mb-album',b.albums);om('m-beach');
   }catch(e){}
@@ -963,7 +980,8 @@ async function openTourismModal(id){
       document.getElementById('mt-normal-view').style.display='block';
       var imgEl=document.getElementById('mt-img');if(t.image_url){imgEl.src=t.image_url;imgEl.style.display='block';}else imgEl.style.display='none';
       var badgeEl=document.getElementById('mt-badge');if(t.badge_text){badgeEl.textContent=t.badge_text;badgeEl.style.display='inline-block';}else badgeEl.style.display='none';
-      document.getElementById('mt-name').textContent=t.name||'';document.getElementById('mt-desc').textContent=t.description||'';
+      document.getElementById('mt-name').textContent=t.name||'';
+      document.getElementById('mt-desc').textContent=t.description||'';
       var m='';if(t.rating)m+='<span class="modal-chip"><iconify-icon icon="lucide:star" style="color:#f59e0b;pointer-events:none"></iconify-icon>'+t.rating+'/5</span>';if(t.distance_info)m+='<span class="modal-chip">'+t.distance_info+'</span>';
       document.getElementById('mt-meta').innerHTML=m;album('mt-album',albums);
     }
@@ -973,11 +991,14 @@ async function openTourismModal(id){
 
 async function openFacModal(id,tab){
   try{
-    var m=FM[tab]||FM['admin-branches'];delete C['/api/facilities?id='+id];var d=await api('/api/facilities?id='+id);var f=d.data;if(!f)return;
+    var m=FM[tab]||FM['admin-branches'];
+    delete C['/api/facilities?id='+id];var d=await api('/api/facilities?id='+id);var f=d.data;if(!f)return;
     var img=document.getElementById('mf-img');if(f.image_url){img.src=f.image_url;img.style.display='block';}else img.style.display='none';
     var badgeEl=document.getElementById('mf-badge');if(f.sub_type){badgeEl.textContent=f.sub_type;badgeEl.style.cssText='background:'+m.bg+';color:'+m.color+';display:inline-block';}else badgeEl.style.display='none';
-    document.getElementById('mf-name').textContent=f.name||'';document.getElementById('mf-desc').textContent=f.description||'';
-    var tags=Array.isArray(f.tags)?f.tags:[];document.getElementById('mf-meta').innerHTML=tags.map(function(tg){return '<span class="modal-chip">#'+tg+'</span>';}).join('');
+    document.getElementById('mf-name').textContent=f.name||'';
+    document.getElementById('mf-desc').textContent=f.description||'';
+    var tags=Array.isArray(f.tags)?f.tags:[];
+    document.getElementById('mf-meta').innerHTML=tags.map(function(tg){return '<span class="modal-chip">#'+tg+'</span>';}).join('');
     album('mf-album',f.albums);om('m-fac');
   }catch(e){}
 }
@@ -1014,18 +1035,11 @@ async function loadMapData(){
   }catch(e){}
 }
 
-/* ══ Init ══ */
-/* تفعيل التأثير على كل الصفحات التي تحتوي هيدر */
-['home','news','guide','more'].forEach(function(id){
-  setupHeaderEffect('screen-'+id);
-});
-
-/* ضبط padding-top عند البداية */
-window.addEventListener('load',function(){
-  ['home','news','guide','more'].forEach(function(id){
-    fixContentPadding('screen-'+id);
-  });
-});
+/* ══ Init: تفعيل التأثير ══ */
+setupHeaderEffect('scroll-home',  'header-home');
+setupHeaderEffect('scroll-news',  'header-news');
+setupHeaderEffect('scroll-guide', 'header-guide');
+setupHeaderEffect('scroll-more',  'header-more');
 
 loadHome();
 </script>
