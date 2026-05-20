@@ -57,22 +57,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   overflow:hidden;
   position:relative;
 }
-
-/* ═══ الظل الثابت فوق الهيدر ═══
-   يُوضع على #app مباشرة (خارج overflow:hidden للـ screen-container)
-   top = ارتفاع الهيدر الفعلي، pointer-events:none حتى لا يعيق أي تفاعل
-   z-index:3 أعلى من screen-container(2) وأقل من bottom-nav(100)          */
-#app::after{
-  content:'';
-  position:absolute;
-  top:var(--header-h);
-  left:0;right:0;
-  height:0;
-  box-shadow:0 0 18px 6px rgba(0,0,0,.20);
-  pointer-events:none;
-  z-index:3;
-}
-
 #shared-header{
   position:relative;
   z-index:1;
@@ -129,7 +113,12 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   border-radius:0;
   min-height:100%;
   position:relative;
-  /* الظل نُقل إلى #app::after ليبقى ثابتاً */
+  /* الظل الطبيعي: يتحرك مع الورقة ويختفي عند تغطية الهيدر */
+  box-shadow:0 -8px 20px rgba(0,0,0,.22);
+}
+/* إخفاء الظل فقط أثناء أنيميشن الانتقال بين الصفحات */
+#screen-container.transitioning .content-block{
+  box-shadow:none;
 }
 #screen-map .scroll-area{overflow:hidden;padding-top:0 !important;}
 #app-map{position:absolute;inset:0;width:100%;height:100%;}
@@ -747,6 +736,15 @@ function switchTab(t){
   var exitTo=forward?'100%':'-100%';
   var DUR=230,EASE='cubic-bezier(.4,0,.2,1)';
   var prev=curTab;
+
+  /* ── إضافة class أثناء الأنيميشن لإخفاء الظل مؤقتاً ── */
+  var container=document.getElementById('screen-container');
+  container.classList.add('transitioning');
+  setTimeout(function(){
+    container.classList.remove('transitioning');
+  },DUR+40);
+  /* ─────────────────────────────────────────────────────── */
+
   if(prevEl){
     prevEl.style.transition='opacity '+DUR+'ms ease,transform '+DUR+'ms '+EASE;
     prevEl.style.opacity='0';
@@ -781,28 +779,19 @@ function switchTab(t){
 }
 
 function resetGuideTab(){
-  /* ═══════════════════════════════════════════════════════════════════
-     إذا كان المستخدم على admin-branches بالفعل والـ cache موجود
-     والـ fac-list يحتوي على محتوى فعلي → لا نعيد التحميل أبداً
-     هذا يمنع الوميض عند العودة لصفحة الدليل
-  ═══════════════════════════════════════════════════════════════════ */
   var targetTab='admin-branches';
   var bar=document.getElementById('guide-seg-bar');
   var firstBtn=document.getElementById('btn-admin-branches');
   var facList=document.getElementById('fac-list');
   var alreadyLoaded=facCat===targetTab
-    && C['/api/facilities?cat=branches']
-    && facList
-    && facList.querySelector('.fac-card');
-
-  /* دائماً أعد ضبط الأزرار وشريط التبويب للبداية */
+    &&C['/api/facilities?cat=branches']
+    &&facList
+    &&facList.querySelector('.fac-card');
   document.querySelectorAll('#screen-guide .seg-btn').forEach(function(b){
     b.classList.remove('active');
   });
   if(firstBtn) firstBtn.classList.add('active');
   if(bar) bar.scrollLeft=0;
-
-  /* فقط إذا لم يكن المحتوى محملاً نعيد التحميل */
   if(!alreadyLoaded){
     facCat=targetTab;
     loadFacTab(targetTab,firstBtn);
@@ -1014,14 +1003,8 @@ async function loadFacTab(tab,btn){
   facCat=tab;
   document.querySelectorAll('#screen-guide .seg-btn').forEach(function(t){t.classList.remove('active');});
   if(btn) btn.classList.add('active');
-
   var el=document.getElementById('fac-list');
   var m=FM[tab];
-
-  /* ═══════════════════════════════════════════════════════════════════
-     إذا كانت البيانات موجودة في الـ cache بالفعل → اعرضها فوراً
-     بدون أي مسح للمحتوى أو spinner → يختفي الوميض تماماً
-  ═══════════════════════════════════════════════════════════════════ */
   if(C['/api/facilities?cat='+m.cat]){
     var cached=C['/api/facilities?cat='+m.cat];
     var cachedItems=cached.data||[];
@@ -1032,13 +1015,9 @@ async function loadFacTab(tab,btn){
     }
     return;
   }
-
-  /* أول تحميل: أظهر الـ spinner بعد تأخير بسيط حتى لا يومض
-     إذا جاءت البيانات قبل انتهاء التأخير → ألغِ الـ spinner      */
   var _lt=setTimeout(function(){
     el.innerHTML='<div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>';
   },150);
-
   try{
     var d=await api('/api/facilities?cat='+m.cat);
     clearTimeout(_lt);
@@ -1054,7 +1033,6 @@ async function loadFacTab(tab,btn){
   }
 }
 
-/* دالة مساعدة لبناء كارد المرفق - استُخرجت لتجنب تكرار الكود */
 function makeFacCard(f,m,tab){
   var img=f.image_url
     ?'<img class="fac-card-img" src="'+f.image_url+'" alt="" onerror="this.outerHTML=\'<div class=fac-card-ph style=background:'+m.bg+'><iconify-icon icon='+m.icon+' style=color:'+m.color+';font-size:1.8rem></iconify-icon></div>\'">'
