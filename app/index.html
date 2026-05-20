@@ -113,7 +113,18 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   border-radius:0;
   min-height:100%;
   position:relative;
-  box-shadow:0 -8px 20px rgba(0,0,0,.22);
+}
+/* ظل ثابت فوق screen-container لا يتأثر بأنيميشن الصفحات */
+#screen-container::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:1px;
+  box-shadow:0 -1px 20px 10px rgba(0,0,0,.22);
+  z-index:10;
+  pointer-events:none;
+  opacity:var(--sc-shadow-opacity,1);
+  transition:opacity .15s linear;
 }
 #screen-map .scroll-area{overflow:hidden;padding-top:0 !important;}
 #app-map{position:absolute;inset:0;width:100%;height:100%;}
@@ -757,6 +768,7 @@ function switchTab(t){
   var nb=document.getElementById('nav-'+t);
   if(nb) nb.classList.add('active');
   curTab=t;
+  updateHeaderShadow();
   if(t==='map'&&!mapDone) initMap2();
   if(t==='news'&&!newsScreenLoaded) loadNewsScreen();
   if(t==='guide') setTimeout(function(){resetGuideTab();},DUR+30);
@@ -1226,11 +1238,26 @@ async function loadMapData(){
   }catch(e){}
 }
 
+/* ── تحديث opacity ظل الهيدر حسب الـ scroll ── */
+function updateHeaderShadow(){
+  var shadow=document.querySelector('#screen-container::before');
+  var hh=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h'))||0;
+  if(!hh){document.documentElement.style.setProperty('--sc-shadow-opacity','1');return;}
+  var scroll=document.querySelector('#screen-'+curTab+' .scroll-area');
+  var st=scroll?scroll.scrollTop:0;
+  var opacity=Math.max(0,1-(st/hh));
+  document.documentElement.style.setProperty('--sc-shadow-opacity',opacity);
+}
+
 window.addEventListener('load',function(){
   applyHeaderHeight();
   window.addEventListener('resize',function(){applyHeaderHeight();});
   initSwipe('scroll-news',function(dir){swipeNews(dir);});
   initSwipe('scroll-guide',function(dir){swipeGuide(dir);});
+  /* ربط scroll listener بكل scroll-area */
+  document.querySelectorAll('.scroll-area').forEach(function(el){
+    el.addEventListener('scroll',updateHeaderShadow,{passive:true});
+  });
 });
 document.fonts.ready.then(function(){applyHeaderHeight();});
 loadHome();
