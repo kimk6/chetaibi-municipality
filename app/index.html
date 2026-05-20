@@ -99,7 +99,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .screen{
   position:absolute;inset:0;
   overflow:hidden;
-  will-change:transform,opacity;
+  will-change:transform;
 }
 .screen.hidden{display:none;pointer-events:none;}
 .scroll-area{
@@ -729,11 +729,11 @@ function switchTab(t){
   var forward=nextIdx>prevIdx;
   var enterFrom=forward?'-100%':'100%';
   var exitTo=forward?'100%':'-100%';
-  var DUR=230,EASE='cubic-bezier(.4,0,.2,1)';
+  /* ── أنيميشن transform فقط بدون opacity لثبات الظل ── */
+  var DUR=280,EASE='cubic-bezier(.4,0,.2,1)';
   var prev=curTab;
   if(prevEl){
-    prevEl.style.transition='opacity '+DUR+'ms ease,transform '+DUR+'ms '+EASE;
-    prevEl.style.opacity='0';
+    prevEl.style.transition='transform '+DUR+'ms '+EASE;
     prevEl.style.transform='translateX('+exitTo+')';
     setTimeout(function(){
       prevEl.classList.add('hidden');
@@ -742,14 +742,13 @@ function switchTab(t){
     },DUR+20);
   }
   nextEl.classList.remove('hidden');
-  nextEl.style.cssText='opacity:0;transform:translateX('+enterFrom+');transition:none';
+  nextEl.style.cssText='transform:translateX('+enterFrom+');transition:none';
   requestAnimationFrame(function(){
     requestAnimationFrame(function(){
       var header=document.getElementById('shared-header');
       var scroll=document.querySelector('#screen-'+t+' .scroll-area');
       if(header&&scroll) scroll.style.paddingTop=header.offsetHeight+'px';
-      nextEl.style.transition='opacity '+DUR+'ms ease,transform '+DUR+'ms '+EASE;
-      nextEl.style.opacity='1';
+      nextEl.style.transition='transform '+DUR+'ms '+EASE;
       nextEl.style.transform='translateX(0)';
       setTimeout(function(){nextEl.style.cssText='';},DUR+20);
     });
