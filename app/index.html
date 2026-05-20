@@ -108,7 +108,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   -webkit-overflow-scrolling:touch;
   overscroll-behavior-y:contain;
 }
-/* ↓ الظل على الورقة البيضاء من الأعلى فقط */
 .content-block{
   background:var(--surface);
   border-radius:0;
@@ -127,7 +126,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   border-top:1px solid var(--border-light);
   display:flex;align-items:flex-start;padding-top:8px;
   z-index:100;
-  /* ↓ ظل شريط التنقل للأعلى */
   box-shadow:0 -4px 16px rgba(0,0,0,.10),0 -1px 0 rgba(0,0,0,.05);
 }
 .nav-btn{
@@ -217,8 +215,13 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .seg-bar-wrap{background:var(--surface);border-bottom:1px solid var(--border-light);}
 .seg-bar{
   display:flex;gap:8px;overflow-x:auto;
-  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior-x:contain;
+  /* ↓ padding على الجانبين لإبعاد الأزرار عن حدود الشاشة دائماً */
   padding:10px 14px;
+  /* ↓ padding إضافي في نهاية الشريط لإظهار أن هناك المزيد */
+  padding-inline-start:14px;
+  padding-inline-end:14px;
 }
 .seg-btn{
   flex-shrink:0;display:flex;align-items:center;gap:6px;
@@ -228,6 +231,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   cursor:pointer;touch-action:manipulation;white-space:nowrap;
   box-shadow:var(--shadow-sm);
   transition:background .2s,color .2s,border-color .2s,box-shadow .2s;
+  /* ↓ منع الأزرار من التمدد */
+  flex-grow:0;
 }
 .seg-btn iconify-icon{font-size:15px;pointer-events:none;flex-shrink:0;}
 .seg-btn.active{
@@ -453,7 +458,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
       <div class="scroll-area" id="scroll-guide">
         <div class="content-block">
           <div class="seg-bar-wrap" id="seg-guide">
-            <div class="seg-bar">
+            <div class="seg-bar" id="guide-seg-bar">
               <button class="seg-btn active" id="btn-admin-branches" onclick="loadFacTab('admin-branches',this)">
                 <iconify-icon icon="lucide:landmark"></iconify-icon>الإدارية
               </button>
@@ -739,7 +744,8 @@ function switchTab(t){
   curTab=t;
   if(t==='map'&&!mapDone) initMap2();
   if(t==='news'&&!newsScreenLoaded) loadNewsScreen();
-  if(t==='guide') resetGuideTab();
+  /* ↓ resetGuideTab بعد انتهاء انيميشن الدخول */
+  if(t==='guide') setTimeout(function(){resetGuideTab();},DUR+30);
   if(t==='home') loadHome();
 }
 function resetGuideTab(){
@@ -748,10 +754,10 @@ function resetGuideTab(){
     b.classList.remove('active');
   });
   var firstBtn=document.getElementById('btn-admin-branches');
-  if(firstBtn){
-    firstBtn.classList.add('active');
-    firstBtn.scrollIntoView({behavior:'instant',block:'nearest',inline:'start'});
-  }
+  if(firstBtn) firstBtn.classList.add('active');
+  /* ↓ إعادة شريط الأزرار للبداية بدون أي حركة */
+  var bar=document.getElementById('guide-seg-bar');
+  if(bar) bar.scrollLeft=0;
   loadFacTab('admin-branches',firstBtn);
 }
 function initSwipe(scrollAreaId,getNext){
