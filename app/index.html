@@ -81,7 +81,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 }
 .header-text{flex:1;}
 .header-text h1{font-size:20px;font-weight:900;color:#fff;letter-spacing:-.3px;line-height:1.2;}
-.header-text p{font-size:11px;color:rgba(255,255,255,.65);font-weight:600;margin-top:2px;}
+/* ↓ تكبير النص قليلاً */
+.header-text p{font-size:12.5px;color:rgba(255,255,255,.75);font-weight:600;margin-top:2px;}
 .header-btn{
   width:36px;height:36px;border-radius:10px;
   background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);
@@ -107,6 +108,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   overflow-y:auto;overflow-x:hidden;
   -webkit-overflow-scrolling:touch;
   overscroll-behavior-y:contain;
+  /* ↓ ظل خفيف على الهيدر */
+  box-shadow:0 -6px 18px rgba(0,0,0,.13);
 }
 .content-block{
   background:var(--surface);
@@ -125,7 +128,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   border-top:1px solid var(--border-light);
   display:flex;align-items:flex-start;padding-top:8px;
   z-index:100;
-  box-shadow:0 -1px 0 rgba(0,0,0,.06),0 -4px 16px rgba(0,0,0,.04);
+  /* ↓ ظل خفيف على شريط التنقل */
+  box-shadow:0 -4px 20px rgba(0,0,0,.10),0 -1px 0 rgba(0,0,0,.05);
 }
 .nav-btn{
   flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
@@ -360,7 +364,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         style="background:transparent">
       <div class="header-text">
         <h1>بلدية شطايبي</h1>
-        <p>والية عنابة - الجزائر</p>
+        <!-- ↓ تصحيح الكتابة + تكبير النص -->
+        <p>ولاية عنابة - الجزائر</p>
       </div>
       <div class="header-btn">
         <iconify-icon icon="lucide:bell" style="color:#fff;font-size:18px;pointer-events:none"></iconify-icon>
@@ -451,7 +456,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         <div class="content-block">
           <div class="seg-bar-wrap" id="seg-guide">
             <div class="seg-bar">
-              <button class="seg-btn active" onclick="loadFacTab('admin-branches',this)">
+              <button class="seg-btn active" id="btn-admin-branches" onclick="loadFacTab('admin-branches',this)">
                 <iconify-icon icon="lucide:landmark"></iconify-icon>الإدارية
               </button>
               <button class="seg-btn" onclick="loadFacTab('education',this)">
@@ -736,15 +741,27 @@ function switchTab(t){
   curTab=t;
   if(t==='map'&&!mapDone) initMap2();
   if(t==='news'&&!newsScreenLoaded) loadNewsScreen();
-  if(t==='guide') loadFacTab(facCat);
+  /* ↓ عند الانتقال لصفحة الدليل: إعادة ضبط التصنيف إلى الإدارية دائماً */
+  if(t==='guide') resetGuideTab();
   if(t==='home') loadHome();
+}
+/* ↓ دالة إعادة ضبط صفحة الدليل إلى التصنيف الأول */
+function resetGuideTab(){
+  facCat='admin-branches';
+  var btns=document.querySelectorAll('#screen-guide .seg-btn');
+  btns.forEach(function(b){b.classList.remove('active');});
+  var firstBtn=document.getElementById('btn-admin-branches');
+  if(firstBtn){
+    firstBtn.classList.add('active');
+    firstBtn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'start'});
+  }
+  loadFacTab('admin-branches',null);
 }
 function initSwipe(scrollAreaId,getNext){
   var el=document.getElementById(scrollAreaId);
   if(!el) return;
   var startX=0,startY=0,tracking=false;
   el.addEventListener('touchstart',function(e){
-    /* إذا بدأ اللمس فوق منطقة الأزرار → لا تتبع السحب */
     if(e.target.closest('.seg-bar-wrap')){tracking=false;return;}
     startX=e.touches[0].clientX;
     startY=e.touches[0].clientY;
