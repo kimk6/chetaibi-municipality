@@ -23,8 +23,8 @@
   --header-h:0px;
   --safe-b:env(safe-area-inset-bottom,0px);
   --safe-t:env(safe-area-inset-top,0px);
-  --shadow-sm:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
-  --shadow-md:0 4px 16px rgba(0,0,0,.10),0 1px 4px rgba(0,0,0,.06);
+  --shadow-sm:0 2px 8px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);
+  --shadow-md:0 4px 20px rgba(0,0,0,.12),0 1px 4px rgba(0,0,0,.06);
 }
 *{
   margin:0;padding:0;box-sizing:border-box;
@@ -110,9 +110,10 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 }
 .content-block{
   background:var(--surface);
-  border-radius:0;
+  border-radius:20px 20px 0 0;
   min-height:100%;
   position:relative;
+  box-shadow:0 -2px 12px rgba(0,0,0,.08);
 }
 
 #screen-map .scroll-area{overflow:hidden;padding-top:0 !important;}
@@ -124,36 +125,36 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   background:rgba(255,255,255,.97);
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   border-top:1px solid var(--border-light);
-  display:flex;align-items:flex-start;padding-top:8px;
+  display:flex;align-items:flex-start;padding-top:6px;
   z-index:100;
-  box-shadow:0 -4px 16px rgba(0,0,0,.10),0 -1px 0 rgba(0,0,0,.05);
+  box-shadow:0 -1px 0 rgba(0,0,0,.06);
 }
 .nav-btn{
-  flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;
   border:none;background:none;cursor:pointer;
   font-family:'Cairo',sans-serif;font-size:10px;font-weight:700;
   color:var(--muted);padding:0 4px;position:relative;
   touch-action:manipulation;
   transition:color .2s ease;
 }
-.nav-btn iconify-icon{font-size:24px;display:block;pointer-events:none;}
 .nav-icon-wrap{
-  position:relative;width:24px;height:24px;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  position:relative;
+  width:56px;height:30px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:99px;
+  transition:background .2s ease;
+  flex-shrink:0;
 }
-.nav-btn .icon-on{display:block;position:absolute;opacity:0;transition:opacity .2s ease;pointer-events:none;}
-.nav-btn .icon-off{display:block;opacity:1;transition:opacity .2s ease;pointer-events:none;}
+.nav-btn.active .nav-icon-wrap{
+  background:var(--green-l);
+}
+.nav-btn iconify-icon{font-size:22px;display:block;pointer-events:none;}
+.nav-btn .icon-on{display:block;position:absolute;opacity:0;transition:opacity .18s ease;pointer-events:none;}
+.nav-btn .icon-off{display:block;opacity:1;transition:opacity .18s ease;pointer-events:none;}
 .nav-btn.active .icon-on{opacity:1;}
 .nav-btn.active .icon-off{opacity:0;}
-.nav-btn::before{
-  content:'';position:absolute;top:-8px;left:50%;
-  transform:translateX(-50%) scaleX(0);
-  width:28px;height:3px;border-radius:0 0 3px 3px;
-  background:var(--green);
-  transition:transform .25s cubic-bezier(.34,1.56,.64,1);
-}
 .nav-btn.active{color:var(--green);}
-.nav-btn.active::before{transform:translateX(-50%) scaleX(1);}
+.nav-btn:active .nav-icon-wrap{transform:scale(.88);transition:transform .1s ease,background .2s ease;}
 .nav-btn span{pointer-events:none;}
 .section{padding:16px 0 4px;}
 .section-header{display:flex;align-items:center;justify-content:space-between;padding:0 18px;margin-bottom:12px;}
@@ -381,7 +382,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         style="background:transparent">
       <div class="header-text">
         <h1>بلدية شطايبي</h1>
-        <p>والية عنابة - الجزائر</p>
+        <p>ولاية عنابة - الجزائر</p>
       </div>
       <div class="header-btn">
         <iconify-icon icon="lucide:bell" style="color:#fff;font-size:18px;pointer-events:none"></iconify-icon>
