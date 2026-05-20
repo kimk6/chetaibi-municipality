@@ -59,10 +59,12 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 }
 #shared-header{
   position:relative;
-  z-index:1;
+  z-index:10;
   flex-shrink:0;
   background:linear-gradient(145deg,#042f1e 0%,var(--green-d) 40%,var(--green-m) 75%,#059669 100%);
   overflow:hidden;
+  /* ↓ ظل الهيدر للأسفل على المحتوى */
+  box-shadow:0 6px 24px rgba(0,0,0,.28),0 2px 8px rgba(0,0,0,.18);
 }
 #shared-header::before{
   content:'';position:absolute;inset:0;
@@ -81,7 +83,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 }
 .header-text{flex:1;}
 .header-text h1{font-size:20px;font-weight:900;color:#fff;letter-spacing:-.3px;line-height:1.2;}
-/* ↓ تكبير النص قليلاً */
 .header-text p{font-size:12.5px;color:rgba(255,255,255,.75);font-weight:600;margin-top:2px;}
 .header-btn{
   width:36px;height:36px;border-radius:10px;
@@ -108,8 +109,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   overflow-y:auto;overflow-x:hidden;
   -webkit-overflow-scrolling:touch;
   overscroll-behavior-y:contain;
-  /* ↓ ظل خفيف على الهيدر */
-  box-shadow:0 -6px 18px rgba(0,0,0,.13);
 }
 .content-block{
   background:var(--surface);
@@ -128,8 +127,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   border-top:1px solid var(--border-light);
   display:flex;align-items:flex-start;padding-top:8px;
   z-index:100;
-  /* ↓ ظل خفيف على شريط التنقل */
-  box-shadow:0 -4px 20px rgba(0,0,0,.10),0 -1px 0 rgba(0,0,0,.05);
+  /* ↓ ظل شريط التنقل للأعلى */
+  box-shadow:0 -6px 24px rgba(0,0,0,.13),0 -2px 8px rgba(0,0,0,.08);
 }
 .nav-btn{
   flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
@@ -364,7 +363,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         style="background:transparent">
       <div class="header-text">
         <h1>بلدية شطايبي</h1>
-        <!-- ↓ تصحيح الكتابة + تكبير النص -->
         <p>ولاية عنابة - الجزائر</p>
       </div>
       <div class="header-btn">
@@ -741,21 +739,25 @@ function switchTab(t){
   curTab=t;
   if(t==='map'&&!mapDone) initMap2();
   if(t==='news'&&!newsScreenLoaded) loadNewsScreen();
-  /* ↓ عند الانتقال لصفحة الدليل: إعادة ضبط التصنيف إلى الإدارية دائماً */
+  /* ↓ إعادة ضبط الدليل عند كل زيارة */
   if(t==='guide') resetGuideTab();
   if(t==='home') loadHome();
 }
-/* ↓ دالة إعادة ضبط صفحة الدليل إلى التصنيف الأول */
+/* ↓ إعادة ضبط صفحة الدليل: تفعيل زر "الإدارية" + تحميل بياناته */
 function resetGuideTab(){
   facCat='admin-branches';
-  var btns=document.querySelectorAll('#screen-guide .seg-btn');
-  btns.forEach(function(b){b.classList.remove('active');});
+  /* إزالة active من كل الأزرار */
+  document.querySelectorAll('#screen-guide .seg-btn').forEach(function(b){
+    b.classList.remove('active');
+  });
+  /* إضافة active لزر الإدارية مباشرة */
   var firstBtn=document.getElementById('btn-admin-branches');
   if(firstBtn){
     firstBtn.classList.add('active');
-    firstBtn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'start'});
+    firstBtn.scrollIntoView({behavior:'instant',block:'nearest',inline:'start'});
   }
-  loadFacTab('admin-branches',null);
+  /* تحميل البيانات مع تمرير الزر مباشرة */
+  loadFacTab('admin-branches',firstBtn);
 }
 function initSwipe(scrollAreaId,getNext){
   var el=document.getElementById(scrollAreaId);
