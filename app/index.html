@@ -96,18 +96,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   margin-top:calc(var(--header-h) * -1);
   z-index:2;
 }
-/* ═══ الظل الثابت ═══
-   عنصر مستقل فوق كل الشاشات لا يتحرك مع أي أنيميشن
-   يتحكم فيه JavaScript عبر opacity حسب موضع السكرول  */
-#header-shadow{
-  position:absolute;
-  top:0;left:0;right:0;
-  height:var(--header-h);
-  pointer-events:none;
-  z-index:50;
-  box-shadow:0 8px 20px 4px rgba(0,0,0,.22);
-  transition:opacity .2s ease;
-}
 .screen{
   position:absolute;inset:0;
   overflow:hidden;
@@ -125,7 +113,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   border-radius:0;
   min-height:100%;
   position:relative;
-  /* لا box-shadow هنا - الظل على #header-shadow الثابت */
+  box-shadow:0 -8px 20px rgba(0,0,0,.22);
 }
 #screen-map .scroll-area{overflow:hidden;padding-top:0 !important;}
 #app-map{position:absolute;inset:0;width:100%;height:100%;}
@@ -386,9 +374,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   </div>
 
   <div id="screen-container">
-
-    <!-- عنصر الظل الثابت - لا يتحرك مع أي صفحة -->
-    <div id="header-shadow"></div>
 
     <!-- ══ HOME ══ -->
     <div class="screen" id="screen-home">
@@ -716,34 +701,6 @@ var TAB_ORDER=['home','news','guide','map','more'];
 var NEWS_CATS=['official','activity','social','poster'];
 var GUIDE_TABS=['admin-branches','education','health','public-bodies','religious','cultural','sports'];
 
-/* ═══════════════════════════════════════════════════════
-   إدارة الظل الثابت - يختفي عند النزول ويظهر عند الصعود
-   نراقب scroll-area الصفحة النشطة فقط
-═══════════════════════════════════════════════════════ */
-var shadowEl=null;
-var shadowRAF=null;
-
-function updateShadow(scrollTop){
-  if(!shadowEl) return;
-  /* الظل يختفي تدريجياً مع أول 40px من السكرول */
-  var h=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h'))||0;
-  var fade=Math.max(0,Math.min(1,1-(scrollTop/h)));
-  shadowEl.style.opacity=fade;
-}
-
-function attachShadowScroll(screenId){
-  var scroll=document.querySelector('#screen-'+screenId+' .scroll-area');
-  if(!scroll) return;
-  /* تحديث الظل فوراً بناءً على موضع السكرول الحالي */
-  updateShadow(scroll.scrollTop);
-  scroll.addEventListener('scroll',function(){
-    if(shadowRAF) cancelAnimationFrame(shadowRAF);
-    shadowRAF=requestAnimationFrame(function(){
-      updateShadow(scroll.scrollTop);
-    });
-  },{passive:true});
-}
-
 function applyHeaderHeight(){
   var header=document.getElementById('shared-header');
   var container=document.getElementById('screen-container');
@@ -755,8 +712,6 @@ function applyHeaderHeight(){
     var scroll=document.querySelector('#screen-'+id+' .scroll-area');
     if(scroll) scroll.style.paddingTop=h+'px';
   });
-  /* تحديث حجم الظل */
-  if(shadowEl) shadowEl.style.height=h+'px';
 }
 
 function resetScroll(screenId){
@@ -774,6 +729,7 @@ function switchTab(t){
   var forward=nextIdx>prevIdx;
   var enterFrom=forward?'-100%':'100%';
   var exitTo=forward?'100%':'-100%';
+  /* ── أنيميشن transform فقط بدون opacity لثبات الظل ── */
   var DUR=280,EASE='cubic-bezier(.4,0,.2,1)';
   var prev=curTab;
   if(prevEl){
@@ -794,11 +750,7 @@ function switchTab(t){
       if(header&&scroll) scroll.style.paddingTop=header.offsetHeight+'px';
       nextEl.style.transition='transform '+DUR+'ms '+EASE;
       nextEl.style.transform='translateX(0)';
-      setTimeout(function(){
-        nextEl.style.cssText='';
-        /* بعد انتهاء الأنيميشن اربط الظل بالصفحة الجديدة */
-        attachShadowScroll(t);
-      },DUR+20);
+      setTimeout(function(){nextEl.style.cssText='';},DUR+20);
     });
   });
   document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');});
@@ -1275,13 +1227,10 @@ async function loadMapData(){
 }
 
 window.addEventListener('load',function(){
-  shadowEl=document.getElementById('header-shadow');
   applyHeaderHeight();
   window.addEventListener('resize',function(){applyHeaderHeight();});
   initSwipe('scroll-news',function(dir){swipeNews(dir);});
   initSwipe('scroll-guide',function(dir){swipeGuide(dir);});
-  /* ربط الظل بالصفحة الافتراضية عند البداية */
-  attachShadowScroll('home');
 });
 document.fonts.ready.then(function(){applyHeaderHeight();});
 loadHome();
