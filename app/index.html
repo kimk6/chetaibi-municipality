@@ -115,7 +115,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   position:relative;
   box-shadow:0 -2px 12px rgba(0,0,0,.08);
 }
-
 #screen-map .scroll-area{overflow:hidden;padding-top:0 !important;}
 #app-map{position:absolute;inset:0;width:100%;height:100%;}
 #bottom-nav{
@@ -145,9 +144,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   transition:background .2s ease;
   flex-shrink:0;
 }
-.nav-btn.active .nav-icon-wrap{
-  background:var(--green-l);
-}
+.nav-btn.active .nav-icon-wrap{background:var(--green-l);}
 .nav-btn iconify-icon{font-size:22px;display:block;pointer-events:none;}
 .nav-btn .icon-on{display:block;position:absolute;opacity:0;transition:opacity .18s ease;pointer-events:none;}
 .nav-btn .icon-off{display:block;opacity:1;transition:opacity .18s ease;pointer-events:none;}
@@ -357,91 +354,255 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 
 /* ══ Material-style header elevation on scroll ══ */
 #shared-header::after{
-  content:'';
-  position:absolute;
-  bottom:0;left:0;right:0;
-  height:1px;
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
   background:rgba(255,255,255,0);
-  transition:background .25s ease, box-shadow .25s ease;
-  pointer-events:none;
-  z-index:2;
+  transition:background .25s ease,box-shadow .25s ease;
+  pointer-events:none;z-index:2;
 }
 #shared-header.scrolled::after{
   background:rgba(255,255,255,.12);
   box-shadow:0 1px 16px 2px rgba(0,0,0,.28);
 }
 
-/* ══ Map Bottom Card ══ */
+/* ══ Map Filter Bar ══ */
+#map-filter-bar{
+  position:absolute;
+  top:16px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:1000;
+  display:flex;
+  gap:8px;
+  pointer-events:auto;
+  padding:0 4px;
+  max-width:calc(100% - 20px);
+}
+.map-filter-btn{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  padding:0 14px;
+  height:38px;
+  border-radius:99px;
+  border:none;
+  font-family:'Cairo',sans-serif;
+  font-size:12px;
+  font-weight:800;
+  cursor:pointer;
+  touch-action:manipulation;
+  white-space:nowrap;
+  flex-shrink:0;
+  transition:all .22s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 4px 16px rgba(0,0,0,.18),0 1px 4px rgba(0,0,0,.10);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  position:relative;
+  overflow:hidden;
+}
+.map-filter-btn::before{
+  content:'';
+  position:absolute;inset:0;
+  opacity:0;
+  transition:opacity .2s;
+  background:rgba(255,255,255,.15);
+}
+.map-filter-btn:active::before{opacity:1;}
+.map-filter-btn iconify-icon{
+  font-size:15px;
+  pointer-events:none;
+  flex-shrink:0;
+  transition:transform .2s;
+}
+.map-filter-btn.active iconify-icon{
+  transform:scale(1.15);
+}
+
+/* الكل */
+.map-filter-btn.mfb-all{
+  background:rgba(255,255,255,.92);
+  color:#374151;
+}
+.map-filter-btn.mfb-all.active{
+  background:#374151;
+  color:#fff;
+  box-shadow:0 4px 18px rgba(55,65,81,.4),0 1px 4px rgba(0,0,0,.12);
+}
+/* الشواطئ */
+.map-filter-btn.mfb-beach{
+  background:rgba(14,165,233,.92);
+  color:#fff;
+}
+.map-filter-btn.mfb-beach.active{
+  background:#0369a1;
+  box-shadow:0 4px 18px rgba(3,105,161,.5),0 1px 4px rgba(0,0,0,.12);
+}
+/* المعالم السياحية */
+.map-filter-btn.mfb-tour{
+  background:rgba(5,150,105,.92);
+  color:#fff;
+}
+.map-filter-btn.mfb-tour.active{
+  background:#065f46;
+  box-shadow:0 4px 18px rgba(6,95,70,.5),0 1px 4px rgba(0,0,0,.12);
+}
+/* المرافق */
+.map-filter-btn.mfb-fac{
+  background:rgba(124,58,237,.92);
+  color:#fff;
+}
+.map-filter-btn.mfb-fac.active{
+  background:#4c1d95;
+  box-shadow:0 4px 18px rgba(76,29,149,.5),0 1px 4px rgba(0,0,0,.12);
+}
+
+/* ══ Map Popup Card (جديد) ══ */
 #map-card-overlay{
   position:absolute;
   bottom:0;left:0;right:0;
   z-index:1000;
-  padding:0 16px 16px;
   pointer-events:none;
   transform:translateY(120%);
-  transition:transform .35s cubic-bezier(.32,1.2,.54,1);
+  transition:transform .38s cubic-bezier(.32,1.2,.54,1);
 }
 #map-card-overlay.open{
   transform:translateY(0);
   pointer-events:auto;
 }
-.map-card{
+
+.map-popup-card{
+  margin:0 16px 16px;
   background:#fff;
-  border-radius:20px;
-  overflow:hidden;
-  box-shadow:0 8px 32px rgba(0,0,0,.18),0 2px 8px rgba(0,0,0,.10);
+  border-radius:24px;
+  overflow:visible;
+  box-shadow:0 12px 40px rgba(0,0,0,.20),0 4px 12px rgba(0,0,0,.10);
   display:flex;
-  align-items:stretch;
-  cursor:pointer;
-  touch-action:manipulation;
-  transition:transform .15s ease,opacity .15s;
+  flex-direction:column;
+  align-items:center;
   position:relative;
+  padding-top:52px;
+  padding-bottom:16px;
 }
-.map-card:active{transform:scale(.98);opacity:.85;}
-.map-card-img{
-  width:90px;flex-shrink:0;
-  object-fit:cover;display:block;
+
+/* الصورة الدائرية الكبيرة */
+.map-popup-avatar{
+  position:absolute;
+  top:-44px;
+  left:50%;
+  transform:translateX(-50%);
+  width:88px;
+  height:88px;
+  border-radius:50%;
+  border:4px solid #fff;
+  box-shadow:0 6px 24px rgba(0,0,0,.22),0 2px 8px rgba(0,0,0,.12);
+  overflow:hidden;
+  background:#f3f4f6;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:2;
+}
+.map-popup-avatar img{
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
   pointer-events:none;
 }
-.map-card-img-ph{
-  width:90px;flex-shrink:0;
+.map-popup-avatar-ph{
+  width:100%;height:100%;
   display:flex;align-items:center;justify-content:center;
+  border-radius:50%;
 }
-.map-card-body{
-  flex:1;padding:13px 14px;min-width:0;
-  display:flex;flex-direction:column;justify-content:center;gap:4px;
+
+/* شارة النوع */
+.map-popup-badge{
+  font-size:10px;
+  font-weight:800;
+  padding:3px 12px;
+  border-radius:99px;
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  margin-bottom:6px;
 }
-.map-card-type{
-  font-size:10px;font-weight:800;
-  padding:2px 8px;border-radius:99px;
-  display:inline-block;align-self:flex-start;
-  margin-bottom:2px;
-}
-.map-card-name{
-  font-size:14px;font-weight:900;color:#111827;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+
+/* الاسم */
+.map-popup-name{
+  font-size:15px;
+  font-weight:900;
+  color:#111827;
+  text-align:center;
   line-height:1.3;
+  padding:0 20px;
+  margin-bottom:4px;
 }
-.map-card-desc{
-  font-size:11.5px;color:#6b7280;
-  display:-webkit-box;-webkit-line-clamp:2;
-  -webkit-box-orient:vertical;overflow:hidden;
-  line-height:1.55;
+
+/* الوصف */
+.map-popup-desc-wrap{
+  background:#f8fafc;
+  border-radius:14px;
+  margin:8px 14px 0;
+  padding:10px 14px;
+  width:calc(100% - 28px);
 }
-.map-card-action{
-  font-size:10.5px;font-weight:800;color:var(--green);
-  display:flex;align-items:center;gap:3px;margin-top:4px;
+.map-popup-desc{
+  font-size:11.5px;
+  color:#6b7280;
+  line-height:1.6;
+  text-align:center;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
 }
-.map-card-close{
-  position:absolute;top:8px;left:8px;
-  width:26px;height:26px;border-radius:50%;
-  background:rgba(0,0,0,.08);border:none;
+
+/* زر التفاصيل */
+.map-popup-action{
+  margin-top:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  font-size:12px;
+  font-weight:800;
+  color:var(--green);
+  background:var(--green-l);
+  border-radius:99px;
+  padding:8px 22px;
+  cursor:pointer;
+  touch-action:manipulation;
+  transition:opacity .15s,transform .15s;
+  border:none;
+  font-family:'Cairo',sans-serif;
+}
+.map-popup-action:active{opacity:.75;transform:scale(.96);}
+.map-popup-action iconify-icon{font-size:14px;pointer-events:none;}
+
+/* زر الإغلاق */
+.map-popup-close{
+  position:absolute;
+  top:10px;
+  left:12px;
+  width:28px;height:28px;
+  border-radius:50%;
+  background:rgba(0,0,0,.07);
+  border:none;
   display:flex;align-items:center;justify-content:center;
   cursor:pointer;touch-action:manipulation;
-  color:#6b7280;font-size:12px;pointer-events:auto;
-  transition:background .15s;
+  color:#9ca3af;font-size:13px;
+  pointer-events:auto;
+  transition:background .15s,color .15s;
+  z-index:3;
 }
-.map-card-close:active{background:rgba(0,0,0,.18);}
+.map-popup-close:active{background:rgba(0,0,0,.18);color:#374151;}
+
+/* الخط الفاصل المزخرف */
+.map-popup-divider{
+  width:40px;height:3px;
+  background:linear-gradient(90deg,var(--green-l),var(--green),var(--green-l));
+  border-radius:99px;
+  margin:6px auto 0;
+}
 </style>
 </head>
 <body>
@@ -454,7 +615,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         style="background:transparent">
       <div class="header-text">
         <h1>بلدية شطايبي</h1>
-        <p>ولاية عنابة - الجزائر</p>
+        <p>والية عنابة - الجزائر</p>
       </div>
       <div class="header-btn">
         <iconify-icon icon="lucide:bell" style="color:#fff;font-size:18px;pointer-events:none"></iconify-icon>
@@ -584,17 +745,43 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
       <div class="scroll-area">
         <div id="app-map"></div>
       </div>
-    
+
+      <!-- شريط تصفية الخريطة -->
+      <div id="map-filter-bar">
+        <button class="map-filter-btn mfb-all active" onclick="filterMap('all',this)">
+          <iconify-icon icon="lucide:layers"></iconify-icon>الكل
+        </button>
+        <button class="map-filter-btn mfb-beach" onclick="filterMap('beach',this)">
+          <iconify-icon icon="lucide:waves"></iconify-icon>الشواطئ
+        </button>
+        <button class="map-filter-btn mfb-tour" onclick="filterMap('tour',this)">
+          <iconify-icon icon="lucide:sun"></iconify-icon>السياحية
+        </button>
+        <button class="map-filter-btn mfb-fac" onclick="filterMap('fac',this)">
+          <iconify-icon icon="lucide:building-2"></iconify-icon>المرافق
+        </button>
+      </div>
+
+      <!-- بطاقة المعلم popup جديدة -->
       <div id="map-card-overlay">
-        <div class="map-card" id="map-card-inner" onclick="mapCardClick()">
-          <div id="map-card-media"></div>
-          <div class="map-card-body">
-            <div id="map-card-type" class="map-card-type"></div>
-            <div id="map-card-name" class="map-card-name"></div>
-            <div id="map-card-desc" class="map-card-desc"></div>
-            <div class="map-card-action"><iconify-icon icon="lucide:info" style="font-size:12px;pointer-events:none"></iconify-icon> عرض التفاصيل</div>
+        <div class="map-popup-card" id="map-card-inner" onclick="mapCardClick()">
+          <!-- الصورة الدائرية -->
+          <div class="map-popup-avatar" id="map-popup-avatar"></div>
+          <!-- زر الإغلاق -->
+          <button class="map-popup-close" onclick="event.stopPropagation();closeMapCard()">
+            <iconify-icon icon="lucide:x" style="pointer-events:none"></iconify-icon>
+          </button>
+          <!-- المحتوى -->
+          <div id="map-card-type" class="map-popup-badge"></div>
+          <div id="map-card-name" class="map-popup-name"></div>
+          <div class="map-popup-divider"></div>
+          <div class="map-popup-desc-wrap" id="map-popup-desc-wrap">
+            <div id="map-card-desc" class="map-popup-desc"></div>
           </div>
-          <button class="map-card-close" onclick="event.stopPropagation();closeMapCard()"><iconify-icon icon="lucide:x" style="pointer-events:none"></iconify-icon></button>
+          <button class="map-popup-action">
+            <iconify-icon icon="lucide:info"></iconify-icon>
+            عرض التفاصيل
+          </button>
         </div>
       </div>
     </div>
@@ -801,6 +988,10 @@ var TAB_ORDER=['home','news','guide','map','more'];
 var NEWS_CATS=['official','activity','social','poster'];
 var GUIDE_TABS=['admin-branches','education','health','public-bodies','religious','cultural','sports'];
 
+/* ── متغيرات طبقات الخريطة للتصفية ── */
+var mapLayers={beach:[],tour:[],fac:[]};
+var activeMapFilter='all';
+
 function applyHeaderHeight(){
   var header=document.getElementById('shared-header');
   var container=document.getElementById('screen-container');
@@ -829,7 +1020,6 @@ function switchTab(t){
   var forward=nextIdx>prevIdx;
   var enterFrom=forward?'-100%':'100%';
   var exitTo=forward?'100%':'-100%';
-  /* ── أنيميشن transform فقط بدون opacity لثبات الظل ── */
   var DUR=280,EASE='cubic-bezier(.4,0,.2,1)';
   var prev=curTab;
   if(prevEl){
@@ -1052,13 +1242,9 @@ function renderNews(items){
     if(n.category==='poster'){
       var posterSrc=n.image_url||'';
       if(posterSrc){
-        return '<div class="poster-card fade-in" onclick="openLightbox(\''+posterSrc+'\')">'
-          +'<img src="'+posterSrc+'" alt="" loading="lazy"></div>';
+        return '<div class="poster-card fade-in" onclick="openLightbox(\''+posterSrc+'\')"><img src="'+posterSrc+'" alt="" loading="lazy"></div>';
       }
-      return '<div class="poster-card fade-in" style="cursor:default">'
-        +'<div class="poster-card-ph" style="background:linear-gradient(135deg,#7c3aed,#4c1d95)">'
-        +'<iconify-icon icon="lucide:image" style="color:rgba(255,255,255,.7);font-size:3rem;pointer-events:none"></iconify-icon>'
-        +'</div></div>';
+      return '<div class="poster-card fade-in" style="cursor:default"><div class="poster-card-ph" style="background:linear-gradient(135deg,#7c3aed,#4c1d95)"><iconify-icon icon="lucide:image" style="color:rgba(255,255,255,.7);font-size:3rem;pointer-events:none"></iconify-icon></div></div>';
     }
     var imgW=n.image_url
       ?'<div class="announce-img-wrap"><img src="'+n.image_url+'" alt="" loading="lazy"></div>'
@@ -1076,7 +1262,7 @@ function renderNews(items){
 }
 
 var FM={
-  'admin-branches':{cat:'branches',    icon:'lucide:landmark',       color:'#059669',bg:'#d1fae5'},
+  'admin-branches':{cat:'branches',    icon:'lucide:landmark',      color:'#059669',bg:'#d1fae5'},
   'education':     {cat:'education',   icon:'lucide:graduation-cap', color:'#2563eb',bg:'#dbeafe'},
   'health':        {cat:'health',      icon:'lucide:heart-pulse',    color:'#dc2626',bg:'#fee2e2'},
   'public-bodies': {cat:'public_bodies',icon:'lucide:building-2',   color:'#7c3aed',bg:'#ede9fe'},
@@ -1291,7 +1477,6 @@ function openLightbox(src){
   document.getElementById('lb-img').src=src;
   document.getElementById('lightbox').classList.add('open');
 }
-
 function closeLightbox(){
   document.getElementById('lightbox').classList.remove('open');
 }
@@ -1313,20 +1498,36 @@ var mapCardData=null;
 function showMapCard(item,typeCfg){
   mapCardData=item;
   mapCardData._typeCfg=typeCfg;
-  var media=document.getElementById('map-card-media');
+
+  /* ── الصورة الدائرية ── */
+  var avatarEl=document.getElementById('map-popup-avatar');
   if(item.image_url){
-    media.innerHTML='<img class="map-card-img" src="'+item.image_url+'" alt="">';
+    avatarEl.innerHTML='<img src="'+item.image_url+'" alt="">';
   } else {
-    media.innerHTML='<div class="map-card-img-ph" style="background:'+typeCfg.bg+'"><iconify-icon icon="'+typeCfg.icon+'" style="font-size:1.8rem;color:'+typeCfg.color+';pointer-events:none"></iconify-icon></div>';
+    avatarEl.innerHTML='<div class="map-popup-avatar-ph" style="background:'+typeCfg.bg+'">'
+      +'<iconify-icon icon="'+typeCfg.icon+'" style="font-size:2.2rem;color:'+typeCfg.color+';pointer-events:none"></iconify-icon>'
+      +'</div>';
   }
+
+  /* ── الشارة ── */
   var typeEl=document.getElementById('map-card-type');
-  typeEl.textContent=typeCfg.label;
-  typeEl.style.cssText='background:'+typeCfg.bg+';color:'+typeCfg.color+';display:inline-block';
+  typeEl.innerHTML='<iconify-icon icon="'+typeCfg.icon+'" style="font-size:12px;pointer-events:none"></iconify-icon>'+typeCfg.label;
+  typeEl.style.cssText='background:'+typeCfg.bg+';color:'+typeCfg.color;
+
+  /* ── الاسم ── */
   document.getElementById('map-card-name').textContent=item.name||'';
+
+  /* ── الوصف ── */
   var desc=item.description||item.content||'';
+  var descWrap=document.getElementById('map-popup-desc-wrap');
   var descEl=document.getElementById('map-card-desc');
-  if(desc){descEl.textContent=desc;descEl.style.display='';}
-  else descEl.style.display='none';
+  if(desc){
+    descEl.textContent=desc;
+    descWrap.style.display='';
+  } else {
+    descWrap.style.display='none';
+  }
+
   document.getElementById('map-card-overlay').classList.add('open');
 }
 
@@ -1344,6 +1545,31 @@ function mapCardClick(){
   else if(d._typeCfg.modal==='fac') openFacModal(d.id, d._typeCfg.tab||'admin-branches');
 }
 
+/* ══ تصفية طبقات الخريطة ══ */
+function filterMap(type, btn){
+  activeMapFilter=type;
+
+  /* تحديث الأزرار */
+  document.querySelectorAll('.map-filter-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+
+  /* إخفاء/إظهار الطبقات */
+  mapLayers.beach.forEach(function(mk){
+    if(type==='all'||type==='beach') mk.addTo(appMap);
+    else if(appMap.hasLayer(mk)) appMap.removeLayer(mk);
+  });
+  mapLayers.tour.forEach(function(mk){
+    if(type==='all'||type==='tour') mk.addTo(appMap);
+    else if(appMap.hasLayer(mk)) appMap.removeLayer(mk);
+  });
+  mapLayers.fac.forEach(function(mk){
+    if(type==='all'||type==='fac') mk.addTo(appMap);
+    else if(appMap.hasLayer(mk)) appMap.removeLayer(mk);
+  });
+
+  closeMapCard();
+}
+
 async function loadMapData(){
   if(!appMap)return;
   appMap.on('click',function(){closeMapCard();});
@@ -1353,13 +1579,15 @@ async function loadMapData(){
       .on('click',function(e){
         L.DomEvent.stopPropagation(e);
         showMapCard(
-          {id:0,name:'مقر بلدية شطايبي',description:'المقر الرئيسي لبلدية شطايبي - ولاية عنابة',image_url:''},
+          {id:0,name:'مقر بلدية شطايبي',description:'المقر الرئيسي لبلدية شطايبي - والية عنابة',image_url:''},
           {bg:'#d1fae5',color:'#059669',icon:'lucide:building-2',label:'بلدية',modal:''}
         );
       });
+
     var results=await Promise.all([api('/api/beaches'),api('/api/tourism'),api('/api/facilities')]);
     var br=results[0],tr=results[1],fr=results[2];
-    function mkMarker(item,color,iconName,typeCfg){
+
+    function mkMarker(item,color,iconName,typeCfg,layerKey){
       if(!item.lat||!item.lng) return;
       var size=34;
       var inner=item.image_url
@@ -1367,20 +1595,29 @@ async function loadMapData(){
         :'<iconify-icon icon="'+iconName+'" style="font-size:14px;color:#fff;pointer-events:none"></iconify-icon>';
       var html='<div style="width:'+size+'px;height:'+size+'px;background:'+color+';border:2.5px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.28);overflow:hidden;cursor:pointer">'+inner+'</div>';
       var ic=L.divIcon({className:'',html:html,iconSize:[size,size],iconAnchor:[size/2,size/2]});
-      L.marker([item.lat,item.lng],{icon:ic}).addTo(appMap)
+      var mk=L.marker([item.lat,item.lng],{icon:ic})
         .on('click',function(e){
           L.DomEvent.stopPropagation(e);
           showMapCard(item,typeCfg);
         });
+      mapLayers[layerKey].push(mk);
+      mk.addTo(appMap);
     }
+
     (br.data||[]).forEach(function(b){
-      mkMarker(b,'#0ea5e9','lucide:waves',{bg:'#e0f2fe',color:'#0369a1',icon:'lucide:waves',label:'شاطئ',modal:'beach'});
+      mkMarker(b,'#0ea5e9','lucide:waves',
+        {bg:'#e0f2fe',color:'#0369a1',icon:'lucide:waves',label:'شاطئ',modal:'beach'},
+        'beach');
     });
     (tr.data||[]).forEach(function(t){
-      mkMarker(t,'#059669','lucide:compass',{bg:'#d1fae5',color:'#065f46',icon:'lucide:compass',label:'سياحة',modal:'tour'});
+      mkMarker(t,'#059669','lucide:compass',
+        {bg:'#d1fae5',color:'#065f46',icon:'lucide:compass',label:'سياحة',modal:'tour'},
+        'tour');
     });
     (fr.data||[]).forEach(function(f){
-      mkMarker(f,'#7c3aed','lucide:building',{bg:'#ede9fe',color:'#5b21b6',icon:'lucide:building',label:'مرفق',modal:'fac',tab:f.category||'admin-branches'});
+      mkMarker(f,'#7c3aed','lucide:building',
+        {bg:'#ede9fe',color:'#5b21b6',icon:'lucide:building',label:'مرفق',modal:'fac',tab:f.category||'admin-branches'},
+        'fac');
     });
   }catch(e){}
 }
@@ -1400,7 +1637,6 @@ window.addEventListener('load',function(){
   window.addEventListener('resize',function(){applyHeaderHeight();});
   initSwipe('scroll-news',function(dir){swipeNews(dir);});
   initSwipe('scroll-guide',function(dir){swipeGuide(dir);});
-  /* ربط scroll listener بكل scroll-area */
   document.querySelectorAll('.scroll-area').forEach(function(el){
     el.addEventListener('scroll',updateHeaderShadow,{passive:true});
   });
