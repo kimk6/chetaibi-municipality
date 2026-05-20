@@ -56,7 +56,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   overflow:hidden;
 }
 
-/* ══ SHARED HEADER - داخل screen-container، تحت المحتوى ══ */
+/* ══ SHARED HEADER ══ */
 #shared-header{
   position:absolute;
   top:0;left:0;right:0;
@@ -73,8 +73,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 #shared-header .app-header-inner{
   pointer-events:auto;
 }
-
-/* ══ HEADER INNER ══ */
 .app-header-inner{
   display:flex;align-items:center;gap:14px;
   position:relative;z-index:1;
@@ -99,12 +97,11 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 /* ══ SCREEN ══ */
 .screen{
   position:absolute;inset:0;
-  overflow:hidden;
   will-change:transform,opacity;
 }
 .screen.hidden{display:none;pointer-events:none;}
 
-/* ══ SCROLL AREA - فوق الهيدر ══ */
+/* ══ SCROLL AREA ══ */
 .scroll-area{
   position:absolute;inset:0;
   z-index:2;
@@ -113,7 +110,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   overscroll-behavior-y:contain;
 }
 
-/* ══ CONTENT BLOCK - الورقة البيضاء التي تغطي الهيدر ══ */
+/* ══ CONTENT BLOCK ══ */
 .content-block{
   background:var(--surface);
   border-radius:20px 20px 0 0;
@@ -411,7 +408,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 
   <div id="screen-container">
 
-    <!-- ══ SHARED HEADER - داخل screen-container بـ z-index:1 ══ -->
+    <!-- ══ SHARED HEADER ══ -->
     <div id="shared-header">
       <div class="app-header-inner">
         <img class="header-logo"
@@ -644,7 +641,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     </button>
   </nav>
 
-</div><!-- end app -->
+</div>
 
 <!-- ══ MODALS ══ -->
 <div class="modal-overlay" id="m-news" onclick="cm('m-news')">
@@ -726,8 +723,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 
 <script>
 'use strict';
-
-/* ══ منع حفظ الصور ══ */
 document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
 document.addEventListener('dragstart',function(e){e.preventDefault();return false;});
 document.addEventListener('selectstart',function(e){e.preventDefault();return false;});
@@ -742,7 +737,6 @@ document.addEventListener('touchstart',function(e){
 },{passive:false});
 document.addEventListener('touchmove',function(e){if(e.touches.length>1)e.preventDefault();},{passive:false});
 
-/* ══ Cache & API ══ */
 var C={};
 async function api(u){
   if(C[u])return C[u];
@@ -752,12 +746,10 @@ async function api(u){
   return d;
 }
 
-/* ══ State ══ */
 var curTab='home',mapDone=false,allNews=[],facCat='admin-branches';
 var newsScreenLoaded=false;
 var TAB_ORDER=['home','news','guide','map','more'];
 
-/* ══ initScrollPadding - يحسب ارتفاع الهيدر المشترك ══ */
 function initScrollPadding(screenId){
   var header=document.getElementById('shared-header');
   var scroll=document.querySelector('#'+screenId+' .scroll-area');
@@ -774,7 +766,6 @@ function resetScroll(screenId){
   if(scroll) scroll.scrollTop=0;
 }
 
-/* ══ switchTab ══ */
 function switchTab(t){
   if(t===curTab) return;
   var prevEl=document.getElementById('screen-'+curTab);
@@ -1208,13 +1199,11 @@ window.addEventListener('load',function(){
     });
   });
 });
-
 document.fonts.ready.then(function(){
   ['home','news','guide','more'].forEach(function(id){
     initScrollPadding('screen-'+id);
   });
 });
-
 loadHome();
 </script>
 </body>
