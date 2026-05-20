@@ -20,6 +20,7 @@
   --surface:#f2f4f7;--card:#ffffff;--text:#111827;--muted:#6b7280;
   --border:#e5e7eb;--border-light:#f3f4f6;
   --nav-h:62px;
+  --header-h:0px;
   --safe-b:env(safe-area-inset-bottom,0px);
   --safe-t:env(safe-area-inset-top,0px);
   --shadow-sm:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
@@ -47,31 +48,27 @@ img{
   pointer-events:none;-webkit-user-drag:none;
 }
 img.clickable{pointer-events:auto !important;cursor:pointer;}
-#app{display:flex;flex-direction:column;height:100%;height:100dvh;overflow:hidden;}
 
-/* ══ SCREEN CONTAINER ══ */
-#screen-container{
-  flex:1;min-height:0;
-  position:relative;
+/* ══ APP ══ */
+#app{
+  display:flex;flex-direction:column;
+  height:100%;height:100dvh;
   overflow:hidden;
+  position:relative;
 }
 
-/* ══ SHARED HEADER ══ */
+/* ══ SHARED HEADER - خارج screen-container تماماً ══ */
 #shared-header{
-  position:absolute;
-  top:0;left:0;right:0;
+  position:relative;
   z-index:1;
+  flex-shrink:0;
   background:linear-gradient(145deg,#042f1e 0%,var(--green-d) 40%,var(--green-m) 75%,#059669 100%);
   overflow:hidden;
-  pointer-events:none;
 }
 #shared-header::before{
   content:'';position:absolute;inset:0;
   background:radial-gradient(ellipse at 85% 20%,rgba(255,255,255,.07) 0%,transparent 60%);
   pointer-events:none;
-}
-#shared-header .app-header-inner{
-  pointer-events:auto;
 }
 .app-header-inner{
   display:flex;align-items:center;gap:14px;
@@ -94,9 +91,21 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 }
 .header-btn:active{background:rgba(255,255,255,.28);}
 
+/* ══ SCREEN CONTAINER - يبدأ من تحت الهيدر ══ */
+#screen-container{
+  flex:1;
+  min-height:0;
+  position:relative;
+  overflow:hidden;
+  /* يرتفع للأعلى بمقدار ارتفاع الهيدر حتى يتمكن المحتوى من تغطيته */
+  margin-top:calc(var(--header-h) * -1);
+  z-index:2;
+}
+
 /* ══ SCREEN ══ */
 .screen{
   position:absolute;inset:0;
+  overflow:hidden;
   will-change:transform,opacity;
 }
 .screen.hidden{display:none;pointer-events:none;}
@@ -104,13 +113,12 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 /* ══ SCROLL AREA ══ */
 .scroll-area{
   position:absolute;inset:0;
-  z-index:2;
   overflow-y:auto;overflow-x:hidden;
   -webkit-overflow-scrolling:touch;
   overscroll-behavior-y:contain;
 }
 
-/* ══ CONTENT BLOCK ══ */
+/* ══ CONTENT BLOCK - الورقة البيضاء ══ */
 .content-block{
   background:var(--surface);
   border-radius:20px 20px 0 0;
@@ -406,24 +414,24 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 <body>
 <div id="app">
 
-  <div id="screen-container">
-
-    <!-- ══ SHARED HEADER ══ -->
-    <div id="shared-header">
-      <div class="app-header-inner">
-        <img class="header-logo"
-          src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo-mobile.png"
-          alt="logo" onerror="this.style.display='none'"
-          style="background:transparent">
-        <div class="header-text">
-          <h1>بلدية شطايبي</h1>
-          <p>والية عنابة - الجزائر</p>
-        </div>
-        <div class="header-btn">
-          <iconify-icon icon="lucide:bell" style="color:#fff;font-size:18px;pointer-events:none"></iconify-icon>
-        </div>
+  <!-- ══ SHARED HEADER - خارج screen-container ══ -->
+  <div id="shared-header">
+    <div class="app-header-inner">
+      <img class="header-logo"
+        src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo-mobile.png"
+        alt="logo" onerror="this.style.display='none'"
+        style="background:transparent">
+      <div class="header-text">
+        <h1>بلدية شطايبي</h1>
+        <p>والية عنابة - الجزائر</p>
+      </div>
+      <div class="header-btn">
+        <iconify-icon icon="lucide:bell" style="color:#fff;font-size:18px;pointer-events:none"></iconify-icon>
       </div>
     </div>
+  </div>
+
+  <div id="screen-container">
 
     <!-- ══ HOME ══ -->
     <div class="screen" id="screen-home">
@@ -666,7 +674,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     </div>
   </div>
 </div>
-
 <div class="modal-overlay" id="m-beach" onclick="cm('m-beach')">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
@@ -679,7 +686,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     </div>
   </div>
 </div>
-
 <div class="modal-overlay" id="m-tour" onclick="cm('m-tour')">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
@@ -701,7 +707,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     </div>
   </div>
 </div>
-
 <div class="modal-overlay" id="m-fac" onclick="cm('m-fac')">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
@@ -715,7 +720,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     </div>
   </div>
 </div>
-
 <div id="lightbox">
   <button id="lb-close" onclick="closeLightbox()">✕</button>
   <img id="lb-img" src="" alt="">
@@ -750,15 +754,19 @@ var curTab='home',mapDone=false,allNews=[],facCat='admin-branches';
 var newsScreenLoaded=false;
 var TAB_ORDER=['home','news','guide','map','more'];
 
-function initScrollPadding(screenId){
+/* ══ حساب ارتفاع الهيدر وضبط margin-top على screen-container ══ */
+function applyHeaderHeight(){
   var header=document.getElementById('shared-header');
-  var scroll=document.querySelector('#'+screenId+' .scroll-area');
-  if(!header||!scroll) return;
+  var container=document.getElementById('screen-container');
+  if(!header||!container) return;
   var h=header.offsetHeight;
-  if(h>0){scroll.style.paddingTop=h+'px';}
-  else{requestAnimationFrame(function(){
-    scroll.style.paddingTop=header.offsetHeight+'px';
-  });}
+  container.style.marginTop=(-h)+'px';
+  document.documentElement.style.setProperty('--header-h',h+'px');
+  /* ضبط padding-top على جميع scroll-areas ══ */
+  ['home','news','guide','more'].forEach(function(id){
+    var scroll=document.querySelector('#screen-'+id+' .scroll-area');
+    if(scroll) scroll.style.paddingTop=h+'px';
+  });
 }
 
 function resetScroll(screenId){
@@ -792,7 +800,9 @@ function switchTab(t){
   nextEl.style.cssText='opacity:0;transform:translateX('+enterFrom+');transition:none';
   requestAnimationFrame(function(){
     requestAnimationFrame(function(){
-      initScrollPadding('screen-'+t);
+      var header=document.getElementById('shared-header');
+      var scroll=document.querySelector('#screen-'+t+' .scroll-area');
+      if(header&&scroll) scroll.style.paddingTop=header.offsetHeight+'px';
       nextEl.style.transition='opacity '+DUR+'ms ease,transform '+DUR+'ms '+EASE;
       nextEl.style.opacity='1';
       nextEl.style.transform='translateX(0)';
@@ -1039,9 +1049,7 @@ function albumBig(elId,albums){
 
 async function openNewsModal(id){
   var n=allNews.find(function(x){return x.id==id;});
-  if(!n){
-    try{var d=await api('/api/news');allNews=d.data||[];n=allNews.find(function(x){return x.id==id;});}catch(e){}
-  }
+  if(!n){try{var d=await api('/api/news');allNews=d.data||[];n=allNews.find(function(x){return x.id==id;});}catch(e){}}
   if(!n)return;
   var albums=[];
   if(Array.isArray(n.albums)&&n.albums.length){albums=n.albums;}
@@ -1053,8 +1061,7 @@ async function openNewsModal(id){
     document.getElementById('mn-normal-view').style.display='none';
     document.getElementById('mn-announce-view').style.display='block';
     var posterSrc=n.image_url||(albums.length?albums[0].image_url:'');
-    document.getElementById('mn-announce-album').innerHTML=posterSrc
-      ?'<img src="'+posterSrc+'" style="width:100%;display:block;pointer-events:none" alt="">':'';
+    document.getElementById('mn-announce-album').innerHTML=posterSrc?'<img src="'+posterSrc+'" style="width:100%;display:block;pointer-events:none" alt="">':'';
   } else if(n.category==='official'){
     document.getElementById('mn-normal-view').style.display='none';
     document.getElementById('mn-announce-view').style.display='block';
@@ -1069,8 +1076,7 @@ async function openNewsModal(id){
     else badgeEl.style.display='none';
     document.getElementById('mn-name').textContent=n.title||'';
     document.getElementById('mn-desc').textContent=n.content||'';
-    document.getElementById('mn-meta').innerHTML=n.date
-      ?'<span class="modal-chip"><iconify-icon icon="lucide:calendar-days" style="pointer-events:none"></iconify-icon>'+n.date+'</span>':'';
+    document.getElementById('mn-meta').innerHTML=n.date?'<span class="modal-chip"><iconify-icon icon="lucide:calendar-days" style="pointer-events:none"></iconify-icon>'+n.date+'</span>':'';
     album('mn-album',albums);
     var cb=document.getElementById('mn-close-btn');
     if(cb) cb.style.display=n.image_url?'flex':'none';
@@ -1190,20 +1196,10 @@ async function loadMapData(){
 }
 
 window.addEventListener('load',function(){
-  ['home','news','guide','more'].forEach(function(id){
-    initScrollPadding('screen-'+id);
-  });
-  window.addEventListener('resize',function(){
-    ['home','news','guide','more'].forEach(function(id){
-      initScrollPadding('screen-'+id);
-    });
-  });
+  applyHeaderHeight();
+  window.addEventListener('resize',function(){applyHeaderHeight();});
 });
-document.fonts.ready.then(function(){
-  ['home','news','guide','more'].forEach(function(id){
-    initScrollPadding('screen-'+id);
-  });
-});
+document.fonts.ready.then(function(){applyHeaderHeight();});
 loadHome();
 </script>
 </body>
