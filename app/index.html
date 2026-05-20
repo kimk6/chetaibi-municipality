@@ -114,19 +114,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   min-height:100%;
   position:relative;
 }
-/* ظل ثابت أسفل الهيدر لا يتأثر بأنيميشن الصفحات */
-#header-shadow{
-  position:absolute;
-  left:0;right:0;
-  height:22px;
-  background:linear-gradient(to bottom,rgba(0,0,0,.20) 0%,rgba(0,0,0,0) 100%);
-  pointer-events:none;
-  z-index:3;
-  opacity:var(--sc-shadow-opacity,1);
-  transition:opacity .15s linear;
-  top:var(--header-h,0px);
-  will-change:opacity;
-}
+
 #screen-map .scroll-area{overflow:hidden;padding-top:0 !important;}
 #app-map{position:absolute;inset:0;width:100%;height:100%;}
 #bottom-nav{
@@ -365,6 +353,22 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .leaflet-control-attribution{display:none !important;}
 .news-badge{font-size:10px;font-weight:800;padding:2px 9px;border-radius:99px;display:inline-block;}
+
+/* ══ Material-style header elevation on scroll ══ */
+#shared-header::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:1px;
+  background:rgba(255,255,255,0);
+  transition:background .25s ease, box-shadow .25s ease;
+  pointer-events:none;
+  z-index:2;
+}
+#shared-header.scrolled::after{
+  background:rgba(255,255,255,.12);
+  box-shadow:0 1px 16px 2px rgba(0,0,0,.28);
+}
 </style>
 </head>
 <body>
@@ -384,7 +388,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
       </div>
     </div>
   </div>
-  <div id="header-shadow"></div>
 
   <div id="screen-container">
 
@@ -1242,14 +1245,12 @@ async function loadMapData(){
 
 /* ── تحديث opacity ظل الهيدر حسب الـ scroll ── */
 function updateHeaderShadow(){
-  var el=document.getElementById('header-shadow');
-  if(!el) return;
-  var hh=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h'))||0;
-  if(!hh){el.style.opacity='1';return;}
+  var header=document.getElementById('shared-header');
+  if(!header) return;
   var scroll=document.querySelector('#screen-'+curTab+' .scroll-area');
   var st=scroll?scroll.scrollTop:0;
-  var opacity=Math.max(0,1-(st/hh));
-  el.style.opacity=opacity;
+  if(st>4){header.classList.add('scrolled');}
+  else{header.classList.remove('scrolled');}
 }
 
 window.addEventListener('load',function(){
