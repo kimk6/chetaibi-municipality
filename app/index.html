@@ -109,6 +109,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 }
 #screen-map .scroll-area{overflow:hidden;padding-top:0 !important;}
 #app-map{position:absolute;inset:0;width:100%;height:100%;}
+
+/* ══ BOTTOM NAV - كما كان أصلاً ══ */
 #bottom-nav{
   flex-shrink:0;
   height:calc(var(--nav-h) + var(--safe-b));
@@ -140,6 +142,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .nav-btn.active{color:var(--green);}
 .nav-btn:active .nav-icon-wrap{transform:scale(.88);transition:transform .1s ease,background .2s ease;}
 .nav-btn span{pointer-events:none;}
+
 .section{padding:16px 0 4px;}
 .section-header{display:flex;align-items:center;justify-content:space-between;padding:0 18px;margin-bottom:12px;}
 .section-title{font-size:14px;font-weight:900;color:var(--text);display:flex;align-items:center;gap:7px;}
@@ -254,6 +257,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .app-footer{text-align:center;padding:24px 20px 12px;border-top:1px solid var(--border-light);margin-top:8px;}
 .app-footer-main{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;}
 .app-footer-sub{font-size:11px;color:#9ca3af;font-style:italic;line-height:1.5;}
+
+/* ══ MODALS ══ */
 .modal-overlay{
   position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.55);
   backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
@@ -284,82 +289,37 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .album-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
 .album-grid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;cursor:pointer;pointer-events:auto !important;touch-action:manipulation;display:block;}
 
-/* ═══ LIGHTBOX ═══ */
+/* ══ LIGHTBOX بسيط ══ */
 #lightbox{
   position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.97);
-  display:none;flex-direction:column;align-items:center;justify-content:center;
-  overscroll-behavior:none;
+  display:none;align-items:center;justify-content:center;
+  padding:20px;overscroll-behavior:none;
 }
 #lightbox.open{display:flex;}
-#lightbox-img-wrap{
-  position:relative;width:100%;flex:1;display:flex;align-items:center;justify-content:center;
-  overflow:hidden;
-}
-#lb-img{
-  max-width:100%;max-height:85dvh;object-fit:contain;border-radius:10px;
-  pointer-events:none;display:block;
-  transition:transform .25s ease;
+#lightbox img{
+  max-width:100%;max-height:90dvh;object-fit:contain;
+  border-radius:10px;pointer-events:none;display:block;
 }
 #lb-close{
   position:absolute;top:calc(var(--safe-t) + 14px);left:14px;
   width:40px;height:40px;background:rgba(255,255,255,.18);border:none;border-radius:50%;
-  color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;
-  backdrop-filter:blur(4px);touch-action:manipulation;pointer-events:auto;z-index:10;
-}
-#lb-prev,#lb-next{
-  position:absolute;top:50%;transform:translateY(-50%);
-  width:44px;height:44px;background:rgba(255,255,255,.18);border:none;border-radius:50%;
   color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;
   backdrop-filter:blur(4px);touch-action:manipulation;pointer-events:auto;z-index:10;
-  transition:background .15s,opacity .2s;
-}
-#lb-prev{right:14px;}
-#lb-next{left:14px;}
-#lb-prev:active,#lb-next:active{background:rgba(255,255,255,.35);}
-#lb-prev.hidden,#lb-next.hidden{opacity:0;pointer-events:none;}
-#lb-counter{
-  color:rgba(255,255,255,.7);font-size:12px;font-weight:700;
-  padding:8px 0 calc(var(--safe-b) + 8px);font-family:'Cairo',sans-serif;
-  flex-shrink:0;
 }
 
-/* ═══ ARCHIVE CARDS ═══ */
-.archive-compare-card{
-  border-radius:16px;overflow:hidden;background:var(--card);
-  border:1px solid var(--border);box-shadow:var(--shadow-md);
-  cursor:pointer;touch-action:manipulation;
-  transition:transform .15s ease,opacity .15s;
+/* ══ بطاقات الأرشيف في الرئيسية ══ */
+/* h-scroll خاص بالأرشيف مع snap */
+#h-archive{
+  scroll-snap-type:x mandatory;
+  padding:2px 18px 20px;
+  /* مسافة إضافية في النهاية لعدم تغطية شريط التنقل */
 }
-.archive-compare-card:active{transform:scale(.98);opacity:.85;}
-.archive-compare-grid{
-  display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);
-}
-.archive-compare-cell{position:relative;overflow:hidden;}
-.archive-compare-cell img{
-  width:100%;aspect-ratio:1;object-fit:cover;display:block;
-  pointer-events:none;
-}
-.archive-compare-label{
-  position:absolute;bottom:6px;right:6px;
-  background:rgba(0,0,0,.65);color:#fff;
-  font-size:10px;font-weight:800;padding:3px 9px;border-radius:7px;
-  pointer-events:none;
-}
-.archive-compare-label.new{
-  right:auto;left:6px;
-  background:rgba(5,150,105,.85);
-}
-.archive-compare-title{
-  font-size:12px;font-weight:700;padding:9px 12px;color:var(--text);
-  border-top:1px solid var(--border-light);
-}
-
-/* ═══ HOME ARCHIVE SCROLL ═══ */
-/* بطاقة الأرشيف في الرئيسية - منشور واحد كامل */
-.h-archive-card{
+.archive-home-card{
+  /* تصغير طفيف + توسيط البطاقة الأولى */
   flex-shrink:0;
-  width:calc(100vw - 36px);
-  max-width:380px;
+  width:calc(100vw - 60px);
+  max-width:340px;
+  scroll-snap-align:center;
   background:var(--card);
   border-radius:18px;
   overflow:hidden;
@@ -369,30 +329,72 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   touch-action:manipulation;
   transition:transform .15s ease,opacity .15s;
 }
-.h-archive-card:active{transform:scale(.97);opacity:.85;}
-.h-archive-card-compare{
+.archive-home-card:active{transform:scale(.97);opacity:.85;}
+/* شبكة المقارنة داخل البطاقة */
+.archive-home-compare{
   display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);
 }
-.h-archive-cell{position:relative;overflow:hidden;}
-.h-archive-cell img{
+.archive-home-cell{
+  position:relative;overflow:hidden;
+  cursor:pointer;
+}
+/* الصورة داخل الخلية - pointer-events none لأن الكليك على الخلية */
+.archive-home-cell img{
   width:100%;aspect-ratio:4/3;object-fit:cover;display:block;pointer-events:none;
 }
-.h-archive-cell-label{
+.archive-home-label{
   position:absolute;bottom:5px;right:5px;
   background:rgba(0,0,0,.65);color:#fff;
   font-size:9px;font-weight:800;padding:2px 7px;border-radius:6px;
   pointer-events:none;
 }
-.h-archive-cell-label.new{
+.archive-home-label.new-label{
   right:auto;left:5px;
   background:rgba(5,150,105,.85);
 }
-.h-archive-single img{
+.archive-home-single{cursor:pointer;}
+.archive-home-single img{
   width:100%;aspect-ratio:16/9;object-fit:cover;display:block;pointer-events:none;
 }
-.h-archive-card-title{
+.archive-home-title{
   font-size:12px;font-weight:700;padding:9px 12px;color:var(--text);
   border-top:1px solid var(--border-light);
+}
+
+/* ══ بطاقات الأرشيف في صفحة الأرشيف ══ */
+.archive-card{
+  border-radius:16px;overflow:hidden;background:var(--card);
+  border:1px solid var(--border);box-shadow:var(--shadow-md);
+  touch-action:manipulation;
+  transition:transform .15s ease,opacity .15s;
+}
+.archive-card:active{transform:scale(.98);opacity:.85;}
+.archive-compare-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);
+}
+.archive-cell{
+  position:relative;overflow:hidden;cursor:pointer;
+}
+.archive-cell img{
+  width:100%;aspect-ratio:1;object-fit:cover;display:block;pointer-events:none;
+}
+.archive-cell-label{
+  position:absolute;bottom:6px;right:6px;
+  background:rgba(0,0,0,.65);color:#fff;
+  font-size:10px;font-weight:800;padding:3px 9px;border-radius:7px;
+  pointer-events:none;
+}
+.archive-cell-label.new-label{
+  right:auto;left:6px;
+  background:rgba(5,150,105,.85);
+}
+.archive-card-title{
+  font-size:12px;font-weight:700;padding:9px 12px;color:var(--text);
+  border-top:1px solid var(--border-light);
+}
+.archive-single{cursor:pointer;}
+.archive-single img{
+  width:100%;aspect-ratio:16/9;object-fit:cover;display:block;pointer-events:none;
 }
 
 .loading{display:flex;align-items:center;justify-content:center;padding:40px;gap:10px;color:var(--muted);font-size:13px;}
@@ -405,6 +407,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .leaflet-control-attribution{display:none !important;}
 .news-badge{font-size:10px;font-weight:800;padding:2px 9px;border-radius:99px;display:inline-block;}
+
+/* ══ MAP CONTROLS ══ */
 #map-controls-right{position:absolute;top:16px;right:14px;z-index:1001;pointer-events:auto;}
 #map-controls-left{position:absolute;top:16px;left:14px;z-index:1001;pointer-events:auto;}
 #map-filter-btn{
@@ -526,6 +530,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 </head>
 <body>
 <div id="app">
+
+  <!-- HEADER -->
   <div id="shared-header">
     <div class="app-header-inner">
       <img class="header-logo"
@@ -541,6 +547,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     </div>
   </div>
 
+  <!-- SCREENS -->
   <div id="screen-container">
 
     <!-- ══ HOME ══ -->
@@ -596,8 +603,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </div>
           </div>
 
-          <!-- قسم بين الأمس واليوم -->
-          <div class="section">
+          <!-- بين الأمس واليوم -->
+          <div class="section" style="padding-bottom:20px">
             <div class="section-header">
               <span class="section-title">
                 <iconify-icon icon="lucide:clock" style="color:#d97706;pointer-events:none"></iconify-icon>بين الأمس واليوم
@@ -605,8 +612,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               <button class="see-all" onclick="switchTab('archive')"
                 style="background:linear-gradient(135deg,#d97706,#b45309);color:#fff;border:none;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700">الأرشيف الكامل</button>
             </div>
-            <!-- h-scroll مع snap للتمرير بين المنشورات -->
-            <div class="h-scroll" id="h-archive" style="scroll-snap-type:x mandatory;padding-bottom:16px;">
+            <div id="h-archive" class="h-scroll">
               <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
             </div>
           </div>
@@ -691,22 +697,22 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             <iconify-icon id="filter-btn-arrow" icon="lucide:chevron-down"></iconify-icon>
           </button>
           <div id="map-filter-menu">
-            <div class="mf-item active" data-type="all" data-label-full="الكل" onclick="selectMapFilter('all',this)">
+            <div class="mf-item active" data-type="all" onclick="selectMapFilter('all',this)">
               <div class="mf-icon-wrap"><iconify-icon icon="lucide:layers"></iconify-icon></div>
               <span>الكل</span>
               <iconify-icon class="mf-check" icon="lucide:check"></iconify-icon>
             </div>
-            <div class="mf-item" data-type="fac" data-label-full="المرافق" onclick="selectMapFilter('fac',this)">
+            <div class="mf-item" data-type="fac" onclick="selectMapFilter('fac',this)">
               <div class="mf-icon-wrap"><iconify-icon icon="lucide:building-2"></iconify-icon></div>
               <span>مرافق</span>
               <iconify-icon class="mf-check" icon="lucide:check"></iconify-icon>
             </div>
-            <div class="mf-item" data-type="beach" data-label-full="الشواطئ" onclick="selectMapFilter('beach',this)">
+            <div class="mf-item" data-type="beach" onclick="selectMapFilter('beach',this)">
               <div class="mf-icon-wrap"><iconify-icon icon="lucide:waves"></iconify-icon></div>
               <span>شواطئ</span>
               <iconify-icon class="mf-check" icon="lucide:check"></iconify-icon>
             </div>
-            <div class="mf-item" data-type="tour" data-label-full="المعالم السياحية" onclick="selectMapFilter('tour',this)">
+            <div class="mf-item" data-type="tour" onclick="selectMapFilter('tour',this)">
               <div class="mf-icon-wrap"><iconify-icon icon="lucide:sun"></iconify-icon></div>
               <span>معالم</span>
               <iconify-icon class="mf-check" icon="lucide:check"></iconify-icon>
@@ -742,6 +748,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     <div class="screen hidden" id="screen-more">
       <div class="scroll-area" id="scroll-more">
         <div class="content-block">
+          <!-- بطاقة رئيس المجلس -->
           <div id="mayor-card" style="margin:18px 18px 12px;background:linear-gradient(135deg,#042f1e 0%,#064e3b 50%,#059669 100%);border-radius:20px;padding:18px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 24px rgba(5,150,105,.25);position:relative;overflow:hidden;">
             <div style="position:absolute;top:-20px;left:-20px;width:100px;height:100px;background:rgba(255,255,255,.04);border-radius:50%;pointer-events:none"></div>
             <div style="position:absolute;bottom:-30px;right:10px;width:120px;height:120px;background:rgba(255,255,255,.03);border-radius:50%;pointer-events:none"></div>
@@ -762,7 +769,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               <span>السابقون</span>
             </button>
           </div>
-
+          <!-- قائمة الروابط -->
           <div style="margin:0 18px 0;background:var(--card);border-radius:18px;overflow:hidden;box-shadow:var(--shadow-sm);border:1px solid var(--border-light)">
             <div class="more-item" onclick="window.location.href='/'">
               <div class="more-icon" style="background:#d1fae5">
@@ -805,7 +812,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
             </div>
           </div>
-
           <div class="app-footer">
             <div class="app-footer-main">بلدية شطايبي © 2026 - جميع الحقوق محفوظة</div>
             <div class="app-footer-sub">تم التطوير بجهود الكفاءات الداخلية لبلدية شطايبي</div>
@@ -836,52 +842,55 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               </button>
             </div>
           </div>
-          <div id="archive-list" style="padding:10px 0">
+          <div id="archive-list" style="padding:10px 16px 20px">
             <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span>جاري التحميل</span></div>
           </div>
         </div>
       </div>
     </div>
 
-    <nav id="bottom-nav">
-      <button class="nav-btn active" id="nav-home" onclick="switchTab('home')">
-        <div class="nav-icon-wrap">
-          <iconify-icon class="icon-off" icon="ph:house" style="font-size:24px"></iconify-icon>
-          <iconify-icon class="icon-on" icon="ph:house-fill" style="font-size:24px"></iconify-icon>
-        </div>
-        <span>الرئيسية</span>
-      </button>
-      <button class="nav-btn" id="nav-news" onclick="switchTab('news')">
-        <div class="nav-icon-wrap">
-          <iconify-icon class="icon-off" icon="ph:newspaper" style="font-size:24px"></iconify-icon>
-          <iconify-icon class="icon-on" icon="ph:newspaper-fill" style="font-size:24px"></iconify-icon>
-        </div>
-        <span>الأخبار</span>
-      </button>
-      <button class="nav-btn" id="nav-guide" onclick="switchTab('guide')">
-        <div class="nav-icon-wrap">
-          <iconify-icon class="icon-off" icon="ph:map-pin" style="font-size:24px"></iconify-icon>
-          <iconify-icon class="icon-on" icon="ph:map-pin-fill" style="font-size:24px"></iconify-icon>
-        </div>
-        <span>الدليل</span>
-      </button>
-      <button class="nav-btn" id="nav-map" onclick="switchTab('map')">
-        <div class="nav-icon-wrap">
-          <iconify-icon class="icon-off" icon="ph:map-trifold" style="font-size:24px"></iconify-icon>
-          <iconify-icon class="icon-on" icon="ph:map-trifold-fill" style="font-size:24px"></iconify-icon>
-        </div>
-        <span>الخريطة</span>
-      </button>
-      <button class="nav-btn" id="nav-more" onclick="switchTab('more')">
-        <div class="nav-icon-wrap">
-          <iconify-icon class="icon-off" icon="ph:squares-four" style="font-size:24px"></iconify-icon>
-          <iconify-icon class="icon-on" icon="ph:squares-four-fill" style="font-size:24px"></iconify-icon>
-        </div>
-        <span>المزيد</span>
-      </button>
-    </nav>
-  </div>
-</div>
+  </div><!-- end screen-container -->
+
+  <!-- BOTTOM NAV - في مكانه الأصلي داخل #app بعد screen-container -->
+  <nav id="bottom-nav">
+    <button class="nav-btn active" id="nav-home" onclick="switchTab('home')">
+      <div class="nav-icon-wrap">
+        <iconify-icon class="icon-off" icon="ph:house" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-on" icon="ph:house-fill" style="font-size:24px"></iconify-icon>
+      </div>
+      <span>الرئيسية</span>
+    </button>
+    <button class="nav-btn" id="nav-news" onclick="switchTab('news')">
+      <div class="nav-icon-wrap">
+        <iconify-icon class="icon-off" icon="ph:newspaper" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-on" icon="ph:newspaper-fill" style="font-size:24px"></iconify-icon>
+      </div>
+      <span>الأخبار</span>
+    </button>
+    <button class="nav-btn" id="nav-guide" onclick="switchTab('guide')">
+      <div class="nav-icon-wrap">
+        <iconify-icon class="icon-off" icon="ph:map-pin" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-on" icon="ph:map-pin-fill" style="font-size:24px"></iconify-icon>
+      </div>
+      <span>الدليل</span>
+    </button>
+    <button class="nav-btn" id="nav-map" onclick="switchTab('map')">
+      <div class="nav-icon-wrap">
+        <iconify-icon class="icon-off" icon="ph:map-trifold" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-on" icon="ph:map-trifold-fill" style="font-size:24px"></iconify-icon>
+      </div>
+      <span>الخريطة</span>
+    </button>
+    <button class="nav-btn" id="nav-more" onclick="switchTab('more')">
+      <div class="nav-icon-wrap">
+        <iconify-icon class="icon-off" icon="ph:squares-four" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-on" icon="ph:squares-four-fill" style="font-size:24px"></iconify-icon>
+      </div>
+      <span>المزيد</span>
+    </button>
+  </nav>
+
+</div><!-- end #app -->
 
 <!-- ══ MODALS ══ -->
 <div class="modal-overlay" id="m-news" onclick="cm('m-news')">
@@ -972,21 +981,10 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   </div>
 </div>
 
-<!-- LIGHTBOX محسّن مع تنقل بين الصور -->
-<div id="lightbox">
-  <button id="lb-close" onclick="closeLightbox()">
-    <iconify-icon icon="lucide:x" style="pointer-events:none;font-size:18px"></iconify-icon>
-  </button>
-  <button id="lb-prev" onclick="lbNav(1)" class="hidden">
-    <iconify-icon icon="lucide:chevron-right" style="pointer-events:none"></iconify-icon>
-  </button>
-  <button id="lb-next" onclick="lbNav(-1)" class="hidden">
-    <iconify-icon icon="lucide:chevron-left" style="pointer-events:none"></iconify-icon>
-  </button>
-  <div id="lightbox-img-wrap">
-    <img id="lb-img" src="" alt="">
-  </div>
-  <div id="lb-counter"></div>
+<!-- LIGHTBOX بسيط -->
+<div id="lightbox" onclick="closeLightbox()">
+  <button id="lb-close" onclick="closeLightbox()">✕</button>
+  <img id="lb-img" src="" alt="">
 </div>
 
 <script>
@@ -999,10 +997,7 @@ document.addEventListener('touchstart',function(e){
     &&!e.target.closest('.album-grid')
     &&!e.target.closest('#mn-announce-album')
     &&!e.target.closest('#mt-sticker-album')
-    &&!e.target.closest('#lightbox')
-    &&!e.target.closest('.archive-compare-cell')
-    &&!e.target.closest('.h-archive-cell')
-    &&!e.target.closest('.h-archive-single')){
+    &&!e.target.closest('#lightbox')){
     e.preventDefault();
   }
 },{passive:false});
@@ -1034,68 +1029,16 @@ var FILTER_CFG={
   tour: {icon:'lucide:sun',       labelFull:'المعالم السياحية'}
 };
 
-/* ══ LIGHTBOX محسّن ══ */
-var _lbImages=[];
-var _lbIndex=0;
-
-function openLightbox(src, imagesArr, startIdx){
+/* ══ LIGHTBOX بسيط ══ */
+function openLightbox(src){
   if(!src)return;
-  _lbImages = Array.isArray(imagesArr) && imagesArr.length ? imagesArr : [src];
-  _lbIndex  = (startIdx !== undefined) ? startIdx : _lbImages.indexOf(src);
-  if(_lbIndex < 0) _lbIndex = 0;
-  _lbRender();
+  document.getElementById('lb-img').src=src;
   document.getElementById('lightbox').classList.add('open');
-  // إضافة دعم السحب للتنقل
-  _lbInitSwipe();
 }
-
-function _lbRender(){
-  var img = document.getElementById('lb-img');
-  var counter = document.getElementById('lb-counter');
-  var prevBtn = document.getElementById('lb-prev');
-  var nextBtn = document.getElementById('lb-next');
-  img.src = _lbImages[_lbIndex];
-  if(_lbImages.length > 1){
-    counter.textContent = (_lbIndex+1) + ' / ' + _lbImages.length;
-    prevBtn.classList.toggle('hidden', _lbIndex >= _lbImages.length-1);
-    nextBtn.classList.toggle('hidden', _lbIndex <= 0);
-  } else {
-    counter.textContent = '';
-    prevBtn.classList.add('hidden');
-    nextBtn.classList.add('hidden');
-  }
-}
-
-function lbNav(dir){
-  var next = _lbIndex + dir;
-  if(next < 0 || next >= _lbImages.length) return;
-  _lbIndex = next;
-  _lbRender();
-}
-
 function closeLightbox(){
   document.getElementById('lightbox').classList.remove('open');
-  _lbImages=[];_lbIndex=0;
+  document.getElementById('lb-img').src='';
 }
-
-// سحب للتنقل داخل اللايتبوكس
-var _lbSwipeX=0;
-function _lbInitSwipe(){
-  var lb=document.getElementById('lightbox');
-  lb.ontouchstart=function(e){_lbSwipeX=e.touches[0].clientX;};
-  lb.ontouchend=function(e){
-    var dx=e.changedTouches[0].clientX - _lbSwipeX;
-    if(Math.abs(dx)>50){
-      // في RTL: سحب يمين = الصورة التالية (index أكبر)، يسار = السابقة
-      if(dx>0) lbNav(1); else lbNav(-1);
-    }
-  };
-}
-
-// إغلاق اللايتبوكس بالضغط خارج الصورة
-document.getElementById('lightbox').addEventListener('click',function(e){
-  if(e.target===this) closeLightbox();
-});
 
 function toggleFilterMenu(e){
   e.stopPropagation();
@@ -1166,9 +1109,13 @@ function locateUser(){
       }
     },
     function(){
-      btn.classList.remove('locating');icon.setAttribute('icon','lucide:locate-off');
+      btn.classList.remove('locating');
+      icon.setAttribute('icon','lucide:locate-off');
       btn.style.color='#dc2626';btn.style.borderColor='#dc2626';
-      setTimeout(function(){icon.setAttribute('icon','lucide:locate');btn.style.color='';btn.style.borderColor='';},2500);
+      setTimeout(function(){
+        icon.setAttribute('icon','lucide:locate');
+        btn.style.color='';btn.style.borderColor='';
+      },2500);
     },
     {enableHighAccuracy:true,timeout:10000,maximumAge:0}
   );
@@ -1190,6 +1137,7 @@ function resetScroll(screenId){
   var scroll=document.querySelector('#'+screenId+' .scroll-area');
   if(scroll)scroll.scrollTop=0;
 }
+
 function switchTab(t){
   if(t===curTab)return;
   var prevEl=document.getElementById('screen-'+curTab);
@@ -1205,7 +1153,11 @@ function switchTab(t){
   if(prevEl){
     prevEl.style.transition='transform '+DUR+'ms '+EASE;
     prevEl.style.transform='translateX('+exitTo+')';
-    setTimeout(function(){prevEl.classList.add('hidden');prevEl.style.cssText='';resetScroll('screen-'+prev);},DUR+20);
+    setTimeout(function(){
+      prevEl.classList.add('hidden');
+      prevEl.style.cssText='';
+      resetScroll('screen-'+prev);
+    },DUR+20);
   }
   nextEl.classList.remove('hidden');
   nextEl.style.cssText='transform:translateX('+enterFrom+');transition:none';
@@ -1232,6 +1184,7 @@ function switchTab(t){
   if(t==='more'&&!_mayorLoaded){_mayorLoaded=true;loadMayor();}
   if(t==='archive')loadArchiveTab(archTab);
 }
+
 function resetGuideTab(){
   var targetTab='admin-branches';
   var bar=document.getElementById('guide-seg-bar');
@@ -1260,7 +1213,7 @@ function initSwipe(scrollAreaId,getNext){
     if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5){getNext(dx<0?-1:1);}
   },{passive:true});
 }
-function swipeHome(dir){if(dir===1){switchTab('news');}}
+function swipeHome(dir){if(dir===1)switchTab('news');}
 function swipeNews(dir){
   var active=document.querySelector('#screen-news .seg-btn.active');
   if(!active)return;
@@ -1280,9 +1233,9 @@ function swipeGuide(dir){
   var btns=document.querySelectorAll('#screen-guide .seg-btn');
   var nextBtn=btns[next];
   loadFacTab(nextTab,nextBtn);
-  if(nextBtn){nextBtn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}
+  if(nextBtn)nextBtn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
 }
-function swipeMore(dir){if(dir===-1){switchTab('map');}}
+function swipeMore(dir){if(dir===-1)switchTab('map');}
 
 var NS={
   official:{grad:'linear-gradient(135deg,#ef4444,#b91c1c)',lbl:'إعلان رسمي',bs:'background:rgba(239,68,68,.12);color:#dc2626'},
@@ -1309,7 +1262,7 @@ function makeNewsCard(n){
     +'</div></div>';
 }
 
-/* ══ الأرشيف ══ */
+/* ══ ARCHIVE ══ */
 var archTab='compare';
 var prevTab='more';
 function goBack(){switchTab(prevTab);}
@@ -1334,48 +1287,40 @@ async function loadArchiveTab(tab){
       el.innerHTML='<div class="empty"><iconify-icon icon="lucide:image-off"></iconify-icon><p>لا توجد صور</p></div>';
       return;
     }
-
-    // بناء مصفوفة الصور لكل بطاقة (للتنقل في اللايتبوكس)
-    var html='<div style="display:flex;flex-direction:column;gap:14px;padding:0 16px 16px">';
-    items.forEach(function(a,i){
+    var html='<div style="display:flex;flex-direction:column;gap:14px;">';
+    items.forEach(function(a){
       if(tab==='compare'){
-        // مصفوفة صور هذه البطاقة
-        var imgs=[a.image_old_url,a.image_new_url];
-        var imgsJson=JSON.stringify(imgs);
-        html+='<div class="archive-compare-card">'
+        /* المقارنة: خليتان قابلتان للضغط */
+        html+='<div class="archive-card">'
           +'<div class="archive-compare-grid">'
-          +'<div class="archive-compare-cell" onclick="openLightbox(\''+a.image_old_url+'\','+imgsJson+',0)" style="cursor:pointer">'
+          /* خلية الأمس - الكليك على الـ div */
+          +'<div class="archive-cell" onclick="openLightbox(\''+a.image_old_url+'\')">'
           +'<img src="'+a.image_old_url+'" loading="lazy">'
-          +'<span class="archive-compare-label">الأمس</span>'
+          +'<span class="archive-cell-label">الأمس</span>'
           +'</div>'
-          +'<div class="archive-compare-cell" onclick="openLightbox(\''+a.image_new_url+'\','+imgsJson+',1)" style="cursor:pointer">'
+          /* خلية اليوم */
+          +'<div class="archive-cell" onclick="openLightbox(\''+a.image_new_url+'\')">'
           +'<img src="'+a.image_new_url+'" loading="lazy">'
-          +'<span class="archive-compare-label new">اليوم</span>'
+          +'<span class="archive-cell-label new-label">اليوم</span>'
           +'</div>'
           +'</div>'
-          +(a.title?'<div class="archive-compare-title">'+a.title+'</div>':'')
+          +(a.title?'<div class="archive-card-title">'+a.title+'</div>':'')
           +'</div>';
       } else {
-        html+='<div class="archive-compare-card" onclick="openLightbox(\''+a.image_new_url+'\')" style="cursor:pointer">'
-          +'<img src="'+a.image_new_url+'" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block" loading="lazy">'
-          +(a.title?'<div class="archive-compare-title">'+a.title+'</div>':'')
+        html+='<div class="archive-card archive-single" onclick="openLightbox(\''+a.image_new_url+'\')">'
+          +'<img src="'+a.image_new_url+'" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block;pointer-events:none" loading="lazy">'
+          +(a.title?'<div class="archive-card-title">'+a.title+'</div>':'')
           +'</div>';
       }
     });
     html+='</div>';
     el.innerHTML=html;
-
-    // إضافة pointer-events للصور داخل الأرشيف بعد الإدراج
-    el.querySelectorAll('.archive-compare-cell img').forEach(function(img){
-      img.style.pointerEvents='none'; // الكليك على الخلية وليس الصورة
-    });
-
   }catch(e){
     el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';
   }
 }
 
-/* ══ الأرشيف في الرئيسية - منشور واحد كامل مع snap ══ */
+/* ══ بين الأمس واليوم في الرئيسية ══ */
 async function loadHArchive(){
   var el=document.getElementById('h-archive');
   if(!el)return;
@@ -1383,43 +1328,41 @@ async function loadHArchive(){
     var d=await api('/api/archives');
     var items=(d.data||[]).filter(function(a){return a.image_old_url&&a.image_new_url;}).slice(0,8);
     if(!items.length){
-      // نجرب الصور التاريخية
       var all=d.data||[];
       items=all.filter(function(a){return a.image_new_url;}).slice(0,8);
     }
     if(!items.length){el.innerHTML='';return;}
-
     el.innerHTML=items.map(function(a){
       var hasCompare=a.image_old_url&&a.image_new_url;
       if(hasCompare){
-        var imgs=[a.image_old_url,a.image_new_url];
-        var imgsJson=JSON.stringify(imgs);
-        return '<div class="h-archive-card" style="scroll-snap-align:start">'
-          +'<div class="h-archive-card-compare">'
-          +'<div class="h-archive-cell" onclick="openLightbox(\''+a.image_old_url+'\','+imgsJson+',0)" style="cursor:pointer">'
+        return '<div class="archive-home-card">'
+          +'<div class="archive-home-compare">'
+          /* خلية الأمس */
+          +'<div class="archive-home-cell" onclick="openLightbox(\''+a.image_old_url+'\')">'
           +'<img src="'+a.image_old_url+'" loading="lazy">'
-          +'<span class="h-archive-cell-label">الأمس</span>'
+          +'<span class="archive-home-label">الأمس</span>'
           +'</div>'
-          +'<div class="h-archive-cell" onclick="openLightbox(\''+a.image_new_url+'\','+imgsJson+',1)" style="cursor:pointer">'
+          /* خلية اليوم */
+          +'<div class="archive-home-cell" onclick="openLightbox(\''+a.image_new_url+'\')">'
           +'<img src="'+a.image_new_url+'" loading="lazy">'
-          +'<span class="h-archive-cell-label new">اليوم</span>'
+          +'<span class="archive-home-label new-label">اليوم</span>'
           +'</div>'
           +'</div>'
-          +(a.title?'<div class="h-archive-card-title">'+a.title+'</div>':'')
+          +(a.title?'<div class="archive-home-title">'+a.title+'</div>':'')
           +'</div>';
       } else {
-        var img=a.image_new_url||'';
-        return '<div class="h-archive-card h-archive-single" onclick="openLightbox(\''+img+'\')" style="scroll-snap-align:start;cursor:pointer">'
-          +'<img src="'+img+'" loading="lazy">'
-          +(a.title?'<div class="h-archive-card-title">'+a.title+'</div>':'')
+        return '<div class="archive-home-card archive-home-single" onclick="openLightbox(\''+a.image_new_url+'\')">'
+          +'<img src="'+a.image_new_url+'" loading="lazy">'
+          +(a.title?'<div class="archive-home-title">'+a.title+'</div>':'')
           +'</div>';
       }
     }).join('');
-
   }catch(e){el.innerHTML='';}
 }
 
-function loadHome(){loadHOfficial();loadHNews();loadHBeaches();loadHTourism();loadHArchive();}
+function loadHome(){
+  loadHOfficial();loadHNews();loadHBeaches();loadHTourism();loadHArchive();
+}
 
 async function loadHOfficial(){
   var el=document.getElementById('h-official');
@@ -1516,13 +1459,13 @@ function renderNews(items){
 }
 
 var FM={
-  'admin-branches':{cat:'branches',   icon:'lucide:landmark',       color:'#059669',bg:'#d1fae5'},
-  'education':     {cat:'education',  icon:'lucide:graduation-cap', color:'#2563eb',bg:'#dbeafe'},
-  'health':        {cat:'health',     icon:'lucide:heart-pulse',    color:'#dc2626',bg:'#fee2e2'},
-  'public-bodies': {cat:'public_bodies',icon:'lucide:building-2',   color:'#7c3aed',bg:'#ede9fe'},
-  'religious':     {cat:'religious',  icon:'lucide:moon-star',      color:'#b45309',bg:'#fef3c7'},
-  'cultural':      {cat:'cultural',   icon:'lucide:palette',        color:'#0891b2',bg:'#cffafe'},
-  'sports':        {cat:'sports',     icon:'lucide:trophy',         color:'#ea580c',bg:'#ffedd5'}
+  'admin-branches':{cat:'branches',    icon:'lucide:landmark',       color:'#059669',bg:'#d1fae5'},
+  'education':     {cat:'education',   icon:'lucide:graduation-cap', color:'#2563eb',bg:'#dbeafe'},
+  'health':        {cat:'health',      icon:'lucide:heart-pulse',    color:'#dc2626',bg:'#fee2e2'},
+  'public-bodies': {cat:'public_bodies',icon:'lucide:building-2',    color:'#7c3aed',bg:'#ede9fe'},
+  'religious':     {cat:'religious',   icon:'lucide:moon-star',      color:'#b45309',bg:'#fef3c7'},
+  'cultural':      {cat:'cultural',    icon:'lucide:palette',        color:'#0891b2',bg:'#cffafe'},
+  'sports':        {cat:'sports',      icon:'lucide:trophy',         color:'#ea580c',bg:'#ffedd5'}
 };
 
 async function loadFacTab(tab,btn){
@@ -1586,19 +1529,17 @@ function album(elId,albums){
   var el=document.getElementById(elId);
   var a=Array.isArray(albums)?albums:[];
   if(!a.length){el.innerHTML='';return;}
-  var urls=a.map(function(x){return x.image_url;});
   el.innerHTML='<div class="album-title"><iconify-icon icon="lucide:images" style="color:var(--green);pointer-events:none"></iconify-icon>معرض الصور ('+a.length+')</div>'
-    +'<div class="album-grid">'+a.map(function(x,i){
-      return '<img src="'+x.image_url+'" alt="" loading="lazy" onclick="openLightbox(\''+x.image_url+'\','+JSON.stringify(urls)+','+i+')" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;cursor:pointer;pointer-events:auto;display:block;touch-action:manipulation">';
+    +'<div class="album-grid">'+a.map(function(x){
+      return '<img src="'+x.image_url+'" alt="" loading="lazy" onclick="openLightbox(\''+x.image_url+'\')" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;cursor:pointer;pointer-events:auto;display:block;touch-action:manipulation">';
     }).join('')+'</div>';
 }
 function albumBig(elId,albums){
   var el=document.getElementById(elId);
   var a=Array.isArray(albums)?albums:[];
   if(!a.length){el.innerHTML='';return;}
-  var urls=a.map(function(x){return x.image_url;});
-  el.innerHTML=a.map(function(x,i){
-    return '<div style="line-height:0;margin-bottom:3px"><img src="'+x.image_url+'" alt="" loading="lazy" onclick="openLightbox(\''+x.image_url+'\','+JSON.stringify(urls)+','+i+')" style="width:100%;display:block;cursor:pointer;pointer-events:auto;touch-action:manipulation"></div>';
+  el.innerHTML=a.map(function(x){
+    return '<div style="line-height:0;margin-bottom:3px"><img src="'+x.image_url+'" alt="" loading="lazy" onclick="openLightbox(\''+x.image_url+'\')" style="width:100%;display:block;cursor:pointer;pointer-events:auto;touch-action:manipulation"></div>';
   }).join('');
 }
 
@@ -1743,12 +1684,18 @@ function mapCardClick(){
 async function loadMapData(){
   if(!appMap)return;
   try{
-    var mIcon=L.divIcon({className:'',html:'<div style="width:36px;height:36px;background:#059669;border:2.5px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.3);font-size:16px">🏛️</div>',iconSize:[36,36],iconAnchor:[18,18]});
+    var mIcon=L.divIcon({
+      className:'',
+      html:'<div style="width:36px;height:36px;background:#059669;border:2.5px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.3);font-size:16px">🏛️</div>',
+      iconSize:[36,36],iconAnchor:[18,18]
+    });
     L.marker([37.067177,7.380601],{icon:mIcon}).addTo(appMap)
       .on('click',function(e){
         L.DomEvent.stopPropagation(e);closeFilterMenu();
-        showMapCard({id:0,name:'مقر بلدية شطايبي',description:'المقر الرئيسي لبلدية شطايبي - والية عنابة',image_url:''},
-          {bg:'#d1fae5',color:'#059669',icon:'lucide:building-2',label:'بلدية',modal:''});
+        showMapCard(
+          {id:0,name:'مقر بلدية شطايبي',description:'المقر الرئيسي لبلدية شطايبي - والية عنابة',image_url:''},
+          {bg:'#d1fae5',color:'#059669',icon:'lucide:building-2',label:'بلدية',modal:''}
+        );
       });
     var results=await Promise.all([api('/api/beaches'),api('/api/tourism'),api('/api/facilities')]);
     var br=results[0],tr=results[1],fr=results[2];
