@@ -1667,19 +1667,23 @@ async function loadMayor(){
   var mandateEl=document.getElementById('mayor-mandate');
   try{
     var d=await api('/api/mayors');
-    var list=d.data||d||[];
-    if(!Array.isArray(list)||!list.length){if(nameEl) nameEl.textContent='--';return;}
-    var m=list[0]; // أول عنصر = الرئيس الحالي
-    _mayorsList=list; // نحفظ القائمة للرؤساء السابقين
-    if(nameEl) nameEl.textContent=m.name||'--';
-    if(m.photo_url&&photoEl){
+    var list=d.data||[];
+    if(!list.length){if(nameEl) nameEl.textContent='--';return;}
+    var m=list[0];
+    _mayorsList=list;
+    // الاسم: name_ar أو name
+    var name=m.name_ar||m.name||'--';
+    if(nameEl) nameEl.textContent=name;
+    // الصورة: image_url
+    if(m.image_url&&photoEl){
       photoEl.onload=function(){photoEl.style.display='block';if(iconEl) iconEl.style.display='none';};
       photoEl.onerror=function(){photoEl.style.display='none';};
-      photoEl.src=m.photo_url;
+      photoEl.src=m.image_url;
     }
-    var manVal=m.mandate||m.period||m.term||'';
-    if(manVal&&mandateEl){
-      mandateEl.innerHTML='<iconify-icon icon="lucide:calendar" style="font-size:12px"></iconify-icon><span>'+manVal+'</span>';
+    // الفترة: period
+    var period=m.period_ar||m.period||'';
+    if(period&&mandateEl){
+      mandateEl.innerHTML='<iconify-icon icon="lucide:calendar" style="font-size:12px"></iconify-icon><span>'+period+'</span>';
     }
   }catch(e){
     console.warn('loadMayor:',e);
@@ -1706,15 +1710,18 @@ async function openPrevMayorsModal(){
       return;
     }
     if(el) el.innerHTML=prev.map(function(m){
-      var photo=m.photo_url
-        ?'<img src="'+m.photo_url+'" style="width:50px;height:50px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid var(--border)">'
+      var photo=m.image_url
+        ?'<img src="'+m.image_url+'" style="width:50px;height:50px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid var(--border-light)">'
         :'<div style="width:50px;height:50px;border-radius:50%;background:var(--green-l);display:flex;align-items:center;justify-content:center;flex-shrink:0"><iconify-icon icon="lucide:user" style="color:var(--green);font-size:24px"></iconify-icon></div>';
-      var mandate=m.mandate||m.period||m.term||'';
+      var name=m.name_ar||m.name||'--';
+      var period=m.period_ar||m.period||'';
+      var isDec=m.is_dec;
       return '<div style="display:flex;align-items:center;gap:13px;padding:13px 0;border-bottom:1px solid var(--border-light)">'
         +photo
         +'<div style="flex:1;min-width:0">'
-        +'<div style="font-size:13px;font-weight:800;color:var(--text)">'+(m.name||'--')+'</div>'
-        +(mandate?'<div style="font-size:11px;color:var(--muted);margin-top:3px;display:flex;align-items:center;gap:4px"><iconify-icon icon="lucide:calendar" style="font-size:11px"></iconify-icon>'+mandate+'</div>':'')
+        +'<div style="font-size:13px;font-weight:800;color:var(--text)">'+name+'</div>'
+        +(isDec?'<div style="font-size:10px;font-weight:800;color:#b45309;background:#fef3c7;display:inline-block;padding:1px 8px;border-radius:99px;margin-top:2px">مندوب تنفيذي</div>':'')
+        +(period?'<div style="font-size:11px;color:var(--muted);margin-top:3px;display:flex;align-items:center;gap:4px"><iconify-icon icon="lucide:calendar" style="font-size:11px"></iconify-icon>'+period+'</div>':'')
         +'</div></div>';
     }).join('');
   }catch(e){
