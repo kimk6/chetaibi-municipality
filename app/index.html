@@ -102,9 +102,9 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   width:40px;height:40px;border-radius:12px;
   background:rgba(255,255,255,.15);
   border:1.5px solid rgba(255,255,255,.28);
-  cursor:pointer;flex-shrink:0;
-  transition:background .15s,transform .1s;
-  position:relative;z-index:3;
+  cursor:pointer;
+  transition:background .15s,transform .3s ease,opacity .3s ease;
+  /* الموضع الرأسي يُحسب بـ JS */
 }
 .header-more-btn:active{background:rgba(255,255,255,.32);transform:scale(.91);}
 .hamburger-lines{
@@ -579,16 +579,10 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         <h1>بلدية شطايبي</h1>
         <p>والية عنابة – الجزائر</p>
       </div>
-      <!-- زر القائمة - بدون أي onclick في HTML -->
-      <button class="header-more-btn" id="header-more-btn" aria-label="القائمة">
-        <div class="hamburger-lines">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </button>
     </div>
   </div>
+
+  <button id="header-more-btn" class="header-more-btn" aria-label="القائمة" style="position:fixed;z-index:9999;left:18px;"><div class="hamburger-lines"><span></span><span></span><span></span></div></button>
 
   <!-- ══ SCREENS ══ -->
   <div id="screen-container">
@@ -1298,10 +1292,19 @@ function applyHeaderHeight(){
   var h=header.offsetHeight;
   container.style.marginTop=(-h)+'px';
   document.documentElement.style.setProperty('--header-h',h+'px');
-  ['home','news','guide','archive'].forEach(function(id){
-    var scroll=document.querySelector('#screen-'+id+' .scroll-area');
-    if(scroll)scroll.style.paddingTop=h+'px';
-  });
+  /* ضبط موضع الزر ليكون في نفس موضعه داخل الهيدر */
+  positionFloatingBtn();
+}
+
+function positionFloatingBtn(){
+  var btn=document.getElementById('header-more-btn');
+  var header=document.getElementById('shared-header');
+  if(!btn||!header)return;
+  /* نحسب المسافة من أعلى الشاشة للزر كما لو كان داخل الهيدر */
+  var safeT=parseFloat(getComputedStyle(document.documentElement)
+    .getPropertyValue('--safe-t'))||0;
+  var btnTop=safeT+16+(header.offsetHeight - safeT - 32)/2;
+  btn.style.top=Math.round(btnTop)+'px';
 }
 function resetScroll(screenId){
   var scroll=document.querySelector('#'+screenId+' .scroll-area');
@@ -1936,10 +1939,22 @@ async function loadMapData(){
    HEADER SHADOW
 ══════════════════════════════════════════ */
 function updateHeaderShadow(){
-  var header=document.getElementById('shared-header');if(!header)return;
+  var header=document.getElementById('shared-header');
+  var btn=document.getElementById('header-more-btn');
+  if(!header)return;
   var scroll=document.querySelector('#screen-'+curTab+' .scroll-area');
   var st=scroll?scroll.scrollTop:0;
+  /* elevation على الهيدر */
   header.classList.toggle('scrolled',st>4);
+  /* الزر يتبع الهيدر — ينزلق للأعلى بنفس مقدار الـ scroll */
+  if(btn){
+    var hh=parseFloat(getComputedStyle(document.documentElement)
+      .getPropertyValue('--header-h'))||0;
+    var shift=Math.min(st,hh);
+    btn.style.transform='translateY(-'+shift+'px)';
+    btn.style.opacity=shift>=hh?'0':'1';
+    btn.style.pointerEvents=shift>=hh?'none':'auto';
+  }
 }
 
 /* ══════════════════════════════════════════
