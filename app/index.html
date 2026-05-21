@@ -742,18 +742,16 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 
   <!-- ══ ARCHIVE ══ -->
   <div class="screen hidden" id="screen-archive">
-    <div class="scroll-area" id="scroll-archive">
-      <!-- هيدر مثل بقية الصفحات -->
-      <div class="home-header">
-        <div class="home-header-inner">
-          <button onclick="goBack()" style="background:rgba(255,255,255,.15);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;flex-shrink:0">
-            <iconify-icon icon="lucide:arrow-right" style="font-size:18px;pointer-events:none"></iconify-icon>
-          </button>
-          <div class="home-greeting" style="flex:1"><h1>أرشيف شطايبي</h1></div>
-        </div>
+    <div class="home-header">
+      <div class="home-header-inner">
+        <button onclick="goBack()" style="background:rgba(255,255,255,.15);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;flex-shrink:0">
+          <iconify-icon icon="lucide:arrow-right" style="font-size:18px;pointer-events:none"></iconify-icon>
+        </button>
+        <div class="home-greeting" style="flex:1"><h1>أرشيف شطايبي</h1></div>
       </div>
+    </div>
+    <div class="scroll-area" id="scroll-archive">
       <div class="content-block" style="padding-top:12px">
-        <!-- tabs -->
         <div class="seg-bar-wrap">
           <div class="seg-bar">
             <button class="seg-btn active" id="arch-tab-compare" onclick="switchArchTab('compare',this)">
@@ -1280,31 +1278,34 @@ async function loadArchiveTab(tab){
     var all=d.data||[];
     var items=tab==='compare'
       ? all.filter(function(a){return a.image_old_url&&a.image_new_url;})
-      : all.filter(function(a){return !(a.image_old_url)&&a.image_new_url;});
+      : all.filter(function(a){return !a.image_old_url&&a.image_new_url;});
     if(!items.length){
       el.innerHTML='<div class="empty"><iconify-icon icon="lucide:image-off"></iconify-icon><p>لا توجد صور</p></div>';
       return;
     }
-    el.innerHTML='<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 4px">'
-      +items.map(function(a){
-        if(tab==='compare'){
-          return '<div style="grid-column:1/-1;border-radius:14px;overflow:hidden;background:var(--surface);border:1px solid var(--border)">'
-            +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border)">'
-            +'<div style="position:relative"><img src="'+a.image_old_url+'" style="width:100%;aspect-ratio:1;object-fit:cover;display:block">'
-            +'<span style="position:absolute;bottom:5px;right:5px;background:rgba(0,0,0,.6);color:#fff;font-size:9px;font-weight:800;padding:2px 7px;border-radius:7px">الأمس</span></div>'
-            +'<div style="position:relative"><img src="'+a.image_new_url+'" style="width:100%;aspect-ratio:1;object-fit:cover;display:block">'
-            +'<span style="position:absolute;bottom:5px;left:5px;background:rgba(5,150,105,.85);color:#fff;font-size:9px;font-weight:800;padding:2px 7px;border-radius:7px">اليوم</span></div>'
-            +'</div>'
-            +(a.title?'<div style="font-size:12px;font-weight:700;padding:8px 10px;color:var(--text)">'+a.title+'</div>':'')
-            +'</div>';
-        } else {
-          return '<div style="border-radius:14px;overflow:hidden;background:var(--surface);border:1px solid var(--border)">'
-            +'<img src="'+a.image_new_url+'" style="width:100%;aspect-ratio:1;object-fit:cover;display:block">'
-            +(a.title?'<div style="font-size:11px;font-weight:700;padding:7px 9px;color:var(--text)">'+a.title+'</div>':'')
-            +'</div>';
-        }
-      }).join('')
-      +'</div>';
+    var html='<div style="display:flex;flex-direction:column;gap:12px;padding:0 4px">';
+    items.forEach(function(a){
+      if(tab==='compare'){
+        html+='<div style="border-radius:14px;overflow:hidden;background:var(--surface);border:1px solid var(--border)">'
+          +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border)">'
+          +'<div style="position:relative;cursor:pointer" onclick="openLightbox(\''+a.image_old_url+'\')">'
+          +'<img src="'+a.image_old_url+'" style="width:100%;aspect-ratio:1;object-fit:cover;display:block" loading="lazy">'
+          +'<span style="position:absolute;bottom:5px;right:5px;background:rgba(0,0,0,.65);color:#fff;font-size:10px;font-weight:800;padding:3px 8px;border-radius:7px">الأمس</span></div>'
+          +'<div style="position:relative;cursor:pointer" onclick="openLightbox(\''+a.image_new_url+'\')">'
+          +'<img src="'+a.image_new_url+'" style="width:100%;aspect-ratio:1;object-fit:cover;display:block" loading="lazy">'
+          +'<span style="position:absolute;bottom:5px;left:5px;background:rgba(5,150,105,.85);color:#fff;font-size:10px;font-weight:800;padding:3px 8px;border-radius:7px">اليوم</span></div>'
+          +'</div>'
+          +(a.title?'<div style="font-size:12px;font-weight:700;padding:9px 11px;color:var(--text)">'+a.title+'</div>':'')
+          +'</div>';
+      } else {
+        html+='<div style="border-radius:14px;overflow:hidden;background:var(--surface);border:1px solid var(--border);cursor:pointer" onclick="openLightbox(\''+a.image_new_url+'\')">'
+          +'<img src="'+a.image_new_url+'" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block" loading="lazy">'
+          +(a.title?'<div style="font-size:12px;font-weight:700;padding:9px 11px;color:var(--text)">'+a.title+'</div>':'')
+          +'</div>';
+      }
+    });
+    html+='</div>';
+    el.innerHTML=html;
   }catch(e){
     el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';
   }
@@ -1315,15 +1316,36 @@ async function loadHArchive(){
   if(!el)return;
   try{
     var d=await api('/api/archives');
-    var items=(d.data||[]).slice(0,6);
+    var items=(d.data||[]).filter(function(a){return a.image_old_url&&a.image_new_url;}).slice(0,5);
+    if(!items.length){
+      // إذا لا توجد مقارنات نجرب الصور التاريخية
+      var all=d.data||[];
+      items=all.filter(function(a){return a.image_new_url;}).slice(0,5);
+    }
     if(!items.length){el.innerHTML='';return;}
     el.innerHTML=items.map(function(a){
-      var img=a.image_new_url||a.image_old_url||'';
-      var ph='<div style="width:120px;height:90px;background:linear-gradient(135deg,#78350f,#d97706);border-radius:12px;display:flex;align-items:center;justify-content:center"><iconify-icon icon="lucide:clock" style="color:rgba(255,255,255,.7);font-size:1.8rem;pointer-events:none"></iconify-icon></div>';
-      return '<div onclick="switchTab(\'archive\')" style="flex-shrink:0;width:120px;cursor:pointer">'
-        +(img?'<img src="'+img+'" style="width:120px;height:90px;object-fit:cover;border-radius:12px;display:block">':ph)
-        +'<div style="font-size:11px;font-weight:700;color:var(--text);margin-top:5px;line-height:1.3;padding:0 2px">'+(a.title||'')+'</div>'
-        +'</div>';
+      var hasCompare=a.image_old_url&&a.image_new_url;
+      if(hasCompare){
+        return '<div style="flex-shrink:0;width:180px;cursor:pointer">'
+          +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;border-radius:12px;overflow:hidden">'
+          +'<div style="position:relative" onclick="openLightbox(\''+a.image_old_url+'\')">'
+          +'<img src="'+a.image_old_url+'" style="width:100%;height:80px;object-fit:cover;display:block">'
+          +'<span style="position:absolute;bottom:3px;right:3px;background:rgba(0,0,0,.6);color:#fff;font-size:8px;font-weight:800;padding:1px 5px;border-radius:5px">الأمس</span>'
+          +'</div>'
+          +'<div style="position:relative" onclick="openLightbox(\''+a.image_new_url+'\')">'
+          +'<img src="'+a.image_new_url+'" style="width:100%;height:80px;object-fit:cover;display:block">'
+          +'<span style="position:absolute;bottom:3px;left:3px;background:rgba(5,150,105,.85);color:#fff;font-size:8px;font-weight:800;padding:1px 5px;border-radius:5px">اليوم</span>'
+          +'</div>'
+          +'</div>'
+          +'<div style="font-size:11px;font-weight:700;color:var(--text);margin-top:5px;line-height:1.3;padding:0 2px">'+(a.title||'')+'</div>'
+          +'</div>';
+      } else {
+        var img=a.image_new_url||'';
+        return '<div style="flex-shrink:0;width:120px;cursor:pointer" onclick="openLightbox(\''+img+'\')">'
+          +'<img src="'+img+'" style="width:120px;height:90px;object-fit:cover;border-radius:12px;display:block">'
+          +'<div style="font-size:11px;font-weight:700;color:var(--text);margin-top:5px;line-height:1.3;padding:0 2px">'+(a.title||'')+'</div>'
+          +'</div>';
+      }
     }).join('');
   }catch(e){el.innerHTML='';}
 }
