@@ -110,7 +110,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 #screen-map .scroll-area{overflow:hidden;padding-top:0 !important;}
 #app-map{position:absolute;inset:0;width:100%;height:100%;}
 
-/* ══ BOTTOM NAV - كما كان أصلاً ══ */
+/* ══ BOTTOM NAV ══ */
 #bottom-nav{
   flex-shrink:0;
   height:calc(var(--nav-h) + var(--safe-b));
@@ -289,7 +289,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .album-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
 .album-grid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;cursor:pointer;pointer-events:auto !important;touch-action:manipulation;display:block;}
 
-/* ══ LIGHTBOX بسيط ══ */
+/* ══ LIGHTBOX ══ */
 #lightbox{
   position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.97);
   display:none;align-items:center;justify-content:center;
@@ -308,14 +308,11 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 }
 
 /* ══ بطاقات الأرشيف في الرئيسية ══ */
-/* h-scroll خاص بالأرشيف مع snap */
 #h-archive{
   scroll-snap-type:x mandatory;
   padding:2px 18px 20px;
-  /* مسافة إضافية في النهاية لعدم تغطية شريط التنقل */
 }
 .archive-home-card{
-  /* تصغير طفيف + توسيط البطاقة الأولى */
   flex-shrink:0;
   width:calc(100vw - 60px);
   max-width:340px;
@@ -330,15 +327,12 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   transition:transform .15s ease,opacity .15s;
 }
 .archive-home-card:active{transform:scale(.97);opacity:.85;}
-/* شبكة المقارنة داخل البطاقة */
 .archive-home-compare{
   display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);
 }
 .archive-home-cell{
-  position:relative;overflow:hidden;
-  cursor:pointer;
+  position:relative;overflow:hidden;cursor:pointer;
 }
-/* الصورة داخل الخلية - pointer-events none لأن الكليك على الخلية */
 .archive-home-cell img{
   width:100%;aspect-ratio:4/3;object-fit:cover;display:block;pointer-events:none;
 }
@@ -408,7 +402,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .leaflet-control-attribution{display:none !important;}
 .news-badge{font-size:10px;font-weight:800;padding:2px 9px;border-radius:99px;display:inline-block;}
 
-/* ══ MAP CONTROLS ══ */
+/* ══ MAP ══ */
 #map-controls-right{position:absolute;top:16px;right:14px;z-index:1001;pointer-events:auto;}
 #map-controls-left{position:absolute;top:16px;left:14px;z-index:1001;pointer-events:auto;}
 #map-filter-btn{
@@ -603,7 +597,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </div>
           </div>
 
-          <!-- بين الأمس واليوم -->
           <div class="section" style="padding-bottom:20px">
             <div class="section-header">
               <span class="section-title">
@@ -748,7 +741,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     <div class="screen hidden" id="screen-more">
       <div class="scroll-area" id="scroll-more">
         <div class="content-block">
-          <!-- بطاقة رئيس المجلس -->
           <div id="mayor-card" style="margin:18px 18px 12px;background:linear-gradient(135deg,#042f1e 0%,#064e3b 50%,#059669 100%);border-radius:20px;padding:18px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 24px rgba(5,150,105,.25);position:relative;overflow:hidden;">
             <div style="position:absolute;top:-20px;left:-20px;width:100px;height:100px;background:rgba(255,255,255,.04);border-radius:50%;pointer-events:none"></div>
             <div style="position:absolute;bottom:-30px;right:10px;width:120px;height:120px;background:rgba(255,255,255,.03);border-radius:50%;pointer-events:none"></div>
@@ -769,7 +761,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               <span>السابقون</span>
             </button>
           </div>
-          <!-- قائمة الروابط -->
           <div style="margin:0 18px 0;background:var(--card);border-radius:18px;overflow:hidden;box-shadow:var(--shadow-sm);border:1px solid var(--border-light)">
             <div class="more-item" onclick="window.location.href='/'">
               <div class="more-icon" style="background:#d1fae5">
@@ -821,15 +812,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     </div>
 
     <!-- ══ ARCHIVE ══ -->
+    <!-- تم حذف div.home-header بالكامل -->
     <div class="screen hidden" id="screen-archive">
-      <div class="home-header">
-        <div class="home-header-inner">
-          <button onclick="goBack()" style="background:rgba(255,255,255,.15);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;flex-shrink:0">
-            <iconify-icon icon="lucide:arrow-right" style="font-size:18px;pointer-events:none"></iconify-icon>
-          </button>
-          <div class="home-greeting" style="flex:1"><h1>أرشيف شطايبي</h1></div>
-        </div>
-      </div>
       <div class="scroll-area" id="scroll-archive">
         <div class="content-block" style="padding-top:12px">
           <div class="seg-bar-wrap">
@@ -851,7 +835,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 
   </div><!-- end screen-container -->
 
-  <!-- BOTTOM NAV - في مكانه الأصلي داخل #app بعد screen-container -->
+  <!-- BOTTOM NAV -->
   <nav id="bottom-nav">
     <button class="nav-btn active" id="nav-home" onclick="switchTab('home')">
       <div class="nav-icon-wrap">
@@ -981,7 +965,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   </div>
 </div>
 
-<!-- LIGHTBOX بسيط -->
+<!-- LIGHTBOX -->
 <div id="lightbox" onclick="closeLightbox()">
   <button id="lb-close" onclick="closeLightbox()">✕</button>
   <img id="lb-img" src="" alt="">
@@ -1017,6 +1001,7 @@ var curTab='home',mapDone=false,allNews=[],facCat='admin-branches';
 var newsScreenLoaded=false,_mayorLoaded=false,_mayorsList=[];
 var TAB_ORDER=['home','news','guide','map','more','archive'];
 var NEWS_CATS=['official','activity','social','poster'];
+var ARCH_TABS=['compare','historic'];
 var GUIDE_TABS=['admin-branches','education','health','public-bodies','religious','cultural','sports'];
 var mapLayers={beach:[],tour:[],fac:[]};
 var activeMapFilter='all';
@@ -1029,7 +1014,7 @@ var FILTER_CFG={
   tour: {icon:'lucide:sun',       labelFull:'المعالم السياحية'}
 };
 
-/* ══ LIGHTBOX بسيط ══ */
+/* ══ LIGHTBOX ══ */
 function openLightbox(src){
   if(!src)return;
   document.getElementById('lb-img').src=src;
@@ -1128,7 +1113,7 @@ function applyHeaderHeight(){
   var h=header.offsetHeight;
   container.style.marginTop=(-h)+'px';
   document.documentElement.style.setProperty('--header-h',h+'px');
-  ['home','news','guide','more'].forEach(function(id){
+  ['home','news','guide','more','archive'].forEach(function(id){
     var scroll=document.querySelector('#screen-'+id+' .scroll-area');
     if(scroll)scroll.style.paddingTop=h+'px';
   });
@@ -1197,6 +1182,7 @@ function resetGuideTab(){
   if(!alreadyLoaded){facCat=targetTab;loadFacTab(targetTab,firstBtn);}
 }
 
+/* ══ SWIPE ══ */
 function initSwipe(scrollAreaId,getNext){
   var el=document.getElementById(scrollAreaId);
   if(!el)return;
@@ -1204,6 +1190,9 @@ function initSwipe(scrollAreaId,getNext){
   el.addEventListener('touchstart',function(e){
     if(e.target.closest('.h-scroll')){tracking=false;return;}
     if(e.target.closest('.seg-bar-wrap')){tracking=false;return;}
+    /* تجاهل السحب فوق بطاقات الأرشيف العمودية */
+    if(e.target.closest('.archive-card')){tracking=false;return;}
+    if(e.target.closest('.archive-single')){tracking=false;return;}
     startX=e.touches[0].clientX;startY=e.touches[0].clientY;tracking=true;
   },{passive:true});
   el.addEventListener('touchend',function(e){
@@ -1213,7 +1202,9 @@ function initSwipe(scrollAreaId,getNext){
     if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5){getNext(dx<0?-1:1);}
   },{passive:true});
 }
+
 function swipeHome(dir){if(dir===1)switchTab('news');}
+
 function swipeNews(dir){
   var active=document.querySelector('#screen-news .seg-btn.active');
   if(!active)return;
@@ -1225,6 +1216,7 @@ function swipeNews(dir){
   var nextBtn=document.querySelector('#screen-news .seg-btn[data-cat="'+nextCat+'"]');
   if(nextBtn){filterNews(nextCat,nextBtn);nextBtn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}
 }
+
 function swipeGuide(dir){
   var idx=GUIDE_TABS.indexOf(facCat);var next=idx+dir;
   if(next<0){switchTab('news');return;}
@@ -1235,7 +1227,28 @@ function swipeGuide(dir){
   loadFacTab(nextTab,nextBtn);
   if(nextBtn)nextBtn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
 }
+
 function swipeMore(dir){if(dir===-1)switchTab('map');}
+
+/* ══ السحب في صفحة الأرشيف ══ */
+function swipeArchive(dir){
+  var idx=ARCH_TABS.indexOf(archTab);
+  var next=idx+dir;
+  if(next<0){
+    /* تجاوزنا compare يميناً ← المزيد */
+    switchTab('more');
+    return;
+  }
+  if(next>=ARCH_TABS.length){
+    /* تجاوزنا historic يساراً ← الرئيسية */
+    switchTab('home');
+    return;
+  }
+  var nextTab=ARCH_TABS[next];
+  var nextBtn=document.getElementById('arch-tab-'+nextTab);
+  switchArchTab(nextTab,nextBtn);
+  if(nextBtn)nextBtn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+}
 
 var NS={
   official:{grad:'linear-gradient(135deg,#ef4444,#b91c1c)',lbl:'إعلان رسمي',bs:'background:rgba(239,68,68,.12);color:#dc2626'},
@@ -1266,6 +1279,7 @@ function makeNewsCard(n){
 var archTab='compare';
 var prevTab='more';
 function goBack(){switchTab(prevTab);}
+
 function switchArchTab(tab,btn){
   archTab=tab;
   document.querySelectorAll('#screen-archive .seg-btn').forEach(function(b){b.classList.remove('active');});
@@ -1290,15 +1304,12 @@ async function loadArchiveTab(tab){
     var html='<div style="display:flex;flex-direction:column;gap:14px;">';
     items.forEach(function(a){
       if(tab==='compare'){
-        /* المقارنة: خليتان قابلتان للضغط */
         html+='<div class="archive-card">'
           +'<div class="archive-compare-grid">'
-          /* خلية الأمس - الكليك على الـ div */
           +'<div class="archive-cell" onclick="openLightbox(\''+a.image_old_url+'\')">'
           +'<img src="'+a.image_old_url+'" loading="lazy">'
           +'<span class="archive-cell-label">الأمس</span>'
           +'</div>'
-          /* خلية اليوم */
           +'<div class="archive-cell" onclick="openLightbox(\''+a.image_new_url+'\')">'
           +'<img src="'+a.image_new_url+'" loading="lazy">'
           +'<span class="archive-cell-label new-label">اليوم</span>'
@@ -1320,7 +1331,7 @@ async function loadArchiveTab(tab){
   }
 }
 
-/* ══ بين الأمس واليوم في الرئيسية ══ */
+/* ══ الأرشيف في الرئيسية ══ */
 async function loadHArchive(){
   var el=document.getElementById('h-archive');
   if(!el)return;
@@ -1337,12 +1348,10 @@ async function loadHArchive(){
       if(hasCompare){
         return '<div class="archive-home-card">'
           +'<div class="archive-home-compare">'
-          /* خلية الأمس */
           +'<div class="archive-home-cell" onclick="openLightbox(\''+a.image_old_url+'\')">'
           +'<img src="'+a.image_old_url+'" loading="lazy">'
           +'<span class="archive-home-label">الأمس</span>'
           +'</div>'
-          /* خلية اليوم */
           +'<div class="archive-home-cell" onclick="openLightbox(\''+a.image_new_url+'\')">'
           +'<img src="'+a.image_new_url+'" loading="lazy">'
           +'<span class="archive-home-label new-label">اليوم</span>'
@@ -1779,10 +1788,11 @@ async function openPrevMayorsModal(){
 window.addEventListener('load',function(){
   applyHeaderHeight();
   window.addEventListener('resize',function(){applyHeaderHeight();});
-  initSwipe('scroll-home', function(dir){swipeHome(dir);});
-  initSwipe('scroll-news', function(dir){swipeNews(dir);});
-  initSwipe('scroll-guide',function(dir){swipeGuide(dir);});
-  initSwipe('scroll-more', function(dir){swipeMore(dir);});
+  initSwipe('scroll-home',   function(dir){swipeHome(dir);});
+  initSwipe('scroll-news',   function(dir){swipeNews(dir);});
+  initSwipe('scroll-guide',  function(dir){swipeGuide(dir);});
+  initSwipe('scroll-more',   function(dir){swipeMore(dir);});
+  initSwipe('scroll-archive',function(dir){swipeArchive(dir);});
   document.querySelectorAll('.scroll-area').forEach(function(el){
     el.addEventListener('scroll',updateHeaderShadow,{passive:true});
   });
