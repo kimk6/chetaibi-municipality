@@ -107,11 +107,19 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   background:rgba(255,255,255,.15);
   border:1.5px solid rgba(255,255,255,.28);
   cursor:pointer;flex-shrink:0;
-  transition:background .15s,transform .1s;
+  transition:background .15s,transform .1s,opacity .3s ease,translate .3s ease;
+  translate:0 0;
+  opacity:1;
 }
 .floating-menu-btn:active{
   background:rgba(255,255,255,.32);
   transform:scale(.91);
+}
+/* حالة الاختفاء مع الهيدر للأعلى */
+.floating-menu-btn.header-hidden{
+  translate:0 -100%;
+  opacity:0;
+  pointer-events:none;
 }
 .hamburger-lines{
   display:flex;flex-direction:column;
@@ -873,8 +881,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 <div id="more-sheet-overlay">
   <div id="more-sheet">
     <div class="more-sheet-drag"></div>
-
-    <!-- بطاقة الرئيس -->
     <div class="mayor-sheet-card" id="ms-mayor-card">
       <div id="ms-mayor-photo-wrap" style="width:58px;height:58px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2.5px solid rgba(255,255,255,.3);box-shadow:0 4px 12px rgba(0,0,0,.2);background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;position:relative;z-index:1;">
         <iconify-icon id="ms-mayor-icon" icon="lucide:user" style="font-size:26px;color:rgba(255,255,255,.5);pointer-events:none"></iconify-icon>
@@ -890,8 +896,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
       </div>
       <iconify-icon icon="lucide:chevron-left" style="color:rgba(255,255,255,.5);font-size:18px;pointer-events:none;position:relative;z-index:1;flex-shrink:0;"></iconify-icon>
     </div>
-
-    <!-- قائمة الروابط -->
     <div style="margin:12px 16px 0;background:var(--card);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-sm);border:1px solid var(--border-light)">
       <div class="more-item" id="ms-item-site">
         <div class="more-icon" style="background:var(--green-l)">
@@ -934,7 +938,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
       </div>
     </div>
-
     <div style="text-align:center;padding:16px 20px 4px;">
       <div style="font-size:11px;color:var(--muted-2);">© 2026 - بلدية شطايبي - جميع الحقوق محفوظة</div>
       <div style="font-size:10px;color:var(--muted-2);font-style:italic;margin-top:3px;">تم التطوير بجهود الكفاءات الداخلية</div>
@@ -959,7 +962,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     </div>
   </div>
 </div>
-
 <div class="modal-overlay" id="m-beach">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
@@ -972,7 +974,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     </div>
   </div>
 </div>
-
 <div class="modal-overlay" id="m-tour">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
@@ -992,7 +993,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     </div>
   </div>
 </div>
-
 <div class="modal-overlay" id="m-fac">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
@@ -1006,7 +1006,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     </div>
   </div>
 </div>
-
 <div class="modal-overlay" id="m-prev-mayors">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
@@ -1033,9 +1032,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 
 <script>
 'use strict';
-/* ══════════════════════════════════════════
-   منع الإجراءات الافتراضية غير المرغوبة
-══════════════════════════════════════════ */
 document.addEventListener('contextmenu',function(e){e.preventDefault();});
 document.addEventListener('dragstart',function(e){e.preventDefault();});
 document.addEventListener('selectstart',function(e){e.preventDefault();});
@@ -1052,9 +1048,6 @@ document.addEventListener('touchmove',function(e){
   if(e.touches.length>1)e.preventDefault();
 },{passive:false});
 
-/* ══════════════════════════════════════════
-   API CACHE
-══════════════════════════════════════════ */
 var C={};
 async function api(u){
   if(C[u])return C[u];
@@ -1063,9 +1056,6 @@ async function api(u){
   C[u]=d;return d;
 }
 
-/* ══════════════════════════════════════════
-   STATE
-══════════════════════════════════════════ */
 var curTab='home',mapDone=false,allNews=[],facCat='admin-branches';
 var newsScreenLoaded=false,_mayorLoaded=false,_mayorsList=[];
 var TAB_ORDER=['home','news','guide','map','archive'];
@@ -1084,9 +1074,7 @@ var FILTER_CFG={
   tour: {icon:'lucide:sun',       labelFull:'المعالم السياحية'}
 };
 
-/* ══════════════════════════════════════════
-   MORE SHEET — نظام معزول تمامًا
-══════════════════════════════════════════ */
+/* ══ MORE SHEET ══ */
 var MoreSheet=(function(){
   var overlay,sheet,btn,isOpen=false;
   function init(){
@@ -1115,24 +1103,17 @@ var MoreSheet=(function(){
   function initDrag(){
     var startY=0,dragging=false,startScroll=0;
     sheet.addEventListener('touchstart',function(e){
-      startY=e.touches[0].clientY;
-      startScroll=sheet.scrollTop;
-      dragging=true;
+      startY=e.touches[0].clientY;startScroll=sheet.scrollTop;dragging=true;
     },{passive:true});
     sheet.addEventListener('touchmove',function(e){
       if(!dragging)return;
       var dy=e.touches[0].clientY-startY;
-      if(dy>0&&startScroll<=0){
-        sheet.style.transition='none';
-        sheet.style.transform='translateY('+Math.min(dy,300)+'px)';
-      }
+      if(dy>0&&startScroll<=0){sheet.style.transition='none';sheet.style.transform='translateY('+Math.min(dy,300)+'px)';}
     },{passive:true});
     sheet.addEventListener('touchend',function(e){
-      if(!dragging)return;
-      dragging=false;
+      if(!dragging)return;dragging=false;
       var dy=e.changedTouches[0].clientY-startY;
-      sheet.style.transition='';
-      sheet.style.transform='';
+      sheet.style.transition='';sheet.style.transform='';
       if(dy>90)close();
     },{passive:true});
   }
@@ -1150,13 +1131,10 @@ var MoreSheet=(function(){
   }
   return{init:init,open:open,close:close};
 })();
-
 function openMoreSheet(){MoreSheet.open();}
 function closeMoreSheet(){MoreSheet.close();}
 
-/* ══════════════════════════════════════════
-   LIGHTBOX
-══════════════════════════════════════════ */
+/* ══ LIGHTBOX ══ */
 function openLightbox(src){
   if(!src)return;
   document.getElementById('lb-img').src=src;
@@ -1167,9 +1145,7 @@ function closeLightbox(){
   document.getElementById('lb-img').src='';
 }
 
-/* ══════════════════════════════════════════
-   MAP FILTER
-══════════════════════════════════════════ */
+/* ══ MAP FILTER ══ */
 function toggleFilterMenu(e){
   e.stopPropagation();
   filterMenuOpen=!filterMenuOpen;
@@ -1191,18 +1167,9 @@ function selectMapFilter(type,el){
   document.getElementById('map-filter-btn').classList.toggle('filter-active',type!=='all');
   activeMapFilter=type;
   if(appMap){
-    mapLayers.beach.forEach(function(mk){
-      if(type==='all'||type==='beach'){if(!appMap.hasLayer(mk))mk.addTo(appMap);}
-      else{if(appMap.hasLayer(mk))appMap.removeLayer(mk);}
-    });
-    mapLayers.tour.forEach(function(mk){
-      if(type==='all'||type==='tour'){if(!appMap.hasLayer(mk))mk.addTo(appMap);}
-      else{if(appMap.hasLayer(mk))appMap.removeLayer(mk);}
-    });
-    mapLayers.fac.forEach(function(mk){
-      if(type==='all'||type==='fac'){if(!appMap.hasLayer(mk))mk.addTo(appMap);}
-      else{if(appMap.hasLayer(mk))appMap.removeLayer(mk);}
-    });
+    mapLayers.beach.forEach(function(mk){if(type==='all'||type==='beach'){if(!appMap.hasLayer(mk))mk.addTo(appMap);}else{if(appMap.hasLayer(mk))appMap.removeLayer(mk);}});
+    mapLayers.tour.forEach(function(mk){if(type==='all'||type==='tour'){if(!appMap.hasLayer(mk))mk.addTo(appMap);}else{if(appMap.hasLayer(mk))appMap.removeLayer(mk);}});
+    mapLayers.fac.forEach(function(mk){if(type==='all'||type==='fac'){if(!appMap.hasLayer(mk))mk.addTo(appMap);}else{if(appMap.hasLayer(mk))appMap.removeLayer(mk);}});
   }
   closeMapCard();
   setTimeout(closeFilterMenu,120);
@@ -1211,14 +1178,9 @@ function applyMapFilterSilent(type){
   var el=document.querySelector('.mf-item[data-type="'+type+'"]');
   if(el)selectMapFilter(type,el);
 }
-function switchTabWithFilter(tab,filterType){
-  pendingMapFilter=filterType;
-  switchTab(tab);
-}
+function switchTabWithFilter(tab,filterType){pendingMapFilter=filterType;switchTab(tab);}
 
-/* ══════════════════════════════════════════
-   LOCATE
-══════════════════════════════════════════ */
+/* ══ LOCATE ══ */
 function locateUser(){
   if(!navigator.geolocation){alert('تحديد الموقع غير مدعوم');return;}
   var btn=document.getElementById('map-locate-btn');
@@ -1233,10 +1195,7 @@ function locateUser(){
       if(appMap){
         appMap.setView([lat,lng],15,{animate:true});
         if(locateMarker)appMap.removeLayer(locateMarker);
-        var pulse='<div style="position:relative;width:20px;height:20px">'
-          +'<div style="position:absolute;inset:0;border-radius:50%;background:rgba(5,150,105,.25);animation:loc-pulse 1.4s ease-out infinite"></div>'
-          +'<div style="position:absolute;inset:3px;border-radius:50%;background:var(--green);border:2px solid #fff;box-shadow:0 2px 8px rgba(5,150,105,.5)"></div>'
-          +'</div>';
+        var pulse='<div style="position:relative;width:20px;height:20px"><div style="position:absolute;inset:0;border-radius:50%;background:rgba(5,150,105,.25);animation:loc-pulse 1.4s ease-out infinite"></div><div style="position:absolute;inset:3px;border-radius:50%;background:var(--green);border:2px solid #fff;box-shadow:0 2px 8px rgba(5,150,105,.5)"></div></div>';
         var locIcon=L.divIcon({className:'',html:pulse,iconSize:[20,20],iconAnchor:[10,10]});
         locateMarker=L.marker([lat,lng],{icon:locIcon}).addTo(appMap);
       }
@@ -1246,17 +1205,12 @@ function locateUser(){
         document.head.appendChild(s);
       }
     },
-    function(){
-      btn.classList.remove('locating');
-      icon.setAttribute('icon','lucide:locate-off');
-    },
+    function(){btn.classList.remove('locating');icon.setAttribute('icon','lucide:locate-off');},
     {enableHighAccuracy:true,timeout:10000,maximumAge:0}
   );
 }
 
-/* ══════════════════════════════════════════
-   HEADER HEIGHT
-══════════════════════════════════════════ */
+/* ══ HEADER HEIGHT ══ */
 function applyHeaderHeight(){
   var header=document.getElementById('shared-header');
   var container=document.getElementById('screen-container');
@@ -1274,9 +1228,7 @@ function resetScroll(screenId){
   if(scroll)scroll.scrollTop=0;
 }
 
-/* ══════════════════════════════════════════
-   SWITCH TAB
-══════════════════════════════════════════ */
+/* ══ SWITCH TAB ══ */
 function switchTab(t){
   if(t===curTab)return;
   var prevEl=document.getElementById('screen-'+curTab);
@@ -1331,9 +1283,7 @@ function resetGuideTab(){
   if(!alreadyLoaded){facCat='admin-branches';loadFacTab('admin-branches',firstBtn);}
 }
 
-/* ══════════════════════════════════════════
-   SWIPE
-══════════════════════════════════════════ */
+/* ══ SWIPE ══ */
 function initSwipe(scrollAreaId,getNext){
   var el=document.getElementById(scrollAreaId);
   if(!el)return;
@@ -1382,9 +1332,7 @@ function swipeArchive(dir){
   }
 }
 
-/* ══════════════════════════════════════════
-   NEWS
-══════════════════════════════════════════ */
+/* ══ NEWS ══ */
 var NS={
   official:{grad:'linear-gradient(135deg,#ef4444,#b91c1c)',lbl:'إعلان رسمي',bs:'background:rgba(239,68,68,.12);color:var(--red)'},
   activity:{grad:'linear-gradient(135deg,var(--green),#065f46)',lbl:'نشاط بلدي',bs:'background:rgba(5,150,105,.12);color:var(--green)'},
@@ -1410,9 +1358,7 @@ function makeNewsCard(n,showTitle){
     +'</div></div>';
 }
 
-/* ══════════════════════════════════════════
-   ARCHIVE
-══════════════════════════════════════════ */
+/* ══ ARCHIVE ══ */
 function switchArchTab(tab,btn){
   archTab=tab;
   document.querySelectorAll('#screen-archive .seg-btn').forEach(function(b){b.classList.remove('active');});
@@ -1433,14 +1379,9 @@ async function loadArchiveTab(tab){
     var html='<div style="display:flex;flex-direction:column;gap:14px;">';
     items.forEach(function(a){
       if(tab==='compare'){
-        html+='<div class="archive-card">'
-          +'<div class="archive-compare-grid">'
-          +'<div class="archive-cell" data-lb="'+a.image_old_url+'">'
-          +'<img src="'+a.image_old_url+'" loading="lazy">'
-          +'<span class="archive-cell-label">الأمس</span></div>'
-          +'<div class="archive-cell" data-lb="'+a.image_new_url+'">'
-          +'<img src="'+a.image_new_url+'" loading="lazy">'
-          +'<span class="archive-cell-label new-label">اليوم</span></div>'
+        html+='<div class="archive-card"><div class="archive-compare-grid">'
+          +'<div class="archive-cell" data-lb="'+a.image_old_url+'"><img src="'+a.image_old_url+'" loading="lazy"><span class="archive-cell-label">الأمس</span></div>'
+          +'<div class="archive-cell" data-lb="'+a.image_new_url+'"><img src="'+a.image_new_url+'" loading="lazy"><span class="archive-cell-label new-label">اليوم</span></div>'
           +'</div>'+(a.title?'<div class="archive-card-title">'+a.title+'</div>':'')+'</div>';
       }else{
         html+='<div class="archive-card archive-single" data-lb="'+a.image_new_url+'">'
@@ -1450,14 +1391,10 @@ async function loadArchiveTab(tab){
     });
     html+='</div>';
     el.innerHTML=html;
-  }catch(e){
-    el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';
-  }
+  }catch(e){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';}
 }
 
-/* ══════════════════════════════════════════
-   HOME
-══════════════════════════════════════════ */
+/* ══ HOME ══ */
 async function loadHArchive(){
   var el=document.getElementById('h-archive');
   if(!el)return;
@@ -1468,15 +1405,12 @@ async function loadHArchive(){
     if(!items.length){el.innerHTML='';return;}
     el.innerHTML=items.map(function(a){
       if(a.image_old_url&&a.image_new_url){
-        return '<div class="archive-home-card">'
-          +'<div class="archive-home-compare">'
+        return '<div class="archive-home-card"><div class="archive-home-compare">'
           +'<div class="archive-home-cell" data-lb="'+a.image_old_url+'"><img src="'+a.image_old_url+'" loading="lazy"><span class="archive-home-label">الأمس</span></div>'
           +'<div class="archive-home-cell" data-lb="'+a.image_new_url+'"><img src="'+a.image_new_url+'" loading="lazy"><span class="archive-home-label new-label">اليوم</span></div>'
           +'</div>'+(a.title?'<div class="archive-home-title">'+a.title+'</div>':'')+'</div>';
       }
-      return '<div class="archive-home-card archive-home-single" data-lb="'+a.image_new_url+'">'
-        +'<img src="'+a.image_new_url+'" loading="lazy">'
-        +(a.title?'<div class="archive-home-title">'+a.title+'</div>':'')+'</div>';
+      return '<div class="archive-home-card archive-home-single" data-lb="'+a.image_new_url+'"><img src="'+a.image_new_url+'" loading="lazy">'+(a.title?'<div class="archive-home-title">'+a.title+'</div>':'')+'</div>';
     }).join('');
   }catch(e){el.innerHTML='';}
 }
@@ -1490,37 +1424,19 @@ function renderMayorHome(m){
   el.innerHTML=
     '<div class="mayor-home-card" id="mayor-home-card-el">'
     +'<div class="mayor-card-top">'
-    +'<div style="width:64px;height:64px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2.5px solid rgba(255,255,255,.3);box-shadow:0 4px 12px rgba(0,0,0,.2);background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;position:relative;z-index:1;">'
-    +photoHtml+'</div>'
+    +'<div style="width:64px;height:64px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2.5px solid rgba(255,255,255,.3);box-shadow:0 4px 12px rgba(0,0,0,.2);background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;position:relative;z-index:1;">'+photoHtml+'</div>'
     +'<div style="flex:1;min-width:0;position:relative;z-index:1;">'
     +'<div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.55);margin-bottom:3px;">رئيس المجلس الشعبي البلدي</div>'
     +'<div style="font-size:16px;font-weight:900;color:#fff;letter-spacing:-.2px;line-height:1.2;">'+(m.name_ar||m.name||'--')+'</div>'
-    +'<div style="font-size:11px;color:rgba(255,255,255,.55);margin-top:4px;display:flex;align-items:center;gap:4px;">'
-    +'<iconify-icon icon="lucide:calendar" style="font-size:11px;pointer-events:none"></iconify-icon>'
-    +'<span>'+period+'</span></div></div>'
+    +'<div style="font-size:11px;color:rgba(255,255,255,.55);margin-top:4px;display:flex;align-items:center;gap:4px;"><iconify-icon icon="lucide:calendar" style="font-size:11px;pointer-events:none"></iconify-icon><span>'+period+'</span></div></div>'
     +'<iconify-icon icon="lucide:user-check" style="font-size:26px;color:rgba(255,255,255,.2);pointer-events:none;position:relative;z-index:1;flex-shrink:0;"></iconify-icon>'
     +'</div>'
-    +'<div class="mayor-prev-btn" id="mayor-prev-btn-el">'
-    +'<div class="mayor-prev-btn-inner">'
-    +'<iconify-icon icon="lucide:users" style="font-size:16px;pointer-events:none;"></iconify-icon>'
-    +'<span>الرؤساء السابقون</span>'
-    +'</div>'
-    +'</div>'
+    +'<div class="mayor-prev-btn" id="mayor-prev-btn-el"><div class="mayor-prev-btn-inner"><iconify-icon icon="lucide:users" style="font-size:16px;pointer-events:none;"></iconify-icon><span>الرؤساء السابقون</span></div></div>'
     +'</div>';
   var cardEl=document.getElementById('mayor-home-card-el');
   var prevBtn=document.getElementById('mayor-prev-btn-el');
-  if(cardEl){
-    cardEl.addEventListener('click',function(e){
-      if(e.target.closest('#mayor-prev-btn-el'))return;
-      openPrevMayorsModal();
-    });
-  }
-  if(prevBtn){
-    prevBtn.addEventListener('click',function(e){
-      e.stopPropagation();
-      openPrevMayorsModal();
-    });
-  }
+  if(cardEl)cardEl.addEventListener('click',function(e){if(e.target.closest('#mayor-prev-btn-el'))return;openPrevMayorsModal();});
+  if(prevBtn)prevBtn.addEventListener('click',function(e){e.stopPropagation();openPrevMayorsModal();});
 }
 function syncMayorToSheet(){
   if(!_mayorsList.length)return;
@@ -1530,58 +1446,29 @@ function syncMayorToSheet(){
   var iconEl=document.getElementById('ms-mayor-icon');
   var mandateEl=document.getElementById('ms-mayor-mandate');
   if(nameEl)nameEl.textContent=m.name_ar||m.name||'--';
-  if(m.image_url&&photoEl){
-    photoEl.src=m.image_url;
-    photoEl.style.display='block';
-    if(iconEl)iconEl.style.display='none';
-  }
+  if(m.image_url&&photoEl){photoEl.src=m.image_url;photoEl.style.display='block';if(iconEl)iconEl.style.display='none';}
   var period=m.period_ar||m.period||'';
-  if(period&&mandateEl){
-    mandateEl.innerHTML='<iconify-icon icon="lucide:calendar" style="font-size:11px;pointer-events:none"></iconify-icon><span>'+period+'</span>';
-  }
+  if(period&&mandateEl)mandateEl.innerHTML='<iconify-icon icon="lucide:calendar" style="font-size:11px;pointer-events:none"></iconify-icon><span>'+period+'</span>';
 }
-function loadHome(){
-  loadHOfficial();loadHNews();loadMayorHome();loadHBeaches();loadHTourism();loadHArchive();
-}
+function loadHome(){loadHOfficial();loadHNews();loadMayorHome();loadHBeaches();loadHTourism();loadHArchive();}
 async function loadMayorHome(){
-  try{
-    var d=await api('/api/mayors');
-    var list=d.data||[];
-    if(!list.length)return;
-    _mayorsList=list;_mayorLoaded=true;
-    renderMayorHome(list[0]);
-    syncMayorToSheet();
-  }catch(e){}
+  try{var d=await api('/api/mayors');var list=d.data||[];if(!list.length)return;_mayorsList=list;_mayorLoaded=true;renderMayorHome(list[0]);syncMayorToSheet();}catch(e){}
 }
 async function loadHOfficial(){
   var el=document.getElementById('h-official');
-  try{
-    var d=await api('/api/news');if(d.data)allNews=d.data;
-    var items=(d.data||[]).filter(function(n){return n.category==='official';}).slice(0,10);
-    el.innerHTML=items.length?items.map(function(n){return makeNewsCard(n,false);}).join(''):'';
-  }catch(e){el.innerHTML='';}
+  try{var d=await api('/api/news');if(d.data)allNews=d.data;var items=(d.data||[]).filter(function(n){return n.category==='official';}).slice(0,10);el.innerHTML=items.length?items.map(function(n){return makeNewsCard(n,false);}).join(''):'';}catch(e){el.innerHTML='';}
 }
 async function loadHNews(){
   var el=document.getElementById('h-news');
-  try{
-    var d=await api('/api/news');if(d.data)allNews=d.data;
-    var items=(d.data||[]).filter(function(n){return n.category!=='official'&&n.category!=='poster';}).slice(0,10);
-    el.innerHTML=items.length?items.map(function(n){return makeNewsCard(n,true);}).join(''):'';
-  }catch(e){el.innerHTML='';}
+  try{var d=await api('/api/news');if(d.data)allNews=d.data;var items=(d.data||[]).filter(function(n){return n.category!=='official'&&n.category!=='poster';}).slice(0,10);el.innerHTML=items.length?items.map(function(n){return makeNewsCard(n,true);}).join(''):'';}catch(e){el.innerHTML='';}
 }
 async function loadHBeaches(){
   var el=document.getElementById('h-beaches');
-  try{
-    var d=await api('/api/beaches');
-    el.innerHTML=(d.data||[]).slice(0,8).map(function(b){return placeCard(b,'beach');}).join('');
-  }catch(e){el.innerHTML='';}
+  try{var d=await api('/api/beaches');el.innerHTML=(d.data||[]).slice(0,8).map(function(b){return placeCard(b,'beach');}).join('');}catch(e){el.innerHTML='';}
 }
 async function loadHTourism(){
   var el=document.getElementById('h-tourism');
-  try{
-    var d=await api('/api/tourism');
-    el.innerHTML=(d.data||[]).slice(0,8).map(function(t){return placeCard(t,'tourism');}).join('');
-  }catch(e){el.innerHTML='';}
+  try{var d=await api('/api/tourism');el.innerHTML=(d.data||[]).slice(0,8).map(function(t){return placeCard(t,'tourism');}).join('');}catch(e){el.innerHTML='';}
 }
 function placeCard(item,type){
   var n=item.name||'';
@@ -1590,14 +1477,10 @@ function placeCard(item,type){
     ?'<div class="place-card-ph" style="background:linear-gradient(135deg,var(--sky),#0284c7)"><iconify-icon icon="lucide:waves" style="color:rgba(255,255,255,.8);font-size:2.2rem;pointer-events:none"></iconify-icon></div>'
     :'<div class="place-card-ph" style="background:linear-gradient(135deg,var(--green),#065f46)"><iconify-icon icon="lucide:compass" style="color:rgba(255,255,255,.8);font-size:2.2rem;pointer-events:none"></iconify-icon></div>';
   var imgH=item.image_url?'<img src="'+item.image_url+'" alt="'+n+'" style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none">':ph;
-  return '<div class="place-card" '+dataAttr+'>'+imgH
-    +'<div class="place-card-grad"></div>'
-    +'<div class="place-card-body"><div class="place-card-name">'+n+'</div></div></div>';
+  return '<div class="place-card" '+dataAttr+'>'+imgH+'<div class="place-card-grad"></div><div class="place-card-body"><div class="place-card-name">'+n+'</div></div></div>';
 }
 
-/* ══════════════════════════════════════════
-   NEWS SCREEN
-══════════════════════════════════════════ */
+/* ══ NEWS SCREEN ══ */
 async function loadNewsScreen(){
   var el=document.getElementById('news-list');
   try{
@@ -1606,9 +1489,7 @@ async function loadNewsScreen(){
     var activeCat=activeBtn?activeBtn.getAttribute('data-cat'):'official';
     newsScreenLoaded=true;
     renderNews(allNews.filter(function(n){return n.category===activeCat;}));
-  }catch(e){
-    el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';
-  }
+  }catch(e){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';}
 }
 function filterNews(cat,btn){
   document.querySelectorAll('#screen-news .seg-btn').forEach(function(t){t.classList.remove('active');});
@@ -1643,9 +1524,7 @@ function renderNews(items){
   }).join('');
 }
 
-/* ══════════════════════════════════════════
-   GUIDE
-══════════════════════════════════════════ */
+/* ══ GUIDE ══ */
 var FM={
   'admin-branches':{cat:'branches',    icon:'lucide:landmark',      color:'var(--green)',  bg:'var(--green-l)'},
   'education':     {cat:'education',   icon:'lucide:graduation-cap', color:'var(--blue)',   bg:'var(--blue-l)'},
@@ -1687,25 +1566,14 @@ function makeFacCard(f,m,tab){
     +'</div>';
 }
 
-/* ══════════════════════════════════════════
-   MODALS
-══════════════════════════════════════════ */
+/* ══ MODALS ══ */
 function om(id){document.getElementById(id).classList.add('open');}
 function cm(id){document.getElementById(id).classList.remove('open');}
 function initModalSwipe(sheet,overlayId){
   var startY=0,startScroll=0,dragging=false;
   sheet.addEventListener('touchstart',function(e){startY=e.touches[0].clientY;startScroll=sheet.scrollTop;dragging=true;},{passive:true});
-  sheet.addEventListener('touchmove',function(e){
-    if(!dragging)return;
-    var dy=e.touches[0].clientY-startY;
-    if(dy>0&&startScroll<=0){sheet.style.transform='translateY('+dy+'px)';sheet.style.transition='none';}
-  },{passive:true});
-  sheet.addEventListener('touchend',function(e){
-    if(!dragging)return;dragging=false;
-    var dy=e.changedTouches[0].clientY-startY;
-    sheet.style.transition='';sheet.style.transform='';
-    if(dy>80&&startScroll<=0)cm(overlayId);
-  },{passive:true});
+  sheet.addEventListener('touchmove',function(e){if(!dragging)return;var dy=e.touches[0].clientY-startY;if(dy>0&&startScroll<=0){sheet.style.transform='translateY('+dy+'px)';sheet.style.transition='none';}},{passive:true});
+  sheet.addEventListener('touchend',function(e){if(!dragging)return;dragging=false;var dy=e.changedTouches[0].clientY-startY;sheet.style.transition='';sheet.style.transform='';if(dy>80&&startScroll<=0)cm(overlayId);},{passive:true});
 }
 function album(elId,albums){
   var el=document.getElementById(elId);
@@ -1718,9 +1586,7 @@ function albumBig(elId,albums){
   var el=document.getElementById(elId);
   var a=Array.isArray(albums)?albums:[];
   if(!a.length){el.innerHTML='';return;}
-  el.innerHTML=a.map(function(x){
-    return '<div style="line-height:0;margin-bottom:3px"><img src="'+x.image_url+'" alt="" loading="lazy" data-lb="'+x.image_url+'" style="width:100%;display:block;cursor:pointer;pointer-events:auto;touch-action:manipulation"></div>';
-  }).join('');
+  el.innerHTML=a.map(function(x){return '<div style="line-height:0;margin-bottom:3px"><img src="'+x.image_url+'" alt="" loading="lazy" data-lb="'+x.image_url+'" style="width:100%;display:block;cursor:pointer;pointer-events:auto;touch-action:manipulation"></div>';}).join('');
 }
 async function openNewsModal(id){
   var n=allNews.find(function(x){return x.id==id;});
@@ -1816,9 +1682,7 @@ async function openFacModal(id,tab){
   }catch(e){}
 }
 
-/* ══════════════════════════════════════════
-   MAP
-══════════════════════════════════════════ */
+/* ══ MAP ══ */
 var appMap=null;
 function initMap2(){
   mapDone=true;
@@ -1883,19 +1747,19 @@ async function loadMapData(){
   }catch(e){}
 }
 
-/* ══════════════════════════════════════════
-   HEADER SHADOW
-══════════════════════════════════════════ */
+/* ══ HEADER SHADOW + زر القائمة يختفي مع الهيدر ══ */
 function updateHeaderShadow(){
-  var header=document.getElementById('shared-header');if(!header)return;
+  var header=document.getElementById('shared-header');
+  var menuBtn=document.getElementById('header-more-btn');
+  if(!header)return;
   var scroll=document.querySelector('#screen-'+curTab+' .scroll-area');
   var st=scroll?scroll.scrollTop:0;
   header.classList.toggle('scrolled',st>4);
+  /* الزر يختفي مع الهيدر بنفس اللحظة بشكل سلس */
+  if(menuBtn)menuBtn.classList.toggle('header-hidden',st>4);
 }
 
-/* ══════════════════════════════════════════
-   MAYORS MODAL
-══════════════════════════════════════════ */
+/* ══ MAYORS MODAL ══ */
 async function openPrevMayorsModal(){
   var el=document.getElementById('prev-mayors-list');
   om('m-prev-mayors');
@@ -1920,14 +1784,10 @@ async function openPrevMayorsModal(){
         +(period?'<div style="font-size:11px;color:var(--muted);margin-top:3px;display:flex;align-items:center;gap:4px"><iconify-icon icon="lucide:calendar" style="font-size:11px;pointer-events:none"></iconify-icon>'+period+'</div>':'')
         +'</div></div>';
     }).join('');
-  }catch(e){
-    if(el)el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر تحميل البيانات</p></div>';
-  }
+  }catch(e){if(el)el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر تحميل البيانات</p></div>';}
 }
 
-/* ══════════════════════════════════════════
-   Event Delegation — تفويض الأحداث العام
-══════════════════════════════════════════ */
+/* ══ EVENT DELEGATION ══ */
 function initEventDelegation(){
   document.addEventListener('click',function(e){
     var t=e.target;
@@ -2005,9 +1865,7 @@ function initEventDelegation(){
   });
 }
 
-/* ══════════════════════════════════════════
-   INIT
-══════════════════════════════════════════ */
+/* ══ INIT ══ */
 window.addEventListener('load',function(){
   applyHeaderHeight();
   window.addEventListener('resize',function(){applyHeaderHeight();});
