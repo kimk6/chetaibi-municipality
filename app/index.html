@@ -167,9 +167,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .news-card-img-ph{width:100%;height:125px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .news-card-body{padding:10px 12px 6px;flex:1;display:flex;flex-direction:column;gap:4px;}
 .news-card-excerpt{font-size:11px;color:var(--muted);line-height:1.45;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;flex:1;}
-
-/* ══ عنوان بطاقة المستجدات ══ */
-/* التعديل 3: عنوان يظهر تحت الصورة مباشرة في بطاقات المستجدات */
 .news-card-title{
   font-size:12px;font-weight:800;color:var(--text);
   padding:7px 12px 0;
@@ -177,7 +174,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
   overflow:hidden;
 }
-
 .news-card-footer{
   display:flex;justify-content:space-between;align-items:center;
   padding:6px 12px;border-top:1px solid var(--border-light);margin-top:auto;
@@ -200,19 +196,15 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .place-card-body{position:absolute;bottom:0;left:0;right:0;padding:10px;pointer-events:none;}
 .place-card-name{font-size:12px;font-weight:900;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.6);line-height:1.3;}
 .place-card-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
-
-/* ══ التعديل 2: توسيط أزرار التصنيفات في الأرشيف ══ */
 .seg-bar-wrap{background:var(--surface);border-bottom:1px solid var(--border-light);}
 .seg-bar{
   display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;
   overscroll-behavior-x:contain;padding:10px 14px;
 }
-/* توسيط خاص بصفحة الأرشيف فقط */
 #screen-archive .seg-bar{
   justify-content:center;
   flex-wrap:nowrap;
 }
-
 .seg-btn{
   flex-shrink:0;display:flex;align-items:center;gap:6px;
   padding:0 16px;height:36px;border-radius:99px;
@@ -596,7 +588,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               <span class="section-title">
                 <iconify-icon icon="lucide:waves" style="color:#0ea5e9;pointer-events:none"></iconify-icon>شواطئ شطايبي
               </span>
-              <button class="see-all" onclick="switchTab('map')">على الخريطة</button>
+              <!-- التعديل 3: زر الشواطئ يفتح الخريطة مع فلتر beach -->
+              <button class="see-all" onclick="switchTabWithFilter('map','beach')">على الخريطة</button>
             </div>
             <div class="h-scroll" id="h-beaches">
               <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
@@ -608,7 +601,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               <span class="section-title">
                 <iconify-icon icon="lucide:sun" style="color:#f59e0b;pointer-events:none"></iconify-icon>معالم سياحية
               </span>
-              <button class="see-all" onclick="switchTab('map')">على الخريطة</button>
+              <!-- التعديل 3: زر المعالم يفتح الخريطة مع فلتر tour -->
+              <button class="see-all" onclick="switchTabWithFilter('map','tour')">على الخريطة</button>
             </div>
             <div class="h-scroll" id="h-tourism">
               <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
@@ -757,8 +751,10 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 
     <!-- ══ MORE ══ -->
     <div class="screen hidden" id="screen-more">
+      <!-- التعديل 2: إضافة scroll-area لصفحة المزيد لتغطية الهيدر عند الاسكرول -->
       <div class="scroll-area" id="scroll-more">
         <div class="content-block">
+
           <div id="mayor-card" style="margin:18px 18px 12px;background:linear-gradient(135deg,#042f1e 0%,#064e3b 50%,#059669 100%);border-radius:20px;padding:18px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 24px rgba(5,150,105,.25);position:relative;overflow:hidden;">
             <div style="position:absolute;top:-20px;left:-20px;width:100px;height:100px;background:rgba(255,255,255,.04);border-radius:50%;pointer-events:none"></div>
             <div style="position:absolute;bottom:-30px;right:10px;width:120px;height:120px;background:rgba(255,255,255,.03);border-radius:50%;pointer-events:none"></div>
@@ -827,17 +823,16 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             <div class="app-footer-main">© 2026 بلدية شطايبي - جميع الحقوق محفوظة</div>
             <div class="app-footer-sub">تم التطوير بجهود الكفاءات الداخلية لبلدية شطايبي</div>
           </div>
+
         </div>
       </div>
     </div>
 
     <!-- ══ ARCHIVE ══ -->
-    <!-- تم حذف div.home-header بالكامل -->
     <div class="screen hidden" id="screen-archive">
       <div class="scroll-area" id="scroll-archive">
         <div class="content-block" style="padding-top:12px">
           <div class="seg-bar-wrap">
-            <!-- التعديل 2: تمت إضافة justify-content:center عبر CSS لصفحة الأرشيف -->
             <div class="seg-bar">
               <button class="seg-btn active" id="arch-tab-compare" onclick="switchArchTab('compare',this)">
                 <iconify-icon icon="lucide:git-compare"></iconify-icon>مقارنة الأمس بالحاضر
@@ -1028,6 +1023,9 @@ var mapLayers={beach:[],tour:[],fac:[]};
 var activeMapFilter='all';
 var filterMenuOpen=false;
 var locateMarker=null;
+/* التعديل 3: فلتر مسبق ينتظر تطبيقه بعد فتح الخريطة */
+var pendingMapFilter=null;
+
 var FILTER_CFG={
   all:  {icon:'lucide:layers',    labelFull:'الكل'},
   fac:  {icon:'lucide:building-2',labelFull:'المرافق'},
@@ -1058,6 +1056,7 @@ function closeFilterMenu(){
   document.getElementById('map-filter-menu').classList.remove('open');
   document.getElementById('filter-btn-arrow').style.transform='rotate(0deg)';
 }
+
 function selectMapFilter(type,el){
   document.querySelectorAll('.mf-item').forEach(function(i){i.classList.remove('active');});
   el.classList.add('active');
@@ -1084,6 +1083,18 @@ function selectMapFilter(type,el){
   }
   closeMapCard();
   setTimeout(function(){closeFilterMenu();},120);
+}
+
+/* ══ التعديل 3: تطبيق الفلتر برمجياً بدون فتح القائمة ══ */
+function applyMapFilterSilent(type){
+  var el=document.querySelector('.mf-item[data-type="'+type+'"]');
+  if(el){selectMapFilter(type,el);}
+}
+
+/* ══ التعديل 3: الانتقال للخريطة مع فلتر محدد ══ */
+function switchTabWithFilter(tab,filterType){
+  pendingMapFilter=filterType;
+  switchTab(tab);
 }
 
 function locateUser(){
@@ -1134,6 +1145,7 @@ function applyHeaderHeight(){
   var h=header.offsetHeight;
   container.style.marginTop=(-h)+'px';
   document.documentElement.style.setProperty('--header-h',h+'px');
+  /* التعديل 2: إضافة 'more' لقائمة الصفحات التي تحصل على paddingTop */
   ['home','news','guide','more','archive'].forEach(function(id){
     var scroll=document.querySelector('#screen-'+id+' .scroll-area');
     if(scroll)scroll.style.paddingTop=h+'px';
@@ -1183,7 +1195,20 @@ function switchTab(t){
   prevTab=curTab;
   curTab=t;
   updateHeaderShadow();
-  if(t==='map'&&!mapDone)initMap2();
+
+  if(t==='map'){
+    if(!mapDone){
+      initMap2();
+    } else if(pendingMapFilter){
+      /* الخريطة جاهزة: طبّق الفلتر فوراً */
+      var pf=pendingMapFilter;
+      pendingMapFilter=null;
+      setTimeout(function(){applyMapFilterSilent(pf);},150);
+    } else if(pendingMapFilter===null&&activeMapFilter!=='all'){
+      /* لا فلتر معلّق: لا تغيير */
+    }
+  }
+
   if(t==='news'&&!newsScreenLoaded)loadNewsScreen();
   if(t==='guide')setTimeout(function(){resetGuideTab();},DUR+30);
   if(t==='home')loadHome();
@@ -1204,7 +1229,6 @@ function resetGuideTab(){
 }
 
 /* ══ SWIPE ══ */
-/* التعديل 1: السحب في صفحة الأرشيف يعمل فوق البطاقات وأزرار التصنيفات */
 function initSwipe(scrollAreaId,getNext){
   var el=document.getElementById(scrollAreaId);
   if(!el)return;
@@ -1212,12 +1236,10 @@ function initSwipe(scrollAreaId,getNext){
   var isArchive=(scrollAreaId==='scroll-archive');
 
   el.addEventListener('touchstart',function(e){
-    /* في صفحة الأرشيف: السحب يعمل فوق كل شيء */
     if(isArchive){
       startX=e.touches[0].clientX;startY=e.touches[0].clientY;tracking=true;
       return;
     }
-    /* في بقية الصفحات: الاستثناءات المعتادة */
     if(e.target.closest('.h-scroll')){tracking=false;return;}
     if(e.target.closest('.seg-bar-wrap')){tracking=false;return;}
     if(e.target.closest('.archive-card')){tracking=false;return;}
@@ -1257,31 +1279,37 @@ function swipeGuide(dir){
 }
 function swipeMore(dir){if(dir===-1)switchTab('map');}
 
-/* ══ التعديل 1: السحب في صفحة الأرشيف ══
- * dir = 1  → سحب لليمين (إلى الأمام في القائمة RTL = تنقل للخلف)
- * dir = -1 → سحب لليسار (إلى الخلف في القائمة RTL = تنقل للأمام)
+/* ══ التعديل 1: السحب في صفحة الأرشيف - الترتيب الصحيح ══
  *
- * المنطق المطلوب:
- * compare + يمين (dir=1)  → المزيد
- * compare + يسار (dir=-1) → الرئيسية
- * historic + يمين (dir=1) → المزيد
- * historic + يسار (dir=-1)→ compare
+ * RTL: سحب لليمين = dir=1 | سحب لليسار = dir=-1
+ *
+ * compare  + يمين (dir=1)  → historic
+ * compare  + يسار (dir=-1) → home
+ * historic + يمين (dir=1)  → more
+ * historic + يسار (dir=-1) → compare
  */
 function swipeArchive(dir){
-  if(dir===1){
-    /* سحب يمين من أي تصنيف → المزيد */
-    switchTab('more');
-    return;
-  }
-  /* dir === -1 → سحب يسار */
-  if(archTab==='historic'){
-    /* historic + يسار → compare */
-    var nextBtn=document.getElementById('arch-tab-compare');
-    switchArchTab('compare',nextBtn);
-    if(nextBtn)nextBtn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  if(archTab==='compare'){
+    if(dir===1){
+      /* compare + يمين → historic */
+      var nextBtn=document.getElementById('arch-tab-historic');
+      switchArchTab('historic',nextBtn);
+      if(nextBtn)nextBtn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+    } else {
+      /* compare + يسار → الرئيسية */
+      switchTab('home');
+    }
   } else {
-    /* compare + يسار → الرئيسية */
-    switchTab('home');
+    /* historic */
+    if(dir===1){
+      /* historic + يمين → المزيد */
+      switchTab('more');
+    } else {
+      /* historic + يسار → compare */
+      var nextBtn=document.getElementById('arch-tab-compare');
+      switchArchTab('compare',nextBtn);
+      if(nextBtn)nextBtn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+    }
   }
 }
 
@@ -1296,7 +1324,6 @@ function makeDateBadge(dateStr){
   return '<span class="card-date"><iconify-icon icon="lucide:calendar-days"></iconify-icon>'+dateStr+'</span>';
 }
 
-/* التعديل 3: بطاقة المستجدات مع عنوان تحت الصورة */
 function makeNewsCard(n,showTitle){
   var s=NS[n.category]||NS.official;
   var excerpt=(n.content||'').substring(0,90)+'...';
@@ -1304,7 +1331,6 @@ function makeNewsCard(n,showTitle){
   var img=n.image_url
     ?'<img class="news-card-img" src="'+n.image_url+'" alt="" loading="lazy">'
     :'<div class="news-card-img-ph" style="background:'+s.grad+'"><iconify-icon icon="'+icon+'" style="color:rgba(255,255,255,.75);font-size:2rem;pointer-events:none"></iconify-icon></div>';
-  /* العنوان يظهر فقط إذا طُلب ذلك (بطاقات المستجدات) وكان العنوان موجوداً */
   var titleHtml='';
   if(showTitle&&n.title){
     titleHtml='<div class="news-card-title">'+n.title+'</div>';
@@ -1418,7 +1444,6 @@ async function loadHOfficial(){
   try{
     var d=await api('/api/news');if(d.data)allNews=d.data;
     var items=(d.data||[]).filter(function(n){return n.category==='official';}).slice(0,10);
-    /* التعديل 3: بطاقات الإعلانات في الرئيسية بدون عنوان (false) */
     el.innerHTML=items.length?items.map(function(n){return makeNewsCard(n,false);}).join(''):'';
   }catch(e){el.innerHTML='';}
 }
@@ -1427,7 +1452,6 @@ async function loadHNews(){
   try{
     var d=await api('/api/news');if(d.data)allNews=d.data;
     var items=(d.data||[]).filter(function(n){return n.category!=='official'&&n.category!=='poster';}).slice(0,10);
-    /* التعديل 3: بطاقات المستجدات مع عنوان (true) */
     el.innerHTML=items.length?items.map(function(n){return makeNewsCard(n,true);}).join(''):'';
   }catch(e){el.innerHTML='';}
 }
@@ -1500,8 +1524,6 @@ function renderNews(items){
     var imgW=n.image_url
       ?'<div class="announce-img-wrap"><img src="'+n.image_url+'" alt="" loading="lazy"></div>'
       :'<div class="announce-img-wrap" style="background:'+s.grad+';height:90px"><iconify-icon icon="'+(n.category==='official'?'lucide:megaphone':'lucide:clipboard-list')+'" style="color:rgba(255,255,255,.65);font-size:2.2rem;pointer-events:none"></iconify-icon></div>';
-
-    /* التعديل 4: إخفاء البادج في تصنيف الإعلانات (official) فقط */
     var badgeHtml='';
     if(n.category!=='official'){
       badgeHtml='<span class="news-badge" style="'+s.bs+'">'+lbl+'</span>';
@@ -1509,7 +1531,6 @@ function renderNews(items){
     var headerRow=(badgeHtml||pin)
       ?'<div style="display:flex;align-items:center;gap:7px;margin-bottom:6px">'+badgeHtml+pin+'</div>'
       :'';
-
     return '<div class="announce-card fade-in" onclick="openNewsModal('+n.id+')">'
       +imgW+'<div class="announce-body">'
       +headerRow
@@ -1521,7 +1542,7 @@ function renderNews(items){
 }
 
 var FM={
-  'admin-branches':{cat:'branches',   icon:'lucide:landmark',       color:'#059669',bg:'#d1fae5'},
+  'admin-branches':{cat:'branches',    icon:'lucide:landmark',       color:'#059669',bg:'#d1fae5'},
   'education':     {cat:'education',   icon:'lucide:graduation-cap', color:'#2563eb',bg:'#dbeafe'},
   'health':        {cat:'health',      icon:'lucide:heart-pulse',    color:'#dc2626',bg:'#fee2e2'},
   'public-bodies': {cat:'public_bodies',icon:'lucide:building-2',   color:'#7c3aed',bg:'#ede9fe'},
@@ -1716,7 +1737,14 @@ function initMap2(){
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(appMap);
     setTimeout(function(){appMap.invalidateSize();},300);
     appMap.on('click',function(){closeMapCard();closeFilterMenu();});
-    loadMapData();
+    loadMapData().then(function(){
+      /* التعديل 3: بعد تحميل بيانات الخريطة، طبّق الفلتر المعلّق إن وجد */
+      if(pendingMapFilter){
+        var pf=pendingMapFilter;
+        pendingMapFilter=null;
+        setTimeout(function(){applyMapFilterSilent(pf);},200);
+      }
+    });
   },100);
 }
 
