@@ -671,6 +671,10 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 <span>2021 - 2025</span>
               </div>
             </div>
+            <button onclick="openPrevMayorsModal()" style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.85);padding:8px 12px;border-radius:12px;font-family:'Cairo',sans-serif;font-size:10px;font-weight:800;cursor:pointer;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:3px;position:relative;z-index:1;">
+              <iconify-icon icon="lucide:users" style="font-size:18px"></iconify-icon>
+              <span>السابقون</span>
+            </button>
           </div>
           <!-- قائمة الروابط -->
           <div style="margin:0 18px 0;background:var(--card);border-radius:18px;overflow:hidden;box-shadow:var(--shadow-sm);border:1px solid var(--border-light)">
@@ -831,6 +835,25 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
       <div class="modal-desc" id="mf-desc"></div>
       <div class="modal-meta" id="mf-meta"></div>
       <div id="mf-album"></div>
+    </div>
+  </div>
+</div>
+
+<!-- modal: الرؤساء السابقون -->
+<div class="modal-overlay" id="m-prev-mayors" onclick="cm('m-prev-mayors')">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-drag"></div>
+    <div class="modal-body">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border-light)">
+        <div style="width:40px;height:40px;border-radius:12px;background:var(--green-l);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <iconify-icon icon="lucide:users" style="color:var(--green);font-size:20px"></iconify-icon>
+        </div>
+        <div>
+          <div style="font-size:15px;font-weight:900;color:var(--text)">الرؤساء السابقون</div>
+          <div style="font-size:11px;color:var(--muted)">رؤساء المجلس الشعبي البلدي</div>
+        </div>
+      </div>
+      <div id="prev-mayors-list"></div>
     </div>
   </div>
 </div>
@@ -1638,24 +1661,59 @@ function updateHeaderShadow(){
 }
 
 async function loadMayor(){
+  var nameEl=document.getElementById('mayor-name');
+  var photoEl=document.getElementById('mayor-photo');
+  var iconEl=document.getElementById('mayor-icon');
+  var mandateEl=document.getElementById('mayor-mandate');
   try{
     var d=await api('/api/mayor');
-    var m=d.data||d;
-    if(!m)return;
-    var nameEl=document.getElementById('mayor-name');
-    var photoEl=document.getElementById('mayor-photo');
-    var iconEl=document.getElementById('mayor-icon');
-    if(nameEl && m.name) nameEl.textContent=m.name;
-    if(photoEl && m.photo_url){
+    var m=null;
+    if(d&&d.data&&(d.data.name||d.data.photo_url)) m=d.data;
+    else if(d&&d.name) m=d;
+    else if(d&&Array.isArray(d.data)&&d.data.length) m=d.data[0];
+    if(!m){if(nameEl) nameEl.textContent='--';return;}
+    if(nameEl) nameEl.textContent=m.name||'--';
+    if(m.photo_url&&photoEl){
+      photoEl.onload=function(){photoEl.style.display='block';if(iconEl) iconEl.style.display='none';};
+      photoEl.onerror=function(){photoEl.style.display='none';};
       photoEl.src=m.photo_url;
-      photoEl.style.display='block';
-      if(iconEl) iconEl.style.display='none';
     }
-    if(m.mandate && document.getElementById('mayor-mandate')){
-      document.getElementById('mayor-mandate').innerHTML=
-        '<iconify-icon icon="lucide:calendar" style="font-size:12px"></iconify-icon><span>'+m.mandate+'</span>';
+    var manVal=m.mandate||m.period||m.term||'';
+    if(manVal&&mandateEl){
+      mandateEl.innerHTML='<iconify-icon icon="lucide:calendar" style="font-size:12px"></iconify-icon><span>'+manVal+'</span>';
     }
-  }catch(e){}
+  }catch(e){
+    console.warn('loadMayor:',e);
+    if(nameEl) nameEl.textContent='--';
+  }
+}
+
+async function openPrevMayorsModal(){
+  var el=document.getElementById('prev-mayors-list');
+  if(el) el.innerHTML='<div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>';
+  om('m-prev-mayors');
+  try{
+    var d=await api('/api/mayor/previous');
+    var list=d.data||d||[];
+    if(!Array.isArray(list)||!list.length){
+      if(el) el.innerHTML='<div class="empty"><iconify-icon icon="lucide:users"></iconify-icon><p>لا توجد بيانات</p></div>';
+      return;
+    }
+    if(el) el.innerHTML=list.map(function(m){
+      var photo=m.photo_url
+        ?'<img src="'+m.photo_url+'" style="width:48px;height:48px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid var(--border)">'
+        :'<div style="width:48px;height:48px;border-radius:50%;background:var(--green-l);display:flex;align-items:center;justify-content:center;flex-shrink:0"><iconify-icon icon="lucide:user" style="color:var(--green);font-size:22px"></iconify-icon></div>';
+      var mandate=m.mandate||m.period||m.term||'';
+      return '<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border-light)">'
+        +photo
+        +'<div style="flex:1;min-width:0">'
+        +'<div style="font-size:13px;font-weight:800;color:var(--text)">'+(m.name||'--')+'</div>'
+        +(mandate?'<div style="font-size:11px;color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:4px"><iconify-icon icon="lucide:calendar" style="font-size:11px"></iconify-icon>'+mandate+'</div>':'')
+        +'</div></div>';
+    }).join('');
+  }catch(e){
+    if(el) el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر تحميل البيانات</p></div>';
+  }
 }
 
 window.addEventListener('load',function(){
