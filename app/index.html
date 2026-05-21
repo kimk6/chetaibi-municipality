@@ -63,7 +63,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 
 /* ══ HEADER ══ */
 #shared-header{
-  position:relative;z-index:3;flex-shrink:0;
+  position:relative;z-index:1;flex-shrink:0;
   background:linear-gradient(145deg,#042f1e 0%,var(--green-d) 40%,var(--green-m) 75%,var(--green) 100%);
   overflow:hidden;
 }
@@ -104,7 +104,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   border:1.5px solid rgba(255,255,255,.28);
   cursor:pointer;flex-shrink:0;
   transition:background .15s,transform .1s;
-  position:relative;z-index:2;
+  /* يرتفع فوق كل شيء باستقلالية تامة */
+  position:relative;z-index:9999;
 }
 .header-more-btn:active{background:rgba(255,255,255,.32);transform:scale(.91);}
 .hamburger-lines{
@@ -140,11 +141,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   box-shadow:0 -2px 12px rgba(0,0,0,.08);
   z-index:1;
   transition:border-radius .28s ease;
-}
-/* الورقة تغطي الهيدر تماماً → ترتفع فوقه وتزيل الـ radius */
-.content-block.over-header{
-  z-index:4;
-  border-radius:0;
 }
 #screen-map .scroll-area{overflow:hidden;padding-top:0 !important;}
 #app-map{position:absolute;inset:0;width:100%;height:100%;}
@@ -1953,13 +1949,7 @@ function updateHeaderShadow(){
   if(!header) return;
   var scroll=document.querySelector('#screen-'+curTab+' .scroll-area');
   var st=scroll?scroll.scrollTop:0;
-  /* elevation على الهيدر */
   header.classList.toggle('scrolled', st>4);
-  /* الورقة تتخطى الهيدر → ترتفع z-index فوقه */
-  var hh=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h'))||0;
-  document.querySelectorAll('#screen-'+curTab+' .content-block').forEach(function(b){
-    b.classList.toggle('over-header', hh>0 && st>=hh);
-  });
 }
 
 /* ══════════════════════════════════════════
