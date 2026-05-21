@@ -521,6 +521,19 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
             </div>
           </div>
+
+          <!-- ══ أرشيف شطايبي ══ -->
+          <div class="section" style="padding-bottom:8px">
+            <div class="section-header">
+              <span class="section-title">
+                <iconify-icon icon="lucide:scroll-text" style="color:#b45309;pointer-events:none"></iconify-icon>أرشيف شطايبي
+              </span>
+            </div>
+            <!-- بطاقة الأرشيف المميزة -->
+            <div id="h-archive-wrap" style="margin:0 18px">
+              <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1200,6 +1213,56 @@ function makeDateBadge(dateStr){
   return '<span class="card-date"><iconify-icon icon="lucide:calendar-days"></iconify-icon>'+dateStr+'</span>';
 }
 
+async function loadHArchive(){
+  var el=document.getElementById('h-archive-wrap');
+  try{
+    var d=await api('/api/archives');
+    var all=Array.isArray(d.data)?d.data:(Array.isArray(d)?d:[]);
+    if(!all.length){if(el)el.innerHTML='';return;}
+    // نأخذ 6 عناصر — نفضل المقارنة (لها image_old_url)
+    var compare=all.filter(function(a){return a.image_old_url&&a.image_old_url.trim();});
+    var historic=all.filter(function(a){return !a.image_old_url||!a.image_old_url.trim();});
+    var items=compare.concat(historic).slice(0,6);
+    var html='<div class="h-scroll" style="padding:2px 0 14px">';
+    items.forEach(function(a){
+      var hasOld=a.image_old_url&&a.image_old_url.trim();
+      var hasNew=a.image_new_url&&a.image_new_url.trim();
+      var title=a.title||a.title_ar||'';
+      if(hasOld&&hasNew){
+        // بطاقة مقارنة — صورتان جنباً إلى جنب
+        html+='<div style="min-width:240px;max-width:240px;border-radius:18px;overflow:hidden;box-shadow:var(--shadow-md);flex-shrink:0;scroll-snap-align:start;background:#1a1a2e;cursor:pointer;">'
+          +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;height:130px;">'
+          +'<div style="position:relative;overflow:hidden" onclick="openLightbox(''+a.image_old_url.replace(/'/g,"\'")+'')">'
+          +'<img src="'+a.image_old_url+'" style="width:100%;height:100%;object-fit:cover" loading="lazy">'
+          +'<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6),transparent)"></div>'
+          +'<span style="position:absolute;bottom:5px;right:6px;font-size:9px;font-weight:800;color:#fff;background:rgba(0,0,0,.5);padding:2px 6px;border-radius:99px">الأمس</span>'
+          +'</div>'
+          +'<div style="position:relative;overflow:hidden" onclick="openLightbox(''+a.image_new_url.replace(/'/g,"\'")+'')">'
+          +'<img src="'+a.image_new_url+'" style="width:100%;height:100%;object-fit:cover" loading="lazy">'
+          +'<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6),transparent)"></div>'
+          +'<span style="position:absolute;bottom:5px;left:6px;font-size:9px;font-weight:800;color:#fff;background:rgba(5,150,105,.7);padding:2px 6px;border-radius:99px">اليوم</span>'
+          +'</div>'
+          +'</div>'
+          +(title?'<div style="padding:8px 11px;background:#fff"><div style="font-size:11px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+title+'</div></div>':'')
+          +'</div>';
+      } else if(hasNew||hasOld){
+        // بطاقة صورة واحدة
+        var imgUrl=hasNew?a.image_new_url:a.image_old_url;
+        html+='<div style="min-width:160px;max-width:160px;border-radius:18px;overflow:hidden;box-shadow:var(--shadow-md);flex-shrink:0;scroll-snap-align:start;cursor:pointer;position:relative;height:180px" onclick="openLightbox(''+imgUrl.replace(/'/g,"\'")+'')">'
+          +'<img src="'+imgUrl+'" style="width:100%;height:100%;object-fit:cover" loading="lazy">'
+          +'<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.65),transparent)"></div>'
+          +(title?'<div style="position:absolute;bottom:0;left:0;right:0;padding:8px 10px"><div style="font-size:10.5px;font-weight:800;color:#fff;line-height:1.3">'+title+'</div></div>':'')
+          +'</div>';
+      }
+    });
+    html+='</div>';
+    if(el) el.innerHTML=html;
+  }catch(e){
+    if(el) el.innerHTML='';
+    console.warn('loadHArchive:',e);
+  }
+}
+
 function makeNewsCard(n){
   var s=NS[n.category]||NS.official;
   var excerpt=(n.content||'').substring(0,90)+'...';
@@ -1215,7 +1278,7 @@ function makeNewsCard(n){
     +'</div></div>';
 }
 
-function loadHome(){loadHOfficial();loadHNews();loadHBeaches();loadHTourism();}
+function loadHome(){loadHOfficial();loadHNews();loadHBeaches();loadHTourism();loadHArchive();}
 
 async function loadHOfficial(){
   var el=document.getElementById('h-official');
