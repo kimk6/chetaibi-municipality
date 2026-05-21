@@ -655,7 +655,25 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     <div class="screen hidden" id="screen-more">
       <div class="scroll-area" id="scroll-more">
         <div class="content-block">
-          <div style="margin:18px 18px 0;background:var(--card);border-radius:18px;overflow:hidden;box-shadow:var(--shadow-sm);border:1px solid var(--border-light)">
+          <!-- بطاقة رئيس المجلس -->
+          <div id="mayor-card" style="margin:18px 18px 12px;background:linear-gradient(135deg,#042f1e 0%,#064e3b 50%,#059669 100%);border-radius:20px;padding:18px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 24px rgba(5,150,105,.25);position:relative;overflow:hidden;">
+            <div style="position:absolute;top:-20px;left:-20px;width:100px;height:100px;background:rgba(255,255,255,.04);border-radius:50%;pointer-events:none"></div>
+            <div style="position:absolute;bottom:-30px;right:10px;width:120px;height:120px;background:rgba(255,255,255,.03);border-radius:50%;pointer-events:none"></div>
+            <div id="mayor-photo-wrap" style="width:64px;height:64px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2.5px solid rgba(255,255,255,.3);box-shadow:0 4px 12px rgba(0,0,0,.2);background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;">
+              <iconify-icon id="mayor-icon" icon="lucide:user" style="font-size:28px;color:rgba(255,255,255,.5)"></iconify-icon>
+              <img id="mayor-photo" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover;">
+            </div>
+            <div style="flex:1;min-width:0;position:relative;z-index:1;">
+              <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.55);letter-spacing:.05em;margin-bottom:3px;">رئيس المجلس الشعبي البلدي</div>
+              <div id="mayor-name" style="font-size:16px;font-weight:900;color:#fff;letter-spacing:-.2px;line-height:1.2;">جاري التحميل...</div>
+              <div id="mayor-mandate" style="font-size:11px;color:rgba(255,255,255,.5);margin-top:4px;display:flex;align-items:center;gap:4px;">
+                <iconify-icon icon="lucide:calendar" style="font-size:12px"></iconify-icon>
+                <span>2021 - 2025</span>
+              </div>
+            </div>
+          </div>
+          <!-- قائمة الروابط -->
+          <div style="margin:0 18px 0;background:var(--card);border-radius:18px;overflow:hidden;box-shadow:var(--shadow-sm);border:1px solid var(--border-light)">
             <div class="more-item" onclick="window.location.href='/'">
               <div class="more-icon" style="background:#d1fae5">
                 <iconify-icon icon="lucide:globe" style="color:#059669;font-size:20px;pointer-events:none"></iconify-icon>
@@ -849,7 +867,7 @@ async function api(u){
 }
 
 var curTab='home',mapDone=false,allNews=[],facCat='admin-branches';
-var newsScreenLoaded=false;
+var newsScreenLoaded=false,_mayorLoaded=false;
 var TAB_ORDER=['home','news','guide','map','more'];
 var NEWS_CATS=['official','activity','social','poster'];
 var GUIDE_TABS=['admin-branches','education','health','public-bodies','religious','cultural','sports'];
@@ -1009,6 +1027,7 @@ function switchTab(t){
   if(t==='news'&&!newsScreenLoaded)loadNewsScreen();
   if(t==='guide')setTimeout(function(){resetGuideTab();},DUR+30);
   if(t==='home')loadHome();
+  if(t==='more'&&!_mayorLoaded){_mayorLoaded=true;loadMayor();}
 }
 
 function resetGuideTab(){
@@ -1616,6 +1635,27 @@ function updateHeaderShadow(){
   var st=scroll?scroll.scrollTop:0;
   if(st>4)header.classList.add('scrolled');
   else header.classList.remove('scrolled');
+}
+
+async function loadMayor(){
+  try{
+    var d=await api('/api/mayor');
+    var m=d.data||d;
+    if(!m)return;
+    var nameEl=document.getElementById('mayor-name');
+    var photoEl=document.getElementById('mayor-photo');
+    var iconEl=document.getElementById('mayor-icon');
+    if(nameEl && m.name) nameEl.textContent=m.name;
+    if(photoEl && m.photo_url){
+      photoEl.src=m.photo_url;
+      photoEl.style.display='block';
+      if(iconEl) iconEl.style.display='none';
+    }
+    if(m.mandate && document.getElementById('mayor-mandate')){
+      document.getElementById('mayor-mandate').innerHTML=
+        '<iconify-icon icon="lucide:calendar" style="font-size:12px"></iconify-icon><span>'+m.mandate+'</span>';
+    }
+  }catch(e){}
 }
 
 window.addEventListener('load',function(){
