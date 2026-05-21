@@ -101,7 +101,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;
   -webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;
 }
-/* ══ حذف الانحناء نهائياً ══ */
 .content-block{
   background:var(--surface);
   border-radius:0;
@@ -306,8 +305,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .leaflet-control-attribution{display:none !important;}
 .news-badge{font-size:10px;font-weight:800;padding:2px 9px;border-radius:99px;display:inline-block;}
-
-/* ══ Map Controls ══ */
 #map-controls-right{
   position:absolute;top:16px;right:14px;
   z-index:1001;pointer-events:auto;
@@ -351,8 +348,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 #map-locate-btn iconify-icon{font-size:18px;pointer-events:none;}
 #map-locate-btn.locating iconify-icon{animation:pulse-loc .9s ease-in-out infinite alternate;}
 @keyframes pulse-loc{from{opacity:1;transform:scale(1);}to{opacity:.6;transform:scale(.85);}}
-
-/* ══ قائمة الفلتر ══ */
 #map-filter-menu{
   position:absolute;top:calc(100% + 10px);right:0;
   min-width:185px;background:var(--card);
@@ -388,8 +383,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   opacity:0;transition:opacity .15s;pointer-events:none;
 }
 .mf-item.active .mf-check{opacity:1;}
-
-/* ══ Map Popup Card - مخفي نهائياً ══ */
 #map-card-overlay{
   position:absolute;
   bottom:calc(var(--nav-h) + var(--safe-b));
@@ -398,15 +391,13 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   pointer-events:none;
   visibility:hidden;
   transform:translateY(calc(100% + 100px));
-  transition:transform .38s cubic-bezier(.32,1.2,.54,1),
-             visibility 0s linear .4s;
+  transition:transform .38s cubic-bezier(.32,1.2,.54,1),visibility 0s linear .4s;
 }
 #map-card-overlay.open{
   visibility:visible;
   transform:translateY(0);
   pointer-events:auto;
-  transition:transform .38s cubic-bezier(.32,1.2,.54,1),
-             visibility 0s linear 0s;
+  transition:transform .38s cubic-bezier(.32,1.2,.54,1),visibility 0s linear 0s;
 }
 .map-popup-card{
   margin:0 14px 14px;background:#fff;border-radius:24px;overflow:visible;
@@ -602,7 +593,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
       <div class="scroll-area">
         <div id="app-map"></div>
       </div>
-
       <!-- زر الفلتر أعلى اليمين -->
       <div id="map-controls-right">
         <div style="position:relative;">
@@ -635,14 +625,12 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           </div>
         </div>
       </div>
-
       <!-- زر الموقع أعلى اليسار -->
       <div id="map-controls-left">
         <button id="map-locate-btn" onclick="locateUser()">
           <iconify-icon icon="lucide:locate" id="locate-icon"></iconify-icon>
         </button>
       </div>
-
       <!-- بطاقة المعلم -->
       <div id="map-card-overlay">
         <div class="map-popup-card" id="map-card-inner" onclick="mapCardClick()">
@@ -869,7 +857,6 @@ var mapLayers={beach:[],tour:[],fac:[]};
 var activeMapFilter='all';
 var filterMenuOpen=false;
 var locateMarker=null;
-
 var FILTER_CFG={
   all:  {icon:'lucide:layers',    labelFull:'الكل'},
   fac:  {icon:'lucide:building-2',labelFull:'المرافق'},
@@ -883,14 +870,12 @@ function toggleFilterMenu(e){
   document.getElementById('map-filter-menu').classList.toggle('open',filterMenuOpen);
   document.getElementById('filter-btn-arrow').style.transform=filterMenuOpen?'rotate(180deg)':'rotate(0deg)';
 }
-
 function closeFilterMenu(){
   if(!filterMenuOpen)return;
   filterMenuOpen=false;
   document.getElementById('map-filter-menu').classList.remove('open');
   document.getElementById('filter-btn-arrow').style.transform='rotate(0deg)';
 }
-
 function selectMapFilter(type,el){
   document.querySelectorAll('.mf-item').forEach(function(i){i.classList.remove('active');});
   el.classList.add('active');
@@ -1040,39 +1025,127 @@ function resetGuideTab(){
   if(!alreadyLoaded){facCat=targetTab;loadFacTab(targetTab,firstBtn);}
 }
 
-function initSwipe(scrollAreaId,getNext){
-  var el=document.getElementById(scrollAreaId);if(!el)return;
+/* ══════════════════════════════════════════
+   دوال السحب المعدّلة
+══════════════════════════════════════════ */
+
+/**
+ * تسجيل مستمع السحب على منطقة التمرير
+ * - يتجاهل السحب فوق .h-scroll (البطاقات الأفقية)
+ * - يتجاهل السحب فوق .seg-bar-wrap (شريط التصنيفات)
+ * @param {string} scrollAreaId - id عنصر منطقة التمرير
+ * @param {function} getNext - دالة تستقبل dir: -1 يسار | 1 يمين
+ */
+function initSwipe(scrollAreaId, getNext){
+  var el=document.getElementById(scrollAreaId);
+  if(!el)return;
   var startX=0,startY=0,tracking=false;
+
   el.addEventListener('touchstart',function(e){
+    // تجاهل السحب فوق البطاقات الأفقية وشريط التصنيفات
+    if(e.target.closest('.h-scroll')){tracking=false;return;}
     if(e.target.closest('.seg-bar-wrap')){tracking=false;return;}
-    startX=e.touches[0].clientX;startY=e.touches[0].clientY;tracking=true;
+    startX=e.touches[0].clientX;
+    startY=e.touches[0].clientY;
+    tracking=true;
   },{passive:true});
+
   el.addEventListener('touchend',function(e){
-    if(!tracking)return;tracking=false;
+    if(!tracking)return;
+    tracking=false;
     var dx=e.changedTouches[0].clientX-startX;
     var dy=e.changedTouches[0].clientY-startY;
-    if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5)getNext(dx<0?-1:1);
+    // عتبة 60px أفقية + التأكد أن الحركة أفقية وليست عمودية
+    if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5){
+      getNext(dx<0?-1:1);
+    }
   },{passive:true});
 }
 
-function swipeNews(dir){
-  var active=document.querySelector('#screen-news .seg-btn.active');if(!active)return;
-  var idx=NEWS_CATS.indexOf(active.getAttribute('data-cat'));
-  var next=idx+dir;if(next<0||next>=NEWS_CATS.length)return;
-  var nextCat=NEWS_CATS[next];
-  var nextBtn=document.querySelector('#screen-news .seg-btn[data-cat="'+nextCat+'"]');
-  if(nextBtn){filterNews(nextCat,nextBtn);nextBtn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}
+/**
+ * سحب على الرئيسية:
+ * - يمين (dir=1)  → الأخبار
+ * - يسار (dir=-1) → لا شيء
+ */
+function swipeHome(dir){
+  if(dir===1){
+    switchTab('news');
+  }
 }
 
+/**
+ * سحب على الأخبار:
+ * - يمين (dir=1)  → تصنيف تالٍ، وإن انتهت → الدليل
+ * - يسار (dir=-1) → تصنيف سابق، وإن انتهت → الرئيسية
+ */
+function swipeNews(dir){
+  var active=document.querySelector('#screen-news .seg-btn.active');
+  if(!active)return;
+  var idx=NEWS_CATS.indexOf(active.getAttribute('data-cat'));
+  var next=idx+dir;
+
+  if(next<0){
+    // تجاوزنا أول تصنيف → الرئيسية
+    switchTab('home');
+    return;
+  }
+  if(next>=NEWS_CATS.length){
+    // تجاوزنا آخر تصنيف → الدليل
+    switchTab('guide');
+    return;
+  }
+
+  var nextCat=NEWS_CATS[next];
+  var nextBtn=document.querySelector('#screen-news .seg-btn[data-cat="'+nextCat+'"]');
+  if(nextBtn){
+    filterNews(nextCat,nextBtn);
+    nextBtn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  }
+}
+
+/**
+ * سحب على الدليل:
+ * - يمين (dir=1)  → تصنيف تالٍ، وإن انتهت → الخريطة
+ * - يسار (dir=-1) → تصنيف سابق، وإن انتهت → الأخبار
+ */
 function swipeGuide(dir){
   var idx=GUIDE_TABS.indexOf(facCat);
-  var next=idx+dir;if(next<0||next>=GUIDE_TABS.length)return;
+  var next=idx+dir;
+
+  if(next<0){
+    // تجاوزنا أول تصنيف → الأخبار
+    switchTab('news');
+    return;
+  }
+  if(next>=GUIDE_TABS.length){
+    // تجاوزنا آخر تصنيف → الخريطة
+    switchTab('map');
+    return;
+  }
+
   var nextTab=GUIDE_TABS[next];
   var btns=document.querySelectorAll('#screen-guide .seg-btn');
   var nextBtn=btns[next];
   loadFacTab(nextTab,nextBtn);
-  if(nextBtn)nextBtn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  if(nextBtn){
+    nextBtn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  }
 }
+
+/**
+ * سحب على المزيد:
+ * - يسار (dir=-1) → الخريطة
+ * - يمين (dir=1)  → لا شيء
+ */
+function swipeMore(dir){
+  if(dir===-1){
+    switchTab('map');
+  }
+}
+
+/* ══════════════════════════════════════════
+   نهاية دوال السحب
+══════════════════════════════════════════ */
 
 var NS={
   official:{grad:'linear-gradient(135deg,#ef4444,#b91c1c)',lbl:'إعلان رسمي',bs:'background:rgba(239,68,68,.12);color:#dc2626'},
@@ -1110,6 +1183,7 @@ async function loadHOfficial(){
     el.innerHTML=items.length?items.map(makeNewsCard).join(''):'';
   }catch(e){el.innerHTML='';}
 }
+
 async function loadHNews(){
   var el=document.getElementById('h-news');
   try{
@@ -1118,6 +1192,7 @@ async function loadHNews(){
     el.innerHTML=items.length?items.map(makeNewsCard).join(''):'';
   }catch(e){el.innerHTML='';}
 }
+
 async function loadHBeaches(){
   var el=document.getElementById('h-beaches');
   try{
@@ -1125,6 +1200,7 @@ async function loadHBeaches(){
     el.innerHTML=items.length?items.map(function(b){return placeCard(b,'beach');}).join(''):'';
   }catch(e){el.innerHTML='';}
 }
+
 async function loadHTourism(){
   var el=document.getElementById('h-tourism');
   try{
@@ -1445,7 +1521,6 @@ function initMap2(){
 }
 
 var mapCardData=null;
-
 function showMapCard(item,typeCfg){
   mapCardData=item;
   mapCardData._typeCfg=typeCfg;
@@ -1546,12 +1621,19 @@ function updateHeaderShadow(){
 window.addEventListener('load',function(){
   applyHeaderHeight();
   window.addEventListener('resize',function(){applyHeaderHeight();});
-  initSwipe('scroll-news',function(dir){swipeNews(dir);});
-  initSwipe('scroll-guide',function(dir){swipeGuide(dir);});
+
+  // ── تسجيل السحب لكل الشاشات ──
+  initSwipe('scroll-home',  function(dir){swipeHome(dir);});
+  initSwipe('scroll-news',  function(dir){swipeNews(dir);});
+  initSwipe('scroll-guide', function(dir){swipeGuide(dir);});
+  initSwipe('scroll-more',  function(dir){swipeMore(dir);});
+  // الخريطة: لا يوجد initSwipe
+
   document.querySelectorAll('.scroll-area').forEach(function(el){
     el.addEventListener('scroll',updateHeaderShadow,{passive:true});
   });
 });
+
 document.fonts.ready.then(function(){applyHeaderHeight();});
 loadHome();
 </script>
