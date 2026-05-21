@@ -96,12 +96,15 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .header-text h1{font-size:20px;font-weight:900;color:#fff;letter-spacing:-.3px;line-height:1.2;}
 .header-text p{font-size:12.5px;color:rgba(255,255,255,.75);font-weight:600;margin-top:2px;}
 
-/* ══ زر القائمة العائم Fixed مستقل تماماً ══ */
+/* ══ زر القائمة العائم Fixed ══
+   z-index:99 → دائماً خلف أي overlay (z-index:200+)
+   يختفي تلقائياً في شاشة الخريطة عبر كلاس map-active
+══ */
 .floating-menu-btn{
   position:fixed;
   top:calc(var(--safe-t) + 16px);
   left:18px;
-  z-index:9999;
+  z-index:99;
   display:flex;align-items:center;justify-content:center;
   width:40px;height:40px;border-radius:12px;
   background:rgba(255,255,255,.15);
@@ -115,11 +118,17 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   background:rgba(255,255,255,.32);
   transform:scale(.91);
 }
-/* حالة الاختفاء مع الهيدر للأعلى */
+/* يختفي للأعلى عند السكرول */
 .floating-menu-btn.header-hidden{
   translate:0 -100%;
   opacity:0;
   pointer-events:none;
+}
+/* يختفي كلياً في شاشة الخريطة */
+.floating-menu-btn.map-active{
+  opacity:0 !important;
+  pointer-events:none !important;
+  translate:0 -100% !important;
 }
 .hamburger-lines{
   display:flex;flex-direction:column;
@@ -444,8 +453,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   pointer-events:none;
 }
 .mayor-prev-btn-inner iconify-icon{font-size:16px;pointer-events:none;color:rgba(255,255,255,.8);}
-
-/* بطاقة الرئيس داخل الـ Sheet */
 .mayor-sheet-card{
   margin:16px 16px 4px;
   background:linear-gradient(135deg,#042f1e 0%,var(--green-d) 50%,var(--green) 100%);
@@ -596,7 +603,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     </div>
   </div>
 
-  <!-- ══ زر القائمة Fixed مستقل تماماً ══ -->
+  <!-- ══ زر القائمة Fixed — z-index:99 دائماً خلف overlays ══ -->
   <button class="floating-menu-btn" id="header-more-btn" aria-label="القائمة">
     <div class="hamburger-lines">
       <span></span>
@@ -612,8 +619,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     <div class="screen" id="screen-home">
       <div class="scroll-area" id="scroll-home">
         <div class="content-block">
-
-          <!-- الإعلانات -->
           <div class="section" style="padding-top:16px">
             <div class="section-header">
               <span class="section-title">
@@ -625,8 +630,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
             </div>
           </div>
-
-          <!-- المستجدات -->
           <div class="section">
             <div class="section-header">
               <span class="section-title">
@@ -638,15 +641,11 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
             </div>
           </div>
-
-          <!-- رئيس البلدية -->
           <div class="section" style="padding-bottom:8px">
             <div id="h-mayor-home" style="padding:0 18px 8px">
               <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
             </div>
           </div>
-
-          <!-- الشواطئ -->
           <div class="section">
             <div class="section-header">
               <span class="section-title">
@@ -658,8 +657,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
             </div>
           </div>
-
-          <!-- المعالم السياحية -->
           <div class="section">
             <div class="section-header">
               <span class="section-title">
@@ -671,8 +668,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
             </div>
           </div>
-
-          <!-- بين الأمس واليوم -->
           <div class="section" style="padding-bottom:20px">
             <div class="section-header">
               <span class="section-title">
@@ -685,7 +680,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -753,6 +747,27 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
       </div>
     </div>
 
+    <!-- ARCHIVE -->
+    <div class="screen hidden" id="screen-archive">
+      <div class="scroll-area" id="scroll-archive">
+        <div class="content-block" style="padding-top:12px">
+          <div class="seg-bar-wrap">
+            <div class="seg-bar">
+              <button class="seg-btn active" id="arch-tab-compare">
+                <iconify-icon icon="lucide:git-compare"></iconify-icon>مقارنة الأمس بالحاضر
+              </button>
+              <button class="seg-btn" id="arch-tab-historic">
+                <iconify-icon icon="lucide:image"></iconify-icon>صور تاريخية
+              </button>
+            </div>
+          </div>
+          <div id="archive-list" style="padding:10px 16px 20px">
+            <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span>جاري التحميل</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- MAP -->
     <div class="screen hidden" id="screen-map">
       <div class="scroll-area">
@@ -813,30 +828,9 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
       </div>
     </div>
 
-    <!-- ARCHIVE -->
-    <div class="screen hidden" id="screen-archive">
-      <div class="scroll-area" id="scroll-archive">
-        <div class="content-block" style="padding-top:12px">
-          <div class="seg-bar-wrap">
-            <div class="seg-bar">
-              <button class="seg-btn active" id="arch-tab-compare">
-                <iconify-icon icon="lucide:git-compare"></iconify-icon>مقارنة الأمس بالحاضر
-              </button>
-              <button class="seg-btn" id="arch-tab-historic">
-                <iconify-icon icon="lucide:image"></iconify-icon>صور تاريخية
-              </button>
-            </div>
-          </div>
-          <div id="archive-list" style="padding:10px 16px 20px">
-            <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span>جاري التحميل</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div><!-- end screen-container -->
 
-  <!-- ══ BOTTOM NAV ══ -->
+  <!-- ══ BOTTOM NAV — الترتيب: الرئيسية، الأخبار، الدليل، الأرشيف، الخريطة ══ -->
   <nav id="bottom-nav">
     <button class="nav-btn active" id="nav-home">
       <div class="nav-icon-wrap">
@@ -859,19 +853,19 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
       </div>
       <span>الدليل</span>
     </button>
-    <button class="nav-btn" id="nav-map">
-      <div class="nav-icon-wrap">
-        <iconify-icon class="icon-off" icon="ph:map-trifold" style="font-size:24px"></iconify-icon>
-        <iconify-icon class="icon-on" icon="ph:map-trifold-fill" style="font-size:24px"></iconify-icon>
-      </div>
-      <span>الخريطة</span>
-    </button>
     <button class="nav-btn" id="nav-archive">
       <div class="nav-icon-wrap">
         <iconify-icon class="icon-off" icon="ph:scroll" style="font-size:24px"></iconify-icon>
         <iconify-icon class="icon-on" icon="ph:scroll-fill" style="font-size:24px"></iconify-icon>
       </div>
       <span>الأرشيف</span>
+    </button>
+    <button class="nav-btn" id="nav-map">
+      <div class="nav-icon-wrap">
+        <iconify-icon class="icon-off" icon="ph:map-trifold" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-on" icon="ph:map-trifold-fill" style="font-size:24px"></iconify-icon>
+      </div>
+      <span>الخريطة</span>
     </button>
   </nav>
 
@@ -1058,7 +1052,8 @@ async function api(u){
 
 var curTab='home',mapDone=false,allNews=[],facCat='admin-branches';
 var newsScreenLoaded=false,_mayorLoaded=false,_mayorsList=[];
-var TAB_ORDER=['home','news','guide','map','archive'];
+/* ترتيب التابات الجديد: home, news, guide, archive, map */
+var TAB_ORDER=['home','news','guide','archive','map'];
 var NEWS_CATS=['official','activity','social','poster'];
 var GUIDE_TABS=['admin-branches','education','health','public-bodies','religious','cultural','sports'];
 var mapLayers={beach:[],tour:[],fac:[]};
@@ -1228,6 +1223,22 @@ function resetScroll(screenId){
   if(scroll)scroll.scrollTop=0;
 }
 
+/* ══ HEADER SHADOW + زر القائمة ══ */
+function updateHeaderShadow(){
+  var header=document.getElementById('shared-header');
+  var menuBtn=document.getElementById('header-more-btn');
+  if(!header)return;
+  var scroll=document.querySelector('#screen-'+curTab+' .scroll-area');
+  var st=scroll?scroll.scrollTop:0;
+  header.classList.toggle('scrolled',st>4);
+  if(menuBtn){
+    /* يختفي للأعلى عند السكرول في الشاشات العادية */
+    menuBtn.classList.toggle('header-hidden',st>4);
+    /* يختفي كلياً في شاشة الخريطة */
+    menuBtn.classList.toggle('map-active',curTab==='map');
+  }
+}
+
 /* ══ SWITCH TAB ══ */
 function switchTab(t){
   if(t===curTab)return;
@@ -1301,6 +1312,7 @@ function initSwipe(scrollAreaId,getNext){
     if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5)getNext(dx<0?-1:1);
   },{passive:true});
 }
+/* swipe بالترتيب الجديد: home←→news←→guide←→archive←→map */
 function swipeHome(dir){if(dir===1)switchTab('news');}
 function swipeNews(dir){
   var active=document.querySelector('#screen-news .seg-btn.active');
@@ -1316,7 +1328,7 @@ function swipeNews(dir){
 function swipeGuide(dir){
   var idx=GUIDE_TABS.indexOf(facCat);var next=idx+dir;
   if(next<0){switchTab('news');return;}
-  if(next>=GUIDE_TABS.length){switchTab('map');return;}
+  if(next>=GUIDE_TABS.length){switchTab('archive');return;}
   var nextTab=GUIDE_TABS[next];
   var btns=document.querySelectorAll('#screen-guide .seg-btn');
   loadFacTab(nextTab,btns[next]);
@@ -1325,9 +1337,9 @@ function swipeGuide(dir){
 function swipeArchive(dir){
   if(archTab==='compare'){
     if(dir===1){var nb=document.getElementById('arch-tab-historic');switchArchTab('historic',nb);}
-    else switchTab('home');
+    else switchTab('guide');
   }else{
-    if(dir===1)switchTab('home');
+    if(dir===1)switchTab('map');
     else{var nb=document.getElementById('arch-tab-compare');switchArchTab('compare',nb);}
   }
 }
@@ -1747,18 +1759,6 @@ async function loadMapData(){
   }catch(e){}
 }
 
-/* ══ HEADER SHADOW + زر القائمة يختفي مع الهيدر ══ */
-function updateHeaderShadow(){
-  var header=document.getElementById('shared-header');
-  var menuBtn=document.getElementById('header-more-btn');
-  if(!header)return;
-  var scroll=document.querySelector('#screen-'+curTab+' .scroll-area');
-  var st=scroll?scroll.scrollTop:0;
-  header.classList.toggle('scrolled',st>4);
-  /* الزر يختفي مع الهيدر بنفس اللحظة بشكل سلس */
-  if(menuBtn)menuBtn.classList.toggle('header-hidden',st>4);
-}
-
 /* ══ MAYORS MODAL ══ */
 async function openPrevMayorsModal(){
   var el=document.getElementById('prev-mayors-list');
@@ -1819,8 +1819,8 @@ function initEventDelegation(){
   document.getElementById('nav-home').addEventListener('click',function(){switchTab('home');});
   document.getElementById('nav-news').addEventListener('click',function(){switchTab('news');});
   document.getElementById('nav-guide').addEventListener('click',function(){switchTab('guide');});
-  document.getElementById('nav-map').addEventListener('click',function(){switchTab('map');});
   document.getElementById('nav-archive').addEventListener('click',function(){switchTab('archive');});
+  document.getElementById('nav-map').addEventListener('click',function(){switchTab('map');});
 
   document.getElementById('btn-see-news-official').addEventListener('click',function(){switchTab('news');});
   document.getElementById('btn-see-news-all').addEventListener('click',function(){switchTab('news');});
