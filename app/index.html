@@ -142,7 +142,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .nav-btn.active{color:var(--green);}
 .nav-btn:active .nav-icon-wrap{transform:scale(.88);transition:transform .1s ease,background .2s ease;}
 .nav-btn span{pointer-events:none;}
-
 .section{padding:16px 0 4px;}
 .section-header{display:flex;align-items:center;justify-content:space-between;padding:0 18px;margin-bottom:12px;}
 .section-title{font-size:14px;font-weight:900;color:var(--text);display:flex;align-items:center;gap:7px;}
@@ -168,6 +167,17 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .news-card-img-ph{width:100%;height:125px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .news-card-body{padding:10px 12px 6px;flex:1;display:flex;flex-direction:column;gap:4px;}
 .news-card-excerpt{font-size:11px;color:var(--muted);line-height:1.45;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;flex:1;}
+
+/* ══ عنوان بطاقة المستجدات ══ */
+/* التعديل 3: عنوان يظهر تحت الصورة مباشرة في بطاقات المستجدات */
+.news-card-title{
+  font-size:12px;font-weight:800;color:var(--text);
+  padding:7px 12px 0;
+  line-height:1.35;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+  overflow:hidden;
+}
+
 .news-card-footer{
   display:flex;justify-content:space-between;align-items:center;
   padding:6px 12px;border-top:1px solid var(--border-light);margin-top:auto;
@@ -190,11 +200,19 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .place-card-body{position:absolute;bottom:0;left:0;right:0;padding:10px;pointer-events:none;}
 .place-card-name{font-size:12px;font-weight:900;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.6);line-height:1.3;}
 .place-card-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
+
+/* ══ التعديل 2: توسيط أزرار التصنيفات في الأرشيف ══ */
 .seg-bar-wrap{background:var(--surface);border-bottom:1px solid var(--border-light);}
 .seg-bar{
   display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;
   overscroll-behavior-x:contain;padding:10px 14px;
 }
+/* توسيط خاص بصفحة الأرشيف فقط */
+#screen-archive .seg-bar{
+  justify-content:center;
+  flex-wrap:nowrap;
+}
+
 .seg-btn{
   flex-shrink:0;display:flex;align-items:center;gap:6px;
   padding:0 16px;height:36px;border-radius:99px;
@@ -390,7 +408,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .archive-single img{
   width:100%;aspect-ratio:16/9;object-fit:cover;display:block;pointer-events:none;
 }
-
 .loading{display:flex;align-items:center;justify-content:center;padding:40px;gap:10px;color:var(--muted);font-size:13px;}
 .loading iconify-icon{font-size:28px;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
@@ -530,7 +547,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     <div class="app-header-inner">
       <img class="header-logo"
         src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo-mobile.png"
-        alt="logo" onerror="this.style.display='none'" style="background:transparent">
+        alt="logo" onerror="this.style.display='none'"
+        style="background:transparent">
       <div class="header-text">
         <h1>بلدية شطايبي</h1>
         <p>والية عنابة – الجزائر</p>
@@ -761,6 +779,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               <span>السابقون</span>
             </button>
           </div>
+
           <div style="margin:0 18px 0;background:var(--card);border-radius:18px;overflow:hidden;box-shadow:var(--shadow-sm);border:1px solid var(--border-light)">
             <div class="more-item" onclick="window.location.href='/'">
               <div class="more-icon" style="background:#d1fae5">
@@ -803,8 +822,9 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
             </div>
           </div>
+
           <div class="app-footer">
-            <div class="app-footer-main">بلدية شطايبي © 2026 - جميع الحقوق محفوظة</div>
+            <div class="app-footer-main">© 2026 بلدية شطايبي - جميع الحقوق محفوظة</div>
             <div class="app-footer-sub">تم التطوير بجهود الكفاءات الداخلية لبلدية شطايبي</div>
           </div>
         </div>
@@ -817,6 +837,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
       <div class="scroll-area" id="scroll-archive">
         <div class="content-block" style="padding-top:12px">
           <div class="seg-bar-wrap">
+            <!-- التعديل 2: تمت إضافة justify-content:center عبر CSS لصفحة الأرشيف -->
             <div class="seg-bar">
               <button class="seg-btn active" id="arch-tab-compare" onclick="switchArchTab('compare',this)">
                 <iconify-icon icon="lucide:git-compare"></iconify-icon>مقارنة الأمس بالحاضر
@@ -1183,18 +1204,27 @@ function resetGuideTab(){
 }
 
 /* ══ SWIPE ══ */
+/* التعديل 1: السحب في صفحة الأرشيف يعمل فوق البطاقات وأزرار التصنيفات */
 function initSwipe(scrollAreaId,getNext){
   var el=document.getElementById(scrollAreaId);
   if(!el)return;
   var startX=0,startY=0,tracking=false;
+  var isArchive=(scrollAreaId==='scroll-archive');
+
   el.addEventListener('touchstart',function(e){
+    /* في صفحة الأرشيف: السحب يعمل فوق كل شيء */
+    if(isArchive){
+      startX=e.touches[0].clientX;startY=e.touches[0].clientY;tracking=true;
+      return;
+    }
+    /* في بقية الصفحات: الاستثناءات المعتادة */
     if(e.target.closest('.h-scroll')){tracking=false;return;}
     if(e.target.closest('.seg-bar-wrap')){tracking=false;return;}
-    /* تجاهل السحب فوق بطاقات الأرشيف العمودية */
     if(e.target.closest('.archive-card')){tracking=false;return;}
     if(e.target.closest('.archive-single')){tracking=false;return;}
     startX=e.touches[0].clientX;startY=e.touches[0].clientY;tracking=true;
   },{passive:true});
+
   el.addEventListener('touchend',function(e){
     if(!tracking)return;tracking=false;
     var dx=e.changedTouches[0].clientX-startX;
@@ -1204,7 +1234,6 @@ function initSwipe(scrollAreaId,getNext){
 }
 
 function swipeHome(dir){if(dir===1)switchTab('news');}
-
 function swipeNews(dir){
   var active=document.querySelector('#screen-news .seg-btn.active');
   if(!active)return;
@@ -1216,7 +1245,6 @@ function swipeNews(dir){
   var nextBtn=document.querySelector('#screen-news .seg-btn[data-cat="'+nextCat+'"]');
   if(nextBtn){filterNews(nextCat,nextBtn);nextBtn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}
 }
-
 function swipeGuide(dir){
   var idx=GUIDE_TABS.indexOf(facCat);var next=idx+dir;
   if(next<0){switchTab('news');return;}
@@ -1227,27 +1255,34 @@ function swipeGuide(dir){
   loadFacTab(nextTab,nextBtn);
   if(nextBtn)nextBtn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
 }
-
 function swipeMore(dir){if(dir===-1)switchTab('map');}
 
-/* ══ السحب في صفحة الأرشيف ══ */
+/* ══ التعديل 1: السحب في صفحة الأرشيف ══
+ * dir = 1  → سحب لليمين (إلى الأمام في القائمة RTL = تنقل للخلف)
+ * dir = -1 → سحب لليسار (إلى الخلف في القائمة RTL = تنقل للأمام)
+ *
+ * المنطق المطلوب:
+ * compare + يمين (dir=1)  → المزيد
+ * compare + يسار (dir=-1) → الرئيسية
+ * historic + يمين (dir=1) → المزيد
+ * historic + يسار (dir=-1)→ compare
+ */
 function swipeArchive(dir){
-  var idx=ARCH_TABS.indexOf(archTab);
-  var next=idx+dir;
-  if(next<0){
-    /* تجاوزنا compare يميناً ← المزيد */
+  if(dir===1){
+    /* سحب يمين من أي تصنيف → المزيد */
     switchTab('more');
     return;
   }
-  if(next>=ARCH_TABS.length){
-    /* تجاوزنا historic يساراً ← الرئيسية */
+  /* dir === -1 → سحب يسار */
+  if(archTab==='historic'){
+    /* historic + يسار → compare */
+    var nextBtn=document.getElementById('arch-tab-compare');
+    switchArchTab('compare',nextBtn);
+    if(nextBtn)nextBtn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  } else {
+    /* compare + يسار → الرئيسية */
     switchTab('home');
-    return;
   }
-  var nextTab=ARCH_TABS[next];
-  var nextBtn=document.getElementById('arch-tab-'+nextTab);
-  switchArchTab(nextTab,nextBtn);
-  if(nextBtn)nextBtn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
 }
 
 var NS={
@@ -1260,15 +1295,23 @@ function makeDateBadge(dateStr){
   if(!dateStr)return '';
   return '<span class="card-date"><iconify-icon icon="lucide:calendar-days"></iconify-icon>'+dateStr+'</span>';
 }
-function makeNewsCard(n){
+
+/* التعديل 3: بطاقة المستجدات مع عنوان تحت الصورة */
+function makeNewsCard(n,showTitle){
   var s=NS[n.category]||NS.official;
   var excerpt=(n.content||'').substring(0,90)+'...';
   var icon=n.category==='official'?'lucide:megaphone':'lucide:newspaper';
   var img=n.image_url
     ?'<img class="news-card-img" src="'+n.image_url+'" alt="" loading="lazy">'
     :'<div class="news-card-img-ph" style="background:'+s.grad+'"><iconify-icon icon="'+icon+'" style="color:rgba(255,255,255,.75);font-size:2rem;pointer-events:none"></iconify-icon></div>';
+  /* العنوان يظهر فقط إذا طُلب ذلك (بطاقات المستجدات) وكان العنوان موجوداً */
+  var titleHtml='';
+  if(showTitle&&n.title){
+    titleHtml='<div class="news-card-title">'+n.title+'</div>';
+  }
   return '<div class="news-card" onclick="openNewsModal('+n.id+')">'
     +img
+    +titleHtml
     +'<div class="news-card-body"><div class="news-card-excerpt">'+excerpt+'</div></div>'
     +'<div class="news-card-footer">'+makeDateBadge(n.date)
     +'<button class="read-more" onclick="event.stopPropagation();openNewsModal('+n.id+')">اقرأ المزيد<iconify-icon icon="lucide:chevron-left"></iconify-icon></button>'
@@ -1279,14 +1322,12 @@ function makeNewsCard(n){
 var archTab='compare';
 var prevTab='more';
 function goBack(){switchTab(prevTab);}
-
 function switchArchTab(tab,btn){
   archTab=tab;
   document.querySelectorAll('#screen-archive .seg-btn').forEach(function(b){b.classList.remove('active');});
   if(btn)btn.classList.add('active');
   loadArchiveTab(tab);
 }
-
 async function loadArchiveTab(tab){
   var el=document.getElementById('archive-list');
   if(!el)return;
@@ -1372,13 +1413,13 @@ async function loadHArchive(){
 function loadHome(){
   loadHOfficial();loadHNews();loadHBeaches();loadHTourism();loadHArchive();
 }
-
 async function loadHOfficial(){
   var el=document.getElementById('h-official');
   try{
     var d=await api('/api/news');if(d.data)allNews=d.data;
     var items=(d.data||[]).filter(function(n){return n.category==='official';}).slice(0,10);
-    el.innerHTML=items.length?items.map(makeNewsCard).join(''):'';
+    /* التعديل 3: بطاقات الإعلانات في الرئيسية بدون عنوان (false) */
+    el.innerHTML=items.length?items.map(function(n){return makeNewsCard(n,false);}).join(''):'';
   }catch(e){el.innerHTML='';}
 }
 async function loadHNews(){
@@ -1386,7 +1427,8 @@ async function loadHNews(){
   try{
     var d=await api('/api/news');if(d.data)allNews=d.data;
     var items=(d.data||[]).filter(function(n){return n.category!=='official'&&n.category!=='poster';}).slice(0,10);
-    el.innerHTML=items.length?items.map(makeNewsCard).join(''):'';
+    /* التعديل 3: بطاقات المستجدات مع عنوان (true) */
+    el.innerHTML=items.length?items.map(function(n){return makeNewsCard(n,true);}).join(''):'';
   }catch(e){el.innerHTML='';}
 }
 async function loadHBeaches(){
@@ -1436,6 +1478,7 @@ function filterNews(cat,btn){
   if(!newsScreenLoaded)return;
   renderNews(allNews.filter(function(n){return n.category===cat;}));
 }
+
 function renderNews(items){
   var el=document.getElementById('news-list');
   if(!items.length){
@@ -1457,9 +1500,19 @@ function renderNews(items){
     var imgW=n.image_url
       ?'<div class="announce-img-wrap"><img src="'+n.image_url+'" alt="" loading="lazy"></div>'
       :'<div class="announce-img-wrap" style="background:'+s.grad+';height:90px"><iconify-icon icon="'+(n.category==='official'?'lucide:megaphone':'lucide:clipboard-list')+'" style="color:rgba(255,255,255,.65);font-size:2.2rem;pointer-events:none"></iconify-icon></div>';
+
+    /* التعديل 4: إخفاء البادج في تصنيف الإعلانات (official) فقط */
+    var badgeHtml='';
+    if(n.category!=='official'){
+      badgeHtml='<span class="news-badge" style="'+s.bs+'">'+lbl+'</span>';
+    }
+    var headerRow=(badgeHtml||pin)
+      ?'<div style="display:flex;align-items:center;gap:7px;margin-bottom:6px">'+badgeHtml+pin+'</div>'
+      :'';
+
     return '<div class="announce-card fade-in" onclick="openNewsModal('+n.id+')">'
       +imgW+'<div class="announce-body">'
-      +'<div style="display:flex;align-items:center;gap:7px;margin-bottom:6px"><span class="news-badge" style="'+s.bs+'">'+lbl+'</span>'+pin+'</div>'
+      +headerRow
       +'<div style="font-size:13px;color:var(--muted);line-height:1.65">'+desc+'</div>'
       +'<div class="announce-footer">'+makeDateBadge(n.date)
       +'<button class="read-more" onclick="event.stopPropagation();openNewsModal('+n.id+')">اقرأ المزيد<iconify-icon icon="lucide:chevron-left"></iconify-icon></button>'
@@ -1468,10 +1521,10 @@ function renderNews(items){
 }
 
 var FM={
-  'admin-branches':{cat:'branches',    icon:'lucide:landmark',       color:'#059669',bg:'#d1fae5'},
+  'admin-branches':{cat:'branches',   icon:'lucide:landmark',       color:'#059669',bg:'#d1fae5'},
   'education':     {cat:'education',   icon:'lucide:graduation-cap', color:'#2563eb',bg:'#dbeafe'},
   'health':        {cat:'health',      icon:'lucide:heart-pulse',    color:'#dc2626',bg:'#fee2e2'},
-  'public-bodies': {cat:'public_bodies',icon:'lucide:building-2',    color:'#7c3aed',bg:'#ede9fe'},
+  'public-bodies': {cat:'public_bodies',icon:'lucide:building-2',   color:'#7c3aed',bg:'#ede9fe'},
   'religious':     {cat:'religious',   icon:'lucide:moon-star',      color:'#b45309',bg:'#fef3c7'},
   'cultural':      {cat:'cultural',    icon:'lucide:palette',        color:'#0891b2',bg:'#cffafe'},
   'sports':        {cat:'sports',      icon:'lucide:trophy',         color:'#ea580c',bg:'#ffedd5'}
@@ -1500,6 +1553,7 @@ async function loadFacTab(tab,btn){
     el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';
   }
 }
+
 function makeFacCard(f,m,tab){
   var img=f.image_url
     ?'<img class="fac-card-img" src="'+f.image_url+'" alt="" onerror="this.outerHTML=\'<div class=fac-card-ph style=background:'+m.bg+'><iconify-icon icon='+m.icon+' style=color:'+m.color+';font-size:1.8rem></iconify-icon></div>\'">'
