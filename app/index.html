@@ -96,17 +96,23 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .header-text h1{font-size:20px;font-weight:900;color:#fff;letter-spacing:-.3px;line-height:1.2;}
 .header-text p{font-size:12.5px;color:rgba(255,255,255,.75);font-weight:600;margin-top:2px;}
 
-/* ══ زر القائمة Hamburger ══ */
-.header-more-btn{
+/* ══ زر القائمة العائم Fixed مستقل تماماً ══ */
+.floating-menu-btn{
+  position:fixed;
+  top:calc(var(--safe-t) + 16px);
+  left:18px;
+  z-index:9999;
   display:flex;align-items:center;justify-content:center;
   width:40px;height:40px;border-radius:12px;
   background:rgba(255,255,255,.15);
   border:1.5px solid rgba(255,255,255,.28);
   cursor:pointer;flex-shrink:0;
   transition:background .15s,transform .1s;
-  position:relative;z-index:2;
 }
-.header-more-btn:active{background:rgba(255,255,255,.32);transform:scale(.91);}
+.floating-menu-btn:active{
+  background:rgba(255,255,255,.32);
+  transform:scale(.91);
+}
 .hamburger-lines{
   display:flex;flex-direction:column;
   gap:5px;align-items:flex-end;justify-content:center;
@@ -359,7 +365,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .album-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
 .album-grid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;cursor:pointer;pointer-events:auto !important;touch-action:manipulation;display:block;}
 
-/* ══ BOTTOM SHEET "المزيد" ══ */
+/* ══ BOTTOM SHEET المزيد ══ */
 #more-sheet-overlay{
   position:fixed;inset:0;z-index:9999;
   background:rgba(0,0,0,.52);
@@ -431,7 +437,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 }
 .mayor-prev-btn-inner iconify-icon{font-size:16px;pointer-events:none;color:rgba(255,255,255,.8);}
 
-/* Sheet بطاقة الرئيس داخل الـ */
+/* بطاقة الرئيس داخل الـ Sheet */
 .mayor-sheet-card{
   margin:16px 16px 4px;
   background:linear-gradient(135deg,#042f1e 0%,var(--green-d) 50%,var(--green) 100%);
@@ -579,16 +585,17 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         <h1>بلدية شطايبي</h1>
         <p>والية عنابة – الجزائر</p>
       </div>
-      <!-- زر القائمة - بدون أي onclick في HTML -->
-      <button class="header-more-btn" id="header-more-btn" aria-label="القائمة">
-        <div class="hamburger-lines">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </button>
     </div>
   </div>
+
+  <!-- ══ زر القائمة Fixed مستقل تماماً ══ -->
+  <button class="floating-menu-btn" id="header-more-btn" aria-label="القائمة">
+    <div class="hamburger-lines">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </button>
 
   <!-- ══ SCREENS ══ -->
   <div id="screen-container">
@@ -624,7 +631,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </div>
           </div>
 
-          <!-- رئيس البلدية - بدون عنوان القسم -->
+          <!-- رئيس البلدية -->
           <div class="section" style="padding-bottom:8px">
             <div id="h-mayor-home" style="padding:0 18px 8px">
               <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
@@ -1026,7 +1033,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 
 <script>
 'use strict';
-
 /* ══════════════════════════════════════════
    منع الإجراءات الافتراضية غير المرغوبة
 ══════════════════════════════════════════ */
@@ -1079,42 +1085,26 @@ var FILTER_CFG={
 };
 
 /* ══════════════════════════════════════════
-   MORE SHEET — نظام معزول تماماً
+   MORE SHEET — نظام معزول تمامًا
 ══════════════════════════════════════════ */
 var MoreSheet=(function(){
   var overlay,sheet,btn,isOpen=false;
-
   function init(){
     overlay=document.getElementById('more-sheet-overlay');
     sheet  =document.getElementById('more-sheet');
     btn    =document.getElementById('header-more-btn');
     if(!overlay||!sheet||!btn)return;
-
-    /* فتح الـ Sheet */
-    btn.addEventListener('click',function(e){
-      e.stopPropagation();
-      open();
-    });
-
-    /* إغلاق بالنقر خارج الـ Sheet */
-    overlay.addEventListener('click',function(e){
-      if(e.target===overlay) close();
-    });
-
-    /* السحب للأسفل */
+    btn.addEventListener('click',function(e){e.stopPropagation();open();});
+    overlay.addEventListener('click',function(e){if(e.target===overlay)close();});
     initDrag();
-
-    /* ربط العناصر */
     bindItems();
   }
-
   function open(){
     if(isOpen)return;
     isOpen=true;
     overlay.classList.add('open');
     syncMayorToSheet();
   }
-
   function close(){
     if(!isOpen)return;
     isOpen=false;
@@ -1122,7 +1112,6 @@ var MoreSheet=(function(){
     sheet.style.transform='';
     sheet.style.transition='';
   }
-
   function initDrag(){
     var startY=0,dragging=false,startScroll=0;
     sheet.addEventListener('touchstart',function(e){
@@ -1147,44 +1136,21 @@ var MoreSheet=(function(){
       if(dy>90)close();
     },{passive:true});
   }
-
   function bindItems(){
     var mayorCard=document.getElementById('ms-mayor-card');
-    if(mayorCard)mayorCard.addEventListener('click',function(){
-      close();
-      setTimeout(openPrevMayorsModal,60);
-    });
-
+    if(mayorCard)mayorCard.addEventListener('click',function(){close();setTimeout(openPrevMayorsModal,60);});
     var itemSite=document.getElementById('ms-item-site');
-    if(itemSite)itemSite.addEventListener('click',function(){
-      window.location.href='/';
-    });
-
+    if(itemSite)itemSite.addEventListener('click',function(){window.location.href='/';});
     var itemGuide=document.getElementById('ms-item-guide');
-    if(itemGuide)itemGuide.addEventListener('click',function(){
-      close();setTimeout(function(){switchTab('guide');},60);
-    });
-
+    if(itemGuide)itemGuide.addEventListener('click',function(){close();setTimeout(function(){switchTab('guide');},60);});
     var itemArchive=document.getElementById('ms-item-archive');
-    if(itemArchive)itemArchive.addEventListener('click',function(){
-      close();setTimeout(function(){switchTab('archive');},60);
-    });
-
+    if(itemArchive)itemArchive.addEventListener('click',function(){close();setTimeout(function(){switchTab('archive');},60);});
     var itemMap=document.getElementById('ms-item-map');
-    if(itemMap)itemMap.addEventListener('click',function(){
-      close();setTimeout(function(){switchTabWithFilter('map','all');},60);
-    });
+    if(itemMap)itemMap.addEventListener('click',function(){close();setTimeout(function(){switchTabWithFilter('map','all');},60);});
   }
-
-  /* تصدير */
-  return {
-    init:init,
-    open:open,
-    close:close
-  };
+  return{init:init,open:open,close:close};
 })();
 
-/* دوال عامة يستخدمها الكود القديم */
 function openMoreSheet(){MoreSheet.open();}
 function closeMoreSheet(){MoreSheet.close();}
 
@@ -1354,7 +1320,6 @@ function switchTab(t){
   if(t==='home')loadHome();
   if(t==='archive')loadArchiveTab(archTab);
 }
-
 function resetGuideTab(){
   var firstBtn=document.getElementById('btn-admin-branches');
   var bar=document.getElementById('guide-seg-bar');
@@ -1411,7 +1376,7 @@ function swipeArchive(dir){
   if(archTab==='compare'){
     if(dir===1){var nb=document.getElementById('arch-tab-historic');switchArchTab('historic',nb);}
     else switchTab('home');
-  } else {
+  }else{
     if(dir===1)switchTab('home');
     else{var nb=document.getElementById('arch-tab-compare');switchArchTab('compare',nb);}
   }
@@ -1515,7 +1480,6 @@ async function loadHArchive(){
     }).join('');
   }catch(e){el.innerHTML='';}
 }
-
 function renderMayorHome(m){
   var el=document.getElementById('h-mayor-home');
   if(!el||!m)return;
@@ -1543,8 +1507,6 @@ function renderMayorHome(m){
     +'</div>'
     +'</div>'
     +'</div>';
-
-  /* ربط الأحداث بعد إنشاء العناصر */
   var cardEl=document.getElementById('mayor-home-card-el');
   var prevBtn=document.getElementById('mayor-prev-btn-el');
   if(cardEl){
@@ -1560,7 +1522,6 @@ function renderMayorHome(m){
     });
   }
 }
-
 function syncMayorToSheet(){
   if(!_mayorsList.length)return;
   var m=_mayorsList[0];
@@ -1579,11 +1540,9 @@ function syncMayorToSheet(){
     mandateEl.innerHTML='<iconify-icon icon="lucide:calendar" style="font-size:11px;pointer-events:none"></iconify-icon><span>'+period+'</span>';
   }
 }
-
 function loadHome(){
   loadHOfficial();loadHNews();loadMayorHome();loadHBeaches();loadHTourism();loadHArchive();
 }
-
 async function loadMayorHome(){
   try{
     var d=await api('/api/mayors');
@@ -1594,7 +1553,6 @@ async function loadMayorHome(){
     syncMayorToSheet();
   }catch(e){}
 }
-
 async function loadHOfficial(){
   var el=document.getElementById('h-official');
   try{
@@ -1603,7 +1561,6 @@ async function loadHOfficial(){
     el.innerHTML=items.length?items.map(function(n){return makeNewsCard(n,false);}).join(''):'';
   }catch(e){el.innerHTML='';}
 }
-
 async function loadHNews(){
   var el=document.getElementById('h-news');
   try{
@@ -1612,7 +1569,6 @@ async function loadHNews(){
     el.innerHTML=items.length?items.map(function(n){return makeNewsCard(n,true);}).join(''):'';
   }catch(e){el.innerHTML='';}
 }
-
 async function loadHBeaches(){
   var el=document.getElementById('h-beaches');
   try{
@@ -1620,7 +1576,6 @@ async function loadHBeaches(){
     el.innerHTML=(d.data||[]).slice(0,8).map(function(b){return placeCard(b,'beach');}).join('');
   }catch(e){el.innerHTML='';}
 }
-
 async function loadHTourism(){
   var el=document.getElementById('h-tourism');
   try{
@@ -1628,7 +1583,6 @@ async function loadHTourism(){
     el.innerHTML=(d.data||[]).slice(0,8).map(function(t){return placeCard(t,'tourism');}).join('');
   }catch(e){el.innerHTML='';}
 }
-
 function placeCard(item,type){
   var n=item.name||'';
   var dataAttr=type==='beach'?'data-beach-id="'+item.id+'"':'data-tour-id="'+item.id+'"';
@@ -1693,7 +1647,7 @@ function renderNews(items){
    GUIDE
 ══════════════════════════════════════════ */
 var FM={
-  'admin-branches':{cat:'branches',    icon:'lucide:landmark',       color:'var(--green)',  bg:'var(--green-l)'},
+  'admin-branches':{cat:'branches',    icon:'lucide:landmark',      color:'var(--green)',  bg:'var(--green-l)'},
   'education':     {cat:'education',   icon:'lucide:graduation-cap', color:'var(--blue)',   bg:'var(--blue-l)'},
   'health':        {cat:'health',      icon:'lucide:heart-pulse',    color:'var(--red)',    bg:'var(--red-l)'},
   'public-bodies': {cat:'public_bodies',icon:'lucide:building-2',   color:'var(--purple)', bg:'var(--purple-l)'},
@@ -1738,7 +1692,6 @@ function makeFacCard(f,m,tab){
 ══════════════════════════════════════════ */
 function om(id){document.getElementById(id).classList.add('open');}
 function cm(id){document.getElementById(id).classList.remove('open');}
-
 function initModalSwipe(sheet,overlayId){
   var startY=0,startScroll=0,dragging=false;
   sheet.addEventListener('touchstart',function(e){startY=e.touches[0].clientY;startScroll=sheet.scrollTop;dragging=true;},{passive:true});
@@ -1754,7 +1707,6 @@ function initModalSwipe(sheet,overlayId){
     if(dy>80&&startScroll<=0)cm(overlayId);
   },{passive:true});
 }
-
 function album(elId,albums){
   var el=document.getElementById(elId);
   var a=Array.isArray(albums)?albums:[];
@@ -1770,7 +1722,6 @@ function albumBig(elId,albums){
     return '<div style="line-height:0;margin-bottom:3px"><img src="'+x.image_url+'" alt="" loading="lazy" data-lb="'+x.image_url+'" style="width:100%;display:block;cursor:pointer;pointer-events:auto;touch-action:manipulation"></div>';
   }).join('');
 }
-
 async function openNewsModal(id){
   var n=allNews.find(function(x){return x.id==id;});
   if(!n){try{var d=await api('/api/news');allNews=d.data||[];n=allNews.find(function(x){return x.id==id;});}catch(e){}}
@@ -1975,32 +1926,19 @@ async function openPrevMayorsModal(){
 }
 
 /* ══════════════════════════════════════════
-   تفويض الأحداث العام (Event Delegation)
-   — بديل آمن عن onclick في HTML
+   Event Delegation — تفويض الأحداث العام
 ══════════════════════════════════════════ */
 function initEventDelegation(){
-
-  /* ── نقرات عامة على document ── */
   document.addEventListener('click',function(e){
     var t=e.target;
-
-    /* بطاقات الأخبار */
     var newsCard=t.closest('.news-card');
     if(newsCard){var id=newsCard.getAttribute('data-news-id');if(id)openNewsModal(id);return;}
-
-    /* زر اقرأ المزيد */
     var readMore=t.closest('.read-more');
     if(readMore){e.stopPropagation();var id=readMore.getAttribute('data-news-id');if(id)openNewsModal(id);return;}
-
-    /* announce-card */
     var annCard=t.closest('.announce-card');
     if(annCard&&!t.closest('.read-more')){var id=annCard.getAttribute('data-news-id');if(id)openNewsModal(id);return;}
-
-    /* poster-card */
     var posterCard=t.closest('.poster-card');
     if(posterCard){var lb=posterCard.getAttribute('data-lb');if(lb)openLightbox(lb);return;}
-
-    /* place cards */
     var placeCard=t.closest('.place-card');
     if(placeCard){
       var bid=placeCard.getAttribute('data-beach-id');
@@ -2009,44 +1947,32 @@ function initEventDelegation(){
       else if(tid)openTourismModal(tid);
       return;
     }
-
-    /* fac cards */
     var facCard=t.closest('.fac-card');
     if(facCard){var fid=facCard.getAttribute('data-fac-id');var ftab=facCard.getAttribute('data-fac-tab');if(fid)openFacModal(fid,ftab||'admin-branches');return;}
-
-    /* archive cells */
     var archCell=t.closest('.archive-cell,.archive-home-cell,.archive-single,.archive-home-single,[data-lb]');
     if(archCell){var lb=archCell.getAttribute('data-lb');if(lb)openLightbox(lb);return;}
-
-    /* album grid images */
     var albImg=t.closest('.album-grid img,[data-lb]');
     if(albImg){var lb=albImg.getAttribute('data-lb');if(lb)openLightbox(lb);return;}
-
-    /* إغلاق modal overlays */
     if(t.classList.contains('modal-overlay')){cm(t.id);return;}
   });
 
-  /* ── شريط التنقل السفلي ── */
   document.getElementById('nav-home').addEventListener('click',function(){switchTab('home');});
   document.getElementById('nav-news').addEventListener('click',function(){switchTab('news');});
   document.getElementById('nav-guide').addEventListener('click',function(){switchTab('guide');});
   document.getElementById('nav-map').addEventListener('click',function(){switchTab('map');});
   document.getElementById('nav-archive').addEventListener('click',function(){switchTab('archive');});
 
-  /* ── أزرار "عرض الكل" ── */
   document.getElementById('btn-see-news-official').addEventListener('click',function(){switchTab('news');});
   document.getElementById('btn-see-news-all').addEventListener('click',function(){switchTab('news');});
   document.getElementById('btn-see-beaches').addEventListener('click',function(){switchTabWithFilter('map','beach');});
   document.getElementById('btn-see-tourism').addEventListener('click',function(){switchTabWithFilter('map','tour');});
   document.getElementById('btn-see-archive').addEventListener('click',function(){switchTab('archive');});
 
-  /* ── تبويبات الأخبار ── */
   document.getElementById('news-btn-official').addEventListener('click',function(){filterNews('official',this);});
   document.getElementById('news-btn-activity').addEventListener('click',function(){filterNews('activity',this);});
   document.getElementById('news-btn-social').addEventListener('click',function(){filterNews('social',this);});
   document.getElementById('news-btn-poster').addEventListener('click',function(){filterNews('poster',this);});
 
-  /* ── تبويبات الدليل ── */
   document.getElementById('btn-admin-branches').addEventListener('click',function(){loadFacTab('admin-branches',this);});
   document.getElementById('btn-education').addEventListener('click',function(){loadFacTab('education',this);});
   document.getElementById('btn-health').addEventListener('click',function(){loadFacTab('health',this);});
@@ -2055,11 +1981,9 @@ function initEventDelegation(){
   document.getElementById('btn-cultural').addEventListener('click',function(){loadFacTab('cultural',this);});
   document.getElementById('btn-sports').addEventListener('click',function(){loadFacTab('sports',this);});
 
-  /* ── تبويبات الأرشيف ── */
   document.getElementById('arch-tab-compare').addEventListener('click',function(){switchArchTab('compare',this);});
   document.getElementById('arch-tab-historic').addEventListener('click',function(){switchArchTab('historic',this);});
 
-  /* ── فلتر الخريطة ── */
   document.getElementById('map-filter-btn').addEventListener('click',function(e){toggleFilterMenu(e);});
   document.getElementById('map-locate-btn').addEventListener('click',function(){locateUser();});
   document.getElementById('map-popup-close-btn').addEventListener('click',function(e){e.stopPropagation();closeMapCard();});
@@ -2070,14 +1994,10 @@ function initEventDelegation(){
     item.addEventListener('click',function(){selectMapFilter(this.getAttribute('data-type'),this);});
   });
 
-  /* ── Lightbox ── */
   document.getElementById('lightbox').addEventListener('click',function(){closeLightbox();});
   document.getElementById('lb-close').addEventListener('click',function(e){e.stopPropagation();closeLightbox();});
-
-  /* ── Modal Tour sticker close ── */
   document.getElementById('mt-sticker-close').addEventListener('click',function(){cm('m-tour');});
 
-  /* ── Modal overlays swipe to close ── */
   ['m-news','m-beach','m-tour','m-fac','m-prev-mayors'].forEach(function(id){
     var overlay=document.getElementById(id);
     var sheet=overlay?overlay.querySelector('.modal-sheet'):null;
@@ -2091,25 +2011,16 @@ function initEventDelegation(){
 window.addEventListener('load',function(){
   applyHeaderHeight();
   window.addEventListener('resize',function(){applyHeaderHeight();});
-
-  /* تهيئة نظام الـ Sheet */
   MoreSheet.init();
-
-  /* تفويض الأحداث */
   initEventDelegation();
-
-  /* Swipe بين التبويبات */
   initSwipe('scroll-home',   function(dir){swipeHome(dir);});
   initSwipe('scroll-news',   function(dir){swipeNews(dir);});
   initSwipe('scroll-guide',  function(dir){swipeGuide(dir);});
   initSwipe('scroll-archive',function(dir){swipeArchive(dir);});
-
-  /* Shadow الـ Header */
   document.querySelectorAll('.scroll-area').forEach(function(el){
     el.addEventListener('scroll',updateHeaderShadow,{passive:true});
   });
 });
-
 document.fonts.ready.then(function(){applyHeaderHeight();});
 loadHome();
 </script>
