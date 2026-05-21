@@ -52,7 +52,6 @@
   --radius-lg:20px;
   --radius-xl:24px;
 }
-
 /* ══ RESET ══ */
 *{
   margin:0;padding:0;box-sizing:border-box;
@@ -120,22 +119,21 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .header-text h1{font-size:20px;font-weight:900;color:#fff;letter-spacing:-.3px;line-height:1.2;}
 .header-text p{font-size:12.5px;color:rgba(255,255,255,.75);font-weight:600;margin-top:2px;}
 
-/* زر المزيد في الهيدر */
+/* ══ زر المزيد - أيقونة قائمة فقط ══ */
 .header-more-btn{
-  display:flex;align-items:center;gap:7px;
-  padding:0 14px;height:36px;
-  border-radius:99px;
+  display:flex;align-items:center;justify-content:center;
+  width:40px;height:40px;
+  border-radius:12px;
   background:rgba(255,255,255,.15);
   border:1px solid rgba(255,255,255,.25);
   color:#fff;
-  font-family:'Cairo',sans-serif;
-  font-size:12px;font-weight:800;
   cursor:pointer;touch-action:manipulation;
   flex-shrink:0;
   transition:background .15s;
+  padding:0;
 }
-.header-more-btn:active{background:rgba(255,255,255,.28);}
-.header-more-btn iconify-icon{font-size:18px;pointer-events:none;}
+.header-more-btn:active{background:rgba(255,255,255,.32);}
+.header-more-btn iconify-icon{font-size:22px;pointer-events:none;}
 
 /* ══ SCREENS ══ */
 #screen-container{
@@ -215,9 +213,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;
 }
 
-/* ══ NEWS CARDS - محسّنة ══ */
+/* ══ NEWS CARDS ══ */
 .news-card{
-  /* عرض متجاوب بدل 210px الثابت */
   min-width:min(240px, 72vw);
   max-width:280px;
   background:var(--card);
@@ -233,7 +230,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 }
 .news-card:active{transform:scale(.95);opacity:.8;}
 .news-card-img{
-  width:100%;height:140px; /* أكبر من 125px */
+  width:100%;height:140px;
   object-fit:cover;display:block;flex-shrink:0;pointer-events:none;
 }
 .news-card-img-ph{
@@ -260,15 +257,13 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   padding:8px 12px;
   border-top:1px solid var(--border-light);
   margin-top:auto;
-  min-height:44px; /* touch target */
+  min-height:44px;
 }
 .card-date{
   display:flex;align-items:center;gap:3px;
   font-size:10.5px;color:var(--muted);font-weight:600;flex-shrink:0;
 }
 .card-date iconify-icon{font-size:12px;pointer-events:none;flex-shrink:0;}
-
-/* زر "اقرأ المزيد" - touch target محسّن */
 .read-more{
   font-size:12px;font-weight:800;color:var(--green);
   border:none;background:var(--green-xl);
@@ -277,7 +272,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   display:flex;align-items:center;gap:4px;
   padding:6px 12px;
   border-radius:99px;
-  min-height:34px; /* touch target واضح */
+  min-height:34px;
   transition:background .15s;
 }
 .read-more:active{background:var(--green-l);}
@@ -379,7 +374,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .fac-card-name{font-size:13px;font-weight:800;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .fac-card-desc{font-size:11px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:2px;}
 
-/* ══ MORE ITEMS (في الـ Bottom Sheet) ══ */
+/* ══ MORE ITEMS ══ */
 .more-item{
   display:flex;align-items:center;gap:14px;padding:14px 16px;
   border-bottom:1px solid var(--border-light);cursor:pointer;
@@ -473,7 +468,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   margin:12px auto 0;
 }
 
-/* بطاقة الرئيس داخل الـ Sheet */
+/* ══ بطاقة الرئيس في الشيت ══ */
 .mayor-sheet-card{
   margin:16px 16px 4px;
   background:linear-gradient(135deg,#042f1e 0%,var(--green-d) 50%,var(--green) 100%);
@@ -495,13 +490,12 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   background:rgba(255,255,255,.03);border-radius:50%;pointer-events:none;
 }
 
-/* ══ بطاقة الرئيس في الرئيسية ══ */
+/* ══ بطاقة الرئيس في الرئيسية - محدّثة ══ */
 .mayor-home-card{
   margin:0 18px 4px;
   background:linear-gradient(135deg,#042f1e 0%,var(--green-d) 50%,var(--green) 100%);
   border-radius:var(--radius-lg);
-  padding:18px;
-  display:flex;align-items:center;gap:14px;
+  padding:18px 18px 0;
   box-shadow:0 8px 24px rgba(5,150,105,.25);
   position:relative;overflow:hidden;
   cursor:pointer;touch-action:manipulation;
@@ -518,6 +512,45 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   width:120px;height:120px;
   background:rgba(255,255,255,.03);border-radius:50%;pointer-events:none;
 }
+/* الجزء العلوي من بطاقة الرئيس */
+.mayor-card-top{
+  display:flex;align-items:center;gap:14px;
+  position:relative;z-index:1;
+  padding-bottom:14px;
+}
+/* فاصل الرؤساء السابقين */
+.mayor-prev-section{
+  border-top:1px solid rgba(255,255,255,.12);
+  padding:12px 0 14px;
+  position:relative;z-index:1;
+}
+.mayor-prev-label{
+  font-size:9px;font-weight:800;
+  color:rgba(255,255,255,.45);
+  letter-spacing:.5px;
+  margin-bottom:10px;
+  text-transform:uppercase;
+}
+.mayor-prev-list{
+  display:flex;gap:12px;overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior-x:contain;
+  padding-bottom:2px;
+}
+.mayor-prev-item{
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  flex-shrink:0;cursor:pointer;
+}
+.mayor-prev-avatar{
+  width:40px;height:40px;border-radius:50%;
+  border:2px solid rgba(255,255,255,.25);
+  overflow:hidden;background:rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.mayor-prev-avatar img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
+.mayor-prev-name{font-size:9px;font-weight:700;color:rgba(255,255,255,.7);text-align:center;max-width:52px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mayor-prev-period{font-size:8px;color:rgba(255,255,255,.4);text-align:center;}
 
 /* ══ ARCHIVE CARDS ══ */
 #h-archive{scroll-snap-type:x mandatory;padding:2px 18px 20px;}
@@ -729,10 +762,9 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         <h1>بلدية شطايبي</h1>
         <p>والية عنابة – الجزائر</p>
       </div>
-      <!-- زر المزيد بدل الجرس -->
-      <button class="header-more-btn" onclick="openMoreSheet()">
-        <iconify-icon icon="ph:squares-four-fill"></iconify-icon>
-        <span>المزيد</span>
+      <!-- زر المزيد - أيقونة قائمة فقط بدون نص -->
+      <button class="header-more-btn" id="more-btn" onclick="openMoreSheet()">
+        <iconify-icon icon="ph:list-bold"></iconify-icon>
       </button>
     </div>
   </div>
@@ -771,14 +803,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </div>
           </div>
 
-          <!-- رئيس البلدية في الرئيسية -->
+          <!-- رئيس البلدية في الرئيسية - بدون عنوان وبدون بادج -->
           <div class="section" style="padding-bottom:8px">
-            <div class="section-header">
-              <span class="section-title">
-                <iconify-icon icon="lucide:user-check" style="color:var(--green);pointer-events:none"></iconify-icon>رئيس البلدية
-              </span>
-              <button class="see-all" onclick="openPrevMayorsModal()">السابقون</button>
-            </div>
             <div id="h-mayor-home" style="padding:0 18px 8px">
               <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
             </div>
@@ -810,11 +836,11 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </div>
           </div>
 
-          <!-- الأرشيف -->
+          <!-- الأرشيف - أيقونة محدّثة -->
           <div class="section" style="padding-bottom:20px">
             <div class="section-header">
               <span class="section-title">
-                <iconify-icon icon="lucide:clock" style="color:var(--amber);pointer-events:none"></iconify-icon>بين الأمس واليوم
+                <iconify-icon icon="ph:images" style="color:var(--amber);pointer-events:none"></iconify-icon>بين الأمس واليوم
               </span>
               <button class="see-all" onclick="switchTab('archive')"
                 style="background:linear-gradient(135deg,var(--amber),#b45309);color:#fff;border:none;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;min-height:32px">الأرشيف الكامل</button>
@@ -974,7 +1000,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 
   </div><!-- end screen-container -->
 
-  <!-- ══ BOTTOM NAV (بدون المزيد، مع الأرشيف) ══ -->
+  <!-- ══ BOTTOM NAV - أيقونة الأرشيف محدّثة ══ -->
   <nav id="bottom-nav">
     <button class="nav-btn active" id="nav-home" onclick="switchTab('home')">
       <div class="nav-icon-wrap">
@@ -1004,10 +1030,11 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
       </div>
       <span>الخريطة</span>
     </button>
+    <!-- أيقونة الأرشيف الجديدة -->
     <button class="nav-btn" id="nav-archive" onclick="switchTab('archive')">
       <div class="nav-icon-wrap">
-        <iconify-icon class="icon-off" icon="ph:clock-counter-clockwise" style="font-size:24px"></iconify-icon>
-        <iconify-icon class="icon-on" icon="ph:clock-counter-clockwise-fill" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-off" icon="ph:images" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-on" icon="ph:images-fill" style="font-size:24px"></iconify-icon>
       </div>
       <span>الأرشيف</span>
     </button>
@@ -1020,7 +1047,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   <div id="more-sheet" onclick="event.stopPropagation()">
     <div class="more-sheet-drag"></div>
 
-    <!-- بطاقة رئيس البلدية داخل الـ Sheet -->
+    <!-- بطاقة رئيس البلدية داخل الشيت -->
     <div class="mayor-sheet-card" onclick="openPrevMayorsModal();closeMoreSheet();" style="cursor:pointer">
       <div id="ms-mayor-photo-wrap" style="width:58px;height:58px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2.5px solid rgba(255,255,255,.3);box-shadow:0 4px 12px rgba(0,0,0,.2);background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;position:relative;z-index:1;">
         <iconify-icon id="ms-mayor-icon" icon="lucide:user" style="font-size:26px;color:rgba(255,255,255,.5);pointer-events:none"></iconify-icon>
@@ -1081,9 +1108,9 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
       </div>
     </div>
 
-    <!-- Footer داخل الـ Sheet -->
+    <!-- Footer داخل الشيت -->
     <div style="text-align:center;padding:16px 20px 4px;">
-      <div style="font-size:11px;color:var(--muted-2);">© 2026 بلدية شطايبي - جميع الحقوق محفوظة</div>
+      <div style="font-size:11px;color:var(--muted-2);">© 2026 - بلدية شطايبي | جميع الحقوق محفوظة</div>
       <div style="font-size:10px;color:var(--muted-2);font-style:italic;margin-top:3px;">تم التطوير بجهود الكفاءات الداخلية</div>
     </div>
   </div>
@@ -1225,7 +1252,6 @@ var locateMarker=null;
 var pendingMapFilter=null;
 var prevTab='home';
 var archTab='compare';
-
 var FILTER_CFG={
   all:  {icon:'lucide:layers',    labelFull:'الكل'},
   fac:  {icon:'lucide:building-2',labelFull:'المرافق'},
@@ -1235,16 +1261,16 @@ var FILTER_CFG={
 
 /* ══ MORE SHEET ══ */
 function openMoreSheet(){
-  document.getElementById('more-sheet-overlay').classList.add('open');
-  document.body.style.overflow='hidden';
-  /* مزامنة بيانات الرئيس */
+  var overlay=document.getElementById('more-sheet-overlay');
+  overlay.classList.add('open');
   syncMayorToSheet();
 }
 function closeMoreSheet(){
-  document.getElementById('more-sheet-overlay').classList.remove('open');
-  document.body.style.overflow='';
+  var overlay=document.getElementById('more-sheet-overlay');
+  overlay.classList.remove('open');
 }
-/* السحب لإغلاق الـ Sheet */
+
+/* السحب لإغلاق الشيت */
 (function(){
   var sheet=document.getElementById('more-sheet');
   var startY=0,startScroll=0,dragging=false;
@@ -1455,7 +1481,6 @@ function switchTab(t){
   if(t==='home')loadHome();
   if(t==='archive')loadArchiveTab(archTab);
 }
-
 function resetGuideTab(){
   var firstBtn=document.getElementById('btn-admin-branches');
   var bar=document.getElementById('guide-seg-bar');
@@ -1487,7 +1512,6 @@ function initSwipe(scrollAreaId,getNext){
     if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5){getNext(dx<0?-1:1);}
   },{passive:true});
 }
-
 function swipeHome(dir){if(dir===1)switchTab('news');}
 function swipeNews(dir){
   var active=document.querySelector('#screen-news .seg-btn.active');
@@ -1517,7 +1541,7 @@ function swipeArchive(dir){
       if(nb)nb.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
     } else {switchTab('home');}
   } else {
-    if(dir===1){switchTab('home');} /* آخر تبويب */
+    if(dir===1){switchTab('home');}
     else {
       var nb=document.getElementById('arch-tab-compare');
       switchArchTab('compare',nb);
@@ -1532,12 +1556,10 @@ var NS={
   activity:{grad:'linear-gradient(135deg,var(--green),#065f46)',lbl:'نشاط بلدي',bs:'background:rgba(5,150,105,.12);color:var(--green)'},
   social:  {grad:'linear-gradient(135deg,var(--purple),#4c1d95)',lbl:'ركن المجتمع',bs:'background:rgba(124,58,237,.12);color:var(--purple)'}
 };
-
 function makeDateBadge(dateStr){
   if(!dateStr)return '';
   return '<span class="card-date"><iconify-icon icon="lucide:calendar-days"></iconify-icon>'+dateStr+'</span>';
 }
-
 function makeNewsCard(n,showTitle){
   var s=NS[n.category]||NS.official;
   var excerpt=(n.content||'').substring(0,90)+'...';
@@ -1626,24 +1648,49 @@ async function loadHArchive(){
   }catch(e){el.innerHTML='';}
 }
 
-/* بطاقة رئيس البلدية في الرئيسية */
-function renderMayorHome(m){
+/* ══ بطاقة رئيس البلدية في الرئيسية - محدّثة مع الرؤساء السابقين ══ */
+function renderMayorHome(currentMayor, prevMayors){
   var el=document.getElementById('h-mayor-home');
-  if(!el||!m)return;
-  var photoHtml=m.image_url
-    ?'<img src="'+m.image_url+'" style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;" onerror="this.style.display=\'none\'">'
+  if(!el||!currentMayor)return;
+  var photoHtml=currentMayor.image_url
+    ?'<img src="'+currentMayor.image_url+'" style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;" onerror="this.style.display=\'none\'">'
     :'<iconify-icon icon="lucide:user" style="font-size:28px;color:rgba(255,255,255,.5);pointer-events:none"></iconify-icon>';
-  var period=m.period_ar||m.period||'2021 - 2025';
+  var period=currentMayor.period_ar||currentMayor.period||'2021 - 2025';
+
+  /* بناء قائمة الرؤساء السابقين */
+  var prevHtml='';
+  if(prevMayors&&prevMayors.length){
+    var prevItems=prevMayors.map(function(m){
+      var pPhoto=m.image_url
+        ?'<img src="'+m.image_url+'" style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;" onerror="this.parentNode.innerHTML=\'<iconify-icon icon=\\\"lucide:user\\\" style=\\\"font-size:18px;color:rgba(255,255,255,.5);pointer-events:none\\\"></iconify-icon>\'">'
+        :'<iconify-icon icon="lucide:user" style="font-size:18px;color:rgba(255,255,255,.5);pointer-events:none"></iconify-icon>';
+      var pName=m.name_ar||m.name||'--';
+      var pPeriod=m.period_ar||m.period||'';
+      return '<div class="mayor-prev-item">'
+        +'<div class="mayor-prev-avatar">'+pPhoto+'</div>'
+        +'<div class="mayor-prev-name">'+pName+'</div>'
+        +(pPeriod?'<div class="mayor-prev-period">'+pPeriod+'</div>':'')
+        +'</div>';
+    }).join('');
+    prevHtml='<div class="mayor-prev-section">'
+      +'<div class="mayor-prev-label">الرؤساء السابقون</div>'
+      +'<div class="mayor-prev-list">'+prevItems+'</div>'
+      +'</div>';
+  }
+
   el.innerHTML='<div class="mayor-home-card" onclick="openPrevMayorsModal()">'
+    +'<div class="mayor-card-top">'
     +'<div style="width:64px;height:64px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2.5px solid rgba(255,255,255,.3);box-shadow:0 4px 12px rgba(0,0,0,.2);background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;position:relative;z-index:1;">'
     +photoHtml+'</div>'
     +'<div style="flex:1;min-width:0;position:relative;z-index:1;">'
     +'<div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.55);margin-bottom:3px;">رئيس المجلس الشعبي البلدي</div>'
-    +'<div style="font-size:16px;font-weight:900;color:#fff;letter-spacing:-.2px;line-height:1.2;">'+(m.name_ar||m.name||'--')+'</div>'
+    +'<div style="font-size:16px;font-weight:900;color:#fff;letter-spacing:-.2px;line-height:1.2;">'+(currentMayor.name_ar||currentMayor.name||'--')+'</div>'
     +'<div style="font-size:11px;color:rgba(255,255,255,.55);margin-top:4px;display:flex;align-items:center;gap:4px;">'
     +'<iconify-icon icon="lucide:calendar" style="font-size:11px;pointer-events:none"></iconify-icon>'
     +'<span>'+period+'</span></div></div>'
     +'<iconify-icon icon="lucide:users" style="font-size:22px;color:rgba(255,255,255,.5);pointer-events:none;position:relative;z-index:1;flex-shrink:0;"></iconify-icon>'
+    +'</div>'
+    +prevHtml
     +'</div>';
 }
 
@@ -1658,7 +1705,9 @@ async function loadMayorHome(){
     if(!list.length)return;
     _mayorsList=list;
     _mayorLoaded=true;
-    renderMayorHome(list[0]);
+    var currentMayor=list[0];
+    var prevMayors=list.slice(1);
+    renderMayorHome(currentMayor,prevMayors);
     syncMayorToSheet();
   }catch(e){}
 }
@@ -1693,7 +1742,6 @@ async function loadHTourism(){
     el.innerHTML=(d.data||[]).slice(0,8).map(function(t){return placeCard(t,'tourism');}).join('');
   }catch(e){el.innerHTML='';}
 }
-
 function placeCard(item,type){
   var n=item.name||'';
   var fn=type==='beach'?'openBeachModal('+item.id+')':'openTourismModal('+item.id+')';
@@ -1757,13 +1805,13 @@ function renderNews(items){
 
 /* ══ GUIDE ══ */
 var FM={
-  'admin-branches':{cat:'branches',    icon:'lucide:landmark',       color:'var(--green)', bg:'var(--green-l)'},
-  'education':     {cat:'education',   icon:'lucide:graduation-cap', color:'var(--blue)',  bg:'var(--blue-l)'},
-  'health':        {cat:'health',      icon:'lucide:heart-pulse',    color:'var(--red)',   bg:'var(--red-l)'},
-  'public-bodies': {cat:'public_bodies',icon:'lucide:building-2',   color:'var(--purple)',bg:'var(--purple-l)'},
-  'religious':     {cat:'religious',   icon:'lucide:moon-star',      color:'var(--amber)', bg:'var(--amber-l)'},
-  'cultural':      {cat:'cultural',    icon:'lucide:palette',        color:'#0891b2',      bg:'var(--sky-l)'},
-  'sports':        {cat:'sports',      icon:'lucide:trophy',         color:'#ea580c',      bg:'#ffedd5'}
+  'admin-branches':{cat:'branches',    icon:'lucide:landmark',      color:'var(--green)',  bg:'var(--green-l)'},
+  'education':     {cat:'education',   icon:'lucide:graduation-cap', color:'var(--blue)',   bg:'var(--blue-l)'},
+  'health':        {cat:'health',      icon:'lucide:heart-pulse',    color:'var(--red)',    bg:'var(--red-l)'},
+  'public-bodies': {cat:'public_bodies',icon:'lucide:building-2',   color:'var(--purple)', bg:'var(--purple-l)'},
+  'religious':     {cat:'religious',   icon:'lucide:moon-star',      color:'var(--amber)',  bg:'var(--amber-l)'},
+  'cultural':      {cat:'cultural',    icon:'lucide:palette',        color:'#0891b2',       bg:'var(--sky-l)'},
+  'sports':        {cat:'sports',      icon:'lucide:trophy',         color:'#ea580c',       bg:'#ffedd5'}
 };
 async function loadFacTab(tab,btn){
   facCat=tab;
@@ -1786,8 +1834,6 @@ async function loadFacTab(tab,btn){
   }catch(e){clearTimeout(_lt);el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';}
 }
 function makeFacCard(f,m,tab){
-  var colorRaw=m.color.replace('var(--','').replace(')','');
-  var bgRaw=m.bg.replace('var(--','').replace(')','');
   var img=f.image_url
     ?'<img class="fac-card-img" src="'+f.image_url+'" alt="">'
     :'<div class="fac-card-ph" style="background:'+m.bg+'"><iconify-icon icon="'+m.icon+'" style="color:'+m.color+';font-size:1.8rem;pointer-events:none"></iconify-icon></div>';
@@ -1802,8 +1848,8 @@ function makeFacCard(f,m,tab){
 }
 
 /* ══ MODALS ══ */
-function om(id){document.getElementById(id).classList.add('open');document.body.style.overflow='hidden';}
-function cm(id){document.getElementById(id).classList.remove('open');document.body.style.overflow='';}
+function om(id){document.getElementById(id).classList.add('open');}
+function cm(id){document.getElementById(id).classList.remove('open');}
 
 document.querySelectorAll('.modal-sheet').forEach(function(sheet){
   var startY=0,startScroll=0,dragging=false;
@@ -1839,7 +1885,6 @@ function albumBig(elId,albums){
     return '<div style="line-height:0;margin-bottom:3px"><img src="'+x.image_url+'" alt="" loading="lazy" onclick="openLightbox(\''+x.image_url+'\')" style="width:100%;display:block;cursor:pointer;pointer-events:auto;touch-action:manipulation"></div>';
   }).join('');
 }
-
 async function openNewsModal(id){
   var n=allNews.find(function(x){return x.id==id;});
   if(!n){try{var d=await api('/api/news');allNews=d.data||[];n=allNews.find(function(x){return x.id==id;});}catch(e){}}
@@ -1871,7 +1916,6 @@ async function openNewsModal(id){
   }
   om('m-news');
 }
-
 async function openBeachModal(id){
   try{
     delete C['/api/beaches?id='+id];
@@ -1887,7 +1931,6 @@ async function openBeachModal(id){
     album('mb-album',b.albums);om('m-beach');
   }catch(e){}
 }
-
 async function openTourismModal(id){
   try{
     delete C['/api/tourism?id='+id];
@@ -1917,7 +1960,6 @@ async function openTourismModal(id){
     om('m-tour');
   }catch(e){}
 }
-
 async function openFacModal(id,tab){
   try{
     var m=FM[tab]||FM['admin-branches'];
@@ -1953,7 +1995,6 @@ function initMap2(){
     });
   },100);
 }
-
 var mapCardData=null;
 function showMapCard(item,typeCfg){
   mapCardData=item;mapCardData._typeCfg=typeCfg;
@@ -1977,7 +2018,6 @@ function mapCardClick(){
   else if(d._typeCfg.modal==='tour')openTourismModal(d.id);
   else if(d._typeCfg.modal==='fac')openFacModal(d.id,d._typeCfg.tab||'admin-branches');
 }
-
 async function loadMapData(){
   if(!appMap)return;
   try{
@@ -2054,9 +2094,9 @@ async function openPrevMayorsModal(){
 window.addEventListener('load',function(){
   applyHeaderHeight();
   window.addEventListener('resize',function(){applyHeaderHeight();});
-  initSwipe('scroll-home',   function(dir){swipeHome(dir);});
-  initSwipe('scroll-news',   function(dir){swipeNews(dir);});
-  initSwipe('scroll-guide',  function(dir){swipeGuide(dir);});
+  initSwipe('scroll-home',  function(dir){swipeHome(dir);});
+  initSwipe('scroll-news',  function(dir){swipeNews(dir);});
+  initSwipe('scroll-guide', function(dir){swipeGuide(dir);});
   initSwipe('scroll-archive',function(dir){swipeArchive(dir);});
   document.querySelectorAll('.scroll-area').forEach(function(el){
     el.addEventListener('scroll',updateHeaderShadow,{passive:true});
