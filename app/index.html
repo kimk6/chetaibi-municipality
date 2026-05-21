@@ -283,18 +283,118 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .album-title{font-size:13px;font-weight:800;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
 .album-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
 .album-grid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;cursor:pointer;pointer-events:auto !important;touch-action:manipulation;display:block;}
+
+/* ═══ LIGHTBOX ═══ */
 #lightbox{
   position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.97);
-  display:none;align-items:center;justify-content:center;padding:16px;overscroll-behavior:none;
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  overscroll-behavior:none;
 }
 #lightbox.open{display:flex;}
-#lightbox img{max-width:100%;max-height:90dvh;object-fit:contain;border-radius:10px;pointer-events:none;}
+#lightbox-img-wrap{
+  position:relative;width:100%;flex:1;display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+#lb-img{
+  max-width:100%;max-height:85dvh;object-fit:contain;border-radius:10px;
+  pointer-events:none;display:block;
+  transition:transform .25s ease;
+}
 #lb-close{
   position:absolute;top:calc(var(--safe-t) + 14px);left:14px;
-  width:36px;height:36px;background:rgba(255,255,255,.18);border:none;border-radius:50%;
-  color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;
-  backdrop-filter:blur(4px);touch-action:manipulation;pointer-events:auto;
+  width:40px;height:40px;background:rgba(255,255,255,.18);border:none;border-radius:50%;
+  color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  backdrop-filter:blur(4px);touch-action:manipulation;pointer-events:auto;z-index:10;
 }
+#lb-prev,#lb-next{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:44px;height:44px;background:rgba(255,255,255,.18);border:none;border-radius:50%;
+  color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  backdrop-filter:blur(4px);touch-action:manipulation;pointer-events:auto;z-index:10;
+  transition:background .15s,opacity .2s;
+}
+#lb-prev{right:14px;}
+#lb-next{left:14px;}
+#lb-prev:active,#lb-next:active{background:rgba(255,255,255,.35);}
+#lb-prev.hidden,#lb-next.hidden{opacity:0;pointer-events:none;}
+#lb-counter{
+  color:rgba(255,255,255,.7);font-size:12px;font-weight:700;
+  padding:8px 0 calc(var(--safe-b) + 8px);font-family:'Cairo',sans-serif;
+  flex-shrink:0;
+}
+
+/* ═══ ARCHIVE CARDS ═══ */
+.archive-compare-card{
+  border-radius:16px;overflow:hidden;background:var(--card);
+  border:1px solid var(--border);box-shadow:var(--shadow-md);
+  cursor:pointer;touch-action:manipulation;
+  transition:transform .15s ease,opacity .15s;
+}
+.archive-compare-card:active{transform:scale(.98);opacity:.85;}
+.archive-compare-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);
+}
+.archive-compare-cell{position:relative;overflow:hidden;}
+.archive-compare-cell img{
+  width:100%;aspect-ratio:1;object-fit:cover;display:block;
+  pointer-events:none;
+}
+.archive-compare-label{
+  position:absolute;bottom:6px;right:6px;
+  background:rgba(0,0,0,.65);color:#fff;
+  font-size:10px;font-weight:800;padding:3px 9px;border-radius:7px;
+  pointer-events:none;
+}
+.archive-compare-label.new{
+  right:auto;left:6px;
+  background:rgba(5,150,105,.85);
+}
+.archive-compare-title{
+  font-size:12px;font-weight:700;padding:9px 12px;color:var(--text);
+  border-top:1px solid var(--border-light);
+}
+
+/* ═══ HOME ARCHIVE SCROLL ═══ */
+/* بطاقة الأرشيف في الرئيسية - منشور واحد كامل */
+.h-archive-card{
+  flex-shrink:0;
+  width:calc(100vw - 36px);
+  max-width:380px;
+  background:var(--card);
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:var(--shadow-md);
+  border:1px solid var(--border-light);
+  cursor:pointer;
+  touch-action:manipulation;
+  transition:transform .15s ease,opacity .15s;
+}
+.h-archive-card:active{transform:scale(.97);opacity:.85;}
+.h-archive-card-compare{
+  display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);
+}
+.h-archive-cell{position:relative;overflow:hidden;}
+.h-archive-cell img{
+  width:100%;aspect-ratio:4/3;object-fit:cover;display:block;pointer-events:none;
+}
+.h-archive-cell-label{
+  position:absolute;bottom:5px;right:5px;
+  background:rgba(0,0,0,.65);color:#fff;
+  font-size:9px;font-weight:800;padding:2px 7px;border-radius:6px;
+  pointer-events:none;
+}
+.h-archive-cell-label.new{
+  right:auto;left:5px;
+  background:rgba(5,150,105,.85);
+}
+.h-archive-single img{
+  width:100%;aspect-ratio:16/9;object-fit:cover;display:block;pointer-events:none;
+}
+.h-archive-card-title{
+  font-size:12px;font-weight:700;padding:9px 12px;color:var(--text);
+  border-top:1px solid var(--border-light);
+}
+
 .loading{display:flex;align-items:center;justify-content:center;padding:40px;gap:10px;color:var(--muted);font-size:13px;}
 .loading iconify-icon{font-size:28px;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
@@ -305,14 +405,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .leaflet-control-attribution{display:none !important;}
 .news-badge{font-size:10px;font-weight:800;padding:2px 9px;border-radius:99px;display:inline-block;}
-#map-controls-right{
-  position:absolute;top:16px;right:14px;
-  z-index:1001;pointer-events:auto;
-}
-#map-controls-left{
-  position:absolute;top:16px;left:14px;
-  z-index:1001;pointer-events:auto;
-}
+#map-controls-right{position:absolute;top:16px;right:14px;z-index:1001;pointer-events:auto;}
+#map-controls-left{position:absolute;top:16px;left:14px;z-index:1001;pointer-events:auto;}
 #map-filter-btn{
   display:flex;align-items:center;gap:7px;
   height:36px;padding:0 14px 0 12px;
@@ -378,25 +472,17 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 }
 .mf-icon-wrap iconify-icon{font-size:13px;pointer-events:none;color:var(--muted);}
 .mf-item.active .mf-icon-wrap iconify-icon{color:var(--green);}
-.mf-check{
-  margin-right:auto;font-size:13px;color:var(--green);
-  opacity:0;transition:opacity .15s;pointer-events:none;
-}
+.mf-check{margin-right:auto;font-size:13px;color:var(--green);opacity:0;transition:opacity .15s;pointer-events:none;}
 .mf-item.active .mf-check{opacity:1;}
 #map-card-overlay{
   position:absolute;
   bottom:calc(var(--nav-h) + var(--safe-b));
-  left:0;right:0;
-  z-index:1000;
-  pointer-events:none;
-  visibility:hidden;
+  left:0;right:0;z-index:1000;pointer-events:none;visibility:hidden;
   transform:translateY(calc(100% + 100px));
   transition:transform .38s cubic-bezier(.32,1.2,.54,1),visibility 0s linear .4s;
 }
 #map-card-overlay.open{
-  visibility:visible;
-  transform:translateY(0);
-  pointer-events:auto;
+  visibility:visible;transform:translateY(0);pointer-events:auto;
   transition:transform .38s cubic-bezier(.32,1.2,.54,1),visibility 0s linear 0s;
 }
 .map-popup-card{
@@ -414,27 +500,11 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 }
 .map-popup-avatar img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
 .map-popup-avatar-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:50%;}
-.map-popup-badge{
-  font-size:10px;font-weight:800;padding:3px 12px;border-radius:99px;
-  display:inline-flex;align-items:center;gap:4px;margin-bottom:6px;
-}
-.map-popup-name{
-  font-size:15px;font-weight:900;color:#111827;text-align:center;
-  line-height:1.3;padding:0 20px;margin-bottom:4px;
-}
-.map-popup-divider{
-  width:40px;height:3px;
-  background:linear-gradient(90deg,var(--green-l),var(--green),var(--green-l));
-  border-radius:99px;margin:6px auto 0;
-}
-.map-popup-desc-wrap{
-  background:#f8fafc;border-radius:14px;
-  margin:8px 14px 0;padding:10px 14px;width:calc(100% - 28px);
-}
-.map-popup-desc{
-  font-size:11.5px;color:#6b7280;line-height:1.6;text-align:center;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
-}
+.map-popup-badge{font-size:10px;font-weight:800;padding:3px 12px;border-radius:99px;display:inline-flex;align-items:center;gap:4px;margin-bottom:6px;}
+.map-popup-name{font-size:15px;font-weight:900;color:#111827;text-align:center;line-height:1.3;padding:0 20px;margin-bottom:4px;}
+.map-popup-divider{width:40px;height:3px;background:linear-gradient(90deg,var(--green-l),var(--green),var(--green-l));border-radius:99px;margin:6px auto 0;}
+.map-popup-desc-wrap{background:#f8fafc;border-radius:14px;margin:8px 14px 0;padding:10px 14px;width:calc(100% - 28px);}
+.map-popup-desc{font-size:11.5px;color:#6b7280;line-height:1.6;text-align:center;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .map-popup-action{
   margin-top:12px;display:flex;align-items:center;justify-content:center;gap:6px;
   font-size:12px;font-weight:800;color:var(--green);
@@ -463,7 +533,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         alt="logo" onerror="this.style.display='none'" style="background:transparent">
       <div class="header-text">
         <h1>بلدية شطايبي</h1>
-        <p>ولاية عنابة – الجزائر</p>
+        <p>والية عنابة – الجزائر</p>
       </div>
       <div class="header-btn">
         <iconify-icon icon="lucide:bell" style="color:#fff;font-size:18px;pointer-events:none"></iconify-icon>
@@ -477,6 +547,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     <div class="screen" id="screen-home">
       <div class="scroll-area" id="scroll-home">
         <div class="content-block">
+
           <div class="section" style="padding-top:16px">
             <div class="section-header">
               <span class="section-title">
@@ -488,6 +559,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
             </div>
           </div>
+
           <div class="section">
             <div class="section-header">
               <span class="section-title">
@@ -499,6 +571,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
             </div>
           </div>
+
           <div class="section">
             <div class="section-header">
               <span class="section-title">
@@ -510,6 +583,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
             </div>
           </div>
+
           <div class="section">
             <div class="section-header">
               <span class="section-title">
@@ -521,17 +595,22 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
             </div>
           </div>
+
+          <!-- قسم بين الأمس واليوم -->
           <div class="section">
             <div class="section-header">
               <span class="section-title">
                 <iconify-icon icon="lucide:clock" style="color:#d97706;pointer-events:none"></iconify-icon>بين الأمس واليوم
               </span>
-              <button class="see-all" onclick="switchTab('archive')" style="background:linear-gradient(135deg,#d97706,#b45309);color:#fff;border:none;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700">الأرشيف الكامل</button>
+              <button class="see-all" onclick="switchTab('archive')"
+                style="background:linear-gradient(135deg,#d97706,#b45309);color:#fff;border:none;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700">الأرشيف الكامل</button>
             </div>
-            <div class="h-scroll" id="h-archive">
+            <!-- h-scroll مع snap للتمرير بين المنشورات -->
+            <div class="h-scroll" id="h-archive" style="scroll-snap-type:x mandatory;padding-bottom:16px;">
               <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -604,7 +683,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
       <div class="scroll-area">
         <div id="app-map"></div>
       </div>
-      <!-- زر الفلتر أعلى اليمين -->
       <div id="map-controls-right">
         <div style="position:relative;">
           <button id="map-filter-btn" onclick="toggleFilterMenu(event)">
@@ -636,13 +714,11 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           </div>
         </div>
       </div>
-      <!-- زر الموقع أعلى اليسار -->
       <div id="map-controls-left">
         <button id="map-locate-btn" onclick="locateUser()">
           <iconify-icon icon="lucide:locate" id="locate-icon"></iconify-icon>
         </button>
       </div>
-      <!-- بطاقة المعلم -->
       <div id="map-card-overlay">
         <div class="map-popup-card" id="map-card-inner" onclick="mapCardClick()">
           <div class="map-popup-avatar" id="map-popup-avatar"></div>
@@ -666,7 +742,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     <div class="screen hidden" id="screen-more">
       <div class="scroll-area" id="scroll-more">
         <div class="content-block">
-          <!-- بطاقة رئيس المجلس -->
           <div id="mayor-card" style="margin:18px 18px 12px;background:linear-gradient(135deg,#042f1e 0%,#064e3b 50%,#059669 100%);border-radius:20px;padding:18px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 24px rgba(5,150,105,.25);position:relative;overflow:hidden;">
             <div style="position:absolute;top:-20px;left:-20px;width:100px;height:100px;background:rgba(255,255,255,.04);border-radius:50%;pointer-events:none"></div>
             <div style="position:absolute;bottom:-30px;right:10px;width:120px;height:120px;background:rgba(255,255,255,.03);border-radius:50%;pointer-events:none"></div>
@@ -687,7 +762,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               <span>السابقون</span>
             </button>
           </div>
-          <!-- قائمة الروابط -->
+
           <div style="margin:0 18px 0;background:var(--card);border-radius:18px;overflow:hidden;box-shadow:var(--shadow-sm);border:1px solid var(--border-light)">
             <div class="more-item" onclick="window.location.href='/'">
               <div class="more-icon" style="background:#d1fae5">
@@ -730,82 +805,82 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
             </div>
           </div>
+
           <div class="app-footer">
-            <div class="app-footer-main">© 2026 - بلدية شطايبي جميع الحقوق محفوظة</div>
+            <div class="app-footer-main">بلدية شطايبي © 2026 - جميع الحقوق محفوظة</div>
             <div class="app-footer-sub">تم التطوير بجهود الكفاءات الداخلية لبلدية شطايبي</div>
           </div>
         </div>
       </div>
     </div>
 
-  </div>
-
-  <!-- ══ ARCHIVE ══ -->
-  <div class="screen hidden" id="screen-archive">
-    <div class="home-header">
-      <div class="home-header-inner">
-        <button onclick="goBack()" style="background:rgba(255,255,255,.15);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;flex-shrink:0">
-          <iconify-icon icon="lucide:arrow-right" style="font-size:18px;pointer-events:none"></iconify-icon>
-        </button>
-        <div class="home-greeting" style="flex:1"><h1>أرشيف شطايبي</h1></div>
+    <!-- ══ ARCHIVE ══ -->
+    <div class="screen hidden" id="screen-archive">
+      <div class="home-header">
+        <div class="home-header-inner">
+          <button onclick="goBack()" style="background:rgba(255,255,255,.15);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;flex-shrink:0">
+            <iconify-icon icon="lucide:arrow-right" style="font-size:18px;pointer-events:none"></iconify-icon>
+          </button>
+          <div class="home-greeting" style="flex:1"><h1>أرشيف شطايبي</h1></div>
+        </div>
       </div>
-    </div>
-    <div class="scroll-area" id="scroll-archive">
-      <div class="content-block" style="padding-top:12px">
-        <div class="seg-bar-wrap">
-          <div class="seg-bar">
-            <button class="seg-btn active" id="arch-tab-compare" onclick="switchArchTab('compare',this)">
-              <iconify-icon icon="lucide:git-compare"></iconify-icon>مقارنة الأمس بالحاضر
-            </button>
-            <button class="seg-btn" id="arch-tab-historic" onclick="switchArchTab('historic',this)">
-              <iconify-icon icon="lucide:image"></iconify-icon>صور تاريخية
-            </button>
+      <div class="scroll-area" id="scroll-archive">
+        <div class="content-block" style="padding-top:12px">
+          <div class="seg-bar-wrap">
+            <div class="seg-bar">
+              <button class="seg-btn active" id="arch-tab-compare" onclick="switchArchTab('compare',this)">
+                <iconify-icon icon="lucide:git-compare"></iconify-icon>مقارنة الأمس بالحاضر
+              </button>
+              <button class="seg-btn" id="arch-tab-historic" onclick="switchArchTab('historic',this)">
+                <iconify-icon icon="lucide:image"></iconify-icon>صور تاريخية
+              </button>
+            </div>
+          </div>
+          <div id="archive-list" style="padding:10px 0">
+            <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span>جاري التحميل</span></div>
           </div>
         </div>
-        <div id="archive-list" style="padding:10px 0">
-          <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span>جاري التحميل</span></div>
-        </div>
       </div>
     </div>
-  </div>
 
-  <nav id="bottom-nav">
-    <button class="nav-btn active" id="nav-home" onclick="switchTab('home')">
-      <div class="nav-icon-wrap">
-        <iconify-icon class="icon-off" icon="ph:house" style="font-size:24px"></iconify-icon>
-        <iconify-icon class="icon-on" icon="ph:house-fill" style="font-size:24px"></iconify-icon>
-      </div>
-      <span>الرئيسية</span>
-    </button>
-    <button class="nav-btn" id="nav-news" onclick="switchTab('news')">
-      <div class="nav-icon-wrap">
-        <iconify-icon class="icon-off" icon="ph:newspaper" style="font-size:24px"></iconify-icon>
-        <iconify-icon class="icon-on" icon="ph:newspaper-fill" style="font-size:24px"></iconify-icon>
-      </div>
-      <span>الأخبار</span>
-    </button>
-    <button class="nav-btn" id="nav-guide" onclick="switchTab('guide')">
-      <div class="nav-icon-wrap">
-        <iconify-icon class="icon-off" icon="ph:map-pin" style="font-size:24px"></iconify-icon>
-        <iconify-icon class="icon-on" icon="ph:map-pin-fill" style="font-size:24px"></iconify-icon>
-      </div>
-      <span>الدليل</span>
-    </button>
-    <button class="nav-btn" id="nav-map" onclick="switchTab('map')">
-      <div class="nav-icon-wrap">
-        <iconify-icon class="icon-off" icon="ph:map-trifold" style="font-size:24px"></iconify-icon>
-        <iconify-icon class="icon-on" icon="ph:map-trifold-fill" style="font-size:24px"></iconify-icon>
-      </div>
-      <span>الخريطة</span>
-    </button>
-    <button class="nav-btn" id="nav-more" onclick="switchTab('more')">
-      <div class="nav-icon-wrap">
-        <iconify-icon class="icon-off" icon="ph:squares-four" style="font-size:24px"></iconify-icon>
-        <iconify-icon class="icon-on" icon="ph:squares-four-fill" style="font-size:24px"></iconify-icon>
-      </div>
-      <span>المزيد</span>
-    </button>
-  </nav>
+    <nav id="bottom-nav">
+      <button class="nav-btn active" id="nav-home" onclick="switchTab('home')">
+        <div class="nav-icon-wrap">
+          <iconify-icon class="icon-off" icon="ph:house" style="font-size:24px"></iconify-icon>
+          <iconify-icon class="icon-on" icon="ph:house-fill" style="font-size:24px"></iconify-icon>
+        </div>
+        <span>الرئيسية</span>
+      </button>
+      <button class="nav-btn" id="nav-news" onclick="switchTab('news')">
+        <div class="nav-icon-wrap">
+          <iconify-icon class="icon-off" icon="ph:newspaper" style="font-size:24px"></iconify-icon>
+          <iconify-icon class="icon-on" icon="ph:newspaper-fill" style="font-size:24px"></iconify-icon>
+        </div>
+        <span>الأخبار</span>
+      </button>
+      <button class="nav-btn" id="nav-guide" onclick="switchTab('guide')">
+        <div class="nav-icon-wrap">
+          <iconify-icon class="icon-off" icon="ph:map-pin" style="font-size:24px"></iconify-icon>
+          <iconify-icon class="icon-on" icon="ph:map-pin-fill" style="font-size:24px"></iconify-icon>
+        </div>
+        <span>الدليل</span>
+      </button>
+      <button class="nav-btn" id="nav-map" onclick="switchTab('map')">
+        <div class="nav-icon-wrap">
+          <iconify-icon class="icon-off" icon="ph:map-trifold" style="font-size:24px"></iconify-icon>
+          <iconify-icon class="icon-on" icon="ph:map-trifold-fill" style="font-size:24px"></iconify-icon>
+        </div>
+        <span>الخريطة</span>
+      </button>
+      <button class="nav-btn" id="nav-more" onclick="switchTab('more')">
+        <div class="nav-icon-wrap">
+          <iconify-icon class="icon-off" icon="ph:squares-four" style="font-size:24px"></iconify-icon>
+          <iconify-icon class="icon-on" icon="ph:squares-four-fill" style="font-size:24px"></iconify-icon>
+        </div>
+        <span>المزيد</span>
+      </button>
+    </nav>
+  </div>
 </div>
 
 <!-- ══ MODALS ══ -->
@@ -879,7 +954,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   </div>
 </div>
 
-<!-- modal: الرؤساء السابقون -->
 <div class="modal-overlay" id="m-prev-mayors" onclick="cm('m-prev-mayors')">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
@@ -898,9 +972,21 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   </div>
 </div>
 
+<!-- LIGHTBOX محسّن مع تنقل بين الصور -->
 <div id="lightbox">
-  <button id="lb-close" onclick="closeLightbox()">✕</button>
-  <img id="lb-img" src="" alt="">
+  <button id="lb-close" onclick="closeLightbox()">
+    <iconify-icon icon="lucide:x" style="pointer-events:none;font-size:18px"></iconify-icon>
+  </button>
+  <button id="lb-prev" onclick="lbNav(1)" class="hidden">
+    <iconify-icon icon="lucide:chevron-right" style="pointer-events:none"></iconify-icon>
+  </button>
+  <button id="lb-next" onclick="lbNav(-1)" class="hidden">
+    <iconify-icon icon="lucide:chevron-left" style="pointer-events:none"></iconify-icon>
+  </button>
+  <div id="lightbox-img-wrap">
+    <img id="lb-img" src="" alt="">
+  </div>
+  <div id="lb-counter"></div>
 </div>
 
 <script>
@@ -913,7 +999,10 @@ document.addEventListener('touchstart',function(e){
     &&!e.target.closest('.album-grid')
     &&!e.target.closest('#mn-announce-album')
     &&!e.target.closest('#mt-sticker-album')
-    &&!e.target.closest('#lightbox')){
+    &&!e.target.closest('#lightbox')
+    &&!e.target.closest('.archive-compare-cell')
+    &&!e.target.closest('.h-archive-cell')
+    &&!e.target.closest('.h-archive-single')){
     e.preventDefault();
   }
 },{passive:false});
@@ -944,6 +1033,69 @@ var FILTER_CFG={
   beach:{icon:'lucide:waves',     labelFull:'الشواطئ'},
   tour: {icon:'lucide:sun',       labelFull:'المعالم السياحية'}
 };
+
+/* ══ LIGHTBOX محسّن ══ */
+var _lbImages=[];
+var _lbIndex=0;
+
+function openLightbox(src, imagesArr, startIdx){
+  if(!src)return;
+  _lbImages = Array.isArray(imagesArr) && imagesArr.length ? imagesArr : [src];
+  _lbIndex  = (startIdx !== undefined) ? startIdx : _lbImages.indexOf(src);
+  if(_lbIndex < 0) _lbIndex = 0;
+  _lbRender();
+  document.getElementById('lightbox').classList.add('open');
+  // إضافة دعم السحب للتنقل
+  _lbInitSwipe();
+}
+
+function _lbRender(){
+  var img = document.getElementById('lb-img');
+  var counter = document.getElementById('lb-counter');
+  var prevBtn = document.getElementById('lb-prev');
+  var nextBtn = document.getElementById('lb-next');
+  img.src = _lbImages[_lbIndex];
+  if(_lbImages.length > 1){
+    counter.textContent = (_lbIndex+1) + ' / ' + _lbImages.length;
+    prevBtn.classList.toggle('hidden', _lbIndex >= _lbImages.length-1);
+    nextBtn.classList.toggle('hidden', _lbIndex <= 0);
+  } else {
+    counter.textContent = '';
+    prevBtn.classList.add('hidden');
+    nextBtn.classList.add('hidden');
+  }
+}
+
+function lbNav(dir){
+  var next = _lbIndex + dir;
+  if(next < 0 || next >= _lbImages.length) return;
+  _lbIndex = next;
+  _lbRender();
+}
+
+function closeLightbox(){
+  document.getElementById('lightbox').classList.remove('open');
+  _lbImages=[];_lbIndex=0;
+}
+
+// سحب للتنقل داخل اللايتبوكس
+var _lbSwipeX=0;
+function _lbInitSwipe(){
+  var lb=document.getElementById('lightbox');
+  lb.ontouchstart=function(e){_lbSwipeX=e.touches[0].clientX;};
+  lb.ontouchend=function(e){
+    var dx=e.changedTouches[0].clientX - _lbSwipeX;
+    if(Math.abs(dx)>50){
+      // في RTL: سحب يمين = الصورة التالية (index أكبر)، يسار = السابقة
+      if(dx>0) lbNav(1); else lbNav(-1);
+    }
+  };
+}
+
+// إغلاق اللايتبوكس بالضغط خارج الصورة
+document.getElementById('lightbox').addEventListener('click',function(e){
+  if(e.target===this) closeLightbox();
+});
 
 function toggleFilterMenu(e){
   e.stopPropagation();
@@ -995,8 +1147,7 @@ function locateUser(){
     function(pos){
       btn.classList.remove('locating');
       icon.setAttribute('icon','lucide:locate-fixed');
-      btn.style.color='var(--green)';
-      btn.style.borderColor='var(--green)';
+      btn.style.color='var(--green)';btn.style.borderColor='var(--green)';
       var lat=pos.coords.latitude,lng=pos.coords.longitude;
       if(appMap){
         appMap.setView([lat,lng],15,{animate:true});
@@ -1009,22 +1160,15 @@ function locateUser(){
         locateMarker=L.marker([lat,lng],{icon:locIcon}).addTo(appMap);
       }
       if(!document.getElementById('loc-pulse-style')){
-        var s=document.createElement('style');
-        s.id='loc-pulse-style';
+        var s=document.createElement('style');s.id='loc-pulse-style';
         s.textContent='@keyframes loc-pulse{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.8);opacity:0}}';
         document.head.appendChild(s);
       }
     },
     function(){
-      btn.classList.remove('locating');
-      icon.setAttribute('icon','lucide:locate-off');
-      btn.style.color='#dc2626';
-      btn.style.borderColor='#dc2626';
-      setTimeout(function(){
-        icon.setAttribute('icon','lucide:locate');
-        btn.style.color='';
-        btn.style.borderColor='';
-      },2500);
+      btn.classList.remove('locating');icon.setAttribute('icon','lucide:locate-off');
+      btn.style.color='#dc2626';btn.style.borderColor='#dc2626';
+      setTimeout(function(){icon.setAttribute('icon','lucide:locate');btn.style.color='';btn.style.borderColor='';},2500);
     },
     {enableHighAccuracy:true,timeout:10000,maximumAge:0}
   );
@@ -1042,12 +1186,10 @@ function applyHeaderHeight(){
     if(scroll)scroll.style.paddingTop=h+'px';
   });
 }
-
 function resetScroll(screenId){
   var scroll=document.querySelector('#'+screenId+' .scroll-area');
   if(scroll)scroll.scrollTop=0;
 }
-
 function switchTab(t){
   if(t===curTab)return;
   var prevEl=document.getElementById('screen-'+curTab);
@@ -1063,11 +1205,7 @@ function switchTab(t){
   if(prevEl){
     prevEl.style.transition='transform '+DUR+'ms '+EASE;
     prevEl.style.transform='translateX('+exitTo+')';
-    setTimeout(function(){
-      prevEl.classList.add('hidden');
-      prevEl.style.cssText='';
-      resetScroll('screen-'+prev);
-    },DUR+20);
+    setTimeout(function(){prevEl.classList.add('hidden');prevEl.style.cssText='';resetScroll('screen-'+prev);},DUR+20);
   }
   nextEl.classList.remove('hidden');
   nextEl.style.cssText='transform:translateX('+enterFrom+');transition:none';
@@ -1094,154 +1232,68 @@ function switchTab(t){
   if(t==='more'&&!_mayorLoaded){_mayorLoaded=true;loadMayor();}
   if(t==='archive')loadArchiveTab(archTab);
 }
-
 function resetGuideTab(){
   var targetTab='admin-branches';
   var bar=document.getElementById('guide-seg-bar');
   var firstBtn=document.getElementById('btn-admin-branches');
   var facList=document.getElementById('fac-list');
-  var alreadyLoaded=facCat===targetTab
-    &&C['/api/facilities?cat=branches']
-    &&facList&&facList.querySelector('.fac-card');
+  var alreadyLoaded=facCat===targetTab&&C['/api/facilities?cat=branches']&&facList&&facList.querySelector('.fac-card');
   document.querySelectorAll('#screen-guide .seg-btn').forEach(function(b){b.classList.remove('active');});
   if(firstBtn)firstBtn.classList.add('active');
   if(bar)bar.scrollLeft=0;
   if(!alreadyLoaded){facCat=targetTab;loadFacTab(targetTab,firstBtn);}
 }
 
-/* ══════════════════════════════════════════
-   دوال السحب المعدّلة
-══════════════════════════════════════════ */
-
-/**
- * تسجيل مستمع السحب على منطقة التمرير
- * - يتجاهل السحب فوق .h-scroll (البطاقات الأفقية)
- * - يتجاهل السحب فوق .seg-bar-wrap (شريط التصنيفات)
- * @param {string} scrollAreaId - id عنصر منطقة التمرير
- * @param {function} getNext - دالة تستقبل dir: -1 يسار | 1 يمين
- */
-function initSwipe(scrollAreaId, getNext){
+function initSwipe(scrollAreaId,getNext){
   var el=document.getElementById(scrollAreaId);
   if(!el)return;
   var startX=0,startY=0,tracking=false;
-
   el.addEventListener('touchstart',function(e){
-    // تجاهل السحب فوق البطاقات الأفقية وشريط التصنيفات
     if(e.target.closest('.h-scroll')){tracking=false;return;}
     if(e.target.closest('.seg-bar-wrap')){tracking=false;return;}
-    startX=e.touches[0].clientX;
-    startY=e.touches[0].clientY;
-    tracking=true;
+    startX=e.touches[0].clientX;startY=e.touches[0].clientY;tracking=true;
   },{passive:true});
-
   el.addEventListener('touchend',function(e){
-    if(!tracking)return;
-    tracking=false;
+    if(!tracking)return;tracking=false;
     var dx=e.changedTouches[0].clientX-startX;
     var dy=e.changedTouches[0].clientY-startY;
-    // عتبة 60px أفقية + التأكد أن الحركة أفقية وليست عمودية
-    if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5){
-      getNext(dx<0?-1:1);
-    }
+    if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5){getNext(dx<0?-1:1);}
   },{passive:true});
 }
-
-/**
- * سحب على الرئيسية:
- * - يمين (dir=1)  → الأخبار
- * - يسار (dir=-1) → لا شيء
- */
-function swipeHome(dir){
-  if(dir===1){
-    switchTab('news');
-  }
-}
-
-/**
- * سحب على الأخبار:
- * - يمين (dir=1)  → تصنيف تالٍ، وإن انتهت → الدليل
- * - يسار (dir=-1) → تصنيف سابق، وإن انتهت → الرئيسية
- */
+function swipeHome(dir){if(dir===1){switchTab('news');}}
 function swipeNews(dir){
   var active=document.querySelector('#screen-news .seg-btn.active');
   if(!active)return;
   var idx=NEWS_CATS.indexOf(active.getAttribute('data-cat'));
   var next=idx+dir;
-
-  if(next<0){
-    // تجاوزنا أول تصنيف → الرئيسية
-    switchTab('home');
-    return;
-  }
-  if(next>=NEWS_CATS.length){
-    // تجاوزنا آخر تصنيف → الدليل
-    switchTab('guide');
-    return;
-  }
-
+  if(next<0){switchTab('home');return;}
+  if(next>=NEWS_CATS.length){switchTab('guide');return;}
   var nextCat=NEWS_CATS[next];
   var nextBtn=document.querySelector('#screen-news .seg-btn[data-cat="'+nextCat+'"]');
-  if(nextBtn){
-    filterNews(nextCat,nextBtn);
-    nextBtn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
-  }
+  if(nextBtn){filterNews(nextCat,nextBtn);nextBtn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}
 }
-
-/**
- * سحب على الدليل:
- * - يمين (dir=1)  → تصنيف تالٍ، وإن انتهت → الخريطة
- * - يسار (dir=-1) → تصنيف سابق، وإن انتهت → الأخبار
- */
 function swipeGuide(dir){
-  var idx=GUIDE_TABS.indexOf(facCat);
-  var next=idx+dir;
-
-  if(next<0){
-    // تجاوزنا أول تصنيف → الأخبار
-    switchTab('news');
-    return;
-  }
-  if(next>=GUIDE_TABS.length){
-    // تجاوزنا آخر تصنيف → الخريطة
-    switchTab('map');
-    return;
-  }
-
+  var idx=GUIDE_TABS.indexOf(facCat);var next=idx+dir;
+  if(next<0){switchTab('news');return;}
+  if(next>=GUIDE_TABS.length){switchTab('map');return;}
   var nextTab=GUIDE_TABS[next];
   var btns=document.querySelectorAll('#screen-guide .seg-btn');
   var nextBtn=btns[next];
   loadFacTab(nextTab,nextBtn);
-  if(nextBtn){
-    nextBtn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
-  }
+  if(nextBtn){nextBtn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}
 }
-
-/**
- * سحب على المزيد:
- * - يسار (dir=-1) → الخريطة
- * - يمين (dir=1)  → لا شيء
- */
-function swipeMore(dir){
-  if(dir===-1){
-    switchTab('map');
-  }
-}
-
-/* ══════════════════════════════════════════
-   نهاية دوال السحب
-══════════════════════════════════════════ */
+function swipeMore(dir){if(dir===-1){switchTab('map');}}
 
 var NS={
   official:{grad:'linear-gradient(135deg,#ef4444,#b91c1c)',lbl:'إعلان رسمي',bs:'background:rgba(239,68,68,.12);color:#dc2626'},
   activity:{grad:'linear-gradient(135deg,#059669,#065f46)',lbl:'نشاط بلدي',bs:'background:rgba(5,150,105,.12);color:#059669'},
-  social:{grad:'linear-gradient(135deg,#7c3aed,#4c1d95)',lbl:'ركن المجتمع',bs:'background:rgba(124,58,237,.12);color:#7c3aed'}
+  social:  {grad:'linear-gradient(135deg,#7c3aed,#4c1d95)',lbl:'ركن المجتمع',bs:'background:rgba(124,58,237,.12);color:#7c3aed'}
 };
 
 function makeDateBadge(dateStr){
   if(!dateStr)return '';
   return '<span class="card-date"><iconify-icon icon="lucide:calendar-days"></iconify-icon>'+dateStr+'</span>';
 }
-
 function makeNewsCard(n){
   var s=NS[n.category]||NS.official;
   var excerpt=(n.content||'').substring(0,90)+'...';
@@ -1257,11 +1309,10 @@ function makeNewsCard(n){
     +'</div></div>';
 }
 
-// ── دوال الأرشيف ──
+/* ══ الأرشيف ══ */
 var archTab='compare';
 var prevTab='more';
 function goBack(){switchTab(prevTab);}
-
 function switchArchTab(tab,btn){
   archTab=tab;
   document.querySelectorAll('#screen-archive .seg-btn').forEach(function(b){b.classList.remove('active');});
@@ -1283,70 +1334,88 @@ async function loadArchiveTab(tab){
       el.innerHTML='<div class="empty"><iconify-icon icon="lucide:image-off"></iconify-icon><p>لا توجد صور</p></div>';
       return;
     }
-    var html='<div style="display:flex;flex-direction:column;gap:12px;padding:0 4px">';
-    items.forEach(function(a){
+
+    // بناء مصفوفة الصور لكل بطاقة (للتنقل في اللايتبوكس)
+    var html='<div style="display:flex;flex-direction:column;gap:14px;padding:0 16px 16px">';
+    items.forEach(function(a,i){
       if(tab==='compare'){
-        html+='<div style="border-radius:14px;overflow:hidden;background:var(--surface);border:1px solid var(--border)">'
-          +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border)">'
-          +'<div style="position:relative;cursor:pointer" onclick="openLightbox(\''+a.image_old_url+'\')">'
-          +'<img src="'+a.image_old_url+'" style="width:100%;aspect-ratio:1;object-fit:cover;display:block" loading="lazy">'
-          +'<span style="position:absolute;bottom:5px;right:5px;background:rgba(0,0,0,.65);color:#fff;font-size:10px;font-weight:800;padding:3px 8px;border-radius:7px">الأمس</span></div>'
-          +'<div style="position:relative;cursor:pointer" onclick="openLightbox(\''+a.image_new_url+'\')">'
-          +'<img src="'+a.image_new_url+'" style="width:100%;aspect-ratio:1;object-fit:cover;display:block" loading="lazy">'
-          +'<span style="position:absolute;bottom:5px;left:5px;background:rgba(5,150,105,.85);color:#fff;font-size:10px;font-weight:800;padding:3px 8px;border-radius:7px">اليوم</span></div>'
+        // مصفوفة صور هذه البطاقة
+        var imgs=[a.image_old_url,a.image_new_url];
+        var imgsJson=JSON.stringify(imgs);
+        html+='<div class="archive-compare-card">'
+          +'<div class="archive-compare-grid">'
+          +'<div class="archive-compare-cell" onclick="openLightbox(\''+a.image_old_url+'\','+imgsJson+',0)" style="cursor:pointer">'
+          +'<img src="'+a.image_old_url+'" loading="lazy">'
+          +'<span class="archive-compare-label">الأمس</span>'
           +'</div>'
-          +(a.title?'<div style="font-size:12px;font-weight:700;padding:9px 11px;color:var(--text)">'+a.title+'</div>':'')
+          +'<div class="archive-compare-cell" onclick="openLightbox(\''+a.image_new_url+'\','+imgsJson+',1)" style="cursor:pointer">'
+          +'<img src="'+a.image_new_url+'" loading="lazy">'
+          +'<span class="archive-compare-label new">اليوم</span>'
+          +'</div>'
+          +'</div>'
+          +(a.title?'<div class="archive-compare-title">'+a.title+'</div>':'')
           +'</div>';
       } else {
-        html+='<div style="border-radius:14px;overflow:hidden;background:var(--surface);border:1px solid var(--border);cursor:pointer" onclick="openLightbox(\''+a.image_new_url+'\')">'
+        html+='<div class="archive-compare-card" onclick="openLightbox(\''+a.image_new_url+'\')" style="cursor:pointer">'
           +'<img src="'+a.image_new_url+'" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block" loading="lazy">'
-          +(a.title?'<div style="font-size:12px;font-weight:700;padding:9px 11px;color:var(--text)">'+a.title+'</div>':'')
+          +(a.title?'<div class="archive-compare-title">'+a.title+'</div>':'')
           +'</div>';
       }
     });
     html+='</div>';
     el.innerHTML=html;
+
+    // إضافة pointer-events للصور داخل الأرشيف بعد الإدراج
+    el.querySelectorAll('.archive-compare-cell img').forEach(function(img){
+      img.style.pointerEvents='none'; // الكليك على الخلية وليس الصورة
+    });
+
   }catch(e){
     el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';
   }
 }
 
+/* ══ الأرشيف في الرئيسية - منشور واحد كامل مع snap ══ */
 async function loadHArchive(){
   var el=document.getElementById('h-archive');
   if(!el)return;
   try{
     var d=await api('/api/archives');
-    var items=(d.data||[]).filter(function(a){return a.image_old_url&&a.image_new_url;}).slice(0,5);
+    var items=(d.data||[]).filter(function(a){return a.image_old_url&&a.image_new_url;}).slice(0,8);
     if(!items.length){
-      // إذا لا توجد مقارنات نجرب الصور التاريخية
+      // نجرب الصور التاريخية
       var all=d.data||[];
-      items=all.filter(function(a){return a.image_new_url;}).slice(0,5);
+      items=all.filter(function(a){return a.image_new_url;}).slice(0,8);
     }
     if(!items.length){el.innerHTML='';return;}
+
     el.innerHTML=items.map(function(a){
       var hasCompare=a.image_old_url&&a.image_new_url;
       if(hasCompare){
-        return '<div style="flex-shrink:0;width:180px;cursor:pointer">'
-          +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;border-radius:12px;overflow:hidden">'
-          +'<div style="position:relative" onclick="openLightbox(\''+a.image_old_url+'\')">'
-          +'<img src="'+a.image_old_url+'" style="width:100%;height:80px;object-fit:cover;display:block">'
-          +'<span style="position:absolute;bottom:3px;right:3px;background:rgba(0,0,0,.6);color:#fff;font-size:8px;font-weight:800;padding:1px 5px;border-radius:5px">الأمس</span>'
+        var imgs=[a.image_old_url,a.image_new_url];
+        var imgsJson=JSON.stringify(imgs);
+        return '<div class="h-archive-card" style="scroll-snap-align:start">'
+          +'<div class="h-archive-card-compare">'
+          +'<div class="h-archive-cell" onclick="openLightbox(\''+a.image_old_url+'\','+imgsJson+',0)" style="cursor:pointer">'
+          +'<img src="'+a.image_old_url+'" loading="lazy">'
+          +'<span class="h-archive-cell-label">الأمس</span>'
           +'</div>'
-          +'<div style="position:relative" onclick="openLightbox(\''+a.image_new_url+'\')">'
-          +'<img src="'+a.image_new_url+'" style="width:100%;height:80px;object-fit:cover;display:block">'
-          +'<span style="position:absolute;bottom:3px;left:3px;background:rgba(5,150,105,.85);color:#fff;font-size:8px;font-weight:800;padding:1px 5px;border-radius:5px">اليوم</span>'
+          +'<div class="h-archive-cell" onclick="openLightbox(\''+a.image_new_url+'\','+imgsJson+',1)" style="cursor:pointer">'
+          +'<img src="'+a.image_new_url+'" loading="lazy">'
+          +'<span class="h-archive-cell-label new">اليوم</span>'
           +'</div>'
           +'</div>'
-          +'<div style="font-size:11px;font-weight:700;color:var(--text);margin-top:5px;line-height:1.3;padding:0 2px">'+(a.title||'')+'</div>'
+          +(a.title?'<div class="h-archive-card-title">'+a.title+'</div>':'')
           +'</div>';
       } else {
         var img=a.image_new_url||'';
-        return '<div style="flex-shrink:0;width:120px;cursor:pointer" onclick="openLightbox(\''+img+'\')">'
-          +'<img src="'+img+'" style="width:120px;height:90px;object-fit:cover;border-radius:12px;display:block">'
-          +'<div style="font-size:11px;font-weight:700;color:var(--text);margin-top:5px;line-height:1.3;padding:0 2px">'+(a.title||'')+'</div>'
+        return '<div class="h-archive-card h-archive-single" onclick="openLightbox(\''+img+'\')" style="scroll-snap-align:start;cursor:pointer">'
+          +'<img src="'+img+'" loading="lazy">'
+          +(a.title?'<div class="h-archive-card-title">'+a.title+'</div>':'')
           +'</div>';
       }
     }).join('');
+
   }catch(e){el.innerHTML='';}
 }
 
@@ -1360,7 +1429,6 @@ async function loadHOfficial(){
     el.innerHTML=items.length?items.map(makeNewsCard).join(''):'';
   }catch(e){el.innerHTML='';}
 }
-
 async function loadHNews(){
   var el=document.getElementById('h-news');
   try{
@@ -1369,7 +1437,6 @@ async function loadHNews(){
     el.innerHTML=items.length?items.map(makeNewsCard).join(''):'';
   }catch(e){el.innerHTML='';}
 }
-
 async function loadHBeaches(){
   var el=document.getElementById('h-beaches');
   try{
@@ -1377,7 +1444,6 @@ async function loadHBeaches(){
     el.innerHTML=items.length?items.map(function(b){return placeCard(b,'beach');}).join(''):'';
   }catch(e){el.innerHTML='';}
 }
-
 async function loadHTourism(){
   var el=document.getElementById('h-tourism');
   try{
@@ -1412,14 +1478,12 @@ async function loadNewsScreen(){
     el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';
   }
 }
-
 function filterNews(cat,btn){
   document.querySelectorAll('#screen-news .seg-btn').forEach(function(t){t.classList.remove('active');});
   btn.classList.add('active');
   if(!newsScreenLoaded)return;
   renderNews(allNews.filter(function(n){return n.category===cat;}));
 }
-
 function renderNews(items){
   var el=document.getElementById('news-list');
   if(!items.length){
@@ -1452,13 +1516,13 @@ function renderNews(items){
 }
 
 var FM={
-  'admin-branches':{cat:'branches',    icon:'lucide:landmark',       color:'#059669',bg:'#d1fae5'},
-  'education':     {cat:'education',   icon:'lucide:graduation-cap', color:'#2563eb',bg:'#dbeafe'},
-  'health':        {cat:'health',      icon:'lucide:heart-pulse',    color:'#dc2626',bg:'#fee2e2'},
+  'admin-branches':{cat:'branches',   icon:'lucide:landmark',       color:'#059669',bg:'#d1fae5'},
+  'education':     {cat:'education',  icon:'lucide:graduation-cap', color:'#2563eb',bg:'#dbeafe'},
+  'health':        {cat:'health',     icon:'lucide:heart-pulse',    color:'#dc2626',bg:'#fee2e2'},
   'public-bodies': {cat:'public_bodies',icon:'lucide:building-2',   color:'#7c3aed',bg:'#ede9fe'},
-  'religious':     {cat:'religious',   icon:'lucide:moon-star',      color:'#b45309',bg:'#fef3c7'},
-  'cultural':      {cat:'cultural',    icon:'lucide:palette',        color:'#0891b2',bg:'#cffafe'},
-  'sports':        {cat:'sports',      icon:'lucide:trophy',         color:'#ea580c',bg:'#ffedd5'}
+  'religious':     {cat:'religious',  icon:'lucide:moon-star',      color:'#b45309',bg:'#fef3c7'},
+  'cultural':      {cat:'cultural',   icon:'lucide:palette',        color:'#0891b2',bg:'#cffafe'},
+  'sports':        {cat:'sports',     icon:'lucide:trophy',         color:'#ea580c',bg:'#ffedd5'}
 };
 
 async function loadFacTab(tab,btn){
@@ -1468,32 +1532,22 @@ async function loadFacTab(tab,btn){
   var el=document.getElementById('fac-list');
   var m=FM[tab];
   if(C['/api/facilities?cat='+m.cat]){
-    var cached=C['/api/facilities?cat='+m.cat];
-    var cachedItems=cached.data||[];
-    if(!cachedItems.length){
-      el.innerHTML='<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>لا توجد عناصر</p></div>';
-    } else {
-      el.innerHTML=cachedItems.map(function(f){return makeFacCard(f,m,tab);}).join('');
-    }
+    var cached=C['/api/facilities?cat='+m.cat];var cachedItems=cached.data||[];
+    if(!cachedItems.length){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>لا توجد عناصر</p></div>';}
+    else{el.innerHTML=cachedItems.map(function(f){return makeFacCard(f,m,tab);}).join('');}
     return;
   }
-  var _lt=setTimeout(function(){
-    el.innerHTML='<div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>';
-  },150);
+  var _lt=setTimeout(function(){el.innerHTML='<div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>';},150);
   try{
     var d=await api('/api/facilities?cat='+m.cat);clearTimeout(_lt);
     var items=d.data||[];
-    if(!items.length){
-      el.innerHTML='<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>لا توجد عناصر</p></div>';
-      return;
-    }
+    if(!items.length){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>لا توجد عناصر</p></div>';return;}
     el.innerHTML=items.map(function(f){return makeFacCard(f,m,tab);}).join('');
   }catch(e){
     clearTimeout(_lt);
     el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';
   }
 }
-
 function makeFacCard(f,m,tab){
   var img=f.image_url
     ?'<img class="fac-card-img" src="'+f.image_url+'" alt="" onerror="this.outerHTML=\'<div class=fac-card-ph style=background:'+m.bg+'><iconify-icon icon='+m.icon+' style=color:'+m.color+';font-size:1.8rem></iconify-icon></div>\'">'
@@ -1513,9 +1567,7 @@ function cm(id){document.getElementById(id).classList.remove('open');document.bo
 
 document.querySelectorAll('.modal-sheet').forEach(function(sheet){
   var startY=0,startScroll=0,dragging=false;
-  sheet.addEventListener('touchstart',function(e){
-    startY=e.touches[0].clientY;startScroll=sheet.scrollTop;dragging=true;
-  },{passive:true});
+  sheet.addEventListener('touchstart',function(e){startY=e.touches[0].clientY;startScroll=sheet.scrollTop;dragging=true;},{passive:true});
   sheet.addEventListener('touchmove',function(e){
     if(!dragging)return;
     var dy=e.touches[0].clientY-startY;
@@ -1534,34 +1586,30 @@ function album(elId,albums){
   var el=document.getElementById(elId);
   var a=Array.isArray(albums)?albums:[];
   if(!a.length){el.innerHTML='';return;}
+  var urls=a.map(function(x){return x.image_url;});
   el.innerHTML='<div class="album-title"><iconify-icon icon="lucide:images" style="color:var(--green);pointer-events:none"></iconify-icon>معرض الصور ('+a.length+')</div>'
-    +'<div class="album-grid">'+a.map(function(x){
-      return '<img src="'+x.image_url+'" alt="" loading="lazy" onclick="openLightbox(\''+x.image_url+'\')" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;cursor:pointer;pointer-events:auto;display:block;touch-action:manipulation">';
+    +'<div class="album-grid">'+a.map(function(x,i){
+      return '<img src="'+x.image_url+'" alt="" loading="lazy" onclick="openLightbox(\''+x.image_url+'\','+JSON.stringify(urls)+','+i+')" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;cursor:pointer;pointer-events:auto;display:block;touch-action:manipulation">';
     }).join('')+'</div>';
 }
-
 function albumBig(elId,albums){
   var el=document.getElementById(elId);
   var a=Array.isArray(albums)?albums:[];
   if(!a.length){el.innerHTML='';return;}
-  el.innerHTML=a.map(function(x){
-    return '<div style="line-height:0;margin-bottom:3px"><img src="'+x.image_url+'" alt="" loading="lazy" onclick="openLightbox(\''+x.image_url+'\')" style="width:100%;display:block;cursor:pointer;pointer-events:auto;touch-action:manipulation"></div>';
+  var urls=a.map(function(x){return x.image_url;});
+  el.innerHTML=a.map(function(x,i){
+    return '<div style="line-height:0;margin-bottom:3px"><img src="'+x.image_url+'" alt="" loading="lazy" onclick="openLightbox(\''+x.image_url+'\','+JSON.stringify(urls)+','+i+')" style="width:100%;display:block;cursor:pointer;pointer-events:auto;touch-action:manipulation"></div>';
   }).join('');
 }
 
 async function openNewsModal(id){
   var n=allNews.find(function(x){return x.id==id;});
-  if(!n){
-    try{var d=await api('/api/news');allNews=d.data||[];n=allNews.find(function(x){return x.id==id;});}catch(e){}
-  }
+  if(!n){try{var d=await api('/api/news');allNews=d.data||[];n=allNews.find(function(x){return x.id==id;});}catch(e){}}
   if(!n)return;
   var albums=[];
   if(Array.isArray(n.albums)&&n.albums.length){albums=n.albums;}
   else if(n.album_urls){
-    try{
-      var arr=typeof n.album_urls==='string'?JSON.parse(n.album_urls):n.album_urls;
-      albums=(arr||[]).map(function(u,i){return{id:i,image_url:u,caption:''};});
-    }catch(e){}
+    try{var arr=typeof n.album_urls==='string'?JSON.parse(n.album_urls):n.album_urls;albums=(arr||[]).map(function(u,i){return{id:i,image_url:u,caption:''};});}catch(e){}
   }
   if(n.category==='poster'){
     document.getElementById('mn-normal-view').style.display='none';
@@ -1579,14 +1627,11 @@ async function openNewsModal(id){
     var imgEl=document.getElementById('mn-img');
     if(n.image_url){imgEl.src=n.image_url;imgEl.style.display='block';}else imgEl.style.display='none';
     var badgeEl=document.getElementById('mn-badge');
-    if(n.custom_label){
-      badgeEl.textContent=n.custom_label;
-      badgeEl.style.cssText='background:rgba(5,150,105,.1);color:#059669;display:inline-block';
-    } else badgeEl.style.display='none';
+    if(n.custom_label){badgeEl.textContent=n.custom_label;badgeEl.style.cssText='background:rgba(5,150,105,.1);color:#059669;display:inline-block';}
+    else badgeEl.style.display='none';
     document.getElementById('mn-name').textContent=n.title||'';
     document.getElementById('mn-desc').textContent=n.content||'';
-    document.getElementById('mn-meta').innerHTML=n.date
-      ?'<span class="modal-chip"><iconify-icon icon="lucide:calendar-days" style="pointer-events:none"></iconify-icon>'+n.date+'</span>':'';
+    document.getElementById('mn-meta').innerHTML=n.date?'<span class="modal-chip"><iconify-icon icon="lucide:calendar-days" style="pointer-events:none"></iconify-icon>'+n.date+'</span>':'';
     album('mn-album',albums);
   }
   om('m-news');
@@ -1614,12 +1659,7 @@ async function openTourismModal(id){
     var d=await api('/api/tourism?id='+id);var t=d.data;if(!t)return;
     var albums=[];
     if(Array.isArray(t.albums)&&t.albums.length){albums=t.albums;}
-    else if(t.album_urls){
-      try{
-        var arr=typeof t.album_urls==='string'?JSON.parse(t.album_urls):t.album_urls;
-        albums=(arr||[]).map(function(u,i){return{id:i,image_url:u,caption:''};});
-      }catch(e){}
-    }
+    else if(t.album_urls){try{var arr=typeof t.album_urls==='string'?JSON.parse(t.album_urls):t.album_urls;albums=(arr||[]).map(function(u,i){return{id:i,image_url:u,caption:''};});}catch(e){}}
     if(t.badge_text==='ملصق'||t.type==='sticker'){
       document.getElementById('mt-normal-view').style.display='none';
       document.getElementById('mt-sticker-view').style.display='block';
@@ -1630,8 +1670,7 @@ async function openTourismModal(id){
       var imgEl=document.getElementById('mt-img');
       if(t.image_url){imgEl.src=t.image_url;imgEl.style.display='block';}else imgEl.style.display='none';
       var badgeEl=document.getElementById('mt-badge');
-      if(t.badge_text){badgeEl.textContent=t.badge_text;badgeEl.style.display='inline-block';}
-      else badgeEl.style.display='none';
+      if(t.badge_text){badgeEl.textContent=t.badge_text;badgeEl.style.display='inline-block';}else badgeEl.style.display='none';
       document.getElementById('mt-name').textContent=t.name||'';
       document.getElementById('mt-desc').textContent=t.description||'';
       var m='';
@@ -1652,44 +1691,24 @@ async function openFacModal(id,tab){
     var img=document.getElementById('mf-img');
     if(f.image_url){img.src=f.image_url;img.style.display='block';}else img.style.display='none';
     var badgeEl=document.getElementById('mf-badge');
-    if(f.sub_type){
-      badgeEl.textContent=f.sub_type;
-      badgeEl.style.cssText='background:'+m.bg+';color:'+m.color+';display:inline-block';
-    } else badgeEl.style.display='none';
+    if(f.sub_type){badgeEl.textContent=f.sub_type;badgeEl.style.cssText='background:'+m.bg+';color:'+m.color+';display:inline-block';}
+    else badgeEl.style.display='none';
     document.getElementById('mf-name').textContent=f.name||'';
     document.getElementById('mf-desc').textContent=f.description||'';
     var tags=Array.isArray(f.tags)?f.tags:[];
     document.getElementById('mf-meta').innerHTML=tags.map(function(tg){return '<span class="modal-chip">#'+tg+'</span>';}).join('');
     var albums=[];
-    if(Array.isArray(f.albums)&&f.albums.length){
-      albums=f.albums.map(function(x){return(typeof x==='string')?{id:x,image_url:x,caption:''}:x;});
-    } else if(f.album_urls){
-      try{
-        var arr=typeof f.album_urls==='string'?JSON.parse(f.album_urls):f.album_urls;
-        albums=(arr||[]).map(function(u,i){return{id:i,image_url:u,caption:''};});
-      }catch(e){}
-    }
+    if(Array.isArray(f.albums)&&f.albums.length){albums=f.albums.map(function(x){return(typeof x==='string')?{id:x,image_url:x,caption:''}:x;});}
+    else if(f.album_urls){try{var arr=typeof f.album_urls==='string'?JSON.parse(f.album_urls):f.album_urls;albums=(arr||[]).map(function(u,i){return{id:i,image_url:u,caption:''};});}catch(e){}}
     album('mf-album',albums);om('m-fac');
   }catch(e){}
-}
-
-function openLightbox(src){
-  if(!src)return;
-  document.getElementById('lb-img').src=src;
-  document.getElementById('lightbox').classList.add('open');
-}
-function closeLightbox(){
-  document.getElementById('lightbox').classList.remove('open');
 }
 
 var appMap=null;
 function initMap2(){
   mapDone=true;
   setTimeout(function(){
-    appMap=L.map('app-map',{
-      center:[37.067177,7.380601],zoom:13,
-      zoomControl:false,attributionControl:false
-    });
+    appMap=L.map('app-map',{center:[37.067177,7.380601],zoom:13,zoomControl:false,attributionControl:false});
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(appMap);
     setTimeout(function(){appMap.invalidateSize();},300);
     appMap.on('click',function(){closeMapCard();closeFilterMenu();});
@@ -1699,16 +1718,10 @@ function initMap2(){
 
 var mapCardData=null;
 function showMapCard(item,typeCfg){
-  mapCardData=item;
-  mapCardData._typeCfg=typeCfg;
+  mapCardData=item;mapCardData._typeCfg=typeCfg;
   var avatarEl=document.getElementById('map-popup-avatar');
-  if(item.image_url){
-    avatarEl.innerHTML='<img src="'+item.image_url+'" alt="">';
-  } else {
-    avatarEl.innerHTML='<div class="map-popup-avatar-ph" style="background:'+typeCfg.bg+'">'
-      +'<iconify-icon icon="'+typeCfg.icon+'" style="font-size:2.2rem;color:'+typeCfg.color+';pointer-events:none"></iconify-icon>'
-      +'</div>';
-  }
+  if(item.image_url){avatarEl.innerHTML='<img src="'+item.image_url+'" alt="">';}
+  else{avatarEl.innerHTML='<div class="map-popup-avatar-ph" style="background:'+typeCfg.bg+'"><iconify-icon icon="'+typeCfg.icon+'" style="font-size:2.2rem;color:'+typeCfg.color+';pointer-events:none"></iconify-icon></div>';}
   var typeEl=document.getElementById('map-card-type');
   typeEl.innerHTML='<iconify-icon icon="'+typeCfg.icon+'" style="font-size:12px;pointer-events:none"></iconify-icon>'+typeCfg.label;
   typeEl.style.cssText='background:'+typeCfg.bg+';color:'+typeCfg.color;
@@ -1716,20 +1729,12 @@ function showMapCard(item,typeCfg){
   var desc=item.description||item.content||'';
   var descWrap=document.getElementById('map-popup-desc-wrap');
   var descEl=document.getElementById('map-card-desc');
-  if(desc){descEl.textContent=desc;descWrap.style.display='';}
-  else descWrap.style.display='none';
+  if(desc){descEl.textContent=desc;descWrap.style.display='';}else descWrap.style.display='none';
   document.getElementById('map-card-overlay').classList.add('open');
 }
-
-function closeMapCard(){
-  document.getElementById('map-card-overlay').classList.remove('open');
-  mapCardData=null;
-}
-
+function closeMapCard(){document.getElementById('map-card-overlay').classList.remove('open');mapCardData=null;}
 function mapCardClick(){
-  if(!mapCardData)return;
-  var d=mapCardData;
-  closeMapCard();
+  if(!mapCardData)return;var d=mapCardData;closeMapCard();
   if(d._typeCfg.modal==='beach')openBeachModal(d.id);
   else if(d._typeCfg.modal==='tour')openTourismModal(d.id);
   else if(d._typeCfg.modal==='fac')openFacModal(d.id,d._typeCfg.tab||'admin-branches');
@@ -1738,18 +1743,12 @@ function mapCardClick(){
 async function loadMapData(){
   if(!appMap)return;
   try{
-    var mIcon=L.divIcon({
-      className:'',
-      html:'<div style="width:36px;height:36px;background:#059669;border:2.5px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.3);font-size:16px">🏛️</div>',
-      iconSize:[36,36],iconAnchor:[18,18]
-    });
+    var mIcon=L.divIcon({className:'',html:'<div style="width:36px;height:36px;background:#059669;border:2.5px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.3);font-size:16px">🏛️</div>',iconSize:[36,36],iconAnchor:[18,18]});
     L.marker([37.067177,7.380601],{icon:mIcon}).addTo(appMap)
       .on('click',function(e){
         L.DomEvent.stopPropagation(e);closeFilterMenu();
-        showMapCard(
-          {id:0,name:'مقر بلدية شطايبي',description:'المقر الرئيسي لبلدية شطايبي - ولاية عنابة',image_url:''},
-          {bg:'#d1fae5',color:'#059669',icon:'lucide:building-2',label:'بلدية',modal:''}
-        );
+        showMapCard({id:0,name:'مقر بلدية شطايبي',description:'المقر الرئيسي لبلدية شطايبي - والية عنابة',image_url:''},
+          {bg:'#d1fae5',color:'#059669',icon:'lucide:building-2',label:'بلدية',modal:''});
       });
     var results=await Promise.all([api('/api/beaches'),api('/api/tourism'),api('/api/facilities')]);
     var br=results[0],tr=results[1],fr=results[2];
@@ -1759,31 +1758,14 @@ async function loadMapData(){
       var inner=item.image_url
         ?'<img src="'+item.image_url+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;pointer-events:none">'
         :'<iconify-icon icon="'+iconName+'" style="font-size:14px;color:#fff;pointer-events:none"></iconify-icon>';
-      var html='<div style="width:'+size+'px;height:'+size+'px;background:'+color
-        +';border:2.5px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center'
-        +';box-shadow:0 3px 10px rgba(0,0,0,.28);overflow:hidden;cursor:pointer">'+inner+'</div>';
+      var html='<div style="width:'+size+'px;height:'+size+'px;background:'+color+';border:2.5px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.28);overflow:hidden;cursor:pointer">'+inner+'</div>';
       var ic=L.divIcon({className:'',html:html,iconSize:[size,size],iconAnchor:[size/2,size/2]});
-      var mk=L.marker([item.lat,item.lng],{icon:ic})
-        .on('click',function(e){
-          L.DomEvent.stopPropagation(e);
-          closeFilterMenu();
-          showMapCard(item,typeCfg);
-        });
-      mapLayers[layerKey].push(mk);
-      mk.addTo(appMap);
+      var mk=L.marker([item.lat,item.lng],{icon:ic}).on('click',function(e){L.DomEvent.stopPropagation(e);closeFilterMenu();showMapCard(item,typeCfg);});
+      mapLayers[layerKey].push(mk);mk.addTo(appMap);
     }
-    (br.data||[]).forEach(function(b){
-      mkMarker(b,'#0ea5e9','lucide:waves',
-        {bg:'#e0f2fe',color:'#0369a1',icon:'lucide:waves',label:'شاطئ',modal:'beach'},'beach');
-    });
-    (tr.data||[]).forEach(function(t){
-      mkMarker(t,'#059669','lucide:compass',
-        {bg:'#d1fae5',color:'#065f46',icon:'lucide:compass',label:'سياحة',modal:'tour'},'tour');
-    });
-    (fr.data||[]).forEach(function(f){
-      mkMarker(f,'#7c3aed','lucide:building',
-        {bg:'#ede9fe',color:'#5b21b6',icon:'lucide:building',label:'مرفق',modal:'fac',tab:f.category||'admin-branches'},'fac');
-    });
+    (br.data||[]).forEach(function(b){mkMarker(b,'#0ea5e9','lucide:waves',{bg:'#e0f2fe',color:'#0369a1',icon:'lucide:waves',label:'شاطئ',modal:'beach'},'beach');});
+    (tr.data||[]).forEach(function(t){mkMarker(t,'#059669','lucide:compass',{bg:'#d1fae5',color:'#065f46',icon:'lucide:compass',label:'سياحة',modal:'tour'},'tour');});
+    (fr.data||[]).forEach(function(f){mkMarker(f,'#7c3aed','lucide:building',{bg:'#ede9fe',color:'#5b21b6',icon:'lucide:building',label:'مرفق',modal:'fac',tab:f.category||'admin-branches'},'fac');});
   }catch(e){}
 }
 
@@ -1791,8 +1773,7 @@ function updateHeaderShadow(){
   var header=document.getElementById('shared-header');if(!header)return;
   var scroll=document.querySelector('#screen-'+curTab+' .scroll-area');
   var st=scroll?scroll.scrollTop:0;
-  if(st>4)header.classList.add('scrolled');
-  else header.classList.remove('scrolled');
+  if(st>4)header.classList.add('scrolled');else header.classList.remove('scrolled');
 }
 
 async function loadMayor(){
@@ -1801,50 +1782,33 @@ async function loadMayor(){
   var iconEl=document.getElementById('mayor-icon');
   var mandateEl=document.getElementById('mayor-mandate');
   try{
-    var d=await api('/api/mayors');
-    var list=d.data||[];
-    if(!list.length){if(nameEl) nameEl.textContent='--';return;}
-    var m=list[0];
-    _mayorsList=list;
-    // الاسم: name_ar أو name
+    var d=await api('/api/mayors');var list=d.data||[];
+    if(!list.length){if(nameEl)nameEl.textContent='--';return;}
+    var m=list[0];_mayorsList=list;
     var name=m.name_ar||m.name||'--';
-    if(nameEl) nameEl.textContent=name;
-    // الصورة: image_url
+    if(nameEl)nameEl.textContent=name;
     if(m.image_url&&photoEl){
-      photoEl.onload=function(){photoEl.style.display='block';if(iconEl) iconEl.style.display='none';};
+      photoEl.onload=function(){photoEl.style.display='block';if(iconEl)iconEl.style.display='none';};
       photoEl.onerror=function(){photoEl.style.display='none';};
       photoEl.src=m.image_url;
     }
-    // الفترة: period
     var period=m.period_ar||m.period||'';
-    if(period&&mandateEl){
-      mandateEl.innerHTML='<iconify-icon icon="lucide:calendar" style="font-size:12px"></iconify-icon><span>'+period+'</span>';
-    }
-  }catch(e){
-    console.warn('loadMayor:',e);
-    if(nameEl) nameEl.textContent='--';
-  }
+    if(period&&mandateEl){mandateEl.innerHTML='<iconify-icon icon="lucide:calendar" style="font-size:12px"></iconify-icon><span>'+period+'</span>';}
+  }catch(e){console.warn('loadMayor:',e);if(nameEl)nameEl.textContent='--';}
 }
 
 async function openPrevMayorsModal(){
   var el=document.getElementById('prev-mayors-list');
   om('m-prev-mayors');
   try{
-    // نستخدم القائمة المحفوظة إن وجدت وإلا نجلب
     var list=_mayorsList;
     if(!list||!list.length){
-      if(el) el.innerHTML='<div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>';
-      var d=await api('/api/mayors');
-      list=d.data||d||[];
-      _mayorsList=list;
+      if(el)el.innerHTML='<div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>';
+      var d=await api('/api/mayors');list=d.data||d||[];_mayorsList=list;
     }
-    // نتخطى أول عنصر (الرئيس الحالي)
     var prev=list.slice(1);
-    if(!prev.length){
-      if(el) el.innerHTML='<div class="empty"><iconify-icon icon="lucide:users"></iconify-icon><p>لا توجد بيانات</p></div>';
-      return;
-    }
-    if(el) el.innerHTML=prev.map(function(m){
+    if(!prev.length){if(el)el.innerHTML='<div class="empty"><iconify-icon icon="lucide:users"></iconify-icon><p>لا توجد بيانات</p></div>';return;}
+    if(el)el.innerHTML=prev.map(function(m){
       var photo=m.image_url
         ?'<img src="'+m.image_url+'" style="width:50px;height:50px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid var(--border-light)">'
         :'<div style="width:50px;height:50px;border-radius:50%;background:var(--green-l);display:flex;align-items:center;justify-content:center;flex-shrink:0"><iconify-icon icon="lucide:user" style="color:var(--green);font-size:24px"></iconify-icon></div>';
@@ -1861,26 +1825,21 @@ async function openPrevMayorsModal(){
     }).join('');
   }catch(e){
     console.warn('openPrevMayorsModal:',e);
-    if(el) el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر تحميل البيانات</p></div>';
+    if(el)el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر تحميل البيانات</p></div>';
   }
 }
 
 window.addEventListener('load',function(){
   applyHeaderHeight();
   window.addEventListener('resize',function(){applyHeaderHeight();});
-
-  // ── تسجيل السحب لكل الشاشات ──
-  initSwipe('scroll-home',  function(dir){swipeHome(dir);});
-  initSwipe('scroll-news',  function(dir){swipeNews(dir);});
-  initSwipe('scroll-guide', function(dir){swipeGuide(dir);});
-  initSwipe('scroll-more',  function(dir){swipeMore(dir);});
-  // الخريطة: لا يوجد initSwipe
-
+  initSwipe('scroll-home', function(dir){swipeHome(dir);});
+  initSwipe('scroll-news', function(dir){swipeNews(dir);});
+  initSwipe('scroll-guide',function(dir){swipeGuide(dir);});
+  initSwipe('scroll-more', function(dir){swipeMore(dir);});
   document.querySelectorAll('.scroll-area').forEach(function(el){
     el.addEventListener('scroll',updateHeaderShadow,{passive:true});
   });
 });
-
 document.fonts.ready.then(function(){applyHeaderHeight();});
 loadHome();
 </script>
