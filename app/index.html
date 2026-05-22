@@ -110,19 +110,23 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
    Hides by sliding UP (translateY -100%)
    When hidden it takes NO space (fixed pos)
 ══════════════════════════════════════════ */
+/* ══════════════════════════════════════════
+   APP LAYOUT — header fixed, content padded once
+══════════════════════════════════════════ */
 #shared-header{
   position:fixed;
   top:0;left:0;right:0;
   z-index:200;
   background:#fff;
-  box-shadow:0 2px 16px rgba(0,0,0,.10),0 1px 4px rgba(0,0,0,.06);
-  will-change:transform,opacity;
+  box-shadow:0 1px 6px rgba(0,0,0,.08);
+  will-change:transform;
+  transform:translateY(0);
+  /* الانتقال فقط بعد snap — يُضبط بـ JS */
 }
 .app-header-inner{
   display:flex;align-items:center;gap:14px;
   padding:calc(var(--safe-t) + 12px) 16px 12px;
 }
-/* Logo — no bg, no border, no radius, no shadow */
 .header-logo{
   width:52px;height:52px;
   object-fit:contain;flex-shrink:0;
@@ -154,18 +158,10 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .hdr-btn.notif-btn{background:var(--green-xl);color:var(--green);}
 .hdr-btn.notif-btn:active{background:var(--green-l);}
 
-
-
-/* ══════════════════════════════════════════
-   APP LAYOUT
-   header is fixed → we need a spacer div
-   whose height = header height (set by JS)
-══════════════════════════════════════════ */
+/* spacer ثابت — لا يتغير أثناء الـ scroll */
 #header-spacer{
   flex-shrink:0;
-  height:var(--header-h);
-  /* This spacer pushes screen-container down
-     exactly as much as the fixed header takes */
+  height:var(--header-h,80px);
 }
 
 /* ══════════════════════════════════════════
@@ -955,98 +951,81 @@ var FILTER_CFG={
 };
 
 /* ══════════════════════════════════════════
-   HEADER HEIGHT MANAGEMENT
-   
-   Strategy:
-   - #shared-header is position:fixed (takes no flow space)
-   - #header-spacer is in the flex flow, height = header height
+   HEADER HIDE/SHOW — translateY فقط، بدون spacer
+   المحتوى لا يتحرك أبداً، الهيدر فوقه فقط
 ══════════════════════════════════════════ */
-var _headerH = 0;
+var _headerH   = 0;
+var _hdrY      = 0;   /* 0 = ظاهر كامل، -_headerH = مختفي */
+var _lastSY    = 0;
+var _ticking   = false;
+var _snapTimer = null;
 
 function measureHeader(){
   var h = document.getElementById('shared-header');
-  if(!h) return 0;
-  return h.getBoundingClientRect().height;
+  return h ? h.getBoundingClientRect().height : 0;
 }
 
 function applyHeaderHeight(){
   _headerH = measureHeader();
   document.documentElement.style.setProperty('--header-h', _headerH+'px');
-  // Spacer matches header when header is visible
+  /* spacer ثابت لا يتغير — يحجز مكان الهيدر فقط */
   var spacer = document.getElementById('header-spacer');
-  if(spacer) spacer.style.height = _headerH+'px';
-}
-
-/* ── Header hide/show: follows finger directly, no jitter ── */
-var _hdrOffset   = 0;   /* 0 = fully visible, -_headerH = fully hidden */
-var _lastSY      = 0;
-var _rafHdr      = null;
-var _snapRaf     = null;
-
-function _applyHdrOffset(offset){
-  var header = document.getElementById('shared-header');
-  var spacer  = document.getElementById('header-spacer');
-  if(!header || !_headerH) return;
-  var clamped = Math.max(-_headerH, Math.min(0, offset));
-  _hdrOffset  = clamped;
-  /* move header without any CSS transition (instant, finger-tracked) */
-  header.style.transition = 'none';
-  header.style.transform  = 'translateY('+clamped+'px)';
-  header.style.opacity    = 1 + clamped/_headerH;   /* 1→0 as it hides */
-  /* spacer shrinks/grows at same rate so content moves with it */
   if(spacer){
     spacer.style.transition = 'none';
-    spacer.style.height     = (_headerH + clamped)+'px';
+    spacer.style.height = _headerH+'px';
   }
 }
 
-function _snapHeader(){
-  /* after finger lifts, snap to fully visible or fully hidden */
-  var header = document.getElementById('shared-header');
-  var spacer  = document.getElementById('header-spacer');
-  if(!header) return;
-  var target  = (_hdrOffset < -_headerH/2) ? -_headerH : 0;
-  var DUR     = 260;
-  var EASE    = 'cubic-bezier(.4,0,.2,1)';
-  header.style.transition = 'transform '+DUR+'ms '+EASE+',opacity '+DUR+'ms '+EASE;
-  header.style.transform  = 'translateY('+target+'px)';
-  header.style.opacity    = target === 0 ? '1' : '0';
-  if(spacer){
-    spacer.style.transition = 'height '+DUR+'ms '+EASE;
-    spacer.style.height     = (_headerH + target)+'px';
+function _setHdrY(y, animated){
+  var hdr = document.getElementById('shared-header');
+  if(!hdr || !_headerH) return;
+  var clamped = Math.max(-_headerH, Math.min(0, y));
+  _hdrY = clamped;
+  if(animated){
+    hdr.style.transition = 'transform .28s cubic-bezier(.4,0,.2,1)';
+  } else {
+    hdr.style.transition = 'none';
   }
-  _hdrOffset = target;
+  hdr.style.transform = 'translateY('+clamped+'px)';
+  /* ظل خفيف فقط عند الإخفاء الجزئي */
+  hdr.style.boxShadow = clamped < 0
+    ? '0 2px 12px rgba(0,0,0,.12)'
+    : '0 1px 6px rgba(0,0,0,.08)';
+}
+
+function _snapHdr(){
+  /* snap: إما يظهر كاملاً أو يختفي كاملاً */
+  var target = (_hdrY < -_headerH * .35) ? -_headerH : 0;
+  _setHdrY(target, true);
 }
 
 function onScrollAreaScroll(e){
-  var scrollEl = e.target; if(!scrollEl) return;
-  var sy       = scrollEl.scrollTop;
-  var delta    = sy - _lastSY;
-  _lastSY      = sy;
-  if(_rafHdr) cancelAnimationFrame(_rafHdr);
-  if(_snapRaf) { clearTimeout(_snapRaf); _snapRaf = null; }
-  _rafHdr = requestAnimationFrame(function(){
-    _applyHdrOffset(_hdrOffset - delta);
-    /* snap after 120ms of no scroll events */
-    _snapRaf = setTimeout(_snapHeader, 120);
-  });
+  if(!_headerH) return;
+  var sy    = e.target.scrollTop;
+  var delta = sy - _lastSY;
+  _lastSY   = sy;
+
+  /* عند أعلى الصفحة دائماً أظهر الهيدر */
+  if(sy <= 0){ _setHdrY(0, false); return; }
+
+  if(!_ticking){
+    _ticking = true;
+    requestAnimationFrame(function(){
+      _setHdrY(_hdrY - delta, false);
+      _ticking = false;
+    });
+  }
+
+  /* snap بعد 180ms من توقف الـ scroll */
+  if(_snapTimer) clearTimeout(_snapTimer);
+  _snapTimer = setTimeout(_snapHdr, 180);
 }
 
 function resetHeaderState(){
-  var header = document.getElementById('shared-header');
-  var spacer  = document.getElementById('header-spacer');
-  _hdrOffset = 0; _lastSY = 0;
-  if(_rafHdr)  cancelAnimationFrame(_rafHdr);
-  if(_snapRaf) clearTimeout(_snapRaf);
-  if(header){
-    header.style.transition = 'none';
-    header.style.transform  = 'translateY(0)';
-    header.style.opacity    = '1';
-  }
-  if(spacer){
-    spacer.style.transition = 'none';
-    spacer.style.height     = _headerH+'px';
-  }
+  if(_snapTimer) clearTimeout(_snapTimer);
+  _snapTimer = null;
+  _lastSY    = 0;
+  _setHdrY(0, false);
 }
 
 function resetScroll(screenId){
@@ -1092,13 +1071,20 @@ function switchTab(t){
 
   curTab=t;
   resetHeaderState();
+  /* إذا كنا نغادر الخريطة: أعِد الـ spacer */
+  if(curTab==='map'){
+    var spacer=document.getElementById('header-spacer');
+    if(spacer)spacer.style.height=_headerH+'px';
+    _headerHidden=false;
+  }
 
   if(t==='map'){
     if(!mapDone) initMap2();
     else if(pendingMapFilter){var pf=pendingMapFilter;pendingMapFilter=null;setTimeout(function(){applyMapFilterSilent(pf);},150);}
-    // Hide header on map (no spacer needed since screen-map fills everything)
-    document.getElementById('shared-header').classList.add('hide-full');
-    document.getElementById('header-spacer').style.height='0px';
+    /* على الخريطة: أخفِ الهيدر تماماً */
+    _setHdrY(-_headerH, true);
+    var spacer=document.getElementById('header-spacer');
+    if(spacer)spacer.style.height='0px';
     _headerHidden=true;
   }
   if(t==='news'&&!newsScreenLoaded) loadNewsScreen();
