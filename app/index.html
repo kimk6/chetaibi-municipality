@@ -31,7 +31,6 @@
   --border:#e2e8f0;--border-light:#f1f5f9;
   --nav-h:64px;
   --header-full-h:0px;
-  --header-mini-h:44px;
   --safe-b:env(safe-area-inset-bottom,0px);
   --safe-t:env(safe-area-inset-top,0px);
   --elev-1:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
@@ -108,32 +107,37 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 #app{display:flex;flex-direction:column;height:100%;height:100dvh;overflow:hidden;position:relative;}
 
 /* ══════════════════════════════════════════
-   HEADER — Full (White) — LARGER
+   HEADER — Full (White) — مع إخفاء/إظهار عند السكرول
 ══════════════════════════════════════════ */
 #shared-header{
   position:relative;
   z-index:50;
   flex-shrink:0;
   background:#fff;
-  /* NO border-bottom — shadow only */
   box-shadow:0 2px 12px rgba(0,0,0,.10), 0 1px 3px rgba(0,0,0,.06);
+  /* الانتقال السلس للإخفاء والإظهار */
   will-change:transform,opacity;
-  transition:transform 320ms cubic-bezier(.4,0,.2,1), opacity 320ms cubic-bezier(.4,0,.2,1);
+  transition:transform 320ms cubic-bezier(.4,0,.2,1), opacity 280ms cubic-bezier(.4,0,.2,1);
 }
+
+/* حالة الإخفاء عند السكرول للأسفل */
 #shared-header.hide-full{
   transform:translateY(-100%);
   opacity:0;
   pointer-events:none;
 }
+
 .app-header-inner{
-  display:flex;align-items:center;gap:14px;
-  padding:calc(var(--safe-t) + 12px) 16px 12px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:calc(var(--safe-t) + 10px) 16px 10px;
 }
 
-/* Logo — no background, no border, no margin, flush */
+/* ══ اللوجو — مكبّر قليلاً ══ */
 .header-logo{
-  width:52px;
-  height:52px;
+  width:62px;
+  height:62px;
   border-radius:0;
   object-fit:contain;
   flex-shrink:0;
@@ -146,18 +150,31 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   display:block;
 }
 
-.header-text{flex:1;min-width:0;}
-.header-text h1{
-  font-size:17px;font-weight:900;
-  color:var(--text);
-  letter-spacing:-.4px;line-height:1.2;
-}
-.header-text p{
-  font-size:12px;color:var(--muted);
-  font-weight:600;margin-top:2px;
+/* ══ نص الهيدر ══ */
+.header-text{
+  flex:1;
+  min-width:0;
 }
 
-/* Header action buttons */
+/* ══ "بلدية شطايبي" — أخضر داكن ══ */
+.header-text h1{
+  font-size:17px;
+  font-weight:900;
+  color:var(--green-dark);
+  letter-spacing:-.4px;
+  line-height:1.2;
+}
+
+/* ══ "ولاية عنابة – الجزائر" — أخضر فاتح + توسيط ══ */
+.header-text p{
+  font-size:12px;
+  color:var(--green);
+  font-weight:600;
+  margin-top:2px;
+  text-align:center;
+}
+
+/* ══ أزرار الهيدر ══ */
 .hdr-actions{display:flex;align-items:center;gap:8px;flex-shrink:0;}
 .hdr-btn{
   width:42px;height:42px;border-radius:50%;border:none;
@@ -172,54 +189,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .hdr-btn iconify-icon{font-size:21px;pointer-events:none;display:block;}
 .hdr-btn.notif-btn{background:var(--green-xl);color:var(--green);}
 .hdr-btn.notif-btn:active{background:var(--green-l);}
-
-/* ══════════════════════════════════════════
-   MINI HEADER — compact, centered logo+title only
-══════════════════════════════════════════ */
-#mini-header{
-  position:absolute;
-  top:0;left:0;right:0;
-  z-index:49;
-  height:calc(var(--safe-t) + var(--header-mini-h));
-  padding-top:var(--safe-t);
-  background:rgba(255,255,255,.96);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  /* shadow only, no border */
-  box-shadow:0 2px 14px rgba(0,0,0,.10), 0 1px 3px rgba(0,0,0,.06);
-  display:flex;align-items:flex-end;justify-content:center;
-  /* hidden by default */
-  opacity:0;
-  transform:translateY(-8px);
-  pointer-events:none;
-  transition:opacity 280ms var(--ease-std), transform 280ms var(--ease-std);
-}
-/* NO green line pseudo-element */
-#mini-header.show-mini{
-  opacity:1;
-  transform:translateY(0);
-  pointer-events:auto;
-}
-.mini-header-inner{
-  display:flex;align-items:center;justify-content:center;
-  width:100%;
-  padding:0 16px 8px;
-  gap:8px;
-}
-.mini-logo{
-  width:26px;height:26px;
-  object-fit:contain;
-  flex-shrink:0;
-  pointer-events:none;
-  background:transparent;
-  border:none;
-  box-shadow:none;
-  display:block;
-}
-.mini-title{
-  font-size:13px;font-weight:900;
-  color:var(--text);letter-spacing:-.2px;
-  white-space:nowrap;
-}
 
 /* ══════════════════════════════════════════
    SCREEN CONTAINER
@@ -606,16 +575,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     </div>
   </div>
 
-  <!-- ══ MINI HEADER — centered logo + title only ══ -->
-  <div id="mini-header">
-    <div class="mini-header-inner">
-      <img class="mini-logo"
-        src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/new_512_any.png"
-        alt="logo" onerror="this.style.display='none'">
-      <span class="mini-title">بلدية شطايبي</span>
-    </div>
-  </div>
-
   <!-- ══ SCREENS ══ -->
   <div id="screen-container">
 
@@ -672,7 +631,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                   </div>
                   <div>
                     <div class="wcard-title">حالة الطقس</div>
-                    <div class="wcard-subtitle" id="pwa-weather-time-label">شطايبي — عنابة</div>
+                    <div class="wcard-subtitle" id="pwa-weather-timelabel">شطايبي — عنابة</div>
                   </div>
                 </div>
                 <div class="wcard-main">
@@ -856,7 +815,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
       </div>
     </div>
 
-    <!-- MAP -->
+    <!-- MAP — بدون هيدر نهائياً -->
     <div class="screen hidden" id="screen-map">
       <div class="scroll-area"><div id="app-map"></div></div>
       <div id="map-controls-right">
@@ -963,9 +922,9 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     <div class="mayor-sheet-card" id="ms-mayor-card">
       <div id="ms-mayor-photo-wrap"
         style="width:58px;height:58px;border-radius:50%;overflow:hidden;flex-shrink:0;
-        border:2.5px solid rgba(255,255,255,.3);box-shadow:0 4px 12px rgba(0,0,0,.2);
-        background:rgba(255,255,255,.1);display:flex;align-items:center;
-        justify-content:center;position:relative;z-index:1;">
+               border:2.5px solid rgba(255,255,255,.3);box-shadow:0 4px 12px rgba(0,0,0,.2);
+               background:rgba(255,255,255,.1);display:flex;align-items:center;
+               justify-content:center;position:relative;z-index:1;">
         <iconify-icon id="ms-mayor-icon" icon="lucide:user"
           style="font-size:26px;color:rgba(255,255,255,.5);pointer-events:none"></iconify-icon>
         <img id="ms-mayor-photo" src="" alt=""
@@ -1195,19 +1154,19 @@ var locateMarker=null;
 var pendingMapFilter=null;
 var archTab='compare';
 var FILTER_CFG={
-  all:   {icon:'lucide:layers',    labelFull:'الكل'},
-  fac:   {icon:'lucide:building-2',labelFull:'المرافق'},
-  beach: {icon:'lucide:waves',     labelFull:'الشواطئ'},
-  tour:  {icon:'lucide:sun',       labelFull:'المعالم السياحية'}
+  all:  {icon:'lucide:layers',    labelFull:'الكل'},
+  fac:  {icon:'lucide:building-2',labelFull:'المرافق'},
+  beach:{icon:'lucide:waves',     labelFull:'الشواطئ'},
+  tour: {icon:'lucide:sun',       labelFull:'المعالم السياحية'}
 };
 
 /* ══════════════════════════════════════════
    HEADER SCROLL BEHAVIOUR
-   - Show mini when scrolled down > threshold
-   - Show full as soon as user scrolls UP (any amount)
+   - إخفاء الهيدر عند السكرول للأسفل بعد الحد المحدد
+   - إظهاره فور السكرول للأعلى بطريقة سلسة
 ══════════════════════════════════════════ */
 var lastScrollY = 0;
-var scrollThreshold = 60; // px to scroll down before hiding full header
+var scrollThreshold = 60;
 
 function onScrollAreaScroll(){
   if(curTab==='map')return;
@@ -1215,24 +1174,19 @@ function onScrollAreaScroll(){
   if(!scrollEl)return;
   var sy = scrollEl.scrollTop;
   var fullHdr = document.getElementById('shared-header');
-  var miniHdr = document.getElementById('mini-header');
 
   if(sy > scrollThreshold){
-    // scrolled down past threshold: hide full, show mini
+    // السكرول للأسفل: إخفاء الهيدر
     fullHdr.classList.add('hide-full');
-    miniHdr.classList.add('show-mini');
   } else {
-    // at or near top (or scrolled up enough): show full, hide mini
+    // في الأعلى أو السكرول للأعلى: إظهار الهيدر
     fullHdr.classList.remove('hide-full');
-    miniHdr.classList.remove('show-mini');
   }
-
   lastScrollY = sy;
 }
 
 function resetHeaderState(){
   document.getElementById('shared-header').classList.remove('hide-full');
-  document.getElementById('mini-header').classList.remove('show-mini');
   lastScrollY = 0;
 }
 
@@ -1243,14 +1197,9 @@ function applyHeaderHeight(){
   var header = document.getElementById('shared-header');
   if(!header) return;
   var h = header.offsetHeight;
-  var miniH = 44;
   document.documentElement.style.setProperty('--header-full-h', h+'px');
-  document.documentElement.style.setProperty('--header-mini-h', miniH+'px');
 
-  var miniHdr = document.getElementById('mini-header');
-  if(miniHdr){ miniHdr.style.top = '0'; }
-
-  // Set padding-top on scroll areas so content starts right below header
+  // تعيين padding-top على مناطق السكرول لتجنب التداخل مع الهيدر
   ['home','news','guide','archive'].forEach(function(id){
     var scroll = document.querySelector('#screen-'+id+' .scroll-area');
     if(scroll) scroll.style.paddingTop = h+'px';
@@ -1308,7 +1257,6 @@ function switchTab(t){
   document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');});
   var nb = document.getElementById('nav-'+t);
   if(nb) nb.classList.add('active');
-
   curTab = t;
   resetHeaderState();
 
@@ -1318,6 +1266,7 @@ function switchTab(t){
       var pf=pendingMapFilter;pendingMapFilter=null;
       setTimeout(function(){applyMapFilterSilent(pf);},150);
     }
+    // إخفاء الهيدر نهائياً في صفحة الخريطة
     document.getElementById('shared-header').classList.add('hide-full');
   }
   if(t==='news'&&!newsScreenLoaded) loadNewsScreen();
@@ -1353,7 +1302,9 @@ function initSwipe(scrollAreaId,getNext){
   var isArchive=(scrollAreaId==='scroll-archive');
   el.addEventListener('touchstart',function(e){
     if(isArchive){startX=e.touches[0].clientX;startY=e.touches[0].clientY;tracking=true;return;}
-    if(e.target.closest('.h-scroll')||e.target.closest('.seg-bar-wrap')||e.target.closest('.archive-card')||e.target.closest('.weather-card')||e.target.closest('.sea-card')){tracking=false;return;}
+    if(e.target.closest('.h-scroll')||e.target.closest('.seg-bar-wrap')||
+       e.target.closest('.archive-card')||e.target.closest('.weather-card')||
+       e.target.closest('.sea-card')){tracking=false;return;}
     startX=e.touches[0].clientX;startY=e.touches[0].clientY;tracking=true;
   },{passive:true});
   el.addEventListener('touchend',function(e){
@@ -1626,7 +1577,6 @@ function syncMayorToSheet(){
   if(period&&mandateEl)mandateEl.innerHTML='<iconify-icon icon="lucide:calendar" style="font-size:11px;pointer-events:none"></iconify-icon><span>'+period+'</span>';
 }
 function loadHome(){loadHOfficial();loadHNews();loadMayorHome();loadHBeaches();loadHTourism();fetchPWAWeather();fetchPWASea();}
-
 var PWA_LAT=37.0850,PWA_LON=7.2550;
 async function fetchPWAWeather(){
   try{
@@ -1636,7 +1586,8 @@ async function fetchPWAWeather(){
     var w=wm[cu.weather_code]||{d:'🌡️',n:'🌙',ar:'متغير'};
     var hdrIcon=document.getElementById('pwa-weather-header-icon');
     var hdrBg=document.getElementById('pwa-weather-icon-bg');
-    if(hdrIcon&&hdrBg){if(isDay){hdrIcon.setAttribute('icon','lucide:sun');hdrIcon.style.color='#f59e0b';hdrBg.style.background='#fef3c7';}else{hdrIcon.setAttribute('icon','lucide:moon');hdrIcon.style.color='#818cf8';hdrBg.style.background='#ede9fe';}}
+    if(hdrIcon&&hdrBg){if(isDay){hdrIcon.setAttribute('icon','lucide:sun');hdrIcon.style.color='#f59e0b';hdrBg.style.background='#fef3c7';}
+    else{hdrIcon.setAttribute('icon','lucide:moon');hdrIcon.style.color='#818cf8';hdrBg.style.background='#ede9fe';}}
     document.getElementById('pwa-weather-icon').textContent=isDay?w.d:w.n;
     document.getElementById('pwa-weather-temp').textContent=Math.round(cu.temperature_2m)+'°';
     document.getElementById('pwa-weather-desc').textContent=w.ar;
@@ -1827,7 +1778,7 @@ async function loadMapData(){
   if(!appMap)return;
   try{
     var mIcon=L.divIcon({className:'',html:'<div style="width:36px;height:36px;background:var(--green);border:2.5px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.3);font-size:16px">🏛️</div>',iconSize:[36,36],iconAnchor:[18,18]});
-    L.marker([37.067177,7.380601],{icon:mIcon}).addTo(appMap).on('click',function(e){L.DomEvent.stopPropagation(e);closeFilterMenu();showMapCard({id:0,name:'مقر بلدية شطايبي',description:'المقر الرئيسي لبلدية شطايبي - والية عنابة',image_url:''},{bg:'var(--green-l)',color:'var(--green)',icon:'lucide:building-2',label:'بلدية',modal:''});});
+    L.marker([37.067177,7.380601],{icon:mIcon}).addTo(appMap).on('click',function(e){L.DomEvent.stopPropagation(e);closeFilterMenu();showMapCard({id:0,name:'مقر بلدية شطايبي',description:'المقر الرئيسي لبلدية شطايبي - ولاية عنابة',image_url:''},{bg:'var(--green-l)',color:'var(--green)',icon:'lucide:building-2',label:'بلدية',modal:''});});
     var results=await Promise.all([api('/api/beaches'),api('/api/tourism'),api('/api/facilities')]);
     var br=results[0],tr=results[1],fr=results[2];
     function mkMarker(item,color,iconName,typeCfg,layerKey){
