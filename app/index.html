@@ -31,7 +31,7 @@
   --border:#e2e8f0;--border-light:#f1f5f9;
   --nav-h:64px;
   --header-full-h:0px;
-  --header-mini-h:48px;
+  --header-mini-h:44px;
   --safe-b:env(safe-area-inset-bottom,0px);
   --safe-t:env(safe-area-inset-top,0px);
   --elev-1:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
@@ -49,7 +49,6 @@
   --text-lg:17px;--text-xl:20px;--text-2xl:24px;
   --sk-base:#e2e8f0;--sk-shine:#f8fafc;
 }
-
 *,*::before,*::after{
   margin:0;padding:0;box-sizing:border-box;
   -webkit-tap-highlight-color:transparent;
@@ -109,52 +108,59 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 #app{display:flex;flex-direction:column;height:100%;height:100dvh;overflow:hidden;position:relative;}
 
 /* ══════════════════════════════════════════
-   HEADER — Full (White)
+   HEADER — Full (White) — LARGER
 ══════════════════════════════════════════ */
 #shared-header{
   position:relative;
   z-index:50;
   flex-shrink:0;
   background:#fff;
-  border-bottom:1px solid var(--border-light);
-  box-shadow:0 1px 0 rgba(0,0,0,.04);
+  /* NO border-bottom — shadow only */
+  box-shadow:0 2px 12px rgba(0,0,0,.10), 0 1px 3px rgba(0,0,0,.06);
   will-change:transform,opacity;
-  transition:transform 380ms cubic-bezier(.4,0,.2,1), opacity 380ms cubic-bezier(.4,0,.2,1);
+  transition:transform 320ms cubic-bezier(.4,0,.2,1), opacity 320ms cubic-bezier(.4,0,.2,1);
 }
 #shared-header.hide-full{
   transform:translateY(-100%);
   opacity:0;
   pointer-events:none;
 }
-
 .app-header-inner{
-  display:flex;align-items:center;gap:12px;
-  padding:calc(var(--safe-t) + 10px) 16px 10px;
+  display:flex;align-items:center;gap:14px;
+  padding:calc(var(--safe-t) + 12px) 16px 12px;
 }
 
+/* Logo — no background, no border, no margin, flush */
 .header-logo{
-  width:42px;height:42px;border-radius:var(--r-sm);
-  object-fit:contain;flex-shrink:0;
+  width:52px;
+  height:52px;
+  border-radius:0;
+  object-fit:contain;
+  flex-shrink:0;
   pointer-events:none;
-  /* subtle green tint border */
-  box-shadow:0 0 0 1.5px rgba(5,150,105,.15), var(--elev-1);
+  background:transparent;
+  box-shadow:none;
+  border:none;
+  margin:0;
+  padding:0;
+  display:block;
 }
 
 .header-text{flex:1;min-width:0;}
 .header-text h1{
-  font-size:15px;font-weight:900;
+  font-size:17px;font-weight:900;
   color:var(--text);
-  letter-spacing:-.3px;line-height:1.2;
+  letter-spacing:-.4px;line-height:1.2;
 }
 .header-text p{
-  font-size:11px;color:var(--muted);
-  font-weight:600;margin-top:1px;
+  font-size:12px;color:var(--muted);
+  font-weight:600;margin-top:2px;
 }
 
-/* Header action buttons — circle style */
+/* Header action buttons */
 .hdr-actions{display:flex;align-items:center;gap:8px;flex-shrink:0;}
 .hdr-btn{
-  width:38px;height:38px;border-radius:50%;border:none;
+  width:42px;height:42px;border-radius:50%;border:none;
   background:var(--surface);
   display:flex;align-items:center;justify-content:center;
   cursor:pointer;touch-action:manipulation;
@@ -163,14 +169,12 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   color:var(--text-2);
 }
 .hdr-btn:active{background:var(--border);transform:scale(.88);}
-.hdr-btn iconify-icon{font-size:19px;pointer-events:none;display:block;}
-
-/* green accent for map btn */
-.hdr-btn.map-btn{background:var(--green-xl);color:var(--green);}
-.hdr-btn.map-btn:active{background:var(--green-l);}
+.hdr-btn iconify-icon{font-size:21px;pointer-events:none;display:block;}
+.hdr-btn.notif-btn{background:var(--green-xl);color:var(--green);}
+.hdr-btn.notif-btn:active{background:var(--green-l);}
 
 /* ══════════════════════════════════════════
-   MINI HEADER — compact sticky bar
+   MINI HEADER — compact, centered logo+title only
 ══════════════════════════════════════════ */
 #mini-header{
   position:absolute;
@@ -178,51 +182,43 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   z-index:49;
   height:calc(var(--safe-t) + var(--header-mini-h));
   padding-top:var(--safe-t);
-  background:rgba(255,255,255,.92);
+  background:rgba(255,255,255,.96);
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-bottom:1px solid rgba(0,0,0,.07);
-  box-shadow:0 2px 12px rgba(0,0,0,.06);
-  display:flex;align-items:flex-end;
+  /* shadow only, no border */
+  box-shadow:0 2px 14px rgba(0,0,0,.10), 0 1px 3px rgba(0,0,0,.06);
+  display:flex;align-items:flex-end;justify-content:center;
   /* hidden by default */
   opacity:0;
   transform:translateY(-8px);
   pointer-events:none;
-  transition:opacity 300ms var(--ease-std), transform 300ms var(--ease-std);
+  transition:opacity 280ms var(--ease-std), transform 280ms var(--ease-std);
 }
+/* NO green line pseudo-element */
 #mini-header.show-mini{
   opacity:1;
   transform:translateY(0);
   pointer-events:auto;
 }
 .mini-header-inner{
-  display:flex;align-items:center;
+  display:flex;align-items:center;justify-content:center;
   width:100%;
   padding:0 16px 8px;
-  gap:10px;
+  gap:8px;
+}
+.mini-logo{
+  width:26px;height:26px;
+  object-fit:contain;
+  flex-shrink:0;
+  pointer-events:none;
+  background:transparent;
+  border:none;
+  box-shadow:none;
+  display:block;
 }
 .mini-title{
-  flex:1;font-size:14px;font-weight:900;
+  font-size:13px;font-weight:900;
   color:var(--text);letter-spacing:-.2px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-/* Flat action buttons for mini header */
-.mini-btn{
-  width:32px;height:32px;border-radius:var(--r-xs);border:none;
-  background:transparent;
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;touch-action:manipulation;
-  transition:background var(--dur-fast),transform var(--dur-fast);
-  color:var(--text-2);flex-shrink:0;
-}
-.mini-btn:active{background:var(--surface);transform:scale(.88);}
-.mini-btn iconify-icon{font-size:20px;pointer-events:none;display:block;}
-.mini-btn.map-btn{color:var(--green);}
-
-/* Green accent line under mini header */
-#mini-header::after{
-  content:'';position:absolute;bottom:0;left:16px;right:16px;height:2px;
-  background:linear-gradient(90deg,var(--green-l),var(--green),var(--green-l));
-  border-radius:var(--r-full);opacity:.6;
+  white-space:nowrap;
 }
 
 /* ══════════════════════════════════════════
@@ -307,8 +303,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   cursor:pointer;touch-action:manipulation;white-space:nowrap;
   box-shadow:var(--elev-1);
   transition:background var(--dur-mid) var(--ease-std),color var(--dur-mid) var(--ease-std),
-             border-color var(--dur-mid) var(--ease-std),box-shadow var(--dur-mid) var(--ease-std),
-             transform var(--dur-fast) var(--ease-std);
+    border-color var(--dur-mid) var(--ease-std),box-shadow var(--dur-mid) var(--ease-std),
+    transform var(--dur-fast) var(--ease-std);
 }
 .seg-btn iconify-icon{font-size:15px;pointer-events:none;flex-shrink:0;}
 .seg-btn.active{background:var(--green);color:#fff;border-color:var(--green);box-shadow:0 4px 14px rgba(5,150,105,.32);}
@@ -593,7 +589,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   <div id="shared-header">
     <div class="app-header-inner">
       <img class="header-logo"
-        src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo-mobile.png"
+        src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/new_512_any.png"
         alt="logo" onerror="this.style.display='none'">
       <div class="header-text">
         <h1>بلدية شطايبي</h1>
@@ -603,23 +599,20 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         <button class="hdr-btn" id="hdr-search-btn" aria-label="بحث">
           <iconify-icon icon="lucide:search"></iconify-icon>
         </button>
-        <button class="hdr-btn map-btn" id="hdr-map-btn" aria-label="الخريطة">
-          <iconify-icon icon="lucide:map-pin"></iconify-icon>
+        <button class="hdr-btn notif-btn" id="hdr-notif-btn" aria-label="التنبيهات">
+          <iconify-icon icon="lucide:bell"></iconify-icon>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- ══ MINI HEADER ══ -->
+  <!-- ══ MINI HEADER — centered logo + title only ══ -->
   <div id="mini-header">
     <div class="mini-header-inner">
+      <img class="mini-logo"
+        src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/new_512_any.png"
+        alt="logo" onerror="this.style.display='none'">
       <span class="mini-title">بلدية شطايبي</span>
-      <button class="mini-btn" id="mini-search-btn" aria-label="بحث">
-        <iconify-icon icon="lucide:search"></iconify-icon>
-      </button>
-      <button class="mini-btn map-btn" id="mini-map-btn" aria-label="الخريطة">
-        <iconify-icon icon="lucide:map-pin"></iconify-icon>
-      </button>
     </div>
   </div>
 
@@ -949,7 +942,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
       </div>
       <span>الأرشيف</span>
     </button>
-    <!-- زر المزيد (يفتح الشيت) بدلاً من الخريطة -->
+    <!-- زر المزيد -->
     <button class="nav-btn" id="nav-more">
       <div class="nav-icon-wrap">
         <iconify-icon class="icon-off" icon="ph:dots-three-outline" style="font-size:24px"></iconify-icon>
@@ -970,9 +963,9 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     <div class="mayor-sheet-card" id="ms-mayor-card">
       <div id="ms-mayor-photo-wrap"
         style="width:58px;height:58px;border-radius:50%;overflow:hidden;flex-shrink:0;
-               border:2.5px solid rgba(255,255,255,.3);box-shadow:0 4px 12px rgba(0,0,0,.2);
-               background:rgba(255,255,255,.1);display:flex;align-items:center;
-               justify-content:center;position:relative;z-index:1;">
+        border:2.5px solid rgba(255,255,255,.3);box-shadow:0 4px 12px rgba(0,0,0,.2);
+        background:rgba(255,255,255,.1);display:flex;align-items:center;
+        justify-content:center;position:relative;z-index:1;">
         <iconify-icon id="ms-mayor-icon" icon="lucide:user"
           style="font-size:26px;color:rgba(255,255,255,.5);pointer-events:none"></iconify-icon>
         <img id="ms-mayor-photo" src="" alt=""
@@ -984,7 +977,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         </div>
         <div id="ms-mayor-name"
           style="font-size:15px;font-weight:900;color:#fff;letter-spacing:-.2px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-          ...جاري التحميل
+          جاري التحميل...
         </div>
         <div id="ms-mayor-mandate"
           style="font-size:11px;color:rgba(255,255,255,.55);margin-top:3px;display:flex;align-items:center;gap:4px;">
@@ -1043,7 +1036,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     </div>
 
     <div style="text-align:center;padding:18px 20px 6px;">
-      <div style="font-size:11px;color:var(--muted-2);">© 2026 - بلدية شطايبي - جميع الحقوق محفوظة</div>
+      <div style="font-size:11px;color:var(--muted-2);">بلدية شطايبي - © 2026 جميع الحقوق محفوظة</div>
       <div style="font-size:10px;color:var(--muted-2);font-style:italic;margin-top:3px;">تم التطوير بجهود الكفاءات الداخلية</div>
     </div>
   </div>
@@ -1066,6 +1059,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     </div>
   </div>
 </div>
+
 <div class="modal-overlay" id="m-beach">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
@@ -1078,6 +1072,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     </div>
   </div>
 </div>
+
 <div class="modal-overlay" id="m-tour">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
@@ -1098,6 +1093,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     </div>
   </div>
 </div>
+
 <div class="modal-overlay" id="m-fac">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
@@ -1111,6 +1107,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     </div>
   </div>
 </div>
+
 <div class="modal-overlay" id="m-prev-mayors">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
@@ -1153,7 +1150,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 
 <script>
 'use strict';
-
 /* ══ HAPTIC ══ */
 function haptic(type){
   if(!navigator.vibrate)return;
@@ -1163,7 +1159,6 @@ function haptic(type){
   else if(type==='success')navigator.vibrate([10,30,10]);
   else if(type==='tab')navigator.vibrate(6);
 }
-
 document.addEventListener('contextmenu',e=>e.preventDefault());
 document.addEventListener('dragstart',e=>e.preventDefault());
 document.addEventListener('selectstart',e=>e.preventDefault());
@@ -1200,75 +1195,71 @@ var locateMarker=null;
 var pendingMapFilter=null;
 var archTab='compare';
 var FILTER_CFG={
-  all:  {icon:'lucide:layers',    labelFull:'الكل'},
-  fac:  {icon:'lucide:building-2',labelFull:'المرافق'},
-  beach:{icon:'lucide:waves',     labelFull:'الشواطئ'},
-  tour: {icon:'lucide:sun',       labelFull:'المعالم السياحية'}
+  all:   {icon:'lucide:layers',    labelFull:'الكل'},
+  fac:   {icon:'lucide:building-2',labelFull:'المرافق'},
+  beach: {icon:'lucide:waves',     labelFull:'الشواطئ'},
+  tour:  {icon:'lucide:sun',       labelFull:'المعالم السياحية'}
 };
 
 /* ══════════════════════════════════════════
    HEADER SCROLL BEHAVIOUR
+   - Show mini when scrolled down > threshold
+   - Show full as soon as user scrolls UP (any amount)
 ══════════════════════════════════════════ */
-var headerVisible=true;
-var lastScrollY=0;
-var scrollThreshold=80; // px before hiding
+var lastScrollY = 0;
+var scrollThreshold = 60; // px to scroll down before hiding full header
 
 function onScrollAreaScroll(){
   if(curTab==='map')return;
   var scrollEl=document.querySelector('#screen-'+curTab+' .scroll-area');
   if(!scrollEl)return;
-  var sy=scrollEl.scrollTop;
-  var fullHdr=document.getElementById('shared-header');
-  var miniHdr=document.getElementById('mini-header');
+  var sy = scrollEl.scrollTop;
+  var fullHdr = document.getElementById('shared-header');
+  var miniHdr = document.getElementById('mini-header');
 
-  if(sy>scrollThreshold){
-    // hide full, show mini
+  if(sy > scrollThreshold){
+    // scrolled down past threshold: hide full, show mini
     fullHdr.classList.add('hide-full');
     miniHdr.classList.add('show-mini');
   } else {
-    // show full, hide mini
+    // at or near top (or scrolled up enough): show full, hide mini
     fullHdr.classList.remove('hide-full');
     miniHdr.classList.remove('show-mini');
   }
-  lastScrollY=sy;
+
+  lastScrollY = sy;
 }
 
 function resetHeaderState(){
   document.getElementById('shared-header').classList.remove('hide-full');
   document.getElementById('mini-header').classList.remove('show-mini');
-  lastScrollY=0;
+  lastScrollY = 0;
 }
 
 /* ══════════════════════════════════════════
    HEADER HEIGHT — padding for scroll areas
 ══════════════════════════════════════════ */
 function applyHeaderHeight(){
-  var header=document.getElementById('shared-header');
-  var container=document.getElementById('screen-container');
-  if(!header||!container)return;
-  var h=header.offsetHeight;
-  // screen-container starts right after header (flex layout)
-  // scroll areas need padding-top = full header height
-  var miniH=48; // mini header height
-  document.documentElement.style.setProperty('--header-full-h',h+'px');
-  document.documentElement.style.setProperty('--header-mini-h',miniH+'px');
+  var header = document.getElementById('shared-header');
+  if(!header) return;
+  var h = header.offsetHeight;
+  var miniH = 44;
+  document.documentElement.style.setProperty('--header-full-h', h+'px');
+  document.documentElement.style.setProperty('--header-mini-h', miniH+'px');
 
-  // position mini-header at top of screen-container
-  var miniHdr=document.getElementById('mini-header');
-  if(miniHdr){
-    miniHdr.style.top='0';
-  }
+  var miniHdr = document.getElementById('mini-header');
+  if(miniHdr){ miniHdr.style.top = '0'; }
 
-  // padding for non-map screens
+  // Set padding-top on scroll areas so content starts right below header
   ['home','news','guide','archive'].forEach(function(id){
-    var scroll=document.querySelector('#screen-'+id+' .scroll-area');
-    if(scroll)scroll.style.paddingTop=h+'px';
+    var scroll = document.querySelector('#screen-'+id+' .scroll-area');
+    if(scroll) scroll.style.paddingTop = h+'px';
   });
 }
 
 function resetScroll(screenId){
-  var scroll=document.querySelector('#'+screenId+' .scroll-area');
-  if(scroll)scroll.scrollTop=0;
+  var scroll = document.querySelector('#'+screenId+' .scroll-area');
+  if(scroll) scroll.scrollTop = 0;
 }
 
 /* ══════════════════════════════════════════
@@ -1277,23 +1268,17 @@ function resetScroll(screenId){
 function switchTab(t){
   if(t===curTab)return;
   haptic('tab');
-
-  // handle map via more sheet or direct
-  var isMapTarget=(t==='map');
-
-  var prevEl=document.getElementById('screen-'+curTab);
-  var nextEl=document.getElementById('screen-'+t);
+  var prevEl = document.getElementById('screen-'+curTab);
+  var nextEl = document.getElementById('screen-'+t);
   if(!nextEl)return;
-
-  var prevIdx=TAB_ORDER.indexOf(curTab);
-  var nextIdx=TAB_ORDER.indexOf(t);
-  // if map not in TAB_ORDER, treat as forward
-  var forward=(nextIdx>=0&&prevIdx>=0)?nextIdx>prevIdx:true;
-  var enterFrom=forward?'-100%':'100%';
-  var exitTo=forward?'100%':'-100%';
-  var DUR=300;
-  var EASE='cubic-bezier(.4,0,.2,1)';
-  var prev=curTab;
+  var prevIdx = TAB_ORDER.indexOf(curTab);
+  var nextIdx = TAB_ORDER.indexOf(t);
+  var forward = (nextIdx>=0&&prevIdx>=0)?nextIdx>prevIdx:true;
+  var enterFrom = forward?'-100%':'100%';
+  var exitTo = forward?'100%':'-100%';
+  var DUR = 300;
+  var EASE = 'cubic-bezier(.4,0,.2,1)';
+  var prev = curTab;
 
   if(prevEl){
     prevEl.style.transition='transform '+DUR+'ms '+EASE+',opacity '+DUR+'ms '+EASE;
@@ -1310,9 +1295,9 @@ function switchTab(t){
   nextEl.style.cssText='transform:translateX('+enterFrom+') scale(.96);opacity:0;transition:none;';
   requestAnimationFrame(function(){
     requestAnimationFrame(function(){
-      var header=document.getElementById('shared-header');
-      var scroll=document.querySelector('#screen-'+t+' .scroll-area');
-      if(header&&scroll&&t!=='map')scroll.style.paddingTop=header.offsetHeight+'px';
+      var header = document.getElementById('shared-header');
+      var scroll = document.querySelector('#screen-'+t+' .scroll-area');
+      if(header&&scroll&&t!=='map') scroll.style.paddingTop = header.offsetHeight+'px';
       nextEl.style.transition='transform '+DUR+'ms '+EASE+',opacity '+DUR+'ms '+EASE;
       nextEl.style.transform='translateX(0) scale(1)';
       nextEl.style.opacity='1';
@@ -1320,27 +1305,25 @@ function switchTab(t){
     });
   });
 
-  // nav active state — only for main tabs
   document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');});
-  var nb=document.getElementById('nav-'+t);
-  if(nb)nb.classList.add('active');
+  var nb = document.getElementById('nav-'+t);
+  if(nb) nb.classList.add('active');
 
-  curTab=t;
+  curTab = t;
   resetHeaderState();
 
   if(t==='map'){
-    if(!mapDone)initMap2();
+    if(!mapDone) initMap2();
     else if(pendingMapFilter){
       var pf=pendingMapFilter;pendingMapFilter=null;
       setTimeout(function(){applyMapFilterSilent(pf);},150);
     }
-    // hide header on map
     document.getElementById('shared-header').classList.add('hide-full');
   }
-  if(t==='news'&&!newsScreenLoaded)loadNewsScreen();
-  if(t==='guide')loadCurrentGuideTab();
-  if(t==='home')loadHome();
-  if(t==='archive')loadArchiveTab(archTab);
+  if(t==='news'&&!newsScreenLoaded) loadNewsScreen();
+  if(t==='guide') loadCurrentGuideTab();
+  if(t==='home') loadHome();
+  if(t==='archive') loadArchiveTab(archTab);
 }
 
 function switchTabWithFilter(tab,filterType){
@@ -1370,11 +1353,7 @@ function initSwipe(scrollAreaId,getNext){
   var isArchive=(scrollAreaId==='scroll-archive');
   el.addEventListener('touchstart',function(e){
     if(isArchive){startX=e.touches[0].clientX;startY=e.touches[0].clientY;tracking=true;return;}
-    if(e.target.closest('.h-scroll')
-      ||e.target.closest('.seg-bar-wrap')
-      ||e.target.closest('.archive-card')
-      ||e.target.closest('.weather-card')
-      ||e.target.closest('.sea-card')){tracking=false;return;}
+    if(e.target.closest('.h-scroll')||e.target.closest('.seg-bar-wrap')||e.target.closest('.archive-card')||e.target.closest('.weather-card')||e.target.closest('.sea-card')){tracking=false;return;}
     startX=e.touches[0].clientX;startY=e.touches[0].clientY;tracking=true;
   },{passive:true});
   el.addEventListener('touchend',function(e){
@@ -1384,7 +1363,6 @@ function initSwipe(scrollAreaId,getNext){
     if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5){haptic('light');getNext(dx<0?-1:1);}
   },{passive:true});
 }
-
 function swipeHome(dir){if(dir===1)switchTab('news');}
 function swipeNews(dir){
   var active=document.querySelector('#screen-news .seg-btn.active');if(!active)return;
@@ -1409,7 +1387,7 @@ function swipeArchive(dir){
     if(dir===1){var nb=document.getElementById('arch-tab-historic');switchArchTab('historic',nb);}
     else switchTab('guide');
   }else{
-    if(dir===1){/* no tab after archive in main flow */}
+    if(dir===1){}
     else{var nb=document.getElementById('arch-tab-compare');switchArchTab('compare',nb);}
   }
 }
@@ -1431,7 +1409,6 @@ var MoreSheet=(function(){
     if(isOpen)return;isOpen=true;
     overlay.classList.add('open');
     syncMayorToSheet();
-    // highlight nav-more
     document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
     var nb=document.getElementById('nav-more');
     if(nb)nb.classList.add('active');
@@ -1440,7 +1417,6 @@ var MoreSheet=(function(){
     if(!isOpen)return;isOpen=false;
     overlay.classList.remove('open');
     sheet.style.transform='';sheet.style.transition='';
-    // restore active nav
     document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
     var nb=document.getElementById('nav-'+curTab);
     if(nb)nb.classList.add('active');
@@ -1485,7 +1461,6 @@ var Search=(function(){
     document.getElementById('search-close-btn').addEventListener('click',close);
     overlay.addEventListener('click',function(e){if(e.target===overlay)close();});
     input.addEventListener('input',onInput);
-    // allow text selection in search input
     input.addEventListener('touchstart',function(e){e.stopPropagation();},{passive:true});
   }
   function open(){
@@ -1502,7 +1477,6 @@ var Search=(function(){
     var q=(input.value||'').trim();
     if(q.length<2){results.innerHTML='<div class="search-empty">اكتب كلمتين على الأقل</div>';return;}
     var found=[];
-    // search news
     allNews.forEach(function(n){
       if((n.title||'').includes(q)||(n.content||'').includes(q)){
         found.push({type:'news',icon:'lucide:newspaper',color:'var(--green)',bg:'var(--green-xl)',title:n.title||'خبر',sub:n.date||'',id:n.id});
@@ -1651,7 +1625,6 @@ function syncMayorToSheet(){
   var period=m.period_ar||m.period||'';
   if(period&&mandateEl)mandateEl.innerHTML='<iconify-icon icon="lucide:calendar" style="font-size:11px;pointer-events:none"></iconify-icon><span>'+period+'</span>';
 }
-
 function loadHome(){loadHOfficial();loadHNews();loadMayorHome();loadHBeaches();loadHTourism();fetchPWAWeather();fetchPWASea();}
 
 var PWA_LAT=37.0850,PWA_LON=7.2550;
@@ -1759,7 +1732,7 @@ function renderNews(items){
 
 /* ══ GUIDE ══ */
 var FM={
-  'admin-branches':{cat:'branches',    icon:'lucide:landmark',       color:'var(--green)',  bg:'var(--green-l)'},
+  'admin-branches':{cat:'branches',    icon:'lucide:landmark',      color:'var(--green)',  bg:'var(--green-l)'},
   'education':     {cat:'education',   icon:'lucide:graduation-cap', color:'var(--blue)',   bg:'var(--blue-l)'},
   'health':        {cat:'health',      icon:'lucide:heart-pulse',    color:'var(--red)',    bg:'var(--red-l)'},
   'public-bodies': {cat:'public_bodies',icon:'lucide:building-2',   color:'var(--purple)', bg:'var(--purple-l)'},
@@ -1907,13 +1880,10 @@ function initEventDelegation(){
   document.getElementById('nav-news').addEventListener('click',function(){haptic('tab');switchTab('news');});
   document.getElementById('nav-guide').addEventListener('click',function(){haptic('tab');switchTab('guide');});
   document.getElementById('nav-archive').addEventListener('click',function(){haptic('tab');switchTab('archive');});
-  // nav-more handled by MoreSheet
 
   // Header buttons
   document.getElementById('hdr-search-btn').addEventListener('click',function(){Search.open();});
-  document.getElementById('hdr-map-btn').addEventListener('click',function(){haptic('light');MoreSheet.close();switchTabWithFilter('map','all');});
-  document.getElementById('mini-search-btn').addEventListener('click',function(){Search.open();});
-  document.getElementById('mini-map-btn').addEventListener('click',function(){haptic('light');switchTabWithFilter('map','all');});
+  document.getElementById('hdr-notif-btn').addEventListener('click',function(){haptic('light');});
 
   // Home buttons
   document.getElementById('btn-see-news-official').addEventListener('click',function(){haptic('light');switchTab('news');});
@@ -1965,11 +1935,9 @@ function initEventDelegation(){
 window.addEventListener('load',function(){
   applyHeaderHeight();
   window.addEventListener('resize',function(){applyHeaderHeight();});
-
   MoreSheet.init();
   Search.init();
   initEventDelegation();
-
   initSwipe('scroll-home',   function(dir){swipeHome(dir);});
   initSwipe('scroll-news',   function(dir){swipeNews(dir);});
   initSwipe('scroll-guide',  function(dir){swipeGuide(dir);});
@@ -1983,7 +1951,6 @@ window.addEventListener('load',function(){
     }
   });
 });
-
 document.fonts.ready.then(function(){applyHeaderHeight();});
 loadHome();
 </script>
