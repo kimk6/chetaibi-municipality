@@ -143,40 +143,138 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 /* ══════════════════════════════════════════
    HEADER
 ══════════════════════════════════════════ */
+/* ══ DYNAMIC APP BAR ══ */
 #shared-header{
   position:relative;z-index:1;flex-shrink:0;
   background:linear-gradient(150deg,#042f1e 0%,var(--green-d) 35%,var(--green-m) 70%,#059c70 100%);
   overflow:hidden;
+  transition:background var(--dur-mid) var(--ease-std),
+             box-shadow var(--dur-mid) var(--ease-std),
+             padding var(--dur-mid) var(--ease-std);
 }
 #shared-header::before{
   content:'';position:absolute;inset:0;
   background:radial-gradient(ellipse at 80% 0%,rgba(255,255,255,.09) 0%,transparent 55%),
               radial-gradient(ellipse at 10% 100%,rgba(255,255,255,.04) 0%,transparent 50%);
   pointer-events:none;
+  transition:opacity var(--dur-mid) var(--ease-std);
 }
-#shared-header::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
-  background:rgba(255,255,255,0);
-  transition:background var(--dur-mid) var(--ease-std),box-shadow var(--dur-mid) var(--ease-std);
-  pointer-events:none;z-index:2;
+#shared-header.compact{
+  background:#fff;
+  box-shadow:0 1px 8px rgba(0,0,0,.08);
 }
-#shared-header.scrolled::after{
-  background:rgba(255,255,255,.10);
-  box-shadow:0 1px 20px 2px rgba(0,0,0,.25);
-}
+#shared-header.compact::before{opacity:0;}
+
+/* الوضع الموسع */
 .app-header-inner{
-  display:flex;align-items:center;gap:14px;
+  display:flex;align-items:center;gap:12px;
   position:relative;z-index:1;
-  padding:calc(var(--safe-t) + 14px) 20px 14px;
+  padding:calc(var(--safe-t) + 14px) 18px 14px;
+  transition:padding var(--dur-mid) var(--ease-std);
 }
+#shared-header.compact .app-header-inner{
+  padding:calc(var(--safe-t) + 8px) 18px 8px;
+}
+
 .header-logo{
   width:46px;height:46px;border-radius:var(--r-sm);
   background:rgba(255,255,255,.95);object-fit:contain;flex-shrink:0;
   pointer-events:none;box-shadow:0 2px 8px rgba(0,0,0,.18);
+  transition:width var(--dur-mid) var(--ease-std),
+             height var(--dur-mid) var(--ease-std),
+             border-radius var(--dur-mid) var(--ease-std),
+             box-shadow var(--dur-mid) var(--ease-std),
+             background var(--dur-mid) var(--ease-std);
 }
-.header-text{flex:1;}
-.header-text h1{font-size:var(--text-lg);font-weight:900;color:#fff;letter-spacing:-.2px;line-height:1.2;}
-.header-text p{font-size:11.5px;color:rgba(255,255,255,.72);font-weight:600;margin-top:2px;letter-spacing:.02em;}
+#shared-header.compact .header-logo{
+  width:32px;height:32px;border-radius:var(--r-xs);
+  box-shadow:0 1px 4px rgba(0,0,0,.12);
+}
+
+.header-text{flex:1;min-width:0;transition:opacity var(--dur-mid) var(--ease-std);}
+.header-text h1{
+  font-size:var(--text-lg);font-weight:900;color:#fff;
+  letter-spacing:-.2px;line-height:1.2;
+  transition:color var(--dur-mid) var(--ease-std),
+             font-size var(--dur-mid) var(--ease-std);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.header-text p{
+  font-size:11.5px;color:rgba(255,255,255,.72);font-weight:600;
+  margin-top:2px;letter-spacing:.02em;
+  transition:color var(--dur-mid) var(--ease-std),
+             font-size var(--dur-mid) var(--ease-std),
+             opacity var(--dur-mid) var(--ease-std);
+}
+#shared-header.compact .header-text h1{color:#111827;font-size:14px;}
+#shared-header.compact .header-text p{color:#6b7280;font-size:10.5px;}
+
+/* أيقونات الهيدر */
+.header-actions{
+  display:flex;align-items:center;gap:8px;flex-shrink:0;
+}
+.hdr-icon-btn{
+  width:36px;height:36px;border-radius:50%;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.15);
+  transition:background var(--dur-fast),transform var(--dur-fast),
+             width var(--dur-mid) var(--ease-std),
+             height var(--dur-mid) var(--ease-std),
+             border-radius var(--dur-mid) var(--ease-std),
+             box-shadow var(--dur-mid) var(--ease-std);
+  position:relative;flex-shrink:0;
+  font-family:var(--font-main);
+}
+.hdr-icon-btn:active{transform:scale(.88);}
+.hdr-icon-btn iconify-icon{
+  font-size:20px;color:#fff;pointer-events:none;
+  transition:color var(--dur-mid) var(--ease-std),font-size var(--dur-mid) var(--ease-std);
+}
+#shared-header.compact .hdr-icon-btn{
+  background:transparent;width:32px;height:32px;
+}
+#shared-header.compact .hdr-icon-btn iconify-icon{color:#374151;font-size:18px;}
+
+/* نقطة التنبيه */
+.notif-dot{
+  position:absolute;top:5px;left:5px;
+  width:8px;height:8px;border-radius:50%;
+  background:#ef4444;border:1.5px solid #fff;
+  opacity:0;transition:opacity var(--dur-mid) var(--ease-std);
+  pointer-events:none;
+}
+#shared-header.compact .notif-dot{border-color:#fff;}
+.notif-dot.show{opacity:1;}
+
+/* حقل البحث المتمدد */
+.header-search-wrap{
+  position:absolute;left:0;right:0;top:0;bottom:0;
+  display:flex;align-items:center;padding:0 18px;
+  background:inherit;z-index:10;
+  opacity:0;pointer-events:none;
+  transition:opacity .2s ease;
+}
+.header-search-wrap.open{opacity:1;pointer-events:auto;}
+.header-search-input{
+  flex:1;height:38px;border:none;outline:none;
+  background:rgba(255,255,255,.2);
+  border-radius:var(--r-full);padding:0 16px;
+  font-family:var(--font-main);font-size:14px;font-weight:600;
+  color:#fff;direction:rtl;
+  transition:background var(--dur-fast);
+}
+.header-search-input::placeholder{color:rgba(255,255,255,.65);}
+#shared-header.compact .header-search-input{
+  background:rgba(0,0,0,.07);color:#111;
+}
+#shared-header.compact .header-search-input::placeholder{color:#9ca3af;}
+.search-cancel-btn{
+  border:none;background:none;color:rgba(255,255,255,.85);
+  font-family:var(--font-main);font-size:13px;font-weight:700;
+  cursor:pointer;padding:0 0 0 12px;white-space:nowrap;flex-shrink:0;
+}
+#shared-header.compact .search-cancel-btn{color:#374151;}
+
 /* ══ FLOATING MENU BTN ══ */
 .floating-menu-btn{
   position:fixed;top:calc(var(--safe-t) + 14px);left:18px;z-index:99;
@@ -536,8 +634,24 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         style="background:transparent">
       <div class="header-text">
         <h1>بلدية شطايبي</h1>
-        <p>والية عنابة – الجزائر</p>
+        <p>ولاية عنابة – الجزائر</p>
       </div>
+      <!-- أيقونات يسار الهيدر -->
+      <div class="header-actions">
+        <button class="hdr-icon-btn" id="hdr-search-btn" aria-label="بحث">
+          <iconify-icon icon="lucide:search"></iconify-icon>
+        </button>
+        <button class="hdr-icon-btn" id="hdr-bell-btn" aria-label="التنبيهات">
+          <iconify-icon icon="lucide:bell"></iconify-icon>
+          <span class="notif-dot" id="notif-dot"></span>
+        </button>
+      </div>
+    </div>
+    <!-- حقل البحث المتمدد -->
+    <div class="header-search-wrap" id="header-search-wrap">
+      <input class="header-search-input" id="header-search-input"
+        type="text" placeholder="ابحث في الأخبار والمرافق..." autocomplete="off">
+      <button class="search-cancel-btn" id="search-cancel-btn">إلغاء</button>
     </div>
   </div>
 
@@ -1343,9 +1457,11 @@ function updateHeaderShadow(){
   if(!header)return;
   var scroll=document.querySelector('#screen-'+curTab+' .scroll-area');
   var st=scroll?scroll.scrollTop:0;
-  header.classList.toggle('scrolled',st>4);
+  // compact: يتحول لأبيض عند التمرير 60px للأسفل
+  header.classList.toggle('compact',st>60);
+  // زر القائمة يختفي مع الهيدر الموسع
   if(menuBtn){
-    menuBtn.classList.toggle('header-hidden',st>4);
+    menuBtn.classList.toggle('header-hidden',st>60);
     menuBtn.classList.toggle('map-active',curTab==='map');
   }
 }
@@ -2104,6 +2220,45 @@ window.addEventListener('load',function(){
   document.querySelectorAll('.scroll-area').forEach(function(el){
     el.addEventListener('scroll',updateHeaderShadow,{passive:true});
   });
+
+  // ── زر البحث: تمديد أفقي يغطي اسم البلدية ──
+  var hdrSearchBtn=document.getElementById('hdr-search-btn');
+  var searchWrap=document.getElementById('header-search-wrap');
+  var searchInput=document.getElementById('header-search-input');
+  var searchCancelBtn=document.getElementById('search-cancel-btn');
+  if(hdrSearchBtn&&searchWrap){
+    hdrSearchBtn.addEventListener('click',function(){
+      haptic('light');
+      searchWrap.classList.add('open');
+      setTimeout(function(){if(searchInput)searchInput.focus();},120);
+    });
+    if(searchCancelBtn){
+      searchCancelBtn.addEventListener('click',function(){
+        haptic('light');
+        searchWrap.classList.remove('open');
+        if(searchInput)searchInput.value='';
+      });
+    }
+  }
+
+  // ── جرس التنبيهات: نقطة حمراء تجريبية ──
+  var bellBtn=document.getElementById('hdr-bell-btn');
+  var notifDot=document.getElementById('notif-dot');
+  if(bellBtn){
+    // أظهر نقطة التنبيه إذا يوجد إعلانات غير مقروءة
+    if(notifDot)notifDot.classList.add('show');
+    bellBtn.addEventListener('click',function(){
+      haptic('mid');
+      // انتقل لتبويب الأخبار وفلتر الإعلانات
+      switchTab('news');
+      setTimeout(function(){
+        var btn=document.getElementById('news-btn-official');
+        if(btn)btn.click();
+      },320);
+      // أخفِ النقطة بعد الضغط
+      if(notifDot)notifDot.classList.remove('show');
+    });
+  }
 });
 
 document.fonts.ready.then(function(){applyHeaderHeight();});
