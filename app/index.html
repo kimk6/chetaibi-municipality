@@ -206,22 +206,19 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .floating-menu-btn{
   position:fixed;top:calc(var(--safe-t) + 14px);left:18px;z-index:99;
   display:flex;align-items:center;justify-content:center;
-  width:42px;height:42px;border-radius:var(--r-sm);
+  width:40px;height:40px;border-radius:var(--r-sm);
   background:rgba(255,255,255,.14);border:1.5px solid rgba(255,255,255,.25);
   cursor:pointer;flex-shrink:0;
   transition:background var(--dur-fast),transform var(--dur-fast),
-             opacity var(--dur-slow) var(--ease-std),translate var(--dur-slow) var(--ease-std);
+             opacity .18s ease,translate .18s ease;
   translate:0 0;opacity:1;
   backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
 }
 .floating-menu-btn:active{background:rgba(255,255,255,.28);transform:scale(.90);}
-.floating-menu-btn.header-hidden{translate:0 -110%;opacity:0;pointer-events:none;}
-.floating-menu-btn.map-active{opacity:0 !important;pointer-events:none !important;translate:0 -110% !important;}
-.hamburger-lines{display:flex;flex-direction:column;gap:5px;align-items:flex-end;justify-content:center;width:20px;height:16px;pointer-events:none;}
-.hamburger-lines span{display:block;height:2px;background:#fff;border-radius:99px;pointer-events:none;}
-.hamburger-lines span:nth-child(1){width:18px;}
-.hamburger-lines span:nth-child(2){width:18px;}
-.hamburger-lines span:nth-child(3){width:12px;}
+.floating-menu-btn.header-hidden{translate:0 -130%;opacity:0;pointer-events:none;}
+.floating-menu-btn.map-active{opacity:0 !important;pointer-events:none !important;translate:0 -130% !important;}
+.hamburger-lines{display:flex;flex-direction:column;gap:4px;align-items:center;justify-content:center;width:17px;height:14px;pointer-events:none;}
+.hamburger-lines span{display:block;height:2px;background:#fff;border-radius:99px;pointer-events:none;width:17px;}
 
 /* ══════════════════════════════════════════
    SCREENS — scale + opacity transition
@@ -253,23 +250,23 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
   border:none;background:none;cursor:pointer;
   font-family:var(--font-main);font-size:10px;font-weight:700;
-  color:var(--muted);padding:0 4px;position:relative;
+  color:var(--muted);padding:0 2px;position:relative;
   touch-action:manipulation;transition:color var(--dur-mid) var(--ease-std);
 }
 .nav-icon-wrap{
-  position:relative;width:58px;height:32px;
+  position:relative;width:54px;height:32px;
   display:flex;align-items:center;justify-content:center;
   border-radius:var(--r-full);transition:background var(--dur-mid) var(--ease-std);flex-shrink:0;
 }
 .nav-btn.active .nav-icon-wrap{background:var(--green-l);}
 .nav-btn:active .nav-icon-wrap{transform:scale(.88);transition:transform var(--dur-fast) var(--ease-std);}
-.nav-btn iconify-icon{font-size:23px;display:block;pointer-events:none;}
+.nav-btn iconify-icon{font-size:24px;display:block;pointer-events:none;}
 .nav-btn .icon-on{display:block;position:absolute;opacity:0;transition:opacity var(--dur-mid) var(--ease-std);pointer-events:none;}
 .nav-btn .icon-off{display:block;opacity:1;transition:opacity var(--dur-mid) var(--ease-std);pointer-events:none;}
 .nav-btn.active .icon-on{opacity:1;}
 .nav-btn.active .icon-off{opacity:0;}
 .nav-btn.active{color:var(--green);}
-.nav-btn span{pointer-events:none;font-size:10px;font-weight:700;letter-spacing:.01em;line-height:1;}
+.nav-btn span{pointer-events:none;font-size:10.5px;font-weight:700;letter-spacing:.01em;line-height:1;}
 
 /* ══════════════════════════════════════════
    SECTIONS
@@ -287,6 +284,13 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 }
 .see-all:active{opacity:.65;background:#bbf7d0;}
 .see-all-arrow{font-size:13px;display:flex;align-items:center;pointer-events:none;flex-shrink:0;}
+.see-all-arrow-btn{
+  border:none;background:none;cursor:pointer;padding:4px;
+  display:flex;align-items:center;justify-content:center;
+  touch-action:manipulation;transition:opacity var(--dur-fast);
+  flex-shrink:0;
+}
+.see-all-arrow-btn:active{opacity:.5;}
 
 /* ══ SEG BAR — يتحرك مع المحتوى (بدون sticky) ══ */
 .seg-bar-wrap{
@@ -430,20 +434,20 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .mayor-prev-pill{
   position:relative;z-index:2;
   flex-shrink:0;
-  display:flex;align-items:center;gap:6px;
+  display:flex;align-items:center;gap:5px;
   background:rgba(255,255,255,.15);
   border:1.5px solid rgba(255,255,255,.28);
   border-radius:var(--r-full);
-  padding:8px 14px;
+  padding:6px 10px;
   cursor:pointer;touch-action:manipulation;
   transition:background var(--dur-fast),transform var(--dur-fast);
   font-family:var(--font-main);
-  font-size:12px;font-weight:800;
+  font-size:11px;font-weight:800;
   color:rgba(255,255,255,.95);
   white-space:nowrap;
 }
 .mayor-prev-pill:active{background:rgba(255,255,255,.28);transform:scale(.93);}
-.mayor-prev-pill iconify-icon{font-size:16px;pointer-events:none;color:rgba(255,255,255,.85);}
+.mayor-prev-pill iconify-icon{font-size:13px;pointer-events:none;color:rgba(255,255,255,.85);}
 
 /* ══ بطاقة الرئيس في الرئيسية ══ */
 .mayor-home-card{margin:4px 16px 8px;background:linear-gradient(135deg,#042f1e 0%,var(--green-d) 48%,#059c70 100%);border-radius:var(--r-lg);padding:18px 18px 0;box-shadow:0 8px 28px rgba(5,150,105,.28),0 2px 8px rgba(5,150,105,.15);position:relative;overflow:hidden;touch-action:manipulation;transition:transform var(--dur-mid),opacity var(--dur-mid);}
@@ -585,9 +589,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 <iconify-icon icon="lucide:megaphone" style="color:var(--red);pointer-events:none"></iconify-icon>
                 الإعلانات
               </span>
-              <button class="see-all" id="btn-see-news-official">
-                عرض الكل
-                <iconify-icon icon="lucide:chevron-left" class="see-all-arrow"></iconify-icon>
+              <button class="see-all-arrow-btn" id="btn-see-news-official">
+                <iconify-icon icon="lucide:chevron-left" style="font-size:22px;color:var(--green);pointer-events:none;"></iconify-icon>
               </button>
             </div>
             <div class="h-scroll" id="h-official">
@@ -602,9 +605,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 <iconify-icon icon="lucide:newspaper" style="color:var(--green);pointer-events:none"></iconify-icon>
                 آخر المستجدات
               </span>
-              <button class="see-all" id="btn-see-news-all">
-                عرض الكل
-                <iconify-icon icon="lucide:chevron-left" class="see-all-arrow"></iconify-icon>
+              <button class="see-all-arrow-btn" id="btn-see-news-all">
+                <iconify-icon icon="lucide:chevron-left" style="font-size:22px;color:var(--green);pointer-events:none;"></iconify-icon>
               </button>
             </div>
             <div class="h-scroll" id="h-news">
@@ -612,17 +614,15 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </div>
           </div>
 
-          <!-- بين الأمس واليوم — تحت آخر المستجدات مباشرة -->
+          <!-- بين الأمس واليوم -->
           <div class="section" style="padding-bottom:24px">
             <div class="section-header">
               <span class="section-title">
                 <iconify-icon icon="lucide:scroll-text" style="color:var(--amber);pointer-events:none"></iconify-icon>
                 بين الأمس واليوم
               </span>
-              <button class="see-all" id="btn-see-archive"
-                style="background:rgba(146,64,14,.10);color:var(--brown);border:none;padding:5px 13px;border-radius:var(--r-full);font-size:11px;font-weight:800;min-height:32px;display:flex;align-items:center;gap:5px;">
-                الأرشيف
-                <iconify-icon icon="lucide:chevron-left" style="font-size:13px;pointer-events:none;flex-shrink:0;"></iconify-icon>
+              <button class="see-all-arrow-btn" id="btn-see-archive">
+                <iconify-icon icon="lucide:chevron-left" style="font-size:22px;color:var(--green);pointer-events:none;"></iconify-icon>
               </button>
             </div>
             <div id="h-archive" class="h-scroll">
@@ -637,9 +637,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 <iconify-icon icon="lucide:waves" style="color:var(--sky);pointer-events:none"></iconify-icon>
                 شواطئ شطايبي
               </span>
-              <button class="see-all" id="btn-see-beaches">
-                في الخريطة
-                <iconify-icon icon="lucide:chevron-left" class="see-all-arrow"></iconify-icon>
+              <button class="see-all-arrow-btn" id="btn-see-beaches">
+                <iconify-icon icon="lucide:chevron-left" style="font-size:22px;color:var(--green);pointer-events:none;"></iconify-icon>
               </button>
             </div>
             <div class="h-scroll" id="h-beaches">
@@ -654,9 +653,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 <iconify-icon icon="lucide:sun" style="color:var(--amber);pointer-events:none"></iconify-icon>
                 معالم سياحية
               </span>
-              <button class="see-all" id="btn-see-tourism">
-                في الخريطة
-                <iconify-icon icon="lucide:chevron-left" class="see-all-arrow"></iconify-icon>
+              <button class="see-all-arrow-btn" id="btn-see-tourism">
+                <iconify-icon icon="lucide:chevron-left" style="font-size:22px;color:var(--green);pointer-events:none;"></iconify-icon>
               </button>
             </div>
             <div class="h-scroll" id="h-tourism">
@@ -741,7 +739,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           <div class="seg-bar-wrap">
             <div class="seg-bar">
               <button class="seg-btn active" id="arch-tab-compare">
-                <iconify-icon icon="lucide:git-compare"></iconify-icon>مقارنة الأمس بالحاضر
+                <iconify-icon icon="lucide:git-compare"></iconify-icon>بين الأمس واليوم
               </button>
               <button class="seg-btn" id="arch-tab-historic">
                 <iconify-icon icon="lucide:image"></iconify-icon>صور تاريخية
@@ -873,12 +871,12 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           style="display:none;width:100%;height:100%;object-fit:cover;">
       </div>
       <!-- معلومات الرئيس -->
-      <div style="flex:1;min-width:0;position:relative;z-index:1;">
-        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.55);margin-bottom:2px;">
+      <div style="flex:1;min-width:0;position:relative;z-index:1;overflow:hidden;">
+        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.55);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
           رئيس المجلس الشعبي البلدي
         </div>
         <div id="ms-mayor-name"
-          style="font-size:15px;font-weight:900;color:#fff;letter-spacing:-.2px;line-height:1.2;">
+          style="font-size:15px;font-weight:900;color:#fff;letter-spacing:-.2px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
           جاري التحميل...
         </div>
         <div id="ms-mayor-mandate"
@@ -1963,6 +1961,81 @@ function initEventDelegation(){
 
   document.querySelectorAll('.mf-item').forEach(function(item){
     item.addEventListener('click',function(){haptic('light');selectMapFilter(this.getAttribute('data-type'),this);});
+  });
+
+  document.getElementById('lightbox').addEventListener('click',function(){closeLightbox();});
+  document.getElementById('lb-close').addEventListener('click',function(e){e.stopPropagation();closeLightbox();});
+  document.getElementById('mt-sticker-close').addEventListener('click',function(){cm('m-tour');});
+
+  ['m-news','m-beach','m-tour','m-fac','m-prev-mayors'].forEach(function(id){
+    var overlay=document.getElementById(id);
+    var sheet=overlay?overlay.querySelector('.modal-sheet'):null;
+    if(sheet)initModalSwipe(sheet,id);
+  });
+}
+
+/* ══ INIT ══ */
+window.addEventListener('load',function(){
+  applyHeaderHeight();
+  window.addEventListener('resize',function(){applyHeaderHeight();});
+  MoreSheet.init();
+  initEventDelegation();
+  initSwipe('scroll-home',   function(dir){swipeHome(dir);});
+  initSwipe('scroll-news',   function(dir){swipeNews(dir);});
+  initSwipe('scroll-guide',  function(dir){swipeGuide(dir);});
+  initSwipe('scroll-archive',function(dir){swipeArchive(dir);});
+  document.querySelectorAll('.scroll-area').forEach(function(el){
+    el.addEventListener('scroll',updateHeaderShadow,{passive:true});
+  });
+});
+document.fonts.ready.then(function(){applyHeaderHeight();});
+loadHome();
+</script>
+</body>
+</html>if(fid)openFacModal(fid,ftab||'admin-branches');return;}
+    var archCell=t.closest('.archive-cell,.archive-home-cell,.archive-single,.archive-home-single,[data-lb]');
+    if(archCell){var lb=archCell.getAttribute('data-lb');if(lb)openLightbox(lb);return;}
+    var albImg=t.closest('.album-grid img,[data-lb]');
+    if(albImg){var lb=albImg.getAttribute('data-lb');if(lb)openLightbox(lb);return;}
+    if(t.classList.contains('modal-overlay')){cm(t.id);return;}
+  });
+
+  document.getElementById('nav-home').addEventListener('click',function(){switchTab('home');});
+  document.getElementById('nav-news').addEventListener('click',function(){switchTab('news');});
+  document.getElementById('nav-guide').addEventListener('click',function(){switchTab('guide');});
+  document.getElementById('nav-archive').addEventListener('click',function(){switchTab('archive');});
+  document.getElementById('nav-map').addEventListener('click',function(){switchTab('map');});
+
+  document.getElementById('btn-see-news-official').addEventListener('click',function(){switchTab('news');});
+  document.getElementById('btn-see-news-all').addEventListener('click',function(){switchTab('news');});
+  document.getElementById('btn-see-beaches').addEventListener('click',function(){switchTabWithFilter('map','beach');});
+  document.getElementById('btn-see-tourism').addEventListener('click',function(){switchTabWithFilter('map','tour');});
+  document.getElementById('btn-see-archive').addEventListener('click',function(){switchTab('archive');});
+
+  document.getElementById('news-btn-official').addEventListener('click',function(){filterNews('official',this);});
+  document.getElementById('news-btn-activity').addEventListener('click',function(){filterNews('activity',this);});
+  document.getElementById('news-btn-social').addEventListener('click',function(){filterNews('social',this);});
+  document.getElementById('news-btn-poster').addEventListener('click',function(){filterNews('poster',this);});
+
+  document.getElementById('btn-admin-branches').addEventListener('click',function(){loadFacTab('admin-branches',this);});
+  document.getElementById('btn-education').addEventListener('click',function(){loadFacTab('education',this);});
+  document.getElementById('btn-health').addEventListener('click',function(){loadFacTab('health',this);});
+  document.getElementById('btn-public-bodies').addEventListener('click',function(){loadFacTab('public-bodies',this);});
+  document.getElementById('btn-religious').addEventListener('click',function(){loadFacTab('religious',this);});
+  document.getElementById('btn-cultural').addEventListener('click',function(){loadFacTab('cultural',this);});
+  document.getElementById('btn-sports').addEventListener('click',function(){loadFacTab('sports',this);});
+
+  document.getElementById('arch-tab-compare').addEventListener('click',function(){switchArchTab('compare',this);});
+  document.getElementById('arch-tab-historic').addEventListener('click',function(){switchArchTab('historic',this);});
+
+  document.getElementById('map-filter-btn').addEventListener('click',function(e){toggleFilterMenu(e);});
+  document.getElementById('map-locate-btn').addEventListener('click',function(){locateUser();});
+  document.getElementById('map-popup-close-btn').addEventListener('click',function(e){e.stopPropagation();closeMapCard();});
+  document.getElementById('map-popup-action-btn').addEventListener('click',function(){mapCardClick();});
+  document.getElementById('map-card-inner').addEventListener('click',function(){mapCardClick();});
+
+  document.querySelectorAll('.mf-item').forEach(function(item){
+    item.addEventListener('click',function(){selectMapFilter(this.getAttribute('data-type'),this);});
   });
 
   document.getElementById('lightbox').addEventListener('click',function(){closeLightbox();});
