@@ -161,46 +161,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .hdr-btn.notif-btn{background:var(--green-xl);color:var(--green);}
 .hdr-btn.notif-btn:active{background:var(--green-l);}
 
-/* ══════════════════════════════════════════
-   MINI HEADER — FIXED, centered logo+title
-   Shows when full header is hidden
-══════════════════════════════════════════ */
-#mini-header{
-  position:fixed;
-  top:0;left:0;right:0;
-  z-index:199;
-  background:rgba(255,255,255,.96);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  box-shadow:0 2px 14px rgba(0,0,0,.10),0 1px 3px rgba(0,0,0,.06);
-  display:flex;align-items:flex-end;justify-content:center;
-  padding-top:var(--safe-t);
-  padding-bottom:10px;
-  /* hidden by default */
-  opacity:0;
-  transform:translateY(-100%);
-  pointer-events:none;
-  transition:opacity 280ms var(--ease-std),
-             transform 280ms var(--ease-std);
-}
-#mini-header.show-mini{
-  opacity:1;
-  transform:translateY(0);
-  pointer-events:auto;
-}
-.mini-header-inner{
-  display:flex;align-items:center;justify-content:center;
-  gap:8px;
-}
-.mini-logo{
-  width:24px;height:24px;
-  object-fit:contain;flex-shrink:0;
-  pointer-events:none;display:block;
-}
-.mini-title{
-  font-size:13px;font-weight:900;
-  color:var(--text);letter-spacing:-.2px;
-  white-space:nowrap;
-}
+
 
 /* ══════════════════════════════════════════
    APP LAYOUT
@@ -530,14 +491,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   </div>
 
   <!-- FIXED MINI HEADER -->
-  <div id="mini-header">
-    <div class="mini-header-inner">
-      <img class="mini-logo"
-        src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/new_512_any.png"
-        alt="logo" onerror="this.style.display='none'">
-      <span class="mini-title">بلدية شطايبي</span>
-    </div>
-  </div>
 
   <!-- SPACER: exact height of full header, keeps content below it -->
   <div id="header-spacer"></div>
@@ -1014,8 +967,6 @@ var FILTER_CFG={
    Strategy:
    - #shared-header is position:fixed (takes no flow space)
    - #header-spacer is in the flex flow, height = header height
-   - When header hides (translateY -100%), spacer height → 0
-   - This way NO phantom space remains
 ══════════════════════════════════════════ */
 var _headerH = 0;
 
@@ -1033,57 +984,12 @@ function applyHeaderHeight(){
   if(spacer) spacer.style.height = _headerH+'px';
 }
 
-/* ══════════════════════════════════════════
-   HEADER SCROLL BEHAVIOUR
-   - scrollTop > threshold  → hide full, show mini, spacer → 0
-   - scrollTop ≤ threshold  → show full, hide mini, spacer → headerH
-   (shows full header as soon as user scrolls up any amount past threshold)
-══════════════════════════════════════════ */
-var _lastSY = 0;
-var _THRESHOLD = 60;
-var _headerHidden = false;
-
 function onScrollAreaScroll(){
-  if(curTab==='map') return;
-  var scrollEl = document.querySelector('#screen-'+curTab+' .scroll-area');
-  if(!scrollEl) return;
-  var sy = scrollEl.scrollTop;
-
-  var fullHdr = document.getElementById('shared-header');
-  var miniHdr = document.getElementById('mini-header');
-  var spacer  = document.getElementById('header-spacer');
-
-  if(sy > _THRESHOLD){
-    // Going down / past threshold → hide full, show mini
-    if(!_headerHidden){
-      _headerHidden = true;
-      fullHdr.classList.add('hide-full');
-      miniHdr.classList.add('show-mini');
-      // Spacer collapses to 0 so NO phantom space
-      spacer.style.height = '0px';
-    }
-  } else {
-    // Back near top → show full, hide mini
-    if(_headerHidden){
-      _headerHidden = false;
-      fullHdr.classList.remove('hide-full');
-      miniHdr.classList.remove('show-mini');
-      // Restore spacer
-      spacer.style.height = _headerH+'px';
-    }
-  }
-  _lastSY = sy;
+  // No scroll behavior needed
 }
 
 function resetHeaderState(){
-  var fullHdr = document.getElementById('shared-header');
-  var miniHdr = document.getElementById('mini-header');
-  var spacer  = document.getElementById('header-spacer');
-  _headerHidden = false;
-  fullHdr.classList.remove('hide-full');
-  miniHdr.classList.remove('show-mini');
-  spacer.style.height = _headerH+'px';
-  _lastSY = 0;
+  // Header reset
 }
 
 function resetScroll(screenId){
