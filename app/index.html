@@ -876,4 +876,1116 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           <div id="map-filter-menu">
             <div class="mf-item active" data-type="all">
               <div class="mf-icon-wrap"><iconify-icon icon="lucide:layers"></iconify-icon></div>
-              <span>الكل</span><iconify-icon class="mf-check" 
+              <span>الكل</span><iconify-icon class="mf-check" icon="lucide:check"></iconify-icon>
+            </div>
+            <div class="mf-item" data-type="fac">
+              <div class="mf-icon-wrap"><iconify-icon icon="lucide:building-2"></iconify-icon></div>
+              <span>مرافق</span><iconify-icon class="mf-check" icon="lucide:check"></iconify-icon>
+            </div>
+            <div class="mf-item" data-type="beach">
+              <div class="mf-icon-wrap"><iconify-icon icon="lucide:waves"></iconify-icon></div>
+              <span>شواطئ</span><iconify-icon class="mf-check" icon="lucide:check"></iconify-icon>
+            </div>
+            <div class="mf-item" data-type="tour">
+              <div class="mf-icon-wrap"><iconify-icon icon="lucide:sun"></iconify-icon></div>
+              <span>معالم</span><iconify-icon class="mf-check" icon="lucide:check"></iconify-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="map-controls-left">
+        <button id="map-locate-btn">
+          <iconify-icon icon="lucide:locate" id="locate-icon"></iconify-icon>
+        </button>
+      </div>
+      <div id="map-card-overlay">
+        <div class="map-popup-card" id="map-card-inner">
+          <div class="map-popup-avatar" id="map-popup-avatar"></div>
+          <button class="map-popup-close" id="map-popup-close-btn">
+            <iconify-icon icon="lucide:x" style="pointer-events:none"></iconify-icon>
+          </button>
+          <div id="map-card-type" class="map-popup-badge"></div>
+          <div id="map-card-name" class="map-popup-name"></div>
+          <div class="map-popup-divider"></div>
+          <div class="map-popup-desc-wrap" id="map-popup-desc-wrap">
+            <div id="map-card-desc" class="map-popup-desc"></div>
+          </div>
+          <button class="map-popup-action" id="map-popup-action-btn">
+            <iconify-icon icon="lucide:info"></iconify-icon>عرض التفاصيل
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end screen-container -->
+
+  <!-- ══ BOTTOM NAV ══ -->
+  <nav id="bottom-nav">
+    <button class="nav-btn active" id="nav-home">
+      <div class="nav-icon-wrap">
+        <iconify-icon class="icon-off" icon="ph:house" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-on" icon="ph:house-fill" style="font-size:24px"></iconify-icon>
+      </div>
+      <span>الرئيسية</span>
+    </button>
+    <button class="nav-btn" id="nav-news">
+      <div class="nav-icon-wrap">
+        <iconify-icon class="icon-off" icon="ph:newspaper" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-on" icon="ph:newspaper-fill" style="font-size:24px"></iconify-icon>
+      </div>
+      <span>الأخبار</span>
+    </button>
+    <button class="nav-btn" id="nav-guide">
+      <div class="nav-icon-wrap">
+        <iconify-icon class="icon-off" icon="ph:map-pin" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-on" icon="ph:map-pin-fill" style="font-size:24px"></iconify-icon>
+      </div>
+      <span>الدليل</span>
+    </button>
+    <button class="nav-btn" id="nav-archive">
+      <div class="nav-icon-wrap">
+        <iconify-icon class="icon-off" icon="ph:scroll" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-on" icon="ph:scroll-fill" style="font-size:24px"></iconify-icon>
+      </div>
+      <span>الأرشيف</span>
+    </button>
+    <!-- زر المزيد (يفتح الشيت) بدلاً من الخريطة -->
+    <button class="nav-btn" id="nav-more">
+      <div class="nav-icon-wrap">
+        <iconify-icon class="icon-off" icon="ph:dots-three-outline" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-on" icon="ph:dots-three-outline-fill" style="font-size:24px"></iconify-icon>
+      </div>
+      <span>المزيد</span>
+    </button>
+  </nav>
+
+</div><!-- end #app -->
+
+<!-- ══ BOTTOM SHEET المزيد ══ -->
+<div id="more-sheet-overlay">
+  <div id="more-sheet">
+    <div class="more-sheet-drag"></div>
+
+    <!-- بطاقة الرئيس -->
+    <div class="mayor-sheet-card" id="ms-mayor-card">
+      <div id="ms-mayor-photo-wrap"
+        style="width:58px;height:58px;border-radius:50%;overflow:hidden;flex-shrink:0;
+               border:2.5px solid rgba(255,255,255,.3);box-shadow:0 4px 12px rgba(0,0,0,.2);
+               background:rgba(255,255,255,.1);display:flex;align-items:center;
+               justify-content:center;position:relative;z-index:1;">
+        <iconify-icon id="ms-mayor-icon" icon="lucide:user"
+          style="font-size:26px;color:rgba(255,255,255,.5);pointer-events:none"></iconify-icon>
+        <img id="ms-mayor-photo" src="" alt=""
+          style="display:none;width:100%;height:100%;object-fit:cover;">
+      </div>
+      <div style="flex:1;min-width:0;position:relative;z-index:1;overflow:hidden;">
+        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.55);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+          رئيس المجلس الشعبي البلدي
+        </div>
+        <div id="ms-mayor-name"
+          style="font-size:15px;font-weight:900;color:#fff;letter-spacing:-.2px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+          ...جاري التحميل
+        </div>
+        <div id="ms-mayor-mandate"
+          style="font-size:11px;color:rgba(255,255,255,.55);margin-top:3px;display:flex;align-items:center;gap:4px;">
+          <iconify-icon icon="lucide:calendar" style="font-size:11px;pointer-events:none"></iconify-icon>
+          <span>2021 - 2025</span>
+        </div>
+      </div>
+      <button class="mayor-prev-pill" id="ms-prev-mayors-btn">
+        <iconify-icon icon="lucide:users" style="font-size:16px;pointer-events:none;"></iconify-icon>
+        السابقون
+      </button>
+    </div>
+
+    <!-- قائمة الروابط -->
+    <div style="margin:14px 16px 0;background:var(--card);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--elev-2);border:1px solid var(--border-light)">
+      <div class="more-item" id="ms-item-map">
+        <div class="more-icon" style="background:var(--blue-l)">
+          <iconify-icon icon="lucide:map-pin" style="color:var(--blue);font-size:20px;pointer-events:none"></iconify-icon>
+        </div>
+        <div style="flex:1">
+          <div class="more-item-title">الخريطة التفاعلية</div>
+          <div class="more-item-sub">مرافق وشواطئ ومعالم شطايبي</div>
+        </div>
+        <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
+      </div>
+      <div class="more-item" id="ms-item-guide">
+        <div class="more-icon" style="background:var(--purple-l)">
+          <iconify-icon icon="lucide:building" style="color:var(--purple);font-size:20px;pointer-events:none"></iconify-icon>
+        </div>
+        <div style="flex:1">
+          <div class="more-item-title">دليل المرافق</div>
+          <div class="more-item-sub">المؤسسات والخدمات العمومية</div>
+        </div>
+        <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
+      </div>
+      <div class="more-item" id="ms-item-archive">
+        <div class="more-icon" style="background:var(--amber-l)">
+          <iconify-icon icon="lucide:scroll-text" style="color:var(--amber);font-size:20px;pointer-events:none"></iconify-icon>
+        </div>
+        <div style="flex:1">
+          <div class="more-item-title">أرشيف شطايبي</div>
+          <div class="more-item-sub">صور الأمس واليوم</div>
+        </div>
+        <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
+      </div>
+      <div class="more-item" id="ms-item-site">
+        <div class="more-icon" style="background:var(--green-l)">
+          <iconify-icon icon="lucide:globe" style="color:var(--green);font-size:20px;pointer-events:none"></iconify-icon>
+        </div>
+        <div style="flex:1">
+          <div class="more-item-title">الموقع الرسمي</div>
+          <div class="more-item-sub">النسخة الكاملة للمتصفح</div>
+        </div>
+        <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
+      </div>
+    </div>
+
+    <div style="text-align:center;padding:18px 20px 6px;">
+      <div style="font-size:11px;color:var(--muted-2);">© 2026 - بلدية شطايبي - جميع الحقوق محفوظة</div>
+      <div style="font-size:10px;color:var(--muted-2);font-style:italic;margin-top:3px;">تم التطوير بجهود الكفاءات الداخلية</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODALS ══ -->
+<div class="modal-overlay" id="m-news">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-drag"></div>
+    <div id="mn-announce-view" style="display:none;position:relative"><div id="mn-announce-album"></div></div>
+    <div id="mn-normal-view">
+      <div style="position:relative"><img id="mn-img" class="modal-img" src="" style="display:none"></div>
+      <div class="modal-body">
+        <div id="mn-badge" class="modal-badge" style="display:none"></div>
+        <div class="modal-name" id="mn-name"></div>
+        <div class="modal-desc" id="mn-desc"></div>
+        <div class="modal-meta" id="mn-meta"></div>
+        <div id="mn-album"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="m-beach">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-drag"></div>
+    <img id="mb-img" class="modal-img" src="" style="display:none">
+    <div class="modal-body">
+      <div class="modal-name" id="mb-name"></div>
+      <div class="modal-desc" id="mb-desc"></div>
+      <div class="modal-meta" id="mb-meta"></div>
+      <div id="mb-album"></div>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="m-tour">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-drag"></div>
+    <div id="mt-sticker-view" style="display:none;position:relative">
+      <button id="mt-sticker-close"
+        style="position:absolute;top:10px;left:12px;z-index:10;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.5);border:none;color:#fff;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);touch-action:manipulation;pointer-events:auto">✕</button>
+      <div id="mt-sticker-album"></div>
+    </div>
+    <div id="mt-normal-view">
+      <div style="position:relative"><img id="mt-img" class="modal-img" src="" style="display:none"></div>
+      <div class="modal-body">
+        <div id="mt-badge" class="modal-badge" style="display:none"></div>
+        <div class="modal-name" id="mt-name"></div>
+        <div class="modal-desc" id="mt-desc"></div>
+        <div class="modal-meta" id="mt-meta"></div>
+        <div id="mt-album"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="m-fac">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-drag"></div>
+    <img id="mf-img" class="modal-img" src="" style="display:none">
+    <div class="modal-body">
+      <div id="mf-badge" class="modal-badge" style="display:none"></div>
+      <div class="modal-name" id="mf-name"></div>
+      <div class="modal-desc" id="mf-desc"></div>
+      <div class="modal-meta" id="mf-meta"></div>
+      <div id="mf-album"></div>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="m-prev-mayors">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-drag"></div>
+    <div class="modal-body">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--border-light)">
+        <div style="width:44px;height:44px;border-radius:var(--r-sm);background:var(--green-l);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <iconify-icon icon="lucide:users" style="color:var(--green);font-size:22px;pointer-events:none"></iconify-icon>
+        </div>
+        <div>
+          <div style="font-size:16px;font-weight:900;color:var(--text);letter-spacing:-.2px;">الرؤساء السابقون</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">رؤساء المجلس الشعبي البلدي</div>
+        </div>
+      </div>
+      <div id="prev-mayors-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <button id="lb-close">✕</button>
+  <img id="lb-img" src="" alt="">
+</div>
+
+<!-- SEARCH OVERLAY -->
+<div id="search-overlay">
+  <div id="search-box">
+    <div class="search-bar">
+      <iconify-icon icon="lucide:search"></iconify-icon>
+      <input type="text" id="search-input" placeholder="ابحث عن خبر، مرفق، شاطئ..." autocomplete="off">
+      <button id="search-close-btn">
+        <iconify-icon icon="lucide:x"></iconify-icon>
+      </button>
+    </div>
+    <div id="search-results">
+      <div class="search-empty">اكتب للبحث في محتوى التطبيق</div>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+/* ══ HAPTIC ══ */
+function haptic(type){
+  if(!navigator.vibrate)return;
+  if(type==='light')navigator.vibrate(8);
+  else if(type==='mid')navigator.vibrate(18);
+  else if(type==='heavy')navigator.vibrate([20,10,20]);
+  else if(type==='success')navigator.vibrate([10,30,10]);
+  else if(type==='tab')navigator.vibrate(6);
+}
+
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('dragstart',e=>e.preventDefault());
+document.addEventListener('selectstart',e=>e.preventDefault());
+document.addEventListener('touchstart',function(e){
+  if(e.target.tagName==='IMG'
+    &&!e.target.closest('.album-grid')
+    &&!e.target.closest('#mn-announce-album')
+    &&!e.target.closest('#mt-sticker-album')
+    &&!e.target.closest('#lightbox')){
+    e.preventDefault();
+  }
+},{passive:false});
+document.addEventListener('touchmove',function(e){
+  if(e.touches.length>1)e.preventDefault();
+},{passive:false});
+
+/* ══ API CACHE ══ */
+var C={};
+async function api(u){
+  if(C[u])return C[u];
+  var r=await fetch(u);var d=await r.json();C[u]=d;return d;
+}
+
+/* ══ STATE ══ */
+var curTab='home',mapDone=false,allNews=[],facCat='admin-branches';
+var newsScreenLoaded=false,_mayorLoaded=false,_mayorsList=[];
+var TAB_ORDER=['home','news','guide','archive'];
+var NEWS_CATS=['official','activity','social','poster'];
+var GUIDE_TABS=['admin-branches','education','health','public-bodies','religious','cultural','sports'];
+var mapLayers={beach:[],tour:[],fac:[]};
+var activeMapFilter='all';
+var filterMenuOpen=false;
+var locateMarker=null;
+var pendingMapFilter=null;
+var archTab='compare';
+var FILTER_CFG={
+  all:  {icon:'lucide:layers',    labelFull:'الكل'},
+  fac:  {icon:'lucide:building-2',labelFull:'المرافق'},
+  beach:{icon:'lucide:waves',     labelFull:'الشواطئ'},
+  tour: {icon:'lucide:sun',       labelFull:'المعالم السياحية'}
+};
+
+/* ══════════════════════════════════════════
+   HEADER SCROLL BEHAVIOUR
+══════════════════════════════════════════ */
+var headerVisible=true;
+var lastScrollY=0;
+var scrollThreshold=80; // px before hiding
+
+function onScrollAreaScroll(){
+  if(curTab==='map')return;
+  var scrollEl=document.querySelector('#screen-'+curTab+' .scroll-area');
+  if(!scrollEl)return;
+  var sy=scrollEl.scrollTop;
+  var fullHdr=document.getElementById('shared-header');
+  var miniHdr=document.getElementById('mini-header');
+
+  if(sy>scrollThreshold){
+    // hide full, show mini
+    fullHdr.classList.add('hide-full');
+    miniHdr.classList.add('show-mini');
+  } else {
+    // show full, hide mini
+    fullHdr.classList.remove('hide-full');
+    miniHdr.classList.remove('show-mini');
+  }
+  lastScrollY=sy;
+}
+
+function resetHeaderState(){
+  document.getElementById('shared-header').classList.remove('hide-full');
+  document.getElementById('mini-header').classList.remove('show-mini');
+  lastScrollY=0;
+}
+
+/* ══════════════════════════════════════════
+   HEADER HEIGHT — padding for scroll areas
+══════════════════════════════════════════ */
+function applyHeaderHeight(){
+  var header=document.getElementById('shared-header');
+  var container=document.getElementById('screen-container');
+  if(!header||!container)return;
+  var h=header.offsetHeight;
+  // screen-container starts right after header (flex layout)
+  // scroll areas need padding-top = full header height
+  var miniH=48; // mini header height
+  document.documentElement.style.setProperty('--header-full-h',h+'px');
+  document.documentElement.style.setProperty('--header-mini-h',miniH+'px');
+
+  // position mini-header at top of screen-container
+  var miniHdr=document.getElementById('mini-header');
+  if(miniHdr){
+    miniHdr.style.top='0';
+  }
+
+  // padding for non-map screens
+  ['home','news','guide','archive'].forEach(function(id){
+    var scroll=document.querySelector('#screen-'+id+' .scroll-area');
+    if(scroll)scroll.style.paddingTop=h+'px';
+  });
+}
+
+function resetScroll(screenId){
+  var scroll=document.querySelector('#'+screenId+' .scroll-area');
+  if(scroll)scroll.scrollTop=0;
+}
+
+/* ══════════════════════════════════════════
+   SWITCH TAB
+══════════════════════════════════════════ */
+function switchTab(t){
+  if(t===curTab)return;
+  haptic('tab');
+
+  // handle map via more sheet or direct
+  var isMapTarget=(t==='map');
+
+  var prevEl=document.getElementById('screen-'+curTab);
+  var nextEl=document.getElementById('screen-'+t);
+  if(!nextEl)return;
+
+  var prevIdx=TAB_ORDER.indexOf(curTab);
+  var nextIdx=TAB_ORDER.indexOf(t);
+  // if map not in TAB_ORDER, treat as forward
+  var forward=(nextIdx>=0&&prevIdx>=0)?nextIdx>prevIdx:true;
+  var enterFrom=forward?'-100%':'100%';
+  var exitTo=forward?'100%':'-100%';
+  var DUR=300;
+  var EASE='cubic-bezier(.4,0,.2,1)';
+  var prev=curTab;
+
+  if(prevEl){
+    prevEl.style.transition='transform '+DUR+'ms '+EASE+',opacity '+DUR+'ms '+EASE;
+    prevEl.style.transform='translateX('+exitTo+') scale(.96)';
+    prevEl.style.opacity='0';
+    setTimeout(function(){
+      prevEl.classList.add('hidden');
+      prevEl.style.cssText='';
+      resetScroll('screen-'+prev);
+    },DUR+20);
+  }
+
+  nextEl.classList.remove('hidden');
+  nextEl.style.cssText='transform:translateX('+enterFrom+') scale(.96);opacity:0;transition:none;';
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      var header=document.getElementById('shared-header');
+      var scroll=document.querySelector('#screen-'+t+' .scroll-area');
+      if(header&&scroll&&t!=='map')scroll.style.paddingTop=header.offsetHeight+'px';
+      nextEl.style.transition='transform '+DUR+'ms '+EASE+',opacity '+DUR+'ms '+EASE;
+      nextEl.style.transform='translateX(0) scale(1)';
+      nextEl.style.opacity='1';
+      setTimeout(function(){nextEl.style.cssText='';},DUR+20);
+    });
+  });
+
+  // nav active state — only for main tabs
+  document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');});
+  var nb=document.getElementById('nav-'+t);
+  if(nb)nb.classList.add('active');
+
+  curTab=t;
+  resetHeaderState();
+
+  if(t==='map'){
+    if(!mapDone)initMap2();
+    else if(pendingMapFilter){
+      var pf=pendingMapFilter;pendingMapFilter=null;
+      setTimeout(function(){applyMapFilterSilent(pf);},150);
+    }
+    // hide header on map
+    document.getElementById('shared-header').classList.add('hide-full');
+  }
+  if(t==='news'&&!newsScreenLoaded)loadNewsScreen();
+  if(t==='guide')loadCurrentGuideTab();
+  if(t==='home')loadHome();
+  if(t==='archive')loadArchiveTab(archTab);
+}
+
+function switchTabWithFilter(tab,filterType){
+  pendingMapFilter=filterType;
+  switchTab(tab);
+}
+
+/* ══ Guide tab memory ══ */
+function loadCurrentGuideTab(){
+  var facList=document.getElementById('fac-list');
+  var m=FM[facCat];if(!m)return;
+  var alreadyLoaded=C['/api/facilities?cat='+m.cat]&&facList&&facList.querySelector('.fac-card');
+  document.querySelectorAll('#screen-guide .seg-btn').forEach(function(b){b.classList.remove('active');});
+  var activeBtn=document.querySelector('#screen-guide .seg-btn[data-guide-cat="'+facCat+'"]');
+  if(activeBtn){
+    activeBtn.classList.add('active');
+    if(alreadyLoaded){setTimeout(function(){activeBtn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});},100);return;}
+  }
+  var btn=document.querySelector('#screen-guide .seg-btn[data-guide-cat="'+facCat+'"]');
+  loadFacTab(facCat,btn);
+}
+
+/* ══ SWIPE ══ */
+function initSwipe(scrollAreaId,getNext){
+  var el=document.getElementById(scrollAreaId);if(!el)return;
+  var startX=0,startY=0,tracking=false;
+  var isArchive=(scrollAreaId==='scroll-archive');
+  el.addEventListener('touchstart',function(e){
+    if(isArchive){startX=e.touches[0].clientX;startY=e.touches[0].clientY;tracking=true;return;}
+    if(e.target.closest('.h-scroll')
+      ||e.target.closest('.seg-bar-wrap')
+      ||e.target.closest('.archive-card')
+      ||e.target.closest('.weather-card')
+      ||e.target.closest('.sea-card')){tracking=false;return;}
+    startX=e.touches[0].clientX;startY=e.touches[0].clientY;tracking=true;
+  },{passive:true});
+  el.addEventListener('touchend',function(e){
+    if(!tracking)return;tracking=false;
+    var dx=e.changedTouches[0].clientX-startX;
+    var dy=e.changedTouches[0].clientY-startY;
+    if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5){haptic('light');getNext(dx<0?-1:1);}
+  },{passive:true});
+}
+
+function swipeHome(dir){if(dir===1)switchTab('news');}
+function swipeNews(dir){
+  var active=document.querySelector('#screen-news .seg-btn.active');if(!active)return;
+  var idx=NEWS_CATS.indexOf(active.getAttribute('data-cat'));var next=idx+dir;
+  if(next<0){switchTab('home');return;}
+  if(next>=NEWS_CATS.length){switchTab('guide');return;}
+  var nextCat=NEWS_CATS[next];
+  var nextBtn=document.querySelector('#screen-news .seg-btn[data-cat="'+nextCat+'"]');
+  if(nextBtn){filterNews(nextCat,nextBtn);nextBtn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}
+}
+function swipeGuide(dir){
+  var idx=GUIDE_TABS.indexOf(facCat);var next=idx+dir;
+  if(next<0){switchTab('news');return;}
+  if(next>=GUIDE_TABS.length){switchTab('archive');return;}
+  var nextTab=GUIDE_TABS[next];
+  var btns=document.querySelectorAll('#screen-guide .seg-btn');
+  loadFacTab(nextTab,btns[next]);
+  if(btns[next])btns[next].scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+}
+function swipeArchive(dir){
+  if(archTab==='compare'){
+    if(dir===1){var nb=document.getElementById('arch-tab-historic');switchArchTab('historic',nb);}
+    else switchTab('guide');
+  }else{
+    if(dir===1){/* no tab after archive in main flow */}
+    else{var nb=document.getElementById('arch-tab-compare');switchArchTab('compare',nb);}
+  }
+}
+
+/* ══ MORE SHEET ══ */
+var MoreSheet=(function(){
+  var overlay,sheet,btn,isOpen=false;
+  function init(){
+    overlay=document.getElementById('more-sheet-overlay');
+    sheet=document.getElementById('more-sheet');
+    btn=document.getElementById('nav-more');
+    if(!overlay||!sheet)return;
+    if(btn)btn.addEventListener('click',function(){haptic('mid');open();});
+    overlay.addEventListener('click',function(e){if(e.target===overlay)close();});
+    initDrag();
+    bindItems();
+  }
+  function open(){
+    if(isOpen)return;isOpen=true;
+    overlay.classList.add('open');
+    syncMayorToSheet();
+    // highlight nav-more
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+    var nb=document.getElementById('nav-more');
+    if(nb)nb.classList.add('active');
+  }
+  function close(){
+    if(!isOpen)return;isOpen=false;
+    overlay.classList.remove('open');
+    sheet.style.transform='';sheet.style.transition='';
+    // restore active nav
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+    var nb=document.getElementById('nav-'+curTab);
+    if(nb)nb.classList.add('active');
+  }
+  function initDrag(){
+    var startY=0,dragging=false,startScroll=0;
+    sheet.addEventListener('touchstart',function(e){startY=e.touches[0].clientY;startScroll=sheet.scrollTop;dragging=true;},{passive:true});
+    sheet.addEventListener('touchmove',function(e){
+      if(!dragging)return;
+      var dy=e.touches[0].clientY-startY;
+      if(dy>0&&startScroll<=0){sheet.style.transition='none';sheet.style.transform='translateY('+Math.min(dy,300)+'px)';}
+    },{passive:true});
+    sheet.addEventListener('touchend',function(e){
+      if(!dragging)return;dragging=false;
+      var dy=e.changedTouches[0].clientY-startY;
+      sheet.style.transition='';sheet.style.transform='';
+      if(dy>90){haptic('light');close();}
+    },{passive:true});
+  }
+  function bindItems(){
+    var prevPill=document.getElementById('ms-prev-mayors-btn');
+    if(prevPill)prevPill.addEventListener('click',function(e){e.stopPropagation();haptic('light');close();setTimeout(openPrevMayorsModal,60);});
+    var itemSite=document.getElementById('ms-item-site');
+    if(itemSite)itemSite.addEventListener('click',function(){haptic('light');window.location.href='/';});
+    var itemGuide=document.getElementById('ms-item-guide');
+    if(itemGuide)itemGuide.addEventListener('click',function(){haptic('light');close();setTimeout(function(){switchTab('guide');},60);});
+    var itemArchive=document.getElementById('ms-item-archive');
+    if(itemArchive)itemArchive.addEventListener('click',function(){haptic('light');close();setTimeout(function(){switchTab('archive');},60);});
+    var itemMap=document.getElementById('ms-item-map');
+    if(itemMap)itemMap.addEventListener('click',function(){haptic('light');close();setTimeout(function(){switchTabWithFilter('map','all');},60);});
+  }
+  return{init:init,open:open,close:close};
+})();
+
+/* ══ SEARCH ══ */
+var Search=(function(){
+  var overlay,input,results;
+  function init(){
+    overlay=document.getElementById('search-overlay');
+    input=document.getElementById('search-input');
+    results=document.getElementById('search-results');
+    document.getElementById('search-close-btn').addEventListener('click',close);
+    overlay.addEventListener('click',function(e){if(e.target===overlay)close();});
+    input.addEventListener('input',onInput);
+    // allow text selection in search input
+    input.addEventListener('touchstart',function(e){e.stopPropagation();},{passive:true});
+  }
+  function open(){
+    overlay.classList.add('open');
+    setTimeout(function(){input.focus();},200);
+    haptic('light');
+  }
+  function close(){
+    overlay.classList.remove('open');
+    input.value='';
+    results.innerHTML='<div class="search-empty">اكتب للبحث في محتوى التطبيق</div>';
+  }
+  function onInput(){
+    var q=(input.value||'').trim();
+    if(q.length<2){results.innerHTML='<div class="search-empty">اكتب كلمتين على الأقل</div>';return;}
+    var found=[];
+    // search news
+    allNews.forEach(function(n){
+      if((n.title||'').includes(q)||(n.content||'').includes(q)){
+        found.push({type:'news',icon:'lucide:newspaper',color:'var(--green)',bg:'var(--green-xl)',title:n.title||'خبر',sub:n.date||'',id:n.id});
+      }
+    });
+    if(!found.length){results.innerHTML='<div class="search-empty">لا توجد نتائج لـ "'+q+'"</div>';return;}
+    results.innerHTML=found.slice(0,20).map(function(r){
+      return '<div class="search-result-item" data-sr-type="'+r.type+'" data-sr-id="'+r.id+'">'
+        +'<div class="sr-icon" style="background:'+r.bg+'"><iconify-icon icon="'+r.icon+'" style="color:'+r.color+';font-size:18px;pointer-events:none"></iconify-icon></div>'
+        +'<div><div class="sr-title">'+r.title+'</div><div class="sr-sub">'+r.sub+'</div></div>'
+        +'</div>';
+    }).join('');
+    results.querySelectorAll('.search-result-item').forEach(function(item){
+      item.addEventListener('click',function(){
+        var type=this.getAttribute('data-sr-type');
+        var id=this.getAttribute('data-sr-id');
+        close();
+        if(type==='news'){switchTab('news');setTimeout(function(){openNewsModal(id);},400);}
+      });
+    });
+  }
+  return{init:init,open:open,close:close};
+})();
+
+/* ══ LIGHTBOX ══ */
+function openLightbox(src){if(!src)return;document.getElementById('lb-img').src=src;document.getElementById('lightbox').classList.add('open');}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');document.getElementById('lb-img').src='';}
+
+/* ══ MAP FILTER ══ */
+function toggleFilterMenu(e){
+  e.stopPropagation();haptic('light');
+  filterMenuOpen=!filterMenuOpen;
+  document.getElementById('map-filter-menu').classList.toggle('open',filterMenuOpen);
+  document.getElementById('filter-btn-arrow').style.transform=filterMenuOpen?'rotate(180deg)':'';
+}
+function closeFilterMenu(){
+  if(!filterMenuOpen)return;filterMenuOpen=false;
+  document.getElementById('map-filter-menu').classList.remove('open');
+  document.getElementById('filter-btn-arrow').style.transform='';
+}
+function selectMapFilter(type,el){
+  document.querySelectorAll('.mf-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+  var cfg=FILTER_CFG[type];
+  document.getElementById('filter-btn-icon').setAttribute('icon',cfg.icon);
+  document.getElementById('filter-btn-label').textContent=cfg.labelFull;
+  document.getElementById('map-filter-btn').classList.toggle('filter-active',type!=='all');
+  activeMapFilter=type;
+  if(appMap){
+    mapLayers.beach.forEach(mk=>{if(type==='all'||type==='beach'){if(!appMap.hasLayer(mk))mk.addTo(appMap);}else{if(appMap.hasLayer(mk))appMap.removeLayer(mk);}});
+    mapLayers.tour.forEach(mk=>{if(type==='all'||type==='tour'){if(!appMap.hasLayer(mk))mk.addTo(appMap);}else{if(appMap.hasLayer(mk))appMap.removeLayer(mk);}});
+    mapLayers.fac.forEach(mk=>{if(type==='all'||type==='fac'){if(!appMap.hasLayer(mk))mk.addTo(appMap);}else{if(appMap.hasLayer(mk))appMap.removeLayer(mk);}});
+  }
+  closeMapCard();setTimeout(closeFilterMenu,120);
+}
+function applyMapFilterSilent(type){
+  var el=document.querySelector('.mf-item[data-type="'+type+'"]');
+  if(el)selectMapFilter(type,el);
+}
+
+/* ══ LOCATE ══ */
+function locateUser(){
+  if(!navigator.geolocation){alert('تحديد الموقع غير مدعوم');return;}
+  haptic('light');
+  var btn=document.getElementById('map-locate-btn');
+  var icon=document.getElementById('locate-icon');
+  btn.classList.add('locating');icon.setAttribute('icon','lucide:loader-2');
+  navigator.geolocation.getCurrentPosition(
+    function(pos){
+      btn.classList.remove('locating');icon.setAttribute('icon','lucide:locate-fixed');haptic('success');
+      var lat=pos.coords.latitude,lng=pos.coords.longitude;
+      if(appMap){
+        appMap.setView([lat,lng],15,{animate:true});
+        if(locateMarker)appMap.removeLayer(locateMarker);
+        var pulse='<div style="position:relative;width:20px;height:20px"><div style="position:absolute;inset:0;border-radius:50%;background:rgba(5,150,105,.25);animation:loc-pulse 1.4s ease-out infinite"></div><div style="position:absolute;inset:3px;border-radius:50%;background:var(--green);border:2px solid #fff;box-shadow:0 2px 8px rgba(5,150,105,.5)"></div></div>';
+        var locIcon=L.divIcon({className:'',html:pulse,iconSize:[20,20],iconAnchor:[10,10]});
+        locateMarker=L.marker([lat,lng],{icon:locIcon}).addTo(appMap);
+      }
+      if(!document.getElementById('loc-pulse-style')){
+        var s=document.createElement('style');s.id='loc-pulse-style';
+        s.textContent='@keyframes loc-pulse{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.8);opacity:0}}';
+        document.head.appendChild(s);
+      }
+    },
+    function(){btn.classList.remove('locating');icon.setAttribute('icon','lucide:locate-off');},
+    {enableHighAccuracy:true,timeout:10000,maximumAge:0}
+  );
+}
+
+/* ══ SKELETON ══ */
+function skNewsCards(count){var h='';for(var i=0;i<count;i++){h+='<div class="sk-news-card"><div class="sk sk-news-img"></div><div class="sk-news-body"><div class="sk sk-line w-full"></div><div class="sk sk-line w-3q"></div><div class="sk sk-line w-half" style="margin-top:4px"></div></div><div class="sk-news-footer"><div class="sk sk-line w-1q" style="height:10px"></div><div class="sk sk-btn"></div></div></div>';}return h;}
+function skPlaceCards(count){var h='';for(var i=0;i<count;i++){h+='<div class="sk sk-place-card"></div>';}return h;}
+function skFacCards(count){var h='';for(var i=0;i<count;i++){h+='<div class="sk-fac-card"><div class="sk sk-fac-img"></div><div class="sk-fac-body"><div class="sk sk-line w-1q" style="height:10px;margin-bottom:6px"></div><div class="sk sk-line w-full" style="height:13px;margin-bottom:6px"></div><div class="sk sk-line w-3q" style="height:10px"></div></div></div>';}return h;}
+function skAnnounceCards(count){var h='';for(var i=0;i<count;i++){h+='<div class="sk-announce-card"><div class="sk sk-announce-img"></div><div class="sk-announce-body"><div class="sk sk-line w-full" style="height:13px;margin-bottom:8px"></div><div class="sk sk-line w-3q" style="height:13px;margin-bottom:8px"></div><div class="sk sk-line w-half" style="height:11px"></div></div></div>';}return h;}
+function skArchiveCards(count){var h='<div style="display:flex;flex-direction:column;gap:16px;">';for(var i=0;i<count;i++){h+='<div class="sk-archive-card"><div class="sk-archive-grid"><div class="sk sk-archive-cell"></div><div class="sk sk-archive-cell"></div></div><div class="sk sk-archive-title"></div></div>';}return h+'</div>';}
+
+/* ══ NEWS ══ */
+var NS={
+  official:{grad:'linear-gradient(135deg,#ef4444,#b91c1c)',lbl:'إعلان رسمي',bs:'background:rgba(239,68,68,.12);color:var(--red)'},
+  activity:{grad:'linear-gradient(135deg,var(--green),#065f46)',lbl:'نشاط بلدي',bs:'background:rgba(5,150,105,.12);color:var(--green)'},
+  social:  {grad:'linear-gradient(135deg,var(--purple),#4c1d95)',lbl:'ركن المجتمع',bs:'background:rgba(124,58,237,.12);color:var(--purple)'}
+};
+function makeDateBadge(d){if(!d)return '';return '<span class="card-date"><iconify-icon icon="lucide:calendar-days"></iconify-icon>'+d+'</span>';}
+function makeNewsCard(n,showTitle){
+  var s=NS[n.category]||NS.official;
+  var excerpt=(n.content||'').substring(0,90)+'...';
+  var icon=n.category==='official'?'lucide:megaphone':'lucide:newspaper';
+  var img=n.image_url?'<img class="news-card-img" src="'+n.image_url+'" alt="" loading="lazy">':'<div class="news-card-img-ph" style="background:'+s.grad+'"><iconify-icon icon="'+icon+'" style="color:rgba(255,255,255,.75);font-size:2rem;pointer-events:none"></iconify-icon></div>';
+  var titleHtml=showTitle&&n.title?'<div class="news-card-title">'+n.title+'</div>':'';
+  return '<div class="news-card" data-news-id="'+n.id+'">'+img+titleHtml+'<div class="news-card-body"><div class="news-card-excerpt">'+excerpt+'</div></div><div class="news-card-footer">'+makeDateBadge(n.date)+'<button class="read-more" data-news-id="'+n.id+'">اقرأ المزيد<iconify-icon icon="lucide:chevron-left"></iconify-icon></button></div></div>';
+}
+
+/* ══ ARCHIVE ══ */
+function switchArchTab(tab,btn){
+  haptic('light');archTab=tab;
+  document.querySelectorAll('#screen-archive .seg-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  loadArchiveTab(tab);
+}
+async function loadArchiveTab(tab){
+  var el=document.getElementById('archive-list');if(!el)return;
+  el.innerHTML=skArchiveCards(4);
+  try{
+    var d=await api('/api/archives');var all=d.data||[];
+    var items=tab==='compare'?all.filter(a=>a.image_old_url&&a.image_new_url):all.filter(a=>!a.image_old_url&&a.image_new_url);
+    if(!items.length){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:image-off"></iconify-icon><p>لا توجد صور</p></div>';return;}
+    var html='<div style="display:flex;flex-direction:column;gap:16px;">';
+    items.forEach(function(a){
+      if(tab==='compare'){html+='<div class="archive-card"><div class="archive-compare-grid"><div class="archive-cell" data-lb="'+a.image_old_url+'"><img src="'+a.image_old_url+'" loading="lazy"><span class="archive-cell-label">الأمس</span></div><div class="archive-cell" data-lb="'+a.image_new_url+'"><img src="'+a.image_new_url+'" loading="lazy"><span class="archive-cell-label new-label">اليوم</span></div></div>'+(a.title?'<div class="archive-card-title">'+a.title+'</div>':'')+'</div>';}
+      else{html+='<div class="archive-card archive-single" data-lb="'+a.image_new_url+'"><img src="'+a.image_new_url+'" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block;pointer-events:none" loading="lazy">'+(a.title?'<div class="archive-card-title">'+a.title+'</div>':'')+'</div>';}
+    });
+    el.innerHTML=html+'</div>';
+  }catch(e){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';}
+}
+
+/* ══ HOME ══ */
+function syncMayorToSheet(){
+  if(!_mayorsList.length)return;
+  var m=_mayorsList[0];
+  var nameEl=document.getElementById('ms-mayor-name');
+  var photoEl=document.getElementById('ms-mayor-photo');
+  var iconEl=document.getElementById('ms-mayor-icon');
+  var mandateEl=document.getElementById('ms-mayor-mandate');
+  if(nameEl)nameEl.textContent=m.name_ar||m.name||'--';
+  if(m.image_url&&photoEl){photoEl.src=m.image_url;photoEl.style.display='block';if(iconEl)iconEl.style.display='none';}
+  var period=m.period_ar||m.period||'';
+  if(period&&mandateEl)mandateEl.innerHTML='<iconify-icon icon="lucide:calendar" style="font-size:11px;pointer-events:none"></iconify-icon><span>'+period+'</span>';
+}
+
+function loadHome(){loadHOfficial();loadHNews();loadMayorHome();loadHBeaches();loadHTourism();fetchPWAWeather();fetchPWASea();}
+
+var PWA_LAT=37.0850,PWA_LON=7.2550;
+async function fetchPWAWeather(){
+  try{
+    var r=await fetch('https://api.open-meteo.com/v1/forecast?latitude='+PWA_LAT+'&longitude='+PWA_LON+'&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code,is_day&daily=temperature_2m_max,temperature_2m_min&timezone=Africa%2FAlgiers&forecast_days=1');
+    var d=await r.json();var cu=d.current;var dl=d.daily;var isDay=cu.is_day===1;
+    var wm={0:{d:'☀️',n:'🌕',ar:'صافٍ'},1:{d:'🌤️',n:'🌙',ar:'غائم خفيف'},2:{d:'⛅',n:'🌥️',ar:'غائم جزئياً'},3:{d:'☁️',n:'☁️',ar:'غائم'},45:{d:'🌫️',n:'🌫️',ar:'ضبابي'},48:{d:'🌫️',n:'🌫️',ar:'ضبابي'},51:{d:'🌦️',n:'🌧️',ar:'رذاذ'},53:{d:'🌦️',n:'🌧️',ar:'رذاذ'},61:{d:'🌧️',n:'🌧️',ar:'ممطر'},63:{d:'🌧️',n:'🌧️',ar:'مطر'},65:{d:'🌧️',n:'🌧️',ar:'مطر غزير'},80:{d:'🌦️',n:'🌧️',ar:'زخات'},81:{d:'🌧️',n:'🌧️',ar:'زخات'},95:{d:'⛈️',n:'⛈️',ar:'عاصفة'}};
+    var w=wm[cu.weather_code]||{d:'🌡️',n:'🌙',ar:'متغير'};
+    var hdrIcon=document.getElementById('pwa-weather-header-icon');
+    var hdrBg=document.getElementById('pwa-weather-icon-bg');
+    if(hdrIcon&&hdrBg){if(isDay){hdrIcon.setAttribute('icon','lucide:sun');hdrIcon.style.color='#f59e0b';hdrBg.style.background='#fef3c7';}else{hdrIcon.setAttribute('icon','lucide:moon');hdrIcon.style.color='#818cf8';hdrBg.style.background='#ede9fe';}}
+    document.getElementById('pwa-weather-icon').textContent=isDay?w.d:w.n;
+    document.getElementById('pwa-weather-temp').textContent=Math.round(cu.temperature_2m)+'°';
+    document.getElementById('pwa-weather-desc').textContent=w.ar;
+    document.getElementById('pwa-weather-hum').textContent=cu.relative_humidity_2m+'%';
+    document.getElementById('pwa-weather-wind').textContent=Math.round(cu.wind_speed_10m)+' كم/س';
+    if(dl){document.getElementById('pwa-weather-max').textContent=Math.round(dl.temperature_2m_max[0])+'°';document.getElementById('pwa-weather-min').textContent=Math.round(dl.temperature_2m_min[0])+'°';}
+    var tlEl=document.getElementById('pwa-weather-time-label');
+    if(tlEl&&dl)tlEl.textContent=(isDay?'الليل: ':'غداً: ')+(isDay?Math.round(dl.temperature_2m_min[0]):Math.round(dl.temperature_2m_max[0]))+'°C';
+  }catch(e){var el=document.getElementById('pwa-weather-desc');if(el)el.textContent='تعذر التحميل';}
+}
+async function fetchPWASea(){
+  try{
+    var r=await fetch('https://marine-api.open-meteo.com/v1/marine?latitude='+PWA_LAT+'&longitude='+PWA_LON+'&current=wave_height,wave_direction&timezone=Africa%2FAlgiers');
+    var d=await r.json();var cu=d.current;
+    if(!cu||cu.wave_height==null){document.getElementById('pwa-sea-state').textContent='--';return;}
+    var v=parseFloat(cu.wave_height.toFixed(1));
+    var dirs=['شمال','شمال شرق','شرق','جنوب شرق','جنوب','جنوب غرب','غرب','شمال غرب'];
+    var dirLabel=cu.wave_direction!=null?dirs[Math.round(cu.wave_direction/45)%8]:'--';
+    var st,si,sd;
+    if(v<0.5){st='هادئ';si='🌊';sd='مناسب للسباحة';}
+    else if(v<1.0){st='هادئ نسبياً';si='🌅';sd='مناسب للسباحة';}
+    else if(v<1.5){st='معتدل';si='🌊';sd='حذر للسباحة';}
+    else if(v<2.5){st='مضطرب';si='⚠️';sd='يُنصح بالحذر';}
+    else{st='عاصف';si='🔴';sd='يُمنع الخروج';}
+    document.getElementById('pwa-sea-icon').textContent=si;
+    document.getElementById('pwa-sea-state').textContent=st;
+    document.getElementById('pwa-sea-desc').textContent=sd;
+    document.getElementById('pwa-sea-wave').textContent=v+' م';
+    document.getElementById('pwa-sea-dir').textContent=dirLabel;
+  }catch(e){var el=document.getElementById('pwa-sea-desc');if(el)el.textContent='تعذر التحميل';}
+}
+async function loadMayorHome(){
+  try{var d=await api('/api/mayors');var list=d.data||[];if(!list.length)return;_mayorsList=list;_mayorLoaded=true;syncMayorToSheet();}catch(e){}
+}
+async function loadHOfficial(){
+  var el=document.getElementById('h-official');el.innerHTML=skNewsCards(3);
+  try{var d=await api('/api/news');if(d.data)allNews=d.data;var items=(d.data||[]).filter(n=>n.category==='official').slice(0,10);el.innerHTML=items.length?items.map(n=>makeNewsCard(n,false)).join(''):'';}catch(e){el.innerHTML='';}
+}
+async function loadHNews(){
+  var el=document.getElementById('h-news');el.innerHTML=skNewsCards(3);
+  try{var d=await api('/api/news');if(d.data)allNews=d.data;var items=(d.data||[]).filter(n=>n.category!=='official'&&n.category!=='poster').slice(0,10);el.innerHTML=items.length?items.map(n=>makeNewsCard(n,true)).join(''):'';}catch(e){el.innerHTML='';}
+}
+async function loadHBeaches(){
+  var el=document.getElementById('h-beaches');el.innerHTML=skPlaceCards(4);
+  try{var d=await api('/api/beaches');el.innerHTML=(d.data||[]).slice(0,8).map(b=>placeCard(b,'beach')).join('');}catch(e){el.innerHTML='';}
+}
+async function loadHTourism(){
+  var el=document.getElementById('h-tourism');el.innerHTML=skPlaceCards(4);
+  try{var d=await api('/api/tourism');el.innerHTML=(d.data||[]).slice(0,8).map(t=>placeCard(t,'tourism')).join('');}catch(e){el.innerHTML='';}
+}
+function placeCard(item,type){
+  var n=item.name||'';
+  var dataAttr=type==='beach'?'data-beach-id="'+item.id+'"':'data-tour-id="'+item.id+'"';
+  var ph=type==='beach'?'<div class="place-card-ph" style="background:linear-gradient(135deg,var(--sky),#0284c7)"><iconify-icon icon="lucide:waves" style="color:rgba(255,255,255,.8);font-size:2.2rem;pointer-events:none"></iconify-icon></div>':'<div class="place-card-ph" style="background:linear-gradient(135deg,var(--green),#065f46)"><iconify-icon icon="lucide:compass" style="color:rgba(255,255,255,.8);font-size:2.2rem;pointer-events:none"></iconify-icon></div>';
+  var imgH=item.image_url?'<img src="'+item.image_url+'" alt="'+n+'" style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none">':ph;
+  return '<div class="place-card" '+dataAttr+'>'+imgH+'<div class="place-card-grad"></div><div class="place-card-body"><div class="place-card-name">'+n+'</div></div></div>';
+}
+
+/* ══ NEWS SCREEN ══ */
+async function loadNewsScreen(){
+  var el=document.getElementById('news-list');
+  el.innerHTML='<div style="padding:12px 0">'+skAnnounceCards(3)+'</div>';
+  try{
+    var d=await api('/api/news');allNews=d.data||[];
+    var activeBtn=document.querySelector('#screen-news .seg-btn.active');
+    var activeCat=activeBtn?activeBtn.getAttribute('data-cat'):'official';
+    newsScreenLoaded=true;
+    renderNews(allNews.filter(n=>n.category===activeCat));
+  }catch(e){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';}
+}
+function filterNews(cat,btn){
+  haptic('light');
+  document.querySelectorAll('#screen-news .seg-btn').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  if(!newsScreenLoaded)return;
+  renderNews(allNews.filter(n=>n.category===cat));
+}
+function renderNews(items){
+  var el=document.getElementById('news-list');
+  if(!items.length){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>لا توجد أخبار</p></div>';return;}
+  el.innerHTML=items.map(function(n){
+    var s=NS[n.category]||NS.official;
+    var lbl=n.custom_label||s.lbl||'';
+    var pin=n.is_pinned?'<span style="font-size:10px;font-weight:800;color:var(--amber);display:flex;align-items:center;gap:2px"><iconify-icon icon="lucide:pin" style="pointer-events:none"></iconify-icon>مثبت</span>':'';
+    var desc=(n.content||'').substring(0,130)+'...';
+    if(n.category==='poster'){var src=n.image_url||'';if(src)return '<div class="poster-card fade-in" data-lb="'+src+'"><img src="'+src+'" alt="" loading="lazy"></div>';return '<div class="poster-card fade-in"><div class="poster-card-ph" style="background:linear-gradient(135deg,var(--purple),#4c1d95)"><iconify-icon icon="lucide:image" style="color:rgba(255,255,255,.7);font-size:3rem;pointer-events:none"></iconify-icon></div></div>';}
+    var imgW=n.image_url?'<div class="announce-img-wrap"><img src="'+n.image_url+'" alt="" loading="lazy"></div>':'<div class="announce-img-wrap" style="background:'+s.grad+';height:90px"><iconify-icon icon="'+(n.category==='official'?'lucide:megaphone':'lucide:clipboard-list')+'" style="color:rgba(255,255,255,.65);font-size:2.2rem;pointer-events:none"></iconify-icon></div>';
+    var badgeHtml=n.category!=='official'?'<span class="news-badge" style="'+s.bs+'">'+lbl+'</span>':'';
+    var headerRow=(badgeHtml||pin)?'<div style="display:flex;align-items:center;gap:7px;margin-bottom:7px">'+badgeHtml+pin+'</div>':'';
+    return '<div class="announce-card fade-in" data-news-id="'+n.id+'">'+imgW+'<div class="announce-body">'+headerRow+'<div style="font-size:13.5px;color:var(--muted);line-height:1.7">'+desc+'</div><div class="announce-footer">'+makeDateBadge(n.date)+'<button class="read-more" data-news-id="'+n.id+'">اقرأ المزيد<iconify-icon icon="lucide:chevron-left"></iconify-icon></button></div></div></div>';
+  }).join('');
+}
+
+/* ══ GUIDE ══ */
+var FM={
+  'admin-branches':{cat:'branches',    icon:'lucide:landmark',       color:'var(--green)',  bg:'var(--green-l)'},
+  'education':     {cat:'education',   icon:'lucide:graduation-cap', color:'var(--blue)',   bg:'var(--blue-l)'},
+  'health':        {cat:'health',      icon:'lucide:heart-pulse',    color:'var(--red)',    bg:'var(--red-l)'},
+  'public-bodies': {cat:'public_bodies',icon:'lucide:building-2',   color:'var(--purple)', bg:'var(--purple-l)'},
+  'religious':     {cat:'religious',   icon:'lucide:moon-star',      color:'var(--amber)',  bg:'var(--amber-l)'},
+  'cultural':      {cat:'cultural',    icon:'lucide:palette',        color:'#0891b2',       bg:'var(--sky-l)'},
+  'sports':        {cat:'sports',      icon:'lucide:trophy',         color:'#ea580c',       bg:'#ffedd5'}
+};
+async function loadFacTab(tab,btn){
+  haptic('light');facCat=tab;
+  document.querySelectorAll('#screen-guide .seg-btn').forEach(t=>t.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  var el=document.getElementById('fac-list');var m=FM[tab];if(!m)return;
+  if(C['/api/facilities?cat='+m.cat]){var items=C['/api/facilities?cat='+m.cat].data||[];el.innerHTML=items.length?items.map(f=>makeFacCard(f,m,tab)).join(''):'<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>لا توجد عناصر</p></div>';return;}
+  el.innerHTML='<div style="padding:8px 0">'+skFacCards(5)+'</div>';
+  try{var d=await api('/api/facilities?cat='+m.cat);var items=d.data||[];el.innerHTML=items.length?items.map(f=>makeFacCard(f,m,tab)).join(''):'<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>لا توجد عناصر</p></div>';}
+  catch(e){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';}
+}
+function makeFacCard(f,m,tab){
+  var img=f.image_url?'<img class="fac-card-img" src="'+f.image_url+'" alt="">':'<div class="fac-card-ph" style="background:'+m.bg+'"><iconify-icon icon="'+m.icon+'" style="color:'+m.color+';font-size:1.8rem;pointer-events:none"></iconify-icon></div>';
+  return '<div class="fac-card fade-in" data-fac-id="'+f.id+'" data-fac-tab="'+tab+'">'+img+'<div class="fac-card-body">'+(f.sub_type?'<span class="fac-card-badge" style="background:'+m.bg+';color:'+m.color+'">'+f.sub_type+'</span>':'')+'<div class="fac-card-name">'+(f.name||'')+'</div>'+(f.description?'<div class="fac-card-desc">'+f.description+'</div>':'')+'</div><iconify-icon icon="lucide:chevron-left" style="font-size:18px;color:var(--muted);padding-left:12px;flex-shrink:0;pointer-events:none"></iconify-icon></div>';
+}
+
+/* ══ MODALS ══ */
+function om(id){document.getElementById(id).classList.add('open');}
+function cm(id){document.getElementById(id).classList.remove('open');}
+function initModalSwipe(sheet,overlayId){
+  var startY=0,startScroll=0,dragging=false;
+  sheet.addEventListener('touchstart',function(e){startY=e.touches[0].clientY;startScroll=sheet.scrollTop;dragging=true;},{passive:true});
+  sheet.addEventListener('touchmove',function(e){if(!dragging)return;var dy=e.touches[0].clientY-startY;if(dy>0&&startScroll<=0){sheet.style.transform='translateY('+dy+'px)';sheet.style.transition='none';}},{passive:true});
+  sheet.addEventListener('touchend',function(e){if(!dragging)return;dragging=false;var dy=e.changedTouches[0].clientY-startY;sheet.style.transition='';sheet.style.transform='';if(dy>80&&startScroll<=0){haptic('light');cm(overlayId);}},{passive:true});
+}
+function album(elId,albums){var el=document.getElementById(elId);var a=Array.isArray(albums)?albums:[];if(!a.length){el.innerHTML='';return;}el.innerHTML='<div class="album-title"><iconify-icon icon="lucide:images" style="color:var(--green);pointer-events:none"></iconify-icon>معرض الصور ('+a.length+')</div><div class="album-grid">'+a.map(x=>'<img src="'+x.image_url+'" alt="" loading="lazy" data-lb="'+x.image_url+'">').join('')+'</div>';}
+function albumBig(elId,albums){var el=document.getElementById(elId);var a=Array.isArray(albums)?albums:[];if(!a.length){el.innerHTML='';return;}el.innerHTML=a.map(x=>'<div style="line-height:0;margin-bottom:4px"><img src="'+x.image_url+'" alt="" loading="lazy" data-lb="'+x.image_url+'" style="width:100%;display:block;cursor:pointer;pointer-events:auto;touch-action:manipulation"></div>').join('');}
+
+async function openNewsModal(id){
+  haptic('light');
+  var n=allNews.find(x=>x.id==id);
+  if(!n){try{var d=await api('/api/news');allNews=d.data||[];n=allNews.find(x=>x.id==id);}catch(e){}}
+  if(!n)return;
+  var albums=[];
+  if(Array.isArray(n.albums)&&n.albums.length)albums=n.albums;
+  else if(n.album_urls){try{var arr=typeof n.album_urls==='string'?JSON.parse(n.album_urls):n.album_urls;albums=(arr||[]).map((u,i)=>({id:i,image_url:u,caption:''}));}catch(e){}}
+  if(n.category==='poster'){document.getElementById('mn-normal-view').style.display='none';document.getElementById('mn-announce-view').style.display='block';var src=n.image_url||(albums.length?albums[0].image_url:'');document.getElementById('mn-announce-album').innerHTML=src?'<img src="'+src+'" style="width:100%;display:block;pointer-events:none" alt="">':'';}
+  else if(n.category==='official'){document.getElementById('mn-normal-view').style.display='none';document.getElementById('mn-announce-view').style.display='block';albumBig('mn-announce-album',albums.length?albums:(n.image_url?[{image_url:n.image_url}]:[]));} 
+  else{document.getElementById('mn-announce-view').style.display='none';document.getElementById('mn-normal-view').style.display='block';var imgEl=document.getElementById('mn-img');if(n.image_url){imgEl.src=n.image_url;imgEl.style.display='block';}else imgEl.style.display='none';var badgeEl=document.getElementById('mn-badge');if(n.custom_label){badgeEl.textContent=n.custom_label;badgeEl.style.cssText='background:rgba(5,150,105,.1);color:var(--green);display:inline-block';}else badgeEl.style.display='none';document.getElementById('mn-name').textContent=n.title||'';document.getElementById('mn-desc').textContent=n.content||'';document.getElementById('mn-meta').innerHTML=n.date?'<span class="modal-chip"><iconify-icon icon="lucide:calendar-days" style="pointer-events:none"></iconify-icon>'+n.date+'</span>':'';album('mn-album',albums);}
+  om('m-news');
+}
+async function openBeachModal(id){
+  haptic('light');
+  try{delete C['/api/beaches?id='+id];var d=await api('/api/beaches?id='+id);var b=d.data;if(!b)return;var img=document.getElementById('mb-img');if(b.image_url){img.src=b.image_url;img.style.display='block';}else img.style.display='none';document.getElementById('mb-name').textContent=b.name||'';document.getElementById('mb-desc').textContent=b.description||'';var m='';if(b.is_supervised)m+='<span class="modal-chip"><iconify-icon icon="lucide:shield-check" style="color:var(--green);pointer-events:none"></iconify-icon>مراقب</span>';if(b.season)m+='<span class="modal-chip">'+b.season+'</span>';document.getElementById('mb-meta').innerHTML=m;album('mb-album',b.albums);om('m-beach');}catch(e){}
+}
+async function openTourismModal(id){
+  haptic('light');
+  try{delete C['/api/tourism?id='+id];var d=await api('/api/tourism?id='+id);var t=d.data;if(!t)return;var albums=[];if(Array.isArray(t.albums)&&t.albums.length)albums=t.albums;else if(t.album_urls){try{var arr=typeof t.album_urls==='string'?JSON.parse(t.album_urls):t.album_urls;albums=(arr||[]).map((u,i)=>({id:i,image_url:u,caption:''}));}catch(e){}}
+  if(t.badge_text==='ملصق'||t.type==='sticker'){document.getElementById('mt-normal-view').style.display='none';document.getElementById('mt-sticker-view').style.display='block';albumBig('mt-sticker-album',albums.length?albums:(t.image_url?[{image_url:t.image_url}]:[]));} 
+  else{document.getElementById('mt-sticker-view').style.display='none';document.getElementById('mt-normal-view').style.display='block';var imgEl=document.getElementById('mt-img');if(t.image_url){imgEl.src=t.image_url;imgEl.style.display='block';}else imgEl.style.display='none';var badgeEl=document.getElementById('mt-badge');if(t.badge_text){badgeEl.textContent=t.badge_text;badgeEl.style.display='inline-block';}else badgeEl.style.display='none';document.getElementById('mt-name').textContent=t.name||'';document.getElementById('mt-desc').textContent=t.description||'';var m='';if(t.rating)m+='<span class="modal-chip"><iconify-icon icon="lucide:star" style="color:var(--amber);pointer-events:none"></iconify-icon>'+t.rating+'/5</span>';if(t.distance_info)m+='<span class="modal-chip">'+t.distance_info+'</span>';document.getElementById('mt-meta').innerHTML=m;album('mt-album',albums);}
+  om('m-tour');}catch(e){}
+}
+async function openFacModal(id,tab){
+  haptic('light');
+  try{var m=FM[tab]||FM['admin-branches'];delete C['/api/facilities?id='+id];var d=await api('/api/facilities?id='+id);var f=d.data;if(!f)return;var img=document.getElementById('mf-img');if(f.image_url){img.src=f.image_url;img.style.display='block';}else img.style.display='none';var badgeEl=document.getElementById('mf-badge');if(f.sub_type){badgeEl.textContent=f.sub_type;badgeEl.style.cssText='background:'+m.bg+';color:'+m.color+';display:inline-block';}else badgeEl.style.display='none';document.getElementById('mf-name').textContent=f.name||'';document.getElementById('mf-desc').textContent=f.description||'';var tags=Array.isArray(f.tags)?f.tags:[];document.getElementById('mf-meta').innerHTML=tags.map(tg=>'<span class="modal-chip">#'+tg+'</span>').join('');var albums=[];if(Array.isArray(f.albums)&&f.albums.length){albums=f.albums.map(x=>typeof x==='string'?{id:x,image_url:x,caption:''}:x);}else if(f.album_urls){try{var arr=typeof f.album_urls==='string'?JSON.parse(f.album_urls):f.album_urls;albums=(arr||[]).map((u,i)=>({id:i,image_url:u,caption:''}));}catch(e){}}album('mf-album',albums);om('m-fac');}catch(e){}
+}
+
+/* ══ MAP ══ */
+var appMap=null;
+function initMap2(){
+  mapDone=true;
+  setTimeout(function(){
+    appMap=L.map('app-map',{center:[37.067177,7.380601],zoom:13,zoomControl:false,attributionControl:false});
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(appMap);
+    setTimeout(function(){appMap.invalidateSize();},300);
+    appMap.on('click',function(){closeMapCard();closeFilterMenu();});
+    loadMapData().then(function(){if(pendingMapFilter){var pf=pendingMapFilter;pendingMapFilter=null;setTimeout(function(){applyMapFilterSilent(pf);},200);}});
+  },100);
+}
+var mapCardData=null;
+function showMapCard(item,typeCfg){
+  mapCardData=item;mapCardData._typeCfg=typeCfg;
+  var avatarEl=document.getElementById('map-popup-avatar');
+  if(item.image_url)avatarEl.innerHTML='<img src="'+item.image_url+'" alt="">';
+  else avatarEl.innerHTML='<div class="map-popup-avatar-ph" style="background:'+typeCfg.bg+'"><iconify-icon icon="'+typeCfg.icon+'" style="font-size:2.2rem;color:'+typeCfg.color+';pointer-events:none"></iconify-icon></div>';
+  var typeEl=document.getElementById('map-card-type');typeEl.innerHTML='<iconify-icon icon="'+typeCfg.icon+'" style="font-size:12px;pointer-events:none"></iconify-icon>'+typeCfg.label;typeEl.style.cssText='background:'+typeCfg.bg+';color:'+typeCfg.color;
+  document.getElementById('map-card-name').textContent=item.name||'';
+  var desc=item.description||item.content||'';
+  var descWrap=document.getElementById('map-popup-desc-wrap');var descEl=document.getElementById('map-card-desc');
+  if(desc){descEl.textContent=desc;descWrap.style.display='';}else descWrap.style.display='none';
+  document.getElementById('map-card-overlay').classList.add('open');
+}
+function closeMapCard(){document.getElementById('map-card-overlay').classList.remove('open');mapCardData=null;}
+function mapCardClick(){if(!mapCardData)return;var d=mapCardData;closeMapCard();if(d._typeCfg.modal==='beach')openBeachModal(d.id);else if(d._typeCfg.modal==='tour')openTourismModal(d.id);else if(d._typeCfg.modal==='fac')openFacModal(d.id,d._typeCfg.tab||'admin-branches');}
+async function loadMapData(){
+  if(!appMap)return;
+  try{
+    var mIcon=L.divIcon({className:'',html:'<div style="width:36px;height:36px;background:var(--green);border:2.5px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.3);font-size:16px">🏛️</div>',iconSize:[36,36],iconAnchor:[18,18]});
+    L.marker([37.067177,7.380601],{icon:mIcon}).addTo(appMap).on('click',function(e){L.DomEvent.stopPropagation(e);closeFilterMenu();showMapCard({id:0,name:'مقر بلدية شطايبي',description:'المقر الرئيسي لبلدية شطايبي - والية عنابة',image_url:''},{bg:'var(--green-l)',color:'var(--green)',icon:'lucide:building-2',label:'بلدية',modal:''});});
+    var results=await Promise.all([api('/api/beaches'),api('/api/tourism'),api('/api/facilities')]);
+    var br=results[0],tr=results[1],fr=results[2];
+    function mkMarker(item,color,iconName,typeCfg,layerKey){
+      if(!item.lat||!item.lng)return;var size=34;
+      var inner=item.image_url?'<img src="'+item.image_url+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;pointer-events:none">':'<iconify-icon icon="'+iconName+'" style="font-size:14px;color:#fff;pointer-events:none"></iconify-icon>';
+      var html='<div style="width:'+size+'px;height:'+size+'px;background:'+color+';border:2.5px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.28);overflow:hidden;cursor:pointer">'+inner+'</div>';
+      var ic=L.divIcon({className:'',html:html,iconSize:[size,size],iconAnchor:[size/2,size/2]});
+      var mk=L.marker([item.lat,item.lng],{icon:ic}).on('click',function(e){L.DomEvent.stopPropagation(e);closeFilterMenu();showMapCard(item,typeCfg);});
+      mapLayers[layerKey].push(mk);mk.addTo(appMap);
+    }
+    (br.data||[]).forEach(b=>mkMarker(b,'var(--sky)','lucide:waves',{bg:'var(--sky-l)',color:'#0369a1',icon:'lucide:waves',label:'شاطئ',modal:'beach'},'beach'));
+    (tr.data||[]).forEach(t=>mkMarker(t,'var(--green)','lucide:compass',{bg:'var(--green-l)',color:'var(--green-dark)',icon:'lucide:compass',label:'سياحة',modal:'tour'},'tour'));
+    (fr.data||[]).forEach(f=>mkMarker(f,'var(--purple)','lucide:building',{bg:'var(--purple-l)',color:'#5b21b6',icon:'lucide:building',label:'مرفق',modal:'fac',tab:f.category||'admin-branches'},'fac'));
+  }catch(e){}
+}
+
+/* ══ MAYORS ══ */
+async function openPrevMayorsModal(){
+  var el=document.getElementById('prev-mayors-list');om('m-prev-mayors');
+  try{
+    var list=_mayorsList;
+    if(!list||!list.length){if(el)el.innerHTML='<div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>';var d=await api('/api/mayors');list=d.data||[];_mayorsList=list;}
+    var prev=list.slice(1);
+    if(!prev.length){if(el)el.innerHTML='<div class="empty"><iconify-icon icon="lucide:users"></iconify-icon><p>لا توجد بيانات</p></div>';return;}
+    if(el)el.innerHTML=prev.map(function(m){
+      var photo=m.image_url?'<img src="'+m.image_url+'" style="width:52px;height:52px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid var(--border-light)">':'<div style="width:52px;height:52px;border-radius:50%;background:var(--green-l);display:flex;align-items:center;justify-content:center;flex-shrink:0"><iconify-icon icon="lucide:user" style="color:var(--green);font-size:24px;pointer-events:none"></iconify-icon></div>';
+      var name=m.name_ar||m.name||'--';var period=m.period_ar||m.period||'';
+      return '<div style="display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--border-light)">'+photo+'<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:800;color:var(--text);letter-spacing:-.1px">'+name+'</div>'+(m.is_dec?'<div style="font-size:10px;font-weight:800;color:var(--amber);background:var(--amber-l);display:inline-block;padding:1px 9px;border-radius:99px;margin-top:3px">مندوب تنفيذي</div>':'')+(period?'<div style="font-size:11.5px;color:var(--muted);margin-top:4px;display:flex;align-items:center;gap:4px"><iconify-icon icon="lucide:calendar" style="font-size:11px;pointer-events:none"></iconify-icon>'+period+'</div>':'')+'</div></div>';
+    }).join('');
+  }catch(e){if(el)el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر تحميل البيانات</p></div>';}
+}
+
+/* ══ EVENT DELEGATION ══ */
+function initEventDelegation(){
+  document.addEventListener('click',function(e){
+    var t=e.target;
+    var newsCard=t.closest('.news-card');if(newsCard){var id=newsCard.getAttribute('data-news-id');if(id)openNewsModal(id);return;}
+    var readMore=t.closest('.read-more');if(readMore){e.stopPropagation();var id=readMore.getAttribute('data-news-id');if(id)openNewsModal(id);return;}
+    var annCard=t.closest('.announce-card');if(annCard&&!t.closest('.read-more')){var id=annCard.getAttribute('data-news-id');if(id)openNewsModal(id);return;}
+    var posterCard=t.closest('.poster-card');if(posterCard){var lb=posterCard.getAttribute('data-lb');if(lb)openLightbox(lb);return;}
+    var placeCard=t.closest('.place-card');if(placeCard){var bid=placeCard.getAttribute('data-beach-id');var tid=placeCard.getAttribute('data-tour-id');if(bid)openBeachModal(bid);else if(tid)openTourismModal(tid);return;}
+    var facCard=t.closest('.fac-card');if(facCard){var fid=facCard.getAttribute('data-fac-id');var ftab=facCard.getAttribute('data-fac-tab');if(fid)openFacModal(fid,ftab||'admin-branches');return;}
+    var archCell=t.closest('.archive-cell,.archive-home-cell,.archive-single,.archive-home-single,[data-lb]');if(archCell){var lb=archCell.getAttribute('data-lb');if(lb)openLightbox(lb);return;}
+    var albImg=t.closest('.album-grid img,[data-lb]');if(albImg){var lb=albImg.getAttribute('data-lb');if(lb)openLightbox(lb);return;}
+    if(t.classList.contains('modal-overlay')){cm(t.id);return;}
+  });
+
+  // Nav
+  document.getElementById('nav-home').addEventListener('click',function(){haptic('tab');switchTab('home');});
+  document.getElementById('nav-news').addEventListener('click',function(){haptic('tab');switchTab('news');});
+  document.getElementById('nav-guide').addEventListener('click',function(){haptic('tab');switchTab('guide');});
+  document.getElementById('nav-archive').addEventListener('click',function(){haptic('tab');switchTab('archive');});
+  // nav-more handled by MoreSheet
+
+  // Header buttons
+  document.getElementById('hdr-search-btn').addEventListener('click',function(){Search.open();});
+  document.getElementById('hdr-map-btn').addEventListener('click',function(){haptic('light');MoreSheet.close();switchTabWithFilter('map','all');});
+  document.getElementById('mini-search-btn').addEventListener('click',function(){Search.open();});
+  document.getElementById('mini-map-btn').addEventListener('click',function(){haptic('light');switchTabWithFilter('map','all');});
+
+  // Home buttons
+  document.getElementById('btn-see-news-official').addEventListener('click',function(){haptic('light');switchTab('news');});
+  document.getElementById('btn-see-news-all').addEventListener('click',function(){haptic('light');switchTab('news');});
+  document.getElementById('btn-see-beaches').addEventListener('click',function(){haptic('light');switchTabWithFilter('map','beach');});
+  document.getElementById('btn-see-tourism').addEventListener('click',function(){haptic('light');switchTabWithFilter('map','tour');});
+
+  // News seg
+  document.getElementById('news-btn-official').addEventListener('click',function(){filterNews('official',this);});
+  document.getElementById('news-btn-activity').addEventListener('click',function(){filterNews('activity',this);});
+  document.getElementById('news-btn-social').addEventListener('click',function(){filterNews('social',this);});
+  document.getElementById('news-btn-poster').addEventListener('click',function(){filterNews('poster',this);});
+
+  // Guide seg
+  document.getElementById('btn-admin-branches').addEventListener('click',function(){loadFacTab('admin-branches',this);});
+  document.getElementById('btn-education').addEventListener('click',function(){loadFacTab('education',this);});
+  document.getElementById('btn-health').addEventListener('click',function(){loadFacTab('health',this);});
+  document.getElementById('btn-public-bodies').addEventListener('click',function(){loadFacTab('public-bodies',this);});
+  document.getElementById('btn-religious').addEventListener('click',function(){loadFacTab('religious',this);});
+  document.getElementById('btn-cultural').addEventListener('click',function(){loadFacTab('cultural',this);});
+  document.getElementById('btn-sports').addEventListener('click',function(){loadFacTab('sports',this);});
+
+  // Archive
+  document.getElementById('arch-tab-compare').addEventListener('click',function(){switchArchTab('compare',this);});
+  document.getElementById('arch-tab-historic').addEventListener('click',function(){switchArchTab('historic',this);});
+
+  // Map
+  document.getElementById('map-filter-btn').addEventListener('click',function(e){toggleFilterMenu(e);});
+  document.getElementById('map-locate-btn').addEventListener('click',function(){locateUser();});
+  document.getElementById('map-popup-close-btn').addEventListener('click',function(e){e.stopPropagation();haptic('light');closeMapCard();});
+  document.getElementById('map-popup-action-btn').addEventListener('click',function(){haptic('light');mapCardClick();});
+  document.getElementById('map-card-inner').addEventListener('click',function(){haptic('light');mapCardClick();});
+  document.querySelectorAll('.mf-item').forEach(function(item){item.addEventListener('click',function(){haptic('light');selectMapFilter(this.getAttribute('data-type'),this);});});
+
+  // Lightbox
+  document.getElementById('lightbox').addEventListener('click',function(){closeLightbox();});
+  document.getElementById('lb-close').addEventListener('click',function(e){e.stopPropagation();closeLightbox();});
+  document.getElementById('mt-sticker-close').addEventListener('click',function(){cm('m-tour');});
+
+  // Modal swipe
+  ['m-news','m-beach','m-tour','m-fac','m-prev-mayors'].forEach(function(id){
+    var overlay=document.getElementById(id);
+    var sheet=overlay?overlay.querySelector('.modal-sheet'):null;
+    if(sheet)initModalSwipe(sheet,id);
+  });
+}
+
+/* ══ INIT ══ */
+window.addEventListener('load',function(){
+  applyHeaderHeight();
+  window.addEventListener('resize',function(){applyHeaderHeight();});
+
+  MoreSheet.init();
+  Search.init();
+  initEventDelegation();
+
+  initSwipe('scroll-home',   function(dir){swipeHome(dir);});
+  initSwipe('scroll-news',   function(dir){swipeNews(dir);});
+  initSwipe('scroll-guide',  function(dir){swipeGuide(dir);});
+  initSwipe('scroll-archive',function(dir){swipeArchive(dir);});
+
+  // scroll listeners for header behaviour
+  ['home','news','guide','archive'].forEach(function(id){
+    var scrollEl=document.querySelector('#screen-'+id+' .scroll-area');
+    if(scrollEl){
+      scrollEl.addEventListener('scroll',onScrollAreaScroll,{passive:true});
+    }
+  });
+});
+
+document.fonts.ready.then(function(){applyHeaderHeight();});
+loadHome();
+</script>
+</body>
+</html>
