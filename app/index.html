@@ -622,28 +622,80 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 الطقس والبحر
               </span>
             </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 18px 6px">
+            <div style="display:flex;flex-direction:column;gap:12px;padding:0 18px 6px">
+
               <!-- بطاقة الطقس -->
-              <div style="background:linear-gradient(135deg,#1d4ed8,#0ea5e9);border-radius:18px;padding:14px;color:#fff;position:relative;overflow:hidden;min-height:130px">
-                <div style="position:absolute;top:-14px;right:-14px;width:70px;height:70px;background:rgba(255,255,255,.08);border-radius:50%"></div>
-                <div style="font-size:11px;font-weight:700;opacity:.8;margin-bottom:6px">حالة الطقس</div>
-                <div style="font-size:36px;line-height:1" id="pwa-weather-icon">⏳</div>
-                <div style="font-size:26px;font-weight:900;margin:4px 0 2px" id="pwa-weather-temp">--°</div>
-                <div style="font-size:11px;opacity:.85;font-weight:600" id="pwa-weather-desc">جاري التحميل</div>
-                <div style="display:flex;gap:8px;margin-top:8px;font-size:10px;opacity:.75">
-                  <span id="pwa-weather-hum">💧 --%</span>
-                  <span id="pwa-weather-wind">💨 -- كم/س</span>
+              <div style="background:#fff;border-radius:20px;padding:18px;box-shadow:0 2px 16px rgba(0,0,0,.08);border:1px solid #f0fdf4">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+                  <div id="pwa-weather-icon-bg" style="width:46px;height:46px;background:#fef3c7;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .3s">
+                    <iconify-icon icon="lucide:sun" id="pwa-weather-header-icon" style="font-size:22px;color:#f59e0b;pointer-events:none"></iconify-icon>
+                  </div>
+                  <div style="flex:1;min-width:0">
+                    <div style="font-size:13px;font-weight:800;color:#1f2937">حالة الطقس</div>
+                    <div style="font-size:11px;color:#6b7280;margin-top:1px" id="pwa-weather-time-label">شطايبي — عنابة</div>
+                  </div>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between">
+                  <div style="display:flex;align-items:center;gap:14px">
+                    <span style="font-size:44px;line-height:1" id="pwa-weather-icon">☀️</span>
+                    <div>
+                      <div style="font-size:34px;font-weight:900;color:#111827;line-height:1" id="pwa-weather-temp">--°</div>
+                      <div style="font-size:12px;color:#6b7280;font-weight:600;margin-top:2px" id="pwa-weather-desc">جاري التحميل...</div>
+                    </div>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:7px;align-items:flex-start">
+                    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#4b5563">
+                      <iconify-icon icon="lucide:droplets" style="color:#60a5fa;font-size:14px;pointer-events:none"></iconify-icon>
+                      <span id="pwa-weather-hum">--%</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#4b5563">
+                      <iconify-icon icon="lucide:wind" style="color:#34d399;font-size:14px;pointer-events:none"></iconify-icon>
+                      <span id="pwa-weather-wind">-- كم/س</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#4b5563">
+                      <iconify-icon icon="lucide:thermometer" style="color:#f87171;font-size:14px;pointer-events:none"></iconify-icon>
+                      <span id="pwa-weather-max">--</span> / <span id="pwa-weather-min">--</span>
+                    </div>
+                  </div>
                 </div>
               </div>
+
               <!-- بطاقة البحر -->
-              <div style="background:linear-gradient(135deg,#065f46,#059669);border-radius:18px;padding:14px;color:#fff;position:relative;overflow:hidden;min-height:130px">
-                <div style="position:absolute;top:-14px;left:-14px;width:70px;height:70px;background:rgba(255,255,255,.08);border-radius:50%"></div>
-                <div style="font-size:11px;font-weight:700;opacity:.8;margin-bottom:6px">حالة البحر</div>
-                <div style="font-size:36px;line-height:1" id="pwa-sea-icon">⏳</div>
-                <div style="font-size:18px;font-weight:900;margin:4px 0 2px" id="pwa-sea-state">--</div>
-                <div style="font-size:11px;opacity:.85;font-weight:600;line-height:1.4" id="pwa-sea-desc">جاري التحميل</div>
-                <div style="margin-top:8px;font-size:10px;opacity:.75" id="pwa-sea-wave">🌊 -- م</div>
+              <div style="background:#fff;border-radius:20px;padding:18px;box-shadow:0 2px 16px rgba(0,0,0,.08);border:1px solid #eff6ff">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+                  <div style="width:46px;height:46px;background:#dbeafe;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                    <iconify-icon icon="lucide:waves" style="font-size:22px;color:#3b82f6;pointer-events:none"></iconify-icon>
+                  </div>
+                  <div style="flex:1;min-width:0">
+                    <div style="font-size:13px;font-weight:800;color:#1f2937">حالة البحر</div>
+                    <div style="font-size:11px;color:#6b7280;margin-top:1px">للصيادين والسياح</div>
+                  </div>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between">
+                  <div style="display:flex;align-items:center;gap:14px">
+                    <span style="font-size:44px;line-height:1" id="pwa-sea-icon">🌊</span>
+                    <div>
+                      <div style="font-size:24px;font-weight:900;color:#111827;line-height:1" id="pwa-sea-state">--</div>
+                      <div style="font-size:12px;color:#6b7280;font-weight:600;margin-top:2px" id="pwa-sea-desc">جاري التحميل...</div>
+                    </div>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:7px;align-items:flex-start">
+                    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#4b5563">
+                      <iconify-icon icon="lucide:wave-triangle" style="color:#60a5fa;font-size:14px;pointer-events:none"></iconify-icon>
+                      <span>ارتفاع: </span><span id="pwa-sea-wave">-- م</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#4b5563">
+                      <iconify-icon icon="lucide:thermometer" style="color:#2dd4bf;font-size:14px;pointer-events:none"></iconify-icon>
+                      <span>الماء: </span><span id="pwa-sea-water-temp">19°C</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#4b5563">
+                      <iconify-icon icon="lucide:compass" style="color:#818cf8;font-size:14px;pointer-events:none"></iconify-icon>
+                      <span id="pwa-sea-dir">--</span>
+                    </div>
+                  </div>
+                </div>
               </div>
+
             </div>
           </div>
 
@@ -1563,16 +1615,29 @@ var PWA_LAT=37.0850,PWA_LON=7.2550;
 
 async function fetchPWAWeather(){
   try{
-    var r=await fetch('https://api.open-meteo.com/v1/forecast?latitude='+PWA_LAT+'&longitude='+PWA_LON+'&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code,is_day&timezone=Africa%2FAlgiers&forecast_days=1');
-    var d=await r.json();var cu=d.current;
+    var r=await fetch('https://api.open-meteo.com/v1/forecast?latitude='+PWA_LAT+'&longitude='+PWA_LON+'&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code,is_day&daily=temperature_2m_max,temperature_2m_min&timezone=Africa%2FAlgiers&forecast_days=1');
+    var d=await r.json();var cu=d.current;var dl=d.daily;
     var isDay=cu.is_day===1;
-    var wm={0:{d:'☀️',n:'🌕',ar:'صافٍ'},1:{d:'🌤️',n:'🌙',ar:'غائم خفيف'},2:{d:'⛅',n:'🌥️',ar:'غائم جزئياً'},3:{d:'☁️',n:'☁️',ar:'غائم'},45:{d:'🌫️',n:'🌫️',ar:'ضبابي'},51:{d:'🌦️',n:'🌧️',ar:'رذاذ'},61:{d:'🌧️',n:'🌧️',ar:'ممطر'},80:{d:'🌦️',n:'🌧️',ar:'زخات'},95:{d:'⛈️',n:'⛈️',ar:'عاصفة'}};
+    var wm={0:{d:'☀️',n:'🌕',ar:'صافٍ'},1:{d:'🌤️',n:'🌙',ar:'غائم خفيف'},2:{d:'⛅',n:'🌥️',ar:'غائم جزئياً'},3:{d:'☁️',n:'☁️',ar:'غائم'},45:{d:'🌫️',n:'🌫️',ar:'ضبابي'},48:{d:'🌫️',n:'🌫️',ar:'ضبابي'},51:{d:'🌦️',n:'🌧️',ar:'رذاذ'},53:{d:'🌦️',n:'🌧️',ar:'رذاذ'},61:{d:'🌧️',n:'🌧️',ar:'ممطر'},63:{d:'🌧️',n:'🌧️',ar:'مطر'},65:{d:'🌧️',n:'🌧️',ar:'مطر غزير'},80:{d:'🌦️',n:'🌧️',ar:'زخات'},81:{d:'🌧️',n:'🌧️',ar:'زخات'},95:{d:'⛈️',n:'⛈️',ar:'عاصفة'}};
     var w=wm[cu.weather_code]||{d:'🌡️',n:'🌙',ar:'متغير'};
+    // تحديث أيقونة الهيدر حسب النهار/الليل
+    var hdrIcon=document.getElementById('pwa-weather-header-icon');
+    var hdrBg=document.getElementById('pwa-weather-icon-bg');
+    if(hdrIcon&&hdrBg){
+      if(isDay){hdrIcon.setAttribute('icon','lucide:sun');hdrIcon.style.color='#f59e0b';hdrBg.style.background='#fef3c7';}
+      else{hdrIcon.setAttribute('icon','lucide:moon');hdrIcon.style.color='#818cf8';hdrBg.style.background='#ede9fe';}
+    }
     document.getElementById('pwa-weather-icon').textContent=isDay?w.d:w.n;
     document.getElementById('pwa-weather-temp').textContent=Math.round(cu.temperature_2m)+'°';
     document.getElementById('pwa-weather-desc').textContent=w.ar;
-    document.getElementById('pwa-weather-hum').textContent='💧 '+cu.relative_humidity_2m+'%';
-    document.getElementById('pwa-weather-wind').textContent='💨 '+Math.round(cu.wind_speed_10m)+' كم/س';
+    document.getElementById('pwa-weather-hum').textContent=cu.relative_humidity_2m+'%';
+    document.getElementById('pwa-weather-wind').textContent=Math.round(cu.wind_speed_10m)+' كم/س';
+    if(dl){
+      document.getElementById('pwa-weather-max').textContent=Math.round(dl.temperature_2m_max[0])+'°';
+      document.getElementById('pwa-weather-min').textContent=Math.round(dl.temperature_2m_min[0])+'°';
+    }
+    var tlEl=document.getElementById('pwa-weather-time-label');
+    if(tlEl&&dl)tlEl.textContent=(isDay?'الليل: ':'غداً: ')+(isDay?Math.round(dl.temperature_2m_min[0]):Math.round(dl.temperature_2m_max[0]))+'°C';
   }catch(e){var el=document.getElementById('pwa-weather-desc');if(el)el.textContent='تعذر التحميل';}
 }
 
@@ -1582,6 +1647,8 @@ async function fetchPWASea(){
     var d=await r.json();var cu=d.current;
     if(!cu||cu.wave_height==null){document.getElementById('pwa-sea-state').textContent='--';return;}
     var v=parseFloat(cu.wave_height.toFixed(1));
+    var dirs=['شمال','شمال شرق','شرق','جنوب شرق','جنوب','جنوب غرب','غرب','شمال غرب'];
+    var dirLabel=cu.wave_direction!=null?dirs[Math.round(cu.wave_direction/45)%8]:'--';
     var st,si,sd;
     if(v<0.5){st='هادئ';si='🌊';sd='مناسب للسباحة';}
     else if(v<1.0){st='هادئ نسبياً';si='🌅';sd='مناسب للسباحة';}
@@ -1591,7 +1658,8 @@ async function fetchPWASea(){
     document.getElementById('pwa-sea-icon').textContent=si;
     document.getElementById('pwa-sea-state').textContent=st;
     document.getElementById('pwa-sea-desc').textContent=sd;
-    document.getElementById('pwa-sea-wave').textContent='🌊 '+v+' م';
+    document.getElementById('pwa-sea-wave').textContent=v+' م';
+    document.getElementById('pwa-sea-dir').textContent=dirLabel;
   }catch(e){var el=document.getElementById('pwa-sea-desc');if(el)el.textContent='تعذر التحميل';}
 }
 
