@@ -984,8 +984,19 @@ function applyHeaderHeight(){
   if(spacer) spacer.style.height = _headerH+'px';
 }
 
-function onScrollAreaScroll(){
-  // No scroll behavior needed
+var lastScrollY=0;
+var headerHidden=false;
+var scrollThreshold=5;
+function onScrollAreaScroll(e){
+  var scrollEl=e.target;if(!scrollEl)return;
+  var currentScrollY=scrollEl.scrollTop;
+  var header=document.getElementById('shared-header');if(!header)return;
+  var scrollDelta=currentScrollY-lastScrollY;
+  if(Math.abs(scrollDelta)<scrollThreshold)return;
+  var shouldHide=scrollDelta>0;
+  if(shouldHide&&!headerHidden){header.classList.add('hide-full');headerHidden=true;}
+  else if(!shouldHide&&headerHidden){header.classList.remove('hide-full');headerHidden=false;}
+  lastScrollY=currentScrollY;
 }
 
 function resetHeaderState(){
