@@ -15,7 +15,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
-
 /* ══════════════════════════════════════════
    DESIGN TOKENS
 ══════════════════════════════════════════ */
@@ -53,11 +52,8 @@
   --font-main:'Cairo','Tajawal',sans-serif;
   --text-xs:10.5px;--text-sm:12px;--text-base:14px;--text-md:15px;
   --text-lg:17px;--text-xl:20px;--text-2xl:24px;
-
-  /* Skeleton */
   --sk-base:#e2e8f0;--sk-shine:#f8fafc;
 }
-
 /* ══ RESET ══ */
 *,*::before,*::after{
   margin:0;padding:0;box-sizing:border-box;
@@ -84,7 +80,6 @@ img{
   -webkit-user-drag:none;display:block;
 }
 img.clickable{pointer-events:auto !important;cursor:pointer;}
-
 /* ══════════════════════════════════════════
    SKELETON LOADING
 ══════════════════════════════════════════ */
@@ -93,16 +88,11 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   100%{background-position:-200% 0;}
 }
 .sk{
-  background:linear-gradient(90deg,
-    var(--sk-base) 25%,
-    var(--sk-shine) 50%,
-    var(--sk-base) 75%);
+  background:linear-gradient(90deg,var(--sk-base) 25%,var(--sk-shine) 50%,var(--sk-base) 75%);
   background-size:200% 100%;
   animation:sk-shimmer 1.4s ease infinite;
   border-radius:var(--r-xs);
 }
-
-/* Skeleton بطاقة أخبار أفقية */
 .sk-news-card{
   min-width:min(248px,72vw);max-width:288px;
   background:var(--card);border-radius:var(--r-lg);
@@ -121,49 +111,35 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   padding:10px 14px;border-top:1px solid var(--border-light);
 }
 .sk-btn{height:30px;width:90px;border-radius:var(--r-full);}
-
-/* Skeleton بطاقة مكان */
 .sk-place-card{
   min-width:162px;max-width:162px;height:218px;
   border-radius:var(--r-lg);overflow:hidden;
   box-shadow:var(--elev-2);flex-shrink:0;
 }
-
-/* Skeleton بطاقة مرفق (fac) */
 .sk-fac-card{
   background:var(--card);border-radius:var(--r-md);
-  border:1px solid rgba(0,0,0,.04);
-  box-shadow:var(--elev-2);
-  margin:0 16px 12px;
-  display:flex;align-items:center;
+  border:1px solid rgba(0,0,0,.04);box-shadow:var(--elev-2);
+  margin:0 16px 12px;display:flex;align-items:center;
   min-height:84px;overflow:hidden;
 }
 .sk-fac-img{width:84px;height:84px;flex-shrink:0;border-radius:0;}
 .sk-fac-body{padding:14px;flex:1;}
-
-/* Skeleton بطاقة إعلان */
 .sk-announce-card{
   background:var(--card);border-radius:var(--r-lg);
-  border:1px solid rgba(0,0,0,.04);
-  box-shadow:var(--elev-2);
+  border:1px solid rgba(0,0,0,.04);box-shadow:var(--elev-2);
   margin:0 16px 14px;overflow:hidden;
 }
 .sk-announce-img{width:100%;height:180px;}
 .sk-announce-body{padding:14px 16px;}
-
-/* Skeleton أرشيف */
 .sk-archive-card{
   background:var(--card);border-radius:var(--r-md);
-  border:1px solid rgba(0,0,0,.04);
-  box-shadow:var(--elev-2);overflow:hidden;
+  border:1px solid rgba(0,0,0,.04);box-shadow:var(--elev-2);overflow:hidden;
 }
 .sk-archive-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);}
 .sk-archive-cell{aspect-ratio:1;}
 .sk-archive-title{height:14px;margin:10px 14px;}
-
 /* ══ APP SHELL ══ */
 #app{display:flex;flex-direction:column;height:100%;height:100dvh;overflow:hidden;position:relative;}
-
 /* ══════════════════════════════════════════
    HEADER
 ══════════════════════════════════════════ */
@@ -175,7 +151,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 #shared-header::before{
   content:'';position:absolute;inset:0;
   background:radial-gradient(ellipse at 80% 0%,rgba(255,255,255,.09) 0%,transparent 55%),
-             radial-gradient(ellipse at 10% 100%,rgba(255,255,255,.04) 0%,transparent 50%);
+              radial-gradient(ellipse at 10% 100%,rgba(255,255,255,.04) 0%,transparent 50%);
   pointer-events:none;
 }
 #shared-header::after{
@@ -201,7 +177,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .header-text{flex:1;}
 .header-text h1{font-size:var(--text-lg);font-weight:900;color:#fff;letter-spacing:-.2px;line-height:1.2;}
 .header-text p{font-size:11.5px;color:rgba(255,255,255,.72);font-weight:600;margin-top:2px;letter-spacing:.02em;}
-
 /* ══ FLOATING MENU BTN ══ */
 .floating-menu-btn{
   position:fixed;top:calc(var(--safe-t) + 14px);left:18px;z-index:99;
@@ -209,8 +184,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   width:40px;height:40px;border-radius:var(--r-sm);
   background:rgba(255,255,255,.14);border:1.5px solid rgba(255,255,255,.25);
   cursor:pointer;flex-shrink:0;
-  transition:background var(--dur-fast),transform var(--dur-fast),
-             opacity .18s ease,translate .18s ease;
+  transition:background var(--dur-fast),transform var(--dur-fast),opacity .18s ease,translate .18s ease;
   translate:0 0;opacity:1;
   backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
 }
@@ -219,9 +193,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .floating-menu-btn.map-active{opacity:0 !important;pointer-events:none !important;translate:0 -130% !important;}
 .hamburger-lines{display:flex;flex-direction:column;gap:4px;align-items:center;justify-content:center;width:17px;height:14px;pointer-events:none;}
 .hamburger-lines span{display:block;height:2px;background:#fff;border-radius:99px;pointer-events:none;width:17px;}
-
 /* ══════════════════════════════════════════
-   SCREENS — scale + opacity transition
+   SCREENS
 ══════════════════════════════════════════ */
 #screen-container{
   flex:1;min-height:0;position:relative;overflow:hidden;
@@ -236,9 +209,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .content-block{background:var(--surface);min-height:100%;position:relative;padding-bottom:20px;}
 #screen-map .scroll-area{overflow:hidden;padding-top:0 !important;}
 #app-map{position:absolute;inset:0;width:100%;height:100%;}
-
 /* ══════════════════════════════════════════
-   BOTTOM NAV — Material 3
+   BOTTOM NAV
 ══════════════════════════════════════════ */
 #bottom-nav{
   flex-shrink:0;height:calc(var(--nav-h) + var(--safe-b));padding-bottom:var(--safe-b);
@@ -267,7 +239,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .nav-btn.active .icon-off{opacity:0;}
 .nav-btn.active{color:var(--green);}
 .nav-btn span{pointer-events:none;font-size:10.5px;font-weight:700;letter-spacing:.01em;line-height:1;}
-
 /* ══════════════════════════════════════════
    SECTIONS
 ══════════════════════════════════════════ */
@@ -291,12 +262,10 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   flex-shrink:0;
 }
 .see-all-arrow-btn:active{opacity:.5;}
-
-/* ══ SEG BAR — يتحرك مع المحتوى (بدون sticky) ══ */
+/* ══ SEG BAR ══ */
 .seg-bar-wrap{
   background:var(--surface);
   border-bottom:1px solid var(--border-light);
-  /* لا يوجد position:sticky هنا */
 }
 .seg-bar{
   display:flex;gap:8px;overflow-x:auto;
@@ -319,13 +288,11 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .seg-btn.active{background:var(--green);color:#fff;border-color:var(--green);box-shadow:0 4px 14px rgba(5,150,105,.32);}
 .seg-btn:active:not(.active){opacity:.62;transform:scale(.95);}
 .seg-btn:active.active{transform:scale(.96);}
-
 /* ══ H-SCROLL ══ */
 .h-scroll{
   display:flex;gap:14px;overflow-x:auto;padding:4px 18px 18px;
   -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;
 }
-
 /* ══ NEWS CARDS ══ */
 .news-card{
   min-width:min(248px,72vw);max-width:288px;
@@ -347,7 +314,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .read-more{font-size:12px;font-weight:800;color:var(--green);border:none;background:var(--green-xl);cursor:pointer;font-family:var(--font-main);touch-action:manipulation;display:flex;align-items:center;gap:4px;padding:6px 13px;border-radius:var(--r-full);min-height:34px;transition:background var(--dur-fast),transform var(--dur-fast);}
 .read-more:active{background:var(--green-l);transform:scale(.93);}
 .read-more iconify-icon{font-size:14px;pointer-events:none;flex-shrink:0;}
-
 /* ══ PLACE CARDS ══ */
 .place-card{min-width:162px;max-width:162px;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--elev-3);flex-shrink:0;cursor:pointer;position:relative;height:218px;touch-action:manipulation;transition:transform var(--dur-mid) var(--ease-std),opacity var(--dur-mid) var(--ease-std);}
 .place-card:active{transform:scale(.94);opacity:.82;}
@@ -356,7 +322,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .place-card-body{position:absolute;bottom:0;left:0;right:0;padding:10px 12px;pointer-events:none;}
 .place-card-name{font-size:12.5px;font-weight:900;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.55);line-height:1.35;}
 .place-card-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
-
 /* ══ ANNOUNCE CARDS ══ */
 .announce-card{background:var(--card);border-radius:var(--r-lg);border:1px solid rgba(0,0,0,.04);overflow:hidden;box-shadow:var(--elev-2);cursor:pointer;margin:0 16px 14px;touch-action:manipulation;transition:transform var(--dur-mid) var(--ease-std),opacity var(--dur-mid) var(--ease-std);}
 .announce-card:active{transform:scale(.975);opacity:.82;}
@@ -364,13 +329,11 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .announce-img-wrap img{width:100%;height:100%;object-fit:cover;pointer-events:none;}
 .announce-body{padding:14px 16px 16px;}
 .announce-footer{display:flex;justify-content:space-between;align-items:center;padding-top:11px;border-top:1px solid var(--border-light);margin-top:10px;min-height:46px;}
-
 /* ══ POSTER CARDS ══ */
 .poster-card{border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--elev-3);cursor:pointer;margin:0 16px 14px;touch-action:manipulation;transition:transform var(--dur-mid) var(--ease-std),opacity var(--dur-mid) var(--ease-std);position:relative;pointer-events:auto;line-height:0;}
 .poster-card:active{transform:scale(.975);opacity:.82;}
 .poster-card img{width:100%;display:block;object-fit:cover;pointer-events:none;}
 .poster-card-ph{width:100%;height:240px;display:flex;align-items:center;justify-content:center;line-height:normal;}
-
 /* ══ FAC CARDS ══ */
 .fac-card{background:var(--card);border-radius:var(--r-md);border:1px solid rgba(0,0,0,.04);overflow:hidden;box-shadow:var(--elev-2);cursor:pointer;margin:0 16px 12px;display:flex;align-items:center;touch-action:manipulation;transition:transform var(--dur-mid) var(--ease-std),opacity var(--dur-mid) var(--ease-std);min-height:84px;}
 .fac-card:active{transform:scale(.97);opacity:.82;}
@@ -380,7 +343,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .fac-card-badge{font-size:10px;font-weight:800;padding:2px 9px;border-radius:var(--r-full);display:inline-block;margin-bottom:5px;}
 .fac-card-name{font-size:13.5px;font-weight:800;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:-.1px;}
 .fac-card-desc{font-size:11.5px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:3px;line-height:1.5;}
-
 /* ══ MORE ITEMS ══ */
 .more-item{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid var(--border-light);cursor:pointer;touch-action:manipulation;transition:background var(--dur-fast);min-height:60px;}
 .more-item:active{background:var(--surface);}
@@ -388,7 +350,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .more-icon{width:44px;height:44px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .more-item-title{font-size:14px;font-weight:800;color:var(--text);letter-spacing:-.1px;}
 .more-item-sub{font-size:11.5px;color:var(--muted);margin-top:2px;line-height:1.4;}
-
 /* ══ MODALS ══ */
 .modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.52);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity var(--dur-mid) var(--ease-std);}
 .modal-overlay.open{opacity:1;pointer-events:auto;}
@@ -406,49 +367,35 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .album-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
 .album-grid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:var(--r-xs);cursor:pointer;pointer-events:auto !important;touch-action:manipulation;display:block;transition:opacity var(--dur-fast);}
 .album-grid img:active{opacity:.75;}
-
 /* ══ BOTTOM SHEET المزيد ══ */
 #more-sheet-overlay{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.50);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;visibility:hidden;transition:opacity .28s var(--ease-std),visibility 0s linear .28s;}
 #more-sheet-overlay.open{opacity:1;visibility:visible;transition:opacity .28s var(--ease-std),visibility 0s linear 0s;}
 #more-sheet{position:absolute;bottom:0;left:0;right:0;background:var(--card);border-radius:var(--r-xl) var(--r-xl) 0 0;padding-bottom:calc(var(--safe-b) + 24px);transform:translateY(100%);transition:transform var(--dur-slow) var(--ease-spring);overflow-y:auto;max-height:92dvh;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;box-shadow:var(--elev-modal);}
 #more-sheet-overlay.open #more-sheet{transform:translateY(0);}
 .more-sheet-drag{width:40px;height:4px;background:var(--muted-3);border-radius:var(--r-full);margin:14px auto 10px;}
-
-/* ══════════════════════════════════════════
-   بطاقة الرئيس في الشيت
-══════════════════════════════════════════ */
+/* ══ بطاقة الرئيس في الشيت ══ */
 .mayor-sheet-card{
   margin:16px 16px 4px;
   background:linear-gradient(135deg,#042f1e 0%,var(--green-d) 48%,#059c70 100%);
-  border-radius:var(--r-lg);
-  padding:16px;
+  border-radius:var(--r-lg);padding:16px;
   display:flex;align-items:center;gap:14px;
   box-shadow:0 8px 28px rgba(5,150,105,.26);
-  position:relative;overflow:hidden;
-  cursor:default;touch-action:manipulation;
+  position:relative;overflow:hidden;cursor:default;touch-action:manipulation;
 }
 .mayor-sheet-card::before{content:'';position:absolute;top:-20px;left:-20px;width:100px;height:100px;background:rgba(255,255,255,.04);border-radius:50%;pointer-events:none;}
 .mayor-sheet-card::after{content:'';position:absolute;bottom:-30px;right:10px;width:120px;height:120px;background:rgba(255,255,255,.03);border-radius:50%;pointer-events:none;}
-
-/* كبسولة "السابقون" تحل محل السهم */
 .mayor-prev-pill{
-  position:relative;z-index:2;
-  flex-shrink:0;
+  position:relative;z-index:2;flex-shrink:0;
   display:flex;align-items:center;gap:5px;
-  background:rgba(255,255,255,.15);
-  border:1.5px solid rgba(255,255,255,.28);
-  border-radius:var(--r-full);
-  padding:6px 10px;
+  background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.28);
+  border-radius:var(--r-full);padding:6px 10px;
   cursor:pointer;touch-action:manipulation;
   transition:background var(--dur-fast),transform var(--dur-fast);
-  font-family:var(--font-main);
-  font-size:11px;font-weight:800;
-  color:rgba(255,255,255,.95);
-  white-space:nowrap;
+  font-family:var(--font-main);font-size:11px;font-weight:800;
+  color:rgba(255,255,255,.95);white-space:nowrap;
 }
 .mayor-prev-pill:active{background:rgba(255,255,255,.28);transform:scale(.93);}
 .mayor-prev-pill iconify-icon{font-size:13px;pointer-events:none;color:rgba(255,255,255,.85);}
-
 /* ══ بطاقة الرئيس في الرئيسية ══ */
 .mayor-home-card{margin:4px 16px 8px;background:linear-gradient(135deg,#042f1e 0%,var(--green-d) 48%,#059c70 100%);border-radius:var(--r-lg);padding:18px 18px 0;box-shadow:0 8px 28px rgba(5,150,105,.28),0 2px 8px rgba(5,150,105,.15);position:relative;overflow:hidden;touch-action:manipulation;transition:transform var(--dur-mid),opacity var(--dur-mid);}
 .mayor-home-card:active{transform:scale(.975);opacity:.88;}
@@ -459,7 +406,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .mayor-prev-btn:active{background:rgba(0,0,0,.30);}
 .mayor-prev-btn-inner{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:var(--r-full);padding:7px 22px;font-size:13px;font-weight:800;color:rgba(255,255,255,.92);font-family:var(--font-main);pointer-events:none;letter-spacing:-.1px;}
 .mayor-prev-btn-inner iconify-icon{font-size:16px;pointer-events:none;color:rgba(255,255,255,.8);}
-
 /* ══ ARCHIVE CARDS ══ */
 #h-archive{scroll-snap-type:x mandatory;padding:4px 18px 22px;}
 .archive-home-card{flex-shrink:0;width:calc(100vw - 64px);max-width:340px;scroll-snap-align:center;background:var(--card);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--elev-3);border:1px solid rgba(0,0,0,.04);cursor:pointer;touch-action:manipulation;transition:transform var(--dur-mid) var(--ease-std),opacity var(--dur-mid) var(--ease-std);}
@@ -482,7 +428,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .archive-card-title{font-size:12px;font-weight:700;padding:10px 14px;color:var(--text);border-top:1px solid var(--border-light);}
 .archive-single{cursor:pointer;}
 .archive-single img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;pointer-events:none;}
-
 /* ══ STATES ══ */
 .loading{display:flex;align-items:center;justify-content:center;padding:48px 20px;gap:10px;color:var(--muted);font-size:13px;font-weight:600;}
 .loading iconify-icon{font-size:28px;animation:spin .8s linear infinite;}
@@ -492,11 +437,9 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .empty p{font-size:13px;font-weight:600;color:var(--muted-2);}
 .fade-in{animation:fadeUp .22s var(--ease-enter) both;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
-
 /* ══ MISC ══ */
 .leaflet-control-attribution{display:none !important;}
 .news-badge{font-size:10px;font-weight:800;padding:2px 9px;border-radius:var(--r-full);display:inline-block;}
-
 /* ══ MAP CONTROLS ══ */
 #map-controls-right{position:absolute;top:16px;right:14px;z-index:1001;pointer-events:auto;}
 #map-controls-left{position:absolute;top:16px;left:14px;z-index:1001;pointer-events:auto;}
@@ -540,7 +483,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .map-popup-action iconify-icon{font-size:14px;pointer-events:none;}
 .map-popup-close{position:absolute;top:10px;left:12px;width:30px;height:30px;border-radius:50%;background:rgba(0,0,0,.07);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;color:var(--muted-2);pointer-events:auto;transition:background var(--dur-fast),color var(--dur-fast);z-index:3;}
 .map-popup-close:active{background:rgba(0,0,0,.16);color:var(--text-2);}
-
 /* ══ LIGHTBOX ══ */
 #lightbox{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.97);display:none;align-items:center;justify-content:center;padding:20px;overscroll-behavior:none;}
 #lightbox.open{display:flex;}
@@ -548,6 +490,38 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 #lb-close{position:absolute;top:calc(var(--safe-t) + 14px);left:14px;width:44px;height:44px;background:rgba(255,255,255,.18);border:none;border-radius:50%;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);touch-action:manipulation;pointer-events:auto;z-index:10;transition:background var(--dur-fast);}
 #lb-close:active{background:rgba(255,255,255,.32);}
 
+/* ══ WEATHER CARDS ══ */
+.weather-sea-section{padding:0 16px 6px;}
+.weather-card,.sea-card{
+  background:#fff;
+  border-radius:20px;
+  padding:18px;
+  box-shadow:0 2px 16px rgba(0,0,0,.08);
+  margin-bottom:12px;
+  /* مهم: منع التداخل مع السحب */
+  touch-action:pan-y;
+  position:relative;
+  z-index:0;
+}
+.weather-card{border:1px solid #f0fdf4;}
+.sea-card{border:1px solid #eff6ff;}
+.wcard-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.wcard-icon-wrap{
+  width:46px;height:46px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:background .3s;
+}
+.wcard-title{font-size:13px;font-weight:800;color:#1f2937;}
+.wcard-subtitle{font-size:11px;color:#6b7280;margin-top:1px;}
+.wcard-main{display:flex;align-items:center;justify-content:space-between;}
+.wcard-primary{display:flex;align-items:center;gap:14px;}
+.wcard-emoji{font-size:44px;line-height:1;}
+.wcard-temp{font-size:34px;font-weight:900;color:#111827;line-height:1;}
+.wcard-sea-state{font-size:24px;font-weight:900;color:#111827;line-height:1;}
+.wcard-desc{font-size:12px;color:#6b7280;font-weight:600;margin-top:2px;}
+.wcard-stats{display:flex;flex-direction:column;gap:7px;align-items:flex-start;}
+.wcard-stat{display:flex;align-items:center;gap:6px;font-size:12px;color:#4b5563;}
+.wcard-stat iconify-icon{font-size:14px;pointer-events:none;flex-shrink:0;}
 </style>
 </head>
 <body>
@@ -614,7 +588,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </div>
           </div>
 
-          <!-- أحوال الطقس والبحر -->
+          <!-- أحوال الطقس والبحر — بدون inline styles معقدة -->
           <div class="section" style="padding-bottom:4px">
             <div class="section-header">
               <span class="section-title">
@@ -622,38 +596,38 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 الطقس والبحر
               </span>
             </div>
-            <div style="display:flex;flex-direction:column;gap:12px;padding:0 18px 6px">
+            <div class="weather-sea-section">
 
               <!-- بطاقة الطقس -->
-              <div style="background:#fff;border-radius:20px;padding:18px;box-shadow:0 2px 16px rgba(0,0,0,.08);border:1px solid #f0fdf4">
-                <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-                  <div id="pwa-weather-icon-bg" style="width:46px;height:46px;background:#fef3c7;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .3s">
+              <div class="weather-card">
+                <div class="wcard-header">
+                  <div class="wcard-icon-wrap" id="pwa-weather-icon-bg" style="background:#fef3c7">
                     <iconify-icon icon="lucide:sun" id="pwa-weather-header-icon" style="font-size:22px;color:#f59e0b;pointer-events:none"></iconify-icon>
                   </div>
-                  <div style="flex:1;min-width:0">
-                    <div style="font-size:13px;font-weight:800;color:#1f2937">حالة الطقس</div>
-                    <div style="font-size:11px;color:#6b7280;margin-top:1px" id="pwa-weather-time-label">شطايبي — عنابة</div>
+                  <div>
+                    <div class="wcard-title">حالة الطقس</div>
+                    <div class="wcard-subtitle" id="pwa-weather-time-label">شطايبي — عنابة</div>
                   </div>
                 </div>
-                <div style="display:flex;align-items:center;justify-content:space-between">
-                  <div style="display:flex;align-items:center;gap:14px">
-                    <span style="font-size:44px;line-height:1" id="pwa-weather-icon">☀️</span>
+                <div class="wcard-main">
+                  <div class="wcard-primary">
+                    <span class="wcard-emoji" id="pwa-weather-icon">☀️</span>
                     <div>
-                      <div style="font-size:34px;font-weight:900;color:#111827;line-height:1" id="pwa-weather-temp">--°</div>
-                      <div style="font-size:12px;color:#6b7280;font-weight:600;margin-top:2px" id="pwa-weather-desc">جاري التحميل...</div>
+                      <div class="wcard-temp" id="pwa-weather-temp">--°</div>
+                      <div class="wcard-desc" id="pwa-weather-desc">جاري التحميل...</div>
                     </div>
                   </div>
-                  <div style="display:flex;flex-direction:column;gap:7px;align-items:flex-start">
-                    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#4b5563">
-                      <iconify-icon icon="lucide:droplets" style="color:#60a5fa;font-size:14px;pointer-events:none"></iconify-icon>
+                  <div class="wcard-stats">
+                    <div class="wcard-stat">
+                      <iconify-icon icon="lucide:droplets" style="color:#60a5fa"></iconify-icon>
                       <span id="pwa-weather-hum">--%</span>
                     </div>
-                    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#4b5563">
-                      <iconify-icon icon="lucide:wind" style="color:#34d399;font-size:14px;pointer-events:none"></iconify-icon>
+                    <div class="wcard-stat">
+                      <iconify-icon icon="lucide:wind" style="color:#34d399"></iconify-icon>
                       <span id="pwa-weather-wind">-- كم/س</span>
                     </div>
-                    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#4b5563">
-                      <iconify-icon icon="lucide:thermometer" style="color:#f87171;font-size:14px;pointer-events:none"></iconify-icon>
+                    <div class="wcard-stat">
+                      <iconify-icon icon="lucide:thermometer" style="color:#f87171"></iconify-icon>
                       <span id="pwa-weather-max">--</span> / <span id="pwa-weather-min">--</span>
                     </div>
                   </div>
@@ -661,35 +635,35 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               </div>
 
               <!-- بطاقة البحر -->
-              <div style="background:#fff;border-radius:20px;padding:18px;box-shadow:0 2px 16px rgba(0,0,0,.08);border:1px solid #eff6ff">
-                <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-                  <div style="width:46px;height:46px;background:#dbeafe;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <div class="sea-card">
+                <div class="wcard-header">
+                  <div class="wcard-icon-wrap" style="background:#dbeafe">
                     <iconify-icon icon="lucide:waves" style="font-size:22px;color:#3b82f6;pointer-events:none"></iconify-icon>
                   </div>
-                  <div style="flex:1;min-width:0">
-                    <div style="font-size:13px;font-weight:800;color:#1f2937">حالة البحر</div>
-                    <div style="font-size:11px;color:#6b7280;margin-top:1px">للصيادين والسياح</div>
+                  <div>
+                    <div class="wcard-title">حالة البحر</div>
+                    <div class="wcard-subtitle">للصيادين والسياح</div>
                   </div>
                 </div>
-                <div style="display:flex;align-items:center;justify-content:space-between">
-                  <div style="display:flex;align-items:center;gap:14px">
-                    <span style="font-size:44px;line-height:1" id="pwa-sea-icon">🌊</span>
+                <div class="wcard-main">
+                  <div class="wcard-primary">
+                    <span class="wcard-emoji" id="pwa-sea-icon">🌊</span>
                     <div>
-                      <div style="font-size:24px;font-weight:900;color:#111827;line-height:1" id="pwa-sea-state">--</div>
-                      <div style="font-size:12px;color:#6b7280;font-weight:600;margin-top:2px" id="pwa-sea-desc">جاري التحميل...</div>
+                      <div class="wcard-sea-state" id="pwa-sea-state">--</div>
+                      <div class="wcard-desc" id="pwa-sea-desc">جاري التحميل...</div>
                     </div>
                   </div>
-                  <div style="display:flex;flex-direction:column;gap:7px;align-items:flex-start">
-                    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#4b5563">
-                      <iconify-icon icon="lucide:wave-triangle" style="color:#60a5fa;font-size:14px;pointer-events:none"></iconify-icon>
+                  <div class="wcard-stats">
+                    <div class="wcard-stat">
+                      <iconify-icon icon="lucide:wave-triangle" style="color:#60a5fa"></iconify-icon>
                       <span>ارتفاع: </span><span id="pwa-sea-wave">-- م</span>
                     </div>
-                    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#4b5563">
-                      <iconify-icon icon="lucide:thermometer" style="color:#2dd4bf;font-size:14px;pointer-events:none"></iconify-icon>
+                    <div class="wcard-stat">
+                      <iconify-icon icon="lucide:thermometer" style="color:#2dd4bf"></iconify-icon>
                       <span>الماء: </span><span id="pwa-sea-water-temp">19°C</span>
                     </div>
-                    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#4b5563">
-                      <iconify-icon icon="lucide:compass" style="color:#818cf8;font-size:14px;pointer-events:none"></iconify-icon>
+                    <div class="wcard-stat">
+                      <iconify-icon icon="lucide:compass" style="color:#818cf8"></iconify-icon>
                       <span id="pwa-sea-dir">--</span>
                     </div>
                   </div>
@@ -739,7 +713,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     <div class="screen hidden" id="screen-news">
       <div class="scroll-area" id="scroll-news">
         <div class="content-block">
-          <!-- seg-bar بدون sticky يتحرك مع المحتوى -->
           <div class="seg-bar-wrap">
             <div class="seg-bar">
               <button class="seg-btn active" data-cat="official" id="news-btn-official">
@@ -767,7 +740,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     <div class="screen hidden" id="screen-guide">
       <div class="scroll-area" id="scroll-guide">
         <div class="content-block">
-          <!-- seg-bar بدون sticky -->
           <div class="seg-bar-wrap">
             <div class="seg-bar" id="guide-seg-bar">
               <button class="seg-btn active" id="btn-admin-branches" data-guide-cat="admin-branches">
@@ -804,7 +776,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     <div class="screen hidden" id="screen-archive">
       <div class="scroll-area" id="scroll-archive">
         <div class="content-block" style="padding-top:12px">
-          <!-- seg-bar بدون sticky -->
           <div class="seg-bar-wrap">
             <div class="seg-bar">
               <button class="seg-btn active" id="arch-tab-compare">
@@ -883,35 +854,35 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     <button class="nav-btn active" id="nav-home">
       <div class="nav-icon-wrap">
         <iconify-icon class="icon-off" icon="ph:house" style="font-size:24px"></iconify-icon>
-        <iconify-icon class="icon-on"  icon="ph:house-fill" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-on" icon="ph:house-fill" style="font-size:24px"></iconify-icon>
       </div>
       <span>الرئيسية</span>
     </button>
     <button class="nav-btn" id="nav-news">
       <div class="nav-icon-wrap">
         <iconify-icon class="icon-off" icon="ph:newspaper" style="font-size:24px"></iconify-icon>
-        <iconify-icon class="icon-on"  icon="ph:newspaper-fill" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-on" icon="ph:newspaper-fill" style="font-size:24px"></iconify-icon>
       </div>
       <span>الأخبار</span>
     </button>
     <button class="nav-btn" id="nav-guide">
       <div class="nav-icon-wrap">
         <iconify-icon class="icon-off" icon="ph:map-pin" style="font-size:24px"></iconify-icon>
-        <iconify-icon class="icon-on"  icon="ph:map-pin-fill" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-on" icon="ph:map-pin-fill" style="font-size:24px"></iconify-icon>
       </div>
       <span>الدليل</span>
     </button>
     <button class="nav-btn" id="nav-archive">
       <div class="nav-icon-wrap">
         <iconify-icon class="icon-off" icon="ph:scroll" style="font-size:24px"></iconify-icon>
-        <iconify-icon class="icon-on"  icon="ph:scroll-fill" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-on" icon="ph:scroll-fill" style="font-size:24px"></iconify-icon>
       </div>
       <span>الأرشيف</span>
     </button>
     <button class="nav-btn" id="nav-map">
       <div class="nav-icon-wrap">
         <iconify-icon class="icon-off" icon="ph:map-trifold" style="font-size:24px"></iconify-icon>
-        <iconify-icon class="icon-on"  icon="ph:map-trifold-fill" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-on" icon="ph:map-trifold-fill" style="font-size:24px"></iconify-icon>
       </div>
       <span>الخريطة</span>
     </button>
@@ -923,47 +894,36 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 <div id="more-sheet-overlay">
   <div id="more-sheet">
     <div class="more-sheet-drag"></div>
-
-    <!-- بطاقة الرئيس: كبسولة "السابقون" بدلاً من السهم، بدون زر منفصل -->
     <div class="mayor-sheet-card" id="ms-mayor-card">
-      <!-- صورة الرئيس -->
       <div id="ms-mayor-photo-wrap"
         style="width:58px;height:58px;border-radius:50%;overflow:hidden;flex-shrink:0;
-               border:2.5px solid rgba(255,255,255,.3);
-               box-shadow:0 4px 12px rgba(0,0,0,.2);
-               background:rgba(255,255,255,.1);
-               display:flex;align-items:center;justify-content:center;
-               position:relative;z-index:1;">
+               border:2.5px solid rgba(255,255,255,.3);box-shadow:0 4px 12px rgba(0,0,0,.2);
+               background:rgba(255,255,255,.1);display:flex;align-items:center;
+               justify-content:center;position:relative;z-index:1;">
         <iconify-icon id="ms-mayor-icon" icon="lucide:user"
           style="font-size:26px;color:rgba(255,255,255,.5);pointer-events:none"></iconify-icon>
         <img id="ms-mayor-photo" src="" alt=""
           style="display:none;width:100%;height:100%;object-fit:cover;">
       </div>
-      <!-- معلومات الرئيس -->
       <div style="flex:1;min-width:0;position:relative;z-index:1;overflow:hidden;">
         <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.55);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
           رئيس المجلس الشعبي البلدي
         </div>
         <div id="ms-mayor-name"
           style="font-size:15px;font-weight:900;color:#fff;letter-spacing:-.2px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-          جاري التحميل...
+          ...جاري التحميل
         </div>
         <div id="ms-mayor-mandate"
-          style="font-size:11px;color:rgba(255,255,255,.55);margin-top:3px;
-                 display:flex;align-items:center;gap:4px;">
-          <iconify-icon icon="lucide:calendar"
-            style="font-size:11px;pointer-events:none"></iconify-icon>
+          style="font-size:11px;color:rgba(255,255,255,.55);margin-top:3px;display:flex;align-items:center;gap:4px;">
+          <iconify-icon icon="lucide:calendar" style="font-size:11px;pointer-events:none"></iconify-icon>
           <span>2021 - 2025</span>
         </div>
       </div>
-      <!-- كبسولة السابقون (بدلاً من السهم) -->
       <button class="mayor-prev-pill" id="ms-prev-mayors-btn">
         <iconify-icon icon="lucide:users" style="font-size:16px;pointer-events:none;"></iconify-icon>
         السابقون
       </button>
     </div>
-
-    <!-- قائمة الخيارات -->
     <div style="margin:14px 16px 0;background:var(--card);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--elev-2);border:1px solid var(--border-light)">
       <div class="more-item" id="ms-item-site">
         <div class="more-icon" style="background:var(--green-l)">
@@ -1006,7 +966,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
       </div>
     </div>
-
     <div style="text-align:center;padding:18px 20px 6px;">
       <div style="font-size:11px;color:var(--muted-2);">© 2026 - بلدية شطايبي - جميع الحقوق محفوظة</div>
       <div style="font-size:10px;color:var(--muted-2);font-style:italic;margin-top:3px;">تم التطوير بجهود الكفاءات الداخلية</div>
@@ -1031,6 +990,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     </div>
   </div>
 </div>
+
 <div class="modal-overlay" id="m-beach">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
@@ -1043,11 +1003,13 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     </div>
   </div>
 </div>
+
 <div class="modal-overlay" id="m-tour">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
     <div id="mt-sticker-view" style="display:none;position:relative">
-      <button id="mt-sticker-close" style="position:absolute;top:10px;left:12px;z-index:10;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.5);border:none;color:#fff;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);touch-action:manipulation;pointer-events:auto">✕</button>
+      <button id="mt-sticker-close"
+        style="position:absolute;top:10px;left:12px;z-index:10;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.5);border:none;color:#fff;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);touch-action:manipulation;pointer-events:auto">✕</button>
       <div id="mt-sticker-album"></div>
     </div>
     <div id="mt-normal-view">
@@ -1062,6 +1024,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     </div>
   </div>
 </div>
+
 <div class="modal-overlay" id="m-fac">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
@@ -1075,6 +1038,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     </div>
   </div>
 </div>
+
 <div class="modal-overlay" id="m-prev-mayors">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
@@ -1101,17 +1065,16 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 
 <script>
 'use strict';
-
 /* ══════════════════════════════════════════
    HAPTIC FEEDBACK
 ══════════════════════════════════════════ */
 function haptic(type){
   if(!navigator.vibrate)return;
-  if(type==='light')  navigator.vibrate(8);
-  else if(type==='mid')    navigator.vibrate(18);
-  else if(type==='heavy')  navigator.vibrate([20,10,20]);
+  if(type==='light') navigator.vibrate(8);
+  else if(type==='mid') navigator.vibrate(18);
+  else if(type==='heavy') navigator.vibrate([20,10,20]);
   else if(type==='success')navigator.vibrate([10,30,10]);
-  else if(type==='tab')    navigator.vibrate(6);
+  else if(type==='tab') navigator.vibrate(6);
 }
 
 document.addEventListener('contextmenu',function(e){e.preventDefault();});
@@ -1178,9 +1141,7 @@ function skNewsCards(count){
 }
 function skPlaceCards(count){
   var html='';
-  for(var i=0;i<count;i++){
-    html+='<div class="sk sk-place-card"></div>';
-  }
+  for(var i=0;i<count;i++){html+='<div class="sk sk-place-card"></div>';}
   return html;
 }
 function skFacCards(count){
@@ -1228,8 +1189,8 @@ var MoreSheet=(function(){
   var overlay,sheet,btn,isOpen=false;
   function init(){
     overlay=document.getElementById('more-sheet-overlay');
-    sheet  =document.getElementById('more-sheet');
-    btn    =document.getElementById('header-more-btn');
+    sheet =document.getElementById('more-sheet');
+    btn   =document.getElementById('header-more-btn');
     if(!overlay||!sheet||!btn)return;
     btn.addEventListener('click',function(e){e.stopPropagation();haptic('mid');open();});
     overlay.addEventListener('click',function(e){if(e.target===overlay)close();});
@@ -1263,7 +1224,6 @@ var MoreSheet=(function(){
     },{passive:true});
   }
   function bindItems(){
-    /* كبسولة السابقون */
     var prevPill=document.getElementById('ms-prev-mayors-btn');
     if(prevPill)prevPill.addEventListener('click',function(e){
       e.stopPropagation();haptic('light');
@@ -1391,7 +1351,7 @@ function updateHeaderShadow(){
 }
 
 /* ══════════════════════════════════════════
-   SWITCH TAB — scale + opacity + translateX
+   SWITCH TAB
 ══════════════════════════════════════════ */
 function switchTab(t){
   if(t===curTab)return;
@@ -1407,9 +1367,7 @@ function switchTab(t){
   var DUR=300;
   var EASE='cubic-bezier(.4,0,.2,1)';
   var prev=curTab;
-
   if(prevEl){
-    /* exit: translateX + scale down + fade */
     prevEl.style.transition='transform '+DUR+'ms '+EASE+',opacity '+DUR+'ms '+EASE;
     prevEl.style.transform='translateX('+exitTo+') scale(.96)';
     prevEl.style.opacity='0';
@@ -1419,23 +1377,19 @@ function switchTab(t){
       resetScroll('screen-'+prev);
     },DUR+20);
   }
-
   nextEl.classList.remove('hidden');
-  /* enter start */
   nextEl.style.cssText='transform:translateX('+enterFrom+') scale(.96);opacity:0;transition:none;';
   requestAnimationFrame(function(){
     requestAnimationFrame(function(){
       var header=document.getElementById('shared-header');
       var scroll=document.querySelector('#screen-'+t+' .scroll-area');
       if(header&&scroll)scroll.style.paddingTop=header.offsetHeight+'px';
-      /* enter end: translateX(0) + scale(1) + opacity(1) */
       nextEl.style.transition='transform '+DUR+'ms '+EASE+',opacity '+DUR+'ms '+EASE;
       nextEl.style.transform='translateX(0) scale(1)';
       nextEl.style.opacity='1';
       setTimeout(function(){nextEl.style.cssText='';},DUR+20);
     });
   });
-
   document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');});
   var nb=document.getElementById('nav-'+t);
   if(nb)nb.classList.add('active');
@@ -1473,7 +1427,17 @@ function initSwipe(scrollAreaId,getNext){
   var isArchive=(scrollAreaId==='scroll-archive');
   el.addEventListener('touchstart',function(e){
     if(isArchive){startX=e.touches[0].clientX;startY=e.touches[0].clientY;tracking=true;return;}
-    if(e.target.closest('.h-scroll')||e.target.closest('.seg-bar-wrap')||e.target.closest('.archive-card')){tracking=false;return;}
+    /* 
+     * الإصلاح: إضافة .weather-card و .sea-card إلى قائمة الاستثناءات
+     * حتى لا تتعارض بطاقات الطقس مع السحب للتبديل
+     */
+    if(e.target.closest('.h-scroll')
+      ||e.target.closest('.seg-bar-wrap')
+      ||e.target.closest('.archive-card')
+      ||e.target.closest('.weather-card')
+      ||e.target.closest('.sea-card')){
+      tracking=false;return;
+    }
     startX=e.touches[0].clientX;startY=e.touches[0].clientY;tracking=true;
   },{passive:true});
   el.addEventListener('touchend',function(e){
@@ -1590,7 +1554,8 @@ async function loadHArchive(){
           +'<div class="archive-home-cell" data-lb="'+a.image_new_url+'"><img src="'+a.image_new_url+'" loading="lazy"><span class="archive-home-label new-label">اليوم</span></div>'
           +'</div>'+(a.title?'<div class="archive-home-title">'+a.title+'</div>':'')+'</div>';
       }
-      return '<div class="archive-home-card archive-home-single" data-lb="'+a.image_new_url+'"><img src="'+a.image_new_url+'" loading="lazy">'+(a.title?'<div class="archive-home-title">'+a.title+'</div>':'')+'</div>';
+      return '<div class="archive-home-card archive-home-single" data-lb="'+a.image_new_url+'"><img src="'+a.image_new_url+'" loading="lazy">'+
+        (a.title?'<div class="archive-home-title">'+a.title+'</div>':'')+'</div>';
     }).join('');
   }catch(e){el.innerHTML='';}
 }
@@ -1608,9 +1573,17 @@ function syncMayorToSheet(){
   if(period&&mandateEl)mandateEl.innerHTML='<iconify-icon icon="lucide:calendar" style="font-size:11px;pointer-events:none"></iconify-icon><span>'+period+'</span>';
 }
 
-function loadHome(){loadHOfficial();loadHNews();loadMayorHome();loadHBeaches();loadHTourism();fetchPWAWeather();fetchPWASea();}
+function loadHome(){
+  loadHOfficial();
+  loadHNews();
+  loadMayorHome();
+  loadHBeaches();
+  loadHTourism();
+  fetchPWAWeather();
+  fetchPWASea();
+}
 
-// ── إحداثيات شطايبي ──
+// —— إحداثيات شطايبي ——
 var PWA_LAT=37.0850,PWA_LON=7.2550;
 
 async function fetchPWAWeather(){
@@ -1618,9 +1591,14 @@ async function fetchPWAWeather(){
     var r=await fetch('https://api.open-meteo.com/v1/forecast?latitude='+PWA_LAT+'&longitude='+PWA_LON+'&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code,is_day&daily=temperature_2m_max,temperature_2m_min&timezone=Africa%2FAlgiers&forecast_days=1');
     var d=await r.json();var cu=d.current;var dl=d.daily;
     var isDay=cu.is_day===1;
-    var wm={0:{d:'☀️',n:'🌕',ar:'صافٍ'},1:{d:'🌤️',n:'🌙',ar:'غائم خفيف'},2:{d:'⛅',n:'🌥️',ar:'غائم جزئياً'},3:{d:'☁️',n:'☁️',ar:'غائم'},45:{d:'🌫️',n:'🌫️',ar:'ضبابي'},48:{d:'🌫️',n:'🌫️',ar:'ضبابي'},51:{d:'🌦️',n:'🌧️',ar:'رذاذ'},53:{d:'🌦️',n:'🌧️',ar:'رذاذ'},61:{d:'🌧️',n:'🌧️',ar:'ممطر'},63:{d:'🌧️',n:'🌧️',ar:'مطر'},65:{d:'🌧️',n:'🌧️',ar:'مطر غزير'},80:{d:'🌦️',n:'🌧️',ar:'زخات'},81:{d:'🌧️',n:'🌧️',ar:'زخات'},95:{d:'⛈️',n:'⛈️',ar:'عاصفة'}};
+    var wm={
+      0:{d:'☀️',n:'🌕',ar:'صافٍ'},1:{d:'🌤️',n:'🌙',ar:'غائم خفيف'},2:{d:'⛅',n:'🌥️',ar:'غائم جزئياً'},
+      3:{d:'☁️',n:'☁️',ar:'غائم'},45:{d:'🌫️',n:'🌫️',ar:'ضبابي'},48:{d:'🌫️',n:'🌫️',ar:'ضبابي'},
+      51:{d:'🌦️',n:'🌧️',ar:'رذاذ'},53:{d:'🌦️',n:'🌧️',ar:'رذاذ'},61:{d:'🌧️',n:'🌧️',ar:'ممطر'},
+      63:{d:'🌧️',n:'🌧️',ar:'مطر'},65:{d:'🌧️',n:'🌧️',ar:'مطر غزير'},80:{d:'🌦️',n:'🌧️',ar:'زخات'},
+      81:{d:'🌧️',n:'🌧️',ar:'زخات'},95:{d:'⛈️',n:'⛈️',ar:'عاصفة'}
+    };
     var w=wm[cu.weather_code]||{d:'🌡️',n:'🌙',ar:'متغير'};
-    // تحديث أيقونة الهيدر حسب النهار/الليل
     var hdrIcon=document.getElementById('pwa-weather-header-icon');
     var hdrBg=document.getElementById('pwa-weather-icon-bg');
     if(hdrIcon&&hdrBg){
@@ -1638,7 +1616,9 @@ async function fetchPWAWeather(){
     }
     var tlEl=document.getElementById('pwa-weather-time-label');
     if(tlEl&&dl)tlEl.textContent=(isDay?'الليل: ':'غداً: ')+(isDay?Math.round(dl.temperature_2m_min[0]):Math.round(dl.temperature_2m_max[0]))+'°C';
-  }catch(e){var el=document.getElementById('pwa-weather-desc');if(el)el.textContent='تعذر التحميل';}
+  }catch(e){
+    var el=document.getElementById('pwa-weather-desc');if(el)el.textContent='تعذر التحميل';
+  }
 }
 
 async function fetchPWASea(){
@@ -1660,7 +1640,9 @@ async function fetchPWASea(){
     document.getElementById('pwa-sea-desc').textContent=sd;
     document.getElementById('pwa-sea-wave').textContent=v+' م';
     document.getElementById('pwa-sea-dir').textContent=dirLabel;
-  }catch(e){var el=document.getElementById('pwa-sea-desc');if(el)el.textContent='تعذر التحميل';}
+  }catch(e){
+    var el=document.getElementById('pwa-sea-desc');if(el)el.textContent='تعذر التحميل';
+  }
 }
 
 async function loadMayorHome(){
@@ -1680,6 +1662,7 @@ async function loadHOfficial(){
     el.innerHTML=items.length?items.map(function(n){return makeNewsCard(n,false);}).join(''):'';
   }catch(e){el.innerHTML='';}
 }
+
 async function loadHNews(){
   var el=document.getElementById('h-news');
   el.innerHTML=skNewsCards(3);
@@ -1689,6 +1672,7 @@ async function loadHNews(){
     el.innerHTML=items.length?items.map(function(n){return makeNewsCard(n,true);}).join(''):'';
   }catch(e){el.innerHTML='';}
 }
+
 async function loadHBeaches(){
   var el=document.getElementById('h-beaches');
   el.innerHTML=skPlaceCards(4);
@@ -1697,6 +1681,7 @@ async function loadHBeaches(){
     el.innerHTML=(d.data||[]).slice(0,8).map(function(b){return placeCard(b,'beach');}).join('');
   }catch(e){el.innerHTML='';}
 }
+
 async function loadHTourism(){
   var el=document.getElementById('h-tourism');
   el.innerHTML=skPlaceCards(4);
@@ -1705,6 +1690,7 @@ async function loadHTourism(){
     el.innerHTML=(d.data||[]).slice(0,8).map(function(t){return placeCard(t,'tourism');}).join('');
   }catch(e){el.innerHTML='';}
 }
+
 function placeCard(item,type){
   var n=item.name||'';
   var dataAttr=type==='beach'?'data-beach-id="'+item.id+'"':'data-tour-id="'+item.id+'"';
@@ -1727,6 +1713,7 @@ async function loadNewsScreen(){
     renderNews(allNews.filter(function(n){return n.category===activeCat;}));
   }catch(e){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';}
 }
+
 function filterNews(cat,btn){
   haptic('light');
   document.querySelectorAll('#screen-news .seg-btn').forEach(function(t){t.classList.remove('active');});
@@ -1734,6 +1721,7 @@ function filterNews(cat,btn){
   if(!newsScreenLoaded)return;
   renderNews(allNews.filter(function(n){return n.category===cat;}));
 }
+
 function renderNews(items){
   var el=document.getElementById('news-list');
   if(!items.length){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>لا توجد أخبار</p></div>';return;}
@@ -1763,14 +1751,15 @@ function renderNews(items){
 
 /* ══ GUIDE ══ */
 var FM={
-  'admin-branches':{cat:'branches',   icon:'lucide:landmark',      color:'var(--green)',  bg:'var(--green-l)'},
-  'education':     {cat:'education',  icon:'lucide:graduation-cap',color:'var(--blue)',   bg:'var(--blue-l)'},
-  'health':        {cat:'health',     icon:'lucide:heart-pulse',   color:'var(--red)',    bg:'var(--red-l)'},
-  'public-bodies': {cat:'public_bodies',icon:'lucide:building-2',  color:'var(--purple)', bg:'var(--purple-l)'},
-  'religious':     {cat:'religious',  icon:'lucide:moon-star',     color:'var(--amber)',  bg:'var(--amber-l)'},
-  'cultural':      {cat:'cultural',   icon:'lucide:palette',       color:'#0891b2',       bg:'var(--sky-l)'},
-  'sports':        {cat:'sports',     icon:'lucide:trophy',        color:'#ea580c',       bg:'#ffedd5'}
+  'admin-branches':{cat:'branches',    icon:'lucide:landmark',       color:'var(--green)',  bg:'var(--green-l)'},
+  'education':     {cat:'education',   icon:'lucide:graduation-cap', color:'var(--blue)',   bg:'var(--blue-l)'},
+  'health':        {cat:'health',      icon:'lucide:heart-pulse',    color:'var(--red)',    bg:'var(--red-l)'},
+  'public-bodies': {cat:'public_bodies',icon:'lucide:building-2',   color:'var(--purple)', bg:'var(--purple-l)'},
+  'religious':     {cat:'religious',   icon:'lucide:moon-star',      color:'var(--amber)',  bg:'var(--amber-l)'},
+  'cultural':      {cat:'cultural',   icon:'lucide:palette',         color:'#0891b2',       bg:'var(--sky-l)'},
+  'sports':        {cat:'sports',      icon:'lucide:trophy',         color:'#ea580c',       bg:'#ffedd5'}
 };
+
 async function loadFacTab(tab,btn){
   haptic('light');
   facCat=tab;
@@ -1790,6 +1779,7 @@ async function loadFacTab(tab,btn){
     el.innerHTML=items.length?items.map(function(f){return makeFacCard(f,m,tab);}).join(''):'<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>لا توجد عناصر</p></div>';
   }catch(e){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';}
 }
+
 function makeFacCard(f,m,tab){
   var img=f.image_url
     ?'<img class="fac-card-img" src="'+f.image_url+'" alt="">'
@@ -1829,6 +1819,7 @@ function albumBig(elId,albums){
   if(!a.length){el.innerHTML='';return;}
   el.innerHTML=a.map(function(x){return '<div style="line-height:0;margin-bottom:4px"><img src="'+x.image_url+'" alt="" loading="lazy" data-lb="'+x.image_url+'" style="width:100%;display:block;cursor:pointer;pointer-events:auto;touch-action:manipulation"></div>';}).join('');
 }
+
 async function openNewsModal(id){
   haptic('light');
   var n=allNews.find(function(x){return x.id==id;});
@@ -1860,6 +1851,7 @@ async function openNewsModal(id){
   }
   om('m-news');
 }
+
 async function openBeachModal(id){
   haptic('light');
   try{
@@ -1876,6 +1868,7 @@ async function openBeachModal(id){
     album('mb-album',b.albums);om('m-beach');
   }catch(e){}
 }
+
 async function openTourismModal(id){
   haptic('light');
   try{
@@ -1906,6 +1899,7 @@ async function openTourismModal(id){
     om('m-tour');
   }catch(e){}
 }
+
 async function openFacModal(id,tab){
   haptic('light');
   try{
@@ -1941,6 +1935,7 @@ function initMap2(){
     });
   },100);
 }
+
 var mapCardData=null;
 function showMapCard(item,typeCfg){
   mapCardData=item;mapCardData._typeCfg=typeCfg;
@@ -1964,6 +1959,7 @@ function mapCardClick(){
   else if(d._typeCfg.modal==='tour')openTourismModal(d.id);
   else if(d._typeCfg.modal==='fac')openFacModal(d.id,d._typeCfg.tab||'admin-branches');
 }
+
 async function loadMapData(){
   if(!appMap)return;
   try{
@@ -2057,7 +2053,6 @@ function initEventDelegation(){
   document.getElementById('btn-see-news-all').addEventListener('click',function(){haptic('light');switchTab('news');});
   document.getElementById('btn-see-beaches').addEventListener('click',function(){haptic('light');switchTabWithFilter('map','beach');});
   document.getElementById('btn-see-tourism').addEventListener('click',function(){haptic('light');switchTabWithFilter('map','tour');});
-  document.getElementById('btn-see-archive').addEventListener('click',function(){haptic('light');switchTab('archive');});
 
   document.getElementById('news-btn-official').addEventListener('click',function(){filterNews('official',this);});
   document.getElementById('news-btn-activity').addEventListener('click',function(){filterNews('activity',this);});
@@ -2110,81 +2105,7 @@ window.addEventListener('load',function(){
     el.addEventListener('scroll',updateHeaderShadow,{passive:true});
   });
 });
-document.fonts.ready.then(function(){applyHeaderHeight();});
-loadHome();
-</script>
-</body>
-</html>if(fid)openFacModal(fid,ftab||'admin-branches');return;}
-    var archCell=t.closest('.archive-cell,.archive-home-cell,.archive-single,.archive-home-single,[data-lb]');
-    if(archCell){var lb=archCell.getAttribute('data-lb');if(lb)openLightbox(lb);return;}
-    var albImg=t.closest('.album-grid img,[data-lb]');
-    if(albImg){var lb=albImg.getAttribute('data-lb');if(lb)openLightbox(lb);return;}
-    if(t.classList.contains('modal-overlay')){cm(t.id);return;}
-  });
 
-  document.getElementById('nav-home').addEventListener('click',function(){switchTab('home');});
-  document.getElementById('nav-news').addEventListener('click',function(){switchTab('news');});
-  document.getElementById('nav-guide').addEventListener('click',function(){switchTab('guide');});
-  document.getElementById('nav-archive').addEventListener('click',function(){switchTab('archive');});
-  document.getElementById('nav-map').addEventListener('click',function(){switchTab('map');});
-
-  document.getElementById('btn-see-news-official').addEventListener('click',function(){switchTab('news');});
-  document.getElementById('btn-see-news-all').addEventListener('click',function(){switchTab('news');});
-  document.getElementById('btn-see-beaches').addEventListener('click',function(){switchTabWithFilter('map','beach');});
-  document.getElementById('btn-see-tourism').addEventListener('click',function(){switchTabWithFilter('map','tour');});
-  document.getElementById('btn-see-archive').addEventListener('click',function(){switchTab('archive');});
-
-  document.getElementById('news-btn-official').addEventListener('click',function(){filterNews('official',this);});
-  document.getElementById('news-btn-activity').addEventListener('click',function(){filterNews('activity',this);});
-  document.getElementById('news-btn-social').addEventListener('click',function(){filterNews('social',this);});
-  document.getElementById('news-btn-poster').addEventListener('click',function(){filterNews('poster',this);});
-
-  document.getElementById('btn-admin-branches').addEventListener('click',function(){loadFacTab('admin-branches',this);});
-  document.getElementById('btn-education').addEventListener('click',function(){loadFacTab('education',this);});
-  document.getElementById('btn-health').addEventListener('click',function(){loadFacTab('health',this);});
-  document.getElementById('btn-public-bodies').addEventListener('click',function(){loadFacTab('public-bodies',this);});
-  document.getElementById('btn-religious').addEventListener('click',function(){loadFacTab('religious',this);});
-  document.getElementById('btn-cultural').addEventListener('click',function(){loadFacTab('cultural',this);});
-  document.getElementById('btn-sports').addEventListener('click',function(){loadFacTab('sports',this);});
-
-  document.getElementById('arch-tab-compare').addEventListener('click',function(){switchArchTab('compare',this);});
-  document.getElementById('arch-tab-historic').addEventListener('click',function(){switchArchTab('historic',this);});
-
-  document.getElementById('map-filter-btn').addEventListener('click',function(e){toggleFilterMenu(e);});
-  document.getElementById('map-locate-btn').addEventListener('click',function(){locateUser();});
-  document.getElementById('map-popup-close-btn').addEventListener('click',function(e){e.stopPropagation();closeMapCard();});
-  document.getElementById('map-popup-action-btn').addEventListener('click',function(){mapCardClick();});
-  document.getElementById('map-card-inner').addEventListener('click',function(){mapCardClick();});
-
-  document.querySelectorAll('.mf-item').forEach(function(item){
-    item.addEventListener('click',function(){selectMapFilter(this.getAttribute('data-type'),this);});
-  });
-
-  document.getElementById('lightbox').addEventListener('click',function(){closeLightbox();});
-  document.getElementById('lb-close').addEventListener('click',function(e){e.stopPropagation();closeLightbox();});
-  document.getElementById('mt-sticker-close').addEventListener('click',function(){cm('m-tour');});
-
-  ['m-news','m-beach','m-tour','m-fac','m-prev-mayors'].forEach(function(id){
-    var overlay=document.getElementById(id);
-    var sheet=overlay?overlay.querySelector('.modal-sheet'):null;
-    if(sheet)initModalSwipe(sheet,id);
-  });
-}
-
-/* ══ INIT ══ */
-window.addEventListener('load',function(){
-  applyHeaderHeight();
-  window.addEventListener('resize',function(){applyHeaderHeight();});
-  MoreSheet.init();
-  initEventDelegation();
-  initSwipe('scroll-home',   function(dir){swipeHome(dir);});
-  initSwipe('scroll-news',   function(dir){swipeNews(dir);});
-  initSwipe('scroll-guide',  function(dir){swipeGuide(dir);});
-  initSwipe('scroll-archive',function(dir){swipeArchive(dir);});
-  document.querySelectorAll('.scroll-area').forEach(function(el){
-    el.addEventListener('scroll',updateHeaderShadow,{passive:true});
-  });
-});
 document.fonts.ready.then(function(){applyHeaderHeight();});
 loadHome();
 </script>
