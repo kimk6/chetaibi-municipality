@@ -116,14 +116,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   z-index:200;
   background:#fff;
   box-shadow:0 2px 16px rgba(0,0,0,.10),0 1px 4px rgba(0,0,0,.06);
-  transition:transform 320ms cubic-bezier(.4,0,.2,1),
-             opacity  320ms cubic-bezier(.4,0,.2,1);
   will-change:transform,opacity;
-}
-#shared-header.hide-full{
-  transform:translateY(-100%);
-  opacity:0;
-  pointer-events:none;
 }
 .app-header-inner{
   display:flex;align-items:center;gap:14px;
@@ -984,43 +977,76 @@ function applyHeaderHeight(){
   if(spacer) spacer.style.height = _headerH+'px';
 }
 
-var lastScrollY=0;
-var headerHidden=false;
-var scrollThreshold=5;
+/* ── Header hide/show: follows finger directly, no jitter ── */
+var _hdrOffset   = 0;   /* 0 = fully visible, -_headerH = fully hidden */
+var _lastSY      = 0;
+var _rafHdr      = null;
+var _snapRaf     = null;
 
-function setHeaderVisible(visible){
-  var header=document.getElementById('shared-header');
-  var spacer=document.getElementById('header-spacer');
-  if(!header||!spacer)return;
-  if(visible&&headerHidden){
-    header.classList.remove('hide-full');
-    spacer.style.transition='height 320ms cubic-bezier(.4,0,.2,1)';
-    spacer.style.height=_headerH+'px';
-    headerHidden=false;
-  }else if(!visible&&!headerHidden){
-    header.classList.add('hide-full');
-    spacer.style.transition='height 320ms cubic-bezier(.4,0,.2,1)';
-    spacer.style.height='0px';
-    headerHidden=true;
+function _applyHdrOffset(offset){
+  var header = document.getElementById('shared-header');
+  var spacer  = document.getElementById('header-spacer');
+  if(!header || !_headerH) return;
+  var clamped = Math.max(-_headerH, Math.min(0, offset));
+  _hdrOffset  = clamped;
+  /* move header without any CSS transition (instant, finger-tracked) */
+  header.style.transition = 'none';
+  header.style.transform  = 'translateY('+clamped+'px)';
+  header.style.opacity    = 1 + clamped/_headerH;   /* 1→0 as it hides */
+  /* spacer shrinks/grows at same rate so content moves with it */
+  if(spacer){
+    spacer.style.transition = 'none';
+    spacer.style.height     = (_headerH + clamped)+'px';
   }
 }
 
+function _snapHeader(){
+  /* after finger lifts, snap to fully visible or fully hidden */
+  var header = document.getElementById('shared-header');
+  var spacer  = document.getElementById('header-spacer');
+  if(!header) return;
+  var target  = (_hdrOffset < -_headerH/2) ? -_headerH : 0;
+  var DUR     = 260;
+  var EASE    = 'cubic-bezier(.4,0,.2,1)';
+  header.style.transition = 'transform '+DUR+'ms '+EASE+',opacity '+DUR+'ms '+EASE;
+  header.style.transform  = 'translateY('+target+'px)';
+  header.style.opacity    = target === 0 ? '1' : '0';
+  if(spacer){
+    spacer.style.transition = 'height '+DUR+'ms '+EASE;
+    spacer.style.height     = (_headerH + target)+'px';
+  }
+  _hdrOffset = target;
+}
+
 function onScrollAreaScroll(e){
-  var scrollEl=e.target;if(!scrollEl)return;
-  var currentScrollY=scrollEl.scrollTop;
-  var scrollDelta=currentScrollY-lastScrollY;
-  if(Math.abs(scrollDelta)<scrollThreshold)return;
-  setHeaderVisible(scrollDelta<0);
-  lastScrollY=currentScrollY;
+  var scrollEl = e.target; if(!scrollEl) return;
+  var sy       = scrollEl.scrollTop;
+  var delta    = sy - _lastSY;
+  _lastSY      = sy;
+  if(_rafHdr) cancelAnimationFrame(_rafHdr);
+  if(_snapRaf) { clearTimeout(_snapRaf); _snapRaf = null; }
+  _rafHdr = requestAnimationFrame(function(){
+    _applyHdrOffset(_hdrOffset - delta);
+    /* snap after 120ms of no scroll events */
+    _snapRaf = setTimeout(_snapHeader, 120);
+  });
 }
 
 function resetHeaderState(){
-  var spacer=document.getElementById('header-spacer');
-  var header=document.getElementById('shared-header');
-  if(header)header.classList.remove('hide-full');
-  if(spacer){spacer.style.transition='none';spacer.style.height=_headerH+'px';}
-  headerHidden=false;
-  lastScrollY=0;
+  var header = document.getElementById('shared-header');
+  var spacer  = document.getElementById('header-spacer');
+  _hdrOffset = 0; _lastSY = 0;
+  if(_rafHdr)  cancelAnimationFrame(_rafHdr);
+  if(_snapRaf) clearTimeout(_snapRaf);
+  if(header){
+    header.style.transition = 'none';
+    header.style.transform  = 'translateY(0)';
+    header.style.opacity    = '1';
+  }
+  if(spacer){
+    spacer.style.transition = 'none';
+    spacer.style.height     = _headerH+'px';
+  }
 }
 
 function resetScroll(screenId){
