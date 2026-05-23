@@ -169,8 +169,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 /* SEG BAR */
 .seg-bar-wrap{background:#fff;border-bottom:1px solid rgba(0,0,0,0.06);}
 .seg-bar{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;padding:10px 16px;}
-#screen-archive .seg-bar{justify-content:stretch;}
-#screen-archive .seg-bar .seg-btn{flex:1;justify-content:center;font-size:13px;font-weight:800;height:42px;padding:0 12px;}
+#screen-archive .seg-bar{justify-content:stretch;padding:10px 16px;}
+#screen-archive .seg-bar .seg-btn{flex:1;justify-content:center;}
 .seg-btn{flex-shrink:0;display:flex;align-items:center;gap:6px;padding:0 16px;height:36px;border-radius:var(--r-full);border:1.5px solid var(--border);background:var(--card);color:var(--muted);font-family:var(--font-main);font-size:12px;font-weight:700;cursor:pointer;touch-action:manipulation;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,0.04);transition:background var(--dur-mid) var(--ease-std),color var(--dur-mid) var(--ease-std),border-color var(--dur-mid) var(--ease-std),box-shadow var(--dur-mid) var(--ease-std),transform var(--dur-fast) var(--ease-std);}
 .seg-btn iconify-icon{font-size:14px;pointer-events:none;flex-shrink:0;}
 .seg-btn.active{background:var(--green);color:#fff;border-color:var(--green);box-shadow:0 3px 12px rgba(5,150,105,.28);}
@@ -833,7 +833,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     <!-- ARCHIVE -->
     <div class="screen hidden" id="screen-archive">
       <div class="scroll-area" id="scroll-archive">
-        <div class="content-block" style="padding-top:12px">
+        <div class="content-block">
           <div class="seg-bar-wrap">
             <div class="seg-bar">
               <button class="seg-btn active" id="arch-tab-compare"><iconify-icon icon="lucide:git-compare"></iconify-icon>بين الأمس واليوم</button>
