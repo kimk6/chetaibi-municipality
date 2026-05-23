@@ -1413,15 +1413,45 @@ async function loadArchiveTab(tab){
   el.innerHTML=skArchiveCards(4);
   try{
     var d=await api('/api/archives');var all=d.data||[];
-    var items=tab==='compare'?all.filter(a=>a.image_old_url&&a.image_new_url):all.filter(a=>a.image_new_url&&(!a.image_old_url||a.category==='historic'||a.type==='historic'));
+    /* DEBUG: اطبع هيكل البيانات في console */
+    console.log('Archives total:',all.length,'first item:',all[0]);
+    if(all.length>0)console.log('Archive fields:',Object.keys(all[0]),'sample:',JSON.stringify(all[0]).substring(0,300));
+
+    var items;
+    if(tab==='compare'){
+      items=all.filter(function(a){return a.image_old_url&&a.image_new_url;});
+    } else {
+      /* جرب كل الحقول الممكنة للتصنيف التاريخي */
+      items=all.filter(function(a){
+        var isHistoric=
+          a.category==='historic'||a.category==='historical'||
+          a.type==='historic'||a.type==='historical'||
+          a.tab==='historic'||
+          (!a.image_old_url && a.image_new_url);
+        return isHistoric;
+      });
+      /* إذا لا يزال فارغاً، اعرض كل الصور التي لها image_new_url */
+      if(!items.length){
+        console.log('Historic fallback: showing all with image_new_url');
+        items=all.filter(function(a){return a.image_new_url;});
+      }
+    }
     if(!items.length){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:image-off"></iconify-icon><p>لا توجد صور</p></div>';return;}
     var html='<div style="display:flex;flex-direction:column;gap:16px;">';
     items.forEach(function(a){
-      if(tab==='compare'){html+='<div class="archive-card"><div class="archive-compare-grid"><div class="archive-cell" data-lb="'+a.image_old_url+'"><img src="'+a.image_old_url+'" loading="lazy"><span class="archive-cell-label">الأمس</span></div><div class="archive-cell" data-lb="'+a.image_new_url+'"><img src="'+a.image_new_url+'" loading="lazy"><span class="archive-cell-label new-label">اليوم</span></div></div>'+(a.title?'<div class="archive-card-title">'+a.title+'</div>':'')+'</div>';}
-      else{html+='<div class="archive-card archive-single" data-lb="'+a.image_new_url+'"><img src="'+a.image_new_url+'" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block;pointer-events:none" loading="lazy">'+(a.title?'<div class="archive-card-title">'+a.title+'</div>':'')+'</div>';}
+      if(tab==='compare'){
+        html+='<div class="archive-card"><div class="archive-compare-grid"><div class="archive-cell" data-lb="'+a.image_old_url+'"><img src="'+a.image_old_url+'" loading="lazy"><span class="archive-cell-label">الأمس</span></div><div class="archive-cell" data-lb="'+a.image_new_url+'"><img src="'+a.image_new_url+'" loading="lazy"><span class="archive-cell-label new-label">اليوم</span></div></div>'+(a.title?'<div class="archive-card-title">'+a.title+'</div>':'')+'</div>';
+      } else {
+        var imgUrl=a.image_new_url||a.image_old_url||a.image_url||'';
+        if(!imgUrl)return;
+        html+='<div class="archive-card archive-single" data-lb="'+imgUrl+'"><img src="'+imgUrl+'" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block;pointer-events:none" loading="lazy">'+(a.title?'<div class="archive-card-title">'+a.title+'</div>':'')+'</div>';
+      }
     });
     el.innerHTML=html+'</div>';
-  }catch(e){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';}
+  }catch(e){
+    console.error('loadArchiveTab error:',e);
+    el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';
+  }
 }
 
 /* ══ HOME ══ */
