@@ -1724,21 +1724,11 @@ async function loadHOfficial(){
   try{
     var d=await api('/api/news');
     if(d.data)allNews=d.data;
-    /* الإعلانات → Carousel */
     _annItems=(d.data||[]).filter(function(n){return n.category==='official';}).slice(0,3);
     _annRender();
-    /* المستجدات → h-news */
-    var newsEl=document.getElementById('h-news');
-    if(newsEl){
-      var items=(d.data||[]).filter(function(n){return n.category!=='official'&&n.category!=='poster';}).slice(0,10);
-      newsEl.innerHTML=items.length?items.map(function(n){return makeNewsCard(n,true);}).join(''):'';
-    }
-  }catch(e){
-    var newsEl=document.getElementById('h-news');
-    if(newsEl)newsEl.innerHTML='';
-  }
+  }catch(e){}
 }
-async function loadHNews(){/* تعمل عبر loadHOfficial */}
+async function loadHNews(){var el=document.getElementById('h-news');el.innerHTML=skNewsCards(3);try{var d=await api('/api/news');if(d.data)allNews=d.data;var items=(d.data||[]).filter(n=>n.category!=='official'&&n.category!=='poster').slice(0,10);el.innerHTML=items.length?items.map(n=>makeNewsCard(n,true)).join(''):'';}catch(e){el.innerHTML='';}}
 async function loadHBeaches(){var el=document.getElementById('h-beaches');el.innerHTML=skPlaceCards(4);try{var d=await api('/api/beaches');el.innerHTML=(d.data||[]).slice(0,8).map(b=>placeCard(b,'beach')).join('');}catch(e){el.innerHTML='';}}
 async function loadHTourism(){var el=document.getElementById('h-tourism');el.innerHTML=skPlaceCards(4);try{var d=await api('/api/tourism');el.innerHTML=(d.data||[]).slice(0,8).map(t=>placeCard(t,'tourism')).join('');}catch(e){el.innerHTML='';}}
 function placeCard(item,type){
