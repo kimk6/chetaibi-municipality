@@ -1651,15 +1651,14 @@ function _annRender(){
     btn.addEventListener('click',function(e){
       e.stopPropagation();
       var id=btn.getAttribute('data-news-id');
-      var n=allNews.find(function(x){return String(x.id)===String(id);});
-      if(n){haptic('light');openNews(n);}
+      if(id){haptic('light');openNewsModal(id);}
     });
   });
   track.querySelectorAll('.ann-slide[data-news-id]').forEach(function(slide){
-    slide.addEventListener('click',function(){
+    slide.addEventListener('click',function(e){
+      if(e.target.closest('.ann-readmore'))return;
       var id=slide.getAttribute('data-news-id');
-      var n=allNews.find(function(x){return String(x.id)===String(id);});
-      if(n){haptic('light');openNews(n);}
+      if(id){haptic('light');openNewsModal(id);}
     });
   });
   var moreBtn=document.getElementById('ann-goto-official');
