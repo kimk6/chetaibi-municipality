@@ -537,6 +537,26 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .ws-tab:active{opacity:.7;}
 .ws-panel{padding:18px;}
 .ws-panel.hidden{display:none;}
+/* ══ ANNOUNCE CAROUSEL ══ */
+.ann-carousel-wrap{margin:0 16px 6px;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(37,99,168,.18),0 1px 4px rgba(0,0,0,.06);}
+.ann-carousel-track{display:flex;flex-direction:row-reverse;will-change:transform;}
+.ann-slide{flex:0 0 100%;min-width:100%;min-height:160px;display:flex;align-items:stretch;position:relative;overflow:hidden;cursor:pointer;touch-action:pan-y;}
+.ann-icon{position:absolute;left:0;bottom:0;width:130px;height:130px;object-fit:contain;pointer-events:none;opacity:.92;filter:drop-shadow(2px 4px 8px rgba(0,0,0,.18));}
+.ann-content{flex:1;display:flex;flex-direction:column;padding:14px 14px 12px 130px;gap:6px;min-width:0;}
+.ann-title{font-size:13px;font-weight:900;color:#fff;text-align:center;line-height:1.35;letter-spacing:-.2px;text-shadow:0 1px 4px rgba(0,0,0,.2);}
+.ann-excerpt{font-size:11.5px;color:rgba(255,255,255,.88);line-height:1.55;flex:1;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;}
+.ann-footer{display:flex;align-items:center;justify-content:space-between;margin-top:4px;gap:8px;}
+.ann-date{display:flex;align-items:center;gap:4px;font-size:10px;color:rgba(255,255,255,.7);font-weight:600;}
+.ann-readmore{display:flex;align-items:center;gap:4px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);border-radius:99px;padding:5px 12px;font-family:var(--font-main);font-size:11px;font-weight:800;color:#fff;cursor:pointer;touch-action:manipulation;backdrop-filter:blur(4px);white-space:nowrap;}
+.ann-readmore:active{background:rgba(255,255,255,.35);}
+.ann-more-slide{display:flex;align-items:center;justify-content:center;cursor:default;}
+.ann-more-btn{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.4);border-radius:14px;padding:14px 22px;font-family:var(--font-main);font-size:13px;font-weight:900;color:#fff;cursor:pointer;touch-action:manipulation;backdrop-filter:blur(6px);letter-spacing:-.1px;}
+.ann-more-btn:active{background:rgba(255,255,255,.3);}
+.ann-dots{display:flex;align-items:center;justify-content:center;gap:7px;padding:10px 0 6px;background:#fff;}
+.ann-dot{width:8px;height:8px;border-radius:99px;border:none;background:#cbd5e1;cursor:pointer;transition:width .2s,background .2s;padding:0;}
+.ann-dot.active{width:22px;background:#3b7fd4;}
+.ann-slide-skeleton{background:linear-gradient(135deg,#c7d9ef,#dce9f7);}
+.ann-sk-bg{width:100%;height:160px;}
 .wcard-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
 .wcard-icon-wrap{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .3s;}
 .wcard-title{font-size:13.5px;font-weight:900;color:var(--text);}
@@ -610,14 +630,20 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 <iconify-icon icon="lucide:megaphone" style="color:var(--red);pointer-events:none"></iconify-icon>
                 الإعلانات
               </span>
-              <!-- ✅ تعديل 3: زر "الكل" في الإعلانات → يذهب لتصنيف "إعلانات" -->
               <button class="see-all-arrow-btn" id="btn-see-news-official">
                 <span>الكل</span>
                 <iconify-icon icon="lucide:chevron-left" style="font-size:16px;pointer-events:none;"></iconify-icon>
               </button>
             </div>
-            <div class="h-scroll" id="h-official">
-              <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
+            <!-- Announce Carousel -->
+            <div class="ann-carousel-wrap" id="ann-carousel-wrap">
+              <div class="ann-carousel-track" id="ann-carousel-track">
+                <!-- الشرائح تُولَّد بالـ JS -->
+                <div class="ann-slide ann-slide-skeleton">
+                  <div class="sk ann-sk-bg"></div>
+                </div>
+              </div>
+              <div class="ann-dots" id="ann-dots"></div>
             </div>
           </div>
 
@@ -1579,7 +1605,111 @@ async function loadMayorHome(){
     syncMayorToSheet();
   }catch(e){}
 }
-async function loadHOfficial(){var el=document.getElementById('h-official');el.innerHTML=skNewsCards(3);try{var d=await api('/api/news');if(d.data)allNews=d.data;var items=(d.data||[]).filter(n=>n.category==='official').slice(0,10);el.innerHTML=items.length?items.map(n=>makeNewsCard(n,false)).join(''):'';}catch(e){el.innerHTML='';}}
+/* ══ ANNOUNCE CAROUSEL ══ */
+var _annItems=[];var _annIdx=0;var _annStartX=0;var _annDragging=false;var _annDX=0;
+function _annBg(){return 'linear-gradient(135deg,#3b7fd4 0%,#5b9bd5 40%,#2563a8 100%)';}
+function _annMakeSlide(n){
+  var date=n.date?'<span class="ann-date"><iconify-icon icon="lucide:calendar-days" style="font-size:11px;pointer-events:none"></iconify-icon>'+n.date+'</span>':'';
+  var title=n.title?'<div class="ann-title">'+n.title+'</div>':'';
+  var excerpt=(n.content||'').substring(0,110)+'...';
+  return '<div class="ann-slide" data-news-id="'+n.id+'" style="background:'+_annBg()+'">'+
+    '<img class="ann-icon" src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/ad.png" alt="" loading="lazy">'+
+    '<div class="ann-content">'+
+      title+
+      '<div class="ann-excerpt">'+excerpt+'</div>'+
+      '<div class="ann-footer">'+
+        date+
+        '<button class="ann-readmore" data-news-id="'+n.id+'">اقرأ المزيد<iconify-icon icon="lucide:chevron-left" style="font-size:12px;pointer-events:none"></iconify-icon></button>'+
+      '</div>'+
+    '</div>'+
+  '</div>';
+}
+function _annMakeMoreSlide(){
+  return '<div class="ann-slide ann-more-slide" style="background:'+_annBg()+'">'+
+    '<button class="ann-more-btn" id="ann-goto-official">'+
+      '<iconify-icon icon="lucide:list" style="font-size:18px;pointer-events:none"></iconify-icon>'+
+      'عرض المزيد من الإعلانات'+
+    '</button>'+
+  '</div>';
+}
+function _annRender(){
+  var track=document.getElementById('ann-carousel-track');
+  var dots=document.getElementById('ann-dots');
+  if(!track)return;
+  var slides=_annItems.slice(0,3).map(_annMakeSlide);
+  slides.push(_annMakeMoreSlide());
+  track.innerHTML=slides.join('');
+  /* dots */
+  var total=slides.length;
+  dots.innerHTML=Array.from({length:total},function(_,i){
+    return '<button class="ann-dot'+(i===0?' active':'')+'" onclick="annGoTo('+i+')"></button>';
+  }).join('');
+  _annIdx=0;
+  _annUpdatePos(false);
+  /* اضغط على اقرأ المزيد */
+  track.querySelectorAll('.ann-readmore').forEach(function(btn){
+    btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      var id=btn.getAttribute('data-news-id');
+      var n=allNews.find(function(x){return String(x.id)===String(id);});
+      if(n){haptic('light');openNews(n);}
+    });
+  });
+  track.querySelectorAll('.ann-slide[data-news-id]').forEach(function(slide){
+    slide.addEventListener('click',function(){
+      var id=slide.getAttribute('data-news-id');
+      var n=allNews.find(function(x){return String(x.id)===String(id);});
+      if(n){haptic('light');openNews(n);}
+    });
+  });
+  var moreBtn=document.getElementById('ann-goto-official');
+  if(moreBtn)moreBtn.addEventListener('click',function(){
+    haptic('light');
+    var btn=document.getElementById('btn-see-news-official');
+    if(btn)btn.click();
+  });
+  /* سحب لليمين/اليسار */
+  _annInitDrag(track);
+}
+function _annInitDrag(track){
+  function onStart(x){_annStartX=x;_annDragging=true;_annDX=0;}
+  function onMove(x){if(!_annDragging)return;_annDX=x-_annStartX;}
+  function onEnd(){
+    if(!_annDragging)return;_annDragging=false;
+    if(_annDX<-40)annGoTo(_annIdx+1);
+    else if(_annDX>40)annGoTo(_annIdx-1);
+    else _annUpdatePos(true);
+    _annDX=0;
+  }
+  track.addEventListener('touchstart',function(e){onStart(e.touches[0].clientX);},{passive:true});
+  track.addEventListener('touchmove',function(e){onMove(e.touches[0].clientX);},{passive:true});
+  track.addEventListener('touchend',onEnd);
+  track.addEventListener('mousedown',function(e){onStart(e.clientX);});
+  window.addEventListener('mousemove',function(e){if(_annDragging)onMove(e.clientX);});
+  window.addEventListener('mouseup',onEnd);
+}
+function annGoTo(i){
+  var total=_annItems.length<3?_annItems.length+1:4;
+  _annIdx=Math.max(0,Math.min(total-1,i));
+  _annUpdatePos(true);
+  document.querySelectorAll('.ann-dot').forEach(function(d,j){
+    d.classList.toggle('active',j===_annIdx);
+  });
+}
+function _annUpdatePos(animate){
+  var track=document.getElementById('ann-carousel-track');if(!track)return;
+  track.style.transition=animate?'transform .32s cubic-bezier(.4,0,.2,1)':'none';
+  track.style.transform='translateX('+(_annIdx*100)+'%)';
+}
+async function loadHOfficial(){
+  var wrap=document.getElementById('ann-carousel-wrap');
+  try{
+    var d=await api('/api/news');
+    if(d.data)allNews=d.data;
+    _annItems=(d.data||[]).filter(function(n){return n.category==='official';}).slice(0,3);
+    _annRender();
+  }catch(e){if(wrap)wrap.innerHTML='';}
+}
 async function loadHNews(){var el=document.getElementById('h-news');el.innerHTML=skNewsCards(3);try{var d=await api('/api/news');if(d.data)allNews=d.data;var items=(d.data||[]).filter(n=>n.category!=='official'&&n.category!=='poster').slice(0,10);el.innerHTML=items.length?items.map(n=>makeNewsCard(n,true)).join(''):'';}catch(e){el.innerHTML='';}}
 async function loadHBeaches(){var el=document.getElementById('h-beaches');el.innerHTML=skPlaceCards(4);try{var d=await api('/api/beaches');el.innerHTML=(d.data||[]).slice(0,8).map(b=>placeCard(b,'beach')).join('');}catch(e){el.innerHTML='';}}
 async function loadHTourism(){var el=document.getElementById('h-tourism');el.innerHTML=skPlaceCards(4);try{var d=await api('/api/tourism');el.innerHTML=(d.data||[]).slice(0,8).map(t=>placeCard(t,'tourism')).join('');}catch(e){el.innerHTML='';}}
