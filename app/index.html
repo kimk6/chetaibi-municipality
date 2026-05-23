@@ -548,7 +548,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   background:#ffffff;
   border-radius:20px;
   border:2px solid rgba(5,150,105,0.30);
-  box-shadow:0 8px 32px rgba(0,0,0,0.13),0 2px 8px rgba(0,0,0,0.08);
+  box-shadow:0 3px 8px rgba(0,0,0,.08),0 1px 3px rgba(0,0,0,.05);
   position:relative;overflow:hidden;cursor:pointer;
   direction:rtl;
 }
@@ -1603,7 +1603,7 @@ function renderWeatherDay(i){
   if(_g('pwa-weather-min'))_g('pwa-weather-min').textContent=Math.round(d.tmin)+'°';
   var tl=_g('pwa-weather-time-label');if(tl)tl.textContent=i===0?'شطايبي — عنابة':d.label;
   var tabs=_g('weather-day-tabs');if(!tabs)return;
-  tabs.querySelectorAll('button').forEach(function(b,j){b.style.background=j===i?'#2563eb':'var(--surface)';b.style.color=j===i?'#fff':'var(--text)';b.style.borderColor=j===i?'#2563eb':'var(--border-light)';b.style.fontWeight=j===i?'800':'600';});
+  tabs.querySelectorAll('button').forEach(function(b,j){b.style.background=j===i?'#3b82f6':'var(--surface)';b.style.color=j===i?'#fff':'var(--text)';b.style.borderColor=j===i?'#3b82f6':'var(--border-light)';b.style.fontWeight=j===i?'800':'600';});
 }
 async function fetchPWAWeather(){
   try{
