@@ -925,25 +925,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 <div id="more-sheet-overlay">
   <div id="more-sheet">
     <div class="more-sheet-drag"></div>
-          <div class="mayor-info-block">
-            <div class="mayor-role-label">رئيس المجلس الشعبي البلدي</div>
-            <div class="mayor-name-text" id="ms-mayor-name">جاري التحميل...</div>
-            <div class="mayor-mandate-row" id="ms-mayor-mandate">
-              <iconify-icon icon="lucide:calendar-days"></iconify-icon>
-              <span class="mayor-mandate-text">2021 – 2025</span>
-            </div>
-          </div>
-        </div>
-        <div class="mayor-card-divider"></div>
-        <button class="mayor-prev-pill" id="ms-prev-mayors-btn">
-          <iconify-icon icon="lucide:users" style="font-size:15px;pointer-events:none;"></iconify-icon>
-          <span>الرؤساء السابقون</span>
-          <iconify-icon class="mayor-prev-pill-arrow" icon="lucide:chevron-left" style="pointer-events:none;"></iconify-icon>
-        </button>
-      </div>
-    </div>
 
-    <div style="margin:14px 16px 0;background:var(--card);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--elev-2);border:1px solid var(--border-light)">
+    <div style="margin:4px 16px 0;background:var(--card);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--elev-2);border:1px solid var(--border-light)">
       <div class="more-item" id="ms-item-map">
         <div class="more-icon" style="background:var(--blue-l)"><iconify-icon icon="lucide:map-pin" style="color:var(--blue);font-size:20px;pointer-events:none"></iconify-icon></div>
         <div style="flex:1"><div class="more-item-title">الخريطة التفاعلية</div><div class="more-item-sub">مرافق وشواطئ ومعالم شطايبي</div></div>
@@ -1445,25 +1428,6 @@ async function loadArchiveTab(tab){
 function syncMayorToSheet(){
   if(!_mayorsList.length)return;
   var m=_mayorsList[0];
-
-  /* ── Bottom Sheet Card ── */
-  var nameEl    = document.getElementById('ms-mayor-name');
-  var photoEl   = document.getElementById('ms-mayor-photo');
-  var iconEl    = document.getElementById('ms-mayor-icon');
-  var mandateEl = document.getElementById('ms-mayor-mandate');
-  if(nameEl) nameEl.textContent = m.name_ar || m.name || '--';
-  if(m.image_url && photoEl){
-    photoEl.src = m.image_url;
-    photoEl.style.display = 'block';
-    if(iconEl) iconEl.style.display = 'none';
-  }
-  var period = m.period_ar || m.period || '';
-  if(period && mandateEl){
-    mandateEl.innerHTML =
-      '<iconify-icon icon="lucide:calendar-days" style="font-size:11px;pointer-events:none;color:rgba(255,255,255,0.55)"></iconify-icon>' +
-      '<span class="mayor-mandate-text">' + period + '</span>';
-  }
-
   /* ── Home Card ── */
   var hNameEl = document.getElementById('home-mayor-name');
   var hPhotoEl = document.getElementById('home-mayor-photo');
