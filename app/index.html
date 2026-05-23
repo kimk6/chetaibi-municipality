@@ -541,11 +541,11 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .ann-carousel-wrap{margin:0 16px 6px;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(37,99,168,.18),0 1px 4px rgba(0,0,0,.06);}
 .ann-carousel-track{display:flex;flex-direction:row;will-change:transform;direction:ltr;}
 .ann-slide{flex:0 0 100%;width:100%;min-height:160px;display:flex;align-items:stretch;position:relative;overflow:hidden;cursor:pointer;touch-action:pan-x;direction:rtl;border-radius:18px;}
-.ann-icon{position:absolute;left:6px;bottom:12px;width:78px;height:78px;object-fit:contain;pointer-events:none;opacity:.92;filter:drop-shadow(2px 4px 8px rgba(0,0,0,.18));}
+.ann-icon{position:absolute;left:6px;top:50%;transform:translateY(-50%);width:78px;height:78px;object-fit:contain;pointer-events:none;opacity:.92;filter:drop-shadow(2px 4px 8px rgba(0,0,0,.18));}
 .ann-content{flex:1;display:flex;flex-direction:column;padding:12px 12px 12px 94px;min-width:0;}
 .ann-title{font-size:18px;font-weight:900;color:#fff;text-align:center;line-height:1.35;letter-spacing:-.3px;text-shadow:0 1px 4px rgba(0,0,0,.25);margin-bottom:8px;}
 .ann-excerpt{font-size:11px;color:rgba(255,255,255,.88);line-height:1.6;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;flex:1;}
-.ann-bottom-row{display:flex;align-items:center;justify-content:space-between;margin-top:8px;gap:8px;}
+.ann-bottom-row{display:flex;align-items:center;flex-direction:row-reverse;justify-content:space-between;margin-top:8px;gap:8px;}
 .ann-dots{display:flex;align-items:center;gap:5px;}
 .ann-dot{width:7px;height:7px;border-radius:99px;border:none;background:rgba(255,255,255,.4);cursor:pointer;transition:width .2s,background .2s;padding:0;flex-shrink:0;}
 .ann-dot.active{width:20px;background:#fff;}
@@ -1641,9 +1641,9 @@ function _annUpdatePos(animate){
 function annGoTo(i){
   _annIdx=((i % _annTotal) + _annTotal) % _annTotal;
   _annUpdatePos(true);
-  /* تحديث الـ dots في كل الشرائح */
+  var DOTS=4;
   document.querySelectorAll('#ann-carousel-track .ann-dots .ann-dot').forEach(function(d,j){
-    d.classList.toggle('active', j===_annIdx);
+    d.classList.toggle('active', j===_annIdx%DOTS);
   });
 }
 
@@ -1676,10 +1676,10 @@ function _annInitDrag(track){
 }
 
 function _annRenderDots(){
-  /* نرسم الـ dots في كل شريحة */
+  var DOTS=4;
   document.querySelectorAll('#ann-carousel-track .ann-dots').forEach(function(dotsEl){
-    dotsEl.innerHTML=_annItems.map(function(_,i){
-      return '<button class="ann-dot'+(i===_annIdx?' active':'')+'" onclick="annGoTo('+i+');event.stopPropagation()"></button>';
+    dotsEl.innerHTML=Array.from({length:DOTS},function(_,i){
+      return '<button class="ann-dot'+(i===_annIdx%DOTS?' active':'')+'" onclick="annGoTo('+i+');event.stopPropagation()"></button>';
     }).join('');
   });
 }
