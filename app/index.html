@@ -387,7 +387,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   background: #ffffff;
   border-radius: 20px;
   border: 2px solid rgba(5,150,105,0.30);
-  box-shadow:0 3px 8px rgba(0,0,0,.08),0 1px 3px rgba(0,0,0,.05);
+  box-shadow: 0 4px 20px rgba(5,150,105,0.10), 0 1px 4px rgba(0,0,0,0.04);
   position: relative;
   overflow: hidden;
 }
@@ -548,7 +548,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   background:#ffffff;
   border-radius:20px;
   border:2px solid rgba(5,150,105,0.30);
-  box-shadow:0 3px 8px rgba(0,0,0,.08),0 1px 3px rgba(0,0,0,.05);
+  box-shadow:0 4px 20px rgba(5,150,105,0.10),0 1px 4px rgba(0,0,0,0.04);
   position:relative;overflow:hidden;cursor:pointer;
   direction:rtl;
 }
@@ -848,7 +848,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               </span>
               <!-- ✅ تعديل 4: "تصفح" → "الخريطة" مع أيقونة map-pin أخضر -->
               <button class="see-all-arrow-btn" id="btn-see-beaches">الخريطة
-                <iconify-icon icon="lucide:map" style="font-size:16px;color:var(--green);pointer-events:none;"></iconify-icon>
+                <iconify-icon icon="lucide:map-pin" style="font-size:16px;color:var(--green);pointer-events:none;"></iconify-icon>
               </button>
             </div>
             <div class="h-scroll" id="h-beaches">
@@ -865,7 +865,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               </span>
               <!-- ✅ تعديل 4: "تصفح" → "الخريطة" مع أيقونة map-pin أخضر -->
               <button class="see-all-arrow-btn" id="btn-see-tourism">الخريطة
-                <iconify-icon icon="lucide:map" style="font-size:16px;color:var(--green);pointer-events:none;"></iconify-icon>
+                <iconify-icon icon="lucide:map-pin" style="font-size:16px;color:var(--green);pointer-events:none;"></iconify-icon>
               </button>
             </div>
             <div class="h-scroll" id="h-tourism">
@@ -1603,7 +1603,7 @@ function renderWeatherDay(i){
   if(_g('pwa-weather-min'))_g('pwa-weather-min').textContent=Math.round(d.tmin)+'°';
   var tl=_g('pwa-weather-time-label');if(tl)tl.textContent=i===0?'شطايبي — عنابة':d.label;
   var tabs=_g('weather-day-tabs');if(!tabs)return;
-  tabs.querySelectorAll('button').forEach(function(b,j){b.style.background=j===i?'#3b82f6':'var(--surface)';b.style.color=j===i?'#fff':'var(--text)';b.style.borderColor=j===i?'#3b82f6':'var(--border-light)';b.style.fontWeight=j===i?'800':'600';});
+  tabs.querySelectorAll('button').forEach(function(b,j){b.style.background=j===i?'#f59e0b':'var(--surface)';b.style.color=j===i?'#fff':'var(--text)';b.style.borderColor=j===i?'#f59e0b':'var(--border-light)';b.style.fontWeight=j===i?'800':'600';});
 }
 async function fetchPWAWeather(){
   try{
@@ -1709,8 +1709,8 @@ function _annCard(n){
     '<div class="ann-card-sep"></div>'+
     '<div class="ann-card-footer">'+
       '<button class="ann-card-btn" data-id="'+n.id+'">'+
+        '<iconify-icon icon="lucide:book-open" style="font-size:13px;pointer-events:none"></iconify-icon>'+
         'اقرأ المزيد'+
-        '<iconify-icon icon="lucide:chevron-left" style="font-size:13px;pointer-events:none"></iconify-icon>'+
       '</button>'+
       dateHtml+
     '</div>'+
