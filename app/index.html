@@ -26,8 +26,8 @@
   --brown:#92400e;--brown-l:#fef3e2;
   --surface:#f4f6f8;--surface-2:#eceef1;
   --card:#ffffff;
-  --text:#0f172a;--text-2:#1e293b;--text-3:#334155;
-  --muted:#64748b;--muted-2:#94a3b8;--muted-3:#cbd5e1;
+  --text:#0f172a;--text-2:#1e293b;--text-3:#4A4A4A;
+  --muted:#4A4A4A;--muted-2:#6b7280;--muted-3:#cbd5e1;
   --border:#e2e8f0;--border-light:#f1f5f9;
   --nav-h:64px;
   --header-h:80px;
@@ -548,11 +548,17 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 #lb-close{position:absolute;top:calc(var(--safe-t) + 14px);left:14px;width:44px;height:44px;background:rgba(255,255,255,.18);border:none;border-radius:50%;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);touch-action:manipulation;pointer-events:auto;z-index:10;transition:background var(--dur-fast);}
 #lb-close:active{background:rgba(255,255,255,.32);}
 
-/* WEATHER / SEA */
+/* WEATHER / SEA UNIFIED */
 .weather-sea-section{padding:0 16px 6px;}
-.weather-card,.sea-card{background:#fff;border-radius:20px;padding:18px;box-shadow:0 4px 16px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.03);margin-bottom:12px;touch-action:pan-y;position:relative;z-index:0;}
-.weather-card{border:1px solid rgba(5,150,105,0.10);}
-.sea-card{border:1px solid rgba(14,165,233,0.10);}
+.weather-sea-unified-card{background:#fff;border-radius:20px;box-shadow:0 4px 16px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.03);border:1px solid rgba(0,0,0,0.06);overflow:hidden;}
+.ws-tabs{display:flex;border-bottom:1px solid var(--border-light);background:#fafafa;}
+.ws-tab{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:12px 8px;border:none;background:transparent;font-family:var(--font-main);font-size:13px;font-weight:700;color:var(--muted-2);cursor:pointer;touch-action:manipulation;position:relative;transition:color var(--dur-mid),background var(--dur-mid);}
+.ws-tab::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:2.5px;border-radius:2px 2px 0 0;background:var(--green);opacity:0;transition:opacity var(--dur-mid);}
+.ws-tab.active{color:var(--green);background:#fff;font-weight:800;}
+.ws-tab.active::after{opacity:1;}
+.ws-tab:active{opacity:.7;}
+.ws-panel{padding:18px;}
+.ws-panel.hidden{display:none;}
 .wcard-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
 .wcard-icon-wrap{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .3s;}
 .wcard-title{font-size:13.5px;font-weight:900;color:var(--text);}
@@ -564,7 +570,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .wcard-sea-state{font-size:24px;font-weight:900;color:var(--text);line-height:1;}
 .wcard-desc{font-size:12px;color:var(--muted);font-weight:600;margin-top:3px;}
 .wcard-stats{display:flex;flex-direction:column;gap:7px;align-items:flex-start;}
-.wcard-stat{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-3);font-weight:500;}
+.wcard-stat{display:flex;align-items:center;gap:6px;font-size:12px;color:#4A4A4A;font-weight:500;}
 .wcard-stat iconify-icon{font-size:14px;pointer-events:none;flex-shrink:0;}
 
 /* SEARCH */
@@ -653,101 +659,97 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </div>
           </div>
 
-          <!-- بطاقة الرئيس - الصفحة الرئيسية -->
-          <div class="mayor-home-card" id="home-mayor-card">
-            <div class="mayor-home-inner">
-              <div class="mayor-home-top">
-                <div class="mayor-home-photo-ring">
-                  <div class="mayor-home-photo-inner" id="home-mayor-photo-wrap">
-                    <iconify-icon id="home-mayor-icon" icon="lucide:user" style="font-size:30px;color:var(--green);pointer-events:none"></iconify-icon>
-                    <img id="home-mayor-photo" src="" alt="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;">
-                  </div>
-                </div>
-                <div class="mayor-home-info">
-                  <div class="mayor-home-role">رئيس المجلس الشعبي البلدي</div>
-                  <div class="mayor-home-name" id="home-mayor-name">جاري التحميل...</div>
-                </div>
-              </div>
-              <button class="mayor-home-btn" id="home-prev-mayors-btn">
-                <iconify-icon icon="lucide:users" style="font-size:14px;pointer-events:none;"></iconify-icon>
-                <span>الرؤساء السابقون</span>
-                <iconify-icon class="mayor-home-btn-arrow" icon="lucide:chevron-left" style="pointer-events:none;"></iconify-icon>
-              </button>
-            </div>
-          </div>
-
-          <!-- بطاقتا الطقس والبحر -->
+          <!-- بطاقة الطقس والبحر الموحدة -->
           <div class="section" style="padding-bottom:4px">
             <div class="weather-sea-section">
-              <div class="weather-card">
-                <div class="wcard-header">
-                  <div class="wcard-icon-wrap" id="pwa-weather-icon-bg" style="background:#fef3c7">
-                    <iconify-icon icon="lucide:sun" id="pwa-weather-header-icon" style="font-size:22px;color:#f59e0b;pointer-events:none"></iconify-icon>
-                  </div>
-                  <div>
-                    <div class="wcard-title">حالة الطقس</div>
-                    <div class="wcard-subtitle" id="pwa-weather-time-label">شطايبي — عنابة</div>
-                  </div>
+              <div class="weather-sea-unified-card">
+
+                <!-- تبويبان علويان -->
+                <div class="ws-tabs">
+                  <button class="ws-tab active" id="ws-tab-weather" onclick="switchWsTab('weather')">
+                    <iconify-icon icon="lucide:sun" style="font-size:14px;pointer-events:none"></iconify-icon>
+                    الطقس
+                  </button>
+                  <button class="ws-tab" id="ws-tab-sea" onclick="switchWsTab('sea')">
+                    <iconify-icon icon="lucide:waves" style="font-size:14px;pointer-events:none"></iconify-icon>
+                    البحر
+                  </button>
                 </div>
-                <div id="weather-day-tabs" style="display:flex;gap:6px;padding:0 2px 10px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;"></div>
-                <div class="wcard-main">
-                  <div class="wcard-primary">
-                    <span class="wcard-emoji" id="pwa-weather-icon">☀️</span>
+
+                <!-- محتوى الطقس -->
+                <div class="ws-panel" id="ws-panel-weather">
+                  <div class="wcard-header">
+                    <div class="wcard-icon-wrap" id="pwa-weather-icon-bg" style="background:#fef3c7">
+                      <iconify-icon icon="lucide:sun" id="pwa-weather-header-icon" style="font-size:22px;color:#f59e0b;pointer-events:none"></iconify-icon>
+                    </div>
                     <div>
-                      <div class="wcard-temp" id="pwa-weather-temp">--°</div>
-                      <div class="wcard-desc" id="pwa-weather-desc">جاري التحميل...</div>
+                      <div class="wcard-title">حالة الطقس</div>
+                      <div class="wcard-subtitle" id="pwa-weather-time-label">شطايبي — عنابة</div>
                     </div>
                   </div>
-                  <div class="wcard-stats">
-                    <div class="wcard-stat">
-                      <iconify-icon icon="lucide:droplets" style="color:#60a5fa"></iconify-icon>
-                      <span id="pwa-weather-hum">--%</span>
+                  <div id="weather-day-tabs" style="display:flex;gap:6px;padding:0 2px 10px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;"></div>
+                  <div class="wcard-main">
+                    <div class="wcard-primary">
+                      <span class="wcard-emoji" id="pwa-weather-icon">☀️</span>
+                      <div>
+                        <div class="wcard-temp" id="pwa-weather-temp">--°</div>
+                        <div class="wcard-desc" id="pwa-weather-desc">جاري التحميل...</div>
+                      </div>
                     </div>
-                    <div class="wcard-stat">
-                      <iconify-icon icon="lucide:wind" style="color:#34d399"></iconify-icon>
-                      <span id="pwa-weather-wind">-- كم/س</span>
-                    </div>
-                    <div class="wcard-stat">
-                      <iconify-icon icon="lucide:thermometer" style="color:#f87171"></iconify-icon>
-                      <span id="pwa-weather-max">--</span> / <span id="pwa-weather-min">--</span>
+                    <div class="wcard-stats">
+                      <div class="wcard-stat">
+                        <iconify-icon icon="lucide:droplets" style="color:#60a5fa"></iconify-icon>
+                        <span id="pwa-weather-hum">--%</span>
+                      </div>
+                      <div class="wcard-stat">
+                        <iconify-icon icon="lucide:wind" style="color:#34d399"></iconify-icon>
+                        <span id="pwa-weather-wind">-- كم/س</span>
+                      </div>
+                      <div class="wcard-stat">
+                        <iconify-icon icon="lucide:thermometer" style="color:#f87171"></iconify-icon>
+                        <span id="pwa-weather-max">--</span> / <span id="pwa-weather-min">--</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="sea-card">
-                <div class="wcard-header">
-                  <div class="wcard-icon-wrap" style="background:#dbeafe">
-                    <iconify-icon icon="lucide:waves" style="font-size:22px;color:#3b82f6;pointer-events:none"></iconify-icon>
-                  </div>
-                  <div>
-                    <div class="wcard-title">حالة البحر</div>
-                    <div class="wcard-subtitle" id="sea-subtitle">للصيادين والسياح</div>
-                  </div>
-                </div>
-                <div id="sea-day-tabs" style="display:flex;gap:6px;padding:0 2px 10px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;"></div>
-                <div class="wcard-main">
-                  <div class="wcard-primary">
-                    <span class="wcard-emoji" id="pwa-sea-icon">🌊</span>
+
+                <!-- محتوى البحر -->
+                <div class="ws-panel hidden" id="ws-panel-sea">
+                  <div class="wcard-header">
+                    <div class="wcard-icon-wrap" style="background:#dbeafe">
+                      <iconify-icon icon="lucide:waves" style="font-size:22px;color:#3b82f6;pointer-events:none"></iconify-icon>
+                    </div>
                     <div>
-                      <div class="wcard-sea-state" id="pwa-sea-state">--</div>
-                      <div class="wcard-desc" id="pwa-sea-desc">جاري التحميل...</div>
+                      <div class="wcard-title">حالة البحر</div>
+                      <div class="wcard-subtitle" id="sea-subtitle">للصيادين والسياح</div>
                     </div>
                   </div>
-                  <div class="wcard-stats">
-                    <div class="wcard-stat">
-                      <iconify-icon icon="lucide:wave-triangle" style="color:#60a5fa"></iconify-icon>
-                      <span>ارتفاع: </span><span id="pwa-sea-wave">-- م</span>
+                  <div id="sea-day-tabs" style="display:flex;gap:6px;padding:0 2px 10px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;"></div>
+                  <div class="wcard-main">
+                    <div class="wcard-primary">
+                      <span class="wcard-emoji" id="pwa-sea-icon">🌊</span>
+                      <div>
+                        <div class="wcard-sea-state" id="pwa-sea-state">--</div>
+                        <div class="wcard-desc" id="pwa-sea-desc">جاري التحميل...</div>
+                      </div>
                     </div>
-                    <div class="wcard-stat">
-                      <iconify-icon icon="lucide:thermometer" style="color:#2dd4bf"></iconify-icon>
-                      <span>الماء: </span><span id="pwa-sea-water-temp">19°C</span>
-                    </div>
-                    <div class="wcard-stat">
-                      <iconify-icon icon="lucide:compass" style="color:#818cf8"></iconify-icon>
-                      <span id="pwa-sea-dir">--</span>
+                    <div class="wcard-stats">
+                      <div class="wcard-stat">
+                        <iconify-icon icon="lucide:wave-triangle" style="color:#60a5fa"></iconify-icon>
+                        <span>ارتفاع: </span><span id="pwa-sea-wave">-- م</span>
+                      </div>
+                      <div class="wcard-stat">
+                        <iconify-icon icon="lucide:thermometer" style="color:#2dd4bf"></iconify-icon>
+                        <span>الماء: </span><span id="pwa-sea-water-temp">19°C</span>
+                      </div>
+                      <div class="wcard-stat">
+                        <iconify-icon icon="lucide:compass" style="color:#818cf8"></iconify-icon>
+                        <span id="pwa-sea-dir">--</span>
+                      </div>
                     </div>
                   </div>
                 </div>
+
               </div>
             </div>
           </div>
@@ -926,7 +928,32 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   <div id="more-sheet">
     <div class="more-sheet-drag"></div>
 
-    <div style="margin:4px 16px 0;background:var(--card);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--elev-2);border:1px solid var(--border-light)">
+    <!-- بطاقة الرئيس داخل الـ overlay -->
+    <div class="mayor-sheet-card" id="ms-mayor-card">
+      <div class="mayor-card-inner-wrap">
+        <div class="mayor-card-top">
+          <div class="mayor-photo-container">
+            <div class="mayor-photo-ring">
+              <div class="mayor-photo-inner" id="ms-mayor-photo-wrap">
+                <iconify-icon id="ms-mayor-icon" icon="lucide:user" style="font-size:28px;color:var(--green);pointer-events:none"></iconify-icon>
+                <img id="ms-mayor-photo" src="" alt="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;">
+              </div>
+            </div>
+          </div>
+          <div class="mayor-info-block">
+            <div class="mayor-role-label">رئيس المجلس الشعبي البلدي</div>
+            <div class="mayor-name-text" id="ms-mayor-name">جاري التحميل...</div>
+          </div>
+          <button class="mayor-prev-pill" id="ms-prev-mayors-btn" style="align-self:center;margin-right:auto;">
+            <iconify-icon icon="lucide:users" style="font-size:14px;pointer-events:none;"></iconify-icon>
+            <span>السابقون</span>
+            <iconify-icon class="mayor-prev-pill-arrow" icon="lucide:chevron-left" style="pointer-events:none;"></iconify-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin:10px 16px 0;background:var(--card);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--elev-2);border:1px solid var(--border-light)">
       <div class="more-item" id="ms-item-map">
         <div class="more-icon" style="background:var(--blue-l)"><iconify-icon icon="lucide:map-pin" style="color:var(--blue);font-size:20px;pointer-events:none"></iconify-icon></div>
         <div style="flex:1"><div class="more-item-title">الخريطة التفاعلية</div><div class="more-item-sub">مرافق وشواطئ ومعالم شطايبي</div></div>
@@ -1146,6 +1173,17 @@ function resetHeaderState(){
 function resetScroll(screenId){
   var s=document.querySelector('#'+screenId+' .scroll-area');
   if(s)s.scrollTop=0;
+}
+
+/* ══ WEATHER/SEA TAB SWITCH ══ */
+function switchWsTab(tab){
+  var tabs=['weather','sea'];
+  tabs.forEach(function(t){
+    var btn=document.getElementById('ws-tab-'+t);
+    var panel=document.getElementById('ws-panel-'+t);
+    if(btn) btn.classList.toggle('active', t===tab);
+    if(panel) panel.classList.toggle('hidden', t!==tab);
+  });
 }
 
 /* ══════════════════════════════════════════
@@ -1458,15 +1496,15 @@ async function loadArchiveTab(tab){
 function syncMayorToSheet(){
   if(!_mayorsList.length)return;
   var m=_mayorsList[0];
-  /* ── Home Card ── */
-  var hNameEl = document.getElementById('home-mayor-name');
-  var hPhotoEl = document.getElementById('home-mayor-photo');
-  var hIconEl  = document.getElementById('home-mayor-icon');
-  if(hNameEl) hNameEl.textContent = 'السيد ' + (m.name_ar || m.name || '--');
-  if(m.image_url && hPhotoEl){
-    hPhotoEl.src = m.image_url;
-    hPhotoEl.style.display = 'block';
-    if(hIconEl) hIconEl.style.display = 'none';
+  /* ── More Sheet Card ── */
+  var nameEl  = document.getElementById('ms-mayor-name');
+  var photoEl = document.getElementById('ms-mayor-photo');
+  var iconEl  = document.getElementById('ms-mayor-icon');
+  if(nameEl) nameEl.textContent = 'السيد ' + (m.name_ar || m.name || '--');
+  if(m.image_url && photoEl){
+    photoEl.src = m.image_url;
+    photoEl.style.display = 'block';
+    if(iconEl) iconEl.style.display = 'none';
   }
 }
 
@@ -1879,9 +1917,6 @@ function initEventDelegation(){
   document.getElementById('nav-archive').addEventListener('click',function(){haptic('tab');switchTab('archive');});
   document.getElementById('hdr-search-btn').addEventListener('click',function(){Search.open();});
   document.getElementById('hdr-notif-btn').addEventListener('click',function(){haptic('light');});
-  /* ── Home Mayor Card Button ── */
-  var homePrevBtn=document.getElementById('home-prev-mayors-btn');
-  if(homePrevBtn)homePrevBtn.addEventListener('click',function(){haptic('light');openPrevMayorsModal();});
   document.getElementById('btn-see-news-official').addEventListener('click',function(){haptic('light');switchTab('news');});
   document.getElementById('btn-see-news-all').addEventListener('click',function(){haptic('light');switchTab('news');});
   document.getElementById('btn-see-beaches').addEventListener('click',function(){haptic('light');switchTabWithFilter('map','beach');});
