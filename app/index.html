@@ -537,139 +537,34 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .ws-tab:active{opacity:.7;}
 .ws-panel{padding:18px;}
 .ws-panel.hidden{display:none;}
-/* ══ ANNOUNCE CAROUSEL 2026 ══ */
-.ann-wrap{margin:0 16px 4px;position:relative;}
-.ann-track-clip{border-radius:20px;overflow:hidden;position:relative;}
-.ann-track{display:flex;direction:ltr;will-change:transform;transition:transform .38s cubic-bezier(.4,0,.2,1);}
-
-/* ── بطاقة الإعلان ── */
-.ann-card{
-  flex:0 0 100%;min-height:148px;
-  display:flex;flex-direction:column;justify-content:space-between;
-  position:relative;overflow:hidden;cursor:pointer;touch-action:pan-x;
-  direction:rtl;
-  padding:18px 18px 14px;
-  box-sizing:border-box;
-}
-/* Gradient الخلفية */
-.ann-card-bg{
-  position:absolute;inset:0;
-  background:linear-gradient(135deg,#0f2942 0%,#1a5276 45%,#0e6655 100%);
-  z-index:0;
-}
-/* طبقة نقوش شفافة خلف المحتوى */
-.ann-card-pattern{
-  position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none;
-}
-.ann-card-pattern::before{
-  content:'';position:absolute;
-  width:220px;height:220px;border-radius:50%;
-  background:rgba(255,255,255,.04);
-  top:-60px;left:-60px;
-}
-.ann-card-pattern::after{
-  content:'';position:absolute;
-  width:160px;height:160px;border-radius:50%;
-  background:rgba(255,255,255,.03);
-  bottom:-50px;right:30px;
-}
-/* المحتوى فوق الخلفية */
-.ann-card-inner{position:relative;z-index:2;display:flex;flex-direction:column;gap:6px;flex:1;}
-
-/* شريط علوي: الكاتيغوري + التاريخ */
-.ann-card-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
-.ann-card-badge{
-  display:inline-flex;align-items:center;gap:5px;
-  background:rgba(255,255,255,.14);
-  border:1px solid rgba(255,255,255,.2);
-  border-radius:6px;padding:3px 9px;
-  font-size:10px;font-weight:800;color:rgba(255,255,255,.9);
-  font-family:var(--font-main);letter-spacing:.3px;
-}
-.ann-card-badge iconify-icon{font-size:11px;pointer-events:none;}
-.ann-card-date{
-  display:flex;align-items:center;gap:4px;
-  font-size:10px;font-weight:600;color:rgba(255,255,255,.6);
-  font-family:var(--font-main);
-}
-.ann-card-date iconify-icon{font-size:11px;pointer-events:none;color:rgba(255,255,255,.5);}
-
-/* العنوان */
-.ann-card-title{
-  font-size:15px;font-weight:900;color:#fff;
-  line-height:1.38;letter-spacing:-.2px;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
-  text-shadow:0 1px 8px rgba(0,0,0,.3);
-}
-/* النص */
-.ann-card-body{
-  font-size:11px;color:rgba(255,255,255,.68);
-  line-height:1.6;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
-}
-
-/* شريط سفلي: زر + dots */
-.ann-card-footer{
-  position:relative;z-index:2;
-  display:flex;align-items:center;justify-content:space-between;
-  margin-top:10px;
-}
-.ann-card-btn{
-  display:inline-flex;align-items:center;gap:5px;
-  background:rgba(255,255,255,.12);
-  border:1px solid rgba(255,255,255,.22);
-  border-radius:8px;padding:5px 13px;
-  font-family:var(--font-main);font-size:10.5px;font-weight:800;
-  color:rgba(255,255,255,.9);cursor:pointer;touch-action:manipulation;
-  transition:background .15s,transform .1s;white-space:nowrap;
-}
-.ann-card-btn:active{background:rgba(255,255,255,.24);transform:scale(.96);}
-.ann-card-btn iconify-icon{font-size:12px;pointer-events:none;}
-/* Dots */
-.ann-dots-wrap{display:flex;align-items:center;gap:5px;}
-.ann-dot{
-  width:7px;height:7px;border-radius:99px;border:none;padding:0;
-  background:rgba(255,255,255,.3);cursor:pointer;flex-shrink:0;
-  transition:width .28s cubic-bezier(.4,0,.2,1),background .28s,opacity .28s;
-}
-.ann-dot.active{width:24px;background:rgba(255,255,255,.95);}
-
-/* بطاقة "تصفح الكل" */
-.ann-card-more{
-  flex:0 0 100%;min-height:148px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:12px;cursor:pointer;touch-action:pan-x;direction:rtl;
-  position:relative;overflow:hidden;
-}
-.ann-card-more-bg{
-  position:absolute;inset:0;
-  background:linear-gradient(135deg,#0f2942 0%,#1a5276 45%,#0e6655 100%);
-  z-index:0;
-}
-.ann-card-more-bg::before{
-  content:'';position:absolute;inset:0;
-  background:rgba(255,255,255,.03);
-}
-.ann-card-more-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:10px;}
-.ann-card-more-icon{
-  width:44px;height:44px;border-radius:50%;
-  background:rgba(255,255,255,.12);
-  border:1.5px solid rgba(255,255,255,.2);
-  display:flex;align-items:center;justify-content:center;
-}
-.ann-card-more-icon iconify-icon{font-size:22px;color:rgba(255,255,255,.9);pointer-events:none;}
-.ann-card-more-label{
-  font-size:13px;font-weight:800;color:rgba(255,255,255,.9);
-  font-family:var(--font-main);letter-spacing:-.1px;
-}
-.ann-card-more-sub{font-size:11px;color:rgba(255,255,255,.5);font-family:var(--font-main);}
-
-/* سكيلتون */
-.ann-skeleton{
-  flex:0 0 100%;min-height:148px;direction:rtl;
-  background:linear-gradient(135deg,#e2e8f0,#f1f5f9);
-  border-radius:20px;
-}
+/* ══ ANNOUNCE CAROUSEL ══ */
+.ann-carousel-wrap{margin:0 16px 6px;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(37,99,168,.18),0 1px 4px rgba(0,0,0,.06);}
+.ann-carousel-track{display:flex;flex-direction:row;will-change:transform;direction:ltr;}
+.ann-slide{flex:0 0 100%;width:100%;min-height:160px;display:flex;align-items:stretch;position:relative;overflow:hidden;cursor:pointer;touch-action:pan-x;direction:rtl;border-radius:18px;}
+.ann-icon{position:absolute;left:6px;top:50%;transform:translateY(-50%);width:78px;height:78px;object-fit:contain;pointer-events:none;opacity:.92;filter:drop-shadow(2px 4px 8px rgba(0,0,0,.18));}
+.ann-content{flex:1;display:flex;flex-direction:column;padding:12px 12px 12px 94px;min-width:0;}
+.ann-title{font-size:18px;font-weight:900;color:#fff;text-align:center;line-height:1.35;letter-spacing:-.3px;text-shadow:0 1px 4px rgba(0,0,0,.25);margin-bottom:8px;}
+.ann-excerpt{font-size:11px;color:rgba(255,255,255,.88);line-height:1.6;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;flex:1;}
+.ann-bottom-row{display:flex;align-items:center;flex-direction:row-reverse;justify-content:space-between;margin-top:8px;gap:8px;}
+.ann-dots{display:flex;align-items:center;gap:5px;}
+.ann-dot{width:7px;height:7px;border-radius:99px;border:none;background:rgba(255,255,255,.4);cursor:pointer;transition:width .2s,background .2s;padding:0;flex-shrink:0;}
+.ann-dot.active{width:20px;background:#fff;}
+.ann-readmore-btn{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.35);border-radius:8px;padding:5px 12px;font-family:var(--font-main);font-size:10.5px;font-weight:800;color:#fff;cursor:pointer;touch-action:manipulation;white-space:nowrap;transition:background .15s;flex-shrink:0;}
+.ann-readmore-btn:active{background:rgba(255,255,255,.32);}
+.ann-readmore{display:none;}
+.ann-footer{display:none;}
+.ann-date{display:none;}
+.ann-meta{display:none;}
+.ann-meta-date{display:none;}
+.ann-meta-icon{display:none;}
+.ann-meta-sep{display:none;}
+.ann-bottom-bar{display:none;}
+.ann-bottom-date{display:none;}
+.ann-more-slide{display:flex;align-items:center;justify-content:center;cursor:default;border-radius:18px;}
+.ann-more-btn{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.4);border-radius:14px;padding:14px 22px;font-family:var(--font-main);font-size:13px;font-weight:900;color:#fff;cursor:pointer;touch-action:manipulation;backdrop-filter:blur(6px);letter-spacing:-.1px;}
+.ann-more-btn:active{background:rgba(255,255,255,.3);}
+.ann-slide-skeleton{background:linear-gradient(135deg,#c7d9ef,#dce9f7);border-radius:18px;}
+.ann-sk-bg{width:100%;height:160px;}
 .wcard-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
 .wcard-icon-wrap{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .3s;}
 .wcard-title{font-size:13.5px;font-weight:900;color:var(--text);}
@@ -738,15 +633,33 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         <div class="content-block">
 
           <div class="section" style="padding-top:20px">
-            <!-- Announce Carousel 2026 -->
-            <div class="ann-wrap" id="ann-wrap">
-              <div class="ann-track-clip">
-                <div class="ann-track" id="ann-track">
-                  <div class="ann-skeleton"></div>
+            <!-- Announce Carousel -->
+            <div class="ann-carousel-wrap" id="ann-carousel-wrap">
+              <div class="ann-carousel-track" id="ann-carousel-track">
+                <!-- الشرائح تُولَّد بالـ JS -->
+                <div class="ann-slide ann-slide-skeleton">
+                  <div class="sk ann-sk-bg"></div>
                 </div>
               </div>
             </div>
+          </div>
+
+          <div class="section">
+            <div class="section-header">
+              <span class="section-title">
+                <iconify-icon icon="lucide:newspaper" style="color:var(--green);pointer-events:none"></iconify-icon>
+                آخر المستجدات
+              </span>
+              <!-- ✅ تعديل 2: زر "الكل" في آخر المستجدات → يذهب لتصنيف "نشاطات" -->
+              <button class="see-all-arrow-btn" id="btn-see-news-all">
+                <span>الكل</span>
+                <iconify-icon icon="lucide:chevron-left" style="font-size:16px;pointer-events:none;"></iconify-icon>
+              </button>
             </div>
+            <div class="h-scroll" id="h-news">
+              <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
+            </div>
+          </div>
 
           <!-- بطاقة الطقس والبحر الموحدة -->
           <div class="section" style="padding-bottom:4px">
@@ -1689,116 +1602,143 @@ async function loadMayorHome(){
     syncMayorToSheet();
   }catch(e){}
 }
-/* ══ ANNOUNCE CAROUSEL 2026 ══ */
-var _annItems=[],_annIdx=0,_annTotal=0;
+/* ══ ANNOUNCE CAROUSEL ══ */
+var _annItems=[],_annIdx=0,_annTotal=0,_annStartX=0,_annDragging=false,_annDX=0;
+function _annBg(){return 'linear-gradient(135deg,#3b7fd4 0%,#5b9bd5 40%,#2563a8 100%)';}
 
-function _annCard(n){
-  var date=n.date?'<div class="ann-card-date"><iconify-icon icon="lucide:calendar-days"></iconify-icon>'+n.date+'</div>':'';
-  var title=n.title?'<div class="ann-card-title">'+n.title+'</div>':'';
-  var body=n.content?'<div class="ann-card-body">'+n.content.substring(0,100)+'...</div>':'';
-  return '<div class="ann-card" data-id="'+n.id+'">'+
-    '<div class="ann-card-bg"></div>'+
-    '<div class="ann-card-pattern"></div>'+
-    '<div class="ann-card-inner">'+
-      '<div class="ann-card-meta">'+
-        '<div class="ann-card-badge"><iconify-icon icon="lucide:megaphone"></iconify-icon>إعلان</div>'+
-        date+
+function _annMakeSlide(n){
+  var title=n.title?'<div class="ann-title">'+n.title+'</div>':'';
+  var datePrefix=n.date?'<iconify-icon icon="lucide:calendar-days" style="font-size:10px;color:rgba(255,255,255,.7);pointer-events:none;flex-shrink:0;vertical-align:middle"></iconify-icon><span style="font-size:10px;color:rgba(255,255,255,.75);font-weight:600;margin-left:3px;margin-right:5px;vertical-align:middle">'+n.date+'</span>':'';
+  var excerpt=(n.content||'').substring(0,120);
+  return '<div class="ann-slide" data-news-id="'+n.id+'" data-date="'+(n.date||'')+'" style="background:'+_annBg()+'">'+
+    '<img class="ann-icon" src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/ad.png" alt="">'+
+    '<div class="ann-content">'+title+
+      '<div class="ann-excerpt">'+datePrefix+excerpt+'...</div>'+
+      '<div class="ann-bottom-row">'+
+        '<div class="ann-dots" id="ann-dots-'+n.id+'"></div>'+
+        '<button class="ann-readmore-btn" data-news-id="'+n.id+'">اقرأ المزيد <iconify-icon icon="lucide:chevron-left" style="font-size:12px;pointer-events:none"></iconify-icon></button>'+
       '</div>'+
-      title+body+
-    '</div>'+
-    '<div class="ann-card-footer">'+
-      '<div class="ann-dots-wrap" id="ann-dots-'+n.id+'"></div>'+
-      '<button class="ann-card-btn" data-id="'+n.id+'">'+
-        'اقرأ المزيد<iconify-icon icon="lucide:arrow-left" style="font-size:12px;pointer-events:none"></iconify-icon>'+
-      '</button>'+
     '</div>'+
   '</div>';
 }
 
-function _annCardMore(){
-  return '<div class="ann-card-more" id="ann-card-more">'+
-    '<div class="ann-card-more-bg"></div>'+
-    '<div class="ann-card-more-inner">'+
-      '<div class="ann-card-more-icon"><iconify-icon icon="lucide:layout-list"></iconify-icon></div>'+
-      '<div class="ann-card-more-label">تصفح جميع الإعلانات</div>'+
-      '<div class="ann-card-more-sub">اضغط للاطلاع على المزيد</div>'+
-    '</div>'+
+function _annMakeMoreSlide(){
+  return '<div class="ann-slide ann-more-slide" style="background:'+_annBg()+'">'+
+    '<button class="ann-more-btn" id="ann-goto-official">'+
+      '<iconify-icon icon="lucide:layout-list" style="font-size:20px;pointer-events:none"></iconify-icon>'+
+      'عرض المزيد من الإعلانات'+
+    '</button>'+
   '</div>';
 }
 
-function _annDots(){
-  var html=Array.from({length:_annTotal},function(_,i){
-    return '<button class="ann-dot'+(i===_annIdx?' active':'')+'" onclick="annTo('+i+');event.stopPropagation()"></button>';
-  }).join('');
-  document.querySelectorAll('.ann-dots-wrap').forEach(function(el){el.innerHTML=html;});
+function _annUpdatePos(animate){
+  var track=document.getElementById('ann-carousel-track');if(!track)return;
+  /* LTR بسيط: الشريحة 0 → 0%, الشريحة 1 → -100%, ... */
+  track.style.transition=animate?'transform .32s cubic-bezier(.4,0,.2,1)':'none';
+  track.style.transform='translateX('+(-_annIdx*100)+'%)';
 }
 
-function annTo(i){
-  _annIdx=Math.max(0,Math.min(_annTotal-1,i));
-  var t=document.getElementById('ann-track');
-  if(t)t.style.transform='translateX('+(-_annIdx*100)+'%)';
-  _annDots();
+function annGoTo(i){
+  _annIdx=((i % _annTotal) + _annTotal) % _annTotal;
+  _annUpdatePos(true);
+  var DOTS=4;
+  document.querySelectorAll('#ann-carousel-track .ann-dots .ann-dot').forEach(function(d,j){
+    d.classList.toggle('active', j===_annIdx%DOTS);
+  });
 }
 
-function _annDrag(clip){
-  var sx=0,sy=0,lock=null,active=false;
-  clip.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;sy=e.touches[0].clientY;active=true;lock=null;},{passive:true});
-  clip.addEventListener('touchmove',function(e){
-    if(!active)return;
-    var dx=Math.abs(e.touches[0].clientX-sx),dy=Math.abs(e.touches[0].clientY-sy);
-    if(!lock&&(dx>7||dy>7))lock=dx>dy?'h':'v';
-    if(lock==='h'&&e.cancelable)e.preventDefault();
-  },{passive:false});
-  clip.addEventListener('touchend',function(e){
-    if(!active)return;active=false;
-    if(lock==='h'){var dx=e.changedTouches[0].clientX-sx;if(dx<-44)annTo(_annIdx+1);else if(dx>44)annTo(_annIdx-1);}
-    lock=null;
-  },{passive:true});
+function _annInitDrag(track){
+  var startX=0,startY=0,dragging=false,locked=null;
+  function onStart(x,y){startX=x;startY=y;dragging=true;locked=null;}
+  function onMove(e,x,y){
+    if(!dragging)return;
+    var dx=Math.abs(x-startX),dy=Math.abs(y-startY);
+    if(!locked&&(dx>6||dy>6))locked=dx>dy?'h':'v';
+    /* إذا أفقي: نمنع الـ scroll لتغيير الصفحة */
+    if(locked==='h'&&e.cancelable)e.preventDefault();
+  }
+  function onEnd(x){
+    if(!dragging)return;dragging=false;
+    if(locked==='h'){
+      var dx=x-startX;
+      if(dx<-40)annGoTo(_annIdx+1);
+      else if(dx>40)annGoTo(_annIdx-1);
+      else _annUpdatePos(true);
+    }
+    locked=null;
+  }
+  track.addEventListener('touchstart',function(e){onStart(e.touches[0].clientX,e.touches[0].clientY);},{passive:true});
+  track.addEventListener('touchmove',function(e){onMove(e,e.touches[0].clientX,e.touches[0].clientY);},{passive:false});
+  track.addEventListener('touchend',function(e){onEnd(e.changedTouches[0].clientX);},{passive:true});
+  track.addEventListener('mousedown',function(e){onStart(e.clientX,e.clientY);});
+  window.addEventListener('mousemove',function(e){if(dragging)onMove(e,e.clientX,e.clientY);});
+  window.addEventListener('mouseup',function(e){if(dragging)onEnd(e.clientX);});
+}
+
+function _annRenderDots(){
+  var DOTS=4;
+  document.querySelectorAll('#ann-carousel-track .ann-dots').forEach(function(dotsEl){
+    dotsEl.innerHTML=Array.from({length:DOTS},function(_,i){
+      return '<button class="ann-dot'+(i===_annIdx%DOTS?' active':'')+'" onclick="annGoTo('+i+');event.stopPropagation()"></button>';
+    }).join('');
+  });
 }
 
 function _annRender(){
-  var track=document.getElementById('ann-track');
+  var track=document.getElementById('ann-carousel-track');
   if(!track)return;
-  var cards=_annItems.map(_annCard);
-  cards.push(_annCardMore());
-  _annTotal=cards.length;
+
+  var slides=_annItems.map(_annMakeSlide);
+  slides.push(_annMakeMoreSlide());
+  _annTotal=slides.length;
   _annIdx=0;
-  track.innerHTML=cards.join('');
+
+  track.innerHTML=slides.join('');
   track.style.direction='ltr';
-  track.style.transform='translateX(0)';
-  _annDots();
-  /* أحداث */
-  track.querySelectorAll('.ann-card-btn').forEach(function(btn){
+
+  _annRenderDots();
+  _annUpdatePos(false);
+  track.querySelectorAll('.ann-readmore-btn').forEach(function(btn){
     btn.addEventListener('click',function(e){
       e.stopPropagation();
-      var id=btn.getAttribute('data-id');
+      var id=btn.getAttribute('data-news-id');
       if(id){haptic('light');openNewsModal(id);}
     });
   });
-  track.querySelectorAll('.ann-card[data-id]').forEach(function(card){
-    card.addEventListener('click',function(e){
-      if(e.target.closest('.ann-card-btn,.ann-dot'))return;
-      var id=card.getAttribute('data-id');
+  track.querySelectorAll('.ann-slide[data-news-id]').forEach(function(slide){
+    slide.addEventListener('click',function(e){
+      if(e.target.closest('.ann-readmore-btn'))return;
+      var id=slide.getAttribute('data-news-id');
       if(id){haptic('light');openNewsModal(id);}
     });
   });
-  var more=document.getElementById('ann-card-more');
-  if(more)more.addEventListener('click',function(){
-    haptic('light');var b=document.getElementById('btn-see-news-official');if(b)b.click();
+  var moreBtn=document.getElementById('ann-goto-official');
+  if(moreBtn)moreBtn.addEventListener('click',function(){
+    haptic('light');
+    var b=document.getElementById('btn-see-news-official');if(b)b.click();
   });
-  var clip=track.parentElement;
-  if(clip)_annDrag(clip);
+  _annInitDrag(track);
 }
 
 async function loadHOfficial(){
   try{
     var d=await api('/api/news');
     if(d.data)allNews=d.data;
+    /* الإعلانات → Carousel */
     _annItems=(d.data||[]).filter(function(n){return n.category==='official';}).slice(0,3);
     _annRender();
-  }catch(e){}
+    /* المستجدات → h-news */
+    var newsEl=document.getElementById('h-news');
+    if(newsEl){
+      var items=(d.data||[]).filter(function(n){return n.category!=='official'&&n.category!=='poster';}).slice(0,10);
+      newsEl.innerHTML=items.length?items.map(function(n){return makeNewsCard(n,true);}).join(''):'';
+    }
+  }catch(e){
+    var newsEl=document.getElementById('h-news');
+    if(newsEl)newsEl.innerHTML='';
+  }
 }
-async function loadHNews(){var el=document.getElementById('h-news');el.innerHTML=skNewsCards(3);try{var d=await api('/api/news');if(d.data)allNews=d.data;var items=(d.data||[]).filter(n=>n.category!=='official'&&n.category!=='poster').slice(0,10);el.innerHTML=items.length?items.map(n=>makeNewsCard(n,true)).join(''):'';}catch(e){el.innerHTML='';}}
+async function loadHNews(){/* تعمل عبر loadHOfficial */}
 async function loadHBeaches(){var el=document.getElementById('h-beaches');el.innerHTML=skPlaceCards(4);try{var d=await api('/api/beaches');el.innerHTML=(d.data||[]).slice(0,8).map(b=>placeCard(b,'beach')).join('');}catch(e){el.innerHTML='';}}
 async function loadHTourism(){var el=document.getElementById('h-tourism');el.innerHTML=skPlaceCards(4);try{var d=await api('/api/tourism');el.innerHTML=(d.data||[]).slice(0,8).map(t=>placeCard(t,'tourism')).join('');}catch(e){el.innerHTML='';}}
 function placeCard(item,type){
