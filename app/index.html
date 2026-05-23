@@ -397,13 +397,13 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 }
 
 /* ══════════════════════════════════════════
-   MAYOR HOME CARD — تصميم جديد عمودي
+   MAYOR HOME CARD — تصميم عمودي متوسط
 ══════════════════════════════════════════ */
 .mayor-home-card {
   margin: 6px 16px 4px;
   background: #ffffff;
   border-radius: 20px;
-  border: 2px solid rgba(5,150,105,0.35);
+  border: 2px solid rgba(5,150,105,0.30);
   box-shadow: 0 4px 20px rgba(5,150,105,0.10), 0 1px 4px rgba(0,0,0,0.04);
   position: relative;
   overflow: hidden;
@@ -467,8 +467,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   transition: background var(--dur-fast), transform var(--dur-fast);
   font-family: var(--font-main); font-size: 12px; font-weight: 800;
   color: var(--green-dark); white-space: nowrap;
-  align-self: center; letter-spacing: 0.1px;
-  margin-top: 2px;
+  align-self: center; letter-spacing: 0.1px; margin-top: 2px;
 }
 .mayor-home-btn:active { background: var(--green-l); transform: scale(0.975); }
 .mayor-home-btn iconify-icon { font-size: 14px; pointer-events: none; color: var(--green); flex-shrink: 0; }
@@ -660,16 +659,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               <div class="mayor-home-top">
                 <div class="mayor-home-photo-ring">
                   <div class="mayor-home-photo-inner" id="home-mayor-photo-wrap">
-                    <iconify-icon
-                      id="home-mayor-icon"
-                      icon="lucide:user"
-                      style="font-size:30px;color:var(--green);pointer-events:none">
-                    </iconify-icon>
-                    <img
-                      id="home-mayor-photo"
-                      src=""
-                      alt=""
-                      style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;">
+                    <iconify-icon id="home-mayor-icon" icon="lucide:user" style="font-size:30px;color:var(--green);pointer-events:none"></iconify-icon>
+                    <img id="home-mayor-photo" src="" alt="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;">
                   </div>
                 </div>
                 <div class="mayor-home-info">
@@ -698,7 +689,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                     <div class="wcard-subtitle" id="pwa-weather-time-label">شطايبي — عنابة</div>
                   </div>
                 </div>
-                <!-- أزرار الأيام -->
                 <div id="weather-day-tabs" style="display:flex;gap:6px;padding:0 2px 10px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;"></div>
                 <div class="wcard-main">
                   <div class="wcard-primary">
@@ -734,6 +724,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                     <div class="wcard-subtitle">للصيادين والسياح</div>
                   </div>
                 </div>
+                <div id="sea-day-tabs" style="display:flex;gap:6px;padding:0 2px 10px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;"></div>
                 <div class="wcard-main">
                   <div class="wcard-primary">
                     <span class="wcard-emoji" id="pwa-sea-icon">🌊</span>
@@ -921,8 +912,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     </button>
     <button class="nav-btn" id="nav-more">
       <div class="nav-icon-wrap">
-        <iconify-icon class="icon-off" icon="ph:dots-three-outline" style="font-size:24px"></iconify-icon>
-        <iconify-icon class="icon-on" icon="ph:dots-three-outline-fill" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-off" icon="ph:squares-four" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-on" icon="ph:squares-four-fill" style="font-size:24px"></iconify-icon>
       </div>
       <span>المزيد</span>
     </button>
@@ -934,26 +925,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 <div id="more-sheet-overlay">
   <div id="more-sheet">
     <div class="more-sheet-drag"></div>
-
-    <!-- ══ MAYOR CARD — Bottom Sheet ══ -->
-    <div class="mayor-sheet-card" id="ms-mayor-card">
-      <div class="mayor-card-inner-wrap">
-        <div class="mayor-card-top">
-          <div class="mayor-photo-container">
-            <div class="mayor-photo-ring">
-              <div class="mayor-photo-inner" id="ms-mayor-photo-wrap">
-                <iconify-icon
-                  id="ms-mayor-icon"
-                  icon="lucide:user"
-                  style="font-size:28px;color:var(--green);pointer-events:none">
-                </iconify-icon>
-                <img
-                  id="ms-mayor-photo"
-                  src="" alt=""
-                  style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;">
-              </div>
-            </div>
-          </div>
           <div class="mayor-info-block">
             <div class="mayor-role-label">رئيس المجلس الشعبي البلدي</div>
             <div class="mayor-name-text" id="ms-mayor-name">جاري التحميل...</div>
@@ -1494,11 +1465,10 @@ function syncMayorToSheet(){
   }
 
   /* ── Home Card ── */
-  var hNameEl    = document.getElementById('home-mayor-name');
-  var hPhotoEl   = document.getElementById('home-mayor-photo');
-  var hIconEl    = document.getElementById('home-mayor-icon');
-  var fullName   = (m.name_ar || m.name || '--');
-  if(hNameEl) hNameEl.textContent = 'السيد ' + fullName;
+  var hNameEl = document.getElementById('home-mayor-name');
+  var hPhotoEl = document.getElementById('home-mayor-photo');
+  var hIconEl  = document.getElementById('home-mayor-icon');
+  if(hNameEl) hNameEl.textContent = 'السيد ' + (m.name_ar || m.name || '--');
   if(m.image_url && hPhotoEl){
     hPhotoEl.src = m.image_url;
     hPhotoEl.style.display = 'block';
@@ -1509,106 +1479,81 @@ function syncMayorToSheet(){
 function loadHome(){loadHOfficial();loadHNews();loadMayorHome();loadHBeaches();loadHTourism();fetchPWAWeather();fetchPWASea();}
 
 var PWA_LAT=37.0850,PWA_LON=7.2550;
-var _weatherDailyData = [];
-var _weatherSelectedDay = 0;
-var WM = {0:{d:'☀️',n:'🌕',ar:'صافٍ'},1:{d:'🌤️',n:'🌙',ar:'غائم خفيف'},2:{d:'⛅',n:'🌥️',ar:'غائم جزئياً'},3:{d:'☁️',n:'☁️',ar:'غائم'},45:{d:'🌫️',n:'🌫️',ar:'ضبابي'},48:{d:'🌫️',n:'🌫️',ar:'ضبابي'},51:{d:'🌦️',n:'🌧️',ar:'رذاذ'},53:{d:'🌦️',n:'🌧️',ar:'رذاذ'},61:{d:'🌧️',n:'🌧️',ar:'ممطر'},63:{d:'🌧️',n:'🌧️',ar:'مطر'},65:{d:'🌧️',n:'🌧️',ar:'مطر غزير'},80:{d:'🌦️',n:'🌧️',ar:'زخات'},81:{d:'🌧️',n:'🌧️',ar:'زخات'},95:{d:'⛈️',n:'⛈️',ar:'عاصفة'}};
-
-function renderWeatherDay(idx){
-  _weatherSelectedDay = idx;
-  var day = _weatherDailyData[idx]; if(!day) return;
-  var isDay = day.isDay;
-  var w = WM[day.code] || {d:'🌡️',n:'🌙',ar:'متغير'};
-  var hdrIcon = document.getElementById('pwa-weather-header-icon');
-  var hdrBg   = document.getElementById('pwa-weather-icon-bg');
-  if(idx === 0){
-    if(hdrIcon && hdrBg){
-      if(isDay){hdrIcon.setAttribute('icon','lucide:sun');hdrIcon.style.color='#f59e0b';hdrBg.style.background='#fef3c7';}
-      else{hdrIcon.setAttribute('icon','lucide:moon');hdrIcon.style.color='#818cf8';hdrBg.style.background='#ede9fe';}
-    }
-  } else {
-    if(hdrIcon && hdrBg){hdrIcon.setAttribute('icon','lucide:calendar-days');hdrIcon.style.color='#60a5fa';hdrBg.style.background='#dbeafe';}
-  }
-  var el=function(id){return document.getElementById(id);};
-  if(el('pwa-weather-icon'))  el('pwa-weather-icon').textContent  = isDay ? w.d : w.n;
-  if(el('pwa-weather-temp'))  el('pwa-weather-temp').textContent  = Math.round(day.temp)+'°';
-  if(el('pwa-weather-desc'))  el('pwa-weather-desc').textContent  = w.ar;
-  if(el('pwa-weather-hum'))   el('pwa-weather-hum').textContent   = day.hum+'%';
-  if(el('pwa-weather-wind'))  el('pwa-weather-wind').textContent  = Math.round(day.wind)+' كم/س';
-  if(el('pwa-weather-max'))   el('pwa-weather-max').textContent   = Math.round(day.tmax)+'°';
-  if(el('pwa-weather-min'))   el('pwa-weather-min').textContent   = Math.round(day.tmin)+'°';
-  var tlEl = el('pwa-weather-time-label');
-  if(tlEl) tlEl.textContent = idx===0 ? 'شطايبي — عنابة' : day.label;
-  /* تحديث الأزرار */
-  var tabs = document.getElementById('weather-day-tabs'); if(!tabs) return;
-  tabs.querySelectorAll('.weather-day-tab').forEach(function(b,i){
-    b.style.background  = i===idx ? '#f59e0b'           : 'var(--surface)';
-    b.style.color       = i===idx ? '#fff'              : 'var(--text)';
-    b.style.borderColor = i===idx ? '#f59e0b'           : 'var(--border-light)';
-    b.style.fontWeight  = i===idx ? '800'               : '600';
-  });
+/* ══ WEATHER + SEA — 5 days ══ */
+var _wDays=[],_sDays=[];
+var _WM={0:{d:'☀️',n:'🌕',ar:'صافٍ'},1:{d:'🌤️',n:'🌙',ar:'غائم خفيف'},2:{d:'⛅',n:'🌥️',ar:'غائم جزئياً'},3:{d:'☁️',n:'☁️',ar:'غائم'},45:{d:'🌫️',n:'🌫️',ar:'ضبابي'},48:{d:'🌫️',n:'🌫️',ar:'ضبابي'},51:{d:'🌦️',n:'🌧️',ar:'رذاذ'},53:{d:'🌦️',n:'🌧️',ar:'رذاذ'},61:{d:'🌧️',n:'🌧️',ar:'ممطر'},63:{d:'🌧️',n:'🌧️',ar:'مطر'},65:{d:'🌧️',n:'🌧️',ar:'مطر غزير'},80:{d:'🌦️',n:'🌧️',ar:'زخات'},81:{d:'🌧️',n:'🌧️',ar:'زخات'},95:{d:'⛈️',n:'⛈️',ar:'عاصفة'}};
+var _DN=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+var _TS='flex-shrink:0;border:1.5px solid var(--border-light);border-radius:99px;padding:4px 12px;font-size:11px;font-family:var(--font-main);background:var(--surface);color:var(--text);cursor:pointer;white-space:nowrap;touch-action:manipulation;transition:background .15s,color .15s,border-color .15s;';
+function _g(id){return document.getElementById(id);}
+function renderWeatherDay(i){
+  var d=_wDays[i];if(!d)return;
+  var w=_WM[d.code]||{d:'🌡️',n:'🌙',ar:'متغير'};
+  var hi=_g('pwa-weather-header-icon'),hb=_g('pwa-weather-icon-bg');
+  if(i===0&&hi&&hb){if(d.isDay){hi.setAttribute('icon','lucide:sun');hi.style.color='#f59e0b';hb.style.background='#fef3c7';}else{hi.setAttribute('icon','lucide:moon');hi.style.color='#818cf8';hb.style.background='#ede9fe';}}
+  else if(hi&&hb){hi.setAttribute('icon','lucide:calendar-days');hi.style.color='#60a5fa';hb.style.background='#dbeafe';}
+  if(_g('pwa-weather-icon'))_g('pwa-weather-icon').textContent=d.isDay?w.d:w.n;
+  if(_g('pwa-weather-temp'))_g('pwa-weather-temp').textContent=Math.round(d.temp)+'°';
+  if(_g('pwa-weather-desc'))_g('pwa-weather-desc').textContent=w.ar;
+  if(_g('pwa-weather-hum'))_g('pwa-weather-hum').textContent=d.hum+'%';
+  if(_g('pwa-weather-wind'))_g('pwa-weather-wind').textContent=Math.round(d.wind)+' كم/س';
+  if(_g('pwa-weather-max'))_g('pwa-weather-max').textContent=Math.round(d.tmax)+'°';
+  if(_g('pwa-weather-min'))_g('pwa-weather-min').textContent=Math.round(d.tmin)+'°';
+  var tl=_g('pwa-weather-time-label');if(tl)tl.textContent=i===0?'شطايبي — عنابة':d.label;
+  var tabs=_g('weather-day-tabs');if(!tabs)return;
+  tabs.querySelectorAll('button').forEach(function(b,j){b.style.background=j===i?'#f59e0b':'var(--surface)';b.style.color=j===i?'#fff':'var(--text)';b.style.borderColor=j===i?'#f59e0b':'var(--border-light)';b.style.fontWeight=j===i?'800':'600';});
 }
-
 async function fetchPWAWeather(){
   try{
-    var r = await fetch(
-      'https://api.open-meteo.com/v1/forecast?latitude='+PWA_LAT+'&longitude='+PWA_LON+
-      '&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code,is_day'+
-      '&daily=temperature_2m_max,temperature_2m_min,weather_code_max,wind_speed_10m_max,precipitation_probability_max'+
-      '&timezone=Africa%2FAlgiers&forecast_days=5'
-    );
-    var d = await r.json(); var cu = d.current; var dl = d.daily;
-    var now = new Date();
-    var dayNames = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
-    _weatherDailyData = [];
-    for(var i=0; i<Math.min(5, dl.time.length); i++){
-      var dt = new Date(dl.time[i]+'T12:00:00');
-      var isToday = i===0;
-      var h = isToday ? now.getHours() : 12;
-      _weatherDailyData.push({
-        label: isToday ? 'اليوم' : dayNames[dt.getDay()],
-        temp : isToday ? cu.temperature_2m : (dl.temperature_2m_max[i]+dl.temperature_2m_min[i])/2,
-        tmax : dl.temperature_2m_max[i],
-        tmin : dl.temperature_2m_min[i],
-        code : isToday ? cu.weather_code : (dl.weather_code_max ? dl.weather_code_max[i] : 0),
-        hum  : isToday ? cu.relative_humidity_2m : (dl.precipitation_probability_max ? dl.precipitation_probability_max[i] : '--'),
-        wind : isToday ? cu.wind_speed_10m : dl.wind_speed_10m_max[i],
-        isDay: (h >= 6 && h < 20)
-      });
+    var r=await fetch('https://api.open-meteo.com/v1/forecast?latitude='+PWA_LAT+'&longitude='+PWA_LON+'&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code,is_day&daily=temperature_2m_max,temperature_2m_min,weather_code_max,wind_speed_10m_max,precipitation_probability_max&timezone=Africa%2FAlgiers&forecast_days=5');
+    var d=await r.json();var cu=d.current;var dl=d.daily;var now=new Date();
+    _wDays=[];
+    for(var i=0;i<Math.min(5,dl.time.length);i++){
+      var dt=new Date(dl.time[i]+'T12:00:00');var h=i===0?now.getHours():12;
+      _wDays.push({label:i===0?'اليوم':_DN[dt.getDay()],temp:i===0?cu.temperature_2m:(dl.temperature_2m_max[i]+dl.temperature_2m_min[i])/2,tmax:dl.temperature_2m_max[i],tmin:dl.temperature_2m_min[i],code:i===0?cu.weather_code:(dl.weather_code_max?dl.weather_code_max[i]:0),hum:i===0?cu.relative_humidity_2m:(dl.precipitation_probability_max?dl.precipitation_probability_max[i]:0),wind:i===0?cu.wind_speed_10m:dl.wind_speed_10m_max[i],isDay:(h>=6&&h<20)});
     }
-    /* بناء أزرار الأيام */
-    var tabs = document.getElementById('weather-day-tabs');
-    if(tabs){
-      tabs.innerHTML = _weatherDailyData.map(function(day,i){
-        return '<button class="weather-day-tab" onclick="renderWeatherDay('+i+')" style="'+
-          'flex-shrink:0;border:1.5px solid var(--border-light);border-radius:99px;'+
-          'padding:4px 12px;font-size:11px;font-weight:600;font-family:var(--font-main);'+
-          'background:var(--surface);color:var(--text);cursor:pointer;white-space:nowrap;'+
-          'touch-action:manipulation;transition:background .15s,color .15s;">'+day.label+'</button>';
-      }).join('');
-    }
+    var tabs=_g('weather-day-tabs');
+    if(tabs)tabs.innerHTML=_wDays.map(function(day,i){return '<button style="'+_TS+'" onclick="renderWeatherDay('+i+')">'+day.label+'</button>';}).join('');
     renderWeatherDay(0);
-  }catch(e){var el=document.getElementById('pwa-weather-desc');if(el)el.textContent='تعذر التحميل';}
+  }catch(e){var el=_g('pwa-weather-desc');if(el)el.textContent='تعذر التحميل';}
+}
+function _seaLabel(v,isDay){
+  if(v<0.3)return{si:'🌊',st:'هادئ جداً',sd:isDay?'مناسب للسباحة':'مناسب للصيد الليلي'};
+  if(v<0.6)return{si:'🎣',st:'هادئ',sd:isDay?'مناسب للسباحة والصيد':'مناسب للصيد'};
+  if(v<1.0)return{si:'🎣',st:'هادئ نسبياً',sd:'مناسب للصيد'};
+  if(v<1.5)return{si:'🌊',st:'معتدل',sd:'حذر عند الخروج'};
+  if(v<2.5)return{si:'⚠️',st:'مضطرب',sd:'يُنصح بالحذر'};
+  return{si:'🔴',st:'عاصف',sd:'يُمنع الخروج'};
+}
+function renderSeaDay(i){
+  var d=_sDays[i];if(!d)return;
+  var lb=_seaLabel(d.wave,d.isDay);
+  if(_g('pwa-sea-icon'))_g('pwa-sea-icon').textContent=lb.si;
+  if(_g('pwa-sea-state'))_g('pwa-sea-state').textContent=lb.st;
+  if(_g('pwa-sea-desc'))_g('pwa-sea-desc').textContent=lb.sd;
+  if(_g('pwa-sea-wave'))_g('pwa-sea-wave').textContent=d.wave.toFixed(1)+' م';
+  if(_g('pwa-sea-dir'))_g('pwa-sea-dir').textContent=d.dir;
+  if(_g('pwa-sea-water-temp'))_g('pwa-sea-water-temp').textContent=d.sst?d.sst.toFixed(1)+'°C':'--';
+  var tabs=_g('sea-day-tabs');if(!tabs)return;
+  tabs.querySelectorAll('button').forEach(function(b,j){b.style.background=j===i?'#3b82f6':'var(--surface)';b.style.color=j===i?'#fff':'var(--text)';b.style.borderColor=j===i?'#3b82f6':'var(--border-light)';b.style.fontWeight=j===i?'800':'600';});
 }
 async function fetchPWASea(){
   try{
-    var r=await fetch('https://marine-api.open-meteo.com/v1/marine?latitude='+PWA_LAT+'&longitude='+PWA_LON+'&current=wave_height,wave_direction&timezone=Africa%2FAlgiers');
-    var d=await r.json();var cu=d.current;
-    if(!cu||cu.wave_height==null){document.getElementById('pwa-sea-state').textContent='--';return;}
-    var v=parseFloat(cu.wave_height.toFixed(1));
-    var dirs=['شمال','شمال شرق','شرق','جنوب شرق','جنوب','جنوب غرب','غرب','شمال غرب'];
-    var dirLabel=cu.wave_direction!=null?dirs[Math.round(cu.wave_direction/45)%8]:'--';
-    var st,si,sd;
-    if(v<0.5){st='هادئ';si='🌊';sd='مناسب للسباحة';}
-    else if(v<1.0){st='هادئ نسبياً';si='🌅';sd='مناسب للسباحة';}
-    else if(v<1.5){st='معتدل';si='🌊';sd='حذر للسباحة';}
-    else if(v<2.5){st='مضطرب';si='⚠️';sd='يُنصح بالحذر';}
-    else{st='عاصف';si='🔴';sd='يُمنع الخروج';}
-    document.getElementById('pwa-sea-icon').textContent=si;
-    document.getElementById('pwa-sea-state').textContent=st;
-    document.getElementById('pwa-sea-desc').textContent=sd;
-    document.getElementById('pwa-sea-wave').textContent=v+' م';
-    document.getElementById('pwa-sea-dir').textContent=dirLabel;
-  }catch(e){var el=document.getElementById('pwa-sea-desc');if(el)el.textContent='تعذر التحميل';}
+    var r=await fetch('https://marine-api.open-meteo.com/v1/marine?latitude='+PWA_LAT+'&longitude='+PWA_LON+'&current=wave_height,wave_direction,sea_surface_temperature&daily=wave_height_max,wave_direction_dominant,sea_surface_temperature_max&timezone=Africa%2FAlgiers&forecast_days=5');
+    var d=await r.json();var cu=d.current;var dl=d.daily;
+    if(!cu||cu.wave_height==null){if(_g('pwa-sea-state'))_g('pwa-sea-state').textContent='--';return;}
+    var dirs=['شمال','شمال شرق','شرق','جنوب شرق','جنوب','جنوب غرب','غرب','شمال غرب'];var now=new Date();
+    _sDays=[];
+    for(var i=0;i<Math.min(5,dl.time.length);i++){
+      var dt=new Date(dl.time[i]+'T12:00:00');var h=i===0?now.getHours():12;
+      var wv=i===0?parseFloat(cu.wave_height.toFixed(2)):parseFloat((dl.wave_height_max[i]||0).toFixed(2));
+      var dv=i===0?cu.wave_direction:(dl.wave_direction_dominant?dl.wave_direction_dominant[i]:null);
+      var sst=i===0?(cu.sea_surface_temperature||null):(dl.sea_surface_temperature_max?dl.sea_surface_temperature_max[i]:null);
+      _sDays.push({label:i===0?'اليوم':_DN[dt.getDay()],wave:wv,dir:dv!=null?dirs[Math.round(dv/45)%8]:'--',sst:sst,isDay:(h>=6&&h<20)});
+    }
+    var tabs=_g('sea-day-tabs');
+    if(tabs)tabs.innerHTML=_sDays.map(function(day,i){return '<button style="'+_TS+'" onclick="renderSeaDay('+i+')">'+day.label+'</button>';}).join('');
+    renderSeaDay(0);
+  }catch(e){var el=_g('pwa-sea-desc');if(el)el.textContent='تعذر التحميل';}
 }
 
 async function loadMayorHome(){
@@ -1857,7 +1802,7 @@ async function loadMapData(){
     var mIcon=L.divIcon({className:'',html:'<div style="width:36px;height:36px;background:var(--green);border:2.5px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.3);font-size:16px">🏛️</div>',iconSize:[36,36],iconAnchor:[18,18]});
     L.marker([37.067177,7.380601],{icon:mIcon}).addTo(appMap).on('click',function(e){
       L.DomEvent.stopPropagation(e);closeFilterMenu();
-      showMapCard({id:0,name:'مقر بلدية شطايبي',description:'المقر الرئيسي لبلدية شطايبي - والية عنابة',image_url:''},{bg:'var(--green-l)',color:'var(--green)',icon:'lucide:building-2',label:'بلدية',modal:''});
+      showMapCard({id:0,name:'مقر بلدية شطايبي',description:'المقر الرئيسي لبلدية شطايبي - ولاية عنابة',image_url:''},{bg:'var(--green-l)',color:'var(--green)',icon:'lucide:building-2',label:'بلدية',modal:''});
     });
     var results=await Promise.all([api('/api/beaches'),api('/api/tourism'),api('/api/facilities')]);
     var br=results[0],tr=results[1],fr=results[2];
@@ -1881,12 +1826,12 @@ async function openPrevMayorsModal(){
   try{
     var list=_mayorsList;
     if(!list||!list.length){if(el)el.innerHTML='<div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>';var d=await api('/api/mayors');list=d.data||[];_mayorsList=list;}
-    var prev=list.slice(1);
-    if(!prev.length){if(el)el.innerHTML='<div class="empty"><iconify-icon icon="lucide:users"></iconify-icon><p>لا توجد بيانات</p></div>';return;}
-    if(el)el.innerHTML=prev.map(function(m){
+    if(!list.length){if(el)el.innerHTML='<div class="empty"><iconify-icon icon="lucide:users"></iconify-icon><p>لا توجد بيانات</p></div>';return;}
+    if(el)el.innerHTML=list.map(function(m,i){
       var photo=m.image_url?'<img src="'+m.image_url+'" style="width:52px;height:52px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid var(--border-light)">':'<div style="width:52px;height:52px;border-radius:50%;background:var(--green-l);display:flex;align-items:center;justify-content:center;flex-shrink:0"><iconify-icon icon="lucide:user" style="color:var(--green);font-size:24px;pointer-events:none"></iconify-icon></div>';
       var name=m.name_ar||m.name||'--';var period=m.period_ar||m.period||'';
-      return '<div style="display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--border-light)">'+photo+'<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:800;color:var(--text);letter-spacing:-.1px">'+name+'</div>'+(m.is_dec?'<div style="font-size:10px;font-weight:800;color:var(--amber);background:var(--amber-l);display:inline-block;padding:1px 9px;border-radius:99px;margin-top:3px">مندوب تنفيذي</div>':'')+(period?'<div style="font-size:11.5px;color:var(--muted);margin-top:4px;display:flex;align-items:center;gap:4px"><iconify-icon icon="lucide:calendar" style="font-size:11px;pointer-events:none"></iconify-icon>'+period+'</div>':'')+'</div></div>';
+      var badge=i===0?'<span style="font-size:10px;font-weight:800;color:#fff;background:var(--green);display:inline-block;padding:1px 9px;border-radius:99px;margin-top:3px">الحالي</span>':(m.is_dec?'<div style="font-size:10px;font-weight:800;color:var(--amber);background:var(--amber-l);display:inline-block;padding:1px 9px;border-radius:99px;margin-top:3px">مندوب تنفيذي</div>':'');
+      return '<div style="display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--border-light)">'+photo+'<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:800;color:var(--text);letter-spacing:-.1px">'+name+'</div>'+badge+(period?'<div style="font-size:11.5px;color:var(--muted);margin-top:4px;display:flex;align-items:center;gap:4px"><iconify-icon icon="lucide:calendar" style="font-size:11px;pointer-events:none"></iconify-icon>'+period+'</div>':'')+'</div></div>';
     }).join('');
   }catch(e){if(el)el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر تحميل البيانات</p></div>';}
 }
