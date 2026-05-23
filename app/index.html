@@ -118,14 +118,14 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   display:flex;align-items:center;gap:12px;
   padding:calc(var(--safe-t) + 10px) 16px 10px;
 }
-.header-logo{width:46px;height:46px;object-fit:contain;flex-shrink:0;pointer-events:none;border-radius:0;background:transparent;box-shadow:none;border:none;display:block;}
+.header-logo{width:52px;height:52px;object-fit:contain;flex-shrink:0;pointer-events:none;border-radius:0;background:transparent;box-shadow:none;border:none;display:block;}
 .header-text{flex:1;min-width:0;}
-.header-text h1{font-size:16.5px;font-weight:900;color:var(--text);letter-spacing:-.4px;line-height:1.2;}
-.header-text p{font-size:11.5px;color:var(--muted);font-weight:600;margin-top:1px;}
+.header-text h1{font-size:18px;font-weight:900;color:var(--text);letter-spacing:-.4px;line-height:1.2;}
+.header-text p{font-size:12.5px;color:var(--muted);font-weight:600;margin-top:1px;}
 .hdr-actions{display:flex;align-items:center;gap:6px;flex-shrink:0;}
-.hdr-btn{width:40px;height:40px;border-radius:50%;border:none;background:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;transition:background var(--dur-fast),transform var(--dur-fast);flex-shrink:0;color:var(--text-2);}
+.hdr-btn{width:46px;height:46px;border-radius:50%;border:none;background:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;transition:background var(--dur-fast),transform var(--dur-fast);flex-shrink:0;color:var(--text-2);}
 .hdr-btn:active{background:var(--border);transform:scale(.88);}
-.hdr-btn iconify-icon{font-size:20px;pointer-events:none;display:block;}
+.hdr-btn iconify-icon{font-size:23px;pointer-events:none;display:block;}
 .hdr-btn.notif-btn{background:var(--green-xl);color:var(--green);}
 .hdr-btn.notif-btn:active{background:var(--green-l);}
 
@@ -144,17 +144,17 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
    BOTTOM NAV
 ══════════════════════════════════════════ */
 #bottom-nav{flex-shrink:0;height:calc(var(--nav-h) + var(--safe-b));padding-bottom:var(--safe-b);background:#ffffff;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid rgba(0,0,0,0.06);display:flex;align-items:flex-start;padding-top:8px;z-index:100;box-shadow:0 -4px 16px rgba(0,0,0,0.05);}
-.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;border:none;background:none;cursor:pointer;font-family:var(--font-main);font-size:10px;font-weight:700;color:var(--muted-2);padding:0 2px;position:relative;touch-action:manipulation;transition:color var(--dur-mid) var(--ease-std);}
-.nav-icon-wrap{position:relative;width:52px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:var(--r-full);transition:background var(--dur-mid) var(--ease-std);flex-shrink:0;}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;border:none;background:none;cursor:pointer;font-family:var(--font-main);font-size:11px;font-weight:700;color:var(--muted-2);padding:0 2px;position:relative;touch-action:manipulation;transition:color var(--dur-mid) var(--ease-std);}
+.nav-icon-wrap{position:relative;width:56px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:var(--r-full);transition:background var(--dur-mid) var(--ease-std);flex-shrink:0;}
 .nav-btn.active .nav-icon-wrap{background:var(--green-l);}
 .nav-btn:active .nav-icon-wrap{transform:scale(.88);transition:transform var(--dur-fast) var(--ease-std);}
-.nav-btn iconify-icon{font-size:23px;display:block;pointer-events:none;}
+.nav-btn iconify-icon{font-size:26px;display:block;pointer-events:none;}
 .nav-btn .icon-on{display:block;position:absolute;opacity:0;transition:opacity var(--dur-mid) var(--ease-std);pointer-events:none;}
 .nav-btn .icon-off{display:block;opacity:1;transition:opacity var(--dur-mid) var(--ease-std);pointer-events:none;}
 .nav-btn.active .icon-on{opacity:1;}
 .nav-btn.active .icon-off{opacity:0;}
 .nav-btn.active{color:var(--green);}
-.nav-btn span{pointer-events:none;font-size:10px;font-weight:700;letter-spacing:.01em;line-height:1;}
+.nav-btn span{pointer-events:none;font-size:11px;font-weight:700;letter-spacing:.01em;line-height:1;}
 
 /* ══════════════════════════════════════════
    SECTIONS
@@ -721,7 +721,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                   </div>
                   <div>
                     <div class="wcard-title">حالة البحر</div>
-                    <div class="wcard-subtitle">للصيادين والسياح</div>
+                    <div class="wcard-subtitle" id="sea-subtitle">للصيادين والسياح</div>
                   </div>
                 </div>
                 <div id="sea-day-tabs" style="display:flex;gap:6px;padding:0 2px 10px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;"></div>
@@ -758,8 +758,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 <iconify-icon icon="lucide:waves" style="color:var(--sky);pointer-events:none"></iconify-icon>
                 شواطئ شطايبي
               </span>
-              <button class="see-all-arrow-btn" id="btn-see-beaches">
-                <iconify-icon icon="lucide:chevron-left" style="font-size:22px;color:var(--green);pointer-events:none;"></iconify-icon>
+              <button class="see-all-arrow-btn" id="btn-see-beaches">تصفح
+                <iconify-icon icon="lucide:chevron-left" style="font-size:18px;color:var(--green);pointer-events:none;"></iconify-icon>
               </button>
             </div>
             <div class="h-scroll" id="h-beaches">
@@ -773,8 +773,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 <iconify-icon icon="lucide:sun" style="color:var(--amber);pointer-events:none"></iconify-icon>
                 معالم سياحية
               </span>
-              <button class="see-all-arrow-btn" id="btn-see-tourism">
-                <iconify-icon icon="lucide:chevron-left" style="font-size:22px;color:var(--green);pointer-events:none;"></iconify-icon>
+              <button class="see-all-arrow-btn" id="btn-see-tourism">تصفح
+                <iconify-icon icon="lucide:chevron-left" style="font-size:18px;color:var(--green);pointer-events:none;"></iconify-icon>
               </button>
             </div>
             <div class="h-scroll" id="h-tourism">
@@ -1413,7 +1413,7 @@ async function loadArchiveTab(tab){
   el.innerHTML=skArchiveCards(4);
   try{
     var d=await api('/api/archives');var all=d.data||[];
-    var items=tab==='compare'?all.filter(a=>a.image_old_url&&a.image_new_url):all.filter(a=>!a.image_old_url&&a.image_new_url);
+    var items=tab==='compare'?all.filter(a=>a.image_old_url&&a.image_new_url):all.filter(a=>a.image_new_url&&(!a.image_old_url||a.category==='historic'||a.type==='historic'));
     if(!items.length){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:image-off"></iconify-icon><p>لا توجد صور</p></div>';return;}
     var html='<div style="display:flex;flex-direction:column;gap:16px;">';
     items.forEach(function(a){
@@ -1501,8 +1501,8 @@ async function fetchPWAWeather(){
   }
 }
 function _seaLabel(v,isDay){
-  if(v<0.3)return{si:'🌊',st:'هادئ جداً',sd:isDay?'مناسب للسباحة':'مناسب للصيد الليلي'};
-  if(v<0.6)return{si:'🎣',st:'هادئ',sd:isDay?'مناسب للسباحة والصيد':'مناسب للصيد'};
+  if(v<0.3)return{si:'🌊',st:'هادئ جداً',sd:isDay?'مناسب للسياحة والسباحة':'مناسب للصيد الليلي'};
+  if(v<0.6)return{si:'🎣',st:'هادئ',sd:isDay?'مناسب للسباحة والصيد':'مناسب للصيد الليلي'};
   if(v<1.0)return{si:'🎣',st:'هادئ نسبياً',sd:'مناسب للصيد'};
   if(v<1.5)return{si:'🌊',st:'معتدل',sd:'حذر عند الخروج'};
   if(v<2.5)return{si:'⚠️',st:'مضطرب',sd:'يُنصح بالحذر'};
@@ -1517,6 +1517,9 @@ function renderSeaDay(i){
   if(_g('pwa-sea-wave'))_g('pwa-sea-wave').textContent=d.wave.toFixed(1)+' م';
   if(_g('pwa-sea-dir'))_g('pwa-sea-dir').textContent=d.dir;
   if(_g('pwa-sea-water-temp'))_g('pwa-sea-water-temp').textContent=d.sst?d.sst.toFixed(1)+'°C':'--';
+  /* تحديث العنوان الفرعي حسب الوقت */
+  var sub=_g('sea-subtitle');
+  if(sub)sub.textContent=d.isDay?'للسياح والسباحين':'للصيادين';
   var tabs=_g('sea-day-tabs');if(!tabs)return;
   tabs.querySelectorAll('button').forEach(function(b,j){b.style.background=j===i?'#3b82f6':'var(--surface)';b.style.color=j===i?'#fff':'var(--text)';b.style.borderColor=j===i?'#3b82f6':'var(--border-light)';b.style.fontWeight=j===i?'800':'600';});
 }
