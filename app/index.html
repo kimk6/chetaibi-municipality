@@ -178,7 +178,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .news-card-img-ph{width:100%;height:152px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .news-card-title{font-size:13.5px;font-weight:800;color:var(--text);padding:11px 14px 4px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;letter-spacing:-.15px;}
 .news-card-body{padding:4px 14px 8px;flex:1;display:flex;flex-direction:column;gap:4px;}
-.news-card-excerpt{font-size:11.5px;color:rgba(255,255,255,0.82);line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;flex:1;}
+.news-card-excerpt{font-size:11.5px;color:var(--muted);line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;flex:1;}
 .news-card-footer{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;border-top:1px solid var(--border-light);margin-top:auto;min-height:46px;}
 .card-date{display:flex;align-items:center;gap:4px;font-size:var(--text-xs);color:var(--muted);font-weight:600;flex-shrink:0;}
 .card-date iconify-icon{font-size:12px;pointer-events:none;flex-shrink:0;}
@@ -537,121 +537,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .ws-tab:active{opacity:.7;}
 .ws-panel{padding:18px;}
 .ws-panel.hidden{display:none;}
-/* ══ ANNOUNCE CAROUSEL — نمط بطاقة الرئيس ══ */
-.ann-wrap{margin:0 16px 0;position:relative;}
-.ann-track-clip{overflow:hidden;}
-.ann-track{display:flex;direction:ltr;will-change:transform;transition:transform .38s cubic-bezier(.4,0,.2,1);}
-
-/* البطاقة — نفس نمط بطاقة الرئيس */
-.ann-card{
-  flex:0 0 100%;
-  background:linear-gradient(145deg,#1e3a8a 0%,#1d4ed8 60%,#2563eb 100%);
-  border-radius:20px;
-  border:none;
-  box-shadow:0 4px 24px rgba(29,78,216,0.35),0 1px 4px rgba(0,0,0,0.10);
-  position:relative;overflow:hidden;cursor:pointer;
-  direction:rtl;
-}
-.ann-card::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,0.10) 0%,transparent 65%);
-  pointer-events:none;z-index:0;
-}
-.ann-card-inner{
-  position:relative;z-index:1;
-  padding:18px 18px 0;
-  display:flex;flex-direction:column;align-items:center;gap:8px;
-}
-/* أيقونة + عنوان في المنتصف */
-.ann-card-head{display:flex;flex-direction:column;align-items:center;gap:6px;width:100%;}
-.ann-card-icon-wrap{
-  width:44px;height:44px;border-radius:50%;
-  background:rgba(255,255,255,0.18);
-  border:1.5px solid rgba(255,255,255,0.30);
-  display:flex;align-items:center;justify-content:center;
-}
-.ann-card-icon-wrap iconify-icon{font-size:22px;color:#ffffff;pointer-events:none;}
-.ann-card-title{
-  font-size:14.5px;font-weight:900;color:#ffffff;
-  text-align:center;line-height:1.35;letter-spacing:-.2px;
-}
-/* نص الإعلان */
-.ann-card-body{
-  font-size:11.5px;color:var(--muted);
-  line-height:1.65;text-align:center;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
-  width:100%;
-}
-/* خط فاصل رفيف */
-.ann-card-sep{
-  width:calc(100% - 36px);height:1px;
-  background:rgba(255,255,255,0.15);margin:4px 0 0;
-}
-/* الشريط السفلي: زر يسار + تاريخ يمين */
-.ann-card-footer{
-  position:relative;z-index:1;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:10px 18px 14px;width:100%;box-sizing:border-box;
-}
-.ann-card-btn{
-  display:inline-flex;align-items:center;gap:6px;
-  background:rgba(255,255,255,0.18);
-  border:1.5px solid rgba(255,255,255,0.40);
-  border-radius:10px;padding:7px 16px;
-  font-family:var(--font-main);font-size:12px;font-weight:800;
-  color:#ffffff;cursor:pointer;touch-action:manipulation;
-  transition:background var(--dur-fast),transform var(--dur-fast);white-space:nowrap;
-}
-.ann-card-btn:active{background:rgba(255,255,255,0.28);transform:scale(.975);}
-.ann-card-btn iconify-icon{font-size:13px;pointer-events:none;color:#ffffff;}
-.ann-card-date{
-  display:flex;align-items:center;gap:4px;
-  font-size:10.5px;font-weight:600;color:rgba(255,255,255,0.70);
-}
-.ann-card-date iconify-icon{font-size:11px;color:rgba(255,255,255,0.70);pointer-events:none;}
-
-/* Dots خارج البطاقة في المنتصف */
-.ann-dots-outer{
-  display:flex;align-items:center;justify-content:center;
-  gap:6px;padding:10px 0 6px;
-}
-.ann-dot{
-  width:7px;height:7px;border-radius:99px;border:none;padding:0;
-  background:rgba(29,78,216,0.25);cursor:pointer;flex-shrink:0;
-  transition:width .25s cubic-bezier(.4,0,.2,1),background .25s;
-}
-.ann-dot.active{width:24px;background:#1d4ed8;}
-
-/* بطاقة تصفح المزيد */
-.ann-card-more{
-  flex:0 0 100%;
-  background:#ffffff;
-  border-radius:20px;
-  border:2px solid rgba(5,150,105,0.30);
-  box-shadow:0 4px 20px rgba(5,150,105,0.10),0 1px 4px rgba(0,0,0,0.04);
-  position:relative;overflow:hidden;cursor:pointer;
-  direction:rtl;min-height:160px;
-  display:flex;align-items:center;justify-content:center;
-}
-.ann-card-more::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 50% 0%,rgba(5,150,105,0.06) 0%,transparent 65%);
-  pointer-events:none;
-}
-.ann-more-btn{
-  position:relative;z-index:1;
-  display:inline-flex;align-items:center;gap:8px;
-  background:var(--green-xl);
-  border:1.5px solid rgba(5,150,105,0.22);
-  border-radius:12px;padding:12px 22px;
-  font-family:var(--font-main);font-size:13px;font-weight:800;
-  color:var(--green-dark);cursor:pointer;touch-action:manipulation;
-  transition:background var(--dur-fast),transform var(--dur-fast);
-}
-.ann-more-btn:active{background:var(--green-l);transform:scale(.975);}
-.ann-more-btn iconify-icon{font-size:16px;pointer-events:none;color:var(--green);}
-
-.ann-skeleton{flex:0 0 100%;min-height:160px;background:linear-gradient(135deg,#ecfdf5,#d1fae5);border-radius:20px;border:2px solid rgba(5,150,105,0.12);}
 .wcard-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
 .wcard-icon-wrap{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .3s;}
 .wcard-title{font-size:13.5px;font-weight:900;color:var(--text);}
@@ -720,18 +605,21 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         <div class="content-block">
 
           <div class="section" style="padding-top:20px">
-            <!-- Announce Carousel 2026 -->
-            <div class="ann-wrap" id="ann-wrap">
-              <div class="ann-track-clip">
-                <div class="ann-track" id="ann-track">
-                  <div class="ann-skeleton"></div>
-                </div>
-              </div>
-              <div class="ann-dots-outer" id="ann-dots-outer"></div>
+            <div class="section-header">
+              <span class="section-title">
+                <iconify-icon icon="lucide:megaphone" style="color:var(--red);pointer-events:none"></iconify-icon>
+                الإعلانات
+              </span>
+              <!-- ✅ تعديل 3: زر "الكل" في الإعلانات → يذهب لتصنيف "إعلانات" -->
+              <button class="see-all-arrow-btn" id="btn-see-news-official">
+                <span>الكل</span>
+                <iconify-icon icon="lucide:chevron-left" style="font-size:16px;pointer-events:none;"></iconify-icon>
+              </button>
             </div>
+            <div class="h-scroll" id="h-official">
+              <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
             </div>
-
-
+          </div>
 
           <div class="section">
             <div class="section-header">
@@ -739,6 +627,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 <iconify-icon icon="lucide:newspaper" style="color:var(--green);pointer-events:none"></iconify-icon>
                 آخر المستجدات
               </span>
+              <!-- ✅ تعديل 2: زر "الكل" في آخر المستجدات → يذهب لتصنيف "نشاطات" -->
               <button class="see-all-arrow-btn" id="btn-see-news-all">
                 <span>الكل</span>
                 <iconify-icon icon="lucide:chevron-left" style="font-size:16px;pointer-events:none;"></iconify-icon>
@@ -855,7 +744,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
             </div>
           </div>
-
 
           <div class="section" style="padding-bottom:8px">
             <div class="section-header">
@@ -1338,7 +1226,7 @@ function initSwipe(scrollAreaId,getNext){
   var isArchive=(scrollAreaId==='scroll-archive');
   el.addEventListener('touchstart',function(e){
     if(isArchive){startX=e.touches[0].clientX;startY=e.touches[0].clientY;tracking=true;return;}
-    if(e.target.closest('.h-scroll')||e.target.closest('.seg-bar-wrap')||e.target.closest('.archive-card')||e.target.closest('.weather-card')||e.target.closest('.sea-card')||e.target.closest('.ann-carousel-wrap')){tracking=false;return;}
+    if(e.target.closest('.h-scroll')||e.target.closest('.seg-bar-wrap')||e.target.closest('.archive-card')||e.target.closest('.weather-card')||e.target.closest('.sea-card')){tracking=false;return;}
     startX=e.touches[0].clientX;startY=e.touches[0].clientY;tracking=true;
   },{passive:true});
   el.addEventListener('touchend',function(e){
@@ -1691,124 +1579,9 @@ async function loadMayorHome(){
     syncMayorToSheet();
   }catch(e){}
 }
-/* ══ ANNOUNCE CAROUSEL 2026 ══ */
-var _annItems=[],_annIdx=0,_annTotal=0;
-
-function _annCard(n){
-  var dateHtml=n.date?'<div class="ann-card-date"><iconify-icon icon="lucide:calendar-days"></iconify-icon>'+n.date+'</div>':'';
-  var titleHtml=n.title?'<div class="ann-card-title">'+n.title+'</div>':'';
-  var bodyHtml=n.content?'<div class="ann-card-body">'+n.content.substring(0,120)+'...</div>':'';
-  return '<div class="ann-card" data-id="'+n.id+'">'+
-    '<div class="ann-card-inner">'+
-      '<div class="ann-card-head">'+
-        '<div class="ann-card-icon-wrap"><iconify-icon icon="lucide:megaphone"></iconify-icon></div>'+
-        titleHtml+
-      '</div>'+
-      bodyHtml+
-    '</div>'+
-    '<div class="ann-card-sep"></div>'+
-    '<div class="ann-card-footer">'+
-      '<button class="ann-card-btn" data-id="'+n.id+'">'+
-        '<iconify-icon icon="lucide:book-open" style="font-size:13px;pointer-events:none"></iconify-icon>'+
-        'اقرأ المزيد'+
-      '</button>'+
-      dateHtml+
-    '</div>'+
-  '</div>';
-}
-
-function _annCardMore(){
-  return '<div class="ann-card-more" id="ann-card-more">'+
-    '<button class="ann-more-btn">'+
-      '<iconify-icon icon="lucide:layout-list"></iconify-icon>'+
-      'تصفح المزيد من الإعلانات'+
-    '</button>'+
-  '</div>';
-}
-
-function _annDots(){
-  var dotsEl=document.getElementById('ann-dots-outer');if(!dotsEl)return;
-  dotsEl.innerHTML=Array.from({length:_annTotal},function(_,i){
-    return '<button class="ann-dot'+(i===_annIdx?' active':'')+'" onclick="annTo('+i+');event.stopPropagation()"></button>';
-  }).join('');
-}
-
-function annTo(i){
-  _annIdx=Math.max(0,Math.min(_annTotal-1,i));
-  var t=document.getElementById('ann-track');
-  if(t)t.style.transform='translateX('+(-_annIdx*100)+'%)';
-  _annDots();
-}
-
-function _annDrag(clip){
-  var sx=0,sy=0,lock=null,active=false;
-  clip.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;sy=e.touches[0].clientY;active=true;lock=null;},{passive:true});
-  clip.addEventListener('touchmove',function(e){
-    if(!active)return;
-    var dx=Math.abs(e.touches[0].clientX-sx),dy=Math.abs(e.touches[0].clientY-sy);
-    if(!lock&&(dx>7||dy>7))lock=dx>dy?'h':'v';
-    if(lock==='h'&&e.cancelable)e.preventDefault();
-  },{passive:false});
-  clip.addEventListener('touchend',function(e){
-    if(!active)return;active=false;
-    if(lock==='h'){var dx=e.changedTouches[0].clientX-sx;if(dx<-44)annTo(_annIdx+1);else if(dx>44)annTo(_annIdx-1);}
-    lock=null;
-  },{passive:true});
-}
-
-function _annRender(){
-  var track=document.getElementById('ann-track');
-  if(!track)return;
-  var cards=_annItems.map(_annCard);
-  cards.push(_annCardMore());
-  _annTotal=cards.length;
-  _annIdx=0;
-  track.innerHTML=cards.join('');
-  track.style.direction='ltr';
-  track.style.transform='translateX(0)';
-  _annDots();
-  /* أحداث */
-  track.querySelectorAll('.ann-card-btn').forEach(function(btn){
-    btn.addEventListener('click',function(e){
-      e.stopPropagation();
-      var id=btn.getAttribute('data-id');
-      if(id){haptic('light');openNewsModal(id);}
-    });
-  });
-  track.querySelectorAll('.ann-card[data-id]').forEach(function(card){
-    card.addEventListener('click',function(e){
-      if(e.target.closest('.ann-card-btn,.ann-dot'))return;
-      var id=card.getAttribute('data-id');
-      if(id){haptic('light');openNewsModal(id);}
-    });
-  });
-  var more=document.getElementById('ann-card-more');
-  if(more)more.addEventListener('click',function(){
-    haptic('light');var b=document.getElementById('btn-see-news-official');if(b)b.click();
-  });
-  var clip=track.parentElement;
-  if(clip)_annDrag(clip);
-}
-
-async function loadHOfficial(){
-  try{
-    var d=await api('/api/news');
-    if(d.data)allNews=d.data;
-    /* Carousel الإعلانات */
-    _annItems=(d.data||[]).filter(function(n){return n.category==='official';}).slice(0,3);
-    _annRender();
-    /* قسم المستجدات */
-    var newsEl=document.getElementById('h-news');
-    if(newsEl){
-      var items=(d.data||[]).filter(function(n){return n.category!=='official'&&n.category!=='poster';}).slice(0,10);
-      newsEl.innerHTML=items.length?items.map(function(n){return makeNewsCard(n,true);}).join(''):'';
-    }
-  }catch(e){
-    var newsEl=document.getElementById('h-news');
-    if(newsEl)newsEl.innerHTML='';
-  }
-}
-async function loadHNews(){/* تُغذَّى من loadHOfficial */}async function loadHBeaches(){var el=document.getElementById('h-beaches');el.innerHTML=skPlaceCards(4);try{var d=await api('/api/beaches');el.innerHTML=(d.data||[]).slice(0,8).map(b=>placeCard(b,'beach')).join('');}catch(e){el.innerHTML='';}}
+async function loadHOfficial(){var el=document.getElementById('h-official');el.innerHTML=skNewsCards(3);try{var d=await api('/api/news');if(d.data)allNews=d.data;var items=(d.data||[]).filter(n=>n.category==='official').slice(0,10);el.innerHTML=items.length?items.map(n=>makeNewsCard(n,false)).join(''):'';}catch(e){el.innerHTML='';}}
+async function loadHNews(){var el=document.getElementById('h-news');el.innerHTML=skNewsCards(3);try{var d=await api('/api/news');if(d.data)allNews=d.data;var items=(d.data||[]).filter(n=>n.category!=='official'&&n.category!=='poster').slice(0,10);el.innerHTML=items.length?items.map(n=>makeNewsCard(n,true)).join(''):'';}catch(e){el.innerHTML='';}}
+async function loadHBeaches(){var el=document.getElementById('h-beaches');el.innerHTML=skPlaceCards(4);try{var d=await api('/api/beaches');el.innerHTML=(d.data||[]).slice(0,8).map(b=>placeCard(b,'beach')).join('');}catch(e){el.innerHTML='';}}
 async function loadHTourism(){var el=document.getElementById('h-tourism');el.innerHTML=skPlaceCards(4);try{var d=await api('/api/tourism');el.innerHTML=(d.data||[]).slice(0,8).map(t=>placeCard(t,'tourism')).join('');}catch(e){el.innerHTML='';}}
 function placeCard(item,type){
   var n=item.name||'';
