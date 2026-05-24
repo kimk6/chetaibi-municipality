@@ -1275,14 +1275,13 @@ function initSwipe(scrollAreaId,getNext){
   },{passive:true});
 }
 function swipeHome(dir){
-  if(dir!==1)return; /* يسار فقط */
-  var scroll=document.querySelector('#screen-home .scroll-area');
-  var st=scroll?scroll.scrollTop:0;
-  /* حساب نهاية منطقة الكاروسيل */
+  if(dir!==1)return;
   var outer=document.getElementById('ann-carousel-outer');
-  var carBottom=outer?(outer.offsetTop+outer.offsetHeight):0;
-  /* إذا كان scroll فوق الكاروسيل → لا سحب */
-  if(st<carBottom-40)return;
+  if(outer){
+    var rect=outer.getBoundingClientRect();
+    /* إذا الكاروسيل لا يزال مرئياً في الشاشة → لا سحب */
+    if(rect.bottom>80)return;
+  }
   switchTab('news');
 }
 function swipeNews(dir){
