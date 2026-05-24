@@ -1278,13 +1278,13 @@ function initSwipe(scrollAreaId,getNext){
 function swipeHome(dir){
   if(dir!==1)return;
   var outer=document.getElementById('ann-carousel-outer');
-  var hNews=document.getElementById('h-news');
   if(outer){
     var rect=outer.getBoundingClientRect();
-    /* إذا الكاروسيل لا يزال مرئياً → تحقق إذا كان h-news مرئياً */
+    /* إذا الكاروسيل لا يزال مرئياً في الشاشة → لا سحب */
     if(rect.bottom>80){
-      /* إذا قسم آخر المستجدات مرئي → انتقل للأخبار */
-      if(hNews){var nr=hNews.getBoundingClientRect();if(nr.top<window.innerHeight&&nr.bottom>0){switchTab('news');return;}}
+      /* استثناء: إذا كان المستخدم فوق قسم آخر المستجدات */
+      var hNews=document.getElementById('h-news');
+      if(hNews){var nr=hNews.getBoundingClientRect();if(nr.top<window.innerHeight*0.5&&nr.bottom>0){switchTab('news');return;}}
       return;
     }
   }
