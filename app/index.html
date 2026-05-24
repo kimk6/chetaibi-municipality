@@ -563,8 +563,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 }
 .ann-carousel-strip .loading{width:100%;text-align:center;padding:20px;}
 .ann-carousel-dots{display:flex;align-items:center;justify-content:center;gap:6px;padding-top:10px;}
-.ann-c-dot{width:8px;height:8px;border-radius:99px;background:rgba(5,150,105,0.25);border:none;padding:0;cursor:pointer;transition:width .28s cubic-bezier(.4,0,.2,1),background .28s;flex-shrink:0;}
-.ann-c-dot.active{width:24px;background:var(--green);}
+.ann-c-dot{width:8px;height:8px;border-radius:99px;background:#cbd5e1;border:none;padding:0;cursor:pointer;transition:width .28s cubic-bezier(.4,0,.2,1),background .28s;flex-shrink:0;}
+.ann-c-dot.active{width:24px;background:#64748b;}
 
 /* البطاقة الثابتة */
 .ann-card{
@@ -595,7 +595,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .ann-card-title{font-size:15.5px;font-weight:900;color:var(--text);text-align:center;line-height:1.35;letter-spacing:-.2px;width:100%;display:flex;align-items:center;justify-content:center;gap:6px;position:relative;padding-bottom:6px;}
 .ann-card-title::after{content:'';position:absolute;bottom:0;left:15%;right:15%;height:2.5px;border-radius:99px;background:linear-gradient(to right,transparent,var(--green),transparent);opacity:0.18;}
 .ann-card-excerpt{font-size:11.5px;color:var(--muted);line-height:1.65;text-align:center;width:100%;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.ann-card-divider{width:calc(100% - 32px);height:1px;background:rgba(5,150,105,0.12);margin:4px 0 0;align-self:center;}
+.ann-card-divider{width:calc(100% - 32px);height:2px;border-radius:2px;margin:4px 0 0;align-self:center;}
 .ann-card-footer{display:flex;align-items:center;flex-direction:row-reverse;justify-content:space-between;padding:7px 14px 10px;width:100%;box-sizing:border-box;}
 .ann-card-btn{display:inline-flex;align-items:center;gap:4px;background:var(--green-xl);border:none;border-radius:var(--r-full);padding:6px 13px;font-family:var(--font-main);font-size:11.5px;font-weight:800;color:var(--green);cursor:pointer;touch-action:manipulation;white-space:nowrap;min-height:32px;transition:background var(--dur-fast);}
 .ann-card-btn:active{background:var(--green-l);}
