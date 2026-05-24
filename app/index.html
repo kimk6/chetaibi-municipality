@@ -550,6 +550,20 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .wcard-stats{display:flex;flex-direction:column;gap:7px;align-items:flex-start;}
 .wcard-stat{display:flex;align-items:center;gap:6px;font-size:12px;color:#4A4A4A;font-weight:500;}
 .wcard-stat iconify-icon{font-size:14px;pointer-events:none;flex-shrink:0;}
+/* OFFICIAL ANNOUNCE CARD */
+.ann-card{background:#fff;border-radius:20px;border:1.5px solid rgba(5,150,105,0.18);box-shadow:0 2px 12px rgba(0,0,0,.06);display:flex;flex-direction:column;align-items:center;padding:18px 16px 14px;min-width:min(260px,76vw);max-width:300px;flex-shrink:0;cursor:pointer;touch-action:manipulation;transition:transform var(--dur-mid),box-shadow var(--dur-mid);}
+.ann-card:active{transform:scale(.96);box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.ann-card-icon-wrap{width:54px;height:54px;border-radius:50%;background:rgba(5,150,105,.1);display:flex;align-items:center;justify-content:center;margin-bottom:12px;flex-shrink:0;}
+.ann-card-icon-wrap iconify-icon{font-size:26px;color:var(--green);pointer-events:none;}
+.ann-card-title{font-size:15px;font-weight:900;color:var(--text);text-align:center;line-height:1.35;letter-spacing:-.2px;margin-bottom:8px;width:100%;}
+.ann-card-excerpt{font-size:12px;color:#4A4A4A;line-height:1.65;text-align:center;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;width:100%;margin-bottom:12px;}
+.ann-card-divider{width:100%;height:1px;background:var(--border-light);margin-bottom:10px;}
+.ann-card-footer{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.ann-card-date{display:flex;align-items:center;gap:5px;font-size:11px;color:#4A4A4A;font-weight:600;flex-shrink:0;}
+.ann-card-date iconify-icon{font-size:13px;color:var(--green);pointer-events:none;flex-shrink:0;}
+.ann-card-btn{display:inline-flex;align-items:center;gap:5px;background:rgba(5,150,105,.09);border:1.5px solid rgba(5,150,105,.18);border-radius:10px;padding:6px 12px;font-family:var(--font-main);font-size:11.5px;font-weight:800;color:var(--green);cursor:pointer;touch-action:manipulation;white-space:nowrap;transition:background var(--dur-fast);}
+.ann-card-btn:active{background:rgba(5,150,105,.18);}
+.ann-card-btn iconify-icon{font-size:13px;pointer-events:none;color:var(--green);}
 /* SEARCH */
 #search-overlay{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.4);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .25s var(--ease-std);display:flex;flex-direction:column;}
 #search-overlay.open{opacity:1;pointer-events:auto;}
@@ -1397,6 +1411,21 @@ var NS={
 function makeDateBadge(d){if(!d)return '';return '<span class="card-date"><iconify-icon icon="lucide:calendar-days"></iconify-icon>'+d+'</span>';}
 function makeNewsCard(n,showTitle){
   var s=NS[n.category]||NS.official;
+  /* بطاقة خاصة للإعلانات الرسمية */
+  if(n.category==='official'){
+    var excerpt=(n.content||'').substring(0,110)+'..';
+    var title=n.title?'<div class="ann-card-title">'+n.title+'</div>':'';
+    var dateHtml=n.date?'<div class="ann-card-date"><iconify-icon icon="lucide:calendar-days"></iconify-icon>'+n.date+'</div>':'<div></div>';
+    return '<div class="ann-card" data-news-id="'+n.id+'">'
+      +'<div class="ann-card-icon-wrap"><iconify-icon icon="lucide:megaphone"></iconify-icon></div>'
+      +title
+      +'<div class="ann-card-excerpt">'+excerpt+'</div>'
+      +'<div class="ann-card-divider"></div>'
+      +'<div class="ann-card-footer">'+dateHtml
+      +'<button class="ann-card-btn" data-news-id="'+n.id+'"><iconify-icon icon="lucide:book-open"></iconify-icon>اقرأ المزيد</button>'
+      +'</div></div>';
+  }
+  /* بطاقة عادية لباقي التصنيفات */
   var excerpt=(n.content||'').substring(0,90)+'...';
   var icon=n.category==='official'?'lucide:megaphone':'lucide:newspaper';
   var img=n.image_url?'<img class="news-card-img" src="'+n.image_url+'" alt="" loading="lazy">':'<div class="news-card-img-ph" style="background:'+s.grad+'"><iconify-icon icon="'+icon+'" style="color:rgba(255,255,255,.75);font-size:2rem;pointer-events:none"></iconify-icon></div>';
@@ -1843,9 +1872,11 @@ async function openPrevMayorsModal(){
 function initEventDelegation(){
   document.addEventListener('click',function(e){
     var t=e.target;
+    var annCardBtn=t.closest('.ann-card-btn');if(annCardBtn){e.stopPropagation();var id=annCardBtn.getAttribute('data-news-id');if(id)openNewsModal(id);return;}
+    var annCard=t.closest('.ann-card');if(annCard){var id=annCard.getAttribute('data-news-id');if(id)openNewsModal(id);return;}
     var newsCard=t.closest('.news-card');if(newsCard){var id=newsCard.getAttribute('data-news-id');if(id)openNewsModal(id);return;}
     var readMore=t.closest('.read-more');if(readMore){e.stopPropagation();var id=readMore.getAttribute('data-news-id');if(id)openNewsModal(id);return;}
-    var annCard=t.closest('.announce-card');if(annCard&&!t.closest('.read-more')){var id=annCard.getAttribute('data-news-id');if(id)openNewsModal(id);return;}
+    var annCardOld=t.closest('.announce-card');if(annCardOld&&!t.closest('.read-more')){var id=annCardOld.getAttribute('data-news-id');if(id)openNewsModal(id);return;}
     var posterCard=t.closest('.poster-card');if(posterCard){var lb=posterCard.getAttribute('data-lb');if(lb)openLightbox(lb);return;}
     var placeCard=t.closest('.place-card');if(placeCard){var bid=placeCard.getAttribute('data-beach-id');var tid=placeCard.getAttribute('data-tour-id');if(bid)openBeachModal(bid);else if(tid)openTourismModal(tid);return;}
     var facCard=t.closest('.fac-card');if(facCard){var fid=facCard.getAttribute('data-fac-id');var ftab=facCard.getAttribute('data-fac-tab');if(fid)openFacModal(fid,ftab||'admin-branches');return;}
