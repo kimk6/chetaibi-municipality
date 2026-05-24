@@ -535,6 +535,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .ws-tab.active{color:var(--green);background:#fff;font-weight:800;}
 .ws-tab.active::after{opacity:1;}
 .ws-tab:active{opacity:.7;}
+#ws-tab-sea.active{color:#3b83f6;}
+#ws-tab-sea.active::after{background:#3b83f6;}
 .ws-panel{padding:18px;}
 .ws-panel.hidden{display:none;}
 .wcard-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
@@ -694,24 +696,16 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 <div class="ws-tabs">
                   <button class="ws-tab active" id="ws-tab-weather" onclick="switchWsTab('weather')">
                     <iconify-icon icon="lucide:sun" style="font-size:14px;pointer-events:none"></iconify-icon>
-                    الطقس
+                    حالة الطقس
                   </button>
                   <button class="ws-tab" id="ws-tab-sea" onclick="switchWsTab('sea')">
                     <iconify-icon icon="lucide:waves" style="font-size:14px;pointer-events:none"></iconify-icon>
-                    البحر
+                    حالة البحر
                   </button>
                 </div>
                 <!-- محتوى الطقس -->
                 <div class="ws-panel" id="ws-panel-weather">
-                  <div class="wcard-header">
-                    <div class="wcard-icon-wrap" id="pwa-weather-icon-bg" style="background:#fef3c7">
-                      <iconify-icon icon="lucide:sun" id="pwa-weather-header-icon" style="font-size:22px;color:#f59e0b;pointer-events:none"></iconify-icon>
-                    </div>
-                    <div>
-                      <div class="wcard-title">حالة الطقس</div>
-                      <div class="wcard-subtitle" id="pwa-weather-time-label">شطايبي — عنابة</div>
-                    </div>
-                  </div>
+
                   <div id="weather-day-tabs" style="display:flex;gap:6px;padding:0 2px 10px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;"></div>
                   <div class="wcard-main">
                     <div class="wcard-primary">
@@ -739,15 +733,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 </div>
                 <!-- محتوى البحر -->
                 <div class="ws-panel hidden" id="ws-panel-sea">
-                  <div class="wcard-header">
-                    <div class="wcard-icon-wrap" style="background:#dbeafe">
-                      <iconify-icon icon="lucide:waves" style="font-size:22px;color:#3b82f6;pointer-events:none"></iconify-icon>
-                    </div>
-                    <div>
-                      <div class="wcard-title">حالة البحر</div>
-                      <div class="wcard-subtitle" id="sea-subtitle">للصيادين والسياح</div>
-                    </div>
-                  </div>
+
                   <div id="sea-day-tabs" style="display:flex;gap:6px;padding:0 2px 10px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;"></div>
                   <div class="wcard-main">
                     <div class="wcard-primary">
@@ -1547,6 +1533,8 @@ var _wDays=[],_sDays=[];
 var _WM={0:{d:'☀️',n:'🌕',ar:'صافٍ'},1:{d:'🌤️',n:'🌙',ar:'غائم خفيف'},2:{d:'⛅',n:'🌥️',ar:'غائم جزئياً'},3:{d:'☁️',n:'☁️',ar:'غائم'},45:{d:'🌫️',n:'🌫️',ar:'ضبابي'},48:{d:'🌫️',n:'🌫️',ar:'ضبابي'},51:{d:'🌦️',n:'🌧️',ar:'رذاذ'},53:{d:'🌦️',n:'🌧️',ar:'رذاذ'},61:{d:'🌧️',n:'🌧️',ar:'ممطر'},63:{d:'🌧️',n:'🌧️',ar:'مطر'},65:{d:'🌧️',n:'🌧️',ar:'مطر غزير'},80:{d:'🌦️',n:'🌧️',ar:'زخات'},81:{d:'🌧️',n:'🌧️',ar:'زخات'},95:{d:'⛈️',n:'⛈️',ar:'عاصفة'}};
 var _DN=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
 var _TS='flex-shrink:0;border:1.5px solid var(--border-light);border-radius:99px;padding:4px 12px;font-size:11px;font-family:var(--font-main);background:var(--surface);color:var(--text);cursor:pointer;white-space:nowrap;touch-action:manipulation;transition:background .15s,color .15s,border-color .15s;';
+var _TS_W='flex-shrink:0;border:1.5px solid rgba(5,150,105,0.3);border-radius:99px;padding:4px 12px;font-size:11px;font-family:var(--font-main);background:var(--green-xl);color:var(--green);cursor:pointer;white-space:nowrap;touch-action:manipulation;font-weight:700;transition:background .15s,color .15s,border-color .15s;';
+var _TS_S='flex-shrink:0;border:1.5px solid rgba(59,131,246,0.3);border-radius:99px;padding:4px 12px;font-size:11px;font-family:var(--font-main);background:#eff6ff;color:#3b83f6;cursor:pointer;white-space:nowrap;touch-action:manipulation;font-weight:700;transition:background .15s,color .15s,border-color .15s;';
 function _g(id){return document.getElementById(id);}
 function renderWeatherDay(i){
   var d=_wDays[i];if(!d)return;
@@ -1589,7 +1577,7 @@ async function fetchPWAWeather(){
       });
     }
     var tabs=_g('weather-day-tabs');
-    if(tabs)tabs.innerHTML=_wDays.map(function(day,i){return '<button style="'+_TS+'" onclick="renderWeatherDay('+i+')">'+day.label+'</button>';}).join('');
+    if(tabs)tabs.innerHTML=_wDays.map(function(day,i){return '<button style="'+_TS_W+'" onclick="renderWeatherDay('+i+')">'+day.label+'</button>';}).join('');
     renderWeatherDay(0);
   }catch(e){
     console.error('fetchPWAWeather error:',e);
@@ -1636,7 +1624,7 @@ async function fetchPWASea(){
       _sDays.push({label:i===0?'اليوم':_DN[dt.getDay()],wave:wv,dir:dv!=null?dirs[Math.round(dv/45)%8]:'--',sst:sst,isDay:(h>=6&&h<20)});
     }
     var tabs=_g('sea-day-tabs');
-    if(tabs)tabs.innerHTML=_sDays.map(function(day,i){return '<button style="'+_TS+'" onclick="renderSeaDay('+i+')">'+day.label+'</button>';}).join('');
+    if(tabs)tabs.innerHTML=_sDays.map(function(day,i){return '<button style="'+_TS_S+'" onclick="renderSeaDay('+i+')">'+day.label+'</button>';}).join('');
     renderSeaDay(0);
   }catch(e){
     console.error('fetchPWASea error:',e);
