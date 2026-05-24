@@ -593,7 +593,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   cursor:pointer;direction:rtl;
   overflow:hidden;position:relative;
   box-sizing:border-box;
-  transition:transform var(--dur-mid);
+  /* بدون transition هنا — يتحكم بها JS مباشرة */
 }
 .ann-card::before{
   content:'';position:absolute;inset:0;
@@ -1759,42 +1759,88 @@ function _annMakeCard(n){
     +'</div>';
 }
 
-function _annCarUpdatePos(animate){
+function _annCarUpdatePos(animate,extraPx){
   var strip=document.getElementById('h-official');if(!strip)return;
+  var vw=strip.parentElement?strip.parentElement.offsetWidth:window.innerWidth;
+  var base=-_annCarIdx*vw;
+  var offset=extraPx||0;
   strip.style.transition=animate?'transform .38s cubic-bezier(.4,0,.2,1)':'none';
-  strip.style.transform='translateX('+(-_annCarIdx*100)+'%)';
+  strip.style.transform='translateX('+(base+offset)+'px)';
 }
 
 function _annCarGoTo(i){
-  /* حلقي: 0←→total-1 */
   _annCarIdx=((i%_annCarTotal)+_annCarTotal)%_annCarTotal;
-  _annCarUpdatePos(true);
+  _annCarUpdatePos(true,0);
   document.querySelectorAll('#ann-carousel-dots .ann-c-dot').forEach(function(d,j){
     d.classList.toggle('active',j===_annCarIdx);
   });
 }
 
-function _annCarInitDrag(outer){
-  var sx=0,sy=0,active=false,lock=null;
-  outer.addEventListener('touchstart',function(e){
-    sx=e.touches[0].clientX;sy=e.touches[0].clientY;active=true;lock=null;
-  },{passive:true});
-  outer.addEventListener('touchmove',function(e){
+function _annCarInitDrag(vp){
+  var strip=document.getElementById('h-official');
+  var sx=0,sy=0,active=false,lock=null,curDx=0;
+
+  function onStart(x,y){
+    sx=x;sy=y;active=true;lock=null;curDx=0;
+    /* إيقاف أي transition جارية */
+    if(strip){strip.style.transition='none';}
+  }
+  function onMove(x,y,cancelFn){
     if(!active)return;
-    var dx=Math.abs(e.touches[0].clientX-sx),dy=Math.abs(e.touches[0].clientY-sy);
-    if(!lock&&(dx>7||dy>7))lock=dx>dy?'h':'v';
-    /* السحب الأفقي: منع scroll الصفحة */
-    if(lock==='h'&&e.cancelable)e.preventDefault();
-  },{passive:false});
-  outer.addEventListener('touchend',function(e){
+    var dx=x-sx, dy=y-sy;
+    if(!lock&&(Math.abs(dx)>7||Math.abs(dy)>7))
+      lock=Math.abs(dx)>Math.abs(dy)?'h':'v';
+    if(lock==='h'){
+      cancelFn&&cancelFn();
+      curDx=dx;
+      /* تحريك البطاقة مع الإصبع فوراً */
+      var vw=vp.offsetWidth||window.innerWidth;
+      var base=-_annCarIdx*vw;
+      /* مقاومة عند الحواف */
+      var resistance=1;
+      if((_annCarIdx===0&&dx>0)||(_annCarIdx===_annCarTotal-1&&dx<0))
+        resistance=0.25;
+      if(strip){
+        strip.style.transition='none';
+        strip.style.transform='translateX('+(base+dx*resistance)+'px)';
+      }
+    }
+  }
+  function onEnd(x){
     if(!active)return;active=false;
     if(lock==='h'){
-      var dx=e.changedTouches[0].clientX-sx;
-      if(dx<-44)_annCarGoTo(_annCarIdx+1);
-      else if(dx>44)_annCarGoTo(_annCarIdx-1);
+      var dx=x-sx;
+      var vw=vp.offsetWidth||window.innerWidth;
+      /* threshold: 30% من العرض أو velocity */
+      if(dx<-vw*0.3)_annCarGoTo(_annCarIdx+1);
+      else if(dx>vw*0.3)_annCarGoTo(_annCarIdx-1);
+      else _annCarUpdatePos(true,0);
     }
-    lock=null;
+    lock=null;curDx=0;
+  }
+
+  /* Touch */
+  vp.addEventListener('touchstart',function(e){
+    onStart(e.touches[0].clientX,e.touches[0].clientY);
   },{passive:true});
+  vp.addEventListener('touchmove',function(e){
+    onMove(e.touches[0].clientX,e.touches[0].clientY,function(){
+      if(e.cancelable)e.preventDefault();
+    });
+  },{passive:false});
+  vp.addEventListener('touchend',function(e){
+    onEnd(e.changedTouches[0].clientX);
+  },{passive:true});
+  vp.addEventListener('touchcancel',function(){
+    if(active){active=false;_annCarUpdatePos(true,0);}
+  },{passive:true});
+
+  /* Mouse (للاختبار على سطح المكتب) */
+  vp.addEventListener('mousedown',function(e){onStart(e.clientX,e.clientY);});
+  window.addEventListener('mousemove',function(e){
+    if(active)onMove(e.clientX,e.clientY,null);
+  });
+  window.addEventListener('mouseup',function(e){if(active)onEnd(e.clientX);});
 }
 
 async function loadHOfficial(){
