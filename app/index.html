@@ -553,10 +553,14 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 /* OFFICIAL ANN CAROUSEL */
 .ann-carousel-outer{
   position:relative;
-  padding:4px 16px 14px;
-  overflow:hidden;
+  padding:4px 0 14px;
+  margin:0 16px;
 }
-/* الـ track: يحتوي البطاقات جنباً إلى جنب بدون gap */
+/* الـ track: overflow hidden هنا لإخفاء البطاقات المجاورة */
+.ann-carousel-viewport{
+  overflow:hidden;
+  border-radius:20px;
+}
 .ann-carousel-strip{
   display:flex;
   will-change:transform;
@@ -749,7 +753,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               </button>
             </div>
             <div class="ann-carousel-outer" id="ann-carousel-outer">
-              <div class="ann-carousel-strip" id="h-official"></div>
+              <div class="ann-carousel-viewport"><div class="ann-carousel-strip" id="h-official"></div></div>
               <div class="ann-carousel-dots" id="ann-carousel-dots"></div>
             </div>
           </div>
@@ -1847,7 +1851,7 @@ async function loadHOfficial(){
       switchTab('news');
       setTimeout(function(){var btn=document.getElementById('news-btn-official');if(btn)filterNews('official',btn);},350);
     });
-    if(outer)_annCarInitDrag(outer);
+    var vp=outer?outer.querySelector('.ann-carousel-viewport'):null;if(vp)_annCarInitDrag(vp);
   }catch(e){if(el)el.innerHTML='';}
 }
 async function loadHNews(){/* تُغذَّى من loadHOfficial */}
