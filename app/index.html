@@ -655,16 +655,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         <div class="content-block">
 
           <div class="section" style="padding-top:20px">
-            <div class="section-header">
-              <span class="section-title">
-                <iconify-icon icon="lucide:megaphone" style="color:var(--red);pointer-events:none"></iconify-icon>
-                الإعلانات
-              </span>
-              <button class="see-all-arrow-btn" id="btn-see-news-official">
-                <span>الكل</span>
-                <iconify-icon icon="lucide:chevron-left" style="font-size:16px;pointer-events:none;"></iconify-icon>
-              </button>
-            </div>
             <div class="ann-carousel-outer" id="ann-carousel-outer">
               <div class="ann-card" id="h-official">
                 <div class="ann-card-content-inner" style="opacity:0"></div>
@@ -789,7 +779,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               </span>
               <!-- ✅ تعديل 4: "تصفح" → "الخريطة" مع أيقونة map-pin أخضر -->
               <button class="see-all-arrow-btn" id="btn-see-beaches">الخريطة
-                <iconify-icon icon="lucide:map-pin" style="font-size:16px;color:var(--green);pointer-events:none;"></iconify-icon>
+                <iconify-icon icon="lucide:map" style="font-size:16px;color:var(--green);pointer-events:none;"></iconify-icon>
               </button>
             </div>
             <div class="h-scroll" id="h-beaches">
@@ -805,7 +795,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               </span>
               <!-- ✅ تعديل 4: "تصفح" → "الخريطة" مع أيقونة map-pin أخضر -->
               <button class="see-all-arrow-btn" id="btn-see-tourism">الخريطة
-                <iconify-icon icon="lucide:map-pin" style="font-size:16px;color:var(--green);pointer-events:none;"></iconify-icon>
+                <iconify-icon icon="lucide:map" style="font-size:16px;color:var(--green);pointer-events:none;"></iconify-icon>
               </button>
             </div>
             <div class="h-scroll" id="h-tourism">
@@ -1289,9 +1279,13 @@ function initSwipe(scrollAreaId,getNext){
   },{passive:true});
 }
 function swipeHome(dir){
-  /* dir=1 يسار، dir=-1 يمين */
+  /* السحب معطل فوق الـ Carousel */
+  var scroll=document.querySelector('#screen-home .scroll-area');
+  var st=scroll?scroll.scrollTop:0;
+  var outerH=document.getElementById('ann-carousel-outer');
+  var carH=outerH?outerH.offsetHeight+60:200;
+  if(st<carH)return; /* فوق الـ Carousel — لا سحب */
   if(dir===1)switchTab('news');
-  /* dir=-1 (يمين) لا شيء - محظور */
 }
 function swipeNews(dir){
   var active=document.querySelector('#screen-news .seg-btn.active');if(!active)return;
