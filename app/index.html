@@ -1732,9 +1732,9 @@ function _annCardContent(n,c){
   if(!c)c=_annLabelColor(n.custom_label||'');
   var dateHtml=n.date?'<div class="ann-card-date"><iconify-icon icon="lucide:calendar-days" style="color:var(--muted)"></iconify-icon>'+n.date+'</div>':'';
   var title=n.title?'<div class="ann-card-title" style="color:var(--text)"><iconify-icon icon="lucide:megaphone" style="font-size:15px;color:var(--text);flex-shrink:0;pointer-events:none"></iconify-icon>'+n.title+'</div>':'';
-  var excerpt=n.content?'<div class="ann-card-excerpt" style="color:'+c.icon+'">'+n.content.substring(0,110)+'...</div>':'';
+  var excerpt=n.content?'<div class="ann-card-excerpt">'+n.content.substring(0,110)+'...</div>':'';
   return title
-    +'<div class="ann-card-divider-top"></div>'
+    +'<div class="ann-card-divider-top" style="background:linear-gradient(to right,transparent,'+c.icon+',transparent)"></div>'
     +excerpt
     +'<div class="ann-card-divider"></div>'
     +'<div class="ann-card-footer">'
