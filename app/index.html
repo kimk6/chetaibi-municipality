@@ -1883,7 +1883,7 @@ function renderNews(items){
       var c=_annLabelColor(n.custom_label||'');
       var annHtml=_annCardContent(n,c);
       return '<div class="ann-card fade-in" '
-        +'style="margin:0 16px 14px;border-color:'+c.border+';box-shadow:0 2px 12px '+c.shadow+',0 1px 3px rgba(0,0,0,0.04)" '
+        +'style="margin:0 16px 14px;width:auto;border-color:'+c.border+';box-shadow:0 2px 12px '+c.shadow+',0 1px 3px rgba(0,0,0,0.04)" '
         +'data-news-id="'+n.id+'">'
         +'<div class="ann-card-content-inner">'+annHtml+'</div>'
         +'</div>';
