@@ -551,14 +551,14 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .wcard-stat{display:flex;align-items:center;gap:6px;font-size:12px;color:#4A4A4A;font-weight:500;}
 .wcard-stat iconify-icon{font-size:14px;pointer-events:none;flex-shrink:0;}
 /* OFFICIAL ANN CAROUSEL */
-.ann-carousel-outer{position:relative;overflow:hidden;padding:4px 0 14px;}
-.ann-carousel-strip{display:flex;transition:transform .35s cubic-bezier(.4,0,.2,1);will-change:transform;gap:12px;padding:0 16px;}
+.ann-carousel-outer{position:relative;overflow:hidden;padding:4px 16px 14px;}
+.ann-carousel-strip{display:flex;transition:transform .38s cubic-bezier(.4,0,.2,1);will-change:transform;gap:0;}
 .ann-carousel-strip .loading{width:100%;text-align:center;padding:20px;}
-.ann-carousel-dots{display:flex;align-items:center;justify-content:center;gap:6px;padding-top:6px;}
-.ann-c-dot{width:9px;height:9px;border-radius:99px;background:rgba(72,144,200,.35);border:none;padding:0;cursor:pointer;transition:width .2s,background .2s;}
-.ann-c-dot.active{width:26px;background:#4890c8;}
+.ann-carousel-dots{display:flex;align-items:center;justify-content:center;gap:8px;padding-top:8px;}
+.ann-c-dot{width:6px;height:6px;border-radius:99px;background:rgba(5,106,76,.22);border:none;padding:0;cursor:pointer;transition:width .25s,background .25s,opacity .25s;}
+.ann-c-dot.active{width:22px;background:#056a4c;}
 /* OFFICIAL ANNOUNCE CARD */
-.ann-card{background:linear-gradient(150deg,#7ec8e3 0%,#4a9fc4 45%,#2e7aa8 100%);border-radius:20px;border:1px solid rgba(255,255,255,.18);box-shadow:0 4px 20px rgba(46,122,168,.28);display:flex;flex-direction:row;align-items:center;padding:18px 16px;gap:14px;width:calc(100vw - 48px);max-width:380px;flex-shrink:0;cursor:pointer;touch-action:pan-y;transition:transform var(--dur-mid),box-shadow var(--dur-mid);}
+.ann-card{background:linear-gradient(145deg,#0a8a63 0%,#056a4c 55%,#034d38 100%);border-radius:20px;border:1px solid rgba(255,255,255,.10);box-shadow:0 4px 16px rgba(0,0,0,0.08),0 1px 3px rgba(0,0,0,0.04);display:flex;flex-direction:row;align-items:center;padding:14px 16px;gap:14px;width:100%;flex-shrink:0;cursor:pointer;touch-action:pan-y;transition:transform var(--dur-mid),box-shadow var(--dur-mid);}
 .ann-card:active{transform:scale(.97);box-shadow:0 1px 6px rgba(0,0,0,.1);}
 .ann-card-icon-wrap{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .ann-card-icon-wrap iconify-icon{font-size:20px;color:#fff;pointer-events:none;}
@@ -574,7 +574,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .ann-card-btn:active{background:rgba(255,255,255,.30);}
 .ann-card-btn iconify-icon{font-size:11px;pointer-events:none;color:#fff;}
 /* بطاقة تصفح المزيد */
-.ann-more-card{background:linear-gradient(150deg,#7ec8e3 0%,#4a9fc4 45%,#2e7aa8 100%);border-radius:20px;border:1px solid rgba(255,255,255,.18);box-shadow:0 4px 20px rgba(46,122,168,.28);display:flex;align-items:center;justify-content:center;padding:18px 16px;width:calc(100vw - 48px);max-width:380px;flex-shrink:0;cursor:pointer;touch-action:pan-y;transition:transform var(--dur-mid);}
+.ann-more-card{background:linear-gradient(145deg,#0a8a63 0%,#056a4c 55%,#034d38 100%);border-radius:20px;border:1px solid rgba(255,255,255,.10);box-shadow:0 4px 16px rgba(0,0,0,0.08),0 1px 3px rgba(0,0,0,0.04);display:flex;align-items:center;justify-content:center;padding:14px 16px;width:100%;flex-shrink:0;cursor:pointer;touch-action:pan-y;transition:transform var(--dur-mid);}
 .ann-more-card:active{transform:scale(.97);}
 .ann-more-card-inner{display:flex;flex-direction:column;align-items:center;gap:10px;}
 .ann-more-card-icon{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;}
@@ -1259,9 +1259,8 @@ function initSwipe(scrollAreaId,getNext){
   },{passive:true});
 }
 function swipeHome(dir){
-  /* dir=1 يسار، dir=-1 يمين */
+  /* السحب يسار من الـ carousel يُلغى بـ e.preventDefault في _annCarInitDrag */
   if(dir===1)switchTab('news');
-  /* dir=-1 (يمين) لا شيء - محظور */
 }
 function swipeNews(dir){
   var active=document.querySelector('#screen-news .seg-btn.active');if(!active)return;
@@ -1626,10 +1625,10 @@ var _annCarIdx=0,_annCarTotal=0;
 function _annCarUpdatePos(animate){
   var strip=document.getElementById('h-official');
   if(!strip)return;
-  var cardW=strip.querySelector('.ann-card');
-  if(!cardW)return;
-  var w=cardW.offsetWidth+12;
-  strip.style.transition=animate?'transform .35s cubic-bezier(.4,0,.2,1)':'none';
+  var outer=document.getElementById('ann-carousel-outer');
+  if(!outer)return;
+  var w=outer.offsetWidth;
+  strip.style.transition=animate?'transform .38s cubic-bezier(.4,0,.2,1)':'none';
   strip.style.transform='translateX('+(_annCarIdx*w)+'px)';
 }
 function _annCarGoTo(i){
@@ -1638,31 +1637,32 @@ function _annCarGoTo(i){
   document.querySelectorAll('#ann-carousel-dots .ann-c-dot').forEach(function(d,j){
     d.classList.toggle('active',j===_annCarIdx);
   });
-}
-function _annCarInitDrag(strip){
-  var sx=0,sy=0,dragging=false,moved=false,lockH=false;
+}function _annCarInitDrag(strip){
+  var sx=0,sy=0,dragging=false,moved=false,lockDir=null;
   strip.addEventListener('touchstart',function(e){
-    sx=e.touches[0].clientX;sy=e.touches[0].clientY;
-    dragging=true;moved=false;lockH=false;
+    sx=e.touches[0].clientX;
+    sy=e.touches[0].clientY;
+    dragging=true;moved=false;lockDir=null;
   },{passive:true});
   strip.addEventListener('touchmove',function(e){
     if(!dragging)return;
-    var dx=e.touches[0].clientX-sx;
-    var dy=e.touches[0].clientY-sy;
-    if(!lockH){lockH=Math.abs(dx)>Math.abs(dy)?'h':'v';}
-    if(lockH==='h'){e.stopPropagation();moved=true;}
-  },{passive:true});
-  strip.addEventListener('touchend',function(e){
-    if(!dragging||!moved){dragging=false;return;}
-    dragging=false;
-    var dx=e.changedTouches[0].clientX-sx;
-    /* السحب لليمين (dx>0) على البطاقة الأولى: لا شيء */
-    if(dx>40){
-      if(_annCarIdx===0){_annCarUpdatePos(true);return;}
-      _annCarGoTo(_annCarIdx-1);
-    } else if(dx<-40){
-      _annCarGoTo(_annCarIdx+1);
+    var dx=Math.abs(e.touches[0].clientX-sx);
+    var dy=Math.abs(e.touches[0].clientY-sy);
+    if(!lockDir) lockDir=dx>dy?'h':'v';
+    if(lockDir==='h'){
+      e.preventDefault(); /* منع الـ scroll والـ swipe page */
+      e.stopPropagation();
+      moved=true;
     }
+  },{passive:false});
+  strip.addEventListener('touchend',function(e){
+    if(!dragging){return;}
+    dragging=false;
+    if(!moved)return;
+    var dx=e.changedTouches[0].clientX-sx;
+    if(dx<-40) _annCarGoTo(_annCarIdx+1);      /* يسار → البطاقة التالية */
+    else if(dx>40) _annCarGoTo(_annCarIdx-1);  /* يمين → البطاقة السابقة */
+    else _annCarUpdatePos(true);
   });
 }
 async function loadHOfficial(){
