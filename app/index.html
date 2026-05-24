@@ -584,6 +584,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   display:flex;flex-direction:column;align-items:center;
   padding:16px 16px 0;gap:8px;
   min-height:200px;
+  flex:1;
 }
 .ann-card-icon-wrap{width:42px;height:42px;border-radius:50%;background:var(--green-xl);border:1.5px solid rgba(5,150,105,0.18);display:flex;align-items:center;justify-content:center;}
 .ann-card-icon-wrap iconify-icon{font-size:20px;color:var(--green);pointer-events:none;}
@@ -596,10 +597,15 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .ann-card-btn iconify-icon{font-size:12px;pointer-events:none;}
 .ann-card-date{display:flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:var(--muted);}
 .ann-card-date iconify-icon{font-size:11px;color:var(--green);pointer-events:none;}
+.ann-more-card-inner{
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:14px;
+  width:100%;height:100%;cursor:pointer;
+  flex:1;
+}
 .ann-more-card-icon{width:48px;height:48px;border-radius:50%;background:var(--green-xl);border:1.5px solid rgba(5,150,105,0.18);display:flex;align-items:center;justify-content:center;}
 .ann-more-card-icon iconify-icon{font-size:24px;color:var(--green);pointer-events:none;}
-.ann-more-card-text{font-size:13px;font-weight:900;color:var(--text);text-align:center;line-height:1.4;}
-.ann-more-card-inner{cursor:pointer;}
+.ann-more-btn{font-size:13px;font-weight:800;}
 /* SEARCH */
 #search-overlay{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.4);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .25s var(--ease-std);display:flex;flex-direction:column;}
 #search-overlay.open{opacity:1;pointer-events:auto;}
@@ -1732,9 +1738,12 @@ function _annCardContent(n){
 }
 
 function _annMoreContent(){
-  return '<div class="ann-more-card-inner" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:16px 0;min-height:200px;">'
+  return '<div class="ann-more-card-inner">'
     +'<div class="ann-more-card-icon"><iconify-icon icon="lucide:layout-list"></iconify-icon></div>'
-    +'<div class="ann-more-card-text">تصفح المزيد من الإعلانات</div>'
+    +'<button class="ann-card-btn ann-more-btn">'
+    +'تصفح المزيد من الإعلانات '
+    +'<iconify-icon icon="lucide:chevron-left" style="font-size:12px;pointer-events:none"></iconify-icon>'
+    +'</button>'
     +'</div>';
 }
 
@@ -1770,6 +1779,11 @@ async function loadHOfficial(){
   var outer=document.getElementById('ann-carousel-outer');
   var el=document.getElementById('h-official');
   if(!el)return;
+  /* إذا البيانات موجودة — فقط أعد عرض البطاقة الحالية */
+  if(_annCarData.length>0){
+    _annCarShowCurrent();
+    return;
+  }
   try{
     var d=await api('/api/news');
     if(d.data)allNews=d.data;
