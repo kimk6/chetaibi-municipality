@@ -1445,11 +1445,11 @@ var NS={
 /* ألوان Carousel حسب custom_label */
 function _annLabelColor(label){
   var m={
-    'استشارة':{border:'rgba(80,180,230,0.42)',shadow:'rgba(80,180,230,0.10)',btnBg:'rgba(80,180,230,0.10)',btnColor:'#1a7fa8',icon:'#50b4e6',divider:'rgba(80,180,230,0.15)',glow:'rgba(80,180,230,0.03)',dot:'#50b4e6'},
-    'دعوة':   {border:'rgba(128,131,224,0.42)',shadow:'rgba(128,131,224,0.10)',btnBg:'rgba(128,131,224,0.10)',btnColor:'#4345a0',icon:'#8083e0',divider:'rgba(128,131,224,0.15)',glow:'rgba(128,131,224,0.03)',dot:'#8083e0'},
-    'مزايدة': {border:'rgba(252,149,93,0.42)', shadow:'rgba(252,149,93,0.10)', btnBg:'rgba(252,149,93,0.10)', btnColor:'#b04a0a',icon:'#fc955d',divider:'rgba(252,149,93,0.15)', glow:'rgba(252,149,93,0.03)',dot:'#fc955d'}
+    'استشارة':{border:'rgba(80,180,230,0.42)',shadow:'rgba(80,180,230,0.10)',btnBg:'rgba(80,180,230,0.10)',btnColor:'#1a7fa8',icon:'#50b4e6',divider:'rgba(80,180,230,0.15)',glow:'rgba(80,180,230,0.01)',dot:'#50b4e6'},
+    'دعوة':   {border:'rgba(128,131,224,0.42)',shadow:'rgba(128,131,224,0.10)',btnBg:'rgba(128,131,224,0.10)',btnColor:'#4345a0',icon:'#8083e0',divider:'rgba(128,131,224,0.15)',glow:'rgba(128,131,224,0.01)',dot:'#8083e0'},
+    'مزايدة': {border:'rgba(252,149,93,0.42)', shadow:'rgba(252,149,93,0.10)', btnBg:'rgba(252,149,93,0.10)', btnColor:'#b04a0a',icon:'#fc955d',divider:'rgba(252,149,93,0.15)', glow:'rgba(252,149,93,0.01)',dot:'#fc955d'}
   };
-  return m[label]||{border:'rgba(5,150,105,0.28)',shadow:'rgba(5,150,105,0.08)',btnBg:'var(--green-xl)',btnColor:'var(--green-dark)',icon:'var(--green)',divider:'rgba(5,150,105,0.12)',glow:'rgba(5,150,105,0.03)',dot:null};
+  return m[label]||{border:'rgba(5,150,105,0.28)',shadow:'rgba(5,150,105,0.08)',btnBg:'var(--green-xl)',btnColor:'var(--green-dark)',icon:'var(--green)',divider:'rgba(5,150,105,0.12)',glow:'rgba(5,150,105,0.01)',dot:null};
 }
 function makeDateBadge(d){if(!d)return '';return '<span class="card-date"><iconify-icon icon="lucide:calendar-days"></iconify-icon>'+d+'</span>';}
 function makeNewsCard(n,showTitle){
