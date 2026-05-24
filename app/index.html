@@ -1733,10 +1733,8 @@ function _annCardContent(n,c){
   var title=n.title?'<div class="ann-card-title" style="color:var(--text)"><iconify-icon icon="lucide:megaphone" style="font-size:15px;color:var(--text);flex-shrink:0;pointer-events:none"></iconify-icon>'+n.title+'</div>':'';
   var excerpt=n.content?'<div class="ann-card-excerpt">'+n.content.substring(0,110)+'...</div>':'';
   return title
-    /* خط تحت العنوان — يتغير حسب custom_label */
-    +'<div style="width:48px;height:3px;border-radius:99px;background:'+c.icon+';margin:0 auto 4px;"></div>'
+    +'<div class="ann-card-divider" style="background:'+c.icon+'!important;opacity:0.6"></div>'
     +excerpt
-    /* الخط الفاصل — أسود ثابت */
     +'<div class="ann-card-divider"></div>'
     +'<div class="ann-card-footer">'
     +'<button class="ann-card-btn" data-news-id="'+n.id+'" style="background:'+c.btnBg+';color:'+c.btnColor+';">'
