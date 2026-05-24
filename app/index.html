@@ -156,7 +156,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .section{padding:20px 0 6px;}
 .section-header{display:flex;align-items:center;justify-content:space-between;padding:0 18px;margin-bottom:14px;}
 .section-title{font-size:15.5px;font-weight:900;color:var(--text);display:flex;align-items:center;gap:8px;letter-spacing:-.2px;position:relative;padding-bottom:5px;}
-.section-title::after{content:'';position:absolute;bottom:0;right:0;width:70%;height:2.5px;border-radius:99px;background:linear-gradient(to left,currentColor,rgba(0,0,0,0));opacity:0.13;}
+.section-title::after{display:none;}
 .section-title iconify-icon{font-size:18px;flex-shrink:0;}
 .see-all-arrow-btn{border:none;background:var(--green-xl);cursor:pointer;padding:5px 10px 5px 8px;display:flex;align-items:center;justify-content:center;touch-action:manipulation;transition:opacity var(--dur-fast),background var(--dur-fast);flex-shrink:0;border-radius:var(--r-full);gap:3px;font-family:var(--font-main);font-size:11.5px;font-weight:800;color:var(--green);}
 .see-all-arrow-btn:active{opacity:.6;}
@@ -591,7 +591,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   flex:1;
 }
 .ann-card-icon-wrap{width:38px;height:38px;border-radius:50%;background:var(--green-xl);border:none;display:flex;align-items:center;justify-content:center;}
-.ann-card-icon-wrap iconify-icon{font-size:21px;color:var(--green);pointer-events:none;}
+.ann-card-icon-wrap iconify-icon{font-size:24px;color:var(--green);pointer-events:none;}
 .ann-card-title{font-size:15.5px;font-weight:900;color:var(--text);text-align:center;line-height:1.35;letter-spacing:-.2px;width:100%;display:flex;align-items:center;justify-content:center;gap:6px;position:relative;padding-bottom:6px;}
 .ann-card-title::after{content:'';position:absolute;bottom:0;left:15%;right:15%;height:2.5px;border-radius:99px;background:linear-gradient(to right,transparent,var(--green),transparent);opacity:0.18;}
 .ann-card-excerpt{font-size:11.5px;color:var(--muted);line-height:1.65;text-align:center;width:100%;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
@@ -1264,7 +1264,7 @@ function initSwipe(scrollAreaId,getNext){
   var isArchive=(scrollAreaId==='scroll-archive');
   el.addEventListener('touchstart',function(e){
     if(isArchive){startX=e.touches[0].clientX;startY=e.touches[0].clientY;tracking=true;return;}
-    if(e.target.closest('.h-scroll')||e.target.closest('.seg-bar-wrap')||e.target.closest('.archive-card')||e.target.closest('.weather-card')||e.target.closest('.sea-card')){tracking=false;return;}
+    if(e.target.closest('.h-scroll')||e.target.closest('.seg-bar-wrap')||e.target.closest('.archive-card')||e.target.closest('.weather-card')||e.target.closest('.sea-card')||e.target.closest('.weather-sea-unified-card')||e.target.closest('#weather-day-tabs')||e.target.closest('#sea-day-tabs')){tracking=false;return;}
     startX=e.touches[0].clientX;startY=e.touches[0].clientY;tracking=true;
   },{passive:true});
   el.addEventListener('touchend',function(e){
@@ -1275,13 +1275,15 @@ function initSwipe(scrollAreaId,getNext){
   },{passive:true});
 }
 function swipeHome(dir){
-  /* السحب معطل فوق الـ Carousel */
+  if(dir!==1)return; /* يسار فقط */
   var scroll=document.querySelector('#screen-home .scroll-area');
   var st=scroll?scroll.scrollTop:0;
-  var outerH=document.getElementById('ann-carousel-outer');
-  var carH=outerH?outerH.offsetHeight+60:200;
-  if(st<carH)return; /* فوق الـ Carousel — لا سحب */
-  if(dir===1)switchTab('news');
+  /* حساب نهاية منطقة الكاروسيل */
+  var outer=document.getElementById('ann-carousel-outer');
+  var carBottom=outer?(outer.offsetTop+outer.offsetHeight):0;
+  /* إذا كان scroll فوق الكاروسيل → لا سحب */
+  if(st<carBottom-40)return;
+  switchTab('news');
 }
 function swipeNews(dir){
   var active=document.querySelector('#screen-news .seg-btn.active');if(!active)return;
