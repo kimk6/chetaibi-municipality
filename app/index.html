@@ -1878,8 +1878,15 @@ function renderNews(items){
     var pin=n.is_pinned?'<span style="font-size:10px;font-weight:800;color:var(--amber);display:flex;align-items:center;gap:2px"><iconify-icon icon="lucide:pin" style="pointer-events:none"></iconify-icon>مثبت</span>':'';
     var desc=(n.content||'').substring(0,130)+'...';
     if(n.category==='poster'){var src=n.image_url||'';if(src)return '<div class="poster-card fade-in" data-lb="'+src+'"><img src="'+src+'" alt="" loading="lazy"></div>';return '<div class="poster-card fade-in"><div class="poster-card-ph" style="background:linear-gradient(135deg,var(--purple),#4c1d95)"><iconify-icon icon="lucide:image" style="color:rgba(255,255,255,.7);font-size:3rem;pointer-events:none"></iconify-icon></div></div>';}
-    var imgW=n.image_url?'<div class="announce-img-wrap"><img src="'+n.image_url+'" alt="" loading="lazy"></div>':'<div class="announce-img-wrap" style="background:'+s.grad+';height:90px"><iconify-icon icon="'+(n.category==='official'?'lucide:megaphone':'lucide:clipboard-list')+'" style="color:rgba(255,255,255,.65);font-size:2.2rem;pointer-events:none"></iconify-icon></div>';
-    var badgeHtml=n.category!=='official'?'<span class="news-badge" style="'+s.bs+'">'+lbl+'</span>':'';
+    /* بطاقة الإعلانات الرسمية — نفس شكل الـ Carousel */
+    if(n.category==='official'){
+      var annHtml=_annCardContent(n);
+      return '<div class="ann-card fade-in" style="margin:0 16px 14px" data-news-id="'+n.id+'">'
+        +'<div class="ann-card-content-inner">'+annHtml+'</div>'
+        +'</div>';
+    }
+    var imgW=n.image_url?'<div class="announce-img-wrap"><img src="'+n.image_url+'" alt="" loading="lazy"></div>':'<div class="announce-img-wrap" style="background:'+s.grad+';height:90px"><iconify-icon icon="lucide:clipboard-list" style="color:rgba(255,255,255,.65);font-size:2.2rem;pointer-events:none"></iconify-icon></div>';
+    var badgeHtml='<span class="news-badge" style="'+s.bs+'">'+lbl+'</span>';
     var headerRow=(badgeHtml||pin)?'<div style="display:flex;align-items:center;gap:7px;margin-bottom:7px">'+badgeHtml+pin+'</div>':'';
     var titleHtml=(n.category==='activity'||n.category==='social')&&n.title?'<div style="font-size:14px;font-weight:800;color:var(--text);line-height:1.45;margin-bottom:6px">'+n.title+'</div>':'';
     return '<div class="announce-card fade-in" data-news-id="'+n.id+'">'+imgW+'<div class="announce-body">'+headerRow+titleHtml+'<div style="font-size:13.5px;color:var(--muted);line-height:1.7">'+desc+'</div><div class="announce-footer">'+makeDateBadge(n.date)+'<button class="read-more" data-news-id="'+n.id+'">اقرأ المزيد<iconify-icon icon="lucide:chevron-left"></iconify-icon></button></div></div></div>';
