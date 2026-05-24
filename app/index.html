@@ -572,7 +572,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   cursor:pointer;direction:rtl;
   overflow:hidden;position:relative;
   box-sizing:border-box;
-  min-height:260px;
 }
 .ann-card::before{
   content:'';position:absolute;inset:0;
@@ -1744,7 +1743,8 @@ function _annMoreContent(){
     +'تصفح المزيد من الإعلانات '
     +'<iconify-icon icon="lucide:chevron-left" style="font-size:12px;pointer-events:none"></iconify-icon>'
     +'</button>'
-    +'</div>';
+    +'</div>'
+    +'<div class="ann-card-footer" style="visibility:hidden"></div>';
 }
 
 var _annCarData=[];
