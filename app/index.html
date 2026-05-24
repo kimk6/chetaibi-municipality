@@ -665,6 +665,12 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 <div class="ann-card-content-inner" style="opacity:0"></div>
               </div>
               <div class="ann-carousel-dots" id="ann-carousel-dots"></div>
+            <div style="text-align:center;padding:4px 0 8px">
+              <button class="read-more" id="ann-see-all-btn" onclick="switchTab('news');setTimeout(function(){var b=document.getElementById('news-btn-official');if(b)filterNews('official',b);},350)">
+                تصفح المزيد من الإعلانات
+                <iconify-icon icon="lucide:chevron-left" style="font-size:12px;pointer-events:none"></iconify-icon>
+              </button>
+            </div>
             </div>
           </div>
 
@@ -1697,11 +1703,7 @@ function _annCarShowCurrent(){
   setTimeout(function(){
     var data=_annCarData[_annCarIdx];
     if(!data){inner.style.opacity='1';inner.style.transform='';return;}
-    if(data.type==='more'){
-      inner.innerHTML=_annMoreContent();
-    } else {
       inner.innerHTML=_annCardContent(data);
-    }
     /* ربط الأحداث من جديد */
     var btn=inner.querySelector('.ann-card-btn');
     if(btn)btn.addEventListener('click',function(e){
@@ -1709,13 +1711,7 @@ function _annCarShowCurrent(){
       var id=btn.getAttribute('data-news-id');
       if(id){haptic('light');openNewsModal(id);}
     });
-    var moreBtn=inner.querySelector('.ann-more-card-inner');
-    if(moreBtn)moreBtn.addEventListener('click',function(){
-      haptic('light');
-      switchTab('news');
-      setTimeout(function(){var b=document.getElementById('news-btn-official');if(b)filterNews('official',b);},350);
-    });
-    inner.style.transition='opacity .22s ease,transform .22s ease';
+        inner.style.transition='opacity .22s ease,transform .22s ease';
     inner.style.opacity='1';
     inner.style.transform='translateY(0)';
   },160);
@@ -1797,7 +1793,6 @@ async function loadHOfficial(){
     if(!items.length){el.innerHTML='';return;}
     /* بناء البيانات */
     _annCarData=items.map(function(n){return {type:'card',id:n.id,title:n.title,content:n.content,date:n.date};});
-    _annCarData.push({type:'more'});
     _annCarTotal=_annCarData.length;
     _annCarIdx=0;
     /* بطاقة واحدة ثابتة */
