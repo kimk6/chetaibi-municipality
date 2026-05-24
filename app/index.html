@@ -1730,10 +1730,10 @@ function _annCarShowCurrent(){
 function _annCardContent(n,c){
   if(!c)c=_annLabelColor(n.custom_label||'');
   var dateHtml=n.date?'<div class="ann-card-date"><iconify-icon icon="lucide:calendar-days" style="color:var(--muted)"></iconify-icon>'+n.date+'</div>':'';
-  var title=n.title?'<div class="ann-card-title" style="color:'+c.icon+'"><iconify-icon icon="lucide:megaphone" style="font-size:15px;color:'+c.icon+';flex-shrink:0;pointer-events:none"></iconify-icon>'+n.title+'</div>':'';
+  var title=n.title?'<div class="ann-card-title" style="color:var(--text)"><iconify-icon icon="lucide:megaphone" style="font-size:15px;color:var(--text);flex-shrink:0;pointer-events:none"></iconify-icon>'+n.title+'</div>':'';
   var excerpt=n.content?'<div class="ann-card-excerpt">'+n.content.substring(0,110)+'...</div>':'';
   return title+excerpt
-    +'<div class="ann-card-divider" style="background:'+c.icon+';opacity:0.25"></div>'
+    +'<div class="ann-card-divider" style="background:'+c.icon+';opacity:0.5"></div>'
     +'<div class="ann-card-footer">'
     +'<button class="ann-card-btn" data-news-id="'+n.id+'" style="background:'+c.btnBg+';color:'+c.btnColor+';">'
     +'اقرأ المزيد <iconify-icon icon="lucide:chevron-left" style="font-size:11px;pointer-events:none;color:'+c.icon+'"></iconify-icon>'
