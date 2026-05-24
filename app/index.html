@@ -1697,40 +1697,47 @@ function _annCarGoTo(i){
 }
 
 function _annCarShowCurrent(){
-  var strip=document.getElementById('h-official');
-  if(!strip)return;
-  var inner=strip.querySelector('.ann-card-content-inner');
+  var card=document.getElementById('h-official');
+  if(!card)return;
+  var inner=card.querySelector('.ann-card-content-inner');
   if(!inner)return;
-  /* fade out → swap → fade in */
   inner.style.transition='opacity .18s ease,transform .18s ease';
   inner.style.opacity='0';
   inner.style.transform='translateY(6px)';
   setTimeout(function(){
     var data=_annCarData[_annCarIdx];
     if(!data){inner.style.opacity='1';inner.style.transform='';return;}
-      inner.innerHTML=_annCardContent(data);
-    /* ربط الأحداث من جديد */
+    /* تطبيق اللون على البطاقة الثابتة */
+    var c=_annLabelColor(data.custom_label||'');
+    card.style.borderColor=c.border;
+    card.style.boxShadow='0 2px 12px '+c.shadow+',0 1px 3px rgba(0,0,0,0.04)';
+    if(data.type==='more'){
+      inner.innerHTML=_annMoreContent();
+    } else {
+      inner.innerHTML=_annCardContent(data,c);
+    }
     var btn=inner.querySelector('.ann-card-btn');
     if(btn)btn.addEventListener('click',function(e){
       e.stopPropagation();
       var id=btn.getAttribute('data-news-id');
       if(id){haptic('light');openNewsModal(id);}
     });
-        inner.style.transition='opacity .22s ease,transform .22s ease';
+    inner.style.transition='opacity .22s ease,transform .22s ease';
     inner.style.opacity='1';
     inner.style.transform='translateY(0)';
   },160);
 }
 
-function _annCardContent(n){
-  var dateHtml=n.date?'<div class="ann-card-date"><iconify-icon icon="lucide:calendar-days"></iconify-icon>'+n.date+'</div>':'';
-  var title=n.title?'<div class="ann-card-title"><iconify-icon icon="lucide:megaphone" style="font-size:15px;color:var(--green);flex-shrink:0;pointer-events:none"></iconify-icon>'+n.title+'</div>':'';
+function _annCardContent(n,c){
+  if(!c)c=_annLabelColor(n.custom_label||'');
+  var dateHtml=n.date?'<div class="ann-card-date"><iconify-icon icon="lucide:calendar-days" style="color:'+c.icon+'"></iconify-icon>'+n.date+'</div>':'';
+  var title=n.title?'<div class="ann-card-title"><iconify-icon icon="lucide:megaphone" style="font-size:15px;color:'+c.icon+';flex-shrink:0;pointer-events:none"></iconify-icon>'+n.title+'</div>':'';
   var excerpt=n.content?'<div class="ann-card-excerpt">'+n.content.substring(0,110)+'...</div>':'';
   return title+excerpt
-    +'<div class="ann-card-divider"></div>'
+    +'<div class="ann-card-divider" style="background:'+c.divider+'"></div>'
     +'<div class="ann-card-footer">'
-    +'<button class="ann-card-btn" data-news-id="'+n.id+'">'
-    +'اقرأ المزيد <iconify-icon icon="lucide:chevron-left" style="font-size:11px;pointer-events:none"></iconify-icon>'
+    +'<button class="ann-card-btn" data-news-id="'+n.id+'" style="background:'+c.btnBg+';color:'+c.btnColor+';">'
+    +'اقرأ المزيد <iconify-icon icon="lucide:chevron-left" style="font-size:11px;pointer-events:none;color:'+c.icon+'"></iconify-icon>'
     +'</button>'
     +dateHtml
     +'</div>';
@@ -1810,9 +1817,12 @@ async function loadHOfficial(){
     }
     /* اعرض أول بطاقة بدون animation */
     var inner=el.querySelector('.ann-card-content-inner');
-    if(inner){
+    if(inner&&_annCarData[0]){
+      var c0=_annLabelColor(_annCarData[0].custom_label||'');
+      el.style.borderColor=c0.border;
+      el.style.boxShadow='0 2px 12px '+c0.shadow+',0 1px 3px rgba(0,0,0,0.04)';
       inner.style.opacity='1';
-      inner.innerHTML=_annCardContent(_annCarData[0]);
+      inner.innerHTML=_annCardContent(_annCarData[0],c0);
       var btn=inner.querySelector('.ann-card-btn');
       if(btn)btn.addEventListener('click',function(e){
         e.stopPropagation();
