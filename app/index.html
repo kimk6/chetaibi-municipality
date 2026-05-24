@@ -1943,41 +1943,39 @@ function initEventDelegation(){
   document.getElementById('hdr-search-btn').addEventListener('click',function(){Search.open();});
   document.getElementById('hdr-notif-btn').addEventListener('click',function(){haptic('light');});
 
-  /* ✅ تعديل 3: زر "الكل" في الإعلانات → صفحة الأخبار تصنيف "إعلانات" */
-  document.getElementById('btn-see-news-official').addEventListener('click',function(){
-    haptic('light');
-    switchTab('news');
-    setTimeout(function(){
-      var btn=document.getElementById('news-btn-official');
-      if(btn) filterNews('official',btn);
-    },350);
+  /* زر الكل - إعلانات (محذوف من UI لكن نتحقق منه) */
+  var btnOfficial=document.getElementById('btn-see-news-official');
+  if(btnOfficial) btnOfficial.addEventListener('click',function(){
+    haptic('light');switchTab('news');
+    setTimeout(function(){var btn=document.getElementById('news-btn-official');if(btn)filterNews('official',btn);},350);
   });
 
-  /* ✅ تعديل 2: زر "الكل" في آخر المستجدات → صفحة الأخبار تصنيف "نشاطات" */
-  document.getElementById('btn-see-news-all').addEventListener('click',function(){
-    haptic('light');
-    switchTab('news');
-    setTimeout(function(){
-      var btn=document.getElementById('news-btn-activity');
-      if(btn) filterNews('activity',btn);
-    },350);
+  /* زر الكل - آخر المستجدات */
+  var btnAll=document.getElementById('btn-see-news-all');
+  if(btnAll) btnAll.addEventListener('click',function(){
+    haptic('light');switchTab('news');
+    setTimeout(function(){var btn=document.getElementById('news-btn-activity');if(btn)filterNews('activity',btn);},350);
   });
 
-  document.getElementById('btn-see-beaches').addEventListener('click',function(){haptic('light');switchTabWithFilter('map','beach');});
-  document.getElementById('btn-see-tourism').addEventListener('click',function(){haptic('light');switchTabWithFilter('map','tour');});
-  document.getElementById('news-btn-official').addEventListener('click',function(){filterNews('official',this);});
-  document.getElementById('news-btn-activity').addEventListener('click',function(){filterNews('activity',this);});
-  document.getElementById('news-btn-social').addEventListener('click',function(){filterNews('social',this);});
-  document.getElementById('news-btn-poster').addEventListener('click',function(){filterNews('poster',this);});
-  document.getElementById('btn-admin-branches').addEventListener('click',function(){loadFacTab('admin-branches',this);});
-  document.getElementById('btn-education').addEventListener('click',function(){loadFacTab('education',this);});
-  document.getElementById('btn-health').addEventListener('click',function(){loadFacTab('health',this);});
-  document.getElementById('btn-public-bodies').addEventListener('click',function(){loadFacTab('public-bodies',this);});
-  document.getElementById('btn-religious').addEventListener('click',function(){loadFacTab('religious',this);});
-  document.getElementById('btn-cultural').addEventListener('click',function(){loadFacTab('cultural',this);});
-  document.getElementById('btn-sports').addEventListener('click',function(){loadFacTab('sports',this);});
-  document.getElementById('arch-tab-compare').addEventListener('click',function(){switchArchTab('compare',this);});
-  document.getElementById('arch-tab-historic').addEventListener('click',function(){switchArchTab('historic',this);});
+  var btnBeaches=document.getElementById('btn-see-beaches');
+  if(btnBeaches) btnBeaches.addEventListener('click',function(){haptic('light');switchTabWithFilter('map','beach');});
+  var btnTourism=document.getElementById('btn-see-tourism');
+  if(btnTourism) btnTourism.addEventListener('click',function(){haptic('light');switchTabWithFilter('map','tour');});
+
+  function safeBtn(id,fn){var el=document.getElementById(id);if(el)el.addEventListener('click',fn);}
+  safeBtn('news-btn-official',function(){filterNews('official',this);});
+  safeBtn('news-btn-activity',function(){filterNews('activity',this);});
+  safeBtn('news-btn-social',function(){filterNews('social',this);});
+  safeBtn('news-btn-poster',function(){filterNews('poster',this);});
+  safeBtn('btn-admin-branches',function(){loadFacTab('admin-branches',this);});
+  safeBtn('btn-education',function(){loadFacTab('education',this);});
+  safeBtn('btn-health',function(){loadFacTab('health',this);});
+  safeBtn('btn-public-bodies',function(){loadFacTab('public-bodies',this);});
+  safeBtn('btn-religious',function(){loadFacTab('religious',this);});
+  safeBtn('btn-cultural',function(){loadFacTab('cultural',this);});
+  safeBtn('btn-sports',function(){loadFacTab('sports',this);});
+  safeBtn('arch-tab-compare',function(){switchArchTab('compare',this);});
+  safeBtn('arch-tab-historic',function(){switchArchTab('historic',this);});
   document.getElementById('map-filter-btn').addEventListener('click',function(e){toggleFilterMenu(e);});
   document.getElementById('map-locate-btn').addEventListener('click',function(){locateUser();});
   document.getElementById('map-popup-close-btn').addEventListener('click',function(e){e.stopPropagation();haptic('light');closeMapCard();});
@@ -2004,7 +2002,7 @@ window.addEventListener('load',function(){
   initSwipe('scroll-news',function(dir){swipeNews(dir);});
   initSwipe('scroll-guide',function(dir){swipeGuide(dir);});
   initSwipe('scroll-archive',function(dir){swipeArchive(dir);});
-  ['home','news','guide','archive'].forEach(function(id){
+  ['home','news','guide','archive','map'].forEach(function(id){
     var scrollEl=document.querySelector('#screen-'+id+' .scroll-area');
     if(scrollEl)scrollEl.addEventListener('scroll',onScrollAreaScroll,{passive:true});
   });
