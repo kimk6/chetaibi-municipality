@@ -116,7 +116,7 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
   display:flex;align-items:center;gap:12px;
   padding:calc(var(--safe-t) + 10px) 16px 10px;
 }
-.header-logo{width:52px;height:52px;object-fit:contain;flex-shrink:0;pointer-events:none;border-radius:0;background:transparent;box-shadow:none;border:none;display:block;}
+.header-logo{width:60px;height:60px;object-fit:contain;flex-shrink:0;pointer-events:none;border-radius:0;background:transparent;box-shadow:none;border:none;display:block;}
 .header-text{flex:1;min-width:0;}
 .header-text h1{font-size:18px;font-weight:900;color:var(--text);letter-spacing:-.4px;line-height:1.2;}
 .header-text p{font-size:12.5px;color:var(--muted);font-weight:600;margin-top:1px;}
@@ -588,8 +588,8 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
 .tl-badges{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
 .tl-badge{font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;}
 .tl-date{font-size:10px;font-weight:600;padding:3px 9px;border-radius:20px;border:1px solid;}
-.tl-title{font-size:15px;font-weight:900;color:#1f2937;margin-bottom:6px;}
-.tl-text{font-size:13.5px;color:#6b7280;line-height:1.75;}
+.tl-title{font-size:15.5px;font-weight:900;color:#1f2937;margin-bottom:6px;}
+.tl-text{font-size:13.5px;color:#6b7280;line-height:1.7;}
 
 /* ══ البطاقة الثابتة */
 .ann-card{
@@ -2419,7 +2419,7 @@ function initEventDelegation(){
       var dy=e.changedTouches[0].clientY-sy;
       if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>40){
         /* RTL: swipe يسار = التالي (الأقدم)، يمين = السابق (الأحدث) */
-        _lbGo(dx<0?1:-1);
+        _lbGo(dx<0?-1:1);
       }
     },{passive:true});
   })();
