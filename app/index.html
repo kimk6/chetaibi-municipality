@@ -528,6 +528,10 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
 .map-popup-action iconify-icon{font-size:14px;pointer-events:none;}
 .map-popup-close{position:absolute;top:10px;left:12px;width:30px;height:30px;border-radius:50%;background:rgba(0,0,0,.07);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;color:var(--muted-2);pointer-events:auto;transition:background var(--dur-fast),color var(--dur-fast);z-index:3;}
 .map-popup-close:active{background:rgba(0,0,0,.16);color:var(--text-2);}
+/* زر عرض في الخريطة داخل الـ modals */
+.modal-map-btn{display:inline-flex;align-items:center;gap:7px;background:var(--blue-l);border:none;border-radius:var(--r-full);padding:9px 18px;font-family:var(--font-main);font-size:12.5px;font-weight:800;color:var(--blue);cursor:pointer;touch-action:manipulation;margin-top:14px;min-height:40px;transition:background var(--dur-fast),transform var(--dur-fast);width:100%;justify-content:center;}
+.modal-map-btn:active{background:#bfdbfe;transform:scale(.96);}
+.modal-map-btn iconify-icon{font-size:16px;pointer-events:none;flex-shrink:0;}
 /* LIGHTBOX */
 #lightbox{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.97);display:none;align-items:center;justify-content:center;padding:20px;overscroll-behavior:none;}
 #lightbox.open{display:flex;}
@@ -1045,6 +1049,7 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
       <div class="modal-name" id="mb-name"></div>
       <div class="modal-desc" id="mb-desc"></div>
       <div class="modal-meta" id="mb-meta"></div>
+      <div id="mb-map-btn-wrap"></div>
       <div id="mb-album"></div>
     </div>
   </div>
@@ -1064,6 +1069,7 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
         <div class="modal-name" id="mt-name"></div>
         <div class="modal-desc" id="mt-desc"></div>
         <div class="modal-meta" id="mt-meta"></div>
+        <div id="mt-map-btn-wrap"></div>
         <div id="mt-album"></div>
       </div>
     </div>
@@ -1079,6 +1085,7 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
       <div class="modal-name" id="mf-name"></div>
       <div class="modal-desc" id="mf-desc"></div>
       <div class="modal-meta" id="mf-meta"></div>
+      <div id="mf-map-btn-wrap"></div>
       <div id="mf-album"></div>
     </div>
   </div>
@@ -2213,6 +2220,7 @@ async function openBeachModal(id){
     if(b.is_supervised)m+='<span class="modal-chip"><iconify-icon icon="lucide:shield-check" style="color:var(--green);pointer-events:none"></iconify-icon>مراقب</span>';
     if(b.season)m+='<span class="modal-chip">'+b.season+'</span>';
     document.getElementById('mb-meta').innerHTML=m;
+    _makeMapBtn(b.lat,b.lng,b.name||'','mb-map-btn-wrap');
     album('mb-album',b.albums);
     om('m-beach');
   }catch(e){}
@@ -2242,6 +2250,7 @@ async function openTourismModal(id){
       if(t.rating)m+='<span class="modal-chip"><iconify-icon icon="lucide:star" style="color:var(--amber);pointer-events:none"></iconify-icon>'+t.rating+'/5</span>';
       if(t.distance_info)m+='<span class="modal-chip">'+t.distance_info+'</span>';
       document.getElementById('mt-meta').innerHTML=m;
+      _makeMapBtn(t.lat,t.lng,t.name||'','mt-map-btn-wrap');
       album('mt-album',albums);
     }
     om('m-tour');
@@ -2261,6 +2270,7 @@ async function openFacModal(id,tab){
     document.getElementById('mf-desc').textContent=f.description||'';
     var tags=Array.isArray(f.tags)?f.tags:[];
     document.getElementById('mf-meta').innerHTML=tags.map(tg=>'<span class="modal-chip">#'+tg+'</span>').join('');
+    _makeMapBtn(f.lat,f.lng,f.name||'','mf-map-btn-wrap');
     var albums=[];
     if(Array.isArray(f.albums)&&f.albums.length){albums=f.albums.map(x=>typeof x==='string'?{id:x,image_url:x,caption:''}:x);}
     else if(f.album_urls){try{var arr=typeof f.album_urls==='string'?JSON.parse(f.album_urls):f.album_urls;albums=(arr||[]).map((u,i)=>({id:i,image_url:u,caption:''}));}catch(e){}}
@@ -2269,6 +2279,46 @@ async function openFacModal(id,tab){
   }catch(e){}
 }
 /* ══ MAP ══ */
+/* دالة فتح الخريطة والتمركز على موقع معين */
+function showOnMap(lat,lng,name){
+  haptic('light');
+  /* أغلق أي modal مفتوح */
+  ['m-beach','m-tour','m-fac'].forEach(function(id){cm(id);});
+  /* انتقل لتبويب الخريطة */
+  switchTab('map');
+  /* بعد تهيئة الخريطة، تحرك إلى الموقع وافتح popup */
+  var tries=0;
+  var waitMap=setInterval(function(){
+    tries++;
+    if(appMap){
+      clearInterval(waitMap);
+      setTimeout(function(){
+        appMap.invalidateSize();
+        appMap.setView([lat,lng],16,{animate:true});
+        /* ابحث عن الماركر المطابق وأظهر البطاقة */
+        var allLayers=[].concat(mapLayers.beach||[],mapLayers.tour||[],mapLayers.fac||[]);
+        allLayers.forEach(function(mk){
+          var pos=mk.getLatLng();
+          if(Math.abs(pos.lat-lat)<0.0002&&Math.abs(pos.lng-lng)<0.0002){
+            mk.fire('click');
+          }
+        });
+      },400);
+    }else if(tries>30){clearInterval(waitMap);}
+  },100);
+}
+function _makeMapBtn(lat,lng,name,wrapId){
+  var wrap=document.getElementById(wrapId);
+  if(!wrap)return;
+  if(lat&&lng){
+    wrap.innerHTML='<button class="modal-map-btn" onclick="showOnMap('+lat+','+lng+',\''+name.replace(/'/g,'')+'\')">'
+      +'<iconify-icon icon="lucide:map-pin"></iconify-icon>الخريطة'
+      +'<iconify-icon icon="lucide:map"></iconify-icon>'
+      +'</button>';
+  }else{
+    wrap.innerHTML='';
+  }
+}
 var appMap=null;
 function initMap2(){
   mapDone=true;
