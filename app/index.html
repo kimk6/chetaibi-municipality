@@ -533,10 +533,10 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
 #lightbox img{max-width:100%;max-height:90dvh;object-fit:contain;border-radius:var(--r-sm);pointer-events:none;display:block;transition:opacity .18s ease;}
 #lb-close{position:absolute;top:calc(var(--safe-t) + 14px);left:14px;width:44px;height:44px;background:rgba(255,255,255,.18);border:none;border-radius:50%;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);touch-action:manipulation;pointer-events:auto;z-index:10;transition:background var(--dur-fast);}
 #lb-close:active{background:rgba(255,255,255,.32);}
-#lb-prev,#lb-next{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;background:rgba(255,255,255,.18);border:none;border-radius:50%;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);touch-action:manipulation;pointer-events:auto;z-index:10;transition:background var(--dur-fast),opacity .2s;}
+#lb-prev,#lb-next{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;background:none;border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;pointer-events:auto;z-index:10;transition:opacity .2s;filter:drop-shadow(0 1px 3px rgba(0,0,0,.6));}
 #lb-prev{right:14px;}
 #lb-next{left:14px;}
-#lb-prev:active,#lb-next:active{background:rgba(255,255,255,.32);}
+#lb-prev:active,#lb-next:active{opacity:.5;}
 #lb-prev.hidden,#lb-next.hidden{opacity:0;pointer-events:none;}
 #lb-counter{position:absolute;bottom:calc(var(--safe-b) + 18px);left:50%;transform:translateX(-50%);color:rgba(255,255,255,.75);font-size:13px;font-weight:700;font-family:var(--font-main);background:rgba(0,0,0,.35);padding:4px 14px;border-radius:20px;pointer-events:none;display:none;}
 /* WEATHER / SEA UNIFIED */
@@ -1289,7 +1289,13 @@ function initSwipe(scrollAreaId,getNext){
   var isArchive=(scrollAreaId==='scroll-archive');
   el.addEventListener('touchstart',function(e){
     if(isArchive){startX=e.touches[0].clientX;startY=e.touches[0].clientY;tracking=true;return;}
-    if(e.target.closest('.h-scroll')||e.target.closest('.seg-bar-wrap')||e.target.closest('.archive-card')||e.target.closest('.weather-card')||e.target.closest('.sea-card')||e.target.closest('.weather-sea-unified-card')||e.target.closest('#weather-day-tabs')||e.target.closest('#sea-day-tabs')){tracking=false;return;}
+    if(e.target.closest('.seg-bar-wrap')||e.target.closest('.archive-card')||e.target.closest('.weather-card')||e.target.closest('.sea-card')||e.target.closest('.weather-sea-unified-card')||e.target.closest('#weather-day-tabs')||e.target.closest('#sea-day-tabs')){tracking=false;return;}
+    /* تجاهل السحب فوق بطاقات h-scroll فقط، لكن السماح على padding المنطقة */
+    var hScrollTarget=e.target.closest('.h-scroll');
+    if(hScrollTarget){
+      var card=e.target.closest('.news-card,.place-card,.ann-card,.announce-card');
+      if(card){tracking=false;return;}
+    }
     startX=e.touches[0].clientX;startY=e.touches[0].clientY;tracking=true;
   },{passive:true});
   el.addEventListener('touchend',function(e){
