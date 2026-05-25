@@ -572,7 +572,20 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
 .ann-c-dot{width:8px;height:8px;border-radius:99px;background:rgba(5,151,107,0.28);border:none;padding:0;cursor:pointer;transition:width .28s cubic-bezier(.4,0,.2,1),background .28s;flex-shrink:0;}
 .ann-c-dot.active{width:24px;background:#05976b;}
 
-/* البطاقة الثابتة */
+/* ══ TIMELINE ══ */
+.tl-wrap{position:relative;padding:16px 16px 24px;}
+.tl-line{position:absolute;right:31px;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,transparent 0%,#a7f3d0 5%,#6ee7b7 20%,#34d399 40%,#10b981 60%,#059669 80%,#a7f3d0 95%,transparent 100%);border-radius:2px;z-index:0;}
+.tl-item{position:relative;padding-right:52px;margin-bottom:20px;}
+.tl-item:last-child{margin-bottom:0;}
+.tl-dot{position:absolute;right:22px;top:18px;width:18px;height:18px;border-radius:50%;border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.18);z-index:1;}
+.tl-card{background:#fff;border-radius:16px;padding:14px 14px 12px;box-shadow:0 4px 14px rgba(0,0,0,.10),0 1px 4px rgba(0,0,0,.06);}
+.tl-badges{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
+.tl-badge{font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;}
+.tl-date{font-size:10px;font-weight:600;padding:3px 9px;border-radius:20px;border:1px solid;}
+.tl-title{font-size:15px;font-weight:900;color:#1f2937;margin-bottom:6px;}
+.tl-text{font-size:12px;color:#6b7280;line-height:1.7;}
+
+/* ══ البطاقة الثابتة */
 .ann-card{
   width:100%;
   background:#fff;
@@ -859,6 +872,7 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
             <div class="seg-bar">
               <button class="seg-btn active" id="arch-tab-compare"><iconify-icon icon="lucide:git-compare"></iconify-icon>بين الأمس واليوم</button>
               <button class="seg-btn" id="arch-tab-historic"><iconify-icon icon="lucide:image"></iconify-icon>صور تاريخية</button>
+              <button class="seg-btn" id="arch-tab-timeline"><iconify-icon icon="lucide:scroll-text"></iconify-icon>الخط الزمني</button>
             </div>
           </div>
           <div id="archive-list" style="padding:12px 16px 24px">
@@ -1307,8 +1321,13 @@ function swipeGuide(dir){
   if(btns[next])btns[next].scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
 }
 function swipeArchive(dir){
-  if(archTab==='compare'){if(dir===1){var nb=document.getElementById('arch-tab-historic');switchArchTab('historic',nb);}else switchTab('guide');}
-  else{if(dir!==1){var nb=document.getElementById('arch-tab-compare');switchArchTab('compare',nb);}}
+  var tabs=['compare','historic','timeline'];
+  var idx=tabs.indexOf(archTab);
+  var next=idx+dir;
+  if(next<0){switchTab('guide');return;}
+  if(next>=tabs.length)return;
+  var nb=document.getElementById('arch-tab-'+tabs[next]);
+  switchArchTab(tabs[next],nb);
 }
 /* ══ MORE SHEET ══ */
 var MoreSheet=(function(){
@@ -1495,6 +1514,7 @@ function switchArchTab(tab,btn){
 }
 async function loadArchiveTab(tab){
   var el=document.getElementById('archive-list');if(!el)return;
+  if(tab==='timeline'){renderTimeline(el);return;}
   el.innerHTML=skArchiveCards(4);
   try{
     var d=await api('/api/archives');var all=d.data||[];
@@ -1547,6 +1567,59 @@ async function loadArchiveTab(tab){
     console.error('loadArchiveTab error:',e);
     el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';
   }
+}
+/* ══ TIMELINE RENDER ══ */
+function renderTimeline(el){
+  var eras=[
+    {
+      dot:'#f59e0b',
+      badge:'العهد القديم — العصر الروماني',badgeClass:'background:#fef3c7;color:#b45309;',
+      date:'القرن 1 — 5 م',dateClass:'color:#c2410c;border-color:#fed7aa;background:#fff7ed;',
+      border:'border-color:#fde68a;',
+      title:'تاكاتوا — Tacatua',
+      text:'تأسست كمدينة مرفئية هامة ومحطة رئيسية على الطريق الساحلي الرابط بين "هيبون" والمدن الغربية. اشتهرت عالمياً بمناجم "البورفير الأحمر" الفاخر الذي كان يُصدر خصيصاً لتزيين قصور وتوابيت أباطرة روما. لا تزال آثارها شاهدة على عظمة تلك الحقبة، ومن أبرزها "النافورة الرومانية" وبقايا نظام الري المتطور.'
+    },
+    {
+      dot:'#14b8a6',
+      badge:'العهد الإسلامي والعثماني',badgeClass:'background:#ccfbf1;color:#0f766e;',
+      date:'القرن 11 — 1830 م',dateClass:'color:#0e7490;border-color:#a5f3fc;background:#ecfeff;',
+      border:'border-color:#99f6e4;',
+      title:'تكوش — Tekkouch',
+      text:'تحول اسمها إلى "تكوش" (مشتق من الأصل الأمازيغي "تيكوش")، وبرزت كمركز استراتيجي للمراقبة البحرية بفضل موقع "رأس تكوش" المحمي طبيعياً. خلال العهد العثماني، كانت المنطقة محطة حيوية لتأمين السفن وتزويد الأسطول الجزائري بالمؤن والأخشاب، وظلت "منارة رأس تكوش" منارة تاريخية لا غنى عنها للملاحة الدولية في المتوسط.'
+    },
+    {
+      dot:'#ef4444',
+      badge:'العهد الاستعماري الفرنسي',badgeClass:'background:#fee2e2;color:#b91c1c;',
+      date:'1869 — 1962 م',dateClass:'color:#be123c;border-color:#fecdd3;background:#fff1f2;',
+      border:'border-color:#fecaca;',
+      title:'هيربيون — Herbillon',
+      text:'أُنشئ المركز السكاني بمرسوم رسمي عام 1869 وسُمي نسبة للجنرال "إيميل هيربيون". شهدت المنطقة نهضة صناعية كبرى عبر استغلال مقالع "الجرانيت الأخضر" الصلب الذي استُخدم لرصف شوارع باريس، مارسيليا، وروما. وبالتوازي مع ذلك، كانت جبالها معقلاً للمقاومة، بدءاً من ثورة "سي زغدود" عام 1841 وصولاً إلى اندلاع الثورة التحريرية الكبرى.'
+    },
+    {
+      dot:'#10b981',
+      badge:'عهد الاستقلال والجزائر الحديثة',badgeClass:'background:#d1fae5;color:#065f46;',
+      date:'منذ 1962 م',dateClass:'color:#16a34a;border-color:#bbf7d0;background:#f0fdf4;',
+      border:'border-color:#a7f3d0;',
+      title:'شطايبي — Chetaïbi',
+      text:'استعادت المدينة هويتها الوطنية عام 1962، وسُميت "شطايبي" تخليداً للشهيد البطل "عمار شطايبي" الذي استشهد في ميدان الشرف بالمنطقة. تحولت البلدية اليوم إلى قطب سياحي عالمي، حيث صُنف خليجها عام 2006 كواحد من أجمل الخلجان في العالم، مما جعلها وجهة رائدة تجمع بين عبق التاريخ وسحر الطبيعة العذراء.'
+    }
+  ];
+  var html='<div class="tl-wrap"><div class="tl-line"></div>';
+  eras.forEach(function(e){
+    html+='<div class="tl-item">'
+      +'<div class="tl-dot" style="background:'+e.dot+'"></div>'
+      +'<div class="tl-card" style="border:1.5px solid transparent;'+e.border+'">'
+        +'<div class="tl-badges">'
+          +'<span class="tl-badge" style="'+e.badgeClass+'">'+e.badge+'</span>'
+          +'<span class="tl-date" style="'+e.dateClass+'">'+e.date+'</span>'
+        +'</div>'
+        +'<div class="tl-title">'+e.title+'</div>'
+        +'<div class="tl-text">'+e.text+'</div>'
+      +'</div>'
+    +'</div>';
+  });
+  html+='</div>';
+  el.innerHTML=html;
 }
 /* ══ HOME ══ */
 function syncMayorToSheet(){
@@ -2237,6 +2310,7 @@ function initEventDelegation(){
   safeBtn('btn-sports',function(){loadFacTab('sports',this);});
   safeBtn('arch-tab-compare',function(){switchArchTab('compare',this);});
   safeBtn('arch-tab-historic',function(){switchArchTab('historic',this);});
+  safeBtn('arch-tab-timeline',function(){switchArchTab('timeline',this);});
   document.getElementById('map-filter-btn').addEventListener('click',function(e){toggleFilterMenu(e);});
   document.getElementById('map-locate-btn').addEventListener('click',function(){locateUser();});
   document.getElementById('map-popup-close-btn').addEventListener('click',function(e){e.stopPropagation();haptic('light');closeMapCard();});
