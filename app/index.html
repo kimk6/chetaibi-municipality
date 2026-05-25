@@ -658,7 +658,7 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
 .sr-sub{font-size:11px;color:var(--muted);margin-top:1px;}
 .search-empty{padding:32px 20px;text-align:center;color:var(--muted);font-size:13px;font-weight:600;}
 /* ══ SERVICES SCREEN ══ */
-.svc-card{background:var(--card);border-radius:18px;border:1px solid var(--border-light);overflow:hidden;box-shadow:var(--shadow-sm);margin:0 16px 14px;}
+.svc-card{background:var(--card);border-radius:var(--r-lg);border:1px solid rgba(0,0,0,.04);overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,0.13),0 2px 6px rgba(0,0,0,0.07);margin:0 16px 14px;}
 .svc-card-header{padding:16px 16px 12px;display:flex;align-items:center;gap:12px;}
 .svc-card-icon{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .svc-card-icon iconify-icon{font-size:22px;}
@@ -896,16 +896,15 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
       <div class="scroll-area" id="scroll-services">
         <div class="content-block">
           <!-- فلاتر التصنيف -->
-          <div class="svc-filter-tabs" id="svc-filter-tabs">
-            <button class="svc-filter-tab active" data-type="all" onclick="filterServices('all',this)">
-              <iconify-icon icon="lucide:layout-list" style="font-size:13px;pointer-events:none"></iconify-icon>الكل
-            </button>
-            <button class="svc-filter-tab" data-type="service" onclick="filterServices('service',this)">
-              <iconify-icon icon="lucide:file-text" style="font-size:13px;pointer-events:none"></iconify-icon>خدمات
-            </button>
-            <button class="svc-filter-tab" data-type="app" onclick="filterServices('app',this)">
-              <iconify-icon icon="lucide:smartphone" style="font-size:13px;pointer-events:none"></iconify-icon>تطبيقات
-            </button>
+          <div class="seg-bar-wrap">
+            <div class="seg-bar" style="justify-content:center;">
+              <button class="seg-btn active" data-type="service" id="svc-btn-service" onclick="filterServices('service',this)">
+                <iconify-icon icon="lucide:file-text"></iconify-icon>خدمات
+              </button>
+              <button class="seg-btn" data-type="app" id="svc-btn-app" onclick="filterServices('app',this)">
+                <iconify-icon icon="lucide:smartphone"></iconify-icon>تطبيقات
+              </button>
+            </div>
           </div>
           <!-- قائمة الخدمات -->
           <div id="svc-list" style="padding:12px 0 24px">
@@ -999,13 +998,7 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
       </div>
       <span>الخدمات</span>
     </button>
-    <button class="nav-btn" id="nav-archive">
-      <div class="nav-icon-wrap">
-        <iconify-icon class="icon-off" icon="ph:scroll" style="font-size:24px"></iconify-icon>
-        <iconify-icon class="icon-on" icon="ph:scroll-fill" style="font-size:24px"></iconify-icon>
-      </div>
-      <span>الأرشيف</span>
-    </button>
+
     <button class="nav-btn" id="nav-more">
       <div class="nav-icon-wrap">
         <iconify-icon class="icon-off" icon="ph:squares-four" style="font-size:24px"></iconify-icon>
@@ -1322,7 +1315,7 @@ function switchTab(t){
   if(t==='guide')loadCurrentGuideTab();
   if(t==='home')loadHome();
   if(t==='archive')loadArchiveTab(archTab);
-  if(t==='services'&&!_svcLoaded){_svcLoaded=true;loadServices('all');}
+  if(t==='services'&&!_svcLoaded){_svcLoaded=true;loadServices('service');}
 }
 function switchTabWithFilter(tab,filterType){pendingMapFilter=filterType;switchTab(tab);}
 function loadCurrentGuideTab(){
@@ -2421,7 +2414,6 @@ function initEventDelegation(){
   document.getElementById('nav-news').addEventListener('click',function(){haptic('tab');switchTab('news');});
   document.getElementById('nav-guide').addEventListener('click',function(){haptic('tab');switchTab('guide');});
   document.getElementById('nav-services').addEventListener('click',function(){haptic('tab');switchTab('services');});
-  document.getElementById('nav-archive').addEventListener('click',function(){haptic('tab');switchTab('archive');});
   document.getElementById('hdr-search-btn').addEventListener('click',function(){Search.open();});
   document.getElementById('hdr-notif-btn').addEventListener('click',function(){haptic('light');});
 
