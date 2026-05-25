@@ -530,9 +530,15 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
 /* LIGHTBOX */
 #lightbox{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.97);display:none;align-items:center;justify-content:center;padding:20px;overscroll-behavior:none;}
 #lightbox.open{display:flex;}
-#lightbox img{max-width:100%;max-height:90dvh;object-fit:contain;border-radius:var(--r-sm);pointer-events:none;display:block;}
+#lightbox img{max-width:100%;max-height:90dvh;object-fit:contain;border-radius:var(--r-sm);pointer-events:none;display:block;transition:opacity .18s ease;}
 #lb-close{position:absolute;top:calc(var(--safe-t) + 14px);left:14px;width:44px;height:44px;background:rgba(255,255,255,.18);border:none;border-radius:50%;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);touch-action:manipulation;pointer-events:auto;z-index:10;transition:background var(--dur-fast);}
 #lb-close:active{background:rgba(255,255,255,.32);}
+#lb-prev,#lb-next{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;background:rgba(255,255,255,.18);border:none;border-radius:50%;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);touch-action:manipulation;pointer-events:auto;z-index:10;transition:background var(--dur-fast),opacity .2s;}
+#lb-prev{right:14px;}
+#lb-next{left:14px;}
+#lb-prev:active,#lb-next:active{background:rgba(255,255,255,.32);}
+#lb-prev.hidden,#lb-next.hidden{opacity:0;pointer-events:none;}
+#lb-counter{position:absolute;bottom:calc(var(--safe-b) + 18px);left:50%;transform:translateX(-50%);color:rgba(255,255,255,.75);font-size:13px;font-weight:700;font-family:var(--font-main);background:rgba(0,0,0,.35);padding:4px 14px;border-radius:20px;pointer-events:none;display:none;}
 /* WEATHER / SEA UNIFIED */
 .weather-sea-section{padding:0 16px 6px;}
 .weather-sea-unified-card{background:#fff;border-radius:20px;filter:drop-shadow(0 6px 14px rgba(0,0,0,0.13)) drop-shadow(0 2px 4px rgba(0,0,0,0.07));border:1px solid rgba(0,0,0,0.06);overflow:visible;}.ws-tabs,.ws-panel{border-radius:20px;overflow:hidden;}
@@ -1096,7 +1102,10 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
 <!-- LIGHTBOX -->
 <div id="lightbox">
   <button id="lb-close">✕</button>
+  <button id="lb-prev"><iconify-icon icon="lucide:chevron-right" style="pointer-events:none;font-size:22px"></iconify-icon></button>
+  <button id="lb-next"><iconify-icon icon="lucide:chevron-left" style="pointer-events:none;font-size:22px"></iconify-icon></button>
   <img id="lb-img" src="" alt="">
+  <div id="lb-counter"></div>
 </div>
 
 <!-- SEARCH -->
@@ -1397,8 +1406,45 @@ var Search=(function(){
   return{init:init,open:open,close:close};
 })();
 /* ══ LIGHTBOX ══ */
-function openLightbox(src){if(!src)return;document.getElementById('lb-img').src=src;document.getElementById('lightbox').classList.add('open');}
-function closeLightbox(){document.getElementById('lightbox').classList.remove('open');document.getElementById('lb-img').src='';}
+/* ══ LIGHTBOX GALLERY ══ */
+var _lbImages=[],_lbIdx=0,_lbTouchX=0;
+function openLightbox(src,gallery){
+  if(!src)return;
+  _lbImages=Array.isArray(gallery)&&gallery.length?gallery:[src];
+  _lbIdx=_lbImages.indexOf(src);
+  if(_lbIdx<0)_lbIdx=0;
+  _lbRender();
+  document.getElementById('lightbox').classList.add('open');
+}
+function _lbRender(){
+  var img=document.getElementById('lb-img');
+  var counter=document.getElementById('lb-counter');
+  var prev=document.getElementById('lb-prev');
+  var next=document.getElementById('lb-next');
+  img.style.opacity='0';
+  img.src=_lbImages[_lbIdx];
+  img.onload=function(){img.style.opacity='1';};
+  if(_lbImages.length>1){
+    counter.style.display='block';
+    counter.textContent=(_lbIdx+1)+' / '+_lbImages.length;
+    prev.classList.toggle('hidden',_lbIdx===0);
+    next.classList.toggle('hidden',_lbIdx===_lbImages.length-1);
+  } else {
+    counter.style.display='none';
+    prev.classList.add('hidden');
+    next.classList.add('hidden');
+  }
+}
+function _lbGo(dir){
+  var n=_lbIdx+dir;
+  if(n<0||n>=_lbImages.length)return;
+  _lbIdx=n;_lbRender();haptic('light');
+}
+function closeLightbox(){
+  document.getElementById('lightbox').classList.remove('open');
+  document.getElementById('lb-img').src='';
+  _lbImages=[];_lbIdx=0;
+}
 /* ══ MAP FILTER ══ */
 function toggleFilterMenu(e){
   e.stopPropagation();haptic('light');
@@ -1538,7 +1584,10 @@ async function loadArchiveTab(tab){
       var html=from===0?'<div style="display:flex;flex-direction:column;gap:16px;" id="archive-items">':'';
       chunk.forEach(function(a){
         if(tab==='compare'){
-          html+='<div class="archive-card"><div class="archive-compare-grid"><div class="archive-cell" data-lb="'+a.image_old_url+'"><img src="'+a.image_old_url+'" loading="lazy"><span class="archive-cell-label">الأمس</span></div><div class="archive-cell" data-lb="'+a.image_new_url+'"><img src="'+a.image_new_url+'" loading="lazy"><span class="archive-cell-label new-label">اليوم</span></div></div>'+(a.title?'<div class="archive-card-title">'+a.title+'</div>':'')+'</div>';
+          html+='<div class="archive-card"><div class="archive-compare-grid">'
+            +'<div class="archive-cell" data-lb="'+a.image_old_url+'" data-lb-pair="'+a.image_new_url+'"><img src="'+a.image_old_url+'" loading="lazy"><span class="archive-cell-label">الأمس</span></div>'
+            +'<div class="archive-cell" data-lb="'+a.image_new_url+'" data-lb-pair="'+a.image_old_url+'"><img src="'+a.image_new_url+'" loading="lazy"><span class="archive-cell-label new-label">اليوم</span></div>'
+            +'</div>'+(a.title?'<div class="archive-card-title">'+a.title+'</div>':'')+'</div>';
         } else {
           var imgUrl=a.image_new_url||a.image_old_url||a.image_url||'';
           if(!imgUrl)return;
@@ -1551,6 +1600,35 @@ async function loadArchiveTab(tab){
       else{
         var oldBtn=el.querySelector('.load-more-wrap');if(oldBtn)oldBtn.remove();
         document.getElementById('archive-items').insertAdjacentHTML('beforeend',html);
+      }
+      /* attach direct click handlers for archive cells (compare = 2-image gallery) */
+      if(tab==='compare'){
+        el.querySelectorAll('.archive-cell[data-lb]').forEach(function(cell){
+          cell.addEventListener('click',function(e){
+            e.stopPropagation();
+            var main=cell.getAttribute('data-lb');
+            var pair=cell.getAttribute('data-lb-pair');
+            /* الأمس أولاً ثم اليوم */
+            var gallery=cell.classList.contains('new-label')||cell.querySelector('.new-label')
+              ?[pair,main]:[main,pair];
+            /* تحديد الأيقونة الصحيحة من اللابل */
+            var lbl=cell.querySelector('.archive-cell-label');
+            var isNew=lbl&&lbl.classList.contains('new-label');
+            openLightbox(main,isNew?[pair,main]:[main,pair]);
+          });
+        });
+      } else {
+        /* single: gallery = كل صور الـ chunk المعروض */
+        var singleUrls=[];
+        arr.slice(0,from+PAGE).forEach(function(a){
+          var u=a.image_new_url||a.image_old_url||a.image_url||'';if(u)singleUrls.push(u);
+        });
+        el.querySelectorAll('.archive-single[data-lb]').forEach(function(card){
+          card.addEventListener('click',function(e){
+            e.stopPropagation();
+            openLightbox(card.getAttribute('data-lb'),singleUrls);
+          });
+        });
       }
       if(hasMore){
         var btn=document.getElementById('arch-load-more');
@@ -2069,17 +2147,19 @@ function initModalSwipe(sheet,overlayId){
 function album(elId,albums){
   var el=document.getElementById(elId);var a=Array.isArray(albums)?albums:[];
   if(!a.length){el.innerHTML='';return;}
+  var urls=a.map(function(x){return x.image_url;});
   el.innerHTML='<div class="album-title"><iconify-icon icon="lucide:images" style="color:var(--green);pointer-events:none"></iconify-icon>معرض الصور ('+a.length+')</div><div class="album-grid">'+a.map(x=>'<img src="'+x.image_url+'" alt="" loading="lazy" data-lb="'+x.image_url+'">').join('')+'</div>';
   el.querySelectorAll('.album-grid img[data-lb]').forEach(function(img){
-    img.addEventListener('click',function(e){e.stopPropagation();openLightbox(this.getAttribute('data-lb'));});
+    img.addEventListener('click',function(e){e.stopPropagation();openLightbox(this.getAttribute('data-lb'),urls);});
   });
 }
 function albumBig(elId,albums){
   var el=document.getElementById(elId);var a=Array.isArray(albums)?albums:[];
   if(!a.length){el.innerHTML='';return;}
+  var urls=a.map(function(x){return x.image_url;});
   el.innerHTML=a.map(x=>'<div style="line-height:0;margin-bottom:4px"><img src="'+x.image_url+'" alt="" loading="lazy" data-lb="'+x.image_url+'" style="width:100%;display:block;cursor:pointer;pointer-events:auto;touch-action:manipulation"></div>').join('');
   el.querySelectorAll('img[data-lb]').forEach(function(img){
-    img.addEventListener('click',function(e){e.stopPropagation();openLightbox(this.getAttribute('data-lb'));});
+    img.addEventListener('click',function(e){e.stopPropagation();openLightbox(this.getAttribute('data-lb'),urls);});
   });
 }
 async function openNewsModal(id){
@@ -2321,6 +2401,22 @@ function initEventDelegation(){
   document.querySelectorAll('.mf-item').forEach(function(item){item.addEventListener('click',function(){haptic('light');selectMapFilter(this.getAttribute('data-type'),this);});});
   document.getElementById('lightbox').addEventListener('click',function(){closeLightbox();});
   document.getElementById('lb-close').addEventListener('click',function(e){e.stopPropagation();closeLightbox();});
+  document.getElementById('lb-prev').addEventListener('click',function(e){e.stopPropagation();_lbGo(-1);});
+  document.getElementById('lb-next').addEventListener('click',function(e){e.stopPropagation();_lbGo(1);});
+  /* swipe للتنقل بين صور الألبوم */
+  (function(){
+    var lbEl=document.getElementById('lightbox');
+    var sx=0,sy=0;
+    lbEl.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
+    lbEl.addEventListener('touchend',function(e){
+      var dx=e.changedTouches[0].clientX-sx;
+      var dy=e.changedTouches[0].clientY-sy;
+      if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>40){
+        /* RTL: swipe يسار = التالي (الأقدم)، يمين = السابق (الأحدث) */
+        _lbGo(dx<0?1:-1);
+      }
+    },{passive:true});
+  })();
   document.getElementById('mt-sticker-close').addEventListener('click',function(){cm('m-tour');});
   ['m-news','m-beach','m-tour','m-fac','m-prev-mayors'].forEach(function(id){
     var overlay=document.getElementById(id);
