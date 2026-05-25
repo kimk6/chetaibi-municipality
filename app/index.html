@@ -76,7 +76,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 ══════════════════════════════════════════ */
 @keyframes sk-shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
 .sk{background:linear-gradient(90deg,var(--sk-base) 25%,var(--sk-shine) 50%,var(--sk-base) 75%);background-size:200% 100%;animation:sk-shimmer 1.4s ease infinite;border-radius:var(--r-xs);}
-.sk-news-card{min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--elev-2);flex-shrink:0;border:1px solid rgba(0,0,0,.04);}
+.sk-ann-card{width:100%;background:var(--card);border-radius:20px;border:1px solid rgba(0,0,0,0.06);box-shadow:0 6px 20px rgba(0,0,0,0.13),0 2px 6px rgba(0,0,0,0.07);display:flex;flex-direction:column;align-items:center;padding:18px 16px;gap:10px;min-height:160px;justify-content:center;}
+min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--elev-2);flex-shrink:0;border:1px solid rgba(0,0,0,.04);}
 .sk-news-img{width:100%;height:148px;}
 .sk-news-body{padding:12px 14px;}
 .sk-line{height:12px;margin-bottom:8px;}
@@ -1807,6 +1808,19 @@ async function loadHOfficial(){
   var outer=document.getElementById('ann-carousel-outer');
   var el=document.getElementById('h-official');
   if(!el)return;
+  /* skeleton أثناء التحميل */
+  if(_annCarData.length===0){
+    el.innerHTML='<div class="sk-ann-card">'
+      +'<div class="sk" style="width:44px;height:44px;border-radius:50%;margin-bottom:4px"></div>'
+      +'<div class="sk sk-line w-half" style="height:16px"></div>'
+      +'<div class="sk sk-line w-full" style="height:11px"></div>'
+      +'<div class="sk sk-line w-3q" style="height:11px"></div>'
+      +'<div style="width:100%;height:1px;background:var(--border-light);margin:4px 0"></div>'
+      +'<div style="width:100%;display:flex;justify-content:space-between">'
+      +'<div class="sk sk-btn"></div>'
+      +'<div class="sk sk-line w-1q" style="height:10px;margin-top:6px"></div>'
+      +'</div></div>';
+  }
   /* إذا البيانات موجودة — فقط أعد عرض البطاقة الحالية */
   if(_annCarData.length>0){
     _annCarShowCurrent();
