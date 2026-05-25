@@ -569,7 +569,7 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
 }
 .ann-carousel-strip .loading{width:100%;text-align:center;padding:20px;}
 .ann-carousel-dots{display:flex;align-items:center;justify-content:center;gap:6px;padding-top:10px;}
-.ann-c-dot{width:8px;height:8px;border-radius:99px;background:rgba(5,151,107,0.3);border:none;padding:0;cursor:pointer;transition:width .28s cubic-bezier(.4,0,.2,1),background .28s;flex-shrink:0;}
+.ann-c-dot{width:8px;height:8px;border-radius:99px;background:rgba(5,151,107,0.28);border:none;padding:0;cursor:pointer;transition:width .28s cubic-bezier(.4,0,.2,1),background .28s;flex-shrink:0;}
 .ann-c-dot.active{width:24px;background:#05976b;}
 
 /* البطاقة الثابتة */
@@ -1707,13 +1707,28 @@ function _annCarUpdatePos(animate,extraPx){
 function _annCarGoTo(i){
   _annCarIdx=((i%_annCarTotal)+_annCarTotal)%_annCarTotal;
   _annCarShowCurrent();
+  _annCarUpdateDots();
+}
+function _annCarUpdateDots(){
   var cur=_annCarData&&_annCarData[_annCarIdx];
-  var dotColor=cur&&cur.custom_label?_annLabelColor(cur.custom_label).dot:null;
+  var lc=_annLabelColor((cur&&cur.custom_label)||'');
+  var activeBg=lc.dot||'#05976b';
+  /* inactive = نفس اللون بشفافية 30% */
+  var inactiveBg=_hexToRgba(activeBg,0.28);
   document.querySelectorAll('#ann-carousel-dots .ann-c-dot').forEach(function(d,j){
     var isActive=j===_annCarIdx;
     d.classList.toggle('active',isActive);
-    d.style.background='';
+    d.style.background=isActive?activeBg:inactiveBg;
   });
+}
+function _hexToRgba(hex,a){
+  /* يقبل hex أو rgba أو var() */
+  var m=hex.match(/^#([0-9a-f]{3,6})$/i);
+  if(!m)return hex.replace(/[\d.]+\)$/,a+')');
+  var s=m[1];
+  if(s.length===3)s=s[0]+s[0]+s[1]+s[1]+s[2]+s[2];
+  var r=parseInt(s.slice(0,2),16),g=parseInt(s.slice(2,4),16),b=parseInt(s.slice(4,6),16);
+  return'rgba('+r+','+g+','+b+','+a+')';
 }
 
 function _annCarShowCurrent(){
@@ -1849,6 +1864,8 @@ async function loadHOfficial(){
       dotsEl.innerHTML=_annCarData.map(function(_,i){
         return '<button class="ann-c-dot'+(i===0?' active':'')+'" onclick="_annCarGoTo('+i+')"></button>';
       }).join('');
+      /* تطبيق الألوان على الـ dots من البداية */
+      _annCarUpdateDots();
     }
     /* اعرض أول بطاقة بدون animation */
     var inner=el.querySelector('.ann-card-content-inner');
