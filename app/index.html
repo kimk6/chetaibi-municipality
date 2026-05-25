@@ -8,6 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="mobile-web-app-capable" content="yes">
 <title>شطايبي</title>
+<link rel="manifest" href="/manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -527,6 +528,10 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
 .map-popup-action iconify-icon{font-size:14px;pointer-events:none;}
 .map-popup-close{position:absolute;top:10px;left:12px;width:30px;height:30px;border-radius:50%;background:rgba(0,0,0,.07);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;color:var(--muted-2);pointer-events:auto;transition:background var(--dur-fast),color var(--dur-fast);z-index:3;}
 .map-popup-close:active{background:rgba(0,0,0,.16);color:var(--text-2);}
+/* زر عرض في الخريطة داخل الـ modals */
+.modal-map-btn{display:inline-flex;align-items:center;gap:7px;background:var(--blue-l);border:none;border-radius:var(--r-full);padding:9px 18px;font-family:var(--font-main);font-size:12.5px;font-weight:800;color:var(--blue);cursor:pointer;touch-action:manipulation;margin-top:14px;min-height:40px;transition:background var(--dur-fast),transform var(--dur-fast);width:100%;justify-content:center;}
+.modal-map-btn:active{background:#bfdbfe;transform:scale(.96);}
+.modal-map-btn iconify-icon{font-size:16px;pointer-events:none;flex-shrink:0;}
 /* LIGHTBOX */
 #lightbox{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.97);display:none;align-items:center;justify-content:center;padding:20px;overscroll-behavior:none;}
 #lightbox.open{display:flex;}
@@ -657,27 +662,6 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
 .sr-title{font-size:13px;font-weight:800;color:var(--text);}
 .sr-sub{font-size:11px;color:var(--muted);margin-top:1px;}
 .search-empty{padding:32px 20px;text-align:center;color:var(--muted);font-size:13px;font-weight:600;}
-/* ══ SERVICES SCREEN ══ */
-.svc-card{background:var(--card);border-radius:var(--r-lg);border:1px solid rgba(0,0,0,.04);overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,0.13),0 2px 6px rgba(0,0,0,0.07);margin:0 16px 14px;}
-.svc-card-header{padding:16px 16px 12px;display:flex;align-items:center;gap:12px;}
-.svc-card-icon{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.svc-card-icon iconify-icon{font-size:22px;}
-.svc-card-name{font-size:14px;font-weight:900;color:var(--text);line-height:1.35;}
-.svc-card-desc{font-size:12.5px;color:var(--muted);line-height:1.65;padding:0 16px 12px;}
-.svc-card-docs{padding:0 16px 12px;}
-.svc-card-docs-title{font-size:12px;font-weight:800;color:var(--text);margin-bottom:8px;display:flex;align-items:center;gap:5px;}
-.svc-card-doc-item{font-size:11.5px;color:var(--muted);display:flex;align-items:flex-start;gap:7px;margin-bottom:5px;line-height:1.5;}
-.svc-card-doc-check{width:16px;height:16px;background:var(--green-l);color:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;flex-shrink:0;margin-top:1px;}
-.svc-card-forms{padding:0 16px 12px;display:flex;flex-direction:column;gap:6px;}
-.svc-card-form-link{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;padding:8px 12px;border-radius:10px;text-decoration:none;transition:opacity .15s;}
-.svc-card-form-link:active{opacity:.7;}
-.svc-card-footer{padding:12px 16px 16px;border-top:1px solid var(--border-light);}
-.svc-card-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:10px;border-radius:12px;font-size:13px;font-weight:800;font-family:var(--font-main);text-decoration:none;border:none;cursor:pointer;transition:opacity .15s;}
-.svc-card-btn:active{opacity:.8;}
-.svc-filter-tabs{display:flex;gap:8px;overflow-x:auto;padding:12px 16px 8px;scrollbar-width:none;position:sticky;top:0;background:var(--surface);z-index:10;border-bottom:1px solid var(--border-light);}
-.svc-filter-tabs::-webkit-scrollbar{display:none;}
-.svc-filter-tab{flex-shrink:0;padding:6px 14px;border-radius:99px;font-size:11.5px;font-weight:800;font-family:var(--font-main);border:1.5px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px;box-shadow:var(--shadow-sm);}
-.svc-filter-tab.active{background:var(--green);color:#fff;border-color:var(--green);box-shadow:0 4px 14px rgba(5,150,105,.28);}
 </style>
 </head>
 <body>
@@ -891,29 +875,6 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
       </div>
     </div>
 
-    <!-- SERVICES -->
-    <div class="screen hidden" id="screen-services">
-      <div class="scroll-area" id="scroll-services">
-        <div class="content-block">
-          <!-- فلاتر التصنيف -->
-          <div class="seg-bar-wrap">
-            <div class="seg-bar" style="justify-content:center;">
-              <button class="seg-btn active" data-type="service" id="svc-btn-service" onclick="filterServices('service',this)">
-                <iconify-icon icon="lucide:file-text"></iconify-icon>خدمات
-              </button>
-              <button class="seg-btn" data-type="app" id="svc-btn-app" onclick="filterServices('app',this)">
-                <iconify-icon icon="lucide:smartphone"></iconify-icon>تطبيقات
-              </button>
-            </div>
-          </div>
-          <!-- قائمة الخدمات -->
-          <div id="svc-list" style="padding:12px 0 24px">
-            <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span>جاري التحميل</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- ARCHIVE -->
     <div class="screen hidden" id="screen-archive">
       <div class="scroll-area" id="scroll-archive">
@@ -991,14 +952,13 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
       </div>
       <span>الدليل</span>
     </button>
-    <button class="nav-btn" id="nav-services">
+    <button class="nav-btn" id="nav-archive">
       <div class="nav-icon-wrap">
-        <iconify-icon class="icon-off" icon="ph:file-text" style="font-size:24px"></iconify-icon>
-        <iconify-icon class="icon-on" icon="ph:file-text-fill" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-off" icon="ph:scroll" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-on" icon="ph:scroll-fill" style="font-size:24px"></iconify-icon>
       </div>
-      <span>الخدمات</span>
+      <span>الأرشيف</span>
     </button>
-
     <button class="nav-btn" id="nav-more">
       <div class="nav-icon-wrap">
         <iconify-icon class="icon-off" icon="ph:squares-four" style="font-size:24px"></iconify-icon>
@@ -1089,6 +1049,7 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
       <div class="modal-name" id="mb-name"></div>
       <div class="modal-desc" id="mb-desc"></div>
       <div class="modal-meta" id="mb-meta"></div>
+      <div id="mb-map-btn-wrap"></div>
       <div id="mb-album"></div>
     </div>
   </div>
@@ -1108,6 +1069,7 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
         <div class="modal-name" id="mt-name"></div>
         <div class="modal-desc" id="mt-desc"></div>
         <div class="modal-meta" id="mt-meta"></div>
+        <div id="mt-map-btn-wrap"></div>
         <div id="mt-album"></div>
       </div>
     </div>
@@ -1123,6 +1085,7 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
       <div class="modal-name" id="mf-name"></div>
       <div class="modal-desc" id="mf-desc"></div>
       <div class="modal-meta" id="mf-meta"></div>
+      <div id="mf-map-btn-wrap"></div>
       <div id="mf-album"></div>
     </div>
   </div>
@@ -1190,9 +1153,9 @@ document.addEventListener('touchmove',function(e){if(e.touches.length>1)e.preven
 var C={};
 async function api(u){if(C[u])return C[u];var r=await fetch(u);var d=await r.json();C[u]=d;return d;}
 /* ══ STATE ══ */
-var curTab='home',mapDone=false,_svcLoaded=false,allNews=[],facCat='admin-branches';
+var curTab='home',mapDone=false,allNews=[],facCat='admin-branches';
 var newsScreenLoaded=false,_mayorLoaded=false,_mayorsList=[];
-var TAB_ORDER=['home','news','guide','services','archive'];
+var TAB_ORDER=['home','news','guide','archive'];
 var NEWS_CATS=['official','activity','social','poster'];
 var GUIDE_TABS=['admin-branches','education','health','public-bodies','religious','cultural','sports'];
 var mapLayers={beach:[],tour:[],fac:[]};
@@ -1315,7 +1278,6 @@ function switchTab(t){
   if(t==='guide')loadCurrentGuideTab();
   if(t==='home')loadHome();
   if(t==='archive')loadArchiveTab(archTab);
-  if(t==='services'&&!_svcLoaded){_svcLoaded=true;loadServices('service');}
 }
 function switchTabWithFilter(tab,filterType){pendingMapFilter=filterType;switchTab(tab);}
 function loadCurrentGuideTab(){
@@ -1353,16 +1315,10 @@ function initSwipe(scrollAreaId,getNext){
 }
 function swipeHome(dir){
   if(dir!==1)return;
-  /* تحقق إذا كان السحب فوق قسم آخر المستجدات (العنوان + البطاقات) */
-  var hNews=document.getElementById('h-news');
-  if(hNews){
-    var sec=hNews.closest('.section')||hNews;
-    var sr=sec.getBoundingClientRect();
-    if(_swipeStartY>=sr.top-10&&_swipeStartY<=sr.bottom){switchTab('news');return;}
-  }
   var outer=document.getElementById('ann-carousel-outer');
   if(outer){
     var rect=outer.getBoundingClientRect();
+    /* إذا الكاروسيل لا يزال مرئياً في الشاشة → لا سحب */
     if(rect.bottom>80)return;
   }
   switchTab('news');
@@ -2264,6 +2220,7 @@ async function openBeachModal(id){
     if(b.is_supervised)m+='<span class="modal-chip"><iconify-icon icon="lucide:shield-check" style="color:var(--green);pointer-events:none"></iconify-icon>مراقب</span>';
     if(b.season)m+='<span class="modal-chip">'+b.season+'</span>';
     document.getElementById('mb-meta').innerHTML=m;
+    _makeMapBtn(b.lat,b.lng,b.name||'','mb-map-btn-wrap');
     album('mb-album',b.albums);
     om('m-beach');
   }catch(e){}
@@ -2293,6 +2250,7 @@ async function openTourismModal(id){
       if(t.rating)m+='<span class="modal-chip"><iconify-icon icon="lucide:star" style="color:var(--amber);pointer-events:none"></iconify-icon>'+t.rating+'/5</span>';
       if(t.distance_info)m+='<span class="modal-chip">'+t.distance_info+'</span>';
       document.getElementById('mt-meta').innerHTML=m;
+      _makeMapBtn(t.lat,t.lng,t.name||'','mt-map-btn-wrap');
       album('mt-album',albums);
     }
     om('m-tour');
@@ -2312,6 +2270,7 @@ async function openFacModal(id,tab){
     document.getElementById('mf-desc').textContent=f.description||'';
     var tags=Array.isArray(f.tags)?f.tags:[];
     document.getElementById('mf-meta').innerHTML=tags.map(tg=>'<span class="modal-chip">#'+tg+'</span>').join('');
+    _makeMapBtn(f.lat,f.lng,f.name||'','mf-map-btn-wrap');
     var albums=[];
     if(Array.isArray(f.albums)&&f.albums.length){albums=f.albums.map(x=>typeof x==='string'?{id:x,image_url:x,caption:''}:x);}
     else if(f.album_urls){try{var arr=typeof f.album_urls==='string'?JSON.parse(f.album_urls):f.album_urls;albums=(arr||[]).map((u,i)=>({id:i,image_url:u,caption:''}));}catch(e){}}
@@ -2320,6 +2279,46 @@ async function openFacModal(id,tab){
   }catch(e){}
 }
 /* ══ MAP ══ */
+/* دالة فتح الخريطة والتمركز على موقع معين */
+function showOnMap(lat,lng,name){
+  haptic('light');
+  /* أغلق أي modal مفتوح */
+  ['m-beach','m-tour','m-fac'].forEach(function(id){cm(id);});
+  /* انتقل لتبويب الخريطة */
+  switchTab('map');
+  /* بعد تهيئة الخريطة، تحرك إلى الموقع وافتح popup */
+  var tries=0;
+  var waitMap=setInterval(function(){
+    tries++;
+    if(appMap){
+      clearInterval(waitMap);
+      setTimeout(function(){
+        appMap.invalidateSize();
+        appMap.setView([lat,lng],16,{animate:true});
+        /* ابحث عن الماركر المطابق وأظهر البطاقة */
+        var allLayers=[].concat(mapLayers.beach||[],mapLayers.tour||[],mapLayers.fac||[]);
+        allLayers.forEach(function(mk){
+          var pos=mk.getLatLng();
+          if(Math.abs(pos.lat-lat)<0.0002&&Math.abs(pos.lng-lng)<0.0002){
+            mk.fire('click');
+          }
+        });
+      },400);
+    }else if(tries>30){clearInterval(waitMap);}
+  },100);
+}
+function _makeMapBtn(lat,lng,name,wrapId){
+  var wrap=document.getElementById(wrapId);
+  if(!wrap)return;
+  if(lat&&lng){
+    wrap.innerHTML='<button class="modal-map-btn" onclick="showOnMap('+lat+','+lng+',\''+name.replace(/'/g,'')+'\')">'
+      +'<iconify-icon icon="lucide:map-pin"></iconify-icon>الخريطة'
+      +'<iconify-icon icon="lucide:map"></iconify-icon>'
+      +'</button>';
+  }else{
+    wrap.innerHTML='';
+  }
+}
 var appMap=null;
 function initMap2(){
   mapDone=true;
@@ -2413,7 +2412,7 @@ function initEventDelegation(){
   document.getElementById('nav-home').addEventListener('click',function(){haptic('tab');switchTab('home');});
   document.getElementById('nav-news').addEventListener('click',function(){haptic('tab');switchTab('news');});
   document.getElementById('nav-guide').addEventListener('click',function(){haptic('tab');switchTab('guide');});
-  document.getElementById('nav-services').addEventListener('click',function(){haptic('tab');switchTab('services');});
+  document.getElementById('nav-archive').addEventListener('click',function(){haptic('tab');switchTab('archive');});
   document.getElementById('hdr-search-btn').addEventListener('click',function(){Search.open();});
   document.getElementById('hdr-notif-btn').addEventListener('click',function(){haptic('light');});
 
@@ -2500,57 +2499,6 @@ window.addEventListener('load',function(){
 });
 document.fonts.ready.then(applyHeaderHeight);
 loadHome();
-
-/* ══ SERVICES ══ */
-var SVC_COLORS={
-  blue:   {bg:'#dbeafe',fg:'#2563eb'},
-  emerald:{bg:'#d1fae5',fg:'#059669'},
-  amber:  {bg:'#fef3c7',fg:'#b45309'},
-  purple: {bg:'#ede9fe',fg:'#7c3aed'},
-  teal:   {bg:'#ccfbf1',fg:'#0d9488'},
-  red:    {bg:'#fee2e2',fg:'#dc2626'}
-};
-var _allServices=[];
-function filterServices(type,btn){
-  document.querySelectorAll('.svc-filter-tab').forEach(function(b){b.classList.remove('active');});
-  if(btn)btn.classList.add('active');
-  var items=type==='all'?_allServices:_allServices.filter(function(s){return type==='app'?s.service_type==='app':s.service_type!=='app';});
-  renderServices(items);
-}
-function renderServices(items){
-  var el=document.getElementById('svc-list');
-  if(!items.length){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>لا توجد خدمات</p></div>';return;}
-  el.innerHTML=items.map(function(s){
-    var c=SVC_COLORS[s.color]||SVC_COLORS.blue;
-    var isApp=s.service_type==='app';
-    var docs=(s.required_docs||'').split('|').map(function(d){return d.trim();}).filter(Boolean);
-    var formLinks=[];try{formLinks=JSON.parse(s.form_links||'[]');}catch{}
-    var name=s.service_name||'';
-    var desc=s.description||'';
-    var docsHtml=docs.length?'<div class="svc-card-docs"><div class="svc-card-docs-title"><iconify-icon icon="lucide:file-check-2" style="color:var(--green);font-size:14px"></iconify-icon>الوثائق المطلوبة</div>'
-      +docs.map(function(d){return '<div class="svc-card-doc-item"><div class="svc-card-doc-check">✓</div><span>'+d+'</span></div>';}).join('')+'</div>':'';
-    var formsHtml=formLinks.length?'<div class="svc-card-forms">'
-      +formLinks.map(function(f,i){return '<a href="'+(f.url||f)+'" target="_blank" rel="noopener" class="svc-card-form-link" style="background:'+c.bg+';color:'+c.fg+'"><iconify-icon icon="lucide:download" style="font-size:14px;pointer-events:none"></iconify-icon>'+(f.label||('استمارة '+(i+1)))+'</a>';}).join('')+'</div>':'';
-    var btnHtml=s.direct_link?'<div class="svc-card-footer"><a href="'+s.direct_link+'" target="_blank" rel="noopener" class="svc-card-btn" style="background:'+c.fg+';color:#fff"><iconify-icon icon="'+(isApp?'lucide:smartphone':'lucide:external-link')+'" style="pointer-events:none"></iconify-icon>'+(isApp?'تحميل التطبيق':'الوصول للخدمة')+'</a></div>':'';
-    return '<div class="svc-card">'
-      +'<div class="svc-card-header"><div class="svc-card-icon" style="background:'+c.bg+'"><iconify-icon icon="lucide:'+(s.icon||'file-text')+'" style="color:'+c.fg+';pointer-events:none"></iconify-icon></div>'
-      +'<div class="svc-card-name">'+name+'</div></div>'
-      +(desc?'<div class="svc-card-desc">'+desc+'</div>':'')
-      +docsHtml+formsHtml+btnHtml
-      +'</div>';
-  }).join('');
-}
-async function loadServices(type){
-  var el=document.getElementById('svc-list');
-  if(el)el.innerHTML='<div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span>جاري التحميل</span></div>';
-  try{
-    var d=await api('/api/services');
-    _allServices=d.data||[];
-    filterServices(type,document.querySelector('.svc-filter-tab[data-type="'+type+'"]'));
-  }catch(e){
-    if(el)el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر تحميل الخدمات</p></div>';
-  }
-}
 </script>
 </body>
 </html>
