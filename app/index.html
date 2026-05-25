@@ -2070,11 +2070,17 @@ function album(elId,albums){
   var el=document.getElementById(elId);var a=Array.isArray(albums)?albums:[];
   if(!a.length){el.innerHTML='';return;}
   el.innerHTML='<div class="album-title"><iconify-icon icon="lucide:images" style="color:var(--green);pointer-events:none"></iconify-icon>معرض الصور ('+a.length+')</div><div class="album-grid">'+a.map(x=>'<img src="'+x.image_url+'" alt="" loading="lazy" data-lb="'+x.image_url+'">').join('')+'</div>';
+  el.querySelectorAll('.album-grid img[data-lb]').forEach(function(img){
+    img.addEventListener('click',function(e){e.stopPropagation();openLightbox(this.getAttribute('data-lb'));});
+  });
 }
 function albumBig(elId,albums){
   var el=document.getElementById(elId);var a=Array.isArray(albums)?albums:[];
   if(!a.length){el.innerHTML='';return;}
   el.innerHTML=a.map(x=>'<div style="line-height:0;margin-bottom:4px"><img src="'+x.image_url+'" alt="" loading="lazy" data-lb="'+x.image_url+'" style="width:100%;display:block;cursor:pointer;pointer-events:auto;touch-action:manipulation"></div>').join('');
+  el.querySelectorAll('img[data-lb]').forEach(function(img){
+    img.addEventListener('click',function(e){e.stopPropagation();openLightbox(this.getAttribute('data-lb'));});
+  });
 }
 async function openNewsModal(id){
   haptic('light');
@@ -2261,8 +2267,9 @@ function initEventDelegation(){
     var posterCard=t.closest('.poster-card');if(posterCard){var lb=posterCard.getAttribute('data-lb');if(lb)openLightbox(lb);return;}
     var placeCard=t.closest('.place-card');if(placeCard){var bid=placeCard.getAttribute('data-beach-id');var tid=placeCard.getAttribute('data-tour-id');if(bid)openBeachModal(bid);else if(tid)openTourismModal(tid);return;}
     var facCard=t.closest('.fac-card');if(facCard){var fid=facCard.getAttribute('data-fac-id');var ftab=facCard.getAttribute('data-fac-tab');if(fid)openFacModal(fid,ftab||'admin-branches');return;}
-    var archCell=t.closest('.archive-cell,.archive-single,[data-lb]');if(archCell){var lb=archCell.getAttribute('data-lb');if(lb)openLightbox(lb);return;}
-    var albImg=t.closest('.album-grid img,[data-lb]');if(albImg){var lb=albImg.getAttribute('data-lb');if(lb)openLightbox(lb);return;}
+    var archCell=t.closest('.archive-cell,.archive-single');if(archCell){var lb=archCell.getAttribute('data-lb');if(lb)openLightbox(lb);return;}
+    /* فتح الـ lightbox لأي صورة تحمل data-lb مباشرة أو عبر أحد أسلافها */
+    var lbEl=t.closest('[data-lb]');if(lbEl&&!lbEl.closest('#lightbox')){var lb=lbEl.getAttribute('data-lb');if(lb){openLightbox(lb);return;}}
     if(t.classList.contains('modal-overlay')){cm(t.id);return;}
   });
   document.getElementById('nav-home').addEventListener('click',function(){haptic('tab');switchTab('home');});
