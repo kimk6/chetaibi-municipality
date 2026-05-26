@@ -1355,12 +1355,6 @@ function initSwipe(scrollAreaId,getNext){
 }
 function swipeHome(dir){
   if(dir!==1)return;
-  var outer=document.getElementById('ann-carousel-outer');
-  if(outer){
-    var rect=outer.getBoundingClientRect();
-    /* إذا الكاروسيل لا يزال مرئياً في الشاشة → لا سحب */
-    if(rect.bottom>80)return;
-  }
   switchTab('news');
 }
 function swipeNews(dir){
@@ -1372,7 +1366,7 @@ function swipeNews(dir){
 }
 function swipeGuide(dir){
   var idx=GUIDE_TABS.indexOf(facCat);var next=idx+dir;
-  if(next<0){switchTab('news');return;}if(next>=GUIDE_TABS.length){switchTab('archive');return;}
+  if(next<0){switchTab('news');return;}if(next>=GUIDE_TABS.length){switchTab('services');return;}
   var nextTab=GUIDE_TABS[next];
   var btns=document.querySelectorAll('#screen-guide .seg-btn');
   loadFacTab(nextTab,btns[next]);
@@ -2267,6 +2261,9 @@ async function openBeachModal(id){
     document.getElementById('mb-name').textContent=b.name||'';
     document.getElementById('mb-desc').textContent=b.description||'';
     var m='';
+    if(b.shore_type==='صخري'||b.beach_type==='صخري'||b.type==='صخري')m+='<span class="modal-chip"><iconify-icon icon="lucide:mountain" style="color:#78716c;pointer-events:none"></iconify-icon>صخري</span>';
+    else if(b.shore_type==='رملي'||b.beach_type==='رملي'||b.type==='رملي')m+='<span class="modal-chip"><iconify-icon icon="lucide:sun" style="color:#f59e0b;pointer-events:none"></iconify-icon>رملي</span>';
+    else if(b.shore_type||b.beach_type||b.type){var st=b.shore_type||b.beach_type||b.type;var ico=st==='صخري'?'lucide:mountain':st==='رملي'?'lucide:sun':'lucide:waves';m+='<span class="modal-chip"><iconify-icon icon="'+ico+'" style="pointer-events:none"></iconify-icon>'+st+'</span>';}
     if(b.is_supervised)m+='<span class="modal-chip"><iconify-icon icon="lucide:shield-check" style="color:var(--green);pointer-events:none"></iconify-icon>مراقب</span>';
     if(b.season)m+='<span class="modal-chip">'+b.season+'</span>';
     document.getElementById('mb-meta').innerHTML=m;
@@ -2363,6 +2360,7 @@ function _makeMapBtn(lat,lng,name,wrapId){
   if(lat&&lng){
     wrap.innerHTML='<button class="modal-map-btn" onclick="showOnMap('+lat+','+lng+',\''+name.replace(/'/g,'')+'\')">'
       +'<iconify-icon icon="lucide:map"></iconify-icon>عرض على الخريطة'
+      +'<iconify-icon icon="lucide:chevron-left" style="margin-right:auto;font-size:15px;pointer-events:none"></iconify-icon>'
       +'</button>';
   }else{
     wrap.innerHTML='';
@@ -2454,14 +2452,13 @@ function initEventDelegation(){
     var placeCard=t.closest('.place-card');if(placeCard){var bid=placeCard.getAttribute('data-beach-id');var tid=placeCard.getAttribute('data-tour-id');if(bid)openBeachModal(bid);else if(tid)openTourismModal(tid);return;}
     var facCard=t.closest('.fac-card');if(facCard){var fid=facCard.getAttribute('data-fac-id');var ftab=facCard.getAttribute('data-fac-tab');if(fid)openFacModal(fid,ftab||'admin-branches');return;}
     var archCell=t.closest('.archive-cell,.archive-single');if(archCell){var lb=archCell.getAttribute('data-lb');if(lb)openLightbox(lb);return;}
-    /* فتح الـ lightbox لأي صورة تحمل data-lb مباشرة أو عبر أحد أسلافها */
     var lbEl=t.closest('[data-lb]');if(lbEl&&!lbEl.closest('#lightbox')){var lb=lbEl.getAttribute('data-lb');if(lb){openLightbox(lb);return;}}
     if(t.classList.contains('modal-overlay')){cm(t.id);return;}
   });
   document.getElementById('nav-home').addEventListener('click',function(){haptic('tab');switchTab('home');});
   document.getElementById('nav-news').addEventListener('click',function(){haptic('tab');switchTab('news');});
   document.getElementById('nav-guide').addEventListener('click',function(){haptic('tab');switchTab('guide');});
-  document.getElementById('nav-archive').addEventListener('click',function(){haptic('tab');switchTab('archive');});
+  var _navArchive=document.getElementById('nav-archive');if(_navArchive)_navArchive.addEventListener('click',function(){haptic('tab');switchTab('archive');});
   var _navSvc=document.getElementById('nav-services');if(_navSvc)_navSvc.addEventListener('click',function(){haptic('tab');switchTab('services');});
   document.getElementById('hdr-search-btn').addEventListener('click',function(){Search.open();});
   document.getElementById('hdr-notif-btn').addEventListener('click',function(){haptic('light');});
@@ -2584,15 +2581,16 @@ async function loadServices(type){
 }
 /* ══ INIT ══ */
 window.addEventListener('load',function(){
-  applyHeaderHeight();
+  try{applyHeaderHeight();}catch(e){}
   window.addEventListener('resize',applyHeaderHeight);
-  MoreSheet.init();
-  Search.init();
-  initEventDelegation();
-  initSwipe('scroll-home',function(dir){swipeHome(dir);});
-  initSwipe('scroll-news',function(dir){swipeNews(dir);});
-  initSwipe('scroll-guide',function(dir){swipeGuide(dir);});
-  initSwipe('scroll-archive',function(dir){swipeArchive(dir);});
+  try{MoreSheet.init();}catch(e){console.error('MoreSheet.init error:',e);}
+  try{Search.init();}catch(e){console.error('Search.init error:',e);}
+  try{initEventDelegation();}catch(e){console.error('initEventDelegation error:',e);}
+  try{initSwipe('scroll-home',function(dir){swipeHome(dir);});}catch(e){}
+  try{initSwipe('scroll-news',function(dir){swipeNews(dir);});}catch(e){}
+  try{initSwipe('scroll-guide',function(dir){swipeGuide(dir);});}catch(e){}
+  try{initSwipe('scroll-archive',function(dir){swipeArchive(dir);});}catch(e){}
+  try{initSwipe('scroll-services',function(dir){if(dir===-1)switchTab('guide');});}catch(e){}
   ['home','news','guide','archive','map','services'].forEach(function(id){
     var scrollEl=document.querySelector('#screen-'+id+' .scroll-area');
     if(scrollEl)scrollEl.addEventListener('scroll',onScrollAreaScroll,{passive:true});
