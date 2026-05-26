@@ -2617,7 +2617,23 @@ window.addEventListener('load',function(){
   /* swipe تبويبات الطقس والبحر */
   try{
     (function(){
-      function addPanelSwipe(panelId,getIdx,setIdx,getLen,onTabSwipe){
+      /* swipe على ws-tabs للتبديل المباشر بين الطقس والبحر */
+      var wsTabs=document.querySelector('.ws-tabs');
+      if(wsTabs){
+        var sx=0,sy=0;
+        wsTabs.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
+        wsTabs.addEventListener('touchend',function(e){
+          var dx=e.changedTouches[0].clientX-sx;
+          var dy=e.changedTouches[0].clientY-sy;
+          if(Math.abs(dx)<44||Math.abs(dx)<Math.abs(dy)*1.3)return;
+          /* RTL: يسار(dx<0) → البحر، يمين(dx>0) → الطقس */
+          if(dx<0)switchWsTab('sea');
+          else switchWsTab('weather');
+          haptic('light');
+        },{passive:true});
+      }
+
+      function addPanelSwipe(panelId,getIdx,setIdx,getLen,onLastDay,onFirstDay){
         var el=document.getElementById(panelId);if(!el)return;
         var sx=0,sy=0;
         el.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
@@ -2625,27 +2641,38 @@ window.addEventListener('load',function(){
           var dx=e.changedTouches[0].clientX-sx;
           var dy=e.changedTouches[0].clientY-sy;
           if(Math.abs(dx)<44||Math.abs(dx)<Math.abs(dy)*1.3)return;
-          /* RTL: يمين=+1 تالٍ، يسار=-1 سابق */
+          /* RTL: يمين(dx>0)=يوم تالٍ، يسار(dx<0)=يوم سابق */
           var dir=dx>0?1:-1;
           var cur=getIdx();var len=getLen();
           var next=cur+dir;
-          if(next>=0&&next<len){setIdx(next);haptic('light');}
-          else if(onTabSwipe){onTabSwipe(dir);haptic('light');}
+          if(next>=0&&next<len){
+            setIdx(next);haptic('light');
+          } else if(dir===1&&next>=len&&onLastDay){
+            /* تجاوز آخر يوم → الانتقال للتبويب التالي */
+            onLastDay();haptic('light');
+          } else if(dir===-1&&next<0&&onFirstDay){
+            /* تجاوز أول يوم → الانتقال للتبويب السابق */
+            onFirstDay();haptic('light');
+          }
+          /* السحب العكسي من أول/آخر يوم بدون تجاوز → لا شيء */
         },{passive:true});
       }
-      /* طقس: تجاوز نهاية الأيام → الانتقال لتبويب البحر */
+
+      /* طقس: تجاوز آخر يوم يميناً → البحر، تجاوز أول يوم يساراً → لا شيء */
       addPanelSwipe('ws-panel-weather',
         function(){return _wIdx;},
         function(i){renderWeatherDay(i);},
         function(){return _wDays.length||1;},
-        function(dir){if(dir===-1)switchWsTab('sea');}
+        function(){switchWsTab('sea');},   /* آخر يوم → البحر */
+        null                               /* أول يوم ← لا شيء */
       );
-      /* بحر: تجاوز نهاية الأيام → الانتقال لتبويب الطقس */
+      /* بحر: تجاوز أول يوم يساراً → الطقس */
       addPanelSwipe('ws-panel-sea',
         function(){return _sIdx;},
         function(i){renderSeaDay(i);},
         function(){return _sDays.length||1;},
-        function(dir){if(dir===1)switchWsTab('weather');}
+        null,                              /* آخر يوم → لا شيء */
+        function(){switchWsTab('weather');} /* أول يوم ← الطقس */
       );
     })();
   }catch(e){}
