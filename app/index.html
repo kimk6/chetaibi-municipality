@@ -1058,7 +1058,7 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
 
     <div style="text-align:center;padding:18px 20px 6px;">
       <div style="font-size:11px;color:var(--muted-2);">بلدية شطايبي - © 2026 جميع الحقوق محفوظة</div>
-      <div style="font-size:10px;color:var(--muted-2);font-style:italic;margin-top:3px;">تم التطوير بجهود كفاءات بلدية شطايبي</div>
+      <div style="font-size:10px;color:var(--muted-2);font-style:italic;margin-top:3px;">تم التطوير <iconify-icon icon="lucide:code-2" style="font-size:11px;vertical-align:middle;pointer-events:none"></iconify-icon> بجهود كفاءات بلدية شطايبي</div>
     </div>
   </div>
 </div>
@@ -1764,7 +1764,7 @@ var PWA_LAT=37.0850,PWA_LON=7.2550;
 window._debugWeather=async function(){try{var r=await fetch('https://api.open-meteo.com/v1/forecast?latitude='+PWA_LAT+'&longitude='+PWA_LON+'&current=temperature_2m,weather_code,is_day&daily=temperature_2m_max,temperature_2m_min,wind_speed_10m_max,precipitation_probability_max,weather_code&timezone=Africa%2FAlgiers&forecast_days=5');var t=await r.text();console.log('Weather status:',r.status,t.substring(0,600));}catch(e){console.error('Weather error:',e);}};
 window._debugSea=async function(){try{var r=await fetch('https://marine-api.open-meteo.com/v1/marine?latitude='+PWA_LAT+'&longitude='+PWA_LON+'&current=wave_height,wave_direction,sea_surface_temperature&daily=wave_height_max,wave_direction_dominant,sea_surface_temperature_max&timezone=Africa%2FAlgiers&forecast_days=5');var t=await r.text();console.log('Sea status:',r.status,t.substring(0,600));}catch(e){console.error('Sea error:',e);}};
 /* ══ WEATHER + SEA — 5 days ══ */
-var _wDays=[],_sDays=[];
+var _wDays=[],_sDays=[],_wIdx=0,_sIdx=0;
 var _WM={0:{d:'☀️',n:'🌕',ar:'الجو صافٍ'},1:{d:'🌤️',n:'🌙',ar:'غائم خفيف'},2:{d:'⛅',n:'🌥️',ar:'غائم جزئياً'},3:{d:'☁️',n:'☁️',ar:'غائم'},45:{d:'🌫️',n:'🌫️',ar:'ضبابي'},48:{d:'🌫️',n:'🌫️',ar:'ضبابي'},51:{d:'🌦️',n:'🌧️',ar:'رذاذ'},53:{d:'🌦️',n:'🌧️',ar:'رذاذ'},61:{d:'🌧️',n:'🌧️',ar:'ممطر'},63:{d:'🌧️',n:'🌧️',ar:'مطر'},65:{d:'🌧️',n:'🌧️',ar:'مطر غزير'},80:{d:'🌦️',n:'🌧️',ar:'زخات'},81:{d:'🌧️',n:'🌧️',ar:'زخات'},95:{d:'⛈️',n:'⛈️',ar:'عاصفة'}};
 var _DN=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
 var _TS='flex-shrink:0;border:1.5px solid var(--border-light);border-radius:99px;padding:4px 12px;font-size:11px;font-family:var(--font-main);background:var(--surface);color:var(--text);cursor:pointer;white-space:nowrap;touch-action:manipulation;transition:background .15s,color .15s,border-color .15s;';
@@ -1772,6 +1772,7 @@ var _TS_W='flex-shrink:0;border:1.5px solid rgba(5,150,105,0.3);border-radius:99
 var _TS_S='flex-shrink:0;border:1.5px solid rgba(59,131,246,0.3);border-radius:99px;padding:4px 12px;font-size:11px;font-family:var(--font-main);background:#eff6ff;color:#3b83f6;cursor:pointer;white-space:nowrap;touch-action:manipulation;font-weight:700;transition:background .15s,color .15s,border-color .15s;';
 function _g(id){return document.getElementById(id);}
 function renderWeatherDay(i){
+  _wIdx=i;
   var d=_wDays[i];if(!d)return;
   var w=_WM[d.code]||{d:'🌡️',n:'🌙',ar:'متغير'};
   var hi=_g('pwa-weather-header-icon'),hb=_g('pwa-weather-icon-bg');
@@ -1838,6 +1839,7 @@ function _seaLabel(v,isDay){
   return{si:'🔴',st:'عاصف',sd:'يُمنع الخروج'};
 }
 function renderSeaDay(i){
+  _sIdx=i;
   var d=_sDays[i];if(!d)return;
   var lb=_seaLabel(d.wave,d.isDay);
   if(_g('pwa-sea-icon'))_g('pwa-sea-icon').textContent=lb.si;
@@ -2013,8 +2015,8 @@ function _annCarInitDrag(vp){
     if(!active)return;active=false;
     if(lock==='h'){
       var dx=x-sx;
-      if(dx<-44)_annCarGoTo(_annCarIdx+1);
-      else if(dx>44)_annCarGoTo(_annCarIdx-1);
+      if(dx<-44)_annCarGoTo(_annCarIdx-1);
+      else if(dx>44)_annCarGoTo(_annCarIdx+1);
     }
     lock=null;
   }
@@ -2264,9 +2266,9 @@ async function openBeachModal(id){
     document.getElementById('mb-name').textContent=b.name||'';
     document.getElementById('mb-desc').textContent=b.description||'';
     var m='';
-    if(b.shore_type==='صخري'||b.beach_type==='صخري'||b.type==='صخري')m+='<span class="modal-chip"><iconify-icon icon="lucide:mountain" style="color:#78716c;pointer-events:none"></iconify-icon>صخري</span>';
-    else if(b.shore_type==='رملي'||b.beach_type==='رملي'||b.type==='رملي')m+='<span class="modal-chip"><iconify-icon icon="lucide:sun" style="color:#f59e0b;pointer-events:none"></iconify-icon>رملي</span>';
-    else if(b.shore_type||b.beach_type||b.type){var st=b.shore_type||b.beach_type||b.type;var ico=st==='صخري'?'lucide:mountain':st==='رملي'?'lucide:sun':'lucide:waves';m+='<span class="modal-chip"><iconify-icon icon="'+ico+'" style="pointer-events:none"></iconify-icon>'+st+'</span>';}
+    if(b.shore_type==='صخري'||b.beach_type==='صخري'||b.type==='صخري')m+='<span class="modal-chip"><iconify-icon icon="lucide:gem" style="color:#78716c;pointer-events:none"></iconify-icon>صخري</span>';
+    else if(b.shore_type==='رملي'||b.beach_type==='رملي'||b.type==='رملي')m+='<span class="modal-chip"><iconify-icon icon="lucide:beach" style="color:#f59e0b;pointer-events:none"></iconify-icon>رملي</span>';
+    else if(b.shore_type||b.beach_type||b.type){var st=b.shore_type||b.beach_type||b.type;var ico=st==='صخري'?'lucide:gem':st==='رملي'?'lucide:beach':'lucide:waves';m+='<span class="modal-chip"><iconify-icon icon="'+ico+'" style="pointer-events:none"></iconify-icon>'+st+'</span>';}
     if(b.is_supervised)m+='<span class="modal-chip"><iconify-icon icon="lucide:shield-check" style="color:var(--green);pointer-events:none"></iconify-icon>مراقب</span>';
     if(b.season)m+='<span class="modal-chip">'+b.season+'</span>';
     document.getElementById('mb-meta').innerHTML=m;
@@ -2298,7 +2300,7 @@ async function openTourismModal(id){
       document.getElementById('mt-desc').textContent=t.description||'';
       var m='';
       if(t.rating)m+='<span class="modal-chip"><iconify-icon icon="lucide:star" style="color:var(--amber);pointer-events:none"></iconify-icon>'+t.rating+'/5</span>';
-      if(t.distance_info)m+='<span class="modal-chip">'+t.distance_info+'</span>';
+      if(t.distance_info)m+='<span class="modal-chip"><iconify-icon icon="lucide:map-pin-check" style="color:var(--green);pointer-events:none"></iconify-icon>'+t.distance_info+'</span>';
       document.getElementById('mt-meta').innerHTML=m;
       _makeMapBtn(t.lat,t.lng,t.name||'','mt-map-btn-wrap');
       album('mt-album',albums);
@@ -2612,6 +2614,25 @@ window.addEventListener('load',function(){
     var scrollEl=document.querySelector('#screen-'+id+' .scroll-area');
     if(scrollEl)scrollEl.addEventListener('scroll',onScrollAreaScroll,{passive:true});
   });
+  /* swipe تبويبات الطقس والبحر */
+  try{
+    (function(){
+      function addPanelSwipe(panelId,getIdx,setIdx,getLen){
+        var el=document.getElementById(panelId);if(!el)return;
+        var sx=0,sy=0;
+        el.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
+        el.addEventListener('touchend',function(e){
+          var dx=e.changedTouches[0].clientX-sx;
+          var dy=e.changedTouches[0].clientY-sy;
+          if(Math.abs(dx)<44||Math.abs(dx)<Math.abs(dy)*1.3)return;
+          var next=Math.max(0,Math.min(getLen()-1,getIdx()+(dx<0?1:-1)));
+          if(next!==getIdx()){setIdx(next);haptic('light');}
+        },{passive:true});
+      }
+      addPanelSwipe('ws-panel-weather',function(){return _wIdx;},function(i){renderWeatherDay(i);},function(){return _wDays.length||1;});
+      addPanelSwipe('ws-panel-sea',function(){return _sIdx;},function(i){renderSeaDay(i);},function(){return _sDays.length||1;});
+    })();
+  }catch(e){}
 });
 document.fonts.ready.then(applyHeaderHeight);
 loadHome();
