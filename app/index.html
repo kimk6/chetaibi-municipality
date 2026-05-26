@@ -662,6 +662,24 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
 .sr-title{font-size:13px;font-weight:800;color:var(--text);}
 .sr-sub{font-size:11px;color:var(--muted);margin-top:1px;}
 .search-empty{padding:32px 20px;text-align:center;color:var(--muted);font-size:13px;font-weight:600;}
+
+/* ══ SERVICES SCREEN ══ */
+.svc-card{background:var(--card);border-radius:var(--r-lg);border:1px solid rgba(0,0,0,.04);overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,0.13),0 2px 6px rgba(0,0,0,0.07);margin:0 16px 14px;}
+.svc-card-header{padding:16px 16px 12px;display:flex;align-items:center;gap:12px;}
+.svc-card-icon{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.svc-card-icon iconify-icon{font-size:22px;}
+.svc-card-name{font-size:14px;font-weight:900;color:var(--text);line-height:1.35;}
+.svc-card-desc{font-size:12.5px;color:var(--muted);line-height:1.65;padding:0 16px 12px;}
+.svc-card-docs{padding:0 16px 12px;}
+.svc-card-docs-title{font-size:12px;font-weight:800;color:var(--text);margin-bottom:8px;display:flex;align-items:center;gap:5px;}
+.svc-card-doc-item{font-size:11.5px;color:var(--muted);display:flex;align-items:flex-start;gap:7px;margin-bottom:5px;line-height:1.5;}
+.svc-card-doc-check{width:16px;height:16px;background:var(--green-l);color:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;flex-shrink:0;margin-top:1px;}
+.svc-card-forms{padding:0 16px 12px;display:flex;flex-direction:column;gap:6px;}
+.svc-card-form-link{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;padding:8px 12px;border-radius:10px;text-decoration:none;transition:opacity .15s;}
+.svc-card-form-link:active{opacity:.7;}
+.svc-card-footer{padding:12px 16px 16px;border-top:1px solid var(--border-light);}
+.svc-card-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:10px;border-radius:12px;font-size:13px;font-weight:800;font-family:var(--font-main);text-decoration:none;border:none;cursor:pointer;transition:opacity .15s;}
+.svc-card-btn:active{opacity:.8;}
 </style>
 </head>
 <body>
@@ -876,6 +894,27 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
     </div>
 
     <!-- ARCHIVE -->
+    <!-- SERVICES -->
+    <div class="screen hidden" id="screen-services">
+      <div class="scroll-area" id="scroll-services">
+        <div class="content-block">
+          <div class="seg-bar-wrap">
+            <div class="seg-bar" style="justify-content:center;">
+              <button class="seg-btn active" data-type="service" id="svc-btn-service" onclick="filterServices('service',this)">
+                <iconify-icon icon="lucide:file-text"></iconify-icon>خدمات
+              </button>
+              <button class="seg-btn" data-type="app" id="svc-btn-app" onclick="filterServices('app',this)">
+                <iconify-icon icon="lucide:smartphone"></iconify-icon>تطبيقات
+              </button>
+            </div>
+          </div>
+          <div id="svc-list" style="padding:12px 0 24px">
+            <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span>جاري التحميل</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="screen hidden" id="screen-archive">
       <div class="scroll-area" id="scroll-archive">
         <div class="content-block">
@@ -958,6 +997,13 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
         <iconify-icon class="icon-on" icon="ph:scroll-fill" style="font-size:24px"></iconify-icon>
       </div>
       <span>الأرشيف</span>
+    </button>
+    <button class="nav-btn" id="nav-services">
+      <div class="nav-icon-wrap">
+        <iconify-icon class="icon-off" icon="ph:file-text" style="font-size:24px"></iconify-icon>
+        <iconify-icon class="icon-on" icon="ph:file-text-fill" style="font-size:24px"></iconify-icon>
+      </div>
+      <span>الخدمات</span>
     </button>
     <button class="nav-btn" id="nav-more">
       <div class="nav-icon-wrap">
@@ -1153,9 +1199,9 @@ document.addEventListener('touchmove',function(e){if(e.touches.length>1)e.preven
 var C={};
 async function api(u){if(C[u])return C[u];var r=await fetch(u);var d=await r.json();C[u]=d;return d;}
 /* ══ STATE ══ */
-var curTab='home',mapDone=false,allNews=[],facCat='admin-branches';
+var curTab='home',mapDone=false,_svcLoaded=false,allNews=[],facCat='admin-branches';
 var newsScreenLoaded=false,_mayorLoaded=false,_mayorsList=[];
-var TAB_ORDER=['home','news','guide','archive'];
+var TAB_ORDER=['home','news','guide','services','archive'];
 var NEWS_CATS=['official','activity','social','poster'];
 var GUIDE_TABS=['admin-branches','education','health','public-bodies','religious','cultural','sports'];
 var mapLayers={beach:[],tour:[],fac:[]};
@@ -1278,6 +1324,7 @@ function switchTab(t){
   if(t==='guide')loadCurrentGuideTab();
   if(t==='home')loadHome();
   if(t==='archive')loadArchiveTab(archTab);
+  if(t==='services'&&!_svcLoaded){_svcLoaded=true;loadServices('service');}
 }
 function switchTabWithFilter(tab,filterType){pendingMapFilter=filterType;switchTab(tab);}
 function loadCurrentGuideTab(){
@@ -2413,6 +2460,7 @@ function initEventDelegation(){
   document.getElementById('nav-news').addEventListener('click',function(){haptic('tab');switchTab('news');});
   document.getElementById('nav-guide').addEventListener('click',function(){haptic('tab');switchTab('guide');});
   document.getElementById('nav-archive').addEventListener('click',function(){haptic('tab');switchTab('archive');});
+  var _navSvc=document.getElementById('nav-services');if(_navSvc)_navSvc.addEventListener('click',function(){haptic('tab');switchTab('services');});
   document.getElementById('hdr-search-btn').addEventListener('click',function(){Search.open();});
   document.getElementById('hdr-notif-btn').addEventListener('click',function(){haptic('light');});
 
@@ -2481,6 +2529,57 @@ function initEventDelegation(){
     if(sheet)initModalSwipe(sheet,id);
   });
 }
+
+/* ══ SERVICES ══ */
+var SVC_COLORS={
+  blue:   {bg:'#dbeafe',fg:'#2563eb'},
+  emerald:{bg:'#d1fae5',fg:'#059669'},
+  amber:  {bg:'#fef3c7',fg:'#b45309'},
+  purple: {bg:'#ede9fe',fg:'#7c3aed'},
+  teal:   {bg:'#ccfbf1',fg:'#0d9488'},
+  red:    {bg:'#fee2e2',fg:'#dc2626'}
+};
+var _allServices=[];
+function filterServices(type,btn){
+  document.querySelectorAll('#svc-btn-service,#svc-btn-app').forEach(function(b){b.classList.remove('active');});
+  if(btn)btn.classList.add('active');
+  var items=_allServices.filter(function(s){return type==='app'?s.service_type==='app':s.service_type!=='app';});
+  renderServices(items);
+}
+function renderServices(items){
+  var el=document.getElementById('svc-list');
+  if(!items.length){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>لا توجد خدمات</p></div>';return;}
+  el.innerHTML=items.map(function(s){
+    var c=SVC_COLORS[s.color]||SVC_COLORS.blue;
+    var isApp=s.service_type==='app';
+    var docs=(s.required_docs||'').split('|').map(function(d){return d.trim();}).filter(Boolean);
+    var formLinks=[];try{formLinks=JSON.parse(s.form_links||'[]');}catch(e){}
+    var name=s.service_name||'';
+    var desc=s.description||'';
+    var docsHtml=docs.length?'<div class="svc-card-docs"><div class="svc-card-docs-title"><iconify-icon icon="lucide:file-check-2" style="color:var(--green);font-size:14px"></iconify-icon>الوثائق المطلوبة</div>'
+      +docs.map(function(d){return '<div class="svc-card-doc-item"><div class="svc-card-doc-check">\u2713</div><span>'+d+'</span></div>';}).join('')+'</div>':'';
+    var formsHtml=formLinks.length?'<div class="svc-card-forms">'
+      +formLinks.map(function(f,i){return '<a href="'+(f.url||f)+'" target="_blank" rel="noopener" class="svc-card-form-link" style="background:'+c.bg+';color:'+c.fg+'"><iconify-icon icon="lucide:download" style="font-size:14px;pointer-events:none"></iconify-icon>'+(f.label||('\u0627\u0633\u062a\u0645\u0627\u0631\u0629 '+(i+1)))+'</a>';}).join('')+'</div>':'';
+    var btnHtml=s.direct_link?'<div class="svc-card-footer"><a href="'+s.direct_link+'" target="_blank" rel="noopener" class="svc-card-btn" style="background:'+c.fg+';color:#fff"><iconify-icon icon="'+(isApp?'lucide:smartphone':'lucide:external-link')+'" style="pointer-events:none"></iconify-icon>'+(isApp?'\u062a\u062d\u0645\u064a\u0644 \u0627\u0644\u062a\u0637\u0628\u064a\u0642':'\u0627\u0644\u0648\u0635\u0648\u0644 \u0644\u0644\u062e\u062f\u0645\u0629')+'</a></div>':'';
+    return '<div class="svc-card">'
+      +'<div class="svc-card-header"><div class="svc-card-icon" style="background:'+c.bg+'"><iconify-icon icon="lucide:'+(s.icon||'file-text')+'" style="color:'+c.fg+';pointer-events:none"></iconify-icon></div>'
+      +'<div class="svc-card-name">'+name+'</div></div>'
+      +(desc?'<div class="svc-card-desc">'+desc+'</div>':'')
+      +docsHtml+formsHtml+btnHtml
+      +'</div>';
+  }).join('');
+}
+async function loadServices(type){
+  var el=document.getElementById('svc-list');
+  if(el)el.innerHTML='<div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span>\u062c\u0627\u0631\u064a \u0627\u0644\u062a\u062d\u0645\u064a\u0644</span></div>';
+  try{
+    var d=await api('/api/services');
+    _allServices=d.data||[];
+    filterServices(type,document.getElementById('svc-btn-service'));
+  }catch(e){
+    if(el)el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>\u062a\u0639\u0630\u0631 \u062a\u062d\u0645\u064a\u0644 \u0627\u0644\u062e\u062f\u0645\u0627\u062a</p></div>';
+  }
+}
 /* ══ INIT ══ */
 window.addEventListener('load',function(){
   applyHeaderHeight();
@@ -2492,7 +2591,7 @@ window.addEventListener('load',function(){
   initSwipe('scroll-news',function(dir){swipeNews(dir);});
   initSwipe('scroll-guide',function(dir){swipeGuide(dir);});
   initSwipe('scroll-archive',function(dir){swipeArchive(dir);});
-  ['home','news','guide','archive','map'].forEach(function(id){
+  ['home','news','guide','archive','map','services'].forEach(function(id){
     var scrollEl=document.querySelector('#screen-'+id+' .scroll-area');
     if(scrollEl)scrollEl.addEventListener('scroll',onScrollAreaScroll,{passive:true});
   });
