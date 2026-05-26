@@ -529,9 +529,10 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
 .map-popup-close{position:absolute;top:10px;left:12px;width:30px;height:30px;border-radius:50%;background:rgba(0,0,0,.07);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;color:var(--muted-2);pointer-events:auto;transition:background var(--dur-fast),color var(--dur-fast);z-index:3;}
 .map-popup-close:active{background:rgba(0,0,0,.16);color:var(--text-2);}
 /* زر عرض في الخريطة داخل الـ modals */
-.modal-map-btn{display:inline-flex;align-items:center;gap:7px;background:var(--blue-l);border:none;border-radius:var(--r-full);padding:9px 18px;font-family:var(--font-main);font-size:12.5px;font-weight:800;color:var(--blue);cursor:pointer;touch-action:manipulation;margin-top:14px;min-height:40px;transition:background var(--dur-fast),transform var(--dur-fast);width:100%;justify-content:center;}
+.modal-map-btn{display:inline-flex;align-items:center;gap:5px;background:var(--blue-l);border:none;border-radius:var(--r-full);padding:6px 14px;font-family:var(--font-main);font-size:12px;font-weight:800;color:var(--blue);cursor:pointer;touch-action:manipulation;margin-top:14px;transition:background var(--dur-fast),transform var(--dur-fast);}
+.modal-map-btn-wrap{display:flex;justify-content:center;}
 .modal-map-btn:active{background:#bfdbfe;transform:scale(.96);}
-.modal-map-btn iconify-icon{font-size:16px;pointer-events:none;flex-shrink:0;}
+.modal-map-btn iconify-icon{font-size:14px;pointer-events:none;flex-shrink:0;}
 /* LIGHTBOX */
 #lightbox{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.97);display:none;align-items:center;justify-content:center;padding:20px;overscroll-behavior:none;}
 #lightbox.open{display:flex;}
@@ -1338,6 +1339,8 @@ function initSwipe(scrollAreaId,getNext){
   el.addEventListener('touchstart',function(e){
     if(isArchive){startX=e.touches[0].clientX;startY=e.touches[0].clientY;tracking=true;return;}
     if(e.target.closest('.seg-bar-wrap')||e.target.closest('.archive-card')||e.target.closest('.weather-card')||e.target.closest('.sea-card')||e.target.closest('.weather-sea-unified-card')||e.target.closest('#weather-day-tabs')||e.target.closest('#sea-day-tabs')){tracking=false;return;}
+    /* إيقاف swipe الصفحة الرئيسية فوق الكاروسيل لإتاحة سحبه */
+    if(scrollAreaId==='scroll-home'&&e.target.closest('#ann-carousel-outer')){tracking=false;return;}
     /* تجاهل السحب فوق بطاقات h-scroll فقط، لكن السماح على padding المنطقة */
     var hScrollTarget=e.target.closest('.h-scroll');
     if(hScrollTarget){
@@ -2358,10 +2361,10 @@ function _makeMapBtn(lat,lng,name,wrapId){
   var wrap=document.getElementById(wrapId);
   if(!wrap)return;
   if(lat&&lng){
-    wrap.innerHTML='<button class="modal-map-btn" onclick="showOnMap('+lat+','+lng+',\''+name.replace(/'/g,'')+'\')">'
+    wrap.innerHTML='<div class="modal-map-btn-wrap"><button class="modal-map-btn" onclick="showOnMap('+lat+','+lng+',\''+name.replace(/'/g,'')+'\')">'
       +'<iconify-icon icon="lucide:map"></iconify-icon>عرض على الخريطة'
-      +'<iconify-icon icon="lucide:chevron-left" style="margin-right:auto;font-size:15px;pointer-events:none"></iconify-icon>'
-      +'</button>';
+      +'<iconify-icon icon="lucide:chevron-left" style="font-size:13px;pointer-events:none"></iconify-icon>'
+      +'</button></div>';
   }else{
     wrap.innerHTML='';
   }
@@ -2590,7 +2593,21 @@ window.addEventListener('load',function(){
   try{initSwipe('scroll-news',function(dir){swipeNews(dir);});}catch(e){}
   try{initSwipe('scroll-guide',function(dir){swipeGuide(dir);});}catch(e){}
   try{initSwipe('scroll-archive',function(dir){swipeArchive(dir);});}catch(e){}
-  try{initSwipe('scroll-services',function(dir){if(dir===-1)switchTab('guide');});}catch(e){}
+  try{initSwipe('scroll-services',function(dir){
+    var active=document.querySelector('#screen-services .seg-btn.active');
+    var cur=active?active.getAttribute('data-type'):'service';
+    var tabs=['service','app'];
+    var idx=tabs.indexOf(cur);
+    var next=idx+dir;
+    if(next<0){switchTab('guide');return;}
+    if(next<tabs.length){
+      var nb=document.getElementById('svc-btn-'+tabs[next]);
+      if(nb){haptic('light');filterServices(tabs[next],nb);}
+    } else {
+      /* سحب إضافي بعد آخر تصنيف → فتح overlay المزيد */
+      haptic('mid');MoreSheet.open();
+    }
+  });}catch(e){}
   ['home','news','guide','archive','map','services'].forEach(function(id){
     var scrollEl=document.querySelector('#screen-'+id+' .scroll-area');
     if(scrollEl)scrollEl.addEventListener('scroll',onScrollAreaScroll,{passive:true});
