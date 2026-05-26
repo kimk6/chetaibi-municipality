@@ -2266,9 +2266,9 @@ async function openBeachModal(id){
     document.getElementById('mb-name').textContent=b.name||'';
     document.getElementById('mb-desc').textContent=b.description||'';
     var m='';
-    if(b.shore_type==='صخري'||b.beach_type==='صخري'||b.type==='صخري')m+='<span class="modal-chip"><iconify-icon icon="lucide:gem" style="color:#78716c;pointer-events:none"></iconify-icon>صخري</span>';
-    else if(b.shore_type==='رملي'||b.beach_type==='رملي'||b.type==='رملي')m+='<span class="modal-chip"><iconify-icon icon="lucide:beach" style="color:#f59e0b;pointer-events:none"></iconify-icon>رملي</span>';
-    else if(b.shore_type||b.beach_type||b.type){var st=b.shore_type||b.beach_type||b.type;var ico=st==='صخري'?'lucide:gem':st==='رملي'?'lucide:beach':'lucide:waves';m+='<span class="modal-chip"><iconify-icon icon="'+ico+'" style="pointer-events:none"></iconify-icon>'+st+'</span>';}
+    if(b.shore_type==='صخري'||b.beach_type==='صخري'||b.type==='صخري')m+='<span class="modal-chip"><iconify-icon icon="lucide:triangle" style="color:#78716c;pointer-events:none"></iconify-icon>صخري</span>';
+    else if(b.shore_type==='رملي'||b.beach_type==='رملي'||b.type==='رملي')m+='<span class="modal-chip"><iconify-icon icon="lucide:sun-medium" style="color:#f59e0b;pointer-events:none"></iconify-icon>رملي</span>';
+    else if(b.shore_type||b.beach_type||b.type){var st=b.shore_type||b.beach_type||b.type;var ico=st==='صخري'?'lucide:triangle':st==='رملي'?'lucide:sun-medium':'lucide:waves';m+='<span class="modal-chip"><iconify-icon icon="'+ico+'" style="pointer-events:none"></iconify-icon>'+st+'</span>';}
     if(b.is_supervised)m+='<span class="modal-chip"><iconify-icon icon="lucide:shield-check" style="color:var(--green);pointer-events:none"></iconify-icon>مراقب</span>';
     if(b.season)m+='<span class="modal-chip">'+b.season+'</span>';
     document.getElementById('mb-meta').innerHTML=m;
@@ -2617,7 +2617,7 @@ window.addEventListener('load',function(){
   /* swipe تبويبات الطقس والبحر */
   try{
     (function(){
-      function addPanelSwipe(panelId,getIdx,setIdx,getLen){
+      function addPanelSwipe(panelId,getIdx,setIdx,getLen,onTabSwipe){
         var el=document.getElementById(panelId);if(!el)return;
         var sx=0,sy=0;
         el.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
@@ -2625,12 +2625,28 @@ window.addEventListener('load',function(){
           var dx=e.changedTouches[0].clientX-sx;
           var dy=e.changedTouches[0].clientY-sy;
           if(Math.abs(dx)<44||Math.abs(dx)<Math.abs(dy)*1.3)return;
-          var next=Math.max(0,Math.min(getLen()-1,getIdx()+(dx<0?1:-1)));
-          if(next!==getIdx()){setIdx(next);haptic('light');}
+          /* RTL: يمين=+1 تالٍ، يسار=-1 سابق */
+          var dir=dx>0?1:-1;
+          var cur=getIdx();var len=getLen();
+          var next=cur+dir;
+          if(next>=0&&next<len){setIdx(next);haptic('light');}
+          else if(onTabSwipe){onTabSwipe(dir);haptic('light');}
         },{passive:true});
       }
-      addPanelSwipe('ws-panel-weather',function(){return _wIdx;},function(i){renderWeatherDay(i);},function(){return _wDays.length||1;});
-      addPanelSwipe('ws-panel-sea',function(){return _sIdx;},function(i){renderSeaDay(i);},function(){return _sDays.length||1;});
+      /* طقس: تجاوز نهاية الأيام → الانتقال لتبويب البحر */
+      addPanelSwipe('ws-panel-weather',
+        function(){return _wIdx;},
+        function(i){renderWeatherDay(i);},
+        function(){return _wDays.length||1;},
+        function(dir){if(dir===-1)switchWsTab('sea');}
+      );
+      /* بحر: تجاوز نهاية الأيام → الانتقال لتبويب الطقس */
+      addPanelSwipe('ws-panel-sea',
+        function(){return _sIdx;},
+        function(i){renderSeaDay(i);},
+        function(){return _sDays.length||1;},
+        function(dir){if(dir===1)switchWsTab('weather');}
+      );
     })();
   }catch(e){}
 });
