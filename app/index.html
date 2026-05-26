@@ -991,13 +991,6 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
       </div>
       <span>الدليل</span>
     </button>
-    <button class="nav-btn" id="nav-archive">
-      <div class="nav-icon-wrap">
-        <iconify-icon class="icon-off" icon="ph:scroll" style="font-size:24px"></iconify-icon>
-        <iconify-icon class="icon-on" icon="ph:scroll-fill" style="font-size:24px"></iconify-icon>
-      </div>
-      <span>الأرشيف</span>
-    </button>
     <button class="nav-btn" id="nav-services">
       <div class="nav-icon-wrap">
         <iconify-icon class="icon-off" icon="ph:file-text" style="font-size:24px"></iconify-icon>
@@ -1064,7 +1057,7 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
 
     <div style="text-align:center;padding:18px 20px 6px;">
       <div style="font-size:11px;color:var(--muted-2);">بلدية شطايبي - © 2026 جميع الحقوق محفوظة</div>
-      <div style="font-size:10px;color:var(--muted-2);font-style:italic;margin-top:3px;">تم التطوير بجهود الكفاءات الداخلية</div>
+      <div style="font-size:10px;color:var(--muted-2);font-style:italic;margin-top:3px;">تم التطوير بجهود كفاءات بلدية شطايبي</div>
     </div>
   </div>
 </div>
@@ -1805,19 +1798,23 @@ async function fetchPWAWeather(){
     if(!r.ok)throw new Error('HTTP '+r.status);
     var d=await r.json();
     if(d.error)throw new Error(d.reason||'API error');
-    var cu=d.current;var dl=d.daily;var now=new Date();
-    if(!cu||!dl)throw new Error('no data');
+    var cu=d.current||{};var dl=d.daily||{};var now=new Date();
+    var times=dl.time||[];
+    if(!times.length)throw new Error('no data');
     _wDays=[];
-    for(var i=0;i<Math.min(5,dl.time.length);i++){
-      var dt=new Date(dl.time[i]+'T12:00:00');var h=i===0?now.getHours():12;
+    for(var i=0;i<Math.min(5,times.length);i++){
+      var dt=new Date(times[i]+'T12:00:00');var h=i===0?now.getHours():12;
+      var tmax=dl.temperature_2m_max?dl.temperature_2m_max[i]:null;
+      var tmin=dl.temperature_2m_min?dl.temperature_2m_min[i]:null;
       var dayCode=dl.weather_code&&dl.weather_code[i]!=null?dl.weather_code[i]:0;
+      var curTemp=cu.temperature_2m!=null?cu.temperature_2m:(tmax!=null&&tmin!=null?(tmax+tmin)/2:20);
       _wDays.push({
         label:i===0?'اليوم':_DN[dt.getDay()],
-        temp:i===0?cu.temperature_2m:(dl.temperature_2m_max[i]+dl.temperature_2m_min[i])/2,
-        tmax:dl.temperature_2m_max[i],tmin:dl.temperature_2m_min[i],
-        code:i===0?cu.weather_code:dayCode,
-        hum:i===0?cu.relative_humidity_2m:(dl.precipitation_probability_max&&dl.precipitation_probability_max[i]!=null?dl.precipitation_probability_max[i]:0),
-        wind:i===0?cu.wind_speed_10m:(dl.wind_speed_10m_max?dl.wind_speed_10m_max[i]:0),
+        temp:i===0?curTemp:(tmax!=null&&tmin!=null?(tmax+tmin)/2:20),
+        tmax:tmax!=null?tmax:20,tmin:tmin!=null?tmin:15,
+        code:i===0?(cu.weather_code!=null?cu.weather_code:dayCode):dayCode,
+        hum:i===0?(cu.relative_humidity_2m!=null?cu.relative_humidity_2m:0):(dl.precipitation_probability_max&&dl.precipitation_probability_max[i]!=null?dl.precipitation_probability_max[i]:0),
+        wind:i===0?(cu.wind_speed_10m!=null?cu.wind_speed_10m:0):(dl.wind_speed_10m_max&&dl.wind_speed_10m_max[i]!=null?dl.wind_speed_10m_max[i]:0),
         isDay:(h>=6&&h<20)
       });
     }
@@ -1826,7 +1823,13 @@ async function fetchPWAWeather(){
     renderWeatherDay(0);
   }catch(e){
     console.error('fetchPWAWeather error:',e);
-    var el=_g('pwa-weather-desc');if(el)el.textContent='تعذر التحميل';
+    /* محاولة ثانية بعد 4 ثوانٍ قبل إظهار الخطأ */
+    if(!fetchPWAWeather._retried){
+      fetchPWAWeather._retried=true;
+      setTimeout(function(){fetchPWAWeather._retried=false;fetchPWAWeather();},4000);
+    } else {
+      var el=_g('pwa-weather-desc');if(el)el.textContent='تعذر التحميل';
+    }
   }
 }
 function _seaLabel(v,isDay){
@@ -2359,8 +2362,7 @@ function _makeMapBtn(lat,lng,name,wrapId){
   if(!wrap)return;
   if(lat&&lng){
     wrap.innerHTML='<button class="modal-map-btn" onclick="showOnMap('+lat+','+lng+',\''+name.replace(/'/g,'')+'\')">'
-      +'<iconify-icon icon="lucide:map-pin"></iconify-icon>الخريطة'
-      +'<iconify-icon icon="lucide:map"></iconify-icon>'
+      +'<iconify-icon icon="lucide:map"></iconify-icon>عرض على الخريطة'
       +'</button>';
   }else{
     wrap.innerHTML='';
