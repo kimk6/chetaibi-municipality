@@ -646,6 +646,37 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .ann-more-card-icon{width:48px;height:48px;border-radius:50%;background:var(--green-xl);border:1.5px solid rgba(5,150,105,0.18);display:flex;align-items:center;justify-content:center;}
 .ann-more-card-icon iconify-icon{font-size:24px;color:var(--green);pointer-events:none;}
 .ann-more-btn{font-size:13px;font-weight:800;}
+/* ══ DARK MODE ══ */
+[data-theme="dark"]{
+  --surface:#0f172a;--surface-2:#1e293b;
+  --card:#1e293b;
+  --text:#f1f5f9;--text-2:#e2e8f0;--text-3:#94a3b8;
+  --muted:#94a3b8;--muted-2:#64748b;--muted-3:#334155;
+  --border:#334155;--border-light:#1e293b;
+  --sk-base:#1e293b;--sk-shine:#334155;
+  --green-xl:#052e16;--green-l:#14532d;
+  --red-l:#450a0a;--blue-l:#172554;--amber-l:#451a03;
+  --purple-l:#2e1065;--sky-l:#082f49;
+}
+[data-theme="dark"] #shared-header{background:#1e293b;box-shadow:0 1px 0 rgba(255,255,255,0.06);}
+[data-theme="dark"] #bottom-nav{background:#1e293b;border-top-color:rgba(255,255,255,0.07);}
+[data-theme="dark"] .seg-bar-wrap{background:#1e293b;border-bottom-color:rgba(255,255,255,0.07);}
+[data-theme="dark"] .ws-tabs{background:#1e293b;}
+[data-theme="dark"] .ann-card,.ann-more-card{border-color:rgba(255,255,255,0.08);}
+[data-theme="dark"] .more-item:active{background:rgba(255,255,255,0.05);}
+[data-theme="dark"] .modal-sheet,[data-theme="dark"] #more-sheet{background:#1e293b;}
+[data-theme="dark"] .modal-img-wrap,[data-theme="dark"] .modal-img{background:#0f172a;}
+/* Settings toggle buttons */
+.settings-section{margin:12px 16px;background:var(--card);border-radius:var(--r-lg);border:1px solid var(--border-light);overflow:hidden;}
+.settings-section-title{font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.5px;padding:10px 16px 6px;}
+.settings-row{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;gap:12px;}
+.settings-row-label{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--text);}
+.settings-row-label iconify-icon{font-size:18px;pointer-events:none;}
+.settings-toggle-group{display:flex;gap:6px;}
+.settings-toggle-btn{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:var(--r-full);border:1.5px solid var(--border);background:var(--surface);font-family:var(--font-main);font-size:11.5px;font-weight:700;color:var(--muted);cursor:pointer;touch-action:manipulation;transition:all var(--dur-fast);}
+.settings-toggle-btn iconify-icon{font-size:14px;pointer-events:none;}
+.settings-toggle-btn.active{background:var(--green);color:#fff;border-color:var(--green);box-shadow:0 2px 8px rgba(5,150,105,.28);}
+.settings-divider{height:1px;background:var(--border-light);margin:0 16px;}
 /* SEARCH */
 #search-overlay{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.4);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .25s var(--ease-std);display:flex;flex-direction:column;}
 #search-overlay.open{opacity:1;pointer-events:auto;}
@@ -1059,6 +1090,40 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
       </div>
     </div>
 
+    <!-- إعدادات التطبيق -->
+    <div class="settings-section" style="margin-bottom:8px;">
+      <div class="settings-section-title">إعدادات التطبيق</div>
+      <div class="settings-row">
+        <div class="settings-row-label">
+          <iconify-icon icon="lucide:sun-moon" style="color:var(--amber)"></iconify-icon>
+          المظهر
+        </div>
+        <div class="settings-toggle-group">
+          <button class="settings-toggle-btn active" id="theme-light-btn" onclick="setTheme('light')">
+            <iconify-icon icon="lucide:sun"></iconify-icon>فاتح
+          </button>
+          <button class="settings-toggle-btn" id="theme-dark-btn" onclick="setTheme('dark')">
+            <iconify-icon icon="lucide:moon"></iconify-icon>داكن
+          </button>
+        </div>
+      </div>
+      <div class="settings-divider"></div>
+      <div class="settings-row">
+        <div class="settings-row-label">
+          <iconify-icon icon="lucide:languages" style="color:var(--blue)"></iconify-icon>
+          اللغة
+        </div>
+        <div class="settings-toggle-group">
+          <button class="settings-toggle-btn active" id="lang-ar-btn" onclick="setLang('ar')">
+            <iconify-icon icon="lucide:type"></iconify-icon>العربية
+          </button>
+          <button class="settings-toggle-btn" id="lang-fr-btn" onclick="setLang('fr')">
+            <iconify-icon icon="lucide:type"></iconify-icon>Français
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div style="text-align:center;padding:18px 20px 6px;">
       <div style="font-size:11px;color:var(--muted-2);">بلدية شطايبي - © 2026 جميع الحقوق محفوظة</div>
       <div style="font-size:10px;color:var(--muted-2);font-style:italic;margin-top:3px;">تم التطوير <iconify-icon icon="lucide:code-2" style="font-size:11px;vertical-align:middle;pointer-events:none"></iconify-icon> بجهود كفاءات بلدية شطايبي</div>
@@ -1401,6 +1466,15 @@ var MoreSheet=(function(){
   }
   function open(){
     if(isOpen)return;isOpen=true;overlay.classList.add('open');syncMayorToSheet();
+    /* تحديث حالة أزرار الإعدادات */
+    var lb=document.getElementById('theme-light-btn');
+    var db=document.getElementById('theme-dark-btn');
+    if(lb)lb.classList.toggle('active',_curTheme==='light');
+    if(db)db.classList.toggle('active',_curTheme==='dark');
+    var ar=document.getElementById('lang-ar-btn');
+    var fr=document.getElementById('lang-fr-btn');
+    if(ar)ar.classList.toggle('active',_curLang==='ar');
+    if(fr)fr.classList.toggle('active',_curLang==='fr');
     document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
     var nb=document.getElementById('nav-more');if(nb)nb.classList.add('active');
   }
@@ -2598,6 +2672,48 @@ async function loadServices(type){
     if(el)el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>\u062a\u0639\u0630\u0631 \u062a\u062d\u0645\u064a\u0644 \u0627\u0644\u062e\u062f\u0645\u0627\u062a</p></div>';
   }
 }
+/* ══ THEME & LANG ══ */
+var _curTheme=localStorage.getItem('app-theme')||'light';
+var _curLang=localStorage.getItem('app-lang')||'ar';
+
+function setTheme(theme){
+  _curTheme=theme;
+  localStorage.setItem('app-theme',theme);
+  document.documentElement.setAttribute('data-theme',theme==='dark'?'dark':'');
+  /* تحديث الأزرار */
+  var lb=document.getElementById('theme-light-btn');
+  var db=document.getElementById('theme-dark-btn');
+  if(lb)lb.classList.toggle('active',theme==='light');
+  if(db)db.classList.toggle('active',theme==='dark');
+  /* theme-color */
+  var tm=document.querySelector('meta[name="theme-color"][media*="light"]');
+  if(tm)tm.content=theme==='dark'?'#1e293b':'#ffffff';
+  haptic('light');
+}
+
+function setLang(lang){
+  _curLang=lang;
+  localStorage.setItem('app-lang',lang);
+  /* تحديث أزرار اللغة */
+  var ar=document.getElementById('lang-ar-btn');
+  var fr=document.getElementById('lang-fr-btn');
+  if(ar)ar.classList.toggle('active',lang==='ar');
+  if(fr)fr.classList.toggle('active',lang==='fr');
+  /* تغيير اتجاه الصفحة */
+  document.documentElement.dir=lang==='fr'?'ltr':'rtl';
+  document.documentElement.lang=lang;
+  haptic('light');
+  /* إعادة تحميل البيانات بالغة الجديدة */
+  allNews=[];_svcData=null;
+  if(curTab==='news')loadNewsScreen();
+  else if(curTab==='home')loadHome();
+}
+
+/* تطبيق الإعدادات المحفوظة عند التحميل */
+(function(){
+  if(_curTheme==='dark')setTheme('dark');
+  if(_curLang==='fr')setLang('fr');
+})();
 /* ══ INIT ══ */
 window.addEventListener('load',function(){
   try{applyHeaderHeight();}catch(e){}
