@@ -658,6 +658,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   --red-l:#450a0a;--blue-l:#172554;--amber-l:#451a03;
   --purple-l:#2e1065;--sky-l:#082f49;
 }
+/* ══ DARK MODE COMPREHENSIVE ══ */
 [data-theme="dark"] #shared-header{background:#1e293b;box-shadow:0 1px 0 rgba(255,255,255,0.06);}
 [data-theme="dark"] #bottom-nav{background:#1e293b;border-top-color:rgba(255,255,255,0.07);}
 [data-theme="dark"] .seg-bar-wrap{background:#1e293b;border-bottom-color:rgba(255,255,255,0.07);}
@@ -672,27 +673,43 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 [data-theme="dark"] .ann-card-divider{background:#94a3b8;}
 /* announce-cards في الأخبار */
 [data-theme="dark"] .announce-card{background:var(--card);border-color:rgba(255,255,255,0.06);}
-/* weather/sea */
-[data-theme="dark"] .weather-sea-unified-card{background:#1e293b;border-color:rgba(255,255,255,0.06);}
-[data-theme="dark"] #ws-panel-weather{background:rgba(5,150,105,0.08);}
-[data-theme="dark"] #ws-panel-sea{background:rgba(59,131,246,0.08);}
-[data-theme="dark"] .ws-tab{color:var(--muted);}
+/* weather/sea card + tabs */
+[data-theme="dark"] .weather-sea-unified-card{background:#1e293b;border-color:rgba(255,255,255,0.06);filter:none;box-shadow:0 4px 20px rgba(0,0,0,0.35);}
+[data-theme="dark"] .ws-tab{color:var(--muted);background:transparent;}
+[data-theme="dark"] .ws-tab.active{background:#0f172a;color:var(--green);}
+[data-theme="dark"] #ws-panel-weather{background:rgba(5,150,105,0.07);}
+[data-theme="dark"] #ws-panel-sea{background:rgba(59,131,246,0.07);}
 [data-theme="dark"] .ws-stat-card{background:#0f172a;border-color:rgba(255,255,255,0.06);}
 [data-theme="dark"] .ws-stat-label{color:var(--muted);}
+/* أيقونة الطقس background */
+[data-theme="dark"] #pwa-weather-icon-bg{background:#1e3a2f !important;}
 /* timeline cards */
-[data-theme="dark"] .tl-card{background:#1e293b;border-color:rgba(255,255,255,0.07) !important;}
+[data-theme="dark"] .tl-card{background:#1e293b !important;border-color:rgba(255,255,255,0.07) !important;}
 [data-theme="dark"] .tl-title{color:var(--text);}
 [data-theme="dark"] .tl-text{color:var(--muted);}
-/* mayor card */
+/* تاريخ الخط الزمني - إزالة الخلفيات الفاتحة */
+[data-theme="dark"] .tl-date{background:#1e293b !important;border-color:rgba(255,255,255,0.12) !important;color:var(--text-3) !important;}
+/* mayor-home-card */
+[data-theme="dark"] .mayor-home-card{background:#1e293b;border-color:rgba(5,150,105,0.25);}
+/* mayor-sheet-card في overlay */
 [data-theme="dark"] .mayor-sheet-card{background:#1e293b;border-color:rgba(255,255,255,0.06);}
 [data-theme="dark"] .mayor-sheet-card::before{background:radial-gradient(circle at top right,rgba(5,150,105,0.12) 0%,transparent 70%);}
-[data-theme="dark"] .mayor-name{color:var(--text);}
-[data-theme="dark"] .mayor-title{color:var(--muted);}
+[data-theme="dark"] .mayor-name,[data-theme="dark"] .mayor-home-name{color:var(--text);}
+[data-theme="dark"] .mayor-title,[data-theme="dark"] .mayor-home-title{color:var(--muted);}
 [data-theme="dark"] .mayor-divider{background:rgba(255,255,255,0.08);}
+[data-theme="dark"] .mayor-card-divider{background:rgba(255,255,255,0.06);}
 [data-theme="dark"] .mayor-stat-card{background:#0f172a;border-color:rgba(255,255,255,0.06);}
 [data-theme="dark"] .mayor-stat-label{color:var(--muted);}
 [data-theme="dark"] .mayor-stat-value{color:var(--text);}
-[data-theme="dark"] .mayor-card-divider{background:rgba(255,255,255,0.06);}
+/* خطوط الفصل */
+[data-theme="dark"] .more-item{border-bottom-color:rgba(255,255,255,0.06);}
+[data-theme="dark"] .archive-card-title{border-top-color:rgba(255,255,255,0.07);}
+[data-theme="dark"] .archive-card{border-color:rgba(255,255,255,0.06);}
+/* search box */
+[data-theme="dark"] #search-box{background:#1e293b;box-shadow:0 8px 32px rgba(0,0,0,0.5);}
+[data-theme="dark"] #search-input{background:#0f172a;color:var(--text);}
+/* أزرار تبويبات الطقس - الخلفية الخضراء الفاتحة في الوضع الداكن */
+[data-theme="dark"] #weather-day-tabs button,[data-theme="dark"] #sea-day-tabs button{border-color:rgba(5,150,105,0.15) !important;}
 /* Settings toggle buttons */
 .settings-section{margin:12px 16px;background:var(--card);border-radius:var(--r-lg);border:1px solid var(--border-light);overflow:hidden;}
 .settings-section-title{font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.5px;padding:10px 16px 6px;}
@@ -1877,9 +1894,10 @@ function renderWeatherDay(i){
   var d=_wDays[i];if(!d)return;
   var w=_WM[d.code]||{d:'🌡️',n:'🌙',ar:'متغير'};
   var hi=_g('pwa-weather-header-icon'),hb=_g('pwa-weather-icon-bg');
-  if(i===0&&hi&&hb){if(d.isDay){hi.setAttribute('icon','lucide:sun');hi.style.color='#f59e0b';hb.style.background='#fef3c7';}
-  else{hi.setAttribute('icon','lucide:moon');hi.style.color='#818cf8';hb.style.background='#ede9fe';}}
-  else if(hi&&hb){hi.setAttribute('icon','lucide:calendar-days');hi.style.color='#60a5fa';hb.style.background='#dbeafe';}
+  var isDark=document.documentElement.getAttribute('data-theme')==='dark';
+  if(i===0&&hi&&hb){if(d.isDay){hi.setAttribute('icon','lucide:sun');hi.style.color='#f59e0b';hb.style.background=isDark?'rgba(245,158,11,0.15)':'#fef3c7';}
+  else{hi.setAttribute('icon','lucide:moon');hi.style.color='#818cf8';hb.style.background=isDark?'rgba(129,140,248,0.15)':'#ede9fe';}}
+  else if(hi&&hb){hi.setAttribute('icon','lucide:calendar-days');hi.style.color='#60a5fa';hb.style.background=isDark?'rgba(96,165,250,0.15)':'#dbeafe';}
   if(_g('pwa-weather-icon'))_g('pwa-weather-icon').textContent=d.isDay?w.d:w.n;
   if(_g('pwa-weather-temp'))_g('pwa-weather-temp').textContent=Math.round(d.temp)+'°';
   if(_g('pwa-weather-desc'))_g('pwa-weather-desc').textContent=w.ar;
