@@ -238,7 +238,7 @@ min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:v
 .modal-name{font-size:20px;font-weight:900;color:var(--text);margin-bottom:10px;line-height:1.35;letter-spacing:-.3px;}
 .modal-desc{font-size:13.5px;color:var(--muted);line-height:1.85;margin-bottom:16px;}
 .modal-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
-.modal-chip{font-size:11px;padding:5px 13px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-full);color:var(--text-3);font-weight:600;display:flex;align-items:center;gap:5px;}
+.modal-chip{font-size:11px;padding:5px 13px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-full);color:var(--text-3);font-weight:600;display:inline-flex;align-items:center;gap:5px;}.modal-chip svg{flex-shrink:0;display:block;}
 .album-title{font-size:13px;font-weight:800;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:7px;}
 .album-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
 .album-grid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:var(--r-xs);cursor:pointer;pointer-events:auto !important;touch-action:manipulation;display:block;transition:opacity var(--dur-fast);}
@@ -2115,13 +2115,13 @@ function placeCard(item,type){
   /* بادج نوع الشاطئ */
   var badgeHtml='';
   if(type==='beach'){
-    var st=item.shore_type||item.beach_type||item.type||'';
+    var st=item.shore_type||item.beach_type||item.type||item.custom_label||'';
     if(st==='صخري')
-      badgeHtml='<div class="place-card-badge" style="background:rgba(120,113,108,0.82);color:#fff"><iconify-icon icon="lucide:mountain" style="color:#fff"></iconify-icon>صخري</div>';
+      badgeHtml='<div class="place-card-badge" style="background:rgba(120,113,108,0.82);color:#fff"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>صخري</div>';
     else if(st==='رملي')
-      badgeHtml='<div class="place-card-badge" style="background:rgba(245,158,11,0.82);color:#fff"><iconify-icon icon="lucide:sun-medium" style="color:#fff"></iconify-icon>رملي</div>';
+      badgeHtml='<div class="place-card-badge" style="background:rgba(245,158,11,0.82);color:#fff"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>رملي</div>';
     else if(st)
-      badgeHtml='<div class="place-card-badge" style="background:rgba(14,165,233,0.82);color:#fff"><iconify-icon icon="lucide:waves" style="color:#fff"></iconify-icon>'+st+'</div>';
+      badgeHtml='<div class="place-card-badge" style="background:rgba(14,165,233,0.82);color:#fff"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2"/></svg>'+st+'</div>';
   }
   return '<div class="place-card" '+dataAttr+'>'+imgH+badgeHtml+'<div class="place-card-grad"></div><div class="place-card-body"><div class="place-card-name">'+n+'</div></div></div>';
 }
@@ -2266,7 +2266,7 @@ async function openNewsModal(id){
     if(n.custom_label){badgeEl.textContent=n.custom_label;badgeEl.style.cssText='background:rgba(5,150,105,.1);color:var(--green);display:inline-block';}else badgeEl.style.display='none';
     document.getElementById('mn-name').textContent=n.title||'';
     document.getElementById('mn-desc').textContent=n.content||'';
-    document.getElementById('mn-meta').innerHTML=n.date?'<span class="modal-chip"><iconify-icon icon="lucide:calendar-days" style="pointer-events:none"></iconify-icon>'+n.date+'</span>':'';
+    document.getElementById('mn-meta').innerHTML=n.date?'<span class="modal-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>'+n.date+'</span>':'';
     album('mn-album',albums);
   }
   om('m-news');
@@ -2281,10 +2281,10 @@ async function openBeachModal(id){
     document.getElementById('mb-name').textContent=b.name||'';
     document.getElementById('mb-desc').textContent=b.description||'';
     var m='';
-    if(b.shore_type==='صخري'||b.beach_type==='صخري'||b.type==='صخري')m+='<span class="modal-chip"><iconify-icon icon="lucide:triangle" style="color:#78716c;pointer-events:none"></iconify-icon>صخري</span>';
-    else if(b.shore_type==='رملي'||b.beach_type==='رملي'||b.type==='رملي')m+='<span class="modal-chip"><iconify-icon icon="lucide:sun-medium" style="color:#f59e0b;pointer-events:none"></iconify-icon>رملي</span>';
-    else if(b.shore_type||b.beach_type||b.type){var st=b.shore_type||b.beach_type||b.type;var ico=st==='صخري'?'lucide:triangle':st==='رملي'?'lucide:sun-medium':'lucide:waves';m+='<span class="modal-chip"><iconify-icon icon="'+ico+'" style="pointer-events:none"></iconify-icon>'+st+'</span>';}
-    if(b.is_supervised)m+='<span class="modal-chip"><iconify-icon icon="lucide:shield-check" style="color:var(--green);pointer-events:none"></iconify-icon>مراقب</span>';
+    if(b.shore_type==='صخري'||b.beach_type==='صخري'||b.type==='صخري'||b.custom_label==='صخري')m+='<span class="modal-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#78716c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>صخري</span>';
+    else if(b.shore_type==='رملي'||b.beach_type==='رملي'||b.type==='رملي'||b.custom_label==='رملي')m+='<span class="modal-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>رملي</span>';
+    else if(b.shore_type||b.beach_type||b.type){var st=b.shore_type||b.beach_type||b.type;m+='<span class="modal-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2"/><path d="M2 12c.6.5 1.2 1 2.5 1C7 13 7 11 9.5 11c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2"/></svg>'+st+'</span>';}
+    if(b.is_supervised)m+='<span class="modal-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>مراقب</span>';
     if(b.season)m+='<span class="modal-chip">'+b.season+'</span>';
     document.getElementById('mb-meta').innerHTML=m;
     _makeMapBtn(b.lat,b.lng,b.name||'','mb-map-btn-wrap');
@@ -2314,8 +2314,8 @@ async function openTourismModal(id){
       document.getElementById('mt-name').textContent=t.name||'';
       document.getElementById('mt-desc').textContent=t.description||'';
       var m='';
-      if(t.rating)m+='<span class="modal-chip"><iconify-icon icon="lucide:star" style="color:var(--amber);pointer-events:none"></iconify-icon>'+t.rating+'/5</span>';
-      if(t.distance_info)m+='<span class="modal-chip"><iconify-icon icon="lucide:map-pin-check" style="color:var(--green);pointer-events:none"></iconify-icon>'+t.distance_info+'</span>';
+      if(t.rating)m+='<span class="modal-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>'+t.rating+'/5</span>';
+      if(t.distance_info)m+='<span class="modal-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>'+t.distance_info+'</span>';
       document.getElementById('mt-meta').innerHTML=m;
       _makeMapBtn(t.lat,t.lng,t.name||'','mt-map-btn-wrap');
       album('mt-album',albums);
