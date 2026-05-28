@@ -1308,6 +1308,15 @@ async function api(u){
   if(C[ul])return C[ul];
   var r=await fetch(ul);var d=await r.json();C[ul]=d;return d;
 }
+/* دالة مساعدة: تُعيد الحقل بالغة الحالية (field_fr إن وُجد عند fr، وإلا field) */
+function _f(obj,field){
+  if(!obj)return '';
+  if(_curLang==='fr'){
+    var fr=obj[field+'_fr'];
+    if(fr&&fr.trim())return fr;
+  }
+  return obj[field+'_ar']||obj[field]||'';
+}
 /* ══ STATE ══ */
 var curTab='home',mapDone=false,_svcLoaded=false,allNews=[],facCat='admin-branches';
 var newsScreenLoaded=false,_mayorLoaded=false,_mayorsList=[];
@@ -1574,7 +1583,7 @@ var Search=(function(){
     var q=(input.value||'').trim();
     if(q.length<2){results.innerHTML='<div class="search-empty">اكتب كلمتين على الأقل</div>';return;}
     var found=[];
-    allNews.forEach(function(n){if((n.title||'').includes(q)||(n.content||'').includes(q)){found.push({type:'news',icon:'lucide:newspaper',color:'var(--green)',bg:'var(--green-xl)',title:n.title||'خبر',sub:n.date||'',id:n.id});}});
+    allNews.forEach(function(n){var nt=_f(n,'title')||'';var nc=_f(n,'content')||'';if(nt.includes(q)||nc.includes(q)){found.push({type:'news',icon:'lucide:newspaper',color:'var(--green)',bg:'var(--green-xl)',title:nt||'خبر',sub:n.date||'',id:n.id});}});
     if(!found.length){results.innerHTML='<div class="search-empty">لا توجد نتائج لـ "'+q+'"</div>';return;}
     results.innerHTML=found.slice(0,20).map(function(r){return '<div class="search-result-item" data-sr-type="'+r.type+'" data-sr-id="'+r.id+'"><div class="sr-icon" style="background:'+r.bg+'"><iconify-icon icon="'+r.icon+'" style="color:'+r.color+';font-size:18px;pointer-events:none"></iconify-icon></div><div><div class="sr-title">'+r.title+'</div><div class="sr-sub">'+r.sub+'</div></div></div>';}).join('');
     results.querySelectorAll('.search-result-item').forEach(function(item){item.addEventListener('click',function(){var type=this.getAttribute('data-sr-type');var id=this.getAttribute('data-sr-id');close();if(type==='news'){switchTab('news');setTimeout(function(){openNewsModal(id);},400);}});});
@@ -1699,8 +1708,9 @@ function makeNewsCard(n,showTitle){
   /* بطاقة خاصة للإعلانات الرسمية */
   if(n.category==='official'){
     var c=_annLabelColor(n.custom_label);
-    var excerpt=(n.content||'').substring(0,110)+'..';
-    var title=n.title?'<div class="ann-card-title"><iconify-icon icon="lucide:megaphone" style="font-size:15px;color:'+c.icon+';flex-shrink:0;pointer-events:none"></iconify-icon>'+n.title+'</div>':'';
+    var excerpt=(_f(n,'content')||'').substring(0,110)+'..';
+    var ntitle=_f(n,'title');
+    var title=ntitle?'<div class="ann-card-title"><iconify-icon icon="lucide:megaphone" style="font-size:15px;color:'+c.icon+';flex-shrink:0;pointer-events:none"></iconify-icon>'+ntitle+'</div>':'';
     var dateHtml=n.date?'<div class="ann-card-date"><iconify-icon icon="lucide:calendar-days"></iconify-icon>'+n.date+'</div>':'<div></div>';
     return '<div class="ann-card" data-news-id="'+n.id+'"'
       +' style="border-color:'+c.border+';box-shadow:0 2px 12px '+c.shadow+',0 1px 3px rgba(0,0,0,0.04);">'
@@ -1716,11 +1726,12 @@ function makeNewsCard(n,showTitle){
       +'</div></div></div>';
   }
   /* بطاقة عادية لباقي التصنيفات */
-  var excerpt=(n.content||'').substring(0,90)+'...';
+  var excerpt=(_f(n,'content')||'').substring(0,90)+'...';
   var icon=n.category==='official'?'lucide:megaphone':'lucide:newspaper';
   var img=n.image_url?'<img class="news-card-img" src="'+n.image_url+'" alt="" loading="lazy" decoding="async">':'<div class="news-card-img-ph" style="background:'+s.grad+'"><iconify-icon icon="'+icon+'" style="color:rgba(255,255,255,.75);font-size:2rem;pointer-events:none"></iconify-icon></div>';
-  var titleHtml=showTitle&&n.title?'<div class="news-card-title">'+n.title+'</div>':'';
-  return '<div class="news-card" data-news-id="'+n.id+'">'+img+titleHtml+'<div class="news-card-body"><div class="news-card-excerpt">'+excerpt+'</div></div><div class="news-card-footer">'+makeDateBadge(n.date)+'<button class="read-more" data-news-id="'+n.id+'">اقرأ المزيد<iconify-icon icon="lucide:chevron-left"></iconify-icon></button></div></div>';
+  var ntitle2=_f(n,'title');
+  var titleHtml=showTitle&&ntitle2?'<div class="news-card-title">'+ntitle2+'</div>':'';
+  return '<div class="news-card" data-news-id="'+n.id+'">'+img+titleHtml+'<div class="news-card-body"><div class="news-card-excerpt">'+excerpt+'</div></div><div class="news-card-footer">'+makeDateBadge(n.date)+'<button class="read-more" data-news-id="'+n.id+'">'+t('read-more')+'<iconify-icon icon="lucide:chevron-left"></iconify-icon></button></div></div>';
 }
 /* ══ ARCHIVE ══ */
 function switchArchTab(tab,btn){
@@ -1853,7 +1864,7 @@ async function syncMayorToSheet(){
   var nameEl = document.getElementById('ms-mayor-name');
   var photoEl = document.getElementById('ms-mayor-photo');
   var iconEl = document.getElementById('ms-mayor-icon');
-  if(nameEl) nameEl.textContent = 'السيد ' + (m.name_ar || m.name || '--');
+  if(nameEl) nameEl.textContent = (_curLang==='fr'?'M. ':'السيد ') + (_f(m,'name')||m.name||'--');
   if(m.image_url && photoEl){
     photoEl.src = m.image_url;
     photoEl.style.display = 'block';
@@ -2166,7 +2177,7 @@ async function loadHOfficial(){
     }
     if(!items.length){el.innerHTML='';return;}
     /* بناء البيانات */
-    _annCarData=items.map(function(n){return {type:'card',id:n.id,title:n.title,content:n.content,date:n.date,custom_label:n.custom_label||''};});
+    _annCarData=items.map(function(n){return {type:'card',id:n.id,title:_f(n,'title')||n.title,content:_f(n,'content')||n.content,date:n.date,custom_label:n.custom_label||''};});
     _annCarTotal=_annCarData.length;
     _annCarIdx=0;
     /* بطاقة واحدة ثابتة */
@@ -2208,7 +2219,7 @@ async function loadHNews(){/* تُغذَّى من loadHOfficial */}
 async function loadHBeaches(){var el=document.getElementById('h-beaches');el.innerHTML=skPlaceCards(4);try{var d=await api('/api/beaches');el.innerHTML=(d.data||[]).slice(0,8).map(b=>placeCard(b,'beach')).join('');}catch(e){el.innerHTML='';}}
 async function loadHTourism(){var el=document.getElementById('h-tourism');el.innerHTML=skPlaceCards(4);try{var d=await api('/api/tourism');el.innerHTML=(d.data||[]).slice(0,8).map(t=>placeCard(t,'tourism')).join('');}catch(e){el.innerHTML='';}}
 function placeCard(item,type){
-  var n=item.name||'';
+  var n=_f(item,'name')||item.name||'';
   var dataAttr=type==='beach'?'data-beach-id="'+item.id+'"':'data-tour-id="'+item.id+'"';
   var ph=type==='beach'
     ?'<div class="place-card-ph" style="background:linear-gradient(135deg,var(--sky),#0284c7)"><iconify-icon icon="lucide:waves" style="color:rgba(255,255,255,.8);font-size:2.2rem;pointer-events:none"></iconify-icon></div>'
@@ -2218,10 +2229,12 @@ function placeCard(item,type){
   var badgeHtml='';
   if(type==='beach'){
     var st=item.shore_type||item.beach_type||item.type||item.custom_label||'';
-    if(st==='صخري')
-      badgeHtml='<div class="place-card-badge" style="background:rgba(120,113,108,0.82);color:#fff"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>صخري</div>';
-    else if(st==='رملي')
-      badgeHtml='<div class="place-card-badge" style="background:rgba(245,158,11,0.82);color:#fff"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>رملي</div>';
+    var isRocky2=st==='صخري'||st==='rocky'||st==='rocheux';
+    var isSandy2=st==='رملي'||st==='sandy'||st==='sableux';
+    if(isRocky2)
+      badgeHtml='<div class="place-card-badge" style="background:rgba(120,113,108,0.82);color:#fff"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>'+t('rocky')+'</div>';
+    else if(isSandy2)
+      badgeHtml='<div class="place-card-badge" style="background:rgba(245,158,11,0.82);color:#fff"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>'+t('sandy')+'</div>';
     else if(st)
       badgeHtml='<div class="place-card-badge" style="background:rgba(14,165,233,0.82);color:#fff"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2"/></svg>'+st+'</div>';
   }
@@ -2312,8 +2325,10 @@ async function loadFacTab(tab,btn){
   catch(e){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';}
 }
 function makeFacCard(f,m,tab){
+  var fname=_f(f,'name')||f.name||'';
+  var fdesc=_f(f,'description')||f.description||'';
   var img=f.image_url?'<img class="fac-card-img" src="'+f.image_url+'" alt="" decoding="async">':'<div class="fac-card-ph" style="background:'+m.bg+'"><iconify-icon icon="'+m.icon+'" style="color:'+m.color+';font-size:1.8rem;pointer-events:none"></iconify-icon></div>';
-  return '<div class="fac-card fade-in" data-fac-id="'+f.id+'" data-fac-tab="'+tab+'">'+img+'<div class="fac-card-body">'+(f.sub_type?'<span class="fac-card-badge" style="background:'+m.bg+';color:'+m.color+'">'+f.sub_type+'</span>':'')+'<div class="fac-card-name">'+(f.name||'')+'</div>'+(f.description?'<div class="fac-card-desc">'+f.description+'</div>':'')+'</div><iconify-icon icon="lucide:chevron-left" style="font-size:18px;color:var(--muted);padding-left:12px;flex-shrink:0;pointer-events:none"></iconify-icon></div>';
+  return '<div class="fac-card fade-in" data-fac-id="'+f.id+'" data-fac-tab="'+tab+'">'+img+'<div class="fac-card-body">'+(f.sub_type?'<span class="fac-card-badge" style="background:'+m.bg+';color:'+m.color+'">'+f.sub_type+'</span>':'')+'<div class="fac-card-name">'+fname+'</div>'+(fdesc?'<div class="fac-card-desc">'+fdesc+'</div>':'')+'</div><iconify-icon icon="lucide:chevron-left" style="font-size:18px;color:var(--muted);padding-left:12px;flex-shrink:0;pointer-events:none"></iconify-icon></div>';
 }
 /* ══ MODALS ══ */
 function om(id){document.getElementById(id).classList.add('open');}
@@ -2366,8 +2381,8 @@ async function openNewsModal(id){
     if(n.image_url){imgEl.src=n.image_url;imgEl.style.display='block';}else imgEl.style.display='none';
     var badgeEl=document.getElementById('mn-badge');
     if(n.custom_label){badgeEl.textContent=n.custom_label;badgeEl.style.cssText='background:rgba(5,150,105,.1);color:var(--green);display:inline-block';}else badgeEl.style.display='none';
-    document.getElementById('mn-name').textContent=n.title||'';
-    document.getElementById('mn-desc').textContent=n.content||'';
+    document.getElementById('mn-name').textContent=_f(n,'title')||'';
+    document.getElementById('mn-desc').textContent=_f(n,'content')||'';
     document.getElementById('mn-meta').innerHTML=n.date?'<span class="modal-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>'+n.date+'</span>':'';
     album('mn-album',albums);
   }
@@ -2380,13 +2395,16 @@ async function openBeachModal(id){
     var d=await api('/api/beaches?id='+id);var b=d.data;if(!b)return;
     var img=document.getElementById('mb-img');
     if(b.image_url){img.src=b.image_url;img.style.display='block';}else img.style.display='none';
-    document.getElementById('mb-name').textContent=b.name||'';
-    document.getElementById('mb-desc').textContent=b.description||'';
+    document.getElementById('mb-name').textContent=_f(b,'name')||'';
+    document.getElementById('mb-desc').textContent=_f(b,'description')||'';
     var m='';
-    if(b.shore_type==='صخري'||b.beach_type==='صخري'||b.type==='صخري'||b.custom_label==='صخري')m+='<span class="modal-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#78716c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>صخري</span>';
-    else if(b.shore_type==='رملي'||b.beach_type==='رملي'||b.type==='رملي'||b.custom_label==='رملي')m+='<span class="modal-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>رملي</span>';
-    else if(b.shore_type||b.beach_type||b.type){var st=b.shore_type||b.beach_type||b.type;m+='<span class="modal-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2"/><path d="M2 12c.6.5 1.2 1 2.5 1C7 13 7 11 9.5 11c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2"/></svg>'+st+'</span>';}
-    if(b.is_supervised)m+='<span class="modal-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>مراقب</span>';
+    var shoreType=b.shore_type||b.beach_type||b.type||b.custom_label||'';
+    var isRocky=shoreType==='صخري'||shoreType==='rocky'||shoreType==='rocheux';
+    var isSandy=shoreType==='رملي'||shoreType==='sandy'||shoreType==='sableux';
+    if(isRocky)m+='<span class="modal-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#78716c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>'+t('rocky')+'</span>';
+    else if(isSandy)m+='<span class="modal-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>'+t('sandy')+'</span>';
+    else if(shoreType)m+='<span class="modal-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2"/><path d="M2 12c.6.5 1.2 1 2.5 1C7 13 7 11 9.5 11c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2"/></svg>'+shoreType+'</span>';
+    if(b.is_supervised)m+='<span class="modal-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>'+t('supervised')+'</span>';
     if(b.season)m+='<span class="modal-chip">'+b.season+'</span>';
     document.getElementById('mb-meta').innerHTML=m;
     _makeMapBtn(b.lat,b.lng,b.name||'','mb-map-btn-wrap');
@@ -2413,8 +2431,8 @@ async function openTourismModal(id){
       if(t.image_url){imgEl.src=t.image_url;imgEl.style.display='block';}else imgEl.style.display='none';
       var badgeEl=document.getElementById('mt-badge');
       if(t.badge_text){badgeEl.textContent=t.badge_text;badgeEl.style.display='inline-block';}else badgeEl.style.display='none';
-      document.getElementById('mt-name').textContent=t.name||'';
-      document.getElementById('mt-desc').textContent=t.description||'';
+      document.getElementById('mt-name').textContent=_f(t,'name')||'';
+      document.getElementById('mt-desc').textContent=_f(t,'description')||'';
       var m='';
       if(t.rating)m+='<span class="modal-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>'+t.rating+'/5</span>';
       if(t.distance_info)m+='<span class="modal-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>'+t.distance_info+'</span>';
@@ -2435,8 +2453,8 @@ async function openFacModal(id,tab){
     if(f.image_url){img.src=f.image_url;img.style.display='block';}else img.style.display='none';
     var badgeEl=document.getElementById('mf-badge');
     if(f.sub_type){badgeEl.textContent=f.sub_type;badgeEl.style.cssText='background:'+m.bg+';color:'+m.color+';display:inline-block';}else badgeEl.style.display='none';
-    document.getElementById('mf-name').textContent=f.name||'';
-    document.getElementById('mf-desc').textContent=f.description||'';
+    document.getElementById('mf-name').textContent=_f(f,'name')||'';
+    document.getElementById('mf-desc').textContent=_f(f,'description')||'';
     var tags=Array.isArray(f.tags)?f.tags:[];
     document.getElementById('mf-meta').innerHTML=tags.map(tg=>'<span class="modal-chip">#'+tg+'</span>').join('');
     _makeMapBtn(f.lat,f.lng,f.name||'','mf-map-btn-wrap');
@@ -2555,7 +2573,7 @@ async function openPrevMayorsModal(){
     if(!list.length){if(el)el.innerHTML='<div class="empty"><iconify-icon icon="lucide:users"></iconify-icon><p>لا توجد بيانات</p></div>';return;}
     if(el)el.innerHTML=list.map(function(m,i){
       var photo=m.image_url?'<img src="'+m.image_url+'" style="width:52px;height:52px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid var(--border-light)" decoding="async">':'<div style="width:52px;height:52px;border-radius:50%;background:var(--green-l);display:flex;align-items:center;justify-content:center;flex-shrink:0"><iconify-icon icon="lucide:user" style="color:var(--green);font-size:24px;pointer-events:none"></iconify-icon></div>';
-      var name=m.name_ar||m.name||'--';var period=m.period_ar||m.period||'';
+      var name=_f(m,'name')||m.name||'--';var period=_f(m,'period')||m.period||'';
       var badge=i===0?'<span style="font-size:10px;font-weight:800;color:#fff;background:var(--green);display:inline-block;padding:1px 9px;border-radius:99px;margin-top:3px">الحالي</span>':(m.is_dec?'<div style="font-size:10px;font-weight:800;color:var(--amber);background:var(--amber-l);display:inline-block;padding:1px 9px;border-radius:99px;margin-top:3px">مندوب تنفيذي</div>':'');
       return '<div style="display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--border-light)">'+photo+'<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:800;color:var(--text);letter-spacing:-.1px">'+name+'</div>'+badge+(period?'<div style="font-size:11.5px;color:var(--muted);margin-top:4px;display:flex;align-items:center;gap:4px"><iconify-icon icon="lucide:calendar" style="font-size:11px;pointer-events:none"></iconify-icon>'+period+'</div>':'')+'</div></div>';
     }).join('');
@@ -2675,13 +2693,13 @@ function renderServices(items){
     var isApp=s.service_type==='app';
     var docs=(s.required_docs||'').split('|').map(function(d){return d.trim();}).filter(Boolean);
     var formLinks=[];try{formLinks=JSON.parse(s.form_links||'[]');}catch(e){}
-    var name=s.service_name||'';
-    var desc=s.description||'';
-    var docsHtml=docs.length?'<div class="svc-card-docs"><div class="svc-card-docs-title"><iconify-icon icon="lucide:file-check-2" style="color:var(--green);font-size:14px"></iconify-icon>الوثائق المطلوبة</div>'
+    var name=_f(s,'service_name')||s.service_name||'';
+    var desc=_f(s,'description')||s.description||'';
+    var docsHtml=docs.length?'<div class="svc-card-docs"><div class="svc-card-docs-title"><iconify-icon icon="lucide:file-check-2" style="color:var(--green);font-size:14px"></iconify-icon>'+(_curLang==='fr'?'Documents requis':'الوثائق المطلوبة')+'</div>'
       +docs.map(function(d){return '<div class="svc-card-doc-item"><div class="svc-card-doc-check">\u2713</div><span>'+d+'</span></div>';}).join('')+'</div>':'';
     var formsHtml=formLinks.length?'<div class="svc-card-forms">'
-      +formLinks.map(function(f,i){return '<a href="'+(f.url||f)+'" target="_blank" rel="noopener" class="svc-card-form-link" style="background:'+c.bg+';color:'+c.fg+'"><iconify-icon icon="lucide:download" style="font-size:14px;pointer-events:none"></iconify-icon>'+(f.label||('\u0627\u0633\u062a\u0645\u0627\u0631\u0629 '+(i+1)))+'</a>';}).join('')+'</div>':'';
-    var btnHtml=s.direct_link?'<div class="svc-card-footer"><a href="'+s.direct_link+'" target="_blank" rel="noopener" class="svc-card-btn" style="background:'+c.fg+';color:#fff"><iconify-icon icon="'+(isApp?'lucide:smartphone':'lucide:external-link')+'" style="pointer-events:none"></iconify-icon>'+(isApp?'\u062a\u062d\u0645\u064a\u0644 \u0627\u0644\u062a\u0637\u0628\u064a\u0642':'\u0627\u0644\u0648\u0635\u0648\u0644 \u0644\u0644\u062e\u062f\u0645\u0629')+'</a></div>':'';
+      +formLinks.map(function(f,i){return '<a href="'+(f.url||f)+'" target="_blank" rel="noopener" class="svc-card-form-link" style="background:'+c.bg+';color:'+c.fg+'"><iconify-icon icon="lucide:download" style="font-size:14px;pointer-events:none"></iconify-icon>'+(f.label||(_curLang==='fr'?'Formulaire '+(i+1):'\u0627\u0633\u062a\u0645\u0627\u0631\u0629 '+(i+1)))+'</a>';}).join('')+'</div>':'';
+    var btnHtml=s.direct_link?'<div class="svc-card-footer"><a href="'+s.direct_link+'" target="_blank" rel="noopener" class="svc-card-btn" style="background:'+c.fg+';color:#fff"><iconify-icon icon="'+(isApp?'lucide:smartphone':'lucide:external-link')+'" style="pointer-events:none"></iconify-icon>'+(_curLang==='fr'?(isApp?'Télécharger':'Accéder'):(isApp?'\u062a\u062d\u0645\u064a\u0644 \u0627\u0644\u062a\u0637\u0628\u064a\u0642':'\u0627\u0644\u0648\u0635\u0648\u0644 \u0644\u0644\u062e\u062f\u0645\u0629'))+'</a></div>':'';
     return '<div class="svc-card">'
       +'<div class="svc-card-header"><div class="svc-card-icon" style="background:'+c.bg+'"><iconify-icon icon="lucide:'+(s.icon||'file-text')+'" style="color:'+c.fg+';pointer-events:none"></iconify-icon></div>'
       +'<div class="svc-card-name">'+name+'</div></div>'
