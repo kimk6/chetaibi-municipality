@@ -771,8 +771,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/new_512_any.png"
         alt="logo" onerror="this.style.display='none'" decoding="async">
       <div class="header-text">
-        <h1>بلدية شطايبي</h1>
-        <p>ولاية عنابة – الجزائر</p>
+        <h1 data-i18n="header-title">بلدية شطايبي</h1>
+        <p data-i18n="header-sub">ولاية عنابة – الجزائر</p>
       </div>
       <div class="hdr-actions">
         <button class="hdr-btn" id="hdr-search-btn" aria-label="بحث">
@@ -807,7 +807,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             <div class="section-header">
               <span class="section-title">
                 <iconify-icon icon="lucide:newspaper" style="color:var(--green);pointer-events:none"></iconify-icon>
-                آخر المستجدات
+                <span data-i18n="section-news">آخر المستجدات</span>
               </span>
               <!-- ✅ تعديل 2: زر "الكل" في آخر المستجدات → يذهب لتصنيف "نشاطات" -->
               <button class="see-all-arrow-btn" id="btn-see-news-all">
@@ -899,7 +899,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             <div class="section-header">
               <span class="section-title">
                 <iconify-icon icon="lucide:waves" style="color:var(--sky);pointer-events:none"></iconify-icon>
-                شواطئ شطايبي
+                <span data-i18n="section-beaches">شواطئ شطايبي</span>
               </span>
               <!-- ✅ تعديل 4: "تصفح" → "الخريطة" مع أيقونة map-pin أخضر -->
               <button class="see-all-arrow-btn" id="btn-see-beaches"><span data-i18n="nav-map">الخريطة</span>
@@ -915,7 +915,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             <div class="section-header">
               <span class="section-title">
                 <iconify-icon icon="lucide:sun" style="color:var(--amber);pointer-events:none"></iconify-icon>
-                معالم سياحية
+                <span data-i18n="section-tourism">معالم سياحية</span>
               </span>
               <!-- ✅ تعديل 4: "تصفح" → "الخريطة" مع أيقونة map-pin أخضر -->
               <button class="see-all-arrow-btn" id="btn-see-tourism">الخريطة
@@ -2742,6 +2742,8 @@ function setTheme(theme){
 var _I18N={
   ar:{
     'nav-home':'الرئيسية','nav-news':'الأخبار','nav-guide':'الدليل','nav-services':'الخدمات','nav-more':'المزيد','nav-map':'الخريطة',
+    'header-title':'بلدية شطايبي','header-sub':'ولاية عنابة – الجزائر',
+    'section-news':'آخر المستجدات','section-beaches':'شواطئ شطايبي','section-tourism':'معالم سياحية',
     'tab-announcements':'إعلانات','tab-activities':'نشاطات','tab-community':'مجتمع','tab-posters':'الملصقات',
     'fcat-branches':'الإدارية','fcat-education':'التعليم','fcat-health':'الصحة','fcat-public-bodies':'الهيئات','fcat-religious':'الدينية','fcat-cultural':'الثقافية','fcat-sports':'الرياضية',
     'sov-tab-services':'خدمات','sov-tab-apps':'تطبيقات',
@@ -2768,6 +2770,8 @@ var _I18N={
   },
   fr:{
     'nav-home':'Accueil','nav-news':'Actualités','nav-guide':'Guide','nav-services':'Services','nav-more':'Plus','nav-map':'Carte',
+    'header-title':'Commune de Chetaïbi','header-sub':'Wilaya d\'Annaba — Algérie',
+    'section-news':'Dernières actualités','section-beaches':'Plages de Chetaïbi','section-tourism':'Sites touristiques',
     'tab-announcements':'Annonces','tab-activities':'Activités','tab-community':'Communauté','tab-posters':'Affiches',
     'fcat-branches':'Administratif','fcat-education':'Enseignement','fcat-health':'Santé','fcat-public-bodies':'Organismes','fcat-religious':'Religieux','fcat-cultural':'Culturel','fcat-sports':'Sports',
     'sov-tab-services':'Services','sov-tab-apps':'Applications',
@@ -2827,15 +2831,24 @@ function setLang(lang){
   var fr=document.getElementById('lang-fr-btn');
   if(ar)ar.classList.toggle('active',lang==='ar');
   if(fr)fr.classList.toggle('active',lang==='fr');
+  /* تعديل حجم خط الهيدر حسب اللغة */
+  var h1=document.querySelector('.header-text h1');
+  if(h1)h1.style.fontSize=lang==='fr'?'13.5px':'18px';
+  var hp=document.querySelector('.header-text p');
+  if(hp)hp.style.fontSize=lang==='fr'?'10.5px':'12.5px';
   applyI18n();
   haptic('light');
-  /* إعادة تحميل المحتوى الديناميكي */
-  allNews=[];_svcData=null;
+  /* مسح الكاش وإعادة تحميل المحتوى */
+  allNews=[];_svcData=null;_svcAppsData=null;
+  newsScreenLoaded=false;
+  /* إعادة تحميل الصفحة الحالية */
   if(curTab==='news')loadNewsScreen();
   else if(curTab==='home')loadHome();
-  else if(curTab==='services')loadServices(document.querySelector('#screen-services .seg-btn.active')?.getAttribute('data-type')||'service');
+  else if(curTab==='services'){var st=document.querySelector('#screen-services .seg-btn.active');loadServices(st?st.getAttribute('data-type'):'service');}
   else if(curTab==='guide')loadFacTab(facCat,document.querySelector('#screen-guide .seg-btn.active'));
   else if(curTab==='archive')loadArchiveTab(archTab);
+  /* تحديث بطاقة الرئيس */
+  syncMayorToSheet();
 }
 
 /* تطبيق الإعدادات المحفوظة عند التحميل */
@@ -2844,6 +2857,12 @@ function setLang(lang){
   if(_curLang==='fr'){
     document.documentElement.dir='ltr';
     document.documentElement.lang='fr';
+    document.addEventListener('DOMContentLoaded',function(){
+      var h1=document.querySelector('.header-text h1');
+      if(h1)h1.style.fontSize='13.5px';
+      var hp=document.querySelector('.header-text p');
+      if(hp)hp.style.fontSize='10.5px';
+    });
   }
   /* applyI18n بعد DOM */
   document.addEventListener('DOMContentLoaded',function(){applyI18n();});
