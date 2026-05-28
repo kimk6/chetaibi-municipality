@@ -1784,7 +1784,7 @@ async function loadArchiveTab(tab){
         }
       });
       var hasMore=arr.length>from+PAGE;
-      if(hasMore)html+='<div class="load-more-wrap"><button class="load-more-btn" id="arch-load-more"><iconify-icon icon="lucide:chevrons-down"></iconify-icon>عرض المزيد</button></div>';
+      if(hasMore)html+='<div class="load-more-wrap"><button class="load-more-btn" id="arch-load-more"><iconify-icon icon="lucide:chevrons-down"></iconify-icon>'+t('load-more')+'</button></div>';
       if(from===0){el.innerHTML=html+'</div>';}
       else{
         var oldBtn=el.querySelector('.load-more-wrap');if(oldBtn)oldBtn.remove();
@@ -2271,7 +2271,7 @@ function renderNews(items,startIdx){
   var chunk=items.slice(startIdx,startIdx+PAGE);
   var html=chunk.map(function(n){
     var s=NS[n.category]||NS.official;var lbl=n.custom_label||s.lbl||'';
-    var pin=n.is_pinned?'<span style="font-size:10px;font-weight:800;color:var(--amber);display:flex;align-items:center;gap:2px"><iconify-icon icon="lucide:pin" style="pointer-events:none"></iconify-icon>مثبت</span>':'';
+    var pin=n.is_pinned?'<span style="font-size:10px;font-weight:800;color:var(--amber);display:flex;align-items:center;gap:2px"><iconify-icon icon="lucide:pin" style="pointer-events:none"></iconify-icon>'+t('pinned')+'</span>':'';
     var desc=(n.content||'').substring(0,130)+'...';
     if(n.category==='poster'){var src=n.image_url||'';if(src)return '<div class="poster-card fade-in" data-lb="'+src+'"><img src="'+src+'" alt="" loading="lazy" decoding="async"></div>';return '<div class="poster-card fade-in"><div class="poster-card-ph" style="background:linear-gradient(135deg,var(--purple),#4c1d95)"><iconify-icon icon="lucide:image" style="color:rgba(255,255,255,.7);font-size:3rem;pointer-events:none"></iconify-icon></div></div>';}
     if(n.category==='official'){
@@ -2287,11 +2287,11 @@ function renderNews(items,startIdx){
     var badgeHtml='<span class="news-badge" style="'+s.bs+'">'+lbl+'</span>';
     var headerRow=(badgeHtml||pin)?'<div style="display:flex;align-items:center;gap:7px;margin-bottom:7px">'+badgeHtml+pin+'</div>':'';
     var titleHtml=(n.category==='activity'||n.category==='social')&&n.title?'<div style="font-size:14px;font-weight:800;color:var(--text);line-height:1.45;margin-bottom:6px">'+n.title+'</div>':'';
-    return '<div class="announce-card fade-in" data-news-id="'+n.id+'">'+imgW+'<div class="announce-body">'+headerRow+titleHtml+'<div style="font-size:13.5px;color:var(--muted);line-height:1.7">'+desc+'</div><div class="announce-footer">'+makeDateBadge(n.date)+'<button class="read-more" data-news-id="'+n.id+'">اقرأ المزيد<iconify-icon icon="lucide:chevron-left"></iconify-icon></button></div></div></div>';
+    return '<div class="announce-card fade-in" data-news-id="'+n.id+'">'+imgW+'<div class="announce-body">'+headerRow+titleHtml+'<div style="font-size:13.5px;color:var(--muted);line-height:1.7">'+desc+'</div><div class="announce-footer">'+makeDateBadge(n.date)+'<button class="read-more" data-news-id="'+n.id+'">'+t('read-more')+'<iconify-icon icon="lucide:chevron-left"></iconify-icon></button></div></div></div>';
   }).join('');
   var hasMore=items.length>startIdx+PAGE;
   if(hasMore){
-    html+='<div class="load-more-wrap"><button class="load-more-btn" id="news-load-more"><iconify-icon icon="lucide:chevrons-down"></iconify-icon>عرض المزيد</button></div>';
+    html+='<div class="load-more-wrap"><button class="load-more-btn" id="news-load-more"><iconify-icon icon="lucide:chevrons-down"></iconify-icon>'+t('load-more')+'</button></div>';
   }
   if(startIdx===0){
     el.innerHTML=html;
@@ -2769,7 +2769,7 @@ var _I18N={
     'today':'اليوم','view-details':'عرض التفاصيل',
     'no-data':'لا توجد بيانات','error-load':'تعذر التحميل',
     'mayors-title':'رؤساء المجلس الشعبي البلدي','mayors-sub':'السجل التاريخي للرؤساء منذ التأسيس',
-    'read-more':'اقرأ المزيد',
+    'read-more':'اقرأ المزيد','load-more':'عرض المزيد','pinned':'مثبت',
     'gallery-label':'معرض الصور',
     'btn-all':'الكل',
     'sea-calm':'هادئ','sea-mostly-calm':'هادئ نسبياً','sea-moderate':'متوسط','sea-rough':'متلاطم','sea-stormy':'عاصف',
@@ -2808,7 +2808,7 @@ var _I18N={
     'today':'Aujourd\'hui','view-details':'Voir détails',
     'no-data':'Aucune donnée','error-load':'Chargement échoué',
     'mayors-title':'Présidents de l\'APC','mayors-sub':'Registre historique des présidents depuis la création',
-    'read-more':'Lire la suite',
+    'read-more':'Lire la suite','load-more':'Voir plus','pinned':'Épinglé',
     'gallery-label':'Galerie photos',
     'btn-all':'Tout',
     'sea-calm':'Calme','sea-mostly-calm':'Assez calme','sea-moderate':'Modérée','sea-rough':'Agitée','sea-stormy':'Tempétueuse',
