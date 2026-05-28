@@ -2011,8 +2011,8 @@ var _annCarIdx=0,_annCarTotal=0;
 
 function _annMakeCard(n){
   var dateHtml=n.date?'<div class="ann-card-date"><iconify-icon icon="lucide:calendar-days"></iconify-icon>'+n.date+'</div>':'';
-  var title=n.title?'<div class="ann-card-title"><iconify-icon icon="lucide:megaphone" style="font-size:15px;color:var(--green);flex-shrink:0;pointer-events:none"></iconify-icon>'+n.title+'</div>':'';
-  var excerpt=n.content?'<div class="ann-card-excerpt">'+n.content.substring(0,160)+'...</div>':'';
+  var title=_f(n,'title')?'<div class="ann-card-title"><iconify-icon icon="lucide:megaphone" style="font-size:15px;color:var(--green);flex-shrink:0;pointer-events:none"></iconify-icon>'+n.title+'</div>':'';
+  var excerpt=_f(n,'content')?'<div class="ann-card-excerpt">'+_f(n,'content').substring(0,160)+'...</div>':'';
   return '<div class="ann-card" data-news-id="'+n.id+'">'
     +'<div class="ann-card-inner">'
     +'<div class="ann-card-icon-wrap"><iconify-icon icon="lucide:megaphone"></iconify-icon></div>'
@@ -2094,8 +2094,8 @@ function _annCarShowCurrent(){
 function _annCardContent(n,c){
   if(!c)c=_annLabelColor(n.custom_label||'');
   var dateHtml=n.date?'<div class="ann-card-date"><iconify-icon icon="lucide:calendar-days" style="color:var(--muted)"></iconify-icon>'+n.date+'</div>':'';
-  var title=n.title?'<div class="ann-card-title" style="color:var(--text)"><iconify-icon icon="lucide:megaphone" style="font-size:15px;color:var(--text);flex-shrink:0;pointer-events:none"></iconify-icon>'+n.title+'</div>':'';
-  var excerpt=n.content?'<div class="ann-card-excerpt">'+n.content.substring(0,110)+'...</div>':'';
+  var title=_f(n,'title')?'<div class="ann-card-title" style="color:var(--text)"><iconify-icon icon="lucide:megaphone" style="font-size:15px;color:var(--text);flex-shrink:0;pointer-events:none"></iconify-icon>'+_f(n,'title')+'</div>':'';
+  var excerpt=_f(n,'content')?'<div class="ann-card-excerpt">'+_f(n,'content').substring(0,110)+'...</div>':'';
   return title
     +'<div class="ann-card-divider-top" style="background:linear-gradient(to right,transparent,'+c.icon+',transparent)"></div>'
     +excerpt
@@ -2272,7 +2272,7 @@ function renderNews(items,startIdx){
   var html=chunk.map(function(n){
     var s=NS[n.category]||NS.official;var lbl=n.custom_label||s.lbl||'';
     var pin=n.is_pinned?'<span style="font-size:10px;font-weight:800;color:var(--amber);display:flex;align-items:center;gap:2px"><iconify-icon icon="lucide:pin" style="pointer-events:none"></iconify-icon>'+t('pinned')+'</span>':'';
-    var desc=(n.content||'').substring(0,130)+'...';
+    var desc=(_f(n,'content')||'').substring(0,130)+'...';
     if(n.category==='poster'){var src=n.image_url||'';if(src)return '<div class="poster-card fade-in" data-lb="'+src+'"><img src="'+src+'" alt="" loading="lazy" decoding="async"></div>';return '<div class="poster-card fade-in"><div class="poster-card-ph" style="background:linear-gradient(135deg,var(--purple),#4c1d95)"><iconify-icon icon="lucide:image" style="color:rgba(255,255,255,.7);font-size:3rem;pointer-events:none"></iconify-icon></div></div>';}
     if(n.category==='official'){
       var c=_annLabelColor(n.custom_label||'');
@@ -2286,7 +2286,7 @@ function renderNews(items,startIdx){
     var imgW=n.image_url?'<div class="announce-img-wrap"><img src="'+n.image_url+'" alt="" loading="lazy" decoding="async"></div>':'<div class="announce-img-wrap" style="background:'+s.grad+';height:90px"><iconify-icon icon="lucide:clipboard-list" style="color:rgba(255,255,255,.65);font-size:2.2rem;pointer-events:none"></iconify-icon></div>';
     var badgeHtml='<span class="news-badge" style="'+s.bs+'">'+lbl+'</span>';
     var headerRow=(badgeHtml||pin)?'<div style="display:flex;align-items:center;gap:7px;margin-bottom:7px">'+badgeHtml+pin+'</div>':'';
-    var titleHtml=(n.category==='activity'||n.category==='social')&&n.title?'<div style="font-size:14px;font-weight:800;color:var(--text);line-height:1.45;margin-bottom:6px">'+n.title+'</div>':'';
+    var titleHtml=(n.category==='activity'||n.category==='social')&&_f(n,'title')?'<div style="font-size:14px;font-weight:800;color:var(--text);line-height:1.45;margin-bottom:6px">'+_f(n,'title')+'</div>':'';
     return '<div class="announce-card fade-in" data-news-id="'+n.id+'">'+imgW+'<div class="announce-body">'+headerRow+titleHtml+'<div style="font-size:13.5px;color:var(--muted);line-height:1.7">'+desc+'</div><div class="announce-footer">'+makeDateBadge(n.date)+'<button class="read-more" data-news-id="'+n.id+'">'+t('read-more')+'<iconify-icon icon="lucide:chevron-left"></iconify-icon></button></div></div></div>';
   }).join('');
   var hasMore=items.length>startIdx+PAGE;
