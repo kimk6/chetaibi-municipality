@@ -902,7 +902,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 شواطئ شطايبي
               </span>
               <!-- ✅ تعديل 4: "تصفح" → "الخريطة" مع أيقونة map-pin أخضر -->
-              <button class="see-all-arrow-btn" id="btn-see-beaches">الخريطة
+              <button class="see-all-arrow-btn" id="btn-see-beaches"><span data-i18n="nav-map">الخريطة</span>
                 <iconify-icon icon="lucide:map" style="font-size:16px;color:var(--green);pointer-events:none;"></iconify-icon>
               </button>
             </div>
@@ -937,10 +937,10 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         <div class="content-block">
           <div class="seg-bar-wrap">
             <div class="seg-bar">
-              <button class="seg-btn active" data-cat="official" id="news-btn-official"><iconify-icon icon="lucide:megaphone"></iconify-icon>إعلانات</button>
-              <button class="seg-btn" data-cat="activity" id="news-btn-activity"><iconify-icon icon="lucide:clipboard-list"></iconify-icon>نشاطات</button>
-              <button class="seg-btn" data-cat="social" id="news-btn-social"><iconify-icon icon="lucide:handshake"></iconify-icon>مجتمع</button>
-              <button class="seg-btn" data-cat="poster" id="news-btn-poster"><iconify-icon icon="lucide:image"></iconify-icon>الملصقات</button>
+              <button class="seg-btn active" data-cat="official" id="news-btn-official"><iconify-icon icon="lucide:megaphone"></iconify-icon><span data-i18n="tab-announcements">إعلانات</span></button>
+              <button class="seg-btn" data-cat="activity" id="news-btn-activity"><iconify-icon icon="lucide:clipboard-list"></iconify-icon><span data-i18n="tab-activities">نشاطات</span></button>
+              <button class="seg-btn" data-cat="social" id="news-btn-social"><iconify-icon icon="lucide:handshake"></iconify-icon><span data-i18n="tab-community">مجتمع</span></button>
+              <button class="seg-btn" data-cat="poster" id="news-btn-poster"><iconify-icon icon="lucide:image"></iconify-icon><span data-i18n="tab-posters">الملصقات</span></button>
             </div>
           </div>
           <div id="news-list" style="padding:12px 0">
@@ -956,13 +956,13 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         <div class="content-block">
           <div class="seg-bar-wrap">
             <div class="seg-bar" id="guide-seg-bar">
-              <button class="seg-btn active" id="btn-admin-branches" data-guide-cat="admin-branches"><iconify-icon icon="lucide:landmark"></iconify-icon>الإدارية</button>
-              <button class="seg-btn" id="btn-education" data-guide-cat="education"><iconify-icon icon="lucide:graduation-cap"></iconify-icon>التعليم</button>
-              <button class="seg-btn" id="btn-health" data-guide-cat="health"><iconify-icon icon="lucide:heart-pulse"></iconify-icon>الصحة</button>
-              <button class="seg-btn" id="btn-public-bodies" data-guide-cat="public-bodies"><iconify-icon icon="lucide:building-2"></iconify-icon>الهيئات</button>
-              <button class="seg-btn" id="btn-religious" data-guide-cat="religious"><iconify-icon icon="lucide:moon-star"></iconify-icon>الدينية</button>
-              <button class="seg-btn" id="btn-cultural" data-guide-cat="cultural"><iconify-icon icon="lucide:palette"></iconify-icon>الثقافية</button>
-              <button class="seg-btn" id="btn-sports" data-guide-cat="sports"><iconify-icon icon="lucide:trophy"></iconify-icon>الرياضية</button>
+              <button class="seg-btn active" id="btn-admin-branches" data-guide-cat="admin-branches"><iconify-icon icon="lucide:landmark"></iconify-icon><span data-i18n="fcat-branches">الإدارية</span></button>
+              <button class="seg-btn" id="btn-education" data-guide-cat="education"><iconify-icon icon="lucide:graduation-cap"></iconify-icon><span data-i18n="fcat-education">التعليم</span></button>
+              <button class="seg-btn" id="btn-health" data-guide-cat="health"><iconify-icon icon="lucide:heart-pulse"></iconify-icon><span data-i18n="fcat-health">الصحة</span></button>
+              <button class="seg-btn" id="btn-public-bodies" data-guide-cat="public-bodies"><iconify-icon icon="lucide:building-2"></iconify-icon><span data-i18n="fcat-public-bodies">الهيئات</span></button>
+              <button class="seg-btn" id="btn-religious" data-guide-cat="religious"><iconify-icon icon="lucide:moon-star"></iconify-icon><span data-i18n="fcat-religious">الدينية</span></button>
+              <button class="seg-btn" id="btn-cultural" data-guide-cat="cultural"><iconify-icon icon="lucide:palette"></iconify-icon><span data-i18n="fcat-cultural">الثقافية</span></button>
+              <button class="seg-btn" id="btn-sports" data-guide-cat="sports"><iconify-icon icon="lucide:trophy"></iconify-icon><span data-i18n="fcat-sports">الرياضية</span></button>
             </div>
           </div>
           <div id="fac-list" style="padding:8px 0">
@@ -980,10 +980,10 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           <div class="seg-bar-wrap">
             <div class="seg-bar" style="justify-content:center;">
               <button class="seg-btn active" data-type="service" id="svc-btn-service" onclick="filterServices('service',this)">
-                <iconify-icon icon="lucide:file-text"></iconify-icon>خدمات
+                <iconify-icon icon="lucide:file-text"></iconify-icon><span data-i18n="sov-tab-services">خدمات</span>
               </button>
               <button class="seg-btn" data-type="app" id="svc-btn-app" onclick="filterServices('app',this)">
-                <iconify-icon icon="lucide:smartphone"></iconify-icon>تطبيقات
+                <iconify-icon icon="lucide:smartphone"></iconify-icon><span data-i18n="sov-tab-apps">تطبيقات</span>
               </button>
             </div>
           </div>
@@ -999,9 +999,9 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         <div class="content-block">
           <div class="seg-bar-wrap">
             <div class="seg-bar">
-              <button class="seg-btn active" id="arch-tab-timeline"><iconify-icon icon="lucide:scroll-text"></iconify-icon>الخط الزمني</button>
-              <button class="seg-btn" id="arch-tab-compare"><iconify-icon icon="lucide:clock"></iconify-icon>بين الأمس واليوم</button>
-              <button class="seg-btn" id="arch-tab-historic"><iconify-icon icon="lucide:images"></iconify-icon>صور تاريخية</button>
+              <button class="seg-btn active" id="arch-tab-timeline"><iconify-icon icon="lucide:scroll-text"></iconify-icon><span data-i18n="arch-tab-timeline">الخط الزمني</span></button>
+              <button class="seg-btn" id="arch-tab-compare"><iconify-icon icon="lucide:clock"></iconify-icon><span data-i18n="arch-tab-compare">بين الأمس واليوم</span></button>
+              <button class="seg-btn" id="arch-tab-historic"><iconify-icon icon="lucide:images"></iconify-icon><span data-i18n="arch-tab-historic">صور تاريخية</span></button>
             </div>
           </div>
           <div id="archive-list" style="padding:12px 16px 24px">
@@ -1054,35 +1054,35 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         <iconify-icon class="icon-off" icon="ph:house" style="font-size:24px"></iconify-icon>
         <iconify-icon class="icon-on" icon="ph:house-fill" style="font-size:24px"></iconify-icon>
       </div>
-      <span>الرئيسية</span>
+      <span data-i18n="nav-home">الرئيسية</span>
     </button>
     <button class="nav-btn" id="nav-news">
       <div class="nav-icon-wrap">
         <iconify-icon class="icon-off" icon="ph:newspaper" style="font-size:24px"></iconify-icon>
         <iconify-icon class="icon-on" icon="ph:newspaper-fill" style="font-size:24px"></iconify-icon>
       </div>
-      <span>الأخبار</span>
+      <span data-i18n="nav-news">الأخبار</span>
     </button>
     <button class="nav-btn" id="nav-guide">
       <div class="nav-icon-wrap">
         <iconify-icon class="icon-off" icon="ph:map-pin" style="font-size:24px"></iconify-icon>
         <iconify-icon class="icon-on" icon="ph:map-pin-fill" style="font-size:24px"></iconify-icon>
       </div>
-      <span>الدليل</span>
+      <span data-i18n="nav-guide">الدليل</span>
     </button>
     <button class="nav-btn" id="nav-services">
       <div class="nav-icon-wrap">
         <iconify-icon class="icon-off" icon="ph:file-text" style="font-size:24px"></iconify-icon>
         <iconify-icon class="icon-on" icon="ph:file-text-fill" style="font-size:24px"></iconify-icon>
       </div>
-      <span>الخدمات</span>
+      <span data-i18n="nav-services">الخدمات</span>
     </button>
     <button class="nav-btn" id="nav-more">
       <div class="nav-icon-wrap">
         <iconify-icon class="icon-off" icon="ph:squares-four" style="font-size:24px"></iconify-icon>
         <iconify-icon class="icon-on" icon="ph:squares-four-fill" style="font-size:24px"></iconify-icon>
       </div>
-      <span>المزيد</span>
+      <span data-i18n="nav-more">المزيد</span>
     </button>
   </nav>
 
@@ -1104,12 +1104,12 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </div>
           </div>
           <div class="mayor-home-info">
-            <div class="mayor-home-role">رئيس المجلس الشعبي البلدي</div>
+            <div class="mayor-home-role" data-i18n="mayor-role">رئيس المجلس الشعبي البلدي</div>
             <div class="mayor-home-name" id="ms-mayor-name">جاري التحميل...</div>
           </div>
           <button class="mayor-home-btn" id="ms-prev-mayors-btn">
             <iconify-icon icon="lucide:users" style="font-size:14px;pointer-events:none;"></iconify-icon>
-            <span>الرؤساء السابقون</span>
+            <span data-i18n="mayor-prev-btn">الرؤساء السابقون</span>
             <iconify-icon class="mayor-home-btn-arrow" icon="lucide:chevron-left" style="pointer-events:none;"></iconify-icon>
           </button>
         </div>
@@ -1119,17 +1119,17 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     <div style="margin:10px 16px 0;background:var(--card);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--elev-2);border:1px solid var(--border-light)">
       <div class="more-item" id="ms-item-map">
         <div class="more-icon" style="background:var(--blue-l)"><iconify-icon icon="lucide:map" style="color:var(--blue);font-size:20px;pointer-events:none"></iconify-icon></div>
-        <div style="flex:1"><div class="more-item-title">الخريطة التفاعلية</div><div class="more-item-sub">مرافق وشواطئ ومعالم شطايبي</div></div>
+        <div style="flex:1"><div class="more-item-title" data-i18n="ms-map-title">الخريطة التفاعلية</div><div class="more-item-sub" data-i18n="ms-map-sub">مرافق وشواطئ ومعالم شطايبي</div></div>
         <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
       </div>
       <div class="more-item" id="ms-item-archive">
         <div class="more-icon" style="background:var(--amber-l)"><iconify-icon icon="lucide:scroll-text" style="color:var(--amber);font-size:20px;pointer-events:none"></iconify-icon></div>
-        <div style="flex:1"><div class="more-item-title">أرشيف شطايبي</div><div class="more-item-sub">محطات تاريخية وصور أرشيفية</div></div>
+        <div style="flex:1"><div class="more-item-title" data-i18n="ms-archive-title">أرشيف شطايبي</div><div class="more-item-sub" data-i18n="ms-archive-sub">محطات تاريخية وصور أرشيفية</div></div>
         <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
       </div>
       <div class="more-item" id="ms-item-site">
         <div class="more-icon" style="background:var(--green-l)"><iconify-icon icon="lucide:globe" style="color:var(--green);font-size:20px;pointer-events:none"></iconify-icon></div>
-        <div style="flex:1"><div class="more-item-title">الموقع الرسمي</div><div class="more-item-sub">النسخة الكاملة للمتصفح</div></div>
+        <div style="flex:1"><div class="more-item-title" data-i18n="ms-site-title">الموقع الرسمي</div><div class="more-item-sub" data-i18n="ms-site-sub">النسخة الكاملة للمتصفح</div></div>
         <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
       </div>
     </div>
@@ -1139,14 +1139,14 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
       <div class="settings-row">
         <div class="settings-row-label">
           <iconify-icon icon="lucide:sun-moon" style="color:var(--amber)"></iconify-icon>
-          المظهر
+          <span data-i18n="setting-theme">المظهر</span>
         </div>
         <div class="settings-toggle-group">
           <button class="settings-toggle-btn active" id="theme-light-btn" onclick="setTheme('light')">
-            <iconify-icon icon="lucide:sun"></iconify-icon>فاتح
+            <iconify-icon icon="lucide:sun"></iconify-icon><span data-i18n="theme-light">فاتح</span>
           </button>
           <button class="settings-toggle-btn" id="theme-dark-btn" onclick="setTheme('dark')">
-            <iconify-icon icon="lucide:moon"></iconify-icon>داكن
+            <iconify-icon icon="lucide:moon"></iconify-icon><span data-i18n="theme-dark">داكن</span>
           </button>
         </div>
       </div>
@@ -1154,7 +1154,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
       <div class="settings-row">
         <div class="settings-row-label">
           <iconify-icon icon="lucide:languages" style="color:var(--blue)"></iconify-icon>
-          اللغة
+          <span data-i18n="setting-lang">اللغة</span>
         </div>
         <div class="settings-toggle-group">
           <button class="settings-toggle-btn active" id="lang-ar-btn" onclick="setLang('ar')">
@@ -1168,8 +1168,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     </div>
 
     <div style="text-align:center;padding:18px 20px 6px;">
-      <div style="font-size:11px;color:var(--muted-2);">بلدية شطايبي - © 2026 جميع الحقوق محفوظة</div>
-      <div style="font-size:10px;color:var(--muted-2);font-style:italic;margin-top:3px;">تم التطوير <iconify-icon icon="lucide:code-2" style="font-size:11px;vertical-align:middle;pointer-events:none"></iconify-icon> بجهود كفاءات بلدية شطايبي</div>
+      <div style="font-size:11px;color:var(--muted-2);" data-i18n="footer-rights">بلدية شطايبي - © 2026 جميع الحقوق محفوظة</div>
+      <div style="font-size:10px;color:var(--muted-2);font-style:italic;margin-top:3px;" data-i18n="footer-dev">تم التطوير <iconify-icon icon="lucide:code-2" style="font-size:11px;vertical-align:middle;pointer-events:none"></iconify-icon> بجهود كفاءات بلدية شطايبي</div>
     </div>
   </div>
 </div>
@@ -1302,7 +1302,12 @@ document.addEventListener('touchstart',function(e){
 document.addEventListener('touchmove',function(e){if(e.touches.length>1)e.preventDefault();},{passive:false});
 /* ══ API CACHE ══ */
 var C={};
-async function api(u){if(C[u])return C[u];var r=await fetch(u);var d=await r.json();C[u]=d;return d;}
+async function api(u){
+  var sep=u.includes('?')?'&':'?';
+  var ul=u+sep+'lang='+_curLang;
+  if(C[ul])return C[ul];
+  var r=await fetch(ul);var d=await r.json();C[ul]=d;return d;
+}
 /* ══ STATE ══ */
 var curTab='home',mapDone=false,_svcLoaded=false,allNews=[],facCat='admin-branches';
 var newsScreenLoaded=false,_mayorLoaded=false,_mayorsList=[];
@@ -1812,39 +1817,17 @@ async function loadArchiveTab(tab){
 }
 /* ══ TIMELINE RENDER ══ */
 function renderTimeline(el){
-  var eras=[
-    {
-      dot:'#f59e0b',
-      badge:'العهد القديم — العصر الروماني',badgeClass:'background:#fef3c7;color:#b45309;',
-      date:'القرن 1 — 5 م',dateClass:'color:#c2410c;border-color:#fed7aa;background:#fff7ed;',
-      border:'border-color:#fde68a;',
-      title:'تاكاتوا — Tacatua',
-      text:'تأسست كمدينة مرفئية هامة ومحطة رئيسية على الطريق الساحلي الرابط بين "هيبون" والمدن الغربية. اشتهرت عالمياً بمناجم "البورفير الأحمر" الفاخر الذي كان يُصدر خصيصاً لتزيين قصور وتوابيت أباطرة روما. لا تزال آثارها شاهدة على عظمة تلك الحقبة، ومن أبرزها "النافورة الرومانية" وبقايا نظام الري المتطور.'
-    },
-    {
-      dot:'#14b8a6',
-      badge:'العهد الإسلامي والعثماني',badgeClass:'background:#ccfbf1;color:#0f766e;',
-      date:'القرن 11 — 1830 م',dateClass:'color:#0e7490;border-color:#a5f3fc;background:#ecfeff;',
-      border:'border-color:#99f6e4;',
-      title:'تكوش — Tekkouch',
-      text:'تحول اسمها إلى "تكوش" (مشتق من الأصل الأمازيغي "تيكوش")، وبرزت كمركز استراتيجي للمراقبة البحرية بفضل موقع "رأس تكوش" المحمي طبيعياً. خلال العهد العثماني، كانت المنطقة محطة حيوية لتأمين السفن وتزويد الأسطول الجزائري بالمؤن والأخشاب، وظلت "منارة رأس تكوش" منارة تاريخية لا غنى عنها للملاحة الدولية في المتوسط.'
-    },
-    {
-      dot:'#ef4444',
-      badge:'العهد الاستعماري الفرنسي',badgeClass:'background:#fee2e2;color:#b91c1c;',
-      date:'1869 — 1962 م',dateClass:'color:#be123c;border-color:#fecdd3;background:#fff1f2;',
-      border:'border-color:#fecaca;',
-      title:'هيربيون — Herbillon',
-      text:'أُنشئ المركز السكاني بمرسوم رسمي عام 1869 وسُمي نسبة للجنرال "إيميل هيربيون". شهدت المنطقة نهضة صناعية كبرى عبر استغلال مقالع "الجرانيت الأخضر" الصلب الذي استُخدم لرصف شوارع باريس، مارسيليا، وروما. وبالتوازي مع ذلك، كانت جبالها معقلاً للمقاومة، بدءاً من ثورة "سي زغدود" عام 1841 وصولاً إلى اندلاع الثورة التحريرية الكبرى.'
-    },
-    {
-      dot:'#10b981',
-      badge:'عهد الاستقلال والجزائر الحديثة',badgeClass:'background:#d1fae5;color:#065f46;',
-      date:'منذ 1962 م',dateClass:'color:#16a34a;border-color:#bbf7d0;background:#f0fdf4;',
-      border:'border-color:#a7f3d0;',
-      title:'شطايبي — Chetaïbi',
-      text:'استعادت المدينة هويتها الوطنية عام 1962، وسُميت "شطايبي" تخليداً للشهيد البطل "عمار شطايبي" الذي استشهد في ميدان الشرف بالمنطقة. تحولت البلدية اليوم إلى قطب سياحي عالمي، حيث صُنف خليجها عام 2006 كواحد من أجمل الخلجان في العالم، مما جعلها وجهة رائدة تجمع بين عبق التاريخ وسحر الطبيعة العذراء.'
-    }
+  var isFr=_curLang==='fr';
+  var eras=isFr?[
+    {dot:'#f59e0b',badge:'Antiquité — Époque romaine',badgeClass:'background:#fef3c7;color:#b45309;',date:'I — V siècle ap. J.-C.',dateClass:'color:#c2410c;border-color:#fed7aa;background:#fff7ed;',border:'border-color:#fde68a;',title:'Tacatua',text:'Fondée comme importante cité portuaire et station principale sur la voie côtière reliant Hippone aux villes occidentales. Elle était mondialement connue pour ses mines de "Porphyre rouge" de luxe, exporté spécialement pour décorer les palais et sarcophages des empereurs romains. Ses vestiges témoignent encore de la grandeur de cette époque, notamment la "Fontaine romaine" et les restes d\'un système d\'irrigation sophistiqué.'},
+    {dot:'#14b8a6',badge:'Époque islamique et ottomane',badgeClass:'background:#ccfbf1;color:#0f766e;',date:'XI — 1830 ap. J.-C.',dateClass:'color:#0e7490;border-color:#a5f3fc;background:#ecfeff;',border:'border-color:#99f6e4;',title:'Tekkouch',text:'Son nom devint "Tekkouch" (du berbère "Tikouch"), et elle s\'imposa comme centre stratégique de surveillance maritime grâce à la position naturellement protégée du "Cap Tekkouch". À l\'époque ottomane, la région était une station vitale pour ravitailler la flotte algérienne. Le "Phare du Cap Tekkouch" resta un repère incontournable pour la navigation internationale en Méditerranée.'},
+    {dot:'#ef4444',badge:'Époque coloniale française',badgeClass:'background:#fee2e2;color:#b91c1c;',date:'1869 — 1962',dateClass:'color:#be123c;border-color:#fecdd3;background:#fff1f2;',border:'border-color:#fecaca;',title:'Herbillon',text:'Le centre fut créé par décret officiel en 1869 et baptisé du nom du général Émile Herbillon. La région connut un essor industriel majeur grâce à l\'exploitation des carrières de "granit vert" utilisé pour paver les rues de Paris, Marseille et Rome. En parallèle, ses montagnes furent un bastion de résistance, de la révolte de "Si Zegdoud" en 1841 jusqu\'au déclenchement de la Révolution de libération.'},
+    {dot:'#10b981',badge:'Indépendance — Algérie moderne',badgeClass:'background:#d1fae5;color:#065f46;',date:'Depuis 1962',dateClass:'color:#16a34a;border-color:#bbf7d0;background:#f0fdf4;',border:'border-color:#a7f3d0;',title:'Chetaïbi',text:'La ville retrouva son identité nationale en 1962 et fut nommée "Chetaïbi" en hommage au martyr "Ammar Chetaibi". La commune est aujourd\'hui un pôle touristique de renommée internationale : sa baie a été classée en 2006 parmi les plus belles baies du monde, en faisant une destination alliant patrimoine historique et nature préservée.'}
+  ]:[
+    {dot:'#f59e0b',badge:'العهد القديم — العصر الروماني',badgeClass:'background:#fef3c7;color:#b45309;',date:'القرن 1 — 5 م',dateClass:'color:#c2410c;border-color:#fed7aa;background:#fff7ed;',border:'border-color:#fde68a;',title:'تاكاتوا — Tacatua',text:'تأسست كمدينة مرفئية هامة ومحطة رئيسية على الطريق الساحلي الرابط بين "هيبون" والمدن الغربية. اشتهرت عالمياً بمناجم "البورفير الأحمر" الفاخر الذي كان يُصدر خصيصاً لتزيين قصور وتوابيت أباطرة روما. لا تزال آثارها شاهدة على عظمة تلك الحقبة، ومن أبرزها "النافورة الرومانية" وبقايا نظام الري المتطور.'},
+    {dot:'#14b8a6',badge:'العهد الإسلامي والعثماني',badgeClass:'background:#ccfbf1;color:#0f766e;',date:'القرن 11 — 1830 م',dateClass:'color:#0e7490;border-color:#a5f3fc;background:#ecfeff;',border:'border-color:#99f6e4;',title:'تكوش — Tekkouch',text:'تحول اسمها إلى "تكوش" (مشتق من الأصل الأمازيغي "تيكوش")، وبرزت كمركز استراتيجي للمراقبة البحرية بفضل موقع "رأس تكوش" المحمي طبيعياً. خلال العهد العثماني، كانت المنطقة محطة حيوية لتأمين السفن وتزويد الأسطول الجزائري بالمؤن والأخشاب، وظلت "منارة رأس تكوش" منارة تاريخية لا غنى عنها للملاحة الدولية في المتوسط.'},
+    {dot:'#ef4444',badge:'العهد الاستعماري الفرنسي',badgeClass:'background:#fee2e2;color:#b91c1c;',date:'1869 — 1962 م',dateClass:'color:#be123c;border-color:#fecdd3;background:#fff1f2;',border:'border-color:#fecaca;',title:'هيربيون — Herbillon',text:'أُنشئ المركز السكاني بمرسوم رسمي عام 1869 وسُمي نسبة للجنرال "إيميل هيربيون". شهدت المنطقة نهضة صناعية كبرى عبر استغلال مقالع "الجرانيت الأخضر" الصلب الذي استُخدم لرصف شوارع باريس، مارسيليا، وروما. وبالتوازي مع ذلك، كانت جبالها معقلاً للمقاومة، بدءاً من ثورة "سي زغدود" عام 1841 وصولاً إلى اندلاع الثورة التحريرية الكبرى.'},
+    {dot:'#10b981',badge:'عهد الاستقلال والجزائر الحديثة',badgeClass:'background:#d1fae5;color:#065f46;',date:'منذ 1962 م',dateClass:'color:#16a34a;border-color:#bbf7d0;background:#f0fdf4;',border:'border-color:#a7f3d0;',title:'شطايبي — Chetaïbi',text:'استعادت المدينة هويتها الوطنية عام 1962، وسُميت "شطايبي" تخليداً للشهيد البطل "عمار شطايبي" الذي استشهد في ميدان الشرف بالمنطقة. تحولت البلدية اليوم إلى قطب سياحي عالمي، حيث صُنف خليجها عام 2006 كواحد من أجمل الخلجان في العالم، مما جعلها وجهة رائدة تجمع بين عبق التاريخ وسحر الطبيعة العذراء.'}
   ];
   var html='<div class="tl-wrap"><div class="tl-line"></div>';
   eras.forEach(function(e){
@@ -1885,6 +1868,8 @@ window._debugSea=async function(){try{var r=await fetch('https://marine-api.open
 var _wDays=[],_sDays=[],_wIdx=0,_sIdx=0;
 var _WM={0:{d:'☀️',n:'🌕',ar:'الجو صافٍ'},1:{d:'🌤️',n:'🌙',ar:'غائم خفيف'},2:{d:'⛅',n:'🌥️',ar:'غائم جزئياً'},3:{d:'☁️',n:'☁️',ar:'غائم'},45:{d:'🌫️',n:'🌫️',ar:'ضبابي'},48:{d:'🌫️',n:'🌫️',ar:'ضبابي'},51:{d:'🌦️',n:'🌧️',ar:'رذاذ'},53:{d:'🌦️',n:'🌧️',ar:'رذاذ'},61:{d:'🌧️',n:'🌧️',ar:'ممطر'},63:{d:'🌧️',n:'🌧️',ar:'مطر'},65:{d:'🌧️',n:'🌧️',ar:'مطر غزير'},80:{d:'🌦️',n:'🌧️',ar:'زخات'},81:{d:'🌧️',n:'🌧️',ar:'زخات'},95:{d:'⛈️',n:'⛈️',ar:'عاصفة'}};
 var _DN=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+function _getDN(i){var days=t('day-names');return Array.isArray(days)?days[i]:_DN[i];}
+function _getToday(){return t('today')||'اليوم';}
 var _TS='flex-shrink:0;border:1.5px solid var(--border-light);border-radius:99px;padding:4px 12px;font-size:11px;font-family:var(--font-main);background:var(--surface);color:var(--text);cursor:pointer;white-space:nowrap;touch-action:manipulation;transition:background .15s,color .15s,border-color .15s;';
 var _TS_W='flex-shrink:0;border:1.5px solid rgba(5,150,105,0.3);border-radius:99px;padding:4px 12px;font-size:11px;font-family:var(--font-main);background:var(--green-xl);color:var(--green);cursor:pointer;white-space:nowrap;touch-action:manipulation;font-weight:700;transition:background .15s,color .15s,border-color .15s;';
 var _TS_S='flex-shrink:0;border:1.5px solid rgba(59,131,246,0.3);border-radius:99px;padding:4px 12px;font-size:11px;font-family:var(--font-main);background:#eff6ff;color:#3b83f6;cursor:pointer;white-space:nowrap;touch-action:manipulation;font-weight:700;transition:background .15s,color .15s,border-color .15s;';
@@ -1926,7 +1911,7 @@ async function fetchPWAWeather(){
       var dayCode=dl.weather_code&&dl.weather_code[i]!=null?dl.weather_code[i]:0;
       var curTemp=cu.temperature_2m!=null?cu.temperature_2m:(tmax!=null&&tmin!=null?(tmax+tmin)/2:20);
       _wDays.push({
-        label:i===0?'اليوم':_DN[dt.getDay()],
+        label:i===0?_getToday():_getDN(dt.getDay()),
         temp:i===0?curTemp:(tmax!=null&&tmin!=null?(tmax+tmin)/2:20),
         tmax:tmax!=null?tmax:20,tmin:tmin!=null?tmin:15,
         code:i===0?(cu.weather_code!=null?cu.weather_code:dayCode):dayCode,
@@ -1987,7 +1972,7 @@ async function fetchPWASea(){
       var wv=i===0?parseFloat(cu.wave_height.toFixed(2)):parseFloat(((dl.wave_height_max&&dl.wave_height_max[i])||0).toFixed(2));
       var dv=i===0?cu.wave_direction:(dl.wave_direction_dominant?dl.wave_direction_dominant[i]:null);
       var sst=i===0?(cu.sea_surface_temperature||null):(dl.sea_surface_temperature_max?dl.sea_surface_temperature_max[i]:null);
-      _sDays.push({label:i===0?'اليوم':_DN[dt.getDay()],wave:wv,dir:dv!=null?dirs[Math.round(dv/45)%8]:'--',sst:sst,isDay:(h>=6&&h<20)});
+      _sDays.push({label:i===0?_getToday():_getDN(dt.getDay()),wave:wv,dir:dv!=null?dirs[Math.round(dv/45)%8]:'--',sst:sst,isDay:(h>=6&&h<20)});
     }
     var tabs=_g('sea-day-tabs');
     if(tabs)tabs.innerHTML=_sDays.map(function(day,i){return '<button style="'+_TS_S+'" onclick="renderSeaDay('+i+')">'+day.label+'</button>';}).join('');
@@ -2496,7 +2481,7 @@ function _makeMapBtn(lat,lng,name,wrapId){
   if(!wrap)return;
   if(lat&&lng){
     wrap.innerHTML='<div class="modal-map-btn-wrap"><button class="modal-map-btn" onclick="showOnMap('+lat+','+lng+',\''+name.replace(/'/g,'')+'\')">'
-      +'<iconify-icon icon="lucide:map"></iconify-icon>عرض على الخريطة'
+      +'<iconify-icon icon="lucide:map"></iconify-icon>'+t('show-map')
       +'<iconify-icon icon="lucide:chevron-left" style="font-size:13px;pointer-events:none"></iconify-icon>'
       +'</button></div>';
   }else{
@@ -2735,33 +2720,121 @@ function setTheme(theme){
   haptic('light');
 }
 
+/* ══ I18N SYSTEM ══ */
+var _I18N={
+  ar:{
+    'nav-home':'الرئيسية','nav-news':'الأخبار','nav-guide':'الدليل','nav-services':'الخدمات','nav-more':'المزيد','nav-map':'الخريطة',
+    'tab-announcements':'إعلانات','tab-activities':'نشاطات','tab-community':'مجتمع','tab-posters':'الملصقات',
+    'fcat-branches':'الإدارية','fcat-education':'التعليم','fcat-health':'الصحة','fcat-public-bodies':'الهيئات','fcat-religious':'الدينية','fcat-cultural':'الثقافية','fcat-sports':'الرياضية',
+    'sov-tab-services':'خدمات','sov-tab-apps':'تطبيقات',
+    'arch-tab-timeline':'الخط الزمني','arch-tab-compare':'بين الأمس واليوم','arch-tab-historic':'صور تاريخية',
+    'mayor-role':'رئيس المجلس الشعبي البلدي','mayor-prev-btn':'الرؤساء السابقون',
+    'ms-map-title':'الخريطة التفاعلية','ms-map-sub':'مرافق وشواطئ ومعالم شطايبي',
+    'ms-archive-title':'أرشيف شطايبي','ms-archive-sub':'محطات تاريخية وصور أرشيفية',
+    'ms-site-title':'الموقع الرسمي','ms-site-sub':'النسخة الكاملة للمتصفح',
+    'setting-theme':'المظهر','theme-light':'فاتح','theme-dark':'داكن','setting-lang':'اللغة',
+    'footer-rights':'بلدية شطايبي - © 2026 جميع الحقوق محفوظة',
+    'footer-dev':'تم التطوير بجهود كفاءات بلدية شطايبي',
+    /* ديناميكي */
+    'loading':'جاري التحميل','show-map':'عرض على الخريطة',
+    'news-cats':{'official':'إعلانات رسمية','activity':'نشاطات بلدية','social':'مجتمع','poster':'الملصقات'},
+    'guide-cats':{'admin-branches':'الفروع الإدارية','education':'التعليم','health':'الصحة','public-bodies':'الهيئات','religious':'الدينية','cultural':'الثقافية','sports':'الرياضية'},
+    'supervised':'مراقب','unsupervised':'غير مراقب','sandy':'رملي','rocky':'صخري',
+    'map-filter-all':'الكل','map-filter-fac':'مرافق','map-filter-beach':'شواطئ','map-filter-tour':'معالم',
+    'day-names':['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'],
+    'today':'اليوم','view-details':'عرض التفاصيل',
+    'no-data':'لا توجد بيانات','error-load':'تعذر التحميل',
+    'mayors-title':'رؤساء المجلس الشعبي البلدي','mayors-sub':'السجل التاريخي للرؤساء منذ التأسيس',
+    'read-more':'اقرأ المزيد',
+    'sea-calm':'هادئ','sea-mostly-calm':'هادئ نسبياً','sea-moderate':'متوسط','sea-rough':'متلاطم','sea-stormy':'عاصف',
+  },
+  fr:{
+    'nav-home':'Accueil','nav-news':'Actualités','nav-guide':'Guide','nav-services':'Services','nav-more':'Plus','nav-map':'Carte',
+    'tab-announcements':'Annonces','tab-activities':'Activités','tab-community':'Communauté','tab-posters':'Affiches',
+    'fcat-branches':'Administratif','fcat-education':'Enseignement','fcat-health':'Santé','fcat-public-bodies':'Organismes','fcat-religious':'Religieux','fcat-cultural':'Culturel','fcat-sports':'Sports',
+    'sov-tab-services':'Services','sov-tab-apps':'Applications',
+    'arch-tab-timeline':'Chronologie','arch-tab-compare':'Hier & Aujourd\'hui','arch-tab-historic':'Photos historiques',
+    'mayor-role':'Président de l\'APC','mayor-prev-btn':'Anciens présidents',
+    'ms-map-title':'Carte interactive','ms-map-sub':'Équipements, plages et sites de Chetaïbi',
+    'ms-archive-title':'Archives Chetaïbi','ms-archive-sub':'Étapes historiques et photos d\'archives',
+    'ms-site-title':'Site officiel','ms-site-sub':'Version complète navigateur',
+    'setting-theme':'Apparence','theme-light':'Clair','theme-dark':'Sombre','setting-lang':'Langue',
+    'footer-rights':'Commune de Chetaïbi — © 2026 Tous droits réservés',
+    'footer-dev':'Développé par les compétences de la commune de Chetaïbi',
+    /* ديناميكي */
+    'loading':'Chargement...','show-map':'Voir sur la carte',
+    'news-cats':{'official':'Annonces officielles','activity':'Activités municipales','social':'Communauté','poster':'Affiches'},
+    'guide-cats':{'admin-branches':'Annexes admin.','education':'Enseignement','health':'Santé','public-bodies':'Organismes','religious':'Religieux','cultural':'Culturel','sports':'Sports'},
+    'supervised':'Surveillée','unsupervised':'Non surveillée','sandy':'Sableux','rocky':'Rocheux',
+    'map-filter-all':'Tout','map-filter-fac':'Équipements','map-filter-beach':'Plages','map-filter-tour':'Sites',
+    'day-names':['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
+    'today':'Aujourd\'hui','view-details':'Voir détails',
+    'no-data':'Aucune donnée','error-load':'Chargement échoué',
+    'mayors-title':'Présidents de l\'APC','mayors-sub':'Registre historique des présidents depuis la création',
+    'read-more':'Lire la suite',
+    'sea-calm':'Calme','sea-mostly-calm':'Assez calme','sea-moderate':'Modérée','sea-rough':'Agitée','sea-stormy':'Tempétueuse',
+  }
+};
+function t(key){var d=_I18N[_curLang]||_I18N.ar;return(d[key]!==undefined?d[key]:(_I18N.ar[key]||key));}
+function applyI18n(){
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var key=el.getAttribute('data-i18n');
+    var val=t(key);
+    if(typeof val==='string'){
+      /* نحافظ على iconify-icon إن وجد */
+      var icons=el.querySelectorAll('iconify-icon');
+      if(icons.length){
+        /* نُحدّث نص العنصر مع الحفاظ على الأيقونات */
+        var first=el.childNodes[0];
+        if(first&&first.nodeType===3)first.textContent=val;
+        else el.insertBefore(document.createTextNode(val),el.firstChild);
+      } else {
+        el.textContent=val;
+      }
+    }
+  });
+  /* تحديث عنوان الصفحة */
+  document.title=_curLang==='fr'?'Chetaïbi':'شطايبي';
+  /* تحديث html lang/dir */
+  document.documentElement.lang=_curLang;
+  document.documentElement.dir=_curLang==='fr'?'ltr':'rtl';
+  /* تحديث ann-card direction */
+  document.querySelectorAll('.ann-card').forEach(function(c){c.style.direction=_curLang==='fr'?'ltr':'rtl';});
+}
 function setLang(lang){
   _curLang=lang;
   localStorage.setItem('app-lang',lang);
-  /* تحديث أزرار اللغة */
+  C={}; /* مسح الكاش عند تغيير اللغة */
   var ar=document.getElementById('lang-ar-btn');
   var fr=document.getElementById('lang-fr-btn');
   if(ar)ar.classList.toggle('active',lang==='ar');
   if(fr)fr.classList.toggle('active',lang==='fr');
-  /* تغيير اتجاه الصفحة */
-  document.documentElement.dir=lang==='fr'?'ltr':'rtl';
-  document.documentElement.lang=lang;
+  applyI18n();
   haptic('light');
-  /* إعادة تحميل البيانات بالغة الجديدة */
+  /* إعادة تحميل المحتوى الديناميكي */
   allNews=[];_svcData=null;
   if(curTab==='news')loadNewsScreen();
   else if(curTab==='home')loadHome();
+  else if(curTab==='services')loadServices(document.querySelector('#screen-services .seg-btn.active')?.getAttribute('data-type')||'service');
+  else if(curTab==='guide')loadFacTab(facCat,document.querySelector('#screen-guide .seg-btn.active'));
+  else if(curTab==='archive')loadArchiveTab(archTab);
 }
 
 /* تطبيق الإعدادات المحفوظة عند التحميل */
 (function(){
   if(_curTheme==='dark')setTheme('dark');
-  if(_curLang==='fr')setLang('fr');
+  if(_curLang==='fr'){
+    document.documentElement.dir='ltr';
+    document.documentElement.lang='fr';
+  }
+  /* applyI18n بعد DOM */
+  document.addEventListener('DOMContentLoaded',function(){applyI18n();});
 })();
 /* ══ INIT ══ */
 window.addEventListener('load',function(){
   try{applyHeaderHeight();}catch(e){}
   window.addEventListener('resize',applyHeaderHeight);
+  applyI18n();
   try{MoreSheet.init();}catch(e){console.error('MoreSheet.init error:',e);}
   try{Search.init();}catch(e){console.error('Search.init error:',e);}
   try{initEventDelegation();}catch(e){console.error('initEventDelegation error:',e);}
