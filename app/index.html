@@ -1881,7 +1881,7 @@ window._debugWeather=async function(){try{var r=await fetch('https://api.open-me
 window._debugSea=async function(){try{var r=await fetch('https://marine-api.open-meteo.com/v1/marine?latitude='+PWA_LAT+'&longitude='+PWA_LON+'&current=wave_height,wave_direction,sea_surface_temperature&daily=wave_height_max,wave_direction_dominant,sea_surface_temperature_max&timezone=Africa%2FAlgiers&forecast_days=5');var t=await r.text();}catch(e){console.error('Sea error:',e);}};
 /* ══ WEATHER + SEA — 5 days ══ */
 var _wDays=[],_sDays=[],_wIdx=0,_sIdx=0;
-var _WM={0:{d:'☀️',n:'🌕',ar:'الجو صافٍ'},1:{d:'🌤️',n:'🌙',ar:'غائم خفيف'},2:{d:'⛅',n:'🌥️',ar:'غائم جزئياً'},3:{d:'☁️',n:'☁️',ar:'غائم'},45:{d:'🌫️',n:'🌫️',ar:'ضبابي'},48:{d:'🌫️',n:'🌫️',ar:'ضبابي'},51:{d:'🌦️',n:'🌧️',ar:'رذاذ'},53:{d:'🌦️',n:'🌧️',ar:'رذاذ'},61:{d:'🌧️',n:'🌧️',ar:'ممطر'},63:{d:'🌧️',n:'🌧️',ar:'مطر'},65:{d:'🌧️',n:'🌧️',ar:'مطر غزير'},80:{d:'🌦️',n:'🌧️',ar:'زخات'},81:{d:'🌧️',n:'🌧️',ar:'زخات'},95:{d:'⛈️',n:'⛈️',ar:'عاصفة'}};
+var _WM={0:{d:'☀️',n:'🌕',ar:'الجو صافٍ',fr:'Ciel dégagé'},1:{d:'🌤️',n:'🌙',ar:'غائم خفيف',fr:'Légèrement nuageux'},2:{d:'⛅',n:'🌥️',ar:'غائم جزئياً',fr:'Partiellement nuageux'},3:{d:'☁️',n:'☁️',ar:'غائم',fr:'Nuageux'},45:{d:'🌫️',n:'🌫️',ar:'ضبابي',fr:'Brouillard'},48:{d:'🌫️',n:'🌫️',ar:'ضبابي',fr:'Brouillard'},51:{d:'🌦️',n:'🌧️',ar:'رذاذ',fr:'Bruine'},53:{d:'🌦️',n:'🌧️',ar:'رذاذ',fr:'Bruine'},61:{d:'🌧️',n:'🌧️',ar:'ممطر',fr:'Pluvieux'},63:{d:'🌧️',n:'🌧️',ar:'مطر',fr:'Pluie'},65:{d:'🌧️',n:'🌧️',ar:'مطر غزير',fr:'Forte pluie'},80:{d:'🌦️',n:'🌧️',ar:'زخات',fr:'Averses'},81:{d:'🌧️',n:'🌧️',ar:'زخات',fr:'Averses'},95:{d:'⛈️',n:'⛈️',ar:'عاصفة'}};
 var _DN=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
 function _getDN(i){var days=t('day-names');return Array.isArray(days)?days[i]:_DN[i];}
 function _getToday(){return t('today')||'اليوم';}
@@ -1892,7 +1892,7 @@ function _g(id){return document.getElementById(id);}
 function renderWeatherDay(i){
   _wIdx=i;
   var d=_wDays[i];if(!d)return;
-  var w=_WM[d.code]||{d:'🌡️',n:'🌙',ar:'متغير'};
+  var w=_WM[d.code]||{d:'🌡️',n:'🌙',ar:'متغير',fr:'Variable'};
   var hi=_g('pwa-weather-header-icon'),hb=_g('pwa-weather-icon-bg');
   var isDark=document.documentElement.getAttribute('data-theme')==='dark';
   if(i===0&&hi&&hb){if(d.isDay){hi.setAttribute('icon','lucide:sun');hi.style.color='#f59e0b';hb.style.background=isDark?'rgba(245,158,11,0.15)':'#fef3c7';}
@@ -1900,7 +1900,7 @@ function renderWeatherDay(i){
   else if(hi&&hb){hi.setAttribute('icon','lucide:calendar-days');hi.style.color='#60a5fa';hb.style.background=isDark?'rgba(96,165,250,0.15)':'#dbeafe';}
   if(_g('pwa-weather-icon'))_g('pwa-weather-icon').textContent=d.isDay?w.d:w.n;
   if(_g('pwa-weather-temp'))_g('pwa-weather-temp').textContent=Math.round(d.temp)+'°';
-  if(_g('pwa-weather-desc'))_g('pwa-weather-desc').textContent=w.ar;
+  if(_g('pwa-weather-desc'))_g('pwa-weather-desc').textContent=_curLang==='fr'?(w.fr||w.ar):w.ar;
   if(_g('pwa-weather-hum'))_g('pwa-weather-hum').textContent=d.hum+'%';
   if(_g('pwa-weather-wind'))_g('pwa-weather-wind').textContent=Math.round(d.wind)+' كم/س';
   if(_g('pwa-weather-max'))_g('pwa-weather-max').textContent=Math.round(d.tmax)+'°';
@@ -2714,13 +2714,13 @@ function renderServices(items){
 }
 async function loadServices(type){
   var el=document.getElementById('svc-list');
-  if(el)el.innerHTML='<div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span>\u062c\u0627\u0631\u064a \u0627\u0644\u062a\u062d\u0645\u064a\u0644</span></div>';
+  if(el)el.innerHTML='<div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span>'+t('loading')+'</span></div>';
   try{
     var d=await api('/api/services');
     _allServices=d.data||[];
     filterServices(type,document.getElementById('svc-btn-service'));
   }catch(e){
-    if(el)el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>\u062a\u0639\u0630\u0631 \u062a\u062d\u0645\u064a\u0644 \u0627\u0644\u062e\u062f\u0645\u0627\u062a</p></div>';
+    if(el)el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>'+t('error-load')+'</p></div>';
   }
 }
 /* ══ THEME & LANG ══ */
