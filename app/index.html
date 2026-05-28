@@ -811,7 +811,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               </span>
               <!-- ✅ تعديل 2: زر "الكل" في آخر المستجدات → يذهب لتصنيف "نشاطات" -->
               <button class="see-all-arrow-btn" id="btn-see-news-all">
-                <span>الكل</span>
+                <span data-i18n="btn-all">الكل</span>
                 <iconify-icon icon="lucide:chevron-left" style="font-size:16px;pointer-events:none;"></iconify-icon>
               </button>
             </div>
@@ -918,7 +918,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 <span data-i18n="section-tourism">معالم سياحية</span>
               </span>
               <!-- ✅ تعديل 4: "تصفح" → "الخريطة" مع أيقونة map-pin أخضر -->
-              <button class="see-all-arrow-btn" id="btn-see-tourism">الخريطة
+              <button class="see-all-arrow-btn" id="btn-see-tourism"><span data-i18n="nav-map">الخريطة</span>
                 <iconify-icon icon="lucide:map" style="font-size:16px;color:var(--green);pointer-events:none;"></iconify-icon>
               </button>
             </div>
@@ -1018,7 +1018,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         <div style="position:relative;">
           <button id="map-filter-btn">
             <iconify-icon id="filter-btn-icon" icon="lucide:layers"></iconify-icon>
-            <span id="filter-btn-label">الكل</span>
+            <span id="filter-btn-label" data-i18n="map-filter-all">الكل</span>
             <iconify-icon id="filter-btn-arrow" icon="lucide:chevron-down"></iconify-icon>
           </button>
           <div id="map-filter-menu">
@@ -1040,7 +1040,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           <div id="map-card-name" class="map-popup-name"></div>
           <div class="map-popup-divider"></div>
           <div class="map-popup-desc-wrap" id="map-popup-desc-wrap"><div id="map-card-desc" class="map-popup-desc"></div></div>
-          <button class="map-popup-action" id="map-popup-action-btn"><iconify-icon icon="lucide:info"></iconify-icon>عرض التفاصيل</button>
+          <button class="map-popup-action" id="map-popup-action-btn"><iconify-icon icon="lucide:info"></iconify-icon><span data-i18n="view-details">عرض التفاصيل</span></button>
         </div>
       </div>
     </div>
@@ -1647,7 +1647,11 @@ function selectMapFilter(type,el){
   document.querySelectorAll('.mf-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');
   var cfg=FILTER_CFG[type];
   document.getElementById('filter-btn-icon').setAttribute('icon',cfg.icon);
-  document.getElementById('filter-btn-label').textContent=cfg.labelFull;
+  var fbEl=document.getElementById('filter-btn-label');
+  if(fbEl){
+    var labelKey='map-filter-'+(catKey||'all');
+    fbEl.textContent=t(labelKey)||cfg.labelFull;
+  }
   document.getElementById('map-filter-btn').classList.toggle('filter-active',type!=='all');
   activeMapFilter=type;
   if(appMap){
@@ -1722,7 +1726,7 @@ function makeNewsCard(n,showTitle){
       +'<div class="ann-card-divider"></div>'
       +'<div class="ann-card-footer">'+dateHtml
       +'<button class="ann-card-btn" data-news-id="'+n.id+'"'
-      +' style="background:'+c.btnBg+';color:'+c.btnColor+';">اقرأ المزيد <iconify-icon icon="lucide:chevron-left" style="font-size:11px;pointer-events:none;color:'+c.icon+'"></iconify-icon></button>'
+      +' style="background:'+c.btnBg+';color:'+c.btnColor+';">'+t('read-more')+' <iconify-icon icon="lucide:chevron-left" style="font-size:11px;pointer-events:none;color:'+c.icon+'"></iconify-icon></button>'
       +'</div></div></div>';
   }
   /* بطاقة عادية لباقي التصنيفات */
@@ -2108,7 +2112,7 @@ function _annMoreContent(){
   return '<div class="ann-more-card-inner">'
     +'<div class="ann-more-card-icon"><iconify-icon icon="lucide:layout-list"></iconify-icon></div>'
     +'<button class="ann-card-btn ann-more-btn">'
-    +'تصفح المزيد من الإعلانات '
+    +(_curLang==='fr'?'Voir plus d\'annonces ':'تصفح المزيد من الإعلانات ')
     +'<iconify-icon icon="lucide:chevron-left" style="font-size:12px;pointer-events:none"></iconify-icon>'
     +'</button>'
     +'</div>'
@@ -2343,7 +2347,7 @@ function album(elId,albums){
   var el=document.getElementById(elId);var a=Array.isArray(albums)?albums:[];
   if(!a.length){el.innerHTML='';return;}
   var urls=a.map(function(x){return x.image_url;});
-  el.innerHTML='<div class="album-title"><iconify-icon icon="lucide:images" style="color:var(--green);pointer-events:none"></iconify-icon>معرض الصور ('+a.length+')</div><div class="album-grid">'+a.map(x=>'<img src="'+x.image_url+'" alt="" loading="lazy" data-lb="'+x.image_url+'" decoding="async">').join('')+'</div>';
+  el.innerHTML='<div class="album-title"><iconify-icon icon="lucide:images" style="color:var(--green);pointer-events:none"></iconify-icon>'+(t('gallery-label')||'معرض الصور')+' ('+a.length+')</div><div class="album-grid">'+a.map(x=>'<img src="'+x.image_url+'" alt="" loading="lazy" data-lb="'+x.image_url+'" decoding="async">').join('')+'</div>';
   el.querySelectorAll('.album-grid img[data-lb]').forEach(function(img){
     img.addEventListener('click',function(e){e.stopPropagation();openLightbox(this.getAttribute('data-lb'),urls);});
   });
@@ -2766,6 +2770,8 @@ var _I18N={
     'no-data':'لا توجد بيانات','error-load':'تعذر التحميل',
     'mayors-title':'رؤساء المجلس الشعبي البلدي','mayors-sub':'السجل التاريخي للرؤساء منذ التأسيس',
     'read-more':'اقرأ المزيد',
+    'gallery-label':'معرض الصور',
+    'btn-all':'الكل',
     'sea-calm':'هادئ','sea-mostly-calm':'هادئ نسبياً','sea-moderate':'متوسط','sea-rough':'متلاطم','sea-stormy':'عاصف',
   },
   fr:{
@@ -2794,6 +2800,8 @@ var _I18N={
     'no-data':'Aucune donnée','error-load':'Chargement échoué',
     'mayors-title':'Présidents de l\'APC','mayors-sub':'Registre historique des présidents depuis la création',
     'read-more':'Lire la suite',
+    'gallery-label':'Galerie photos',
+    'btn-all':'Tout',
     'sea-calm':'Calme','sea-mostly-calm':'Assez calme','sea-moderate':'Modérée','sea-rough':'Agitée','sea-stormy':'Tempétueuse',
   }
 };
