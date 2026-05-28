@@ -3050,32 +3050,55 @@ function applyI18n(){
 function setLang(lang){
   _curLang=lang;
   localStorage.setItem('app-lang',lang);
-  C={}; /* مسح الكاش عند تغيير اللغة */
+
+  /* مسح كل الكاش */
+  C={};
+  allNews=[];
+  _svcData=null;
+  _svcAppsData=null;
+  newsScreenLoaded=false;
+  _svcLoaded=false;
+  _mayorLoaded=false;
+  _mayorsList=[];
+  _annCarData=[];
+
+  /* تحديث أزرار اللغة */
   var ar=document.getElementById('lang-ar-btn');
   var fr=document.getElementById('lang-fr-btn');
   if(ar)ar.classList.toggle('active',lang==='ar');
   if(fr)fr.classList.toggle('active',lang==='fr');
-  /* تعديل حجم خط الهيدر حسب اللغة */
+
+  /* تحديث اتجاه الصفحة */
+  document.documentElement.lang=lang;
+  document.documentElement.dir=lang==='fr'?'ltr':'rtl';
+
+  /* تحديث حجم خط الهيدر */
   var h1=document.querySelector('.header-text h1');
   if(h1)h1.style.fontSize=lang==='fr'?'13.5px':'18px';
   var hp=document.querySelector('.header-text p');
   if(hp)hp.style.fontSize=lang==='fr'?'10.5px':'12.5px';
+
+  /* تطبيق ترجمات data-i18n */
   applyI18n();
-  haptic('light');
-  /* مسح الكاش وإعادة تحميل المحتوى */
-  allNews=[];_svcData=null;_svcAppsData=null;
-  newsScreenLoaded=false;
+
   /* إعادة تحميل الصفحة الحالية */
   if(curTab==='news')loadNewsScreen();
   else if(curTab==='home')loadHome();
-  else if(curTab==='services'){var st=document.querySelector('#screen-services .seg-btn.active');loadServices(st?st.getAttribute('data-type'):'service');}
+  else if(curTab==='services'){
+    var st=document.querySelector('#screen-services .seg-btn.active');
+    loadServices(st?st.getAttribute('data-type'):'service');
+  }
   else if(curTab==='guide')loadFacTab(facCat,document.querySelector('#screen-guide .seg-btn.active'));
   else if(curTab==='archive')loadArchiveTab(archTab);
-  /* إعادة تعيين حالة التحميل حتى تُحمَّل الصفحات بلغة جديدة */
-  newsScreenLoaded=false;
-  _svcLoaded=false;
+  else loadHome();
+
+  /* إعادة تحميل الرئيسية دائماً (حتى لو كانت نشطة) */
+  if(curTab!=='home')loadHome();
+
   /* تحديث بطاقة الرئيس */
   syncMayorToSheet();
+
+  haptic('light');
 }
 
 /* تطبيق الإعدادات المحفوظة عند التحميل */
@@ -3084,15 +3107,21 @@ function setLang(lang){
   if(_curLang==='fr'){
     document.documentElement.dir='ltr';
     document.documentElement.lang='fr';
-    document.addEventListener('DOMContentLoaded',function(){
+  }
+  /* applyI18n بعد DOM */
+  document.addEventListener('DOMContentLoaded',function(){
+    applyI18n();
+    if(_curLang==='fr'){
       var h1=document.querySelector('.header-text h1');
       if(h1)h1.style.fontSize='13.5px';
       var hp=document.querySelector('.header-text p');
       if(hp)hp.style.fontSize='10.5px';
-    });
-  }
-  /* applyI18n بعد DOM */
-  document.addEventListener('DOMContentLoaded',function(){applyI18n();});
+      var arBtn=document.getElementById('lang-ar-btn');
+      var frBtn=document.getElementById('lang-fr-btn');
+      if(arBtn)arBtn.classList.remove('active');
+      if(frBtn)frBtn.classList.add('active');
+    }
+  });
 })();
 /* ══ INIT ══ */
 window.addEventListener('load',function(){
