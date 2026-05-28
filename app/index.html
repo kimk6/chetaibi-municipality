@@ -990,11 +990,11 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 <div class="ws-tabs">
                   <button class="ws-tab active" id="ws-tab-weather" onclick="switchWsTab('weather')">
                     <iconify-icon icon="lucide:sun" style="font-size:14px;pointer-events:none"></iconify-icon>
-                    حالة الطقس
+                    <span data-i18n="ws-tab-weather">حالة الطقس</span>
                   </button>
                   <button class="ws-tab" id="ws-tab-sea" onclick="switchWsTab('sea')">
                     <iconify-icon icon="lucide:waves" style="font-size:14px;pointer-events:none"></iconify-icon>
-                    حالة البحر
+                    <span data-i18n="ws-tab-sea">حالة البحر</span>
                   </button>
                 </div>
                 <!-- محتوى الطقس -->
@@ -2064,7 +2064,7 @@ function renderWeatherDay(i){
   if(_g('pwa-weather-temp'))_g('pwa-weather-temp').textContent=Math.round(d.temp)+'°';
   if(_g('pwa-weather-desc'))_g('pwa-weather-desc').textContent=_curLang==='fr'?(w.fr||w.ar):w.ar;
   if(_g('pwa-weather-hum'))_g('pwa-weather-hum').textContent=d.hum+'%';
-  if(_g('pwa-weather-wind'))_g('pwa-weather-wind').textContent=Math.round(d.wind)+' كم/س';
+  if(_g('pwa-weather-wind'))_g('pwa-weather-wind').textContent=Math.round(d.wind)+' '+t('weather-wind-label');
   if(_g('pwa-weather-max'))_g('pwa-weather-max').textContent=Math.round(d.tmax)+'°';
   if(_g('pwa-weather-min'))_g('pwa-weather-min').textContent=Math.round(d.tmin)+'°';
   var tl=_g('pwa-weather-time-label');if(tl)tl.textContent=i===0?t('weather-location'):d.label;
@@ -2112,12 +2112,13 @@ async function fetchPWAWeather(){
   }
 }
 function _seaLabel(v,isDay){
-  if(v<0.3)return{si:'🌊',st:'هادئ جداً',sd:isDay?'مناسب للسباحة':'مناسب للصيد الليلي'};
-  if(v<0.6)return{si:'🎣',st:'هادئ',sd:isDay?'مناسب للسباحة والصيد':'مناسب للصيد الليلي'};
-  if(v<1.0)return{si:'🎣',st:'هادئ نسبياً',sd:'مناسب للصيد'};
-  if(v<1.5)return{si:'⚠️',st:'معتدل',sd:'حذر عند الخروج'};
-  if(v<2.5)return{si:'⚠️',st:'مضطرب',sd:'يُنصح بالحذر'};
-  return{si:'🔴',st:'عاصف',sd:'يُمنع الخروج'};
+  var tips=t('sea-tips')||{};var states=t('sea-states')||{};
+  if(v<0.3)return{si:'🌊',st:states.calm||'هادئ جداً',sd:isDay?(tips.calm_day||'مناسب للسباحة'):(tips.calm_night||'مناسب للصيد الليلي')};
+  if(v<0.6)return{si:'🎣',st:states.calm||'هادئ',sd:isDay?(tips.calm_day||'مناسب للسباحة والصيد'):(tips.calm_night||'مناسب للصيد الليلي')};
+  if(v<1.0)return{si:'🎣',st:states.mostly_calm||'هادئ نسبياً',sd:tips.mostly_calm_day||'مناسب للصيد'};
+  if(v<1.5)return{si:'⚠️',st:states.moderate||'معتدل',sd:isDay?(tips.moderate_day||'حذر عند الخروج'):(tips.moderate_night||'حذر')};
+  if(v<2.5)return{si:'⚠️',st:states.rough||'مضطرب',sd:tips.rough||'يُنصح بالحذر'};
+  return{si:'🔴',st:states.stormy||'عاصف',sd:tips.stormy||'يُمنع الخروج'};
 }
 function renderSeaDay(i){
   _sIdx=i;
@@ -2126,11 +2127,11 @@ function renderSeaDay(i){
   if(_g('pwa-sea-icon'))_g('pwa-sea-icon').textContent=lb.si;
   if(_g('pwa-sea-state'))_g('pwa-sea-state').textContent=lb.st;
   if(_g('pwa-sea-desc'))_g('pwa-sea-desc').textContent=lb.sd;
-  if(_g('pwa-sea-wave'))_g('pwa-sea-wave').textContent=d.wave.toFixed(1)+' م';
+  if(_g('pwa-sea-wave'))_g('pwa-sea-wave').textContent=d.wave.toFixed(1)+' '+t('sea-wave-unit');
   if(_g('pwa-sea-dir'))_g('pwa-sea-dir').textContent=d.dir;
   if(_g('pwa-sea-water-temp'))_g('pwa-sea-water-temp').textContent=d.sst?d.sst.toFixed(1)+'°C':'--';
   var sub=_g('sea-subtitle');
-  if(sub)sub.textContent=d.isDay?'للصيادين والسباحين':'للسياح';
+  if(sub)sub.textContent=d.isDay?t('sea-daytime'):t('sea-nighttime');
   var tabs=_g('sea-day-tabs');if(!tabs)return;
   tabs.querySelectorAll('button').forEach(function(b,j){b.style.background=j===i?'#3b83f6':'#eff6ff';b.style.color=j===i?'#fff':'#3b83f6';b.style.borderColor=j===i?'#3b83f6':'rgba(59,131,246,0.3)';b.style.fontWeight=j===i?'800':'700';});
 }
@@ -2142,7 +2143,9 @@ async function fetchPWASea(){
     if(d.error)throw new Error(d.reason||'API error');
     var cu=d.current;var dl=d.daily;
     if(!cu||cu.wave_height==null){if(_g('pwa-sea-state'))_g('pwa-sea-state').textContent='--';return;}
-    var dirs=['شمال','شمال شرق','شرق','جنوب شرق','جنوب','جنوب غرب','غرب','شمال غرب'];var now=new Date();
+    var dirs=_curLang==='fr'
+      ?['N','NE','E','SE','S','SO','O','NO']
+      :['شمال','شمال شرق','شرق','جنوب شرق','جنوب','جنوب غرب','غرب','شمال غرب'];var now=new Date();
     _sDays=[];
     for(var i=0;i<Math.min(5,dl.time.length);i++){
       var dt=new Date(dl.time[i]+'T12:00:00');var h=i===0?now.getHours():12;
@@ -2494,7 +2497,7 @@ function makeFacCard(f,m,tab){
   var fname=_f(f,'name')||f.name||'';
   var fdesc=_f(f,'description')||f.description||'';
   var img=f.image_url?'<img class="fac-card-img" src="'+f.image_url+'" alt="" decoding="async">':'<div class="fac-card-ph" style="background:'+m.bg+'"><iconify-icon icon="'+m.icon+'" style="color:'+m.color+';font-size:1.8rem;pointer-events:none"></iconify-icon></div>';
-  return '<div class="fac-card fade-in" data-fac-id="'+f.id+'" data-fac-tab="'+tab+'">'+img+'<div class="fac-card-body">'+(f.sub_type?'<span class="fac-card-badge" style="background:'+m.bg+';color:'+m.color+'">'+f.sub_type+'</span>':'')+'<div class="fac-card-name">'+fname+'</div>'+(fdesc?'<div class="fac-card-desc">'+fdesc+'</div>':'')+'</div><iconify-icon icon="lucide:chevron-left" style="font-size:18px;color:var(--muted);padding-left:12px;flex-shrink:0;pointer-events:none"></iconify-icon></div>';
+  return '<div class="fac-card fade-in" data-fac-id="'+f.id+'" data-fac-tab="'+tab+'">'+img+'<div class="fac-card-body">'+(f.sub_type?'<span class="fac-card-badge" style="background:'+m.bg+';color:'+m.color+'">'+(_f(f,'sub_type')||f.sub_type)+'</span>':'')+'<div class="fac-card-name">'+fname+'</div>'+(fdesc?'<div class="fac-card-desc">'+fdesc+'</div>':'')+'</div><iconify-icon icon="lucide:chevron-left" style="font-size:18px;color:var(--muted);padding-left:12px;flex-shrink:0;pointer-events:none"></iconify-icon></div>';
 }
 /* ══ MODALS ══ */
 function om(id){document.getElementById(id).classList.add('open');}
@@ -2618,11 +2621,16 @@ async function openFacModal(id,tab){
     var img=document.getElementById('mf-img');
     if(f.image_url){img.src=f.image_url;img.style.display='block';}else img.style.display='none';
     var badgeEl=document.getElementById('mf-badge');
-    if(f.sub_type){badgeEl.textContent=f.sub_type;badgeEl.style.cssText='background:'+m.bg+';color:'+m.color+';display:inline-block';}else badgeEl.style.display='none';
+    var badgeEl=document.getElementById('mf-badge');
+    if(f.sub_type){
+      var subTrans=_f(f,'sub_type')||f.sub_type;
+      badgeEl.textContent=subTrans;badgeEl.style.cssText='background:'+m.bg+';color:'+m.color+';display:inline-block';
+    }else badgeEl.style.display='none';
     document.getElementById('mf-name').textContent=_f(f,'name')||'';
     document.getElementById('mf-desc').textContent=_f(f,'description')||'';
-    var tags=Array.isArray(f.tags)?f.tags:[];
-    document.getElementById('mf-meta').innerHTML=tags.map(tg=>'<span class="modal-chip">#'+tg+'</span>').join('');
+    var tags=Array.isArray(f.tags)?f.tags:(typeof f.tags==='string'&&f.tags?f.tags.split(',').map(function(s){return s.trim();}):[])||[];
+    var tagsLabel=tags.length?'<div style="font-size:11px;color:var(--muted);font-weight:700;margin-bottom:4px">'+t('fac-tags-label')+'</div>':'';
+    document.getElementById('mf-meta').innerHTML=tagsLabel+tags.map(function(tg){return '<span class="modal-chip">#'+tg+'</span>';}).join('');
     _makeMapBtn(f.lat,f.lng,f.name||'','mf-map-btn-wrap');
     var albums=[];
     if(Array.isArray(f.albums)&&f.albums.length){albums=f.albums.map(x=>typeof x==='string'?{id:x,image_url:x,caption:''}:x);}
@@ -2861,11 +2869,11 @@ function renderServices(items){
     var formLinks=[];try{formLinks=JSON.parse(s.form_links||'[]');}catch(e){}
     var name=_f(s,'service_name')||s.service_name||'';
     var desc=_f(s,'description')||s.description||'';
-    var docsHtml=docs.length?'<div class="svc-card-docs"><div class="svc-card-docs-title"><iconify-icon icon="lucide:file-check-2" style="color:var(--green);font-size:14px"></iconify-icon>'+(_curLang==='fr'?'Documents requis':'الوثائق المطلوبة')+'</div>'
+    var docsHtml=docs.length?'<div class="svc-card-docs"><div class="svc-card-docs-title"><iconify-icon icon="lucide:file-check-2" style="color:var(--green);font-size:14px"></iconify-icon>'+t('svc-docs-title')+'</div>'
       +docs.map(function(d){return '<div class="svc-card-doc-item"><div class="svc-card-doc-check">\u2713</div><span>'+d+'</span></div>';}).join('')+'</div>':'';
     var formsHtml=formLinks.length?'<div class="svc-card-forms">'
-      +formLinks.map(function(f,i){return '<a href="'+(f.url||f)+'" target="_blank" rel="noopener" class="svc-card-form-link" style="background:'+c.bg+';color:'+c.fg+'"><iconify-icon icon="lucide:download" style="font-size:14px;pointer-events:none"></iconify-icon>'+(f.label||(_curLang==='fr'?'Formulaire '+(i+1):'\u0627\u0633\u062a\u0645\u0627\u0631\u0629 '+(i+1)))+'</a>';}).join('')+'</div>':'';
-    var btnHtml=s.direct_link?'<div class="svc-card-footer"><a href="'+s.direct_link+'" target="_blank" rel="noopener" class="svc-card-btn" style="background:'+c.fg+';color:#fff"><iconify-icon icon="'+(isApp?'lucide:smartphone':'lucide:external-link')+'" style="pointer-events:none"></iconify-icon>'+(isApp?t('svc-action-app'):t('svc-action-service'))+'</a></div>':'';
+      +formLinks.map(function(f,i){return '<a href="'+(f.url||f)+'" target="_blank" rel="noopener" class="svc-card-form-link" style="background:'+c.bg+';color:'+c.fg+'"><iconify-icon icon="lucide:download" style="font-size:14px;pointer-events:none"></iconify-icon>'+(f.label||((_curLang==='fr'?'Formulaire ':'استمارة ')+(i+1)))+'</a>';}).join('')+'</div>':'';
+    var btnHtml=s.direct_link?'<div class="svc-card-footer"><a href="'+s.direct_link+'" target="_blank" rel="noopener" class="svc-card-btn" style="background:'+c.fg+';color:#fff"><iconify-icon icon="'+(isApp?'lucide:smartphone':'lucide:external-link')+'" style="pointer-events:none"></iconify-icon>'+(isApp?t('svc-download'):t('svc-access'))+'</a></div>':'';
     return '<div class="svc-card">'
       +'<div class="svc-card-header"><div class="svc-card-icon" style="background:'+c.bg+'"><iconify-icon icon="lucide:'+(s.icon||'file-text')+'" style="color:'+c.fg+';pointer-events:none"></iconify-icon></div>'
       +'<div class="svc-card-name">'+name+'</div></div>'
@@ -2921,7 +2929,6 @@ var _I18N={
     'setting-theme':'المظهر','theme-light':'فاتح','theme-dark':'داكن','setting-lang':'اللغة',
     'footer-rights':'بلدية شطايبي - © 2026 جميع الحقوق محفوظة',
     'footer-dev':'تم التطوير بجهود كفاءات بلدية شطايبي',
-    /* ديناميكي */
     'loading':'جاري التحميل','show-map':'عرض على الخريطة',
     'news-cats':{'official':'إعلانات رسمية','activity':'نشاطات بلدية','social':'مجتمع','poster':'الملصقات'},
     'guide-cats':{'admin-branches':'الفروع الإدارية','education':'التعليم','health':'الصحة','public-bodies':'الهيئات','religious':'الدينية','cultural':'الثقافية','sports':'الرياضية'},
@@ -2932,18 +2939,33 @@ var _I18N={
     'no-data':'لا توجد بيانات','error-load':'تعذر التحميل',
     'mayors-title':'رؤساء المجلس الشعبي البلدي','mayors-sub':'السجل التاريخي للرؤساء منذ التأسيس',
     'read-more':'اقرأ المزيد','load-more':'عرض المزيد','pinned':'مثبت',
-    'gallery-label':'معرض الصور',
-    'btn-all':'الكل',
+    'gallery-label':'معرض الصور','btn-all':'الكل',
     'sea-calm':'هادئ','sea-mostly-calm':'هادئ نسبياً','sea-moderate':'متوسط','sea-rough':'متلاطم','sea-stormy':'عاصف',
-    'search-placeholder':'اكتب للبحث في شطايبي',
-    'search-no-results':'لا توجد نتائج لـ',
+    'search-placeholder':'اكتب للبحث في شطايبي','search-no-results':'لا توجد نتائج لـ',
     'no-images':'لا توجد صور','no-news':'لا توجد أخبار','no-items':'لا توجد عناصر',
     'no-services':'لا توجد خدمات','no-data-mayors':'لا توجد بيانات',
-    'weather-location':'شطايبي — عنابة',
-    'read-more-btn':'اقرأ المزيد',
+    'weather-location':'شطايبي — عنابة','read-more-btn':'اقرأ المزيد',
     'svc-btn-service':'خدمات','svc-btn-app':'تطبيقات',
     'svc-action-service':'الوصول للخدمة','svc-action-app':'تحميل التطبيق',
     'map-municipality':'مقر بلدية شطايبي','map-municipality-desc':'المقر الرئيسي لبلدية شطايبي - ولاية عنابة','map-municipality-label':'بلدية',
+    /* ── طقس ── */
+    'weather-wind-label':'كم/س','weather-humidity-label':'رطوبة','weather-feels':'يشعر كـ',
+    'weather-max':'أعلى','weather-min':'أدنى','weather-today':'شطايبي — اليوم',
+    'ws-tab-weather':'أحوال الطقس','ws-tab-sea':'أحوال البحر',
+    /* ── بحر ── */
+    'sea-wave-label':'ارتفاع الموج','sea-wave-unit':'م',
+    'sea-temp-label':'حرارة الماء','sea-dir-label':'الاتجاه',
+    'sea-states':{'calm':'هادئ','mostly_calm':'هادئ نسبياً','moderate':'معتدل','rough':'مضطرب','stormy':'عاصف'},
+    'sea-tips':{'calm_day':'البحر هادئ — مناسب للسباحة','calm_night':'البحر هادئ — مناسب للصيد','mostly_calm_day':'هادئ نسبياً — مناسب','mostly_calm_night':'هادئ — مناسب للصيد','moderate_day':'معتدل — توخ الحذر','moderate_night':'معتدل — حذر للصيادين','rough':'مضطرب — يُنصح بالحذر','stormy':'عاصف — يُمنع الخروج'},
+    'sea-daytime':'للسياح والسباحين','sea-nighttime':'للصيادين الليليين',
+    /* ── خدمات ── */
+    'svc-docs-title':'الوثائق المطلوبة','svc-forms-title':'الاستمارات',
+    'svc-access':'الوصول للخدمة','svc-download':'تحميل التطبيق',
+    /* ── مرافق ── */
+    'fac-tags-label':'الكلمات الدلالية',
+    'fcat-labels':{'admin-branches':'فروع إدارية','education':'تعليم وتكوين','health':'صحية','public-bodies':'هيئات عمومية','religious':'دينية','cultural':'ثقافية','sports':'رياضية'},
+    /* ── الخبر ── */
+    'news-cat-official':'إعلانات','news-cat-activity':'نشاطات','news-cat-social':'مجتمع','news-cat-poster':'ملصقات',
   },
   fr:{
     'nav-home':'Accueil','nav-news':'Actualités','nav-guide':'Guide','nav-services':'Services','nav-more':'Plus','nav-map':'Carte',
@@ -2960,7 +2982,6 @@ var _I18N={
     'setting-theme':'Apparence','theme-light':'Clair','theme-dark':'Sombre','setting-lang':'Langue',
     'footer-rights':'Commune de Chetaïbi — © 2026 Tous droits réservés',
     'footer-dev':'Développé par les compétences de la commune de Chetaïbi',
-    /* ديناميكي */
     'loading':'Chargement...','show-map':'Voir sur la carte',
     'news-cats':{'official':'Annonces officielles','activity':'Activités municipales','social':'Communauté','poster':'Affiches'},
     'guide-cats':{'admin-branches':'Annexes admin.','education':'Enseignement','health':'Santé','public-bodies':'Organismes','religious':'Religieux','cultural':'Culturel','sports':'Sports'},
@@ -2971,18 +2992,33 @@ var _I18N={
     'no-data':'Aucune donnée','error-load':'Chargement échoué',
     'mayors-title':'Présidents de l\'APC','mayors-sub':'Registre historique des présidents depuis la création',
     'read-more':'Lire la suite','load-more':'Voir plus','pinned':'Épinglé',
-    'gallery-label':'Galerie photos',
-    'btn-all':'Tout',
+    'gallery-label':'Galerie photos','btn-all':'Tout',
     'sea-calm':'Calme','sea-mostly-calm':'Assez calme','sea-moderate':'Modérée','sea-rough':'Agitée','sea-stormy':'Tempétueuse',
-    'search-placeholder':'Rechercher à Chetaïbi',
-    'search-no-results':'Aucun résultat pour',
+    'search-placeholder':'Rechercher à Chetaïbi','search-no-results':'Aucun résultat pour',
     'no-images':'Aucune photo','no-news':'Aucune actualité','no-items':'Aucun élément',
     'no-services':'Aucun service','no-data-mayors':'Aucune donnée',
-    'weather-location':'Chetaïbi — Annaba',
-    'read-more-btn':'Lire la suite',
+    'weather-location':'Chetaïbi — Annaba','read-more-btn':'Lire la suite',
     'svc-btn-service':'Services','svc-btn-app':'Applications',
     'svc-action-service':'Accéder','svc-action-app':'Télécharger',
     'map-municipality':'Siège APC Chetaïbi','map-municipality-desc':'Siège principal de la commune de Chetaïbi — wilaya d\'Annaba','map-municipality-label':'Commune',
+    /* ── طقس ── */
+    'weather-wind-label':'km/h','weather-humidity-label':'Humidité','weather-feels':'Ressenti',
+    'weather-max':'Max','weather-min':'Min','weather-today':'Chetaïbi — Aujourd\'hui',
+    'ws-tab-weather':'Météo','ws-tab-sea':'État de la mer',
+    /* ── بحر ── */
+    'sea-wave-label':'Hauteur vagues','sea-wave-unit':'m',
+    'sea-temp-label':'Temp. eau','sea-dir-label':'Direction',
+    'sea-states':{'calm':'Calme','mostly_calm':'Assez calme','moderate':'Modéré','rough':'Agité','stormy':'Tempétueux'},
+    'sea-tips':{'calm_day':'Mer calme — Baignade possible','calm_night':'Mer calme — Pêche possible','mostly_calm_day':'Assez calme — Baignade possible','mostly_calm_night':'Assez calme — Pêche possible','moderate_day':'Modérée — Prudence','moderate_night':'Modérée — Prudence pêcheurs','rough':'Agitée — Prudence recommandée','stormy':'Tempétueuse — Interdit'},
+    'sea-daytime':'Touristes et baigneurs','sea-nighttime':'Pêcheurs nocturnes',
+    /* ── خدمات ── */
+    'svc-docs-title':'Documents requis','svc-forms-title':'Formulaires',
+    'svc-access':'Accéder au service','svc-download':'Télécharger l\'application',
+    /* ── مرافق ── */
+    'fac-tags-label':'Mots-clés',
+    'fcat-labels':{'admin-branches':'Annexes admin.','education':'Enseignement','health':'Santé','public-bodies':'Organismes','religious':'Religieux','cultural':'Culturel','sports':'Sports'},
+    /* ── خبر ── */
+    'news-cat-official':'Annonces','news-cat-activity':'Activités','news-cat-social':'Communauté','news-cat-poster':'Affiches',
   }
 };
 function t(key){var d=_I18N[_curLang]||_I18N.ar;return(d[key]!==undefined?d[key]:(_I18N.ar[key]||key));}
