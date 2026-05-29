@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#1C1E24" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="mobile-web-app-capable" content="yes">
@@ -91,7 +91,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 ══════════════════════════════════════════ */
 @keyframes sk-shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
 .sk{background:linear-gradient(90deg,var(--sk-base) 25%,var(--sk-shine) 50%,var(--sk-base) 75%);background-size:200% 100%;animation:sk-shimmer 1.4s ease infinite;border-radius:var(--r-xs);}
-.sk-ann-card{width:100%;background:var(--card);border-radius:20px;border:1px solid rgba(0,0,0,0.06);box-shadow:0 6px 20px rgba(0,0,0,0.13),0 2px 6px rgba(0,0,0,0.07);display:flex;flex-direction:column;align-items:center;padding:18px 16px;gap:10px;min-height:160px;justify-content:center;}
+.sk-ann-card{width:100%;background:var(--card);border-radius:var(--r-xl);border:1px solid rgba(0,0,0,0.06);box-shadow:0 6px 20px rgba(0,0,0,0.13),0 2px 6px rgba(0,0,0,0.07);display:flex;flex-direction:column;align-items:center;padding:18px 16px;gap:10px;min-height:160px;justify-content:center;}
 .sk-news-card{min-width:min(248px,72vw);max-width:288px;background:var(--card);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--elev-2);flex-shrink:0;border:1px solid rgba(0,0,0,.04);}
 .sk-news-img{width:100%;height:148px;}
 .sk-news-body{padding:12px 14px;}
@@ -99,7 +99,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .sk-line.w-full{width:100%;}.sk-line.w-3q{width:75%;}.sk-line.w-half{width:50%;}.sk-line.w-1q{width:25%;}
 .sk-news-footer{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-top:1px solid var(--border-light);}
 .sk-btn{height:30px;width:90px;border-radius:var(--r-full);}
-.sk-place-card{min-width:162px;max-width:162px;height:218px;border-radius:var(--r-lg);overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,0.13),0 2px 6px rgba(0,0,0,0.07);flex-shrink:0;}
+.sk-place-card{min-width:162px;max-width:162px;height:218px;border-radius:var(--r-xl);overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,0.13),0 2px 6px rgba(0,0,0,0.07);flex-shrink:0;}
 .sk-fac-card{background:var(--card);border-radius:var(--r-md);border:1px solid rgba(0,0,0,.04);box-shadow:var(--elev-2);margin:0 16px 12px;display:flex;align-items:center;min-height:84px;overflow:hidden;}
 .sk-fac-img{width:84px;height:84px;flex-shrink:0;border-radius:0;}
 .sk-fac-body{padding:14px;flex:1;}
@@ -494,8 +494,22 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 /* STATES */
 .loading{display:flex;align-items:center;justify-content:center;padding:48px 20px;gap:10px;color:var(--muted);font-size:13px;font-weight:600;}
 .loading iconify-icon{font-size:28px;animation:spin .8s linear infinite;}
+/* ══ PULL-TO-REFRESH ══ */
+.ptr-wrap{position:relative;}
+.ptr-indicator{
+  position:absolute;top:-56px;left:50%;transform:translateX(-50%);
+  width:40px;height:40px;border-radius:50%;
+  background:var(--card);box-shadow:0 2px 14px rgba(0,0,0,.14);
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none;z-index:20;
+  transition:opacity .18s,top .18s var(--ease-std);opacity:0;
+}
+.ptr-indicator.ptr-visible{opacity:1;}
+.ptr-indicator.ptr-loading iconify-icon{animation:spin .7s linear infinite;}
+.ptr-indicator iconify-icon{font-size:20px;color:var(--green);pointer-events:none;transition:transform .18s;}
+
 @keyframes spin{to{transform:rotate(360deg);}}
-.empty{text-align:center;padding:48px 24px;color:var(--muted);}
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:52px 24px 40px;color:var(--muted);gap:10px;}
 .empty iconify-icon{font-size:50px;opacity:.28;display:block;margin:0 auto 12px;}
 .empty p{font-size:13px;font-weight:600;color:var(--muted-2);}
 .fade-in{animation:fadeUp .18s var(--ease-enter) both;}
@@ -810,6 +824,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 </style>
 </head>
 <body>
+<a href="#screen-container" style="position:absolute;top:-40px;left:0;background:var(--green);color:#fff;padding:8px 16px;border-radius:0 0 8px 8px;font-size:13px;font-weight:700;z-index:9999;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-40px'">انتقل للمحتوى الرئيسي</a>
 <div id="app">
 
   <!-- FIXED HEADER -->
@@ -834,11 +849,12 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   </div>
 
   <!-- SCREENS -->
-  <div id="screen-container">
+  <main id="screen-container" role="main">
 
     <!-- HOME -->
     <div class="screen" id="screen-home">
       <div class="scroll-area" id="scroll-home">
+        <div class="ptr-indicator" id="ptr-home"><iconify-icon icon="lucide:refresh-cw"></iconify-icon></div>
         <div class="content-block">
 
           <div class="section" style="padding-top:20px">
@@ -982,6 +998,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     <!-- NEWS -->
     <div class="screen hidden" id="screen-news">
       <div class="scroll-area" id="scroll-news">
+        <div class="ptr-indicator" id="ptr-news"><iconify-icon icon="lucide:refresh-cw"></iconify-icon></div>
         <div class="content-block">
           <div class="seg-bar-wrap">
             <div class="seg-bar">
@@ -1024,6 +1041,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     <!-- SERVICES -->
     <div class="screen hidden" id="screen-services">
       <div class="scroll-area" id="scroll-services">
+        <div class="ptr-indicator" id="ptr-services"><iconify-icon icon="lucide:refresh-cw"></iconify-icon></div>
         <div class="content-block">
           <div class="seg-bar-wrap">
             <div class="seg-bar" style="justify-content:center;">
@@ -1093,39 +1111,39 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
       </div>
     </div>
 
-  </div><!-- end screen-container -->
+  </main><!-- end screen-container -->
 
   <!-- BOTTOM NAV -->
-  <nav id="bottom-nav">
-    <button class="nav-btn active" id="nav-home">
+  <nav id="bottom-nav" role="tablist" aria-label="التنقل الرئيسي">
+    <button class="nav-btn active" id="nav-home" aria-label="الرئيسية" aria-current="page" role="tab">
       <div class="nav-icon-wrap">
         <iconify-icon class="icon-off" icon="ph:house" style="font-size:24px"></iconify-icon>
         <iconify-icon class="icon-on" icon="ph:house-fill" style="font-size:24px"></iconify-icon>
       </div>
       <span data-i18n="nav-home">الرئيسية</span>
     </button>
-    <button class="nav-btn" id="nav-news">
+    <button class="nav-btn" id="nav-news" aria-label="الأخبار" role="tab">
       <div class="nav-icon-wrap">
         <iconify-icon class="icon-off" icon="ph:newspaper" style="font-size:24px"></iconify-icon>
         <iconify-icon class="icon-on" icon="ph:newspaper-fill" style="font-size:24px"></iconify-icon>
       </div>
       <span data-i18n="nav-news">الأخبار</span>
     </button>
-    <button class="nav-btn" id="nav-guide">
+    <button class="nav-btn" id="nav-guide" aria-label="الدليل" role="tab">
       <div class="nav-icon-wrap">
         <iconify-icon class="icon-off" icon="ph:map-pin" style="font-size:24px"></iconify-icon>
         <iconify-icon class="icon-on" icon="ph:map-pin-fill" style="font-size:24px"></iconify-icon>
       </div>
       <span data-i18n="nav-guide">الدليل</span>
     </button>
-    <button class="nav-btn" id="nav-services">
+    <button class="nav-btn" id="nav-services" aria-label="الخدمات" role="tab">
       <div class="nav-icon-wrap">
         <iconify-icon class="icon-off" icon="ph:file-text" style="font-size:24px"></iconify-icon>
         <iconify-icon class="icon-on" icon="ph:file-text-fill" style="font-size:24px"></iconify-icon>
       </div>
       <span data-i18n="nav-services">الخدمات</span>
     </button>
-    <button class="nav-btn" id="nav-more">
+    <button class="nav-btn" id="nav-more" aria-label="المزيد" role="tab" aria-haspopup="true">
       <div class="nav-icon-wrap">
         <iconify-icon class="icon-off" icon="ph:squares-four" style="font-size:24px"></iconify-icon>
         <iconify-icon class="icon-on" icon="ph:squares-four-fill" style="font-size:24px"></iconify-icon>
@@ -1223,7 +1241,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 </div>
 
 <!-- MODALS -->
-<div class="modal-overlay" id="m-news">
+<div class="modal-overlay" id="m-news" role="dialog" aria-modal="true" aria-label="تفاصيل الخبر">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
     <div id="mn-announce-view" style="display:none;position:relative"><div id="mn-announce-album"></div></div>
@@ -1240,7 +1258,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   </div>
 </div>
 
-<div class="modal-overlay" id="m-beach">
+<div class="modal-overlay" id="m-beach" role="dialog" aria-modal="true" aria-label="تفاصيل الشاطئ">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
     <img id="mb-img" class="modal-img" src="" style="display:none" decoding="async">
@@ -1254,7 +1272,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   </div>
 </div>
 
-<div class="modal-overlay" id="m-tour">
+<div class="modal-overlay" id="m-tour" role="dialog" aria-modal="true" aria-label="تفاصيل المعلم">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
     <div id="mt-sticker-view" style="display:none;position:relative">
@@ -1457,27 +1475,29 @@ function switchTab(t){
   var prevIdx=TAB_ORDER.indexOf(curTab);
   var nextIdx=TAB_ORDER.indexOf(t);
   var forward=(nextIdx>=0&&prevIdx>=0)?nextIdx>prevIdx:true;
-  var enterFrom=forward?'-100%':'100%';
-  var exitTo=forward?'100%':'-100%';
+  /* RTL/LTR: عكس الاتجاه حسب اللغة */
+  var isLTR=(document.documentElement.dir==='ltr');
+  var enterFrom=forward?(isLTR?'100%':'-100%'):(isLTR?'-100%':'100%');
+  var exitTo=forward?(isLTR?'-100%':'100%'):(isLTR?'100%':'-100%');
   var DUR=300,EASE='cubic-bezier(.4,0,.2,1)';
   var prev=curTab;
   if(prevEl){
     prevEl.style.transition='transform '+DUR+'ms '+EASE+',opacity '+DUR+'ms '+EASE;
-    prevEl.style.transform='translateX('+exitTo+') scale(.96)';
+    prevEl.style.transform='translateX('+exitTo+')';
     prevEl.style.opacity='0';
     setTimeout(function(){prevEl.classList.add('hidden');prevEl.style.cssText='';resetScroll('screen-'+prev);},DUR+20);
   }
   nextEl.classList.remove('hidden');
-  nextEl.style.cssText='transform:translateX('+enterFrom+') scale(.96);opacity:0;transition:none;';
+  nextEl.style.cssText='transform:translateX('+enterFrom+');opacity:0;transition:none;';
   requestAnimationFrame(function(){requestAnimationFrame(function(){
     nextEl.style.transition='transform '+DUR+'ms '+EASE+',opacity '+DUR+'ms '+EASE;
-    nextEl.style.transform='translateX(0) scale(1)';
+    nextEl.style.transform='translateX(0)';
     nextEl.style.opacity='1';
     setTimeout(function(){nextEl.style.cssText='';},DUR+20);
   });});
-  document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');b.removeAttribute('aria-current');});
   var nb=document.getElementById('nav-'+t);
-  if(nb)nb.classList.add('active');
+  if(nb){nb.classList.add('active');nb.setAttribute('aria-current','page');}
   curTab=t;
   resetHeaderState();
   if(t==='map'){
@@ -1875,7 +1895,7 @@ async function loadArchiveTab(tab){
     renderArchChunk(items,0);
   }catch(e){
     console.error('loadArchiveTab error:',e);
-    el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>'+t('error-load')+'</p></div>';
+    el.innerHTML='<div class="empty"><div style="font-size:48px;line-height:1;margin-bottom:4px">📡</div><p style="font-size:15px;font-weight:700;color:var(--text-2)">'+t('error-load')+'</p><p style="font-size:12px;color:var(--muted)">'+t('check-connection')+'</p></div>';
   }
 }
 /* ══ TIMELINE RENDER ══ */
@@ -1925,8 +1945,8 @@ async function syncMayorToSheet(){
 }
 async function loadHome(){loadHOfficial();loadHNews();loadMayorHome();loadHBeaches();loadHTourism();fetchPWAWeather();fetchPWASea();}
 var PWA_LAT=37.0850,PWA_LON=7.2550;
-window._debugWeather=async function(){try{var r=await fetch('https://api.open-meteo.com/v1/forecast?latitude='+PWA_LAT+'&longitude='+PWA_LON+'&current=temperature_2m,weather_code,is_day&daily=temperature_2m_max,temperature_2m_min,wind_speed_10m_max,precipitation_probability_max,weather_code&timezone=Africa%2FAlgiers&forecast_days=5');var t=await r.text();}catch(e){console.error('Weather error:',e);}};
-window._debugSea=async function(){try{var r=await fetch('https://marine-api.open-meteo.com/v1/marine?latitude='+PWA_LAT+'&longitude='+PWA_LON+'&current=wave_height,wave_direction,sea_surface_temperature&daily=wave_height_max,wave_direction_dominant,sea_surface_temperature_max&timezone=Africa%2FAlgiers&forecast_days=5');var t=await r.text();}catch(e){console.error('Sea error:',e);}};
+/* _debugWeather removed in production */
+/* _debugSea removed in production */
 /* ══ WEATHER + SEA — 5 days ══ */
 var _wDays=[],_sDays=[],_wIdx=0,_sIdx=0;
 var _WM={0:{d:'☀️',n:'🌕',ar:'الجو صافٍ',fr:'Ciel dégagé'},1:{d:'🌤️',n:'🌙',ar:'غائم خفيف',fr:'Légèrement nuageux'},2:{d:'⛅',n:'🌥️',ar:'غائم جزئياً',fr:'Partiellement nuageux'},3:{d:'☁️',n:'☁️',ar:'غائم',fr:'Nuageux'},45:{d:'🌫️',n:'🌫️',ar:'ضبابي',fr:'Brouillard'},48:{d:'🌫️',n:'🌫️',ar:'ضبابي',fr:'Brouillard'},51:{d:'🌦️',n:'🌧️',ar:'رذاذ',fr:'Bruine'},53:{d:'🌦️',n:'🌧️',ar:'رذاذ',fr:'Bruine'},61:{d:'🌧️',n:'🌧️',ar:'ممطر',fr:'Pluvieux'},63:{d:'🌧️',n:'🌧️',ar:'مطر',fr:'Pluie'},65:{d:'🌧️',n:'🌧️',ar:'مطر غزير',fr:'Forte pluie'},80:{d:'🌦️',n:'🌧️',ar:'زخات',fr:'Averses'},81:{d:'🌧️',n:'🌧️',ar:'زخات',fr:'Averses'},95:{d:'⛈️',n:'⛈️',ar:'عاصفة'}};
@@ -2305,7 +2325,7 @@ async function loadNewsScreen(){
     var activeCat=activeBtn?activeBtn.getAttribute('data-cat'):'official';
     newsScreenLoaded=true;
     renderNews(allNews.filter(n=>n.category===activeCat));
-  }catch(e){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>'+t('error-load')+'</p></div>';}
+  }catch(e){el.innerHTML='<div class="empty"><div style="font-size:48px;line-height:1;margin-bottom:4px">📡</div><p style="font-size:15px;font-weight:700;color:var(--text-2)">'+t('error-load')+'</p><p style="font-size:12px;color:var(--muted)">'+t('check-connection')+'</p></div>';}
 }
 function filterNews(cat,btn){
   haptic('light');
@@ -2318,7 +2338,7 @@ function renderNews(items,startIdx){
   var el=document.getElementById('news-list');
   startIdx=startIdx||0;
   var PAGE=8;
-  if(!startIdx&&!items.length){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>'+t('no-news')+'</p></div>';return;}
+  if(!startIdx&&!items.length){el.innerHTML='<div class="empty"><div style="font-size:52px;line-height:1;margin-bottom:4px">📭</div><p style="font-size:15px;font-weight:700;color:var(--text-2)">'+t('no-news')+'</p></div>';return;}
   var chunk=items.slice(startIdx,startIdx+PAGE);
   var html=chunk.map(function(n){
     var s=NS[n.category]||NS.official;var lbl=n.custom_label||s.lbl||'';
@@ -2377,7 +2397,7 @@ async function loadFacTab(tab,btn){
   if(C['/api/facilities?cat='+m.cat]){var items=C['/api/facilities?cat='+m.cat].data||[];el.innerHTML=items.length?items.map(f=>makeFacCard(f,m,tab)).join(''):'<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>'+t('no-items')+'</p></div>';return;}
   el.innerHTML='<div style="padding:8px 0">'+skFacCards(5)+'</div>';
   try{var d=await api('/api/facilities?cat='+m.cat);var items=d.data||[];el.innerHTML=items.length?items.map(f=>makeFacCard(f,m,tab)).join(''):'<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>'+t('no-items')+'</p></div>';}
-  catch(e){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>'+t('error-load')+'</p></div>';}
+  catch(e){el.innerHTML='<div class="empty"><div style="font-size:48px;line-height:1;margin-bottom:4px">📡</div><p style="font-size:15px;font-weight:700;color:var(--text-2)">'+t('error-load')+'</p><p style="font-size:12px;color:var(--muted)">'+t('check-connection')+'</p></div>';}
 }
 function makeFacCard(f,m,tab){
   var fname=_f(f,'name')||f.name||'';
@@ -2776,7 +2796,7 @@ async function loadServices(type){
     _allServices=d.data||[];
     filterServices(type,document.getElementById('svc-btn-service'));
   }catch(e){
-    if(el)el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>'+t('error-load')+'</p></div>';
+    if(el)el.innerHTML='<div class="empty"><div style="font-size:48px;line-height:1;margin-bottom:4px">📡</div><p style="font-size:15px;font-weight:700;color:var(--text-2)">'+t('error-load')+'</p><p style="font-size:12px;color:var(--muted)">'+t('check-connection')+'</p></div>';
   }
 }
 /* ══ THEME & LANG ══ */
@@ -2793,8 +2813,10 @@ function setTheme(theme){
   if(lb)lb.classList.toggle('active',theme==='light');
   if(db)db.classList.toggle('active',theme==='dark');
   /* theme-color */
-  var tm=document.querySelector('meta[name="theme-color"][media*="light"]');
-  if(tm)tm.content=theme==='dark'?'#1e293b':'#ffffff';
+  var tmLight=document.querySelector('meta[name="theme-color"][media*="light"]');
+  var tmDark=document.querySelector('meta[name="theme-color"][media*="dark"]');
+  if(tmLight)tmLight.content=theme==='dark'?'#1C1E24':'#ffffff';
+  if(tmDark)tmDark.content='#1C1E24';
   haptic('light');
 }
 
@@ -2822,7 +2844,7 @@ var _I18N={
     'map-filter-all':'الكل','map-filter-fac':'مرافق','map-filter-beach':'شواطئ','map-filter-tour':'معالم',
     'day-names':['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'],
     'today':'اليوم','view-details':'عرض التفاصيل',
-    'no-data':'لا توجد بيانات','error-load':'تعذر التحميل',
+    'no-data':'لا توجد بيانات','error-load':'تعذر التحميل','check-connection':'تحقق من الاتصال بالإنترنت',
     'mayors-title':'رؤساء المجلس الشعبي البلدي','mayors-sub':'السجل التاريخي للرؤساء منذ التأسيس',
     'read-more':'اقرأ المزيد','load-more':'عرض المزيد','pinned':'مثبت',
     'gallery-label':'معرض الصور','btn-all':'الكل',
@@ -2875,7 +2897,7 @@ var _I18N={
     'map-filter-all':'Tout','map-filter-fac':'Équipements','map-filter-beach':'Plages','map-filter-tour':'Sites',
     'day-names':['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
     'today':'Aujourd\'hui','view-details':'Voir détails',
-    'no-data':'Aucune donnée','error-load':'Chargement échoué',
+    'no-data':'Aucune donnée','error-load':'Chargement échoué','check-connection':'Vérifiez votre connexion internet',
     'mayors-title':'Présidents de l\'APC','mayors-sub':'Registre historique des présidents depuis la création',
     'read-more':'Lire la suite','load-more':'Voir plus','pinned':'Épinglé',
     'gallery-label':'Galerie photos','btn-all':'Tout',
@@ -2980,6 +3002,50 @@ function setLang(lang){
   /* applyI18n بعد DOM */
   document.addEventListener('DOMContentLoaded',function(){applyI18n();});
 })();
+
+/* ══ PULL-TO-REFRESH ══ */
+(function(){
+  var THRESHOLD=72,RESIST=.4;
+  function initPTR(scrollId,indicatorId,onRefresh){
+    var el=document.getElementById(scrollId);
+    var ind=document.getElementById(indicatorId);
+    if(!el||!ind)return;
+    var sy=0,dragging=false,pulling=false,dist=0;
+    el.addEventListener('touchstart',function(e){
+      if(el.scrollTop>0)return;
+      sy=e.touches[0].clientY;dragging=true;dist=0;pulling=false;
+    },{passive:true});
+    el.addEventListener('touchmove',function(e){
+      if(!dragging||el.scrollTop>0)return;
+      var dy=(e.touches[0].clientY-sy)*RESIST;
+      if(dy<4)return;
+      pulling=true;dist=Math.min(dy,THRESHOLD*1.3);
+      ind.style.top=(dist-50)+'px';
+      ind.classList.add('ptr-visible');
+      var pct=Math.min(dist/THRESHOLD,1);
+      ind.querySelector('iconify-icon').style.transform='rotate('+(pct*240)+'deg)';
+    },{passive:true});
+    el.addEventListener('touchend',function(){
+      if(!pulling){dragging=false;return;}
+      dragging=false;pulling=false;
+      if(dist>=THRESHOLD){
+        ind.classList.add('ptr-loading');
+        ind.style.top='-10px';
+        haptic('mid');
+        onRefresh(function(){
+          ind.classList.remove('ptr-loading','ptr-visible');
+          ind.style.top='-56px';
+        });
+      } else {
+        ind.classList.remove('ptr-visible');
+        ind.style.top='-56px';
+      }
+      dist=0;
+    },{passive:true});
+  }
+  window._initPTR=initPTR;
+})();
+
 /* ══ INIT ══ */
 window.addEventListener('load',function(){
   try{applyHeaderHeight();}catch(e){}
@@ -3076,6 +3142,18 @@ window.addEventListener('load',function(){
 });
 document.fonts.ready.then(applyHeaderHeight);
 loadHome();
+  /* تفعيل Pull-to-Refresh */
+  if(window._initPTR){
+    _initPTR('scroll-home','ptr-home',function(done){
+      allNews=[];loadHome();setTimeout(done,1200);
+    });
+    _initPTR('scroll-news','ptr-news',function(done){
+      newsScreenLoaded=false;loadNewsScreen();setTimeout(done,1200);
+    });
+    _initPTR('scroll-services','ptr-services',function(done){
+      _svcData=null;_svcLoaded=false;loadServices('service');setTimeout(done,1200);
+    });
+  }
 </script>
 </body>
 </html>
