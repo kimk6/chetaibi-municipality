@@ -648,230 +648,68 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .ann-more-btn{font-size:13px;font-weight:800;}
 /* ══ DARK MODE ══ */
 [data-theme="dark"]{
-  /* ── Surfaces ── */
-  --surface:#121212;
-  --surface-2:#1e1e1e;
-  --card:#1e1e1e;
-  /* ── Typography ── */
-  --text:#f2f2f2;
-  --text-2:#dedede;
-  --text-3:#9e9e9e;
-  --muted:#9e9e9e;
-  --muted-2:#757575;
-  --muted-3:#424242;
-  /* ── Borders ── */
-  --border:#2c2c2c;
-  --border-light:#242424;
-  /* ── Skeleton ── */
-  --sk-base:#1e1e1e;
-  --sk-shine:#2a2a2a;
-  /* ── Tonal surfaces (للأيقونات والبادجات) ── */
-  --green-xl:rgba(16,185,129,0.10);
-  --green-l:rgba(16,185,129,0.15);
-  --red-l:rgba(239,68,68,0.12);
-  --blue-l:rgba(59,130,246,0.12);
-  --amber-l:rgba(245,158,11,0.12);
-  --purple-l:rgba(139,92,246,0.12);
-  --sky-l:rgba(14,165,233,0.12);
+  --surface:#0f172a;--surface-2:#1e293b;
+  --card:#1e293b;
+  --text:#f1f5f9;--text-2:#e2e8f0;--text-3:#94a3b8;
+  --muted:#94a3b8;--muted-2:#64748b;--muted-3:#334155;
+  --border:#334155;--border-light:#1e293b;
+  --sk-base:#1e293b;--sk-shine:#334155;
+  --green-xl:#052e16;--green-l:#14532d;
+  --red-l:#450a0a;--blue-l:#172554;--amber-l:#451a03;
+  --purple-l:#2e1065;--sky-l:#082f49;
 }
-
 /* ══ DARK MODE COMPREHENSIVE ══ */
-
-/* ── Header & Nav ── */
-[data-theme="dark"] #shared-header{
-  background:#1e1e1e;
-  box-shadow:0 1px 0 rgba(255,255,255,0.06);
-}
-[data-theme="dark"] #bottom-nav{
-  background:rgba(30,30,30,0.97);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  border-top:1px solid #2a2a2a;
-}
-
-/* ── Seg bars & tabs ── */
-[data-theme="dark"] .seg-bar-wrap{
-  background:#1e1e1e;
-  border-bottom-color:#2a2a2a;
-}
-[data-theme="dark"] .seg-btn{
-  background:#2a2a2a;
-  color:#9e9e9e;
-  border-color:#333;
-}
-[data-theme="dark"] .seg-btn.active{
-  background:var(--green);
-  color:#fff;
-  border-color:var(--green);
-}
-[data-theme="dark"] .ws-tabs{background:#1e1e1e;}
-[data-theme="dark"] .ws-tab{color:#757575;background:transparent;}
-[data-theme="dark"] .ws-tab.active{background:#121212;color:var(--green);}
-[data-theme="dark"] #ws-panel-weather{background:rgba(16,185,129,0.05);}
-[data-theme="dark"] #ws-panel-sea{background:rgba(59,130,246,0.05);}
-[data-theme="dark"] .ws-stat-card{background:#121212;border-color:#2a2a2a;}
-[data-theme="dark"] .ws-stat-label{color:#757575;}
-
-/* ── Cards ── */
-[data-theme="dark"] .ann-card,.ann-more-card{
-  background:#1e1e1e;
-  border-color:#2a2a2a;
-}
-[data-theme="dark"] .ann-card::before{
-  background:radial-gradient(ellipse at 50% 0%,rgba(16,185,129,0.06) 0%,transparent 65%);
-}
-[data-theme="dark"] .ann-card-divider{background:#2a2a2a;}
-[data-theme="dark"] .announce-card{
-  background:#1e1e1e;
-  border-color:#2a2a2a;
-  box-shadow:0 2px 12px rgba(0,0,0,0.4);
-}
-[data-theme="dark"] .news-card{
-  background:#1e1e1e;
-  border-color:#2a2a2a;
-}
-[data-theme="dark"] .fac-card{
-  background:#1e1e1e;
-  border-color:#2a2a2a;
-}
-[data-theme="dark"] .svc-card{
-  background:#1e1e1e;
-  border-color:#2a2a2a;
-  box-shadow:0 2px 12px rgba(0,0,0,0.4);
-}
-[data-theme="dark"] .archive-card{
-  background:#1e1e1e;
-  border-color:#2a2a2a;
-}
-[data-theme="dark"] .archive-card-title{border-top-color:#2a2a2a;}
-[data-theme="dark"] .sk-card,[data-theme="dark"] .sk-news-card{
-  background:#1e1e1e;
-  border-color:#2a2a2a;
-}
-
-/* ── Weather/Sea unified card ── */
-[data-theme="dark"] .weather-sea-unified-card{
-  background:#1e1e1e;
-  border-color:#2a2a2a;
-  filter:none;
-  box-shadow:0 4px 24px rgba(0,0,0,0.5);
-}
-[data-theme="dark"] #pwa-weather-icon-bg{background:rgba(16,185,129,0.12) !important;}
-
-/* ── Timeline ── */
-[data-theme="dark"] .tl-card{
-  background:#1e1e1e !important;
-  border-color:#2a2a2a !important;
-  box-shadow:0 2px 12px rgba(0,0,0,0.3) !important;
-}
-[data-theme="dark"] .tl-title{color:#f2f2f2;}
-[data-theme="dark"] .tl-text{color:#9e9e9e;}
-[data-theme="dark"] .tl-date{
-  background:#1e1e1e !important;
-  border-color:#333 !important;
-  color:#9e9e9e !important;
-}
-
-/* ── Mayor cards ── */
-[data-theme="dark"] .mayor-home-card{
-  background:#1e1e1e;
-  border-color:#2a2a2a;
-}
-[data-theme="dark"] .mayor-sheet-card{
-  background:#1e1e1e;
-  border-color:#2a2a2a;
-}
-[data-theme="dark"] .mayor-sheet-card::before{
-  background:radial-gradient(circle at top right,rgba(16,185,129,0.10) 0%,transparent 70%);
-}
-[data-theme="dark"] .mayor-name,[data-theme="dark"] .mayor-home-name{color:#f2f2f2;}
-[data-theme="dark"] .mayor-title,[data-theme="dark"] .mayor-home-title{color:#9e9e9e;}
-[data-theme="dark"] .mayor-divider{background:#2a2a2a;}
-[data-theme="dark"] .mayor-card-divider{background:#2a2a2a;}
-[data-theme="dark"] .mayor-stat-card{background:#121212;border-color:#2a2a2a;}
-[data-theme="dark"] .mayor-stat-label{color:#757575;}
-[data-theme="dark"] .mayor-stat-value{color:#f2f2f2;}
-
-/* ── Modals & Sheets ── */
-[data-theme="dark"] .modal-sheet,[data-theme="dark"] #more-sheet{
-  background:#1e1e1e;
-}
-[data-theme="dark"] .modal-drag{background:#333;}
-[data-theme="dark"] .modal-img-wrap,[data-theme="dark"] .modal-img{background:#121212;}
-[data-theme="dark"] .modal-chip{
-  background:#2a2a2a;
-  border-color:#333;
-  color:#dedede;
-}
-[data-theme="dark"] .album-grid img{border-color:#2a2a2a;}
-
-/* ── More screen ── */
-[data-theme="dark"] .more-item{border-bottom-color:#2a2a2a;}
-[data-theme="dark"] .more-item:active{background:#2a2a2a;}
-
-/* ── Search ── */
-[data-theme="dark"] #search-box{
-  background:#1e1e1e;
-  box-shadow:0 8px 40px rgba(0,0,0,0.7);
-  border:1px solid #2a2a2a;
-}
-[data-theme="dark"] #search-input{
-  background:#121212;
-  color:#f2f2f2;
-}
-[data-theme="dark"] .search-bar{border-bottom-color:#2a2a2a;}
-[data-theme="dark"] .search-result-item{border-bottom-color:#2a2a2a;}
-[data-theme="dark"] .search-result-item:active{background:#2a2a2a;}
-
-/* ── Weather day tabs ── */
-[data-theme="dark"] #weather-day-tabs button{
-  border-color:rgba(16,185,129,0.2) !important;
-  background:rgba(16,185,129,0.06) !important;
-  color:var(--green) !important;
-}
-[data-theme="dark"] #sea-day-tabs button{
-  border-color:rgba(59,130,246,0.2) !important;
-  background:rgba(59,130,246,0.06) !important;
-  color:#60a5fa !important;
-}
-
-/* ── Section headers ── */
-[data-theme="dark"] .section-header{border-bottom-color:#2a2a2a;}
-[data-theme="dark"] .section-title{color:#f2f2f2;}
-[data-theme="dark"] .see-all{
-  background:rgba(16,185,129,0.12);
-  color:var(--green);
-}
-
-/* ── Place cards (beaches/tourism) ── */
-[data-theme="dark"] .place-card-ph{background:#1e1e1e;}
-
-/* ── Map popup ── */
-[data-theme="dark"] .map-popup-card{
-  background:#1e1e1e;
-  box-shadow:0 8px 32px rgba(0,0,0,0.6);
-}
-[data-theme="dark"] .map-popup-title{color:#f2f2f2;}
-[data-theme="dark"] .map-popup-desc{color:#9e9e9e;}
-
-/* ── Lightbox ── */
-[data-theme="dark"] #lightbox{background:rgba(0,0,0,0.97);}
-
-/* ── Guide tabs ── */
-[data-theme="dark"] .guide-tab{
-  background:#1e1e1e;
-  border-color:#2a2a2a;
-  color:#9e9e9e;
-}
-[data-theme="dark"] .guide-tab .gt-icon{filter:brightness(0.8);}
-[data-theme="dark"] .guide-tab.active{
-  color:#fff;
-  box-shadow:0 4px 16px rgba(0,0,0,0.4);
-}
-
-/* ── Scrollbar ── */
-[data-theme="dark"] ::-webkit-scrollbar-track{background:#121212;}
-[data-theme="dark"] ::-webkit-scrollbar-thumb{background:#333;}
+[data-theme="dark"] #shared-header{background:#1e293b;box-shadow:0 1px 0 rgba(255,255,255,0.06);}
+[data-theme="dark"] #bottom-nav{background:#1e293b;border-top-color:rgba(255,255,255,0.07);}
+[data-theme="dark"] .seg-bar-wrap{background:#1e293b;border-bottom-color:rgba(255,255,255,0.07);}
+[data-theme="dark"] .ws-tabs{background:#1e293b;}
+[data-theme="dark"] .ann-card,.ann-more-card{border-color:rgba(255,255,255,0.08);}
+[data-theme="dark"] .more-item:active{background:rgba(255,255,255,0.05);}
+[data-theme="dark"] .modal-sheet,[data-theme="dark"] #more-sheet{background:#1e293b;}
+[data-theme="dark"] .modal-img-wrap,[data-theme="dark"] .modal-img{background:#0f172a;}
+/* ann-card carousel */
+[data-theme="dark"] .ann-card{background:#1e293b;border-color:rgba(5,150,105,0.25);}
+[data-theme="dark"] .ann-card::before{background:radial-gradient(ellipse at 50% 0%,rgba(5,150,105,0.08) 0%,transparent 65%);}
+[data-theme="dark"] .ann-card-divider{background:#94a3b8;}
+/* announce-cards في الأخبار */
+[data-theme="dark"] .announce-card{background:var(--card);border-color:rgba(255,255,255,0.06);}
+/* weather/sea card + tabs */
+[data-theme="dark"] .weather-sea-unified-card{background:#1e293b;border-color:rgba(255,255,255,0.06);filter:none;box-shadow:0 4px 20px rgba(0,0,0,0.35);}
+[data-theme="dark"] .ws-tab{color:var(--muted);background:transparent;}
+[data-theme="dark"] .ws-tab.active{background:#0f172a;color:var(--green);}
+[data-theme="dark"] #ws-panel-weather{background:rgba(5,150,105,0.07);}
+[data-theme="dark"] #ws-panel-sea{background:rgba(59,131,246,0.07);}
+[data-theme="dark"] .ws-stat-card{background:#0f172a;border-color:rgba(255,255,255,0.06);}
+[data-theme="dark"] .ws-stat-label{color:var(--muted);}
+/* أيقونة الطقس background */
+[data-theme="dark"] #pwa-weather-icon-bg{background:#1e3a2f !important;}
+/* timeline cards */
+[data-theme="dark"] .tl-card{background:#1e293b !important;border-color:rgba(255,255,255,0.07) !important;}
+[data-theme="dark"] .tl-title{color:var(--text);}
+[data-theme="dark"] .tl-text{color:var(--muted);}
+/* تاريخ الخط الزمني - إزالة الخلفيات الفاتحة */
+[data-theme="dark"] .tl-date{background:#1e293b !important;border-color:rgba(255,255,255,0.12) !important;color:var(--text-3) !important;}
+/* mayor-home-card */
+[data-theme="dark"] .mayor-home-card{background:#1e293b;border-color:rgba(5,150,105,0.25);}
+/* mayor-sheet-card في overlay */
+[data-theme="dark"] .mayor-sheet-card{background:#1e293b;border-color:rgba(255,255,255,0.06);}
+[data-theme="dark"] .mayor-sheet-card::before{background:radial-gradient(circle at top right,rgba(5,150,105,0.12) 0%,transparent 70%);}
+[data-theme="dark"] .mayor-name,[data-theme="dark"] .mayor-home-name{color:var(--text);}
+[data-theme="dark"] .mayor-title,[data-theme="dark"] .mayor-home-title{color:var(--muted);}
+[data-theme="dark"] .mayor-divider{background:rgba(255,255,255,0.08);}
+[data-theme="dark"] .mayor-card-divider{background:rgba(255,255,255,0.06);}
+[data-theme="dark"] .mayor-stat-card{background:#0f172a;border-color:rgba(255,255,255,0.06);}
+[data-theme="dark"] .mayor-stat-label{color:var(--muted);}
+[data-theme="dark"] .mayor-stat-value{color:var(--text);}
+/* خطوط الفصل */
+[data-theme="dark"] .more-item{border-bottom-color:rgba(255,255,255,0.06);}
+[data-theme="dark"] .archive-card-title{border-top-color:rgba(255,255,255,0.07);}
+[data-theme="dark"] .archive-card{border-color:rgba(255,255,255,0.06);}
+/* search box */
+[data-theme="dark"] #search-box{background:#1e293b;box-shadow:0 8px 32px rgba(0,0,0,0.5);}
+[data-theme="dark"] #search-input{background:#0f172a;color:var(--text);}
+/* أزرار تبويبات الطقس - الخلفية الخضراء الفاتحة في الوضع الداكن */
+[data-theme="dark"] #weather-day-tabs button,[data-theme="dark"] #sea-day-tabs button{border-color:rgba(5,150,105,0.15) !important;}
 /* Settings toggle buttons */
 .settings-section{margin:12px 16px;background:var(--card);border-radius:var(--r-lg);border:1px solid var(--border-light);overflow:hidden;}
 .settings-section-title{font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.5px;padding:10px 16px 6px;}
@@ -990,11 +828,11 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 <div class="ws-tabs">
                   <button class="ws-tab active" id="ws-tab-weather" onclick="switchWsTab('weather')">
                     <iconify-icon icon="lucide:sun" style="font-size:14px;pointer-events:none"></iconify-icon>
-                    <span data-i18n="ws-tab-weather">حالة الطقس</span>
+                    حالة الطقس
                   </button>
                   <button class="ws-tab" id="ws-tab-sea" onclick="switchWsTab('sea')">
                     <iconify-icon icon="lucide:waves" style="font-size:14px;pointer-events:none"></iconify-icon>
-                    <span data-i18n="ws-tab-sea">حالة البحر</span>
+                    حالة البحر
                   </button>
                 </div>
                 <!-- محتوى الطقس -->
@@ -1006,7 +844,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                       <span class="wcard-emoji" id="pwa-weather-icon">☀️</span>
                       <div>
                         <div class="wcard-temp" id="pwa-weather-temp">--°</div>
-                        <div class="wcard-desc" id="pwa-weather-desc" data-i18n="loading">جاري التحميل</div>
+                        <div class="wcard-desc" id="pwa-weather-desc">جاري التحميل...</div>
                       </div>
                     </div>
                     <div class="wcard-stats">
@@ -1034,17 +872,17 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                       <span class="wcard-emoji" id="pwa-sea-icon">🌊</span>
                       <div>
                         <div class="wcard-sea-state" id="pwa-sea-state">--</div>
-                        <div class="wcard-desc" id="pwa-sea-desc" data-i18n="loading">جاري التحميل</div>
+                        <div class="wcard-desc" id="pwa-sea-desc">جاري التحميل...</div>
                       </div>
                     </div>
                     <div class="wcard-stats">
                       <div class="wcard-stat">
                         <iconify-icon icon="lucide:arrow-up" style="color:#60a5fa"></iconify-icon>
-                        <span>ارتفاع الموج: </span><span id="pwa-sea-wave">-- م</span>
+                        <span data-i18n="sea-wave-label">ارتفاع الموج:</span> <span id="pwa-sea-wave">--</span>
                       </div>
                       <div class="wcard-stat">
                         <iconify-icon icon="lucide:thermometer" style="color:#2dd4bf"></iconify-icon>
-                        <span>الماء: </span><span id="pwa-sea-water-temp">19°C</span>
+                        <span data-i18n="sea-temp-label">الماء:</span> <span id="pwa-sea-water-temp">19°C</span>
                       </div>
                       <div class="wcard-stat">
                         <iconify-icon icon="lucide:compass" style="color:#818cf8"></iconify-icon>
@@ -1106,7 +944,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </div>
           </div>
           <div id="news-list" style="padding:12px 0">
-            <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span data-i18n="loading">جاري التحميل</span></div>
+            <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span>جاري التحميل</span></div>
           </div>
         </div>
       </div>
@@ -1128,7 +966,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </div>
           </div>
           <div id="fac-list" style="padding:8px 0">
-            <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span data-i18n="loading">جاري التحميل</span></div>
+            <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span>جاري التحميل</span></div>
           </div>
         </div>
       </div>
@@ -1150,7 +988,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </div>
           </div>
           <div id="svc-list" style="padding:12px 0 24px">
-            <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span data-i18n="loading">جاري التحميل</span></div>
+            <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span>جاري التحميل</span></div>
           </div>
         </div>
       </div>
@@ -1167,7 +1005,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </div>
           </div>
           <div id="archive-list" style="padding:12px 16px 24px">
-            <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span data-i18n="loading">جاري التحميل</span></div>
+            <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span>جاري التحميل</span></div>
           </div>
         </div>
       </div>
@@ -1439,7 +1277,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     </div>
     <div id="search-results">
       <!-- ✅ تعديل 1: نص البحث -->
-      <div class="search-empty" data-i18n="search-placeholder">اكتب للبحث في شطايبي</div>
+      <div class="search-empty">اكتب للبحث في شطايبي</div>
     </div>
   </div>
 </div>
@@ -1739,14 +1577,14 @@ var Search=(function(){
   function close(){
     overlay.classList.remove('open');input.value='';
     /* ✅ تعديل 1: نص البحث عند الإغلاق */
-    results.innerHTML='<div class="search-empty">'+t('search-placeholder')+'</div>';
+    results.innerHTML='<div class="search-empty">اكتب للبحث في شطايبي</div>';
   }
   function onInput(){
     var q=(input.value||'').trim();
     if(q.length<2){results.innerHTML='<div class="search-empty">اكتب كلمتين على الأقل</div>';return;}
     var found=[];
     allNews.forEach(function(n){var nt=_f(n,'title')||'';var nc=_f(n,'content')||'';if(nt.includes(q)||nc.includes(q)){found.push({type:'news',icon:'lucide:newspaper',color:'var(--green)',bg:'var(--green-xl)',title:nt||'خبر',sub:n.date||'',id:n.id});}});
-    if(!found.length){results.innerHTML='<div class="search-empty">'+t('search-no-results')+' "'+q+'"</div>';return;}
+    if(!found.length){results.innerHTML='<div class="search-empty">لا توجد نتائج لـ "'+q+'"</div>';return;}
     results.innerHTML=found.slice(0,20).map(function(r){return '<div class="search-result-item" data-sr-type="'+r.type+'" data-sr-id="'+r.id+'"><div class="sr-icon" style="background:'+r.bg+'"><iconify-icon icon="'+r.icon+'" style="color:'+r.color+';font-size:18px;pointer-events:none"></iconify-icon></div><div><div class="sr-title">'+r.title+'</div><div class="sr-sub">'+r.sub+'</div></div></div>';}).join('');
     results.querySelectorAll('.search-result-item').forEach(function(item){item.addEventListener('click',function(){var type=this.getAttribute('data-sr-type');var id=this.getAttribute('data-sr-id');close();if(type==='news'){switchTab('news');setTimeout(function(){openNewsModal(id);},400);}});});
   }
@@ -1929,7 +1767,7 @@ async function loadArchiveTab(tab){
         items=all.filter(function(a){return a.image_new_url;});
       }
     }
-    if(!items.length){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:image-off"></iconify-icon><p>'+t('no-images')+'</p></div>';return;}
+    if(!items.length){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:image-off"></iconify-icon><p>لا توجد صور</p></div>';return;}
     function renderArchChunk(arr,from){
       var PAGE=8;var chunk=arr.slice(from,from+PAGE);
       var html=from===0?'<div style="display:flex;flex-direction:column;gap:16px;" id="archive-items">':'';
@@ -1946,7 +1784,7 @@ async function loadArchiveTab(tab){
         }
       });
       var hasMore=arr.length>from+PAGE;
-      if(hasMore)html+='<div class="load-more-wrap"><button class="load-more-btn" id="arch-load-more"><iconify-icon icon="lucide:chevrons-down"></iconify-icon>'+t('load-more')+'</button></div>';
+      if(hasMore)html+='<div class="load-more-wrap"><button class="load-more-btn" id="arch-load-more"><iconify-icon icon="lucide:chevrons-down"></iconify-icon>عرض المزيد</button></div>';
       if(from===0){el.innerHTML=html+'</div>';}
       else{
         var oldBtn=el.querySelector('.load-more-wrap');if(oldBtn)oldBtn.remove();
@@ -1989,7 +1827,7 @@ async function loadArchiveTab(tab){
     renderArchChunk(items,0);
   }catch(e){
     console.error('loadArchiveTab error:',e);
-    el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>'+t('error-load')+'</p></div>';
+    el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';
   }
 }
 /* ══ TIMELINE RENDER ══ */
@@ -2043,7 +1881,7 @@ window._debugWeather=async function(){try{var r=await fetch('https://api.open-me
 window._debugSea=async function(){try{var r=await fetch('https://marine-api.open-meteo.com/v1/marine?latitude='+PWA_LAT+'&longitude='+PWA_LON+'&current=wave_height,wave_direction,sea_surface_temperature&daily=wave_height_max,wave_direction_dominant,sea_surface_temperature_max&timezone=Africa%2FAlgiers&forecast_days=5');var t=await r.text();}catch(e){console.error('Sea error:',e);}};
 /* ══ WEATHER + SEA — 5 days ══ */
 var _wDays=[],_sDays=[],_wIdx=0,_sIdx=0;
-var _WM={0:{d:'☀️',n:'🌕',ar:'الجو صافٍ',fr:'Ciel dégagé'},1:{d:'🌤️',n:'🌙',ar:'غائم خفيف',fr:'Légèrement nuageux'},2:{d:'⛅',n:'🌥️',ar:'غائم جزئياً',fr:'Partiellement nuageux'},3:{d:'☁️',n:'☁️',ar:'غائم',fr:'Nuageux'},45:{d:'🌫️',n:'🌫️',ar:'ضبابي',fr:'Brouillard'},48:{d:'🌫️',n:'🌫️',ar:'ضبابي',fr:'Brouillard'},51:{d:'🌦️',n:'🌧️',ar:'رذاذ',fr:'Bruine'},53:{d:'🌦️',n:'🌧️',ar:'رذاذ',fr:'Bruine'},61:{d:'🌧️',n:'🌧️',ar:'ممطر',fr:'Pluvieux'},63:{d:'🌧️',n:'🌧️',ar:'مطر',fr:'Pluie'},65:{d:'🌧️',n:'🌧️',ar:'مطر غزير',fr:'Forte pluie'},80:{d:'🌦️',n:'🌧️',ar:'زخات',fr:'Averses'},81:{d:'🌧️',n:'🌧️',ar:'زخات',fr:'Averses'},95:{d:'⛈️',n:'⛈️',ar:'عاصفة'}};
+var _WM={0:{d:'☀️',n:'🌕',ar:'الجو صافٍ'},1:{d:'🌤️',n:'🌙',ar:'غائم خفيف'},2:{d:'⛅',n:'🌥️',ar:'غائم جزئياً'},3:{d:'☁️',n:'☁️',ar:'غائم'},45:{d:'🌫️',n:'🌫️',ar:'ضبابي'},48:{d:'🌫️',n:'🌫️',ar:'ضبابي'},51:{d:'🌦️',n:'🌧️',ar:'رذاذ'},53:{d:'🌦️',n:'🌧️',ar:'رذاذ'},61:{d:'🌧️',n:'🌧️',ar:'ممطر'},63:{d:'🌧️',n:'🌧️',ar:'مطر'},65:{d:'🌧️',n:'🌧️',ar:'مطر غزير'},80:{d:'🌦️',n:'🌧️',ar:'زخات'},81:{d:'🌧️',n:'🌧️',ar:'زخات'},95:{d:'⛈️',n:'⛈️',ar:'عاصفة'}};
 var _DN=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
 function _getDN(i){var days=t('day-names');return Array.isArray(days)?days[i]:_DN[i];}
 function _getToday(){return t('today')||'اليوم';}
@@ -2054,7 +1892,7 @@ function _g(id){return document.getElementById(id);}
 function renderWeatherDay(i){
   _wIdx=i;
   var d=_wDays[i];if(!d)return;
-  var w=_WM[d.code]||{d:'🌡️',n:'🌙',ar:'متغير',fr:'Variable'};
+  var w=_WM[d.code]||{d:'🌡️',n:'🌙',ar:'متغير'};
   var hi=_g('pwa-weather-header-icon'),hb=_g('pwa-weather-icon-bg');
   var isDark=document.documentElement.getAttribute('data-theme')==='dark';
   if(i===0&&hi&&hb){if(d.isDay){hi.setAttribute('icon','lucide:sun');hi.style.color='#f59e0b';hb.style.background=isDark?'rgba(245,158,11,0.15)':'#fef3c7';}
@@ -2062,12 +1900,12 @@ function renderWeatherDay(i){
   else if(hi&&hb){hi.setAttribute('icon','lucide:calendar-days');hi.style.color='#60a5fa';hb.style.background=isDark?'rgba(96,165,250,0.15)':'#dbeafe';}
   if(_g('pwa-weather-icon'))_g('pwa-weather-icon').textContent=d.isDay?w.d:w.n;
   if(_g('pwa-weather-temp'))_g('pwa-weather-temp').textContent=Math.round(d.temp)+'°';
-  if(_g('pwa-weather-desc'))_g('pwa-weather-desc').textContent=_curLang==='fr'?(w.fr||w.ar):w.ar;
+  if(_g('pwa-weather-desc'))_g('pwa-weather-desc').textContent=currentLang==='fr'?(w.fr||w.ar):w.ar;
   if(_g('pwa-weather-hum'))_g('pwa-weather-hum').textContent=d.hum+'%';
-  if(_g('pwa-weather-wind'))_g('pwa-weather-wind').textContent=Math.round(d.wind)+' '+t('weather-wind-label');
+  if(_g('pwa-weather-wind'))_g('pwa-weather-wind').textContent=Math.round(d.wind)+' '+(currentLang==='fr'?'km/h':'كم/س');
   if(_g('pwa-weather-max'))_g('pwa-weather-max').textContent=Math.round(d.tmax)+'°';
   if(_g('pwa-weather-min'))_g('pwa-weather-min').textContent=Math.round(d.tmin)+'°';
-  var tl=_g('pwa-weather-time-label');if(tl)tl.textContent=i===0?t('weather-location'):d.label;
+  var tl=_g('pwa-weather-time-label');if(tl)tl.textContent=i===0?(currentLang==='fr'?'Chetaïbi — Annaba':'شطايبي — عنابة'):d.label;
   var tabs=_g('weather-day-tabs');if(!tabs)return;
   tabs.querySelectorAll('button').forEach(function(b,j){b.style.background=j===i?'var(--green)':'var(--green-xl)';b.style.color=j===i?'#fff':'var(--green)';b.style.borderColor=j===i?'var(--green)':'rgba(5,150,105,0.3)';b.style.fontWeight=j===i?'800':'700';});
 }
@@ -2107,18 +1945,18 @@ async function fetchPWAWeather(){
       fetchPWAWeather._retried=true;
       setTimeout(function(){fetchPWAWeather._retried=false;fetchPWAWeather();},4000);
     } else {
-      var el=_g('pwa-weather-desc');if(el)el.textContent=t('error-load');
+      var el=_g('pwa-weather-desc');if(el)el.textContent=currentLang==='fr'?'Chargement échoué':'تعذر التحميل';
     }
   }
 }
 function _seaLabel(v,isDay){
-  var tips=t('sea-tips')||{};var states=t('sea-states')||{};
-  if(v<0.3)return{si:'🌊',st:states.calm||'هادئ جداً',sd:isDay?(tips.calm_day||'مناسب للسباحة'):(tips.calm_night||'مناسب للصيد الليلي')};
-  if(v<0.6)return{si:'🎣',st:states.calm||'هادئ',sd:isDay?(tips.calm_day||'مناسب للسباحة والصيد'):(tips.calm_night||'مناسب للصيد الليلي')};
-  if(v<1.0)return{si:'🎣',st:states.mostly_calm||'هادئ نسبياً',sd:tips.mostly_calm_day||'مناسب للصيد'};
-  if(v<1.5)return{si:'⚠️',st:states.moderate||'معتدل',sd:isDay?(tips.moderate_day||'حذر عند الخروج'):(tips.moderate_night||'حذر')};
-  if(v<2.5)return{si:'⚠️',st:states.rough||'مضطرب',sd:tips.rough||'يُنصح بالحذر'};
-  return{si:'🔴',st:states.stormy||'عاصف',sd:tips.stormy||'يُمنع الخروج'};
+  var fr=currentLang==='fr';
+  if(v<0.3)return{si:'🌊',st:fr?'Très calme':'هادئ جداً',sd:isDay?(fr?'Baignade possible':'مناسب للسباحة'):(fr?'Pêche nocturne':'مناسب للصيد الليلي')};
+  if(v<0.6)return{si:'🎣',st:fr?'Calme':'هادئ',sd:isDay?(fr?'Baignade et pêche':'مناسب للسباحة والصيد'):(fr?'Pêche nocturne':'مناسب للصيد الليلي')};
+  if(v<1.0)return{si:'🎣',st:fr?'Assez calme':'هادئ نسبياً',sd:fr?'Pêche possible':'مناسب للصيد'};
+  if(v<1.5)return{si:'⚠️',st:fr?'Modéré':'معتدل',sd:fr?'Prudence recommandée':'حذر عند الخروج'};
+  if(v<2.5)return{si:'⚠️',st:fr?'Agité':'مضطرب',sd:fr?'Prudence conseillée':'يُنصح بالحذر'};
+  return{si:'🔴',st:fr?'Tempétueux':'عاصف',sd:fr?'Sortie interdite':'يُمنع الخروج'};
 }
 function renderSeaDay(i){
   _sIdx=i;
@@ -2127,11 +1965,11 @@ function renderSeaDay(i){
   if(_g('pwa-sea-icon'))_g('pwa-sea-icon').textContent=lb.si;
   if(_g('pwa-sea-state'))_g('pwa-sea-state').textContent=lb.st;
   if(_g('pwa-sea-desc'))_g('pwa-sea-desc').textContent=lb.sd;
-  if(_g('pwa-sea-wave'))_g('pwa-sea-wave').textContent=d.wave.toFixed(1)+' '+t('sea-wave-unit');
+  if(_g('pwa-sea-wave'))_g('pwa-sea-wave').textContent=d.wave.toFixed(1)+(currentLang==='fr'?' m':' م');
   if(_g('pwa-sea-dir'))_g('pwa-sea-dir').textContent=d.dir;
   if(_g('pwa-sea-water-temp'))_g('pwa-sea-water-temp').textContent=d.sst?d.sst.toFixed(1)+'°C':'--';
   var sub=_g('sea-subtitle');
-  if(sub)sub.textContent=d.isDay?t('sea-daytime'):t('sea-nighttime');
+  if(sub)sub.textContent=d.isDay?(currentLang==='fr'?'Pour pêcheurs et baigneurs':'للصيادين والسباحين'):(currentLang==='fr'?'Pour les touristes':'للسياح');
   var tabs=_g('sea-day-tabs');if(!tabs)return;
   tabs.querySelectorAll('button').forEach(function(b,j){b.style.background=j===i?'#3b83f6':'#eff6ff';b.style.color=j===i?'#fff':'#3b83f6';b.style.borderColor=j===i?'#3b83f6':'rgba(59,131,246,0.3)';b.style.fontWeight=j===i?'800':'700';});
 }
@@ -2143,9 +1981,7 @@ async function fetchPWASea(){
     if(d.error)throw new Error(d.reason||'API error');
     var cu=d.current;var dl=d.daily;
     if(!cu||cu.wave_height==null){if(_g('pwa-sea-state'))_g('pwa-sea-state').textContent='--';return;}
-    var dirs=_curLang==='fr'
-      ?['N','NE','E','SE','S','SO','O','NO']
-      :['شمال','شمال شرق','شرق','جنوب شرق','جنوب','جنوب غرب','غرب','شمال غرب'];var now=new Date();
+    var dirs=currentLang==='fr'?['Nord','Nord-Est','Est','Sud-Est','Sud','Sud-Ouest','Ouest','Nord-Ouest']:['شمال','شمال شرق','شرق','جنوب شرق','جنوب','جنوب غرب','غرب','شمال غرب'];var now=new Date();
     _sDays=[];
     for(var i=0;i<Math.min(5,dl.time.length);i++){
       var dt=new Date(dl.time[i]+'T12:00:00');var h=i===0?now.getHours():12;
@@ -2159,7 +1995,7 @@ async function fetchPWASea(){
     renderSeaDay(0);
   }catch(e){
     console.error('fetchPWASea error:',e);
-    var el=_g('pwa-sea-desc');if(el)el.textContent=t('error-load');
+    var el=_g('pwa-sea-desc');if(el)el.textContent=currentLang==='fr'?'Chargement échoué':'تعذر التحميل';
   }
 }
 async function loadMayorHome(){
@@ -2176,8 +2012,8 @@ var _annCarIdx=0,_annCarTotal=0;
 
 function _annMakeCard(n){
   var dateHtml=n.date?'<div class="ann-card-date"><iconify-icon icon="lucide:calendar-days"></iconify-icon>'+n.date+'</div>':'';
-  var title=_f(n,'title')?'<div class="ann-card-title"><iconify-icon icon="lucide:megaphone" style="font-size:15px;color:var(--green);flex-shrink:0;pointer-events:none"></iconify-icon>'+n.title+'</div>':'';
-  var excerpt=_f(n,'content')?'<div class="ann-card-excerpt">'+_f(n,'content').substring(0,160)+'...</div>':'';
+  var title=n.title?'<div class="ann-card-title"><iconify-icon icon="lucide:megaphone" style="font-size:15px;color:var(--green);flex-shrink:0;pointer-events:none"></iconify-icon>'+n.title+'</div>':'';
+  var excerpt=n.content?'<div class="ann-card-excerpt">'+n.content.substring(0,160)+'...</div>':'';
   return '<div class="ann-card" data-news-id="'+n.id+'">'
     +'<div class="ann-card-inner">'
     +'<div class="ann-card-icon-wrap"><iconify-icon icon="lucide:megaphone"></iconify-icon></div>'
@@ -2186,7 +2022,7 @@ function _annMakeCard(n){
     +'<div class="ann-card-divider"></div>'
     +'<div class="ann-card-footer">'
     +'<button class="ann-card-btn" data-news-id="'+n.id+'">'
-    +t('read-more')+' <iconify-icon icon="lucide:chevron-left" style="font-size:12px;pointer-events:none"></iconify-icon>'
+    +'اقرأ المزيد <iconify-icon icon="lucide:chevron-left" style="font-size:12px;pointer-events:none"></iconify-icon>'
     +'</button>'
     +dateHtml
     +'</div>'
@@ -2259,15 +2095,15 @@ function _annCarShowCurrent(){
 function _annCardContent(n,c){
   if(!c)c=_annLabelColor(n.custom_label||'');
   var dateHtml=n.date?'<div class="ann-card-date"><iconify-icon icon="lucide:calendar-days" style="color:var(--muted)"></iconify-icon>'+n.date+'</div>':'';
-  var title=_f(n,'title')?'<div class="ann-card-title" style="color:var(--text)"><iconify-icon icon="lucide:megaphone" style="font-size:15px;color:var(--text);flex-shrink:0;pointer-events:none"></iconify-icon>'+_f(n,'title')+'</div>':'';
-  var excerpt=_f(n,'content')?'<div class="ann-card-excerpt">'+_f(n,'content').substring(0,110)+'...</div>':'';
+  var title=n.title?'<div class="ann-card-title" style="color:var(--text)"><iconify-icon icon="lucide:megaphone" style="font-size:15px;color:var(--text);flex-shrink:0;pointer-events:none"></iconify-icon>'+n.title+'</div>':'';
+  var excerpt=n.content?'<div class="ann-card-excerpt">'+n.content.substring(0,110)+'...</div>':'';
   return title
     +'<div class="ann-card-divider-top" style="background:linear-gradient(to right,transparent,'+c.icon+',transparent)"></div>'
     +excerpt
     +'<div class="ann-card-divider"></div>'
     +'<div class="ann-card-footer">'
     +'<button class="ann-card-btn" data-news-id="'+n.id+'" style="background:'+c.btnBg+';color:'+c.btnColor+';">'
-    +t('read-more')+' <iconify-icon icon="lucide:chevron-left" style="font-size:11px;pointer-events:none;color:'+c.icon+'"></iconify-icon>'
+    +'اقرأ المزيد <iconify-icon icon="lucide:chevron-left" style="font-size:11px;pointer-events:none;color:'+c.icon+'"></iconify-icon>'
     +'</button>'
     +dateHtml
     +'</div>';
@@ -2419,7 +2255,7 @@ async function loadNewsScreen(){
     var activeCat=activeBtn?activeBtn.getAttribute('data-cat'):'official';
     newsScreenLoaded=true;
     renderNews(allNews.filter(n=>n.category===activeCat));
-  }catch(e){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>'+t('error-load')+'</p></div>';}
+  }catch(e){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';}
 }
 function filterNews(cat,btn){
   haptic('light');
@@ -2432,12 +2268,12 @@ function renderNews(items,startIdx){
   var el=document.getElementById('news-list');
   startIdx=startIdx||0;
   var PAGE=8;
-  if(!startIdx&&!items.length){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>'+t('no-news')+'</p></div>';return;}
+  if(!startIdx&&!items.length){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>لا توجد أخبار</p></div>';return;}
   var chunk=items.slice(startIdx,startIdx+PAGE);
   var html=chunk.map(function(n){
     var s=NS[n.category]||NS.official;var lbl=n.custom_label||s.lbl||'';
-    var pin=n.is_pinned?'<span style="font-size:10px;font-weight:800;color:var(--amber);display:flex;align-items:center;gap:2px"><iconify-icon icon="lucide:pin" style="pointer-events:none"></iconify-icon>'+t('pinned')+'</span>':'';
-    var desc=(_f(n,'content')||'').substring(0,130)+'...';
+    var pin=n.is_pinned?'<span style="font-size:10px;font-weight:800;color:var(--amber);display:flex;align-items:center;gap:2px"><iconify-icon icon="lucide:pin" style="pointer-events:none"></iconify-icon>مثبت</span>':'';
+    var desc=(n.content||'').substring(0,130)+'...';
     if(n.category==='poster'){var src=n.image_url||'';if(src)return '<div class="poster-card fade-in" data-lb="'+src+'"><img src="'+src+'" alt="" loading="lazy" decoding="async"></div>';return '<div class="poster-card fade-in"><div class="poster-card-ph" style="background:linear-gradient(135deg,var(--purple),#4c1d95)"><iconify-icon icon="lucide:image" style="color:rgba(255,255,255,.7);font-size:3rem;pointer-events:none"></iconify-icon></div></div>';}
     if(n.category==='official'){
       var c=_annLabelColor(n.custom_label||'');
@@ -2451,12 +2287,12 @@ function renderNews(items,startIdx){
     var imgW=n.image_url?'<div class="announce-img-wrap"><img src="'+n.image_url+'" alt="" loading="lazy" decoding="async"></div>':'<div class="announce-img-wrap" style="background:'+s.grad+';height:90px"><iconify-icon icon="lucide:clipboard-list" style="color:rgba(255,255,255,.65);font-size:2.2rem;pointer-events:none"></iconify-icon></div>';
     var badgeHtml='<span class="news-badge" style="'+s.bs+'">'+lbl+'</span>';
     var headerRow=(badgeHtml||pin)?'<div style="display:flex;align-items:center;gap:7px;margin-bottom:7px">'+badgeHtml+pin+'</div>':'';
-    var titleHtml=(n.category==='activity'||n.category==='social')&&_f(n,'title')?'<div style="font-size:14px;font-weight:800;color:var(--text);line-height:1.45;margin-bottom:6px">'+_f(n,'title')+'</div>':'';
-    return '<div class="announce-card fade-in" data-news-id="'+n.id+'">'+imgW+'<div class="announce-body">'+headerRow+titleHtml+'<div style="font-size:13.5px;color:var(--muted);line-height:1.7">'+desc+'</div><div class="announce-footer">'+makeDateBadge(n.date)+'<button class="read-more" data-news-id="'+n.id+'">'+t('read-more')+'<iconify-icon icon="lucide:chevron-left"></iconify-icon></button></div></div></div>';
+    var titleHtml=(n.category==='activity'||n.category==='social')&&n.title?'<div style="font-size:14px;font-weight:800;color:var(--text);line-height:1.45;margin-bottom:6px">'+n.title+'</div>':'';
+    return '<div class="announce-card fade-in" data-news-id="'+n.id+'">'+imgW+'<div class="announce-body">'+headerRow+titleHtml+'<div style="font-size:13.5px;color:var(--muted);line-height:1.7">'+desc+'</div><div class="announce-footer">'+makeDateBadge(n.date)+'<button class="read-more" data-news-id="'+n.id+'">اقرأ المزيد<iconify-icon icon="lucide:chevron-left"></iconify-icon></button></div></div></div>';
   }).join('');
   var hasMore=items.length>startIdx+PAGE;
   if(hasMore){
-    html+='<div class="load-more-wrap"><button class="load-more-btn" id="news-load-more"><iconify-icon icon="lucide:chevrons-down"></iconify-icon>'+t('load-more')+'</button></div>';
+    html+='<div class="load-more-wrap"><button class="load-more-btn" id="news-load-more"><iconify-icon icon="lucide:chevrons-down"></iconify-icon>عرض المزيد</button></div>';
   }
   if(startIdx===0){
     el.innerHTML=html;
@@ -2488,16 +2324,16 @@ async function loadFacTab(tab,btn){
   document.querySelectorAll('#screen-guide .seg-btn').forEach(t=>t.classList.remove('active'));
   if(btn)btn.classList.add('active');
   var el=document.getElementById('fac-list');var m=FM[tab];if(!m)return;
-  if(C['/api/facilities?cat='+m.cat]){var items=C['/api/facilities?cat='+m.cat].data||[];el.innerHTML=items.length?items.map(f=>makeFacCard(f,m,tab)).join(''):'<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>'+t('no-items')+'</p></div>';return;}
+  if(C['/api/facilities?cat='+m.cat]){var items=C['/api/facilities?cat='+m.cat].data||[];el.innerHTML=items.length?items.map(f=>makeFacCard(f,m,tab)).join(''):'<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>لا توجد عناصر</p></div>';return;}
   el.innerHTML='<div style="padding:8px 0">'+skFacCards(5)+'</div>';
-  try{var d=await api('/api/facilities?cat='+m.cat);var items=d.data||[];el.innerHTML=items.length?items.map(f=>makeFacCard(f,m,tab)).join(''):'<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>'+t('no-items')+'</p></div>';}
-  catch(e){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>'+t('error-load')+'</p></div>';}
+  try{var d=await api('/api/facilities?cat='+m.cat);var items=d.data||[];el.innerHTML=items.length?items.map(f=>makeFacCard(f,m,tab)).join(''):'<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>لا توجد عناصر</p></div>';}
+  catch(e){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر التحميل</p></div>';}
 }
 function makeFacCard(f,m,tab){
   var fname=_f(f,'name')||f.name||'';
   var fdesc=_f(f,'description')||f.description||'';
   var img=f.image_url?'<img class="fac-card-img" src="'+f.image_url+'" alt="" decoding="async">':'<div class="fac-card-ph" style="background:'+m.bg+'"><iconify-icon icon="'+m.icon+'" style="color:'+m.color+';font-size:1.8rem;pointer-events:none"></iconify-icon></div>';
-  return '<div class="fac-card fade-in" data-fac-id="'+f.id+'" data-fac-tab="'+tab+'">'+img+'<div class="fac-card-body">'+(f.sub_type?'<span class="fac-card-badge" style="background:'+m.bg+';color:'+m.color+'">'+(_f(f,'sub_type')||f.sub_type)+'</span>':'')+'<div class="fac-card-name">'+fname+'</div>'+(fdesc?'<div class="fac-card-desc">'+fdesc+'</div>':'')+'</div><iconify-icon icon="lucide:chevron-left" style="font-size:18px;color:var(--muted);padding-left:12px;flex-shrink:0;pointer-events:none"></iconify-icon></div>';
+  return '<div class="fac-card fade-in" data-fac-id="'+f.id+'" data-fac-tab="'+tab+'">'+img+'<div class="fac-card-body">'+(f.sub_type?'<span class="fac-card-badge" style="background:'+m.bg+';color:'+m.color+'">'+f.sub_type+'</span>':'')+'<div class="fac-card-name">'+fname+'</div>'+(fdesc?'<div class="fac-card-desc">'+fdesc+'</div>':'')+'</div><iconify-icon icon="lucide:chevron-left" style="font-size:18px;color:var(--muted);padding-left:12px;flex-shrink:0;pointer-events:none"></iconify-icon></div>';
 }
 /* ══ MODALS ══ */
 function om(id){document.getElementById(id).classList.add('open');}
@@ -2621,16 +2457,11 @@ async function openFacModal(id,tab){
     var img=document.getElementById('mf-img');
     if(f.image_url){img.src=f.image_url;img.style.display='block';}else img.style.display='none';
     var badgeEl=document.getElementById('mf-badge');
-    var badgeEl=document.getElementById('mf-badge');
-    if(f.sub_type){
-      var subTrans=_f(f,'sub_type')||f.sub_type;
-      badgeEl.textContent=subTrans;badgeEl.style.cssText='background:'+m.bg+';color:'+m.color+';display:inline-block';
-    }else badgeEl.style.display='none';
+    if(f.sub_type){badgeEl.textContent=f.sub_type;badgeEl.style.cssText='background:'+m.bg+';color:'+m.color+';display:inline-block';}else badgeEl.style.display='none';
     document.getElementById('mf-name').textContent=_f(f,'name')||'';
     document.getElementById('mf-desc').textContent=_f(f,'description')||'';
-    var tags=Array.isArray(f.tags)?f.tags:(typeof f.tags==='string'&&f.tags?f.tags.split(',').map(function(s){return s.trim();}):[])||[];
-    var tagsLabel=tags.length?'<div style="font-size:11px;color:var(--muted);font-weight:700;margin-bottom:4px">'+t('fac-tags-label')+'</div>':'';
-    document.getElementById('mf-meta').innerHTML=tagsLabel+tags.map(function(tg){return '<span class="modal-chip">#'+tg+'</span>';}).join('');
+    var tags=Array.isArray(f.tags)?f.tags:[];
+    document.getElementById('mf-meta').innerHTML=tags.map(tg=>'<span class="modal-chip">#'+tg+'</span>').join('');
     _makeMapBtn(f.lat,f.lng,f.name||'','mf-map-btn-wrap');
     var albums=[];
     if(Array.isArray(f.albums)&&f.albums.length){albums=f.albums.map(x=>typeof x==='string'?{id:x,image_url:x,caption:''}:x);}
@@ -2721,7 +2552,7 @@ async function loadMapData(){
     var mIcon=L.divIcon({className:'',html:'<div style="width:36px;height:36px;background:var(--green);border:2.5px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.3);font-size:16px">🏛️</div>',iconSize:[36,36],iconAnchor:[18,18]});
     L.marker([37.067177,7.380601],{icon:mIcon}).addTo(appMap).on('click',function(e){
       L.DomEvent.stopPropagation(e);closeFilterMenu();
-      showMapCard({id:0,name:t('map-municipality'),description:t('map-municipality-desc'),image_url:''},{bg:'var(--green-l)',color:'var(--green)',icon:'lucide:building-2',label:t('map-municipality-label'),modal:''});
+      showMapCard({id:0,name:'مقر بلدية شطايبي',description:'المقر الرئيسي لبلدية شطايبي - ولاية عنابة',image_url:''},{bg:'var(--green-l)',color:'var(--green)',icon:'lucide:building-2',label:'بلدية',modal:''});
     });
     var results=await Promise.all([api('/api/beaches'),api('/api/tourism'),api('/api/facilities')]);
     var br=results[0],tr=results[1],fr=results[2];
@@ -2744,7 +2575,7 @@ async function openPrevMayorsModal(){
   try{
     var list=_mayorsList;
     if(!list||!list.length){if(el)el.innerHTML='<div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>';var d=await api('/api/mayors');list=d.data||[];_mayorsList=list;}
-    if(!list.length){if(el)el.innerHTML='<div class="empty"><iconify-icon icon="lucide:users"></iconify-icon><p>'+t('no-data-mayors')+'</p></div>';return;}
+    if(!list.length){if(el)el.innerHTML='<div class="empty"><iconify-icon icon="lucide:users"></iconify-icon><p>لا توجد بيانات</p></div>';return;}
     if(el)el.innerHTML=list.map(function(m,i){
       var photo=m.image_url?'<img src="'+m.image_url+'" style="width:52px;height:52px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid var(--border-light)" decoding="async">':'<div style="width:52px;height:52px;border-radius:50%;background:var(--green-l);display:flex;align-items:center;justify-content:center;flex-shrink:0"><iconify-icon icon="lucide:user" style="color:var(--green);font-size:24px;pointer-events:none"></iconify-icon></div>';
       var name=_f(m,'name')||m.name||'--';var period=_f(m,'period')||m.period||'';
@@ -2861,7 +2692,7 @@ function filterServices(type,btn){
 }
 function renderServices(items){
   var el=document.getElementById('svc-list');
-  if(!items.length){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>'+t('no-services')+'</p></div>';return;}
+  if(!items.length){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>لا توجد خدمات</p></div>';return;}
   el.innerHTML=items.map(function(s){
     var c=SVC_COLORS[s.color]||SVC_COLORS.blue;
     var isApp=s.service_type==='app';
@@ -2869,11 +2700,11 @@ function renderServices(items){
     var formLinks=[];try{formLinks=JSON.parse(s.form_links||'[]');}catch(e){}
     var name=_f(s,'service_name')||s.service_name||'';
     var desc=_f(s,'description')||s.description||'';
-    var docsHtml=docs.length?'<div class="svc-card-docs"><div class="svc-card-docs-title"><iconify-icon icon="lucide:file-check-2" style="color:var(--green);font-size:14px"></iconify-icon>'+t('svc-docs-title')+'</div>'
+    var docsHtml=docs.length?'<div class="svc-card-docs"><div class="svc-card-docs-title"><iconify-icon icon="lucide:file-check-2" style="color:var(--green);font-size:14px"></iconify-icon>'+(_curLang==='fr'?'Documents requis':'الوثائق المطلوبة')+'</div>'
       +docs.map(function(d){return '<div class="svc-card-doc-item"><div class="svc-card-doc-check">\u2713</div><span>'+d+'</span></div>';}).join('')+'</div>':'';
     var formsHtml=formLinks.length?'<div class="svc-card-forms">'
-      +formLinks.map(function(f,i){return '<a href="'+(f.url||f)+'" target="_blank" rel="noopener" class="svc-card-form-link" style="background:'+c.bg+';color:'+c.fg+'"><iconify-icon icon="lucide:download" style="font-size:14px;pointer-events:none"></iconify-icon>'+(f.label||((_curLang==='fr'?'Formulaire ':'استمارة ')+(i+1)))+'</a>';}).join('')+'</div>':'';
-    var btnHtml=s.direct_link?'<div class="svc-card-footer"><a href="'+s.direct_link+'" target="_blank" rel="noopener" class="svc-card-btn" style="background:'+c.fg+';color:#fff"><iconify-icon icon="'+(isApp?'lucide:smartphone':'lucide:external-link')+'" style="pointer-events:none"></iconify-icon>'+(isApp?t('svc-download'):t('svc-access'))+'</a></div>':'';
+      +formLinks.map(function(f,i){return '<a href="'+(f.url||f)+'" target="_blank" rel="noopener" class="svc-card-form-link" style="background:'+c.bg+';color:'+c.fg+'"><iconify-icon icon="lucide:download" style="font-size:14px;pointer-events:none"></iconify-icon>'+(f.label||(_curLang==='fr'?'Formulaire '+(i+1):'\u0627\u0633\u062a\u0645\u0627\u0631\u0629 '+(i+1)))+'</a>';}).join('')+'</div>':'';
+    var btnHtml=s.direct_link?'<div class="svc-card-footer"><a href="'+s.direct_link+'" target="_blank" rel="noopener" class="svc-card-btn" style="background:'+c.fg+';color:#fff"><iconify-icon icon="'+(isApp?'lucide:smartphone':'lucide:external-link')+'" style="pointer-events:none"></iconify-icon>'+(_curLang==='fr'?(isApp?'Télécharger':'Accéder'):(isApp?'\u062a\u062d\u0645\u064a\u0644 \u0627\u0644\u062a\u0637\u0628\u064a\u0642':'\u0627\u0644\u0648\u0635\u0648\u0644 \u0644\u0644\u062e\u062f\u0645\u0629'))+'</a></div>':'';
     return '<div class="svc-card">'
       +'<div class="svc-card-header"><div class="svc-card-icon" style="background:'+c.bg+'"><iconify-icon icon="lucide:'+(s.icon||'file-text')+'" style="color:'+c.fg+';pointer-events:none"></iconify-icon></div>'
       +'<div class="svc-card-name">'+name+'</div></div>'
@@ -2884,13 +2715,13 @@ function renderServices(items){
 }
 async function loadServices(type){
   var el=document.getElementById('svc-list');
-  if(el)el.innerHTML='<div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span>'+t('loading')+'</span></div>';
+  if(el)el.innerHTML='<div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon><span>\u062c\u0627\u0631\u064a \u0627\u0644\u062a\u062d\u0645\u064a\u0644</span></div>';
   try{
     var d=await api('/api/services');
     _allServices=d.data||[];
     filterServices(type,document.getElementById('svc-btn-service'));
   }catch(e){
-    if(el)el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>'+t('error-load')+'</p></div>';
+    if(el)el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>\u062a\u0639\u0630\u0631 \u062a\u062d\u0645\u064a\u0644 \u0627\u0644\u062e\u062f\u0645\u0627\u062a</p></div>';
   }
 }
 /* ══ THEME & LANG ══ */
@@ -2929,6 +2760,7 @@ var _I18N={
     'setting-theme':'المظهر','theme-light':'فاتح','theme-dark':'داكن','setting-lang':'اللغة',
     'footer-rights':'بلدية شطايبي - © 2026 جميع الحقوق محفوظة',
     'footer-dev':'تم التطوير بجهود كفاءات بلدية شطايبي',
+    /* ديناميكي */
     'loading':'جاري التحميل','show-map':'عرض على الخريطة',
     'news-cats':{'official':'إعلانات رسمية','activity':'نشاطات بلدية','social':'مجتمع','poster':'الملصقات'},
     'guide-cats':{'admin-branches':'الفروع الإدارية','education':'التعليم','health':'الصحة','public-bodies':'الهيئات','religious':'الدينية','cultural':'الثقافية','sports':'الرياضية'},
@@ -2938,34 +2770,10 @@ var _I18N={
     'today':'اليوم','view-details':'عرض التفاصيل',
     'no-data':'لا توجد بيانات','error-load':'تعذر التحميل',
     'mayors-title':'رؤساء المجلس الشعبي البلدي','mayors-sub':'السجل التاريخي للرؤساء منذ التأسيس',
-    'read-more':'اقرأ المزيد','load-more':'عرض المزيد','pinned':'مثبت',
-    'gallery-label':'معرض الصور','btn-all':'الكل',
+    'read-more':'اقرأ المزيد',
+    'gallery-label':'معرض الصور',
+    'btn-all':'الكل',
     'sea-calm':'هادئ','sea-mostly-calm':'هادئ نسبياً','sea-moderate':'متوسط','sea-rough':'متلاطم','sea-stormy':'عاصف',
-    'search-placeholder':'اكتب للبحث في شطايبي','search-no-results':'لا توجد نتائج لـ',
-    'no-images':'لا توجد صور','no-news':'لا توجد أخبار','no-items':'لا توجد عناصر',
-    'no-services':'لا توجد خدمات','no-data-mayors':'لا توجد بيانات',
-    'weather-location':'شطايبي — عنابة','read-more-btn':'اقرأ المزيد',
-    'svc-btn-service':'خدمات','svc-btn-app':'تطبيقات',
-    'svc-action-service':'الوصول للخدمة','svc-action-app':'تحميل التطبيق',
-    'map-municipality':'مقر بلدية شطايبي','map-municipality-desc':'المقر الرئيسي لبلدية شطايبي - ولاية عنابة','map-municipality-label':'بلدية',
-    /* ── طقس ── */
-    'weather-wind-label':'كم/س','weather-humidity-label':'رطوبة','weather-feels':'يشعر كـ',
-    'weather-max':'أعلى','weather-min':'أدنى','weather-today':'شطايبي — اليوم',
-    'ws-tab-weather':'أحوال الطقس','ws-tab-sea':'أحوال البحر',
-    /* ── بحر ── */
-    'sea-wave-label':'ارتفاع الموج','sea-wave-unit':'م',
-    'sea-temp-label':'حرارة الماء','sea-dir-label':'الاتجاه',
-    'sea-states':{'calm':'هادئ','mostly_calm':'هادئ نسبياً','moderate':'معتدل','rough':'مضطرب','stormy':'عاصف'},
-    'sea-tips':{'calm_day':'البحر هادئ — مناسب للسباحة','calm_night':'البحر هادئ — مناسب للصيد','mostly_calm_day':'هادئ نسبياً — مناسب','mostly_calm_night':'هادئ — مناسب للصيد','moderate_day':'معتدل — توخ الحذر','moderate_night':'معتدل — حذر للصيادين','rough':'مضطرب — يُنصح بالحذر','stormy':'عاصف — يُمنع الخروج'},
-    'sea-daytime':'للسياح والسباحين','sea-nighttime':'للصيادين الليليين',
-    /* ── خدمات ── */
-    'svc-docs-title':'الوثائق المطلوبة','svc-forms-title':'الاستمارات',
-    'svc-access':'الوصول للخدمة','svc-download':'تحميل التطبيق',
-    /* ── مرافق ── */
-    'fac-tags-label':'الكلمات الدلالية',
-    'fcat-labels':{'admin-branches':'فروع إدارية','education':'تعليم وتكوين','health':'صحية','public-bodies':'هيئات عمومية','religious':'دينية','cultural':'ثقافية','sports':'رياضية'},
-    /* ── الخبر ── */
-    'news-cat-official':'إعلانات','news-cat-activity':'نشاطات','news-cat-social':'مجتمع','news-cat-poster':'ملصقات',
   },
   fr:{
     'nav-home':'Accueil','nav-news':'Actualités','nav-guide':'Guide','nav-services':'Services','nav-more':'Plus','nav-map':'Carte',
@@ -2982,6 +2790,7 @@ var _I18N={
     'setting-theme':'Apparence','theme-light':'Clair','theme-dark':'Sombre','setting-lang':'Langue',
     'footer-rights':'Commune de Chetaïbi — © 2026 Tous droits réservés',
     'footer-dev':'Développé par les compétences de la commune de Chetaïbi',
+    /* ديناميكي */
     'loading':'Chargement...','show-map':'Voir sur la carte',
     'news-cats':{'official':'Annonces officielles','activity':'Activités municipales','social':'Communauté','poster':'Affiches'},
     'guide-cats':{'admin-branches':'Annexes admin.','education':'Enseignement','health':'Santé','public-bodies':'Organismes','religious':'Religieux','cultural':'Culturel','sports':'Sports'},
@@ -2991,34 +2800,10 @@ var _I18N={
     'today':'Aujourd\'hui','view-details':'Voir détails',
     'no-data':'Aucune donnée','error-load':'Chargement échoué',
     'mayors-title':'Présidents de l\'APC','mayors-sub':'Registre historique des présidents depuis la création',
-    'read-more':'Lire la suite','load-more':'Voir plus','pinned':'Épinglé',
-    'gallery-label':'Galerie photos','btn-all':'Tout',
+    'read-more':'Lire la suite',
+    'gallery-label':'Galerie photos',
+    'btn-all':'Tout',
     'sea-calm':'Calme','sea-mostly-calm':'Assez calme','sea-moderate':'Modérée','sea-rough':'Agitée','sea-stormy':'Tempétueuse',
-    'search-placeholder':'Rechercher à Chetaïbi','search-no-results':'Aucun résultat pour',
-    'no-images':'Aucune photo','no-news':'Aucune actualité','no-items':'Aucun élément',
-    'no-services':'Aucun service','no-data-mayors':'Aucune donnée',
-    'weather-location':'Chetaïbi — Annaba','read-more-btn':'Lire la suite',
-    'svc-btn-service':'Services','svc-btn-app':'Applications',
-    'svc-action-service':'Accéder','svc-action-app':'Télécharger',
-    'map-municipality':'Siège APC Chetaïbi','map-municipality-desc':'Siège principal de la commune de Chetaïbi — wilaya d\'Annaba','map-municipality-label':'Commune',
-    /* ── طقس ── */
-    'weather-wind-label':'km/h','weather-humidity-label':'Humidité','weather-feels':'Ressenti',
-    'weather-max':'Max','weather-min':'Min','weather-today':'Chetaïbi — Aujourd\'hui',
-    'ws-tab-weather':'Météo','ws-tab-sea':'État de la mer',
-    /* ── بحر ── */
-    'sea-wave-label':'Hauteur vagues','sea-wave-unit':'m',
-    'sea-temp-label':'Temp. eau','sea-dir-label':'Direction',
-    'sea-states':{'calm':'Calme','mostly_calm':'Assez calme','moderate':'Modéré','rough':'Agité','stormy':'Tempétueux'},
-    'sea-tips':{'calm_day':'Mer calme — Baignade possible','calm_night':'Mer calme — Pêche possible','mostly_calm_day':'Assez calme — Baignade possible','mostly_calm_night':'Assez calme — Pêche possible','moderate_day':'Modérée — Prudence','moderate_night':'Modérée — Prudence pêcheurs','rough':'Agitée — Prudence recommandée','stormy':'Tempétueuse — Interdit'},
-    'sea-daytime':'Touristes et baigneurs','sea-nighttime':'Pêcheurs nocturnes',
-    /* ── خدمات ── */
-    'svc-docs-title':'Documents requis','svc-forms-title':'Formulaires',
-    'svc-access':'Accéder au service','svc-download':'Télécharger l\'application',
-    /* ── مرافق ── */
-    'fac-tags-label':'Mots-clés',
-    'fcat-labels':{'admin-branches':'Annexes admin.','education':'Enseignement','health':'Santé','public-bodies':'Organismes','religious':'Religieux','cultural':'Culturel','sports':'Sports'},
-    /* ── خبر ── */
-    'news-cat-official':'Annonces','news-cat-activity':'Activités','news-cat-social':'Communauté','news-cat-poster':'Affiches',
   }
 };
 function t(key){var d=_I18N[_curLang]||_I18N.ar;return(d[key]!==undefined?d[key]:(_I18N.ar[key]||key));}
@@ -3050,55 +2835,29 @@ function applyI18n(){
 function setLang(lang){
   _curLang=lang;
   localStorage.setItem('app-lang',lang);
-
-  /* مسح كل الكاش */
-  C={};
-  allNews=[];
-  newsScreenLoaded=false;
-  _mayorLoaded=false;
-  _mayorsList=[];
-  _annCarData=[];
-  try{_svcLoaded=false;}catch(e){}
-  try{_svcData=null;}catch(e){}
-  try{_svcAppsData=null;}catch(e){}
-
-  /* تحديث أزرار اللغة */
+  C={}; /* مسح الكاش عند تغيير اللغة */
   var ar=document.getElementById('lang-ar-btn');
   var fr=document.getElementById('lang-fr-btn');
   if(ar)ar.classList.toggle('active',lang==='ar');
   if(fr)fr.classList.toggle('active',lang==='fr');
-
-  /* تحديث اتجاه الصفحة */
-  document.documentElement.lang=lang;
-  document.documentElement.dir=lang==='fr'?'ltr':'rtl';
-
-  /* تحديث حجم خط الهيدر */
+  /* تعديل حجم خط الهيدر حسب اللغة */
   var h1=document.querySelector('.header-text h1');
   if(h1)h1.style.fontSize=lang==='fr'?'13.5px':'18px';
   var hp=document.querySelector('.header-text p');
   if(hp)hp.style.fontSize=lang==='fr'?'10.5px':'12.5px';
-
-  /* تطبيق ترجمات data-i18n */
   applyI18n();
-
+  haptic('light');
+  /* مسح الكاش وإعادة تحميل المحتوى */
+  allNews=[];_svcData=null;_svcAppsData=null;
+  newsScreenLoaded=false;
   /* إعادة تحميل الصفحة الحالية */
   if(curTab==='news')loadNewsScreen();
   else if(curTab==='home')loadHome();
-  else if(curTab==='services'){
-    var st=document.querySelector('#screen-services .seg-btn.active');
-    loadServices(st?st.getAttribute('data-type'):'service');
-  }
+  else if(curTab==='services'){var st=document.querySelector('#screen-services .seg-btn.active');loadServices(st?st.getAttribute('data-type'):'service');}
   else if(curTab==='guide')loadFacTab(facCat,document.querySelector('#screen-guide .seg-btn.active'));
   else if(curTab==='archive')loadArchiveTab(archTab);
-  else loadHome();
-
-  /* إعادة تحميل الرئيسية دائماً (حتى لو كانت نشطة) */
-  if(curTab!=='home')loadHome();
-
   /* تحديث بطاقة الرئيس */
   syncMayorToSheet();
-
-  haptic('light');
 }
 
 /* تطبيق الإعدادات المحفوظة عند التحميل */
@@ -3107,21 +2866,15 @@ function setLang(lang){
   if(_curLang==='fr'){
     document.documentElement.dir='ltr';
     document.documentElement.lang='fr';
-  }
-  /* applyI18n بعد DOM */
-  document.addEventListener('DOMContentLoaded',function(){
-    applyI18n();
-    if(_curLang==='fr'){
+    document.addEventListener('DOMContentLoaded',function(){
       var h1=document.querySelector('.header-text h1');
       if(h1)h1.style.fontSize='13.5px';
       var hp=document.querySelector('.header-text p');
       if(hp)hp.style.fontSize='10.5px';
-      var arBtn=document.getElementById('lang-ar-btn');
-      var frBtn=document.getElementById('lang-fr-btn');
-      if(arBtn)arBtn.classList.remove('active');
-      if(frBtn)frBtn.classList.add('active');
-    }
-  });
+    });
+  }
+  /* applyI18n بعد DOM */
+  document.addEventListener('DOMContentLoaded',function(){applyI18n();});
 })();
 /* ══ INIT ══ */
 window.addEventListener('load',function(){
