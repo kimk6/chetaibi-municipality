@@ -822,6 +822,20 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .svc-card-footer{padding:10px 14px 14px;border-top:1px solid var(--border-light);}
 .svc-card-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:11px;border-radius:var(--r-md);font-size:13px;font-weight:800;font-family:var(--font-main);text-decoration:none;border:none;cursor:pointer;transition:opacity var(--dur-fast),transform var(--dur-fast);}
 .svc-card-btn:active{opacity:.82;transform:scale(.97);}
+
+/* ══ Micro-interactions ══ */
+.ann-card:active,.announce-card:active,.place-card:active,
+.fac-card:active,.news-card:active,.mayor-home-card:active,
+.archive-card:active,.svc-card:active,.beach-modal-card:active{
+  transform:scale(0.97);opacity:.88;
+  transition:transform .08s ease,opacity .08s ease;
+}
+.see-all-arrow-btn:active,.read-more:active,.ann-card-btn:active{
+  transform:scale(0.95);opacity:.80;
+}
+.nav-btn:active .nav-icon-wrap{transform:scale(.88);}
+.ws-tab:active,.seg-btn:active{transform:scale(.95);}
+
 </style>
 </head>
 <body>
@@ -858,31 +872,9 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         <div class="ptr-indicator" id="ptr-home"><iconify-icon icon="lucide:refresh-cw"></iconify-icon></div>
         <div class="content-block">
 
+          <!-- بطاقة الإعلان الأخير -->
           <div class="section" style="padding-top:20px">
-            <div class="ann-carousel-outer" id="ann-carousel-outer">
-              <div class="ann-card" id="h-official">
-                <div class="ann-card-content-inner" style="opacity:0"></div>
-              </div>
-              <div class="ann-carousel-dots" id="ann-carousel-dots"></div>
-
-            </div>
-          </div>
-
-          <div class="section">
-            <div class="section-header">
-              <span class="section-title">
-                <iconify-icon icon="lucide:newspaper" style="color:var(--green);pointer-events:none"></iconify-icon>
-                <span data-i18n="section-news">آخر المستجدات</span>
-              </span>
-              <!-- ✅ تعديل 2: زر "الكل" في آخر المستجدات → يذهب لتصنيف "نشاطات" -->
-              <button class="see-all-arrow-btn" id="btn-see-news-all">
-                <span data-i18n="btn-all">الكل</span>
-                <iconify-icon icon="lucide:chevron-left" style="font-size:16px;pointer-events:none;"></iconify-icon>
-              </button>
-            </div>
-            <div class="h-scroll" id="h-news">
-              <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
-            </div>
+            <div id="h-official-single"></div>
           </div>
 
           <!-- بطاقة الطقس والبحر الموحدة -->
@@ -2262,7 +2254,7 @@ async function syncMayorToSheet(){
     if(iconEl) iconEl.style.display = 'none';
   }
 }
-async function loadHome(){loadHOfficial();loadHNews();loadMayorHome();loadHBeaches();loadHTourism();fetchPWAWeather();fetchPWASea();}
+async function loadHome(){loadHOfficial();loadMayorHome();loadHBeaches();loadHTourism();fetchPWAWeather();fetchPWASea();}
 var PWA_LAT=37.0850,PWA_LON=7.2550;
 /* _debugWeather removed in production */
 /* _debugSea removed in production */
@@ -2538,77 +2530,39 @@ function _annCarInitDrag(vp){
 }
 
 async function loadHOfficial(){
-  var outer=document.getElementById('ann-carousel-outer');
-  var el=document.getElementById('h-official');
+  /* بطاقة واحدة للآخر إعلان */
+  var el=document.getElementById('h-official-single');
   if(!el)return;
-  /* skeleton أثناء التحميل */
-  if(_annCarData.length===0){
-    el.innerHTML='<div class="sk-ann-card">'
-      +'<div class="sk" style="width:44px;height:44px;border-radius:50%;margin-bottom:4px"></div>'
-      +'<div class="sk sk-line w-half" style="height:16px"></div>'
-      +'<div class="sk sk-line w-full" style="height:11px"></div>'
-      +'<div class="sk sk-line w-3q" style="height:11px"></div>'
-      +'<div style="width:100%;height:1px;background:var(--border-light);margin:4px 0"></div>'
-      +'<div style="width:100%;display:flex;justify-content:space-between">'
-      +'<div class="sk sk-btn"></div>'
-      +'<div class="sk sk-line w-1q" style="height:10px;margin-top:6px"></div>'
-      +'</div></div>';
-  }
-  /* إذا البيانات موجودة — فقط أعد عرض البطاقة الحالية */
-  if(_annCarData.length>0){
-    _annCarShowCurrent();
-    return;
-  }
+  /* skeleton */
+  el.innerHTML='<div class="sk-ann-card" style="margin:0 16px"></div>';
   try{
     var d=await api('/api/news');
     if(d.data)allNews=d.data;
-    var items=(d.data||[]).filter(function(n){return n.category==='official';}).slice(0,5);
-    /* قسم المستجدات */
-    var newsEl=document.getElementById('h-news');
-    if(newsEl){
-      var ni=(d.data||[]).filter(function(n){return n.category!=='official'&&n.category!=='poster';}).slice(0,10);
-      newsEl.innerHTML=ni.length?ni.map(function(n){return makeNewsCard(n,true);}).join(''):'';
-    }
+    var items=(d.data||[]).filter(function(n){return n.category==='official';});
     if(!items.length){el.innerHTML='';return;}
-    /* بناء البيانات */
-    _annCarData=items.map(function(n){return {type:'card',id:n.id,title:_f(n,'title')||n.title,content:_f(n,'content')||n.content,date:n.date,custom_label:n.custom_label||''};});
-    _annCarTotal=_annCarData.length;
-    _annCarIdx=0;
-    /* بطاقة واحدة ثابتة */
-    el.innerHTML='<div class="ann-card-content-inner"></div>';
-    /* dots */
-    var dotsEl=document.getElementById('ann-carousel-dots');
-    if(dotsEl){
-      dotsEl.innerHTML=_annCarData.map(function(_,i){
-        return '<button class="ann-c-dot'+(i===0?' active':'')+'" onclick="_annCarGoTo('+i+')"></button>';
-      }).join('');
-      /* تطبيق الألوان على الـ dots من البداية */
-      _annCarUpdateDots();
-    }
-    /* اعرض أول بطاقة بدون animation */
-    var inner=el.querySelector('.ann-card-content-inner');
-    if(inner&&_annCarData[0]){
-      var c0=_annLabelColor(_annCarData[0].custom_label||'');
-      el.style.borderColor=c0.border;
-      el.style.boxShadow='0 2px 12px '+c0.shadow+',0 1px 3px rgba(0,0,0,0.04)';
-      inner.style.opacity='1';
-      inner.innerHTML=_annCardContent(_annCarData[0],c0);
-      var btn=inner.querySelector('.ann-card-btn');
-      if(btn)btn.addEventListener('click',function(e){
-        e.stopPropagation();
-        var id=btn.getAttribute('data-news-id');
-        if(id){haptic('light');openNewsModal(id);}
-      });
-      inner.addEventListener('click',function(e){
-        if(e.target.closest('.ann-card-btn'))return;
-        var cur=_annCarData[_annCarIdx];
-        if(cur&&cur.id){haptic('light');openNewsModal(cur.id);}
-      });
-    }
-    /* drag على البطاقة نفسها */
-    _annCarInitDrag(el);
-  }catch(e){if(el)el.innerHTML='';}
+    var n=items[0];
+    var c=_annLabelColor(n.custom_label||'');
+    var annHtml=_annCardContent(n,c);
+    el.innerHTML='<div class="ann-card" '
+      +'style="margin:0 16px;width:auto;background:'+c.glow+';border-color:'+c.border+';box-shadow:var(--elev-2)" '
+      +'data-news-id="'+n.id+'">'
+      +'<div class="ann-card-content-inner">'+annHtml+'</div>'
+      +'</div>';
+    /* ربط حدث الضغط */
+    var card=el.querySelector('.ann-card');
+    if(card)card.addEventListener('click',function(){
+      haptic('light');
+      openNewsModal(parseInt(card.getAttribute('data-news-id')));
+    });
+    var btn=el.querySelector('.ann-card-btn');
+    if(btn)btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      haptic('light');
+      openNewsModal(parseInt(btn.getAttribute('data-news-id')));
+    });
+  }catch(e){el.innerHTML='';}
 }
+
 async function loadHNews(){/* تُغذَّى من loadHOfficial */}
 async function loadHBeaches(){var el=document.getElementById('h-beaches');el.innerHTML=skPlaceCards(4);try{var d=await api('/api/beaches');el.innerHTML=(d.data||[]).slice(0,8).map(b=>placeCard(b,'beach')).join('');}catch(e){el.innerHTML='';}}
 async function loadHTourism(){var el=document.getElementById('h-tourism');el.innerHTML=skPlaceCards(4);try{var d=await api('/api/tourism');el.innerHTML=(d.data||[]).slice(0,8).map(t=>placeCard(t,'tourism')).join('');}catch(e){el.innerHTML='';}}
@@ -2995,6 +2949,11 @@ function initEventDelegation(){
     if(t.classList.contains('modal-overlay')){cm(t.id);return;}
   });
   document.getElementById('nav-home').addEventListener('click',function(){haptic('tab');switchTab('home');});
+  /* haptic على كل البطاقات */
+  document.addEventListener('touchstart',function(e){
+    var t=e.target;
+    if(t.closest('.place-card,.announce-card,.fac-card,.mayor-home-card,.archive-card,.svc-card,.ann-card'))haptic('light');
+  },{passive:true});
   document.getElementById('nav-news').addEventListener('click',function(){haptic('tab');switchTab('news');});
   document.getElementById('nav-guide').addEventListener('click',function(){haptic('tab');switchTab('guide');});
   var _navArchive=document.getElementById('nav-archive');if(_navArchive)_navArchive.addEventListener('click',function(){haptic('tab');switchTab('archive');});
