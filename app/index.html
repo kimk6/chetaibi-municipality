@@ -511,9 +511,40 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .ptr-indicator iconify-icon{font-size:20px;color:var(--green);pointer-events:none;}
 
 @keyframes spin{to{transform:rotate(360deg);}}
-.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:52px 24px 40px;color:var(--muted);gap:10px;}
+
+/* ══ EMPTY STATE — Professional ══ */
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:56px 32px 48px;gap:0;}
+.empty-icon-wrap{width:80px;height:80px;border-radius:50%;background:var(--surface-2);display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+.empty-icon-wrap iconify-icon{font-size:36px;color:var(--muted-3);display:block;pointer-events:none;}
+.empty-title{font-size:16px;font-weight:900;color:var(--text-2);margin-bottom:6px;letter-spacing:-.2px;}
+.empty-sub{font-size:13px;color:var(--muted);line-height:1.6;max-width:240px;}
+.empty-action{margin-top:18px;padding:9px 22px;background:var(--green);color:#fff;border:none;border-radius:var(--r-full);font-family:var(--font-main);font-size:13px;font-weight:800;cursor:pointer;touch-action:manipulation;transition:opacity var(--dur-fast),transform var(--dur-fast);}
+.empty-action:active{opacity:.8;transform:scale(.95);}
+/* keep backward compat */
 .empty iconify-icon{font-size:50px;opacity:.28;display:block;margin:0 auto 12px;}
 .empty p{font-size:13px;font-weight:600;color:var(--muted-2);}
+
+/* ══ TOAST / SNACKBAR ══ */
+#toast-container{position:fixed;bottom:calc(var(--nav-h) + var(--safe-b) + 12px);left:50%;transform:translateX(-50%);z-index:9000;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;width:min(calc(100vw - 32px),360px);}
+.toast{display:flex;align-items:center;gap:10px;background:#1C1E24;color:#E3E4E8;font-family:var(--font-main);font-size:13.5px;font-weight:600;padding:13px 16px;border-radius:var(--r-md);box-shadow:0 4px 20px rgba(0,0,0,.28);pointer-events:auto;width:100%;animation:toastIn .22s var(--ease-spring) both;line-height:1.35;}
+.toast.toast-out{animation:toastOut .18s var(--ease-exit) forwards;}
+.toast-icon{font-size:18px;flex-shrink:0;}
+.toast-text{flex:1;}
+.toast-action{font-size:12px;font-weight:800;color:var(--green);background:none;border:none;font-family:var(--font-main);cursor:pointer;padding:3px 0 3px 6px;flex-shrink:0;touch-action:manipulation;white-space:nowrap;}
+.toast-action:active{opacity:.7;}
+@keyframes toastIn{from{opacity:0;transform:translateY(12px) scale(.96);}to{opacity:1;transform:translateY(0) scale(1);}}
+@keyframes toastOut{to{opacity:0;transform:translateY(8px) scale(.96);}}
+[data-theme="light"] .toast{background:#1C2433;color:#F5F7FA;}
+
+/* ══ TAB BADGE ══ */
+.tab-badge{position:absolute;top:-3px;right:-6px;min-width:16px;height:16px;padding:0 4px;background:var(--red);color:#fff;font-size:9.5px;font-weight:900;border-radius:var(--r-full);display:flex;align-items:center;justify-content:center;pointer-events:none;border:2px solid var(--card);}
+
+/* ══ PREFERS REDUCED MOTION ══ */
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
+  .ptr-indicator{transition:none !important;}
+}
+
 .fade-in{animation:fadeUp .18s var(--ease-enter) both;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 /* MAP */
@@ -1025,6 +1056,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     <!-- GUIDE -->
     <div class="screen hidden" id="screen-guide">
       <div class="scroll-area" id="scroll-guide">
+        <div class="ptr-indicator" id="ptr-guide"><iconify-icon icon="lucide:refresh-cw"></iconify-icon></div>
         <div class="content-block">
           <div class="seg-bar-wrap">
             <div class="seg-bar" id="guide-seg-bar">
@@ -1366,6 +1398,9 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 
 </div><!-- end #app -->
 
+<!-- TOAST -->
+<div id="toast-container" aria-live="polite" aria-atomic="false"></div>
+
 <!-- BOTTOM SHEET المزيد -->
 <div id="more-sheet-overlay">
   <div id="more-sheet">
@@ -1630,6 +1665,46 @@ document.addEventListener('touchstart',function(e){
   if(e.target.tagName==='IMG'&&!e.target.closest('.album-grid')&&!e.target.closest('#mn-announce-album')&&!e.target.closest('#mt-sticker-album')&&!e.target.closest('#lightbox')){e.preventDefault();}
 },{passive:false});
 document.addEventListener('touchmove',function(e){if(e.touches.length>1)e.preventDefault();},{passive:false});
+/* ══ TOAST SYSTEM ══ */
+var _toastTimers=[];
+function showToast(msg,opts){
+  opts=opts||{};
+  var icon=opts.icon||'lucide:check-circle';
+  var iconColor=opts.iconColor||'var(--green)';
+  var action=opts.action||null;
+  var duration=opts.duration||3200;
+  var container=document.getElementById('toast-container');
+  if(!container)return;
+  var toast=document.createElement('div');
+  toast.className='toast';
+  toast.innerHTML='<iconify-icon class="toast-icon" icon="'+icon+'" style="color:'+iconColor+';pointer-events:none"></iconify-icon>'
+    +'<span class="toast-text">'+msg+'</span>'
+    +(action?'<button class="toast-action" onclick="('+action.fn+')();this.closest(\'.toast\')._dismiss()">'+action.label+'</button>':'');
+  container.appendChild(toast);
+  function dismiss(){
+    toast.classList.add('toast-out');
+    setTimeout(function(){if(toast.parentNode)toast.parentNode.removeChild(toast);},200);
+  }
+  toast._dismiss=dismiss;
+  var timer=setTimeout(dismiss,duration);
+  _toastTimers.push(timer);
+  /* max 3 toasts */
+  var toasts=container.querySelectorAll('.toast:not(.toast-out)');
+  if(toasts.length>3)toasts[0]._dismiss&&toasts[0]._dismiss();
+}
+function showToastError(msg){showToast(msg||t('error-load'),{icon:'lucide:wifi-off',iconColor:'var(--red)',duration:4000});}
+function showToastSuccess(msg){showToast(msg,{icon:'lucide:check-circle',iconColor:'var(--green)'});}
+
+/* ══ EMPTY STATE HELPER ══ */
+function makeEmpty(icon,title,sub,actionLabel,actionFn){
+  var a=actionLabel?'<button class="empty-action" onclick="'+actionFn+'">'+actionLabel+'</button>':'';
+  return '<div class="empty fade-in">'
+    +'<div class="empty-icon-wrap"><iconify-icon icon="'+icon+'"></iconify-icon></div>'
+    +'<div class="empty-title">'+title+'</div>'
+    +'<div class="empty-sub">'+sub+'</div>'
+    +a+'</div>';
+}
+
 /* ══ API CACHE ══ */
 var C={};
 async function api(u){
@@ -2160,7 +2235,7 @@ async function loadArchiveTab(tab){
         items=all.filter(function(a){return a.image_new_url;});
       }
     }
-    if(!items.length){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:image-off"></iconify-icon><p>'+t('no-images')+'</p></div>';return;}
+    if(!items.length){el.innerHTML=makeEmpty('lucide:image-off',t('no-images'),t('no-data'),null,'');return;}
     function renderArchChunk(arr,from){
       var PAGE=8;var chunk=arr.slice(from,from+PAGE);
       var html=from===0?'<div style="display:flex;flex-direction:column;gap:16px;" id="archive-items">':'';
@@ -2220,7 +2295,7 @@ async function loadArchiveTab(tab){
     renderArchChunk(items,0);
   }catch(e){
     console.error('loadArchiveTab error:',e);
-    el.innerHTML='<div class="empty"><div style="font-size:48px;line-height:1;margin-bottom:4px">📡</div><p style="font-size:15px;font-weight:700;color:var(--text-2)">'+t('error-load')+'</p><p style="font-size:12px;color:var(--muted)">'+t('check-connection')+'</p></div>';
+    el.innerHTML=makeEmpty('lucide:wifi-off',t('error-load'),t('check-connection'),t('loading'),'');
   }
 }
 /* ══ TIMELINE RENDER ══ */
@@ -2628,8 +2703,26 @@ async function loadNewsScreen(){
     var activeBtn=document.querySelector('#screen-news .seg-btn.active');
     var activeCat=activeBtn?activeBtn.getAttribute('data-cat'):'official';
     newsScreenLoaded=true;
-    renderNews(allNews.filter(n=>n.category===activeCat));
-  }catch(e){el.innerHTML='<div class="empty"><div style="font-size:48px;line-height:1;margin-bottom:4px">📡</div><p style="font-size:15px;font-weight:700;color:var(--text-2)">'+t('error-load')+'</p><p style="font-size:12px;color:var(--muted)">'+t('check-connection')+'</p></div>';}
+    _updateNewsBadges(allNews);
+    renderNews(allNews.filter(function(n){return n.category===activeCat;}));
+  }catch(e){
+    el.innerHTML=makeEmpty('lucide:wifi-off',t('error-load'),t('check-connection'),'↻ '+t('loading'),'loadNewsScreen()');
+    showToastError();
+  }
+}
+/* badge counts على تبويبات الأخبار */
+function _updateNewsBadges(data){
+  var cats=['official','activity','social','poster'];
+  cats.forEach(function(cat){
+    var btn=document.getElementById('news-btn-'+cat);if(!btn)return;
+    var old=btn.querySelector('.tab-badge');if(old)old.remove();
+    var count=(data||[]).filter(function(n){return n.category===cat;}).length;
+    if(count>0){
+      var b=document.createElement('span');
+      b.className='tab-badge';b.textContent=count>99?'99+':count;
+      btn.style.position='relative';btn.appendChild(b);
+    }
+  });
 }
 function filterNews(cat,btn){
   haptic('light');
@@ -2642,7 +2735,7 @@ function renderNews(items,startIdx){
   var el=document.getElementById('news-list');
   startIdx=startIdx||0;
   var PAGE=8;
-  if(!startIdx&&!items.length){el.innerHTML='<div class="empty"><div style="font-size:52px;line-height:1;margin-bottom:4px">📭</div><p style="font-size:15px;font-weight:700;color:var(--text-2)">'+t('no-news')+'</p></div>';return;}
+  if(!startIdx&&!items.length){el.innerHTML=makeEmpty('lucide:newspaper',t('no-news'),t('no-data'),null,'');return;}
   var chunk=items.slice(startIdx,startIdx+PAGE);
   var html=chunk.map(function(n){
     var s=NS[n.category]||NS.official;var lbl=n.custom_label||s.lbl||'';
@@ -2698,10 +2791,10 @@ async function loadFacTab(tab,btn){
   document.querySelectorAll('#screen-guide .seg-btn').forEach(t=>t.classList.remove('active'));
   if(btn)btn.classList.add('active');
   var el=document.getElementById('fac-list');var m=FM[tab];if(!m)return;
-  if(C['/api/facilities?cat='+m.cat]){var items=C['/api/facilities?cat='+m.cat].data||[];el.innerHTML=items.length?items.map(f=>makeFacCard(f,m,tab)).join(''):'<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>'+t('no-items')+'</p></div>';return;}
+  if(C['/api/facilities?cat='+m.cat]){var items=C['/api/facilities?cat='+m.cat].data||[];el.innerHTML=items.length?items.map(f=>makeFacCard(f,m,tab)).join(''):makeEmpty('lucide:inbox',t('no-items'),t('no-data'),null,'');return;}
   el.innerHTML='<div style="padding:8px 0">'+skFacCards(5)+'</div>';
-  try{var d=await api('/api/facilities?cat='+m.cat);var items=d.data||[];el.innerHTML=items.length?items.map(f=>makeFacCard(f,m,tab)).join(''):'<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>'+t('no-items')+'</p></div>';}
-  catch(e){el.innerHTML='<div class="empty"><div style="font-size:48px;line-height:1;margin-bottom:4px">📡</div><p style="font-size:15px;font-weight:700;color:var(--text-2)">'+t('error-load')+'</p><p style="font-size:12px;color:var(--muted)">'+t('check-connection')+'</p></div>';}
+  try{var d=await api('/api/facilities?cat='+m.cat);var items=d.data||[];el.innerHTML=items.length?items.map(f=>makeFacCard(f,m,tab)).join(''):makeEmpty('lucide:inbox',t('no-items'),t('no-data'),null,'');}
+  catch(e){el.innerHTML=makeEmpty('lucide:wifi-off',t('error-load'),t('check-connection'),t('loading'),'');}
 }
 function makeFacCard(f,m,tab){
   var fname=_f(f,'name')||f.name||'';
@@ -2954,14 +3047,14 @@ async function openPrevMayorsModal(){
   try{
     var list=_mayorsList;
     if(!list||!list.length){if(el)el.innerHTML='<div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>';var d=await api('/api/mayors');list=d.data||[];_mayorsList=list;}
-    if(!list.length){if(el)el.innerHTML='<div class="empty"><iconify-icon icon="lucide:users"></iconify-icon><p>'+t('no-data-mayors')+'</p></div>';return;}
+    if(!list.length){if(el)el.innerHTML=makeEmpty('lucide:users',t('no-data-mayors'),t('no-data'),null,'');return;}
     if(el)el.innerHTML=list.map(function(m,i){
       var photo=m.image_url?'<img src="'+m.image_url+'" style="width:52px;height:52px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid var(--border-light)" decoding="async">':'<div style="width:52px;height:52px;border-radius:50%;background:var(--green-l);display:flex;align-items:center;justify-content:center;flex-shrink:0"><iconify-icon icon="lucide:user" style="color:var(--green);font-size:24px;pointer-events:none"></iconify-icon></div>';
       var name=_f(m,'name')||m.name||'--';var period=_f(m,'period')||m.period||'';
       var badge=i===0?'<span style="font-size:10px;font-weight:800;color:#fff;background:var(--green);display:inline-block;padding:1px 9px;border-radius:99px;margin-top:3px">الحالي</span>':(m.is_dec?'<div style="font-size:10px;font-weight:800;color:var(--amber);background:var(--amber-l);display:inline-block;padding:1px 9px;border-radius:99px;margin-top:3px">مندوب تنفيذي</div>':'');
       return '<div style="display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--border-light)">'+photo+'<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:800;color:var(--text);letter-spacing:-.1px">'+name+'</div>'+badge+(period?'<div style="font-size:11.5px;color:var(--muted);margin-top:4px;display:flex;align-items:center;gap:4px"><iconify-icon icon="lucide:calendar" style="font-size:11px;pointer-events:none"></iconify-icon>'+period+'</div>':'')+'</div></div>';
     }).join('');
-  }catch(e){if(el)el.innerHTML='<div class="empty"><iconify-icon icon="lucide:wifi-off"></iconify-icon><p>تعذر تحميل البيانات</p></div>';}
+  }catch(e){if(el)el.innerHTML=makeEmpty('lucide:wifi-off',t('error-load'),t('check-connection'),null,'');}
 }
 /* ══ EVENT DELEGATION ══ */
 function initEventDelegation(){
@@ -3076,7 +3169,7 @@ function filterServices(type,btn){
 }
 function renderServices(items){
   var el=document.getElementById('svc-list');
-  if(!items.length){el.innerHTML='<div class="empty"><iconify-icon icon="lucide:inbox"></iconify-icon><p>'+t('no-services')+'</p></div>';return;}
+  if(!items.length){el.innerHTML=makeEmpty('lucide:file-text',t('no-services'),t('no-data'),null,'');return;}
   el.innerHTML=items.map(function(s){
     var c=SVC_COLORS[s.color]||SVC_COLORS.blue;
     var isApp=s.service_type==='app';
@@ -3105,7 +3198,7 @@ async function loadServices(type){
     _allServices=d.data||[];
     filterServices(type,document.getElementById('svc-btn-service'));
   }catch(e){
-    if(el)el.innerHTML='<div class="empty"><div style="font-size:48px;line-height:1;margin-bottom:4px">📡</div><p style="font-size:15px;font-weight:700;color:var(--text-2)">'+t('error-load')+'</p><p style="font-size:12px;color:var(--muted)">'+t('check-connection')+'</p></div>';
+    if(el)el.innerHTML=makeEmpty('lucide:wifi-off',t('error-load'),t('check-connection'),t('loading'),'');
   }
 }
 /* ══ THEME & LANG ══ */
@@ -3169,6 +3262,7 @@ var _I18N={
     'day-names':['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'],
     'today':'اليوم','view-details':'عرض التفاصيل',
     'no-data':'لا توجد بيانات','error-load':'تعذر التحميل','check-connection':'تحقق من الاتصال بالإنترنت',
+    'calling':'جاري الاتصال...','opening-browser':'يفتح في المتصفح','copied':'تم النسخ',
     'mayors-title':'رؤساء المجلس الشعبي البلدي','mayors-sub':'السجل التاريخي للرؤساء منذ التأسيس',
     'read-more':'اقرأ المزيد','load-more':'عرض المزيد','pinned':'مثبت',
     'gallery-label':'معرض الصور','btn-all':'الكل',
@@ -3237,6 +3331,7 @@ var _I18N={
     'day-names':['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
     'today':'Aujourd\'hui','view-details':'Voir détails',
     'no-data':'Aucune donnée','error-load':'Chargement échoué','check-connection':'Vérifiez votre connexion internet',
+    'calling':'Appel en cours...','opening-browser':'Ouverture du navigateur','copied':'Copié',
     'mayors-title':'Présidents de l\'APC','mayors-sub':'Registre historique des présidents depuis la création',
     'read-more':'Lire la suite','load-more':'Voir plus','pinned':'Épinglé',
     'gallery-label':'Galerie photos','btn-all':'Tout',
@@ -3492,7 +3587,22 @@ loadHome();
     _initPTR('scroll-services','ptr-services',function(done){
       _svcData=null;_svcLoaded=false;loadServices('service');setTimeout(done,1200);
     });
+    _initPTR('scroll-guide','ptr-guide',function(done){
+      Object.keys(C).forEach(function(k){if(k.includes('/api/facilities'))delete C[k];});
+      var active=document.querySelector('#screen-guide .seg-btn.active');
+      if(active)loadFacTab(active.getAttribute('data-guide-cat'),active);
+      setTimeout(done,1200);
+    });
   }
+  /* Toast على الروابط الخارجية وأرقام الهاتف */
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('a[href^="tel:"]');
+    if(a){setTimeout(function(){showToast(t('calling')||'جاري الاتصال...',{icon:'lucide:phone',iconColor:'var(--green)',duration:2000});},300);}
+    var ext=e.target.closest('a[target="_blank"]');
+    if(ext&&!ext.closest('.modal-sheet')&&!ext.closest('#more-sheet')){
+      setTimeout(function(){showToast(t('opening-browser')||'يفتح في المتصفح',{icon:'lucide:external-link',iconColor:'var(--blue)',duration:2000});},300);
+    }
+  });
 </script>
 </body>
 </html>
