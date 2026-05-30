@@ -1889,7 +1889,7 @@ function closeAboutScreen(){
 /* ══════════════════════════════════════════
    HEADER HIDE/SHOW
 ══════════════════════════════════════════ */
-var _headerH=0,_hdrY=0,_lastSY=0,_ticking=false,_snapTimer=null,_headerHidden=false;
+var _headerH=0,_headerHidden=false;
 function measureHeader(){
   var h=document.getElementById('shared-header');
   return h?h.getBoundingClientRect().height:0;
@@ -1898,36 +1898,10 @@ function applyHeaderHeight(){
   _headerH=measureHeader();
   document.documentElement.style.setProperty('--header-h',_headerH+'px');
 }
-function _setHdrY(y,animated){
-  var hdr=document.getElementById('shared-header');
-  if(!hdr||!_headerH)return;
-  var clamped=Math.max(-_headerH,Math.min(0,y));
-  _hdrY=clamped;
-  hdr.style.transition=animated?'transform .28s cubic-bezier(.4,0,.2,1)':'none';
-  hdr.style.transform='translateY('+clamped+'px)';
-  hdr.style.boxShadow=clamped<0?'0 2px 12px rgba(0,0,0,.12)':'0 1px 6px rgba(0,0,0,.08)';
-}
-function _snapHdr(){
-  var target=(_hdrY<-_headerH*.35)?-_headerH:0;
-  _setHdrY(target,true);
-}
-function onScrollAreaScroll(e){
-  if(!_headerH)return;
-  var sy=e.target.scrollTop;
-  var delta=sy-_lastSY;
-  _lastSY=sy;
-  if(sy<=0){_setHdrY(0,false);return;}
-  if(!_ticking){
-    _ticking=true;
-    requestAnimationFrame(function(){_setHdrY(_hdrY-delta,false);_ticking=false;});
-  }
-  if(_snapTimer)clearTimeout(_snapTimer);
-  _snapTimer=setTimeout(_snapHdr,180);
-}
+function onScrollAreaScroll(){}
 function resetHeaderState(){
-  if(_snapTimer)clearTimeout(_snapTimer);
-  _snapTimer=null;_lastSY=0;
-  _setHdrY(0,false);
+  var hdr=document.getElementById('shared-header');
+  if(hdr){hdr.style.transition='none';hdr.style.transform='none';}
 }
 function resetScroll(screenId){
   var s=document.querySelector('#'+screenId+' .scroll-area');
