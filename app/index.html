@@ -497,16 +497,18 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 /* ══ PULL-TO-REFRESH ══ */
 .ptr-wrap{position:relative;}
 .ptr-indicator{
-  position:absolute;top:-56px;left:50%;transform:translateX(-50%);
-  width:40px;height:40px;border-radius:50%;
-  background:var(--card);box-shadow:0 2px 14px rgba(0,0,0,.14);
+  position:fixed;top:68px;left:50%;transform:translateX(-50%) scale(0.6);
+  width:44px;height:44px;border-radius:50%;
+  background:var(--card);
+  box-shadow:0 4px 20px rgba(0,0,0,.18),0 0 0 1px rgba(0,0,0,.05);
   display:flex;align-items:center;justify-content:center;
-  pointer-events:none;z-index:20;
-  transition:opacity .18s,top .18s var(--ease-std);opacity:0;
+  pointer-events:none;z-index:200;
+  transition:opacity .22s ease,transform .22s cubic-bezier(.34,1.56,.64,1);
+  opacity:0;
 }
-.ptr-indicator.ptr-visible{opacity:1;}
+.ptr-indicator.ptr-visible{opacity:1;transform:translateX(-50%) scale(1);}
 .ptr-indicator.ptr-loading iconify-icon{animation:spin .7s linear infinite;}
-.ptr-indicator iconify-icon{font-size:20px;color:var(--green);pointer-events:none;transition:transform .18s;}
+.ptr-indicator iconify-icon{font-size:20px;color:var(--green);pointer-events:none;}
 
 @keyframes spin{to{transform:rotate(360deg);}}
 .empty{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:52px 24px 40px;color:var(--muted);gap:10px;}
@@ -1193,11 +1195,17 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         <div style="flex:1"><div class="more-item-title" data-i18n="ms-archive-title">أرشيف شطايبي</div><div class="more-item-sub" data-i18n="ms-archive-sub">محطات تاريخية وصور أرشيفية</div></div>
         <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
       </div>
-      <div class="more-item" id="ms-item-site">
-        <div class="more-icon" style="background:var(--green-l)"><iconify-icon icon="lucide:globe" style="color:var(--green);font-size:20px;pointer-events:none"></iconify-icon></div>
-        <div style="flex:1"><div class="more-item-title" data-i18n="ms-site-title">الموقع الرسمي</div><div class="more-item-sub" data-i18n="ms-site-sub">النسخة الكاملة للمتصفح</div></div>
+      <div class="more-item" id="ms-item-about" onclick="om('m-about')">
+        <div class="more-icon" style="background:var(--green-l)"><iconify-icon icon="lucide:info" style="color:var(--green);font-size:20px;pointer-events:none"></iconify-icon></div>
+        <div style="flex:1"><div class="more-item-title" data-i18n="ms-about-title">عن بلدية شطايبي</div><div class="more-item-sub" data-i18n="ms-about-sub">تعرّف على البلدية ومهامها</div></div>
         <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
       </div>
+      <div class="more-item" id="ms-item-privacy" onclick="om('m-privacy')">
+        <div class="more-icon" style="background:var(--blue-l)"><iconify-icon icon="lucide:shield-check" style="color:var(--blue);font-size:20px;pointer-events:none"></iconify-icon></div>
+        <div style="flex:1"><div class="more-item-title" data-i18n="ms-privacy-title">سياسة الخصوصية</div><div class="more-item-sub" data-i18n="ms-privacy-sub">كيف نحمي بياناتك</div></div>
+        <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
+      </div>
+
     </div>
 
     <!-- إعدادات التطبيق -->
@@ -1235,7 +1243,90 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 
     <div style="text-align:center;padding:18px 20px 6px;">
       <div style="font-size:11px;color:var(--muted-2);" data-i18n="footer-rights">بلدية شطايبي - © 2026 جميع الحقوق محفوظة</div>
-      <div style="font-size:10px;color:var(--muted-2);font-style:italic;margin-top:3px;" data-i18n="footer-dev">تم التطوير <iconify-icon icon="lucide:code-2" style="font-size:11px;vertical-align:middle;pointer-events:none"></iconify-icon> بجهود كفاءات بلدية شطايبي</div>
+      <div style="font-size:10px;color:var(--muted-2);font-style:italic;margin-top:3px;">تم التطوير <iconify-icon icon="lucide:code-2" style="font-size:11px;vertical-align:middle;pointer-events:none"></iconify-icon> بجهود كفاءات بلدية شطايبي</div>
+    </div>
+  </div>
+</div>
+
+<!-- modal: عن البلدية -->
+<div class="modal-overlay" id="m-about" onclick="cm('m-about')" role="dialog" aria-modal="true">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-drag"></div>
+    <div class="modal-body">
+      <!-- رأس الـ modal -->
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border-light)">
+        <div style="width:52px;height:52px;border-radius:15px;overflow:hidden;flex-shrink:0;border:1px solid var(--border-light)">
+          <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo-mobile.png" style="width:100%;height:100%;object-fit:contain" alt="logo">
+        </div>
+        <div>
+          <div style="font-size:17px;font-weight:900;color:var(--text)" data-i18n="about-name">بلدية شطايبي</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px" data-i18n="about-wilaya">ولاية عنابة — الجزائر</div>
+        </div>
+      </div>
+      <!-- معلومات البلدية -->
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="background:var(--surface);border-radius:14px;padding:14px 16px">
+          <div style="font-size:12px;font-weight:800;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em" data-i18n="about-info-title">معلومات عامة</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div><div style="font-size:11px;color:var(--muted)" data-i18n="stat-area">المساحة</div><div style="font-size:15px;font-weight:900;color:var(--text)">134 كم²</div></div>
+            <div><div style="font-size:11px;color:var(--muted)" data-i18n="stat-pop">السكان</div><div style="font-size:15px;font-weight:900;color:var(--text)">8,767</div></div>
+            <div><div style="font-size:11px;color:var(--muted)" data-i18n="stat-postal">الرمز البريدي</div><div style="font-size:15px;font-weight:900;color:var(--text)">23014</div></div>
+            <div><div style="font-size:11px;color:var(--muted)" data-i18n="about-daira">الدائرة</div><div style="font-size:15px;font-weight:900;color:var(--text)" data-i18n="about-daira-val">شطايبي</div></div>
+          </div>
+        </div>
+        <div style="background:var(--surface);border-radius:14px;padding:14px 16px">
+          <div style="font-size:12px;font-weight:800;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em" data-i18n="about-contact-title">التواصل</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:10px"><iconify-icon icon="lucide:map-pin" style="color:var(--green);font-size:16px;flex-shrink:0;pointer-events:none"></iconify-icon><span style="font-size:13px;color:var(--text)" data-i18n="about-address">شطايبي، ولاية عنابة، الجزائر</span></div>
+            <div style="display:flex;align-items:center;gap:10px"><iconify-icon icon="lucide:globe" style="color:var(--blue);font-size:16px;flex-shrink:0;pointer-events:none"></iconify-icon><a href="https://chetaibi.dz" target="_blank" style="font-size:13px;color:var(--blue);text-decoration:none">chetaibi.dz</a></div>
+          </div>
+        </div>
+        <div style="background:var(--surface);border-radius:14px;padding:14px 16px">
+          <div style="font-size:12px;font-weight:800;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em" data-i18n="about-app-title">عن التطبيق</div>
+          <div style="font-size:13px;color:var(--muted);line-height:1.7" data-i18n="about-app-desc">تطبيق بلدية شطايبي هو منصة رقمية رسمية تتيح للمواطنين الاطلاع على آخر الأخبار والإعلانات والخدمات الإدارية ومرافق المدينة.</div>
+          <div style="margin-top:10px;display:flex;align-items:center;gap:6px"><span style="font-size:12px;color:var(--muted)" data-i18n="about-version">الإصدار</span><span style="font-size:12px;font-weight:800;color:var(--green)">1.0.0</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal: سياسة الخصوصية -->
+<div class="modal-overlay" id="m-privacy" onclick="cm('m-privacy')" role="dialog" aria-modal="true">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-drag"></div>
+    <div class="modal-body">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border-light)">
+        <div style="width:40px;height:40px;border-radius:12px;background:var(--blue-l);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <iconify-icon icon="lucide:shield-check" style="color:var(--blue);font-size:20px;pointer-events:none"></iconify-icon>
+        </div>
+        <div>
+          <div style="font-size:16px;font-weight:900;color:var(--text)" data-i18n="ms-privacy-title">سياسة الخصوصية</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px" data-i18n="privacy-date">آخر تحديث: يناير 2026</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;font-size:13px;color:var(--muted);line-height:1.75">
+
+        <div><div style="font-size:13.5px;font-weight:800;color:var(--text);margin-bottom:5px" data-i18n="privacy-s1-title">1. جمع المعلومات</div>
+        <div data-i18n="privacy-s1-body">لا يقوم تطبيق بلدية شطايبي بجمع أي بيانات شخصية من المستخدمين. التطبيق يعرض فقط المعلومات العامة المتعلقة بالبلدية من أخبار وخدمات ومرافق.</div></div>
+
+        <div><div style="font-size:13.5px;font-weight:800;color:var(--text);margin-bottom:5px" data-i18n="privacy-s2-title">2. الأذونات المطلوبة</div>
+        <div data-i18n="privacy-s2-body">يطلب التطبيق إذن الوصول إلى الإنترنت فقط، وذلك لتحميل المحتوى من الخوادم الرسمية للبلدية. لا يطلب أي أذونات أخرى كالموقع أو الكاميرا أو جهات الاتصال.</div></div>
+
+        <div><div style="font-size:13.5px;font-weight:800;color:var(--text);margin-bottom:5px" data-i18n="privacy-s3-title">3. ملفات تعريف الارتباط</div>
+        <div data-i18n="privacy-s3-body">يستخدم التطبيق التخزين المحلي (LocalStorage) فقط لحفظ تفضيلات المستخدم مثل اللغة والمظهر، ولا يُشارك هذا بأي شكل مع أطراف خارجية.</div></div>
+
+        <div><div style="font-size:13.5px;font-weight:800;color:var(--text);margin-bottom:5px" data-i18n="privacy-s4-title">4. أطراف ثالثة</div>
+        <div data-i18n="privacy-s4-body">يستخدم التطبيق خدمات الطقس لعرض حالة الطقس والبحر. لا تُشارك أي بيانات شخصية مع هذه الخدمات.</div></div>
+
+        <div><div style="font-size:13.5px;font-weight:800;color:var(--text);margin-bottom:5px" data-i18n="privacy-s5-title">5. أمان البيانات</div>
+        <div data-i18n="privacy-s5-body">جميع الاتصالات بين التطبيق والخادم تتم عبر بروتوكول HTTPS المشفر لضمان أمان المعلومات.</div></div>
+
+        <div><div style="font-size:13.5px;font-weight:800;color:var(--text);margin-bottom:5px" data-i18n="privacy-s6-title">6. التواصل معنا</div>
+        <div data-i18n="privacy-s6-body">لأي استفسار بخصوص سياسة الخصوصية، يمكنكم التواصل معنا عبر الموقع الرسمي: </div>
+        <a href="https://chetaibi.dz" target="_blank" style="color:var(--blue);font-weight:700;text-decoration:none;display:block;margin-top:4px">chetaibi.dz</a></div>
+
+      </div>
     </div>
   </div>
 </div>
@@ -1618,8 +1709,6 @@ var MoreSheet=(function(){
   function bindItems(){
     var pp=document.getElementById('ms-prev-mayors-btn');
     if(pp)pp.addEventListener('click',function(e){e.stopPropagation();haptic('light');close();setTimeout(openPrevMayorsModal,60);});
-    var is=document.getElementById('ms-item-site');
-    if(is)is.addEventListener('click',function(){haptic('light');window.location.href='/';});
     var ig=document.getElementById('ms-item-guide');
     if(ig)ig.addEventListener('click',function(){haptic('light');close();setTimeout(function(){switchTab('guide');},60);});
     var ia=document.getElementById('ms-item-archive');
@@ -2834,6 +2923,21 @@ var _I18N={
     'ms-map-title':'الخريطة التفاعلية','ms-map-sub':'مرافق وشواطئ ومعالم شطايبي',
     'ms-archive-title':'أرشيف شطايبي','ms-archive-sub':'محطات تاريخية وصور أرشيفية',
     'ms-site-title':'الموقع الرسمي','ms-site-sub':'النسخة الكاملة للمتصفح',
+    'ms-about-title':'عن بلدية شطايبي','ms-about-sub':'تعرّف على البلدية ومهامها',
+    'ms-privacy-title':'سياسة الخصوصية','ms-privacy-sub':'كيف نحمي بياناتك',
+    'about-name':'بلدية شطايبي','about-wilaya':'ولاية عنابة — الجزائر',
+    'about-info-title':'معلومات عامة','about-contact-title':'التواصل',
+    'about-daira':'الدائرة','about-daira-val':'شطايبي',
+    'about-address':'شطايبي، ولاية عنابة، الجزائر',
+    'about-app-title':'عن التطبيق','about-version':'الإصدار',
+    'about-app-desc':'تطبيق بلدية شطايبي هو منصة رقمية رسمية تتيح للمواطنين الاطلاع على آخر الأخبار والإعلانات والخدمات الإدارية ومرافق المدينة.',
+    'privacy-date':'آخر تحديث: يناير 2026',
+    'privacy-s1-title':'1. جمع المعلومات','privacy-s1-body':'لا يقوم تطبيق بلدية شطايبي بجمع أي بيانات شخصية من المستخدمين.',
+    'privacy-s2-title':'2. الأذونات المطلوبة','privacy-s2-body':'يطلب التطبيق إذن الوصول إلى الإنترنت فقط لتحميل المحتوى الرسمي.',
+    'privacy-s3-title':'3. ملفات تعريف الارتباط','privacy-s3-body':'يستخدم التطبيق التخزين المحلي لحفظ تفضيلات المستخدم فقط.',
+    'privacy-s4-title':'4. أطراف ثالثة','privacy-s4-body':'يستخدم التطبيق خدمات الطقس دون مشاركة بيانات شخصية.',
+    'privacy-s5-title':'5. أمان البيانات','privacy-s5-body':'جميع الاتصالات تتم عبر بروتوكول HTTPS المشفر.',
+    'privacy-s6-title':'6. التواصل معنا','privacy-s6-body':'للاستفسار يمكنكم التواصل عبر الموقع الرسمي:',
     'setting-theme':'المظهر','theme-light':'فاتح','theme-dark':'داكن','setting-lang':'اللغة',
     'footer-rights':'بلدية شطايبي - © 2026 جميع الحقوق محفوظة',
     'footer-dev':'تم التطوير بجهود كفاءات بلدية شطايبي',
@@ -2887,6 +2991,21 @@ var _I18N={
     'ms-map-title':'Carte interactive','ms-map-sub':'Équipements, plages et sites de Chetaïbi',
     'ms-archive-title':'Archives Chetaïbi','ms-archive-sub':'Étapes historiques et photos d\'archives',
     'ms-site-title':'Site officiel','ms-site-sub':'Version complète navigateur',
+    'ms-about-title':"À propos de Chetaïbi",'ms-about-sub':"Découvrez la commune",
+    'ms-privacy-title':"Politique de confidentialité",'ms-privacy-sub':"Comment nous protégeons vos données",
+    'about-name':"Commune de Chetaïbi",'about-wilaya':"Wilaya d'Annaba — Algérie",
+    'about-info-title':"Informations générales",'about-contact-title':"Contact",
+    'about-daira':"Daïra",'about-daira-val':"Chetaïbi",
+    'about-address':"Chetaïbi, Wilaya d'Annaba, Algérie",
+    'about-app-title':"À propos de l'app",'about-version':"Version",
+    'about-app-desc':"Application officielle de la commune de Chetaïbi.",
+    'privacy-date':"Dernière mise à jour: Janvier 2026",
+    'privacy-s1-title':"1. Collecte des données",'privacy-s1-body':"Aucune donnée personnelle collectée.",
+    'privacy-s2-title':"2. Autorisations",'privacy-s2-body':"Accès Internet uniquement.",
+    'privacy-s3-title':"3. Cookies",'privacy-s3-body':"Stockage local pour vos préférences uniquement.",
+    'privacy-s4-title':"4. Tiers",'privacy-s4-body':"Services météo sans partage de données.",
+    'privacy-s5-title':"5. Sécurité",'privacy-s5-body':"Communications via HTTPS sécurisé.",
+    'privacy-s6-title':"6. Contact",'privacy-s6-body':"Contactez-nous via:",
     'setting-theme':'Apparence','theme-light':'Clair','theme-dark':'Sombre','setting-lang':'Langue',
     'footer-rights':'Commune de Chetaïbi — © 2026 Tous droits réservés',
     'footer-dev':'Développé par les compétences de la commune de Chetaïbi',
