@@ -633,12 +633,13 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   width:100%;background:var(--card);
   border-radius:var(--r-xl);
   border:1px solid var(--border-light);
-  box-shadow:var(--elev-3);
+  box-shadow:var(--elev-2);
   display:flex;flex-direction:column;
   cursor:pointer;direction:rtl;
-  overflow:visible;position:relative;
+  overflow:hidden;position:relative;
   box-sizing:border-box;
-}.ann-card-content-inner,.ann-card-footer{overflow:hidden;}
+  transition:transform .08s ease,opacity .08s ease;
+}.ann-card-content-inner,
 .ann-card::before{
   content:'';position:absolute;inset:0;
   background:radial-gradient(ellipse at 50% 0%,rgba(0,135,90,0.04) 0%,transparent 65%);
@@ -651,18 +652,31 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   padding:14px 16px 0;gap:7px;
   flex:1;
 }
-.ann-card-icon-wrap{width:38px;height:38px;border-radius:50%;background:var(--green-xl);border:none;display:flex;align-items:center;justify-content:center;}
+/* ══ ann-card 2026 design ══ */
+.ann-card-inner{display:flex;gap:0;width:100%;}
+.ann-card-accent{width:4px;border-radius:0;flex-shrink:0;}
+.ann-card-body-wrap{flex:1;padding:14px 16px 12px;min-width:0;display:flex;flex-direction:column;gap:7px;}
+.ann-card-top{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
+.ann-card-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:var(--r-full);font-size:10px;font-weight:800;}
+.ann-card-date{display:flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:var(--muted);}
+.ann-card-title{font-size:14.5px;font-weight:900;color:var(--text);line-height:1.4;letter-spacing:-.15px;}
+.ann-card-excerpt{font-size:12.5px;color:var(--text-2);line-height:1.7;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.ann-card-footer{display:flex;justify-content:flex-end;padding-top:2px;}
+.ann-card-btn{display:inline-flex;align-items:center;gap:4px;border-radius:var(--r-full);padding:5px 13px;font-family:var(--font-main);font-size:11px;font-weight:800;cursor:pointer;touch-action:manipulation;white-space:nowrap;border:1.5px solid transparent;transition:opacity .12s;}
+.ann-card-btn:active{opacity:.7;}
+.ann-card-divider,.ann-card-divider-top{display:none;}
+.ann-card-icon-wrap{display:none;}
 .ann-card-icon-wrap iconify-icon{font-size:24px;color:var(--green);pointer-events:none;}
-.ann-card-title{font-size:15.5px;font-weight:900;color:var(--text);text-align:center;line-height:1.35;letter-spacing:-.2px;width:100%;display:flex;align-items:center;justify-content:center;gap:6px;position:relative;}
+
 .ann-card-title::after{display:none;}
-.ann-card-excerpt{font-size:13.5px;color:var(--muted);line-height:1.7;text-align:right;direction:rtl;width:100%;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
-.ann-card-divider{width:calc(100% - 32px);height:1px;background:#1e293b;opacity:0.12;margin:4px 0 0;align-self:center;}
-.ann-card-divider-top{width:35%;height:1.5px;background:linear-gradient(to right,transparent,rgba(5,150,105,0.3),transparent);margin:3px 0 6px;align-self:center;border:none;}
+
+
+
 .ann-card-footer{display:flex;align-items:center;flex-direction:row-reverse;justify-content:space-between;padding:7px 14px 10px;width:100%;box-sizing:border-box;}
-.ann-card-btn{display:inline-flex;align-items:center;gap:4px;background:var(--green-xl);border:none;border-radius:var(--r-full);padding:6px 13px;font-family:var(--font-main);font-size:11.5px;font-weight:800;color:var(--green);cursor:pointer;touch-action:manipulation;white-space:nowrap;min-height:32px;transition:background var(--dur-fast);}
+
 .ann-card-btn:active{background:var(--green-l);}
 .ann-card-btn iconify-icon{font-size:12px;pointer-events:none;}
-.ann-card-date{display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:600;color:var(--muted);}
+
 .ann-card-date iconify-icon{font-size:11px;color:var(--muted);pointer-events:none;}
 .ann-more-card-inner{
   display:flex;flex-direction:column;align-items:center;
@@ -2475,18 +2489,35 @@ function _annCarShowCurrent(){
 
 function _annCardContent(n,c){
   if(!c)c=_annLabelColor(n.custom_label||'');
-  var dateHtml=n.date?'<div class="ann-card-date"><iconify-icon icon="lucide:calendar-days" style="color:var(--muted)"></iconify-icon>'+n.date+'</div>':'';
-  var title=_f(n,'title')?'<div class="ann-card-title" style="color:var(--text)"><iconify-icon icon="lucide:megaphone" style="font-size:15px;color:var(--text);flex-shrink:0;pointer-events:none"></iconify-icon>'+_f(n,'title')+'</div>':'';
-  var excerpt=_f(n,'content')?'<div class="ann-card-excerpt">'+_f(n,'content').substring(0,110)+'...</div>':'';
-  return title
-    +'<div class="ann-card-divider-top" style="background:linear-gradient(to right,transparent,'+c.icon+',transparent)"></div>'
-    +excerpt
-    +'<div class="ann-card-divider"></div>'
+  var lbl=n.custom_label||'';
+  var dateHtml=n.date
+    ?'<div class="ann-card-date"><iconify-icon icon="lucide:calendar-days" style="pointer-events:none"></iconify-icon>'+n.date+'</div>'
+    :'';
+  var titleHtml=_f(n,'title')
+    ?'<div class="ann-card-title">'+_f(n,'title')+'</div>'
+    :'';
+  var excerptHtml=_f(n,'content')
+    ?'<div class="ann-card-excerpt">'+_f(n,'content').substring(0,150)+'...</div>'
+    :'';
+  var badgeHtml=lbl
+    ?'<span class="ann-card-badge" style="background:'+c.btnBg+';color:'+c.btnColor+'">'
+      +'<iconify-icon icon="lucide:megaphone" style="font-size:11px;pointer-events:none"></iconify-icon>'
+      +lbl+'</span>'
+    :'';
+  return '<div class="ann-card-inner">'
+    +'<div class="ann-card-accent" style="background:'+c.icon+'"></div>'
+    +'<div class="ann-card-body-wrap">'
+    +'<div class="ann-card-top">'+badgeHtml+dateHtml+'</div>'
+    +titleHtml
+    +excerptHtml
     +'<div class="ann-card-footer">'
-    +'<button class="ann-card-btn" data-news-id="'+n.id+'" style="background:'+c.btnBg+';color:'+c.btnColor+';">'
-    +t('read-more')+' <iconify-icon icon="lucide:chevron-left" style="font-size:11px;pointer-events:none;color:'+c.icon+'"></iconify-icon>'
+    +'<button class="ann-card-btn" data-news-id="'+n.id+'" '
+    +'style="background:'+c.btnBg+';color:'+c.btnColor+';border-color:'+c.border+'">'
+    +t('read-more')
+    +' <iconify-icon icon="lucide:chevron-left" style="font-size:11px;pointer-events:none"></iconify-icon>'
     +'</button>'
-    +dateHtml
+    +'</div>'
+    +'</div>'
     +'</div>';
 }
 
