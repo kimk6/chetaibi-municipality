@@ -155,18 +155,60 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 /* ══════════════════════════════════════════
    BOTTOM NAV
 ══════════════════════════════════════════ */
-#bottom-nav{flex-shrink:0;height:calc(var(--nav-h) + var(--safe-b));padding-bottom:var(--safe-b);background:rgba(255,255,255,0.95);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid rgba(0,0,0,0.05);display:flex;align-items:flex-start;padding-top:6px;z-index:100;}
-.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;border:none;background:none;cursor:pointer;font-family:var(--font-main);font-size:10.5px;font-weight:700;color:var(--muted-2);padding:0 2px;position:relative;touch-action:manipulation;transition:color var(--dur-mid) var(--ease-std);}
-.nav-icon-wrap{position:relative;width:48px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:var(--r-full);transition:background var(--dur-mid) var(--ease-std),transform var(--dur-fast) var(--ease-spring);flex-shrink:0;}
-.nav-btn.active .nav-icon-wrap{background:var(--green-l);}
+#bottom-nav{
+  flex-shrink:0;
+  height:calc(var(--nav-h) + var(--safe-b));
+  padding-bottom:var(--safe-b);
+  background:rgba(255,255,255,0.97);
+  backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
+  border-top:1px solid rgba(0,0,0,0.06);
+  display:flex;align-items:flex-start;padding-top:8px;
+  z-index:100;
+  position:relative;
+}
+/* مؤشر علوي متحرك */
+#bottom-nav::before{
+  content:'';
+  position:absolute;top:0;right:0;
+  height:3px;
+  background:linear-gradient(90deg,var(--green-dark),var(--green),#34d399);
+  border-radius:0 0 3px 3px;
+  transition:width .25s var(--ease-spring),right .25s var(--ease-spring);
+  width:20%;
+}
+#bottom-nav[data-active="0"]::before{right:80%;}
+#bottom-nav[data-active="1"]::before{right:60%;}
+#bottom-nav[data-active="2"]::before{right:40%;}
+#bottom-nav[data-active="3"]::before{right:20%;}
+#bottom-nav[data-active="4"]::before{right:0%;}
+
+.nav-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+  border:none;background:none;cursor:pointer;
+  font-family:var(--font-main);font-size:10.5px;font-weight:700;
+  color:var(--muted-2);padding:0 2px;position:relative;
+  touch-action:manipulation;
+  transition:color var(--dur-mid) var(--ease-std);
+}
+.nav-icon-wrap{
+  position:relative;width:48px;height:30px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:var(--r-full);
+  transition:background var(--dur-mid) var(--ease-std),transform var(--dur-fast) var(--ease-spring);
+  flex-shrink:0;
+}
+.nav-btn.active .nav-icon-wrap{
+  background:linear-gradient(135deg,var(--green-dark),var(--green));
+  box-shadow:0 3px 10px rgba(0,135,90,0.30);
+}
 .nav-btn:active .nav-icon-wrap{transform:scale(.84);}
-.nav-btn iconify-icon{font-size:24px;display:block;pointer-events:none;}
-.nav-btn .icon-on{display:block;position:absolute;opacity:0;transition:opacity var(--dur-mid) var(--ease-std);pointer-events:none;}
+.nav-btn iconify-icon{font-size:22px;display:block;pointer-events:none;}
+.nav-btn .icon-on{display:block;position:absolute;opacity:0;transition:opacity var(--dur-mid) var(--ease-std);pointer-events:none;color:#fff;}
 .nav-btn .icon-off{display:block;opacity:1;transition:opacity var(--dur-mid) var(--ease-std);pointer-events:none;}
 .nav-btn.active .icon-on{opacity:1;}
 .nav-btn.active .icon-off{opacity:0;}
 .nav-btn.active{color:var(--green);}
-.nav-btn span{pointer-events:none;font-size:10.5px;font-weight:700;letter-spacing:.01em;line-height:1;transition:color var(--dur-mid);}
+.nav-btn span{pointer-events:none;font-size:10px;font-weight:700;letter-spacing:.01em;line-height:1;transition:color var(--dur-mid);}
 /* ══════════════════════════════════════════
    SECTIONS
 ══════════════════════════════════════════ */
@@ -659,99 +701,64 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .tl-title{font-size:15px;font-weight:900;color:var(--text);margin-bottom:5px;letter-spacing:-.2px;}
 .tl-text{font-size:13px;color:var(--muted);line-height:1.75;}
 
-/* ══ ANN CARD — 2026 Professional ══ */
+/* ══ ANN CARD ══ */
 .ann-card{
   width:100%;background:var(--card);
-  border-radius:20px;
+  border-radius:var(--r-xl);
   border:1px solid var(--border-light);
-  box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.06);
-  display:flex;flex-direction:row;
+  box-shadow:var(--elev-2);
+  display:flex;flex-direction:column;
   cursor:pointer;direction:rtl;
   overflow:hidden;position:relative;
   box-sizing:border-box;
-  transition:transform .12s ease,box-shadow .12s ease;
-  min-height:110px;
+  transition:transform .08s ease,opacity .08s ease;
+}.ann-card-content-inner,
+.ann-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(0,135,90,0.04) 0%,transparent 65%);
+  pointer-events:none;z-index:0;border-radius:var(--r-xl);
 }
-.ann-card:active{transform:scale(.985);box-shadow:0 1px 3px rgba(0,0,0,.04);}
-
-/* الشريط اللوني الجانبي — عريض وبارز */
-.ann-card-side{
-  width:72px;flex-shrink:0;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  gap:8px;padding:16px 0;
-  position:relative;
-}
-.ann-card-side-icon{
-  width:44px;height:44px;border-radius:14px;
-  background:rgba(255,255,255,0.22);
-  display:flex;align-items:center;justify-content:center;
-}
-.ann-card-side-icon iconify-icon{font-size:22px;pointer-events:none;color:#fff;}
-.ann-card-side-label{
-  font-size:9.5px;font-weight:900;color:rgba(255,255,255,0.90);
-  letter-spacing:.03em;text-align:center;line-height:1.2;
-  padding:0 4px;
-}
-
-/* المحتوى */
-.ann-card-body{
-  flex:1;min-width:0;
-  display:flex;flex-direction:column;
-  padding:14px 14px 12px;
-  gap:0;
-}
-.ann-card-meta{
-  display:flex;align-items:center;gap:6px;
-  margin-bottom:8px;
-}
-.ann-card-date{
-  display:flex;align-items:center;gap:4px;
-  font-size:10.5px;font-weight:600;color:var(--muted);
-}
-.ann-card-date iconify-icon{font-size:12px;pointer-events:none;}
-.ann-card-excerpt{
-  font-size:13px;color:var(--text);
-  line-height:1.72;font-weight:500;
-  display:-webkit-box;-webkit-line-clamp:3;
-  -webkit-box-orient:vertical;overflow:hidden;
+/* المحتوى المتغير */
+.ann-card-content-inner{
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;align-items:center;
+  padding:14px 16px 0;gap:7px;
   flex:1;
 }
-.ann-card-footer{
-  display:flex;align-items:center;justify-content:flex-end;
-  margin-top:10px;
-}
-.ann-card-btn{
-  display:inline-flex;align-items:center;gap:5px;
-  border-radius:99px;padding:5px 13px;
-  font-family:var(--font-main);font-size:11px;font-weight:800;
-  cursor:pointer;touch-action:manipulation;
-  white-space:nowrap;border:none;
-  transition:opacity .1s;
-}
-.ann-card-btn:active{opacity:.65;}
-.ann-card-btn iconify-icon{font-size:11px;pointer-events:none;}
+/* ══ ann-card 2026 design ══ */
+.ann-card-inner{display:flex;gap:0;width:100%;}
+.ann-card-accent{width:4px;border-radius:0;flex-shrink:0;}
+.ann-card-body-wrap{flex:1;padding:14px 16px 12px;min-width:0;display:flex;flex-direction:column;gap:7px;}
+.ann-card-top{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
+.ann-card-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:var(--r-full);font-size:10px;font-weight:800;}
+.ann-card-date{display:flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:var(--muted);}
+.ann-card-title{font-size:14.5px;font-weight:900;color:var(--text);line-height:1.4;letter-spacing:-.15px;}
+.ann-card-excerpt{font-size:12.5px;color:var(--text-2);line-height:1.7;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.ann-card-footer{display:flex;justify-content:flex-end;padding-top:2px;}
+.ann-card-btn{display:inline-flex;align-items:center;gap:4px;border-radius:var(--r-full);padding:5px 13px;font-family:var(--font-main);font-size:11px;font-weight:800;cursor:pointer;touch-action:manipulation;white-space:nowrap;border:1.5px solid transparent;transition:opacity .12s;}
+.ann-card-btn:active{opacity:.7;}
+.ann-card-divider,.ann-card-divider-top{display:none;}
+.ann-card-icon-wrap{display:none;}
+.ann-card-icon-wrap iconify-icon{font-size:24px;color:var(--green);pointer-events:none;}
 
-/* إلغاء كل الـ classes القديمة غير المستخدمة */
-.ann-card-inner,.ann-card-accent,.ann-card-body-wrap,
-.ann-card-top,.ann-card-badge,.ann-card-title,
-.ann-card-icon-wrap,.ann-card-divider,.ann-card-divider-top,
-.ann-card-content-inner,.ann-card-header{display:contents;}
 .ann-card-title::after{display:none;}
-.ann-card::before{display:none;}
 
-/* more card */
+
+
+.ann-card-footer{display:flex;align-items:center;flex-direction:row-reverse;justify-content:space-between;padding:7px 14px 10px;width:100%;box-sizing:border-box;}
+
+.ann-card-btn:active{background:var(--green-l);}
+.ann-card-btn iconify-icon{font-size:12px;pointer-events:none;}
+
+.ann-card-date iconify-icon{font-size:11px;color:var(--muted);pointer-events:none;}
 .ann-more-card-inner{
   display:flex;flex-direction:column;align-items:center;
-  justify-content:center;gap:12px;
-  width:100%;padding:24px 16px;cursor:pointer;
+  justify-content:center;gap:14px;
+  width:100%;height:100%;cursor:pointer;
+  flex:1;
 }
-.ann-more-card-icon{
-  width:44px;height:44px;border-radius:50%;
-  background:var(--green-xl);border:1.5px solid rgba(5,150,105,0.18);
-  display:flex;align-items:center;justify-content:center;
-}
-.ann-more-card-icon iconify-icon{font-size:22px;color:var(--green);pointer-events:none;}
+.ann-more-card-icon{width:48px;height:48px;border-radius:50%;background:var(--green-xl);border:1.5px solid rgba(5,150,105,0.18);display:flex;align-items:center;justify-content:center;}
+.ann-more-card-icon iconify-icon{font-size:24px;color:var(--green);pointer-events:none;}
 .ann-more-btn{font-size:13px;font-weight:800;}
 /* ══ DARK MODE ══ */
 [data-theme="dark"]{
@@ -791,9 +798,12 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   box-shadow:0 1px 0 rgba(255,255,255,0.05);
 }
 [data-theme="dark"] #bottom-nav{
-  background:rgba(28,30,36,0.97);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  background:rgba(17,19,24,0.98);
+  backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
   border-top:1px solid rgba(255,255,255,0.06);
+}
+[data-theme="dark"] .nav-btn.active .nav-icon-wrap{
+  box-shadow:0 3px 12px rgba(0,135,90,0.22);
 }
 
 /* ── Seg bars ── */
@@ -1393,7 +1403,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   </main><!-- end screen-container -->
 
   <!-- BOTTOM NAV -->
-  <nav id="bottom-nav" role="tablist" aria-label="التنقل الرئيسي">
+  <nav id="bottom-nav" data-active="4" role="tablist" aria-label="التنقل الرئيسي">
     <button class="nav-btn active" id="nav-home" aria-label="الرئيسية" aria-current="page" role="tab">
       <div class="nav-icon-wrap">
         <iconify-icon class="icon-off" icon="ph:house" style="font-size:24px"></iconify-icon>
@@ -1935,6 +1945,11 @@ function switchTab(t){
   document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');b.removeAttribute('aria-current');});
   var nb=document.getElementById('nav-'+t);
   if(nb){nb.classList.add('active');nb.setAttribute('aria-current','page');}
+  /* تحديث مؤشر الخط العلوي */
+  var _navOrder=['home','news','guide','services','more'];
+  var _navIdx=_navOrder.indexOf(t);
+  var _nav=document.getElementById('bottom-nav');
+  if(_nav&&_navIdx>=0)_nav.setAttribute('data-active',String(4-_navIdx));
   curTab=t;
   resetHeaderState();
   if(t==='map'){
@@ -2203,41 +2218,34 @@ var NS={
 /* ألوان Carousel حسب custom_label */
 function _annLabelColor(label){
   var m={
-    'استشارة':{bg:'linear-gradient(160deg,#0ea5e9,#0284c7)',icon:'ph:chats-circle-fill',btnBg:'rgba(14,165,233,0.10)',btnColor:'#0284c7',border:'rgba(14,165,233,0.22)',shadow:'rgba(14,165,233,0.10)',dot:'#0ea5e9'},
-    'دعوة':   {bg:'linear-gradient(160deg,#8b5cf6,#6d28d9)',icon:'ph:envelope-open-fill',btnBg:'rgba(139,92,246,0.10)',btnColor:'#6d28d9',border:'rgba(139,92,246,0.22)',shadow:'rgba(139,92,246,0.10)',dot:'#8b5cf6'},
-    'مزايدة': {bg:'linear-gradient(160deg,#f59e0b,#d97706)',icon:'ph:gavel-fill',btnBg:'rgba(245,158,11,0.10)',btnColor:'#b45309',border:'rgba(245,158,11,0.22)',shadow:'rgba(245,158,11,0.10)',dot:'#f59e0b'}
+    'استشارة':{border:'rgba(80,180,230,0.42)',shadow:'rgba(80,180,230,0.10)',btnBg:'rgba(80,180,230,0.10)',btnColor:'#1a7fa8',icon:'#50b4e6',divider:'rgba(80,180,230,0.15)',glow:'rgba(80,180,230,0.05)',dot:'#50b4e6'},
+    'دعوة':   {border:'rgba(128,131,224,0.42)',shadow:'rgba(128,131,224,0.10)',btnBg:'rgba(128,131,224,0.10)',btnColor:'#4345a0',icon:'#8083e0',divider:'rgba(128,131,224,0.15)',glow:'rgba(128,131,224,0.05)',dot:'#8083e0'},
+    'مزايدة': {border:'rgba(252,149,93,0.42)', shadow:'rgba(252,149,93,0.10)', btnBg:'rgba(252,149,93,0.10)', btnColor:'#b04a0a',icon:'#fc955d',divider:'rgba(252,149,93,0.15)', glow:'rgba(252,149,93,0.05)',dot:'#fc955d'}
   };
-  return m[label]||{bg:'linear-gradient(160deg,#00875A,#065f46)',icon:'ph:megaphone-simple-fill',btnBg:'var(--green-xl)',btnColor:'var(--green-m)',border:'rgba(0,135,90,0.22)',shadow:'rgba(0,135,90,0.08)',dot:'#00875A'};
-}
-
-function _buildAnnCard(n,c){
-  var lbl=n.custom_label||'إعلان';
-  var dateHtml=n.date
-    ?'<div class="ann-card-date"><iconify-icon icon="ph:calendar-blank" style="pointer-events:none"></iconify-icon>'+n.date+'</div>'
-    :'';
-  var excerpt=(_f(n,'content')||'').substring(0,140);
-  return '<div class="ann-card-side" style="background:'+c.bg+'">'
-    +'<div class="ann-card-side-icon"><iconify-icon icon="'+c.icon+'"></iconify-icon></div>'
-    +'<div class="ann-card-side-label">'+lbl+'</div>'
-    +'</div>'
-    +'<div class="ann-card-body">'
-    +'<div class="ann-card-meta">'+dateHtml+'</div>'
-    +'<div class="ann-card-excerpt">'+excerpt+'</div>'
-    +'<div class="ann-card-footer">'
-    +'<button class="ann-card-btn" data-news-id="'+n.id+'" style="background:'+c.btnBg+';color:'+c.btnColor+'">'+t('read-more')+' <iconify-icon icon="ph:arrow-left-bold"></iconify-icon></button>'
-    +'</div>'
-    +'</div>';
+  return m[label]||{border:'rgba(5,150,105,0.28)',shadow:'rgba(5,150,105,0.08)',btnBg:'var(--green-xl)',btnColor:'#05976b',icon:'var(--green)',divider:'rgba(5,150,105,0.12)',glow:'rgba(5,150,105,0.05)',dot:null};
 }
 function makeDateBadge(d){if(!d)return '';return '<span class="card-date"><iconify-icon icon="lucide:calendar-days"></iconify-icon>'+d+'</span>';}
 function makeNewsCard(n,showTitle){
   var s=NS[n.category]||NS.official;
   /* بطاقة خاصة للإعلانات الرسمية */
   if(n.category==='official'){
-    var c=_annLabelColor(n.custom_label||'');
+    var c=_annLabelColor(n.custom_label);
+    var excerpt=(_f(n,'content')||'').substring(0,110)+'..';
+    var ntitle=_f(n,'title');
+    var title=ntitle?'<div class="ann-card-title"><iconify-icon icon="lucide:megaphone" style="font-size:15px;color:'+c.icon+';flex-shrink:0;pointer-events:none"></iconify-icon>'+ntitle+'</div>':'';
+    var dateHtml=n.date?'<div class="ann-card-date"><iconify-icon icon="lucide:calendar-days"></iconify-icon>'+n.date+'</div>':'<div></div>';
     return '<div class="ann-card" data-news-id="'+n.id+'"'
-      +' style="border-color:'+c.border+';box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px '+c.shadow+';">'
-      +_buildAnnCard(n,c)
-      +'</div>';
+      +' style="border-color:'+c.border+';box-shadow:0 2px 12px '+c.shadow+',0 1px 3px rgba(0,0,0,0.04);">'
+      +'<div class="ann-card-body">'
+      +'<div class="ann-card-header">'
+      +'<div class="ann-card-icon-wrap" style="background:'+c.btnBg+';border-color:'+c.border+'"><iconify-icon icon="lucide:megaphone" style="color:'+c.icon+'"></iconify-icon></div>'
+      +title+'</div>'
+      +'<div class="ann-card-excerpt">'+excerpt+'</div>'
+      +'<div class="ann-card-divider"></div>'
+      +'<div class="ann-card-footer">'+dateHtml
+      +'<button class="ann-card-btn" data-news-id="'+n.id+'"'
+      +' style="background:'+c.btnBg+';color:'+c.btnColor+';">'+t('read-more')+' <iconify-icon icon="lucide:chevron-left" style="font-size:11px;pointer-events:none;color:'+c.icon+'"></iconify-icon></button>'
+      +'</div></div></div>';
   }
   /* بطاقة عادية لباقي التصنيفات */
   var excerpt=(_f(n,'content')||'').substring(0,90)+'...';
@@ -2523,10 +2531,21 @@ async function loadMayorHome(){
 var _annCarIdx=0,_annCarTotal=0;
 
 function _annMakeCard(n){
-  var c=_annLabelColor(n.custom_label||'');
-  return '<div class="ann-card" data-news-id="'+n.id+'"'
-    +' style="border-color:'+c.border+';box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px '+c.shadow+';">'
-    +_buildAnnCard(n,c)
+  var dateHtml=n.date?'<div class="ann-card-date"><iconify-icon icon="lucide:calendar-days"></iconify-icon>'+n.date+'</div>':'';
+  var title=_f(n,'title')?'<div class="ann-card-title"><iconify-icon icon="lucide:megaphone" style="font-size:15px;color:var(--green);flex-shrink:0;pointer-events:none"></iconify-icon>'+n.title+'</div>':'';
+  var excerpt=_f(n,'content')?'<div class="ann-card-excerpt">'+_f(n,'content').substring(0,160)+'...</div>':'';
+  return '<div class="ann-card" data-news-id="'+n.id+'">'
+    +'<div class="ann-card-inner">'
+    +'<div class="ann-card-icon-wrap"><iconify-icon icon="lucide:megaphone"></iconify-icon></div>'
+    +title+excerpt
+    +'</div>'
+    +'<div class="ann-card-divider"></div>'
+    +'<div class="ann-card-footer">'
+    +'<button class="ann-card-btn" data-news-id="'+n.id+'">'
+    +t('read-more')+' <iconify-icon icon="lucide:chevron-left" style="font-size:12px;pointer-events:none"></iconify-icon>'
+    +'</button>'
+    +dateHtml
+    +'</div>'
     +'</div>';
 }
 
@@ -2562,39 +2581,69 @@ function _hexToRgba(hex,a){
 }
 
 function _annCarShowCurrent(){
-  var el=document.getElementById('h-official-single');
-  if(!el)return;
-  var card=el.querySelector('.ann-card');
+  var card=document.getElementById('h-official');
   if(!card)return;
-  card.style.transition='opacity .18s ease,transform .18s ease';
-  card.style.opacity='0';
-  card.style.transform='translateY(5px)';
+  var inner=card.querySelector('.ann-card-content-inner');
+  if(!inner)return;
+  inner.style.transition='opacity .18s ease,transform .18s ease';
+  inner.style.opacity='0';
+  inner.style.transform='translateY(6px)';
   setTimeout(function(){
     var data=_annCarData[_annCarIdx];
-    if(!data){card.style.opacity='1';card.style.transform='';return;}
+    if(!data){inner.style.opacity='1';inner.style.transform='';return;}
+    /* تطبيق اللون على البطاقة الثابتة */
     var c=_annLabelColor(data.custom_label||'');
     card.style.borderColor=c.border;
-    card.style.boxShadow='0 1px 3px rgba(0,0,0,.06),0 4px 16px '+c.shadow;
+    card.style.boxShadow='0 2px 12px '+c.shadow+',0 1px 3px rgba(0,0,0,0.04)';
     if(data.type==='more'){
-      card.innerHTML='<div class="ann-more-card-inner"><div class="ann-more-card-icon"><iconify-icon icon="ph:list-bullets-fill" style="font-size:22px;color:var(--green);pointer-events:none"></iconify-icon></div><button class="ann-card-btn ann-more-btn" style="background:var(--green-xl);color:var(--green-m)">'+(_curLang==='fr'?'Voir plus':'تصفح المزيد')+' <iconify-icon icon="ph:arrow-left-bold" style="font-size:10px;pointer-events:none"></iconify-icon></button></div>';
+      inner.innerHTML=_annMoreContent();
     } else {
-      card.innerHTML=_buildAnnCard(data,c);
+      inner.innerHTML=_annCardContent(data,c);
     }
-    var btn=card.querySelector('.ann-card-btn');
+    var btn=inner.querySelector('.ann-card-btn');
     if(btn)btn.addEventListener('click',function(e){
       e.stopPropagation();
       var id=btn.getAttribute('data-news-id');
       if(id){haptic('light');openNewsModal(id);}
     });
-    card.style.transition='opacity .22s ease,transform .22s ease';
-    card.style.opacity='1';
-    card.style.transform='translateY(0)';
+    inner.style.transition='opacity .22s ease,transform .22s ease';
+    inner.style.opacity='1';
+    inner.style.transform='translateY(0)';
   },160);
 }
 
 function _annCardContent(n,c){
   if(!c)c=_annLabelColor(n.custom_label||'');
-  return _buildAnnCard(n,c);
+  var lbl=n.custom_label||'';
+  var dateHtml=n.date
+    ?'<div class="ann-card-date"><iconify-icon icon="lucide:calendar-days" style="pointer-events:none"></iconify-icon>'+n.date+'</div>'
+    :'';
+  var titleHtml=_f(n,'title')
+    ?'<div class="ann-card-title">'+_f(n,'title')+'</div>'
+    :'';
+  var excerptHtml=_f(n,'content')
+    ?'<div class="ann-card-excerpt">'+_f(n,'content').substring(0,150)+'...</div>'
+    :'';
+  var badgeHtml=lbl
+    ?'<span class="ann-card-badge" style="background:'+c.btnBg+';color:'+c.btnColor+'">'
+      +'<iconify-icon icon="lucide:megaphone" style="font-size:11px;pointer-events:none"></iconify-icon>'
+      +lbl+'</span>'
+    :'';
+  return '<div class="ann-card-inner">'
+    +'<div class="ann-card-accent" style="background:'+c.icon+'"></div>'
+    +'<div class="ann-card-body-wrap">'
+    +'<div class="ann-card-top">'+badgeHtml+dateHtml+'</div>'
+    +titleHtml
+    +excerptHtml
+    +'<div class="ann-card-footer">'
+    +'<button class="ann-card-btn" data-news-id="'+n.id+'" '
+    +'style="background:'+c.btnBg+';color:'+c.btnColor+';border-color:'+c.border+'">'
+    +t('read-more')
+    +' <iconify-icon icon="lucide:chevron-left" style="font-size:11px;pointer-events:none"></iconify-icon>'
+    +'</button>'
+    +'</div>'
+    +'</div>'
+    +'</div>';
 }
 
 function _annMoreContent(){
@@ -2649,11 +2698,11 @@ async function loadHOfficial(){
     if(!items.length){el.innerHTML='';return;}
     var n=items[0];
     var c=_annLabelColor(n.custom_label||'');
-    var annHtml=_buildAnnCard(n,c);
+    var annHtml=_annCardContent(n,c);
     el.innerHTML='<div class="ann-card" '
-      +'style="margin:0 16px;width:auto;border-color:'+c.border+';box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px '+c.shadow+';" '
+      +'style="margin:0 16px;width:auto;background:'+c.glow+';border-color:'+c.border+';box-shadow:var(--elev-2)" '
       +'data-news-id="'+n.id+'">'
-      +annHtml
+      +'<div class="ann-card-content-inner">'+annHtml+'</div>'
       +'</div>';
     /* ربط حدث الضغط */
     var card=el.querySelector('.ann-card');
@@ -2745,10 +2794,11 @@ function renderNews(items,startIdx){
     if(n.category==='poster'){var src=n.image_url||'';if(src)return '<div class="poster-card fade-in" data-lb="'+src+'"><img src="'+src+'" alt="" loading="lazy" decoding="async"></div>';return '<div class="poster-card fade-in"><div class="poster-card-ph" style="background:linear-gradient(135deg,var(--purple),#4c1d95)"><iconify-icon icon="lucide:image" style="color:rgba(255,255,255,.7);font-size:3rem;pointer-events:none"></iconify-icon></div></div>';}
     if(n.category==='official'){
       var c=_annLabelColor(n.custom_label||'');
+      var annHtml=_annCardContent(n,c);
       return '<div class="ann-card fade-in" '
-        +'style="margin:0 16px 14px;width:auto;border-color:'+c.border+';box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px '+c.shadow+';" '
+        +'style="margin:0 16px 14px;width:auto;border-color:'+c.border+';box-shadow:0 6px 20px rgba(0,0,0,0.13),0 2px 6px rgba(0,0,0,0.07)" '
         +'data-news-id="'+n.id+'">'
-        +_buildAnnCard(n,c)
+        +'<div class="ann-card-content-inner">'+annHtml+'</div>'
         +'</div>';
     }
     var imgW=n.image_url?'<div class="announce-img-wrap"><img src="'+n.image_url+'" alt="" loading="lazy" decoding="async"></div>':'<div class="announce-img-wrap" style="background:'+s.grad+';height:90px"><iconify-icon icon="lucide:clipboard-list" style="color:rgba(255,255,255,.65);font-size:2.2rem;pointer-events:none"></iconify-icon></div>';
