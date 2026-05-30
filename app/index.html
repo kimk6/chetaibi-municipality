@@ -773,7 +773,17 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 /* ── Weather day tabs ── */
 [data-theme="dark"] #weather-day-tabs button,[data-theme="dark"] #sea-day-tabs button{border-color:rgba(0,135,90,0.15) !important;}
 
-/* Settings toggle buttons */
+/* ══ ABOUT SCREEN OVERLAY ══ */
+#screen-about{
+  position:fixed;inset:0;z-index:450;
+  transform:translateX(-100%);
+  transition:transform var(--dur-slow) var(--ease-spring);
+  overflow:hidden;
+  display:block !important;
+  pointer-events:none;
+}
+#screen-about.open{transform:translateX(0);pointer-events:auto;}
+#screen-about .scroll-area{padding-top:0;}
 .settings-section{margin:10px 16px;background:var(--card);border-radius:var(--r-lg);border:1px solid var(--border-light);overflow:hidden;}
 .settings-section-title{font-size:10.5px;font-weight:800;color:var(--muted-2);letter-spacing:.6px;padding:10px 16px 6px;text-transform:uppercase;}
 .settings-row{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;gap:12px;border-bottom:1px solid var(--border-light);}
@@ -1195,7 +1205,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         <div style="flex:1"><div class="more-item-title" data-i18n="ms-archive-title">أرشيف شطايبي</div><div class="more-item-sub" data-i18n="ms-archive-sub">محطات تاريخية وصور أرشيفية</div></div>
         <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
       </div>
-      <div class="more-item" id="ms-item-about" onclick="om('m-about')">
+      <div class="more-item" id="ms-item-about" onclick="MoreSheet.close();setTimeout(function(){openAboutScreen();},60)">
         <div class="more-icon" style="background:var(--green-l)"><iconify-icon icon="lucide:info" style="color:var(--green);font-size:20px;pointer-events:none"></iconify-icon></div>
         <div style="flex:1"><div class="more-item-title" data-i18n="ms-about-title">عن بلدية شطايبي</div><div class="more-item-sub" data-i18n="ms-about-sub">تعرّف على البلدية ومهامها</div></div>
         <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
@@ -1248,51 +1258,145 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   </div>
 </div>
 
-<!-- modal: عن البلدية -->
-<div class="modal-overlay" id="m-about" onclick="cm('m-about')" role="dialog" aria-modal="true">
-  <div class="modal-sheet" onclick="event.stopPropagation()">
-    <div class="modal-drag"></div>
-    <div class="modal-body">
-      <!-- رأس الـ modal -->
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border-light)">
-        <div style="width:52px;height:52px;border-radius:15px;overflow:hidden;flex-shrink:0;border:1px solid var(--border-light)">
-          <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo-mobile.png" style="width:100%;height:100%;object-fit:contain" alt="logo">
-        </div>
-        <div>
-          <div style="font-size:17px;font-weight:900;color:var(--text)" data-i18n="about-name">بلدية شطايبي</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:2px" data-i18n="about-wilaya">ولاية عنابة — الجزائر</div>
+<!-- صفحة: عن بلدية شطايبي -->
+<div id="screen-about" style="background:var(--surface);">
+  <div class="scroll-area" id="scroll-about">
+    <div class="content-block" style="padding-bottom:32px;">
+
+      <!-- رأس الصفحة -->
+      <div style="background:linear-gradient(135deg,var(--green-dark) 0%,var(--green) 60%,#34d399 100%);padding:calc(var(--safe-t) + 60px) 18px 28px;position:relative;overflow:hidden;">
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 70% 30%,rgba(255,255,255,0.08) 0%,transparent 60%);pointer-events:none;"></div>
+        <!-- زر الرجوع -->
+        <button id="about-back-btn-inner" onclick="closeAboutScreen()" style="position:absolute;top:calc(var(--safe-t) + 10px);right:14px;width:38px;height:38px;border-radius:50%;border:none;background:rgba(255,255,255,0.22);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;z-index:2;">
+          <iconify-icon icon="lucide:arrow-right" style="font-size:18px;pointer-events:none;"></iconify-icon>
+        </button>
+        <div style="display:flex;align-items:center;gap:14px;position:relative;z-index:1;">
+          <div style="width:64px;height:64px;border-radius:18px;overflow:hidden;flex-shrink:0;border:2px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);">
+            <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/logo-mobile.png" style="width:100%;height:100%;object-fit:contain;" alt="logo">
+          </div>
+          <div>
+            <div style="font-size:20px;font-weight:900;color:#fff;letter-spacing:-0.4px;text-shadow:0 1px 4px rgba(0,0,0,0.15);">بلدية شطايبي</div>
+            <div style="font-size:13px;color:rgba(255,255,255,0.82);margin-top:3px;font-weight:500;">ولاية عنابة — الجزائر</div>
+          </div>
         </div>
       </div>
-      <!-- معلومات البلدية -->
-      <div style="display:flex;flex-direction:column;gap:14px">
-        <div style="background:var(--surface);border-radius:14px;padding:14px 16px">
-          <div style="font-size:12px;font-weight:800;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em" data-i18n="about-info-title">معلومات عامة</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-            <div><div style="font-size:11px;color:var(--muted)" data-i18n="stat-area">المساحة</div><div style="font-size:15px;font-weight:900;color:var(--text)">134 كم²</div></div>
-            <div><div style="font-size:11px;color:var(--muted)" data-i18n="stat-pop">السكان</div><div style="font-size:15px;font-weight:900;color:var(--text)">8,767</div></div>
-            <div><div style="font-size:11px;color:var(--muted)" data-i18n="stat-postal">الرمز البريدي</div><div style="font-size:15px;font-weight:900;color:var(--text)">23014</div></div>
-            <div><div style="font-size:11px;color:var(--muted)" data-i18n="about-daira">الدائرة</div><div style="font-size:15px;font-weight:900;color:var(--text)" data-i18n="about-daira-val">شطايبي</div></div>
+
+      <!-- بطاقات المعلومات العامة -->
+      <div style="padding:18px 16px 0;">
+        <div style="font-size:11px;font-weight:800;color:var(--muted);letter-spacing:0.7px;text-transform:uppercase;margin-bottom:10px;padding-right:2px;">معلومات عامة</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+          <!-- المساحة -->
+          <div style="background:var(--card);border-radius:var(--r-lg);padding:14px 14px;border:1px solid var(--border-light);box-shadow:var(--elev-1);display:flex;flex-direction:column;gap:6px;">
+            <div style="width:34px;height:34px;border-radius:10px;background:var(--green-xl);display:flex;align-items:center;justify-content:center;">
+              <iconify-icon icon="lucide:map" style="font-size:16px;color:var(--green);pointer-events:none;"></iconify-icon>
+            </div>
+            <div style="font-size:10.5px;color:var(--muted);font-weight:600;">المساحة</div>
+            <div style="font-size:18px;font-weight:900;color:var(--text);letter-spacing:-0.5px;line-height:1;">134 <span style="font-size:12px;font-weight:700;">كم²</span></div>
+          </div>
+          <!-- السكان -->
+          <div style="background:var(--card);border-radius:var(--r-lg);padding:14px 14px;border:1px solid var(--border-light);box-shadow:var(--elev-1);display:flex;flex-direction:column;gap:6px;">
+            <div style="width:34px;height:34px;border-radius:10px;background:rgba(21,101,192,0.1);display:flex;align-items:center;justify-content:center;">
+              <iconify-icon icon="lucide:users" style="font-size:16px;color:var(--blue);pointer-events:none;"></iconify-icon>
+            </div>
+            <div style="font-size:10.5px;color:var(--muted);font-weight:600;">السكان</div>
+            <div style="font-size:18px;font-weight:900;color:var(--text);letter-spacing:-0.5px;line-height:1;">8,767</div>
+          </div>
+          <!-- الرمز البريدي -->
+          <div style="background:var(--card);border-radius:var(--r-lg);padding:14px 14px;border:1px solid var(--border-light);box-shadow:var(--elev-1);display:flex;flex-direction:column;gap:6px;">
+            <div style="width:34px;height:34px;border-radius:10px;background:rgba(245,127,23,0.1);display:flex;align-items:center;justify-content:center;">
+              <iconify-icon icon="lucide:mail-open" style="font-size:16px;color:var(--amber);pointer-events:none;"></iconify-icon>
+            </div>
+            <div style="font-size:10.5px;color:var(--muted);font-weight:600;">الرمز البريدي</div>
+            <div style="font-size:18px;font-weight:900;color:var(--text);letter-spacing:-0.5px;line-height:1;">23014</div>
+          </div>
+          <!-- الدائرة -->
+          <div style="background:var(--card);border-radius:var(--r-lg);padding:14px 14px;border:1px solid var(--border-light);box-shadow:var(--elev-1);display:flex;flex-direction:column;gap:6px;">
+            <div style="width:34px;height:34px;border-radius:10px;background:rgba(106,27,154,0.1);display:flex;align-items:center;justify-content:center;">
+              <iconify-icon icon="lucide:landmark" style="font-size:16px;color:var(--purple);pointer-events:none;"></iconify-icon>
+            </div>
+            <div style="font-size:10.5px;color:var(--muted);font-weight:600;">الدائرة</div>
+            <div style="font-size:18px;font-weight:900;color:var(--text);letter-spacing:-0.5px;line-height:1;">شطايبي</div>
           </div>
         </div>
-        <div style="background:var(--surface);border-radius:14px;padding:14px 16px">
-          <div style="font-size:12px;font-weight:800;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em" data-i18n="about-contact-title">التواصل</div>
-          <div style="display:flex;flex-direction:column;gap:8px">
-            <div style="display:flex;align-items:center;gap:10px"><iconify-icon icon="lucide:map-pin" style="color:var(--green);font-size:16px;flex-shrink:0;pointer-events:none"></iconify-icon><span style="font-size:13px;color:var(--text)" data-i18n="about-address">شطايبي، ولاية عنابة، الجزائر</span></div>
-            <div style="display:flex;align-items:center;gap:10px"><iconify-icon icon="lucide:globe" style="color:var(--blue);font-size:16px;flex-shrink:0;pointer-events:none"></iconify-icon><a href="https://chetaibi.dz" target="_blank" style="font-size:13px;color:var(--blue);text-decoration:none">chetaibi.dz</a></div>
+
+        <!-- بطاقة معلومات الاتصال -->
+        <div style="font-size:11px;font-weight:800;color:var(--muted);letter-spacing:0.7px;text-transform:uppercase;margin-bottom:10px;padding-right:2px;">التواصل</div>
+        <div style="background:var(--card);border-radius:var(--r-xl);border:1px solid var(--border-light);box-shadow:var(--elev-2);overflow:hidden;margin-bottom:14px;">
+          <!-- البريد الإلكتروني -->
+          <a href="mailto:apc.chetaibi.officiel@gmail.com" style="display:flex;align-items:center;gap:13px;padding:14px 16px;border-bottom:1px solid var(--border-light);text-decoration:none;touch-action:manipulation;transition:background var(--dur-fast);" onclick="this.style.background='var(--surface)';setTimeout(()=>this.style.background='',200)">
+            <div style="width:38px;height:38px;border-radius:var(--r-md);background:rgba(229,57,53,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <iconify-icon icon="lucide:mail" style="font-size:17px;color:var(--red);pointer-events:none;"></iconify-icon>
+            </div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:11px;color:var(--muted);font-weight:600;margin-bottom:2px;">البريد الإلكتروني</div>
+              <div style="font-size:12.5px;font-weight:700;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">apc.chetaibi.officiel@gmail.com</div>
+            </div>
+            <iconify-icon icon="lucide:external-link" style="font-size:14px;color:var(--muted-2);pointer-events:none;flex-shrink:0;"></iconify-icon>
+          </a>
+          <!-- الهاتف -->
+          <a href="tel:0388870716" style="display:flex;align-items:center;gap:13px;padding:14px 16px;border-bottom:1px solid var(--border-light);text-decoration:none;touch-action:manipulation;transition:background var(--dur-fast);" onclick="this.style.background='var(--surface)';setTimeout(()=>this.style.background='',200)">
+            <div style="width:38px;height:38px;border-radius:var(--r-md);background:var(--green-xl);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <iconify-icon icon="lucide:phone" style="font-size:17px;color:var(--green);pointer-events:none;"></iconify-icon>
+            </div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:11px;color:var(--muted);font-weight:600;margin-bottom:2px;">الهاتف</div>
+              <div style="font-size:14px;font-weight:800;color:var(--text);">038 87 07 16</div>
+            </div>
+            <iconify-icon icon="lucide:external-link" style="font-size:14px;color:var(--muted-2);pointer-events:none;flex-shrink:0;"></iconify-icon>
+          </a>
+          <!-- الفاكس -->
+          <div style="display:flex;align-items:center;gap:13px;padding:14px 16px;border-bottom:1px solid var(--border-light);">
+            <div style="width:38px;height:38px;border-radius:var(--r-md);background:rgba(245,127,23,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <iconify-icon icon="lucide:printer" style="font-size:17px;color:var(--amber);pointer-events:none;"></iconify-icon>
+            </div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:11px;color:var(--muted);font-weight:600;margin-bottom:2px;">الفاكس</div>
+              <div style="font-size:14px;font-weight:800;color:var(--text);">038 87 07 15</div>
+            </div>
+          </div>
+          <!-- العنوان -->
+          <div style="display:flex;align-items:center;gap:13px;padding:14px 16px;border-bottom:1px solid var(--border-light);">
+            <div style="width:38px;height:38px;border-radius:var(--r-md);background:rgba(2,119,189,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <iconify-icon icon="lucide:map-pin" style="font-size:17px;color:var(--sky);pointer-events:none;"></iconify-icon>
+            </div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:11px;color:var(--muted);font-weight:600;margin-bottom:2px;">العنوان</div>
+              <div style="font-size:13px;font-weight:700;color:var(--text);line-height:1.4;">بلدية شطايبي، ولاية عنابة، الجزائر</div>
+            </div>
+          </div>
+          <!-- فيسبوك -->
+          <a href="https://m.facebook.com/@apc.chetaibi.page.officielle" target="_blank" style="display:flex;align-items:center;gap:13px;padding:14px 16px;text-decoration:none;touch-action:manipulation;transition:background var(--dur-fast);" onclick="this.style.background='var(--surface)';setTimeout(()=>this.style.background='',200)">
+            <div style="width:38px;height:38px;border-radius:var(--r-md);background:rgba(24,119,242,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <iconify-icon icon="bi:facebook" style="font-size:18px;color:#1877f2;pointer-events:none;"></iconify-icon>
+            </div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:11px;color:var(--muted);font-weight:600;margin-bottom:2px;">الصفحة الرسمية على فيسبوك</div>
+              <div style="font-size:12.5px;font-weight:700;color:#1877f2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">@apc.chetaibi.page.officielle</div>
+            </div>
+            <iconify-icon icon="lucide:external-link" style="font-size:14px;color:var(--muted-2);pointer-events:none;flex-shrink:0;"></iconify-icon>
+          </a>
+        </div>
+
+        <!-- بطاقة عن التطبيق -->
+        <div style="font-size:11px;font-weight:800;color:var(--muted);letter-spacing:0.7px;text-transform:uppercase;margin-bottom:10px;padding-right:2px;">عن التطبيق</div>
+        <div style="background:var(--card);border-radius:var(--r-xl);border:1px solid var(--border-light);box-shadow:var(--elev-2);padding:16px 16px 14px;margin-bottom:14px;">
+          <div style="font-size:13px;color:var(--muted);line-height:1.75;">تطبيق بلدية شطايبي هو منصة رقمية رسمية تتيح للمواطنين الاطلاع على آخر الأخبار والإعلانات والخدمات الإدارية ومرافق المدينة.</div>
+          <div style="margin-top:12px;display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid var(--border-light);">
+            <div style="width:28px;height:28px;border-radius:8px;background:var(--green-xl);display:flex;align-items:center;justify-content:center;">
+              <iconify-icon icon="lucide:tag" style="font-size:13px;color:var(--green);pointer-events:none;"></iconify-icon>
+            </div>
+            <span style="font-size:12px;color:var(--muted);">الإصدار</span>
+            <span style="font-size:12px;font-weight:800;color:var(--green);">1.0.0</span>
           </div>
         </div>
-        <div style="background:var(--surface);border-radius:14px;padding:14px 16px">
-          <div style="font-size:12px;font-weight:800;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em" data-i18n="about-app-title">عن التطبيق</div>
-          <div style="font-size:13px;color:var(--muted);line-height:1.7" data-i18n="about-app-desc">تطبيق بلدية شطايبي هو منصة رقمية رسمية تتيح للمواطنين الاطلاع على آخر الأخبار والإعلانات والخدمات الإدارية ومرافق المدينة.</div>
-          <div style="margin-top:10px;display:flex;align-items:center;gap:6px"><span style="font-size:12px;color:var(--muted)" data-i18n="about-version">الإصدار</span><span style="font-size:12px;font-weight:800;color:var(--green)">1.0.0</span></div>
-        </div>
+
       </div>
     </div>
   </div>
 </div>
 
 <!-- modal: سياسة الخصوصية -->
-<div class="modal-overlay" id="m-privacy" onclick="cm('m-privacy')" role="dialog" aria-modal="true">
+<div class="modal-overlay" id="m-privacy" onclick="cm('m-privacy')" role="dialog" aria-modal="true" style="z-index:10000;">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
     <div class="modal-body">
@@ -1492,6 +1596,27 @@ var FILTER_CFG={
   beach:{icon:'lucide:waves',labelFull:'الشواطئ'},
   tour:{icon:'lucide:sun',labelFull:'المعالم السياحية'}
 };
+/* ══ ABOUT SCREEN ══ */
+function openAboutScreen(){
+  haptic('light');
+  var el=document.getElementById('screen-about');
+  if(!el)return;
+  el.classList.remove('hidden');
+  requestAnimationFrame(function(){el.classList.add('open');});
+  var hdr=document.getElementById('shared-header');
+  if(hdr)hdr.style.display='none';
+}
+function closeAboutScreen(){
+  haptic('light');
+  var el=document.getElementById('screen-about');
+  if(!el)return;
+  el.classList.remove('open');
+  setTimeout(function(){
+    el.classList.add('hidden');
+    var hdr=document.getElementById('shared-header');
+    if(hdr)hdr.style.display='';
+  },320);
+}
 /* ══════════════════════════════════════════
    HEADER HIDE/SHOW
 ══════════════════════════════════════════ */
