@@ -437,11 +437,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   background:var(--surface);color:var(--text);
   border:1.5px solid var(--border-light);
 }
-.modal-action-btn.directions{
-  background:linear-gradient(135deg,var(--green-dark),var(--green));
-  color:#fff;
-  box-shadow:0 2px 10px rgba(0,135,90,0.28);
-}
 [data-theme="dark"] .modal-action-btn.share{background:var(--surface-2);border-color:rgba(255,255,255,0.08);}
 
 /* place-card قديمة للتوافق */
@@ -1995,9 +1990,9 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           <iconify-icon icon="ph:share-network-fill"></iconify-icon>
           <span data-i18n="btn-share">مشاركة</span>
         </button>
-        <button class="modal-action-btn directions" id="mb-directions-btn">
-          <iconify-icon icon="ph:navigation-fill"></iconify-icon>
-          <span data-i18n="btn-directions">احسب المسافة</span>
+        <button class="modal-action-btn share" id="mb-map-action-btn" style="display:none;">
+          <iconify-icon icon="ph:map-pin-fill"></iconify-icon>
+          <span data-i18n="show-map">عرض على الخريطة</span>
         </button>
       </div>
       <div id="mb-map-btn-wrap"></div>
@@ -2025,9 +2020,9 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             <iconify-icon icon="ph:share-network-fill"></iconify-icon>
             <span data-i18n="btn-share">مشاركة</span>
           </button>
-          <button class="modal-action-btn directions" id="mt-directions-btn">
-            <iconify-icon icon="ph:navigation-fill"></iconify-icon>
-            <span data-i18n="btn-directions">احسب المسافة</span>
+          <button class="modal-action-btn share" id="mt-map-action-btn" style="display:none;">
+            <iconify-icon icon="ph:map-pin-fill"></iconify-icon>
+            <span data-i18n="show-map">عرض على الخريطة</span>
           </button>
         </div>
         <div id="mt-map-btn-wrap"></div>
@@ -3355,16 +3350,10 @@ async function openBeachModal(id){
     if(b.season)m+='<span class="modal-chip">'+b.season+'</span>';
     document.getElementById('mb-meta').innerHTML=m;
     _makeMapBtn(b.lat,b.lng,b.name||'','mb-map-btn-wrap');
-    /* أزرار المشاركة والمسافة */
     var mbRow=document.getElementById('mb-action-row');
     var mbShare=document.getElementById('mb-share-btn');
-    var mbDir=document.getElementById('mb-directions-btn');
     if(mbRow)mbRow.style.display='flex';
-    if(mbShare){mbShare.onclick=function(){_sharePlace(_f(b,'name')||b.name||'',b.lat,b.lng);};}
-    if(mbDir&&b.lat&&b.lng){
-      mbDir.style.display='';
-      mbDir.onclick=function(){_directionsPlace(b.lat,b.lng,_f(b,'name')||b.name||'');};
-    }else if(mbDir){mbDir.style.display='none';}
+    if(mbShare)mbShare.onclick=function(){_sharePlace(_f(b,'name')||b.name||'',b.lat,b.lng);};
     album('mb-album',b.albums);
     om('m-beach');
   }catch(e){}
@@ -3397,11 +3386,8 @@ async function openTourismModal(id){
       _makeMapBtn(t.lat,t.lng,t.name||'','mt-map-btn-wrap');
       var mtRow=document.getElementById('mt-action-row');
       var mtShare=document.getElementById('mt-share-btn');
-      var mtDir=document.getElementById('mt-directions-btn');
       if(mtRow)mtRow.style.display='flex';
       if(mtShare)mtShare.onclick=function(){_sharePlace(_f(t,'name')||t.name||'',t.lat,t.lng);};
-      if(mtDir&&t.lat&&t.lng){mtDir.style.display='';mtDir.onclick=function(){_directionsPlace(t.lat,t.lng,_f(t,'name')||t.name||'');};}
-      else if(mtDir)mtDir.style.display='none';
       album('mt-album',albums);
     }
     om('m-tour');
@@ -3484,13 +3470,23 @@ function _directionsPlace(lat,lng,name){
 function _makeMapBtn(lat,lng,name,wrapId){
   var wrap=document.getElementById(wrapId);
   if(!wrap)return;
-  if(lat&&lng){
+  /* إخفاء الزر القديم */
+  wrap.innerHTML='';
+  /* تفعيل زر الخريطة الموحد إن وُجد */
+  var prefix=wrapId.replace('-map-btn-wrap','');
+  var actionBtn=document.getElementById(prefix+'-map-action-btn');
+  if(actionBtn){
+    if(lat&&lng){
+      actionBtn.style.display='';
+      actionBtn.onclick=function(){showOnMap(lat,lng,name.replace(/'/g,''));};
+    } else {
+      actionBtn.style.display='none';
+    }
+  } else if(lat&&lng){
+    /* للمرافق وغيرها — احتفظ بالزر القديم */
     wrap.innerHTML='<div class="modal-map-btn-wrap"><button class="modal-map-btn" onclick="showOnMap('+lat+','+lng+',\''+name.replace(/'/g,'')+'\')">'
       +'<iconify-icon icon="lucide:map"></iconify-icon>'+t('show-map')
-      +'<iconify-icon icon="lucide:chevron-left" style="font-size:13px;pointer-events:none"></iconify-icon>'
       +'</button></div>';
-  }else{
-    wrap.innerHTML='';
   }
 }
 var appMap=null;
