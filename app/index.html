@@ -212,10 +212,10 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .h-scroll{display:flex;gap:12px;overflow-x:auto;padding:4px 16px 20px;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;}
 
 /* ══════════════════════════════════════════
-   NEWS CARDS — MD3 2026
+   NEWS CARDS — بطاقة أفقية MD3 2026
 ══════════════════════════════════════════ */
 .news-card{
-  min-width:min(248px,72vw);max-width:272px;
+  min-width:min(300px,82vw);max-width:320px;
   background:var(--card);
   border-radius:var(--r-xl);
   overflow:hidden;
@@ -223,63 +223,62 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   flex-shrink:0;
   border:1px solid var(--border-light);
   cursor:pointer;
-  display:flex;flex-direction:column;
+  display:flex;
+  flex-direction:column;
   touch-action:manipulation;
   transition:transform var(--dur-mid) var(--ease-spring),
-             box-shadow var(--dur-mid),opacity var(--dur-mid);
+             box-shadow var(--dur-mid);
 }
-.news-card:active{transform:scale(.965);opacity:.9;box-shadow:var(--elev-1);}
+.news-card:active{transform:scale(.965);box-shadow:var(--elev-1);}
 
-/* صورة مع نسبة ثابتة */
+/* منطقة الصورة — نسبة عريضة */
 .news-card-img{
-  width:100%;height:140px;
+  width:100%;height:160px;
   object-fit:cover;display:block;
   flex-shrink:0;pointer-events:none;
 }
 .news-card-img-ph{
-  width:100%;height:140px;
+  width:100%;height:160px;
   display:flex;align-items:center;justify-content:center;
   flex-shrink:0;
-  background:linear-gradient(140deg,var(--green-xl),var(--green-l));
+  background:linear-gradient(135deg,var(--green-xl) 0%,var(--green-l) 100%);
+}
+.news-card-img-ph iconify-icon{
+  font-size:2.6rem;color:var(--green);opacity:.55;pointer-events:none;
 }
 
-/* نص العنوان */
+/* نص */
+.news-card-content{
+  padding:12px 14px 0;
+  flex:1;display:flex;flex-direction:column;gap:5px;
+}
 .news-card-title{
-  font-size:13.5px;font-weight:800;
+  font-size:14px;font-weight:800;
   color:var(--text);
-  padding:12px 14px 4px;
-  line-height:1.45;
+  line-height:1.4;
   display:-webkit-box;-webkit-line-clamp:2;
   -webkit-box-orient:vertical;overflow:hidden;
   letter-spacing:-.25px;
-  flex-shrink:0;
-}
-
-/* جسم المقتطف */
-.news-card-body{
-  padding:2px 14px 10px;
-  flex:1;display:flex;flex-direction:column;
 }
 .news-card-excerpt{
   font-size:12px;color:var(--muted);
   line-height:1.6;
   display:-webkit-box;-webkit-line-clamp:2;
   -webkit-box-orient:vertical;overflow:hidden;
-  flex:1;
 }
 
-/* footer — تاريخ + زر */
+/* footer */
 .news-card-footer{
   display:flex;justify-content:space-between;align-items:center;
-  padding:9px 12px 10px;
+  padding:10px 14px 12px;
+  margin-top:8px;
   border-top:1px solid var(--border-light);
-  margin-top:auto;
   gap:8px;
 }
 .card-date{
   display:flex;align-items:center;gap:4px;
   font-size:10.5px;color:var(--muted-2);font-weight:600;
-  flex-shrink:0;min-width:0;overflow:hidden;
+  flex-shrink:0;
 }
 .card-date iconify-icon{font-size:11px;pointer-events:none;flex-shrink:0;}
 .read-more{
@@ -288,18 +287,19 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   border:none;background:var(--green-xl);
   cursor:pointer;font-family:var(--font-main);
   touch-action:manipulation;
-  display:flex;align-items:center;gap:3px;
-  padding:5px 11px;border-radius:var(--r-full);
+  display:flex;align-items:center;gap:4px;
+  padding:6px 13px;border-radius:var(--r-full);
   white-space:nowrap;flex-shrink:0;
   transition:background var(--dur-fast),transform var(--dur-fast);
 }
 .read-more:active{background:var(--green-l);transform:scale(.92);}
 .read-more iconify-icon{font-size:11px;pointer-events:none;flex-shrink:0;}
 
-/* PLACE CARDS */
+[data-theme="dark"] .news-card{background:#1C1E24;border-color:#2A2D38;}
+
 /* ══ HERO SCROLL ══ */
 .hero-scroll{
-  display:flex;gap:14px;
+  display:flex;gap:12px;
   overflow-x:auto;-webkit-overflow-scrolling:touch;
   overscroll-behavior-x:contain;scrollbar-width:none;
   padding:0 16px 20px;
@@ -307,69 +307,53 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 }
 .hero-scroll::-webkit-scrollbar{display:none;}
 
-/* ══ HERO CARD — Immersive 2026 ══ */
+/* ══ HERO CARD — Portrait, نظيف ══ */
 .hero-card{
-  min-width:76vw;max-width:296px;
-  height:210px;
+  min-width:48vw;max-width:200px;
+  height:256px;
   border-radius:var(--r-xl);
   overflow:hidden;flex-shrink:0;
   cursor:pointer;position:relative;
-  box-shadow:0 2px 8px rgba(0,0,0,.10),0 8px 28px rgba(0,0,0,.16);
+  box-shadow:0 2px 8px rgba(0,0,0,.12),0 6px 22px rgba(0,0,0,.16);
   touch-action:manipulation;
   scroll-snap-align:start;
-  transition:transform var(--dur-mid) var(--ease-spring),
-             opacity var(--dur-mid),
-             box-shadow var(--dur-mid);
+  transition:transform var(--dur-mid) var(--ease-spring),box-shadow var(--dur-mid);
 }
-.hero-card:active{transform:scale(.96);opacity:.88;box-shadow:0 2px 8px rgba(0,0,0,.10);}
-.hero-card img{
-  width:100%;height:100%;object-fit:cover;
-  display:block;pointer-events:none;
-  transition:transform .5s var(--ease-enter);
-}
-.hero-card:active img{transform:scale(1.04);}
+.hero-card:active{transform:scale(.96);box-shadow:0 1px 4px rgba(0,0,0,.10);}
+.hero-card img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
 .hero-card-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
 .hero-card-grad{
   position:absolute;inset:0;
-  background:linear-gradient(
-    to top,
-    rgba(0,0,0,.82) 0%,
-    rgba(0,0,0,.28) 45%,
-    transparent 78%
-  );
+  background:linear-gradient(to top,rgba(0,0,0,.78) 0%,rgba(0,0,0,.18) 48%,transparent 75%);
   pointer-events:none;
 }
 .hero-card-body{
   position:absolute;bottom:0;left:0;right:0;
-  padding:18px 16px;
+  padding:14px 14px 16px;
   pointer-events:none;
 }
-.hero-card-info{display:flex;flex-direction:column;gap:0;}
+.hero-card-info{display:flex;flex-direction:column;}
 .hero-card-badge{display:none;}
 .hero-card-sub{display:none;}
 .hero-card-map-btn{display:none;}
 .hero-card-name{
-  font-size:16px;font-weight:900;color:#fff;
-  text-shadow:0 2px 12px rgba(0,0,0,.55);
-  line-height:1.25;letter-spacing:-.35px;
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  font-size:13.5px;font-weight:900;color:#fff;
+  text-shadow:0 1px 6px rgba(0,0,0,.55);
+  line-height:1.3;letter-spacing:-.2px;
+  display:-webkit-box;-webkit-line-clamp:2;
+  -webkit-box-orient:vertical;overflow:hidden;
 }
-
 /* skeleton hero */
-.sk-hero-card{
-  min-width:76vw;max-width:296px;height:210px;
-  border-radius:var(--r-xl);overflow:hidden;
-  flex-shrink:0;scroll-snap-align:start;
-}
+.sk-hero-card{min-width:48vw;max-width:200px;height:256px;border-radius:var(--r-xl);overflow:hidden;flex-shrink:0;scroll-snap-align:start;}
 
-/* ══ DISCOVER PILLS — Unified green ══ */
+/* ══ DISCOVER PILLS ══ */
 .discover-pills{
   display:flex;gap:8px;
-  padding:0 16px 16px;
+  padding:0 16px 14px;
 }
 .discover-pill{
-  display:inline-flex;align-items:center;gap:7px;
-  padding:9px 20px;
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 18px;
   border-radius:var(--r-full);
   border:1.5px solid var(--border);
   background:var(--card);
@@ -378,19 +362,12 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   font-size:13px;font-weight:700;
   cursor:pointer;touch-action:manipulation;
   box-shadow:var(--elev-1);
-  transition:
-    background var(--dur-mid) var(--ease-std),
-    color var(--dur-mid) var(--ease-std),
-    border-color var(--dur-mid) var(--ease-std),
-    box-shadow var(--dur-mid) var(--ease-std),
-    transform var(--dur-fast) var(--ease-spring);
+  transition:background var(--dur-mid) var(--ease-std),color var(--dur-mid) var(--ease-std),border-color var(--dur-mid) var(--ease-std),box-shadow var(--dur-mid),transform var(--dur-fast) var(--ease-spring);
 }
-.discover-pill iconify-icon{font-size:16px;pointer-events:none;flex-shrink:0;}
+.discover-pill iconify-icon{font-size:15px;pointer-events:none;flex-shrink:0;}
 .discover-pill.active{
-  background:var(--green);
-  color:#fff;
-  border-color:transparent;
-  box-shadow:0 3px 14px rgba(0,135,90,.28),var(--elev-1);
+  background:var(--green);color:#fff;border-color:transparent;
+  box-shadow:0 2px 12px rgba(0,135,90,.25);
 }
 .discover-pill:active:not(.active){transform:scale(.94);opacity:.7;}
 .discover-pill:active.active{transform:scale(.97);}
@@ -398,7 +375,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 [data-theme="dark"] .discover-pill.active{background:var(--green-m);border-color:transparent;color:#fff;}
 .discover-panel.hidden{display:none !important;}
 
-/* place-card (للاستخدامات الأخرى) */
+
 .place-card{min-width:158px;max-width:158px;border-radius:20px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.07),0 6px 20px rgba(0,0,0,.11);flex-shrink:0;cursor:pointer;position:relative;height:212px;touch-action:manipulation;transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);}
 .place-card:active{transform:scale(.93);opacity:.82;}
 .place-card img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;border-radius:20px;}
@@ -3044,15 +3021,17 @@ async function loadHLatestNews(){
     el.innerHTML=items.map(function(n){
       var title=_f(n,'title')||'';
       var content=_f(n,'content')||'';
-      var desc=content.length>90?content.slice(0,90)+'…':content;
+      var desc=content.length>85?content.slice(0,85)+'…':content;
       var imgH=n.image_url
         ?'<img class="news-card-img" src="'+n.image_url+'" alt="" loading="lazy" decoding="async">'
-        :'<div class="news-card-img-ph" style="background:linear-gradient(140deg,var(--green-xl),var(--green-l));"><iconify-icon icon="lucide:clipboard-list" style="color:var(--green);font-size:2rem;pointer-events:none;opacity:.7;"></iconify-icon></div>';
+        :'<div class="news-card-img-ph"><iconify-icon icon="lucide:clipboard-list" style="pointer-events:none;"></iconify-icon></div>';
       var dateHtml=n.date?'<div class="card-date"><iconify-icon icon="lucide:calendar"></iconify-icon>'+n.date+'</div>':'<div></div>';
       return '<div class="news-card fade-in" data-news-id="'+n.id+'">'
         +imgH
+        +'<div class="news-card-content">'
         +(title?'<div class="news-card-title">'+title+'</div>':'')
-        +(desc?'<div class="news-card-body"><div class="news-card-excerpt">'+desc+'</div></div>':'')
+        +(desc?'<div class="news-card-excerpt">'+desc+'</div>':'')
+        +'</div>'
         +'<div class="news-card-footer">'+dateHtml
         +'<button class="read-more" data-news-id="'+n.id+'">'+t('read-more')+'<iconify-icon icon="lucide:chevron-left"></iconify-icon></button>'
         +'</div>'
