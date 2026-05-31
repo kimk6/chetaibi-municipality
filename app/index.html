@@ -2467,10 +2467,7 @@ function selectMapFilter(type,el){
   var cfg=FILTER_CFG[type];
   document.getElementById('filter-btn-icon').setAttribute('icon',cfg.icon);
   var fbEl=document.getElementById('filter-btn-label');
-  if(fbEl){
-    var labelKey='map-filter-'+(catKey||'all');
-    fbEl.textContent=t(labelKey)||cfg.labelFull;
-  }
+  if(fbEl){fbEl.textContent=cfg.labelFull;}
   document.getElementById('map-filter-btn').classList.toggle('filter-active',type!=='all');
   activeMapFilter=type;
   if(appMap){
