@@ -210,99 +210,193 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .seg-btn:active.active{transform:scale(.97);}
 /* H-SCROLL */
 .h-scroll{display:flex;gap:12px;overflow-x:auto;padding:4px 16px 20px;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;}
-/* NEWS CARDS */
-.news-card{min-width:min(244px,70vw);max-width:284px;background:var(--card);border-radius:20px;overflow:hidden;box-shadow:var(--elev-2);flex-shrink:0;border:1px solid var(--border-light);cursor:pointer;display:flex;flex-direction:column;touch-action:manipulation;transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);}
-.news-card:active{transform:scale(.96);opacity:.85;}
-.news-card-img{width:100%;height:148px;object-fit:cover;display:block;flex-shrink:0;pointer-events:none;}
-.news-card-img-ph{width:100%;height:148px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.news-card-title{font-size:13.5px;font-weight:800;color:var(--text);padding:11px 14px 3px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;letter-spacing:-.2px;}
-.news-card-body{padding:3px 14px 8px;flex:1;display:flex;flex-direction:column;gap:4px;}
-.news-card-excerpt{font-size:12.5px;color:var(--muted);line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;flex:1;}
-.news-card-footer{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-top:1px solid var(--border-light);margin-top:auto;min-height:44px;}
-.card-date{display:flex;align-items:center;gap:4px;font-size:var(--text-xs);color:var(--muted-2);font-weight:600;flex-shrink:0;}
+
+/* ══════════════════════════════════════════
+   NEWS CARDS — MD3 2026
+══════════════════════════════════════════ */
+.news-card{
+  min-width:min(248px,72vw);max-width:272px;
+  background:var(--card);
+  border-radius:var(--r-xl);
+  overflow:hidden;
+  box-shadow:var(--elev-2);
+  flex-shrink:0;
+  border:1px solid var(--border-light);
+  cursor:pointer;
+  display:flex;flex-direction:column;
+  touch-action:manipulation;
+  transition:transform var(--dur-mid) var(--ease-spring),
+             box-shadow var(--dur-mid),opacity var(--dur-mid);
+}
+.news-card:active{transform:scale(.965);opacity:.9;box-shadow:var(--elev-1);}
+
+/* صورة مع نسبة ثابتة */
+.news-card-img{
+  width:100%;height:140px;
+  object-fit:cover;display:block;
+  flex-shrink:0;pointer-events:none;
+}
+.news-card-img-ph{
+  width:100%;height:140px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  background:linear-gradient(140deg,var(--green-xl),var(--green-l));
+}
+
+/* نص العنوان */
+.news-card-title{
+  font-size:13.5px;font-weight:800;
+  color:var(--text);
+  padding:12px 14px 4px;
+  line-height:1.45;
+  display:-webkit-box;-webkit-line-clamp:2;
+  -webkit-box-orient:vertical;overflow:hidden;
+  letter-spacing:-.25px;
+  flex-shrink:0;
+}
+
+/* جسم المقتطف */
+.news-card-body{
+  padding:2px 14px 10px;
+  flex:1;display:flex;flex-direction:column;
+}
+.news-card-excerpt{
+  font-size:12px;color:var(--muted);
+  line-height:1.6;
+  display:-webkit-box;-webkit-line-clamp:2;
+  -webkit-box-orient:vertical;overflow:hidden;
+  flex:1;
+}
+
+/* footer — تاريخ + زر */
+.news-card-footer{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:9px 12px 10px;
+  border-top:1px solid var(--border-light);
+  margin-top:auto;
+  gap:8px;
+}
+.card-date{
+  display:flex;align-items:center;gap:4px;
+  font-size:10.5px;color:var(--muted-2);font-weight:600;
+  flex-shrink:0;min-width:0;overflow:hidden;
+}
 .card-date iconify-icon{font-size:11px;pointer-events:none;flex-shrink:0;}
-.read-more{font-size:11.5px;font-weight:800;color:var(--green);border:none;background:var(--green-xl);cursor:pointer;font-family:var(--font-main);touch-action:manipulation;display:flex;align-items:center;gap:3px;padding:5px 12px;border-radius:var(--r-full);min-height:30px;transition:background var(--dur-fast),transform var(--dur-fast);}
+.read-more{
+  font-size:11px;font-weight:800;
+  color:var(--green-dark);
+  border:none;background:var(--green-xl);
+  cursor:pointer;font-family:var(--font-main);
+  touch-action:manipulation;
+  display:flex;align-items:center;gap:3px;
+  padding:5px 11px;border-radius:var(--r-full);
+  white-space:nowrap;flex-shrink:0;
+  transition:background var(--dur-fast),transform var(--dur-fast);
+}
 .read-more:active{background:var(--green-l);transform:scale(.92);}
-.read-more iconify-icon{font-size:12px;pointer-events:none;flex-shrink:0;}
+.read-more iconify-icon{font-size:11px;pointer-events:none;flex-shrink:0;}
+
 /* PLACE CARDS */
-/* ══ HERO SCROLL (discover section) ══ */
+/* ══ HERO SCROLL ══ */
 .hero-scroll{
-  display:flex;gap:12px;
+  display:flex;gap:14px;
   overflow-x:auto;-webkit-overflow-scrolling:touch;
   overscroll-behavior-x:contain;scrollbar-width:none;
-  padding:0 16px 4px;
+  padding:0 16px 20px;
   scroll-snap-type:x mandatory;
 }
 .hero-scroll::-webkit-scrollbar{display:none;}
 
-/* Hero Card — بطاقة انغمارية كاملة */
+/* ══ HERO CARD — Immersive 2026 ══ */
 .hero-card{
-  min-width:82vw;max-width:320px;
-  height:220px;border-radius:24px;
+  min-width:76vw;max-width:296px;
+  height:210px;
+  border-radius:var(--r-xl);
   overflow:hidden;flex-shrink:0;
   cursor:pointer;position:relative;
-  box-shadow:0 4px 12px rgba(0,0,0,.14),0 12px 32px rgba(0,0,0,.18);
+  box-shadow:0 2px 8px rgba(0,0,0,.10),0 8px 28px rgba(0,0,0,.16);
   touch-action:manipulation;
   scroll-snap-align:start;
-  transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid),box-shadow var(--dur-mid);
+  transition:transform var(--dur-mid) var(--ease-spring),
+             opacity var(--dur-mid),
+             box-shadow var(--dur-mid);
 }
-.hero-card:active{transform:scale(.96);opacity:.88;box-shadow:0 2px 8px rgba(0,0,0,.12);}
-.hero-card img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;transition:transform .4s ease;}
-.hero-card:active img{transform:scale(1.03);}
+.hero-card:active{transform:scale(.96);opacity:.88;box-shadow:0 2px 8px rgba(0,0,0,.10);}
+.hero-card img{
+  width:100%;height:100%;object-fit:cover;
+  display:block;pointer-events:none;
+  transition:transform .5s var(--ease-enter);
+}
+.hero-card:active img{transform:scale(1.04);}
 .hero-card-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
 .hero-card-grad{
   position:absolute;inset:0;
   background:linear-gradient(
     to top,
-    rgba(0,0,0,.88) 0%,
-    rgba(0,0,0,.40) 40%,
-    rgba(0,0,0,.10) 65%,
-    transparent 100%
+    rgba(0,0,0,.82) 0%,
+    rgba(0,0,0,.28) 45%,
+    transparent 78%
   );
   pointer-events:none;
 }
 .hero-card-body{
   position:absolute;bottom:0;left:0;right:0;
-  padding:16px 16px 16px;
-  display:flex;align-items:flex-end;justify-content:space-between;
+  padding:18px 16px;
   pointer-events:none;
 }
-.hero-card-info{display:flex;flex-direction:column;gap:5px;flex:1;min-width:0;}
-.hero-card-badge{
-  display:inline-flex;align-items:center;gap:4px;
-  padding:3px 10px;border-radius:99px;
-  font-size:10px;font-weight:800;
-  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  width:fit-content;
-}
-.hero-card-badge iconify-icon{font-size:11px;pointer-events:none;flex-shrink:0;}
+.hero-card-info{display:flex;flex-direction:column;gap:0;}
+.hero-card-badge{display:none;}
+.hero-card-sub{display:none;}
+.hero-card-map-btn{display:none;}
 .hero-card-name{
   font-size:16px;font-weight:900;color:#fff;
-  text-shadow:0 2px 8px rgba(0,0,0,.6);
-  line-height:1.25;letter-spacing:-.3px;
+  text-shadow:0 2px 12px rgba(0,0,0,.55);
+  line-height:1.25;letter-spacing:-.35px;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
 }
-.hero-card-sub{
-  font-size:11.5px;font-weight:600;color:rgba(255,255,255,.75);
-  text-shadow:0 1px 4px rgba(0,0,0,.5);
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-}
-.hero-card-map-btn{
-  width:40px;height:40px;border-radius:50%;
-  background:rgba(255,255,255,0.20);
-  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  border:1.5px solid rgba(255,255,255,0.35);
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;margin-right:10px;cursor:pointer;
-  pointer-events:auto;
-  transition:background var(--dur-fast),transform var(--dur-fast);
-  box-shadow:0 2px 8px rgba(0,0,0,.20);
-}
-.hero-card-map-btn:active{background:rgba(255,255,255,0.42);transform:scale(.86);}
-.hero-card-map-btn iconify-icon{font-size:18px;color:#fff;pointer-events:none;}
 
 /* skeleton hero */
-.sk-hero-card{min-width:82vw;max-width:320px;height:220px;border-radius:24px;overflow:hidden;flex-shrink:0;scroll-snap-align:start;}
+.sk-hero-card{
+  min-width:76vw;max-width:296px;height:210px;
+  border-radius:var(--r-xl);overflow:hidden;
+  flex-shrink:0;scroll-snap-align:start;
+}
+
+/* ══ DISCOVER PILLS — Unified green ══ */
+.discover-pills{
+  display:flex;gap:8px;
+  padding:0 16px 16px;
+}
+.discover-pill{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:9px 20px;
+  border-radius:var(--r-full);
+  border:1.5px solid var(--border);
+  background:var(--card);
+  color:var(--muted);
+  font-family:var(--font-main);
+  font-size:13px;font-weight:700;
+  cursor:pointer;touch-action:manipulation;
+  box-shadow:var(--elev-1);
+  transition:
+    background var(--dur-mid) var(--ease-std),
+    color var(--dur-mid) var(--ease-std),
+    border-color var(--dur-mid) var(--ease-std),
+    box-shadow var(--dur-mid) var(--ease-std),
+    transform var(--dur-fast) var(--ease-spring);
+}
+.discover-pill iconify-icon{font-size:16px;pointer-events:none;flex-shrink:0;}
+.discover-pill.active{
+  background:var(--green);
+  color:#fff;
+  border-color:transparent;
+  box-shadow:0 3px 14px rgba(0,135,90,.28),var(--elev-1);
+}
+.discover-pill:active:not(.active){transform:scale(.94);opacity:.7;}
+.discover-pill:active.active{transform:scale(.97);}
+[data-theme="dark"] .discover-pill{background:var(--surface-3);border-color:rgba(255,255,255,.10);color:var(--muted);}
+[data-theme="dark"] .discover-pill.active{background:var(--green-m);border-color:transparent;color:#fff;}
+.discover-panel.hidden{display:none !important;}
 
 /* place-card (للاستخدامات الأخرى) */
 .place-card{min-width:158px;max-width:158px;border-radius:20px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.07),0 6px 20px rgba(0,0,0,.11);flex-shrink:0;cursor:pointer;position:relative;height:212px;touch-action:manipulation;transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);}
@@ -659,71 +753,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .home-quick-icon iconify-icon{font-size:22px;pointer-events:none;}
 .home-quick-btn span{pointer-events:none;}
 
-/* ══ DISCOVER MAP BTN — new style ══ */
-.discover-map-btn{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:7px 14px;border-radius:99px;
-  border:1.5px solid rgba(21,101,192,0.22);
-  background:#EFF6FF;
-  color:#1565C0;
-  font-family:var(--font-main);font-size:12px;font-weight:800;
-  cursor:pointer;touch-action:manipulation;
-  transition:background var(--dur-fast),transform var(--dur-fast),box-shadow var(--dur-fast);
-  white-space:nowrap;
-  box-shadow:0 1px 4px rgba(21,101,192,.10);
-}
-.discover-map-btn:active{background:#DBEAFE;transform:scale(.94);box-shadow:none;}
-.discover-map-btn iconify-icon{pointer-events:none;flex-shrink:0;}
-[data-theme="dark"] .discover-map-btn{background:rgba(21,101,192,0.14);border-color:rgba(21,101,192,0.28);color:#60A5FA;}
-
-/* ══ DISCOVER PILL CHIPS — طافية خارج أي بطاقة ══ */
-.discover-pills{
-  display:flex;gap:8px;
-  padding:0 16px 14px;
-}
-.discover-pill{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:8px 18px;border-radius:99px;
-  border:1.5px solid var(--border);
-  background:var(--card);
-  color:var(--muted);
-  font-family:var(--font-main);font-size:13px;font-weight:700;
-  cursor:pointer;touch-action:manipulation;
-  transition:background var(--dur-mid) var(--ease-std),
-             color var(--dur-mid) var(--ease-std),
-             border-color var(--dur-mid) var(--ease-std),
-             box-shadow var(--dur-mid) var(--ease-std),
-             transform var(--dur-fast) var(--ease-spring);
-  box-shadow:var(--elev-1);
-}
-.discover-pill iconify-icon{font-size:15px;pointer-events:none;flex-shrink:0;}
-/* الشواطئ نشط */
-.discover-pill.active[data-tab="beaches"]{
-  background:linear-gradient(135deg,#0369a1,#0ea5e9);
-  color:#fff;border-color:transparent;
-  box-shadow:0 3px 12px rgba(14,165,233,.35);
-}
-/* المعالم نشط */
-.discover-pill.active[data-tab="tourism"]{
-  background:linear-gradient(135deg,#92400e,#d97706);
-  color:#fff;border-color:transparent;
-  box-shadow:0 3px 12px rgba(217,119,6,.32);
-}
-.discover-pill:active:not(.active){transform:scale(.95);opacity:.75;}
-.discover-pill:active.active{transform:scale(.97);}
-
-[data-theme="dark"] .discover-pill{background:var(--surface-3);border-color:var(--border);color:var(--muted);}
-
-/* ══ HERO SCROLL — full bleed ══ */
-.hero-scroll{
-  display:flex;gap:12px;
-  overflow-x:auto;-webkit-overflow-scrolling:touch;
-  overscroll-behavior-x:contain;scrollbar-width:none;
-  padding:0 16px 20px;
-  scroll-snap-type:x mandatory;
-}
-.hero-scroll::-webkit-scrollbar{display:none;}
-.discover-panel.hidden{display:none;}
 .load-more-wrap{display:flex;justify-content:center;padding:14px 0 6px;}
 .load-more-btn{display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-full);padding:8px 20px;font-family:var(--font-main);font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;touch-action:manipulation;transition:background var(--dur-fast),transform var(--dur-fast);}
 .load-more-btn:active{background:var(--surface-2);transform:scale(.96);}
@@ -1334,10 +1363,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 <iconify-icon icon="ph:compass-rose-fill" style="color:var(--green);pointer-events:none"></iconify-icon>
                 <span data-i18n="section-discover">اكتشف شطايبي</span>
               </span>
-              <button class="discover-map-btn" id="btn-see-discover">
-                <iconify-icon icon="ph:map-trifold-fill" style="pointer-events:none;font-size:15px;"></iconify-icon>
-                <span data-i18n="nav-map">الخريطة</span>
-              </button>
             </div>
             <!-- Pill Chips — طافية بدون بطاقة حاوية -->
             <div class="discover-pills">
@@ -3070,18 +3095,13 @@ function placeCard(item,type){
   } else {
     badgeHtml='<div class="hero-card-badge" style="background:rgba(0,0,0,0.42);color:#fff"><iconify-icon icon="ph:map-pin-fill" style="font-size:10px;pointer-events:none"></iconify-icon>'+t('tourism-label')+'</div>';
   }
-  /* زر الخريطة المدمج */
-  var mapBtn='<button class="hero-card-map-btn" data-map-filter="'+mapFilter+'" onclick="event.stopPropagation();haptic(\'light\');switchTabWithFilter(\'map\',\''+mapFilter+'\');">'
-    +'<iconify-icon icon="ph:map-trifold-fill" style="pointer-events:none"></iconify-icon>'
-    +'</button>';
+  /* زر الخريطة المدمج — محذوف */
   var desc=_f(item,'description')||_f(item,'location')||'';
-  var subHtml=desc?'<div class="hero-card-sub">'+desc.substring(0,40)+'</div>':'';
   return '<div class="hero-card" '+dataAttr+'>'
     +imgH
     +'<div class="hero-card-grad"></div>'
     +'<div class="hero-card-body">'
-    +'<div class="hero-card-info">'+badgeHtml+'<div class="hero-card-name">'+n+'</div>'+subHtml+'</div>'
-    +mapBtn
+    +'<div class="hero-card-info"><div class="hero-card-name">'+n+'</div></div>'
     +'</div>'
     +'</div>';
 }
