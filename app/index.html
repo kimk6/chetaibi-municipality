@@ -41,13 +41,14 @@
   --header-h:76px;
   --safe-b:env(safe-area-inset-bottom,0px);
   --safe-t:env(safe-area-inset-top,0px);
-  /* ── Elevation — softer, more diffuse ── */
-  --elev-1:0 1px 2px rgba(0,0,0,.04),0 1px 4px rgba(0,0,0,.03);
-  --elev-2:0 2px 6px rgba(0,0,0,.05),0 1px 2px rgba(0,0,0,.04);
-  --elev-3:0 4px 12px rgba(0,0,0,.07),0 2px 4px rgba(0,0,0,.04);
-  --elev-4:0 8px 24px rgba(0,0,0,.09),0 3px 8px rgba(0,0,0,.05);
-  --elev-card:0 2px 8px rgba(0,0,0,.06),0 0 0 1px rgba(0,0,0,.04);
+  /* ── Elevation — MD3 unified system ── */
+  --elev-1:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --elev-2:0 2px 8px rgba(0,0,0,.07),0 1px 3px rgba(0,0,0,.04);
+  --elev-3:0 4px 16px rgba(0,0,0,.09),0 2px 6px rgba(0,0,0,.05);
+  --elev-4:0 8px 28px rgba(0,0,0,.11),0 3px 10px rgba(0,0,0,.06);
+  --elev-card:0 2px 8px rgba(0,0,0,.07),0 0 0 1px rgba(0,0,0,.04);
   --elev-modal:0 24px 64px rgba(0,0,0,.18),0 8px 24px rgba(0,0,0,.10);
+  --elev-green:0 4px 16px rgba(0,135,90,.14),0 1px 4px rgba(0,0,0,.04);
   /* ── Radii ── */
   --r-xs:8px;--r-sm:12px;--r-md:16px;--r-lg:20px;--r-xl:24px;--r-2xl:28px;--r-full:999px;
   /* ── Motion ── */
@@ -170,21 +171,22 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 /* ══════════════════════════════════════════
    SECTIONS
 ══════════════════════════════════════════ */
-.section{padding:20px 0 6px;}
+.section{padding:20px 0 8px;}
 .section-header{display:flex;align-items:center;justify-content:space-between;padding:0 16px;margin-bottom:14px;}
 .section-title{font-size:15px;font-weight:900;color:var(--text);display:flex;align-items:center;gap:8px;letter-spacing:-.3px;position:relative;}
 .section-title::after{display:none;}
 .section-title iconify-icon{font-size:18px;flex-shrink:0;}
 .see-all-arrow-btn{
-  border:1px solid rgba(0,135,90,0.18);background:var(--green-xl);
-  cursor:pointer;padding:6px 13px 6px 10px;
+  border:1px solid rgba(0,135,90,0.16);background:var(--green-xl);
+  cursor:pointer;padding:6px 14px 6px 10px;
   display:flex;align-items:center;justify-content:center;
   touch-action:manipulation;
-  transition:background var(--dur-fast),transform var(--dur-fast);
+  transition:background var(--dur-fast),transform var(--dur-fast),box-shadow var(--dur-fast);
   flex-shrink:0;border-radius:99px;gap:5px;
   font-family:var(--font-main);font-size:11.5px;font-weight:800;color:var(--green-dark);
+  box-shadow:0 1px 4px rgba(0,135,90,.10);
 }
-.see-all-arrow-btn:active{background:var(--green-l);transform:scale(.94);}
+.see-all-arrow-btn:active{background:var(--green-l);transform:scale(.93);box-shadow:none;}
 /* SEG BAR */
 .seg-bar-wrap{background:var(--card);border-bottom:1px solid var(--border-light);}
 .seg-bar{display:flex;gap:7px;overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;padding:9px 16px;}
@@ -207,9 +209,9 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .seg-btn:active:not(.active){opacity:.6;transform:scale(.95);}
 .seg-btn:active.active{transform:scale(.97);}
 /* H-SCROLL */
-.h-scroll{display:flex;gap:12px;overflow-x:auto;padding:8px 18px 22px;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;}
+.h-scroll{display:flex;gap:12px;overflow-x:auto;padding:4px 16px 20px;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;}
 /* NEWS CARDS */
-.news-card{min-width:min(244px,70vw);max-width:284px;background:var(--card);border-radius:20px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 14px rgba(0,0,0,.07);flex-shrink:0;border:1px solid var(--border-light);cursor:pointer;display:flex;flex-direction:column;touch-action:manipulation;transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);}
+.news-card{min-width:min(244px,70vw);max-width:284px;background:var(--card);border-radius:20px;overflow:hidden;box-shadow:var(--elev-2);flex-shrink:0;border:1px solid var(--border-light);cursor:pointer;display:flex;flex-direction:column;touch-action:manipulation;transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);}
 .news-card:active{transform:scale(.96);opacity:.85;}
 .news-card-img{width:100%;height:148px;object-fit:cover;display:block;flex-shrink:0;pointer-events:none;}
 .news-card-img-ph{width:100%;height:148px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
@@ -300,7 +302,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .place-card-name{font-size:12px;font-weight:900;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.5);line-height:1.3;}
 .place-card-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
 /* ANNOUNCE CARDS */
-.announce-card{background:var(--card);border-radius:var(--r-lg);border:1px solid var(--border-light);overflow:hidden;box-shadow:var(--elev-card);cursor:pointer;margin:0 16px 12px;touch-action:manipulation;transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);}
+.announce-card{background:var(--card);border-radius:var(--r-lg);border:1px solid var(--border-light);overflow:hidden;box-shadow:var(--elev-2);cursor:pointer;margin:0 16px 12px;touch-action:manipulation;transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);}
 .announce-card:active{transform:scale(.975);opacity:.82;}
 .announce-img-wrap{width:100%;height:172px;display:flex;align-items:center;justify-content:center;background:var(--green-xl);overflow:hidden;}
 .announce-img-wrap img{width:100%;height:100%;object-fit:cover;pointer-events:none;}
@@ -509,7 +511,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   background: var(--card);
   border-radius: 20px;
   border: 1px solid var(--border-light);
-  box-shadow: 0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,135,90,0.08);
+  box-shadow: var(--elev-green);
   overflow: hidden;
   display: flex;
   flex-direction: row;
@@ -600,11 +602,11 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 /* ══ HOME STATS STRIP ══ */
 .home-stats-strip{
   display:flex;align-items:center;
-  margin:8px 16px 4px;
+  margin:0 16px 4px;
   background:var(--card);
   border-radius:20px;
   border:1px solid var(--border-light);
-  box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 12px rgba(0,0,0,.05);
+  box-shadow:var(--elev-2);
   overflow:hidden;
 }
 .home-stat-item{
@@ -686,7 +688,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .load-more-btn:active{background:var(--surface-2);transform:scale(.96);}
 .load-more-btn iconify-icon{font-size:14px;pointer-events:none;color:var(--green);}
 /* ARCHIVE */
-.archive-card{border-radius:20px;overflow:hidden;background:var(--card);border:1px solid var(--border-light);box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 14px rgba(0,0,0,.07);touch-action:manipulation;transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);}
+.archive-card{border-radius:20px;overflow:hidden;background:var(--card);border:1px solid var(--border-light);box-shadow:var(--elev-2);touch-action:manipulation;transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);}
 .archive-card:active{transform:scale(.975);opacity:.84;}
 .archive-compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);}
 .archive-cell{position:relative;overflow:hidden;cursor:pointer;}
@@ -870,7 +872,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   width:100%;background:var(--card);
   border-radius:20px;
   border:1px solid var(--border-light);
-  box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.06);
+  box-shadow:var(--elev-2);
   display:flex;flex-direction:row;
   cursor:pointer;direction:rtl;
   overflow:hidden;position:relative;
@@ -1025,7 +1027,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 [data-theme="dark"] .announce-card{background:#1C1E24;border-color:#2A2D38;box-shadow:0 2px 12px rgba(0,0,0,0.4);}
 [data-theme="dark"] .news-card{background:#1C1E24;border-color:#2A2D38;}
 [data-theme="dark"] .fac-card{background:#1C1E24;border-color:#2A2D38;}
-[data-theme="dark"] .svc-card{background:#1C1E24;border-color:#2A2D38;box-shadow:0 2px 12px rgba(0,0,0,.4);}
+[data-theme="dark"] .svc-card{background:#1C1E24;border-color:#2A2D38;box-shadow:0 2px 8px rgba(0,0,0,.4);}
 [data-theme="dark"] .archive-card{background:#1C1E24;border-color:#2A2D38;}
 [data-theme="dark"] .archive-card-title{border-top-color:#2A2D38;}
 
@@ -1093,7 +1095,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .search-empty{padding:32px 20px;text-align:center;color:var(--muted);font-size:13px;font-weight:600;}
 
 /* ══ SERVICES SCREEN ══ */
-.svc-card{background:var(--card);border-radius:20px;border:1px solid var(--border-light);overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 14px rgba(0,0,0,.07);margin:0 16px 12px;}
+.svc-card{background:var(--card);border-radius:20px;border:1px solid var(--border-light);overflow:hidden;box-shadow:var(--elev-2);margin:0 16px 12px;}
 .svc-card-header{padding:14px 14px 10px;display:flex;align-items:center;gap:12px;}
 .svc-card-icon{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,0.07);}
 .svc-card-icon iconify-icon{font-size:22px;}
@@ -1123,6 +1125,34 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .nav-btn:active .nav-icon-wrap{transform:scale(.88);}
 .ws-tab:active,.seg-btn:active{transform:scale(.95);}
 
+/* ══ Latest Updates Section ══ */
+.latest-section-wrap{
+  padding:0;
+}
+.latest-section-wrap .ann-card{
+  margin:0 16px;
+  width:auto;
+}
+
+/* ══ Stats Strip Enhancement ══ */
+.home-stat-item{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;gap:5px;padding:14px 8px;
+}
+.home-stat-icon{
+  width:36px;height:36px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.home-stat-val{font-size:18px;font-weight:900;color:var(--text);letter-spacing:-.5px;line-height:1;}
+.home-stat-lbl{font-size:10.5px;font-weight:600;color:var(--muted);text-align:center;line-height:1.3;}
+
+/* ══ Section divider — subtle top border for sections after first ══ */
+.section + .section{
+  border-top:1px solid transparent;
+}
+
+/* ══ Home content spacing ══ */
+.content-block{background:var(--surface);min-height:100%;position:relative;padding-bottom:28px;}
 </style>
 </head>
 <body>
@@ -1159,13 +1189,24 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         <div class="ptr-indicator" id="ptr-home"><iconify-icon icon="lucide:refresh-cw"></iconify-icon></div>
         <div class="content-block">
 
-          <!-- بطاقة الإعلان الأخير -->
-          <div class="section" style="padding-top:20px">
-            <div id="h-official-single"></div>
+          <!-- آخر المستجدات -->
+          <div class="section" style="padding-top:16px;padding-bottom:0;">
+            <div class="section-header">
+              <span class="section-title">
+                <iconify-icon icon="ph:sparkle-fill" style="color:var(--green);pointer-events:none;"></iconify-icon>
+                <span data-i18n="section-latest">آخر المستجدات</span>
+              </span>
+              <button class="see-all-arrow-btn" onclick="haptic('light');switchTab('news');">
+                <span data-i18n="see-all">عرض الكل</span>
+                <iconify-icon icon="ph:arrow-left-bold" style="font-size:12px;pointer-events:none;"></iconify-icon>
+              </button>
+            </div>
+            <!-- بطاقة الإعلان الأخير -->
+            <div id="h-official-single" style="padding-bottom:4px;"></div>
           </div>
 
           <!-- شريط الإحصائيات السريعة -->
-          <div class="home-stats-strip">
+          <div class="home-stats-strip" style="margin-top:10px;">
             <div class="home-stat-item">
               <div class="home-stat-icon" style="background:var(--green-xl);">
                 <iconify-icon icon="ph:users-three-fill" style="color:var(--green);font-size:18px;pointer-events:none;"></iconify-icon>
@@ -1191,48 +1232,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </div>
           </div>
 
-          <!-- روابط سريعة للخدمات -->
-          <div class="section" style="padding-bottom:0;">
-            <div class="section-header">
-              <span class="section-title">
-                <iconify-icon icon="ph:lightning-fill" style="color:var(--amber);pointer-events:none;"></iconify-icon>
-                <span data-i18n="section-quick">وصول سريع</span>
-              </span>
-              <button class="see-all-arrow-btn" onclick="haptic('light');switchTab('services');">
-                <span data-i18n="nav-services">الخدمات</span>
-                <iconify-icon icon="ph:arrow-left-bold" style="font-size:12px;pointer-events:none;"></iconify-icon>
-              </button>
-            </div>
-            <div class="home-quick-grid">
-              <button class="home-quick-btn" onclick="haptic('light');switchTab('services');">
-                <div class="home-quick-icon" style="background:rgba(0,135,90,0.10);">
-                  <iconify-icon icon="ph:identification-card-fill" style="color:var(--green);pointer-events:none;"></iconify-icon>
-                </div>
-                <span data-i18n="svc-birth">شهادة الميلاد</span>
-              </button>
-              <button class="home-quick-btn" onclick="haptic('light');switchTab('services');">
-                <div class="home-quick-icon" style="background:rgba(2,119,189,0.10);">
-                  <iconify-icon icon="ph:house-fill" style="color:var(--sky);pointer-events:none;"></iconify-icon>
-                </div>
-                <span data-i18n="svc-residence">شهادة الإقامة</span>
-              </button>
-              <button class="home-quick-btn" onclick="haptic('light');switchTab('services');">
-                <div class="home-quick-icon" style="background:rgba(139,92,246,0.10);">
-                  <iconify-icon icon="ph:file-text-fill" style="color:var(--purple);pointer-events:none;"></iconify-icon>
-                </div>
-                <span data-i18n="svc-family">دفتر العائلة</span>
-              </button>
-              <button class="home-quick-btn" onclick="haptic('light');switchTab('services');">
-                <div class="home-quick-icon" style="background:rgba(245,158,11,0.10);">
-                  <iconify-icon icon="ph:buildings-fill" style="color:var(--amber);pointer-events:none;"></iconify-icon>
-                </div>
-                <span data-i18n="svc-more-services">المزيد</span>
-              </button>
-            </div>
-          </div>
-
           <!-- بطاقة الطقس والبحر الموحدة -->
-          <div class="section" style="padding-bottom:4px">
+          <div class="section" style="padding-top:8px;padding-bottom:4px">
             <div class="weather-sea-section">
               <div class="weather-sea-unified-card">
                 <!-- تبويبان علويان -->
@@ -3557,7 +3558,7 @@ var _I18N={
   ar:{
     'nav-home':'الرئيسية','nav-news':'الأخبار','nav-guide':'الدليل','nav-services':'الخدمات','nav-more':'المزيد','nav-map':'الخريطة',
     'header-title':'بلدية شطايبي','header-sub':'ولاية عنابة – الجزائر',
-    'section-news':'آخر المستجدات','section-beaches':'الشواطئ','section-tourism':'المعالم','section-discover':'اكتشف شطايبي','section-quick':'وصول سريع','svc-birth':'شهادة الميلاد','svc-residence':'شهادة الإقامة','svc-family':'دفتر العائلة','svc-more-services':'المزيد','tourism-label':'معلم سياحي',
+    'section-news':'آخر المستجدات','section-latest':'آخر المستجدات','see-all':'عرض الكل','section-beaches':'الشواطئ','section-tourism':'المعالم','section-discover':'اكتشف شطايبي','section-quick':'وصول سريع','svc-birth':'شهادة الميلاد','svc-residence':'شهادة الإقامة','svc-family':'دفتر العائلة','svc-more-services':'المزيد','tourism-label':'معلم سياحي',
     'tab-announcements':'إعلانات','tab-activities':'نشاطات','tab-community':'مجتمع','tab-posters':'الملصقات',
     'fcat-branches':'الإدارية','fcat-education':'التعليم','fcat-health':'الصحة','fcat-public-bodies':'الهيئات','fcat-religious':'الدينية','fcat-cultural':'الثقافية','fcat-sports':'الرياضية',
     'sov-tab-services':'خدمات','sov-tab-apps':'تطبيقات',
@@ -3626,7 +3627,7 @@ var _I18N={
   fr:{
     'nav-home':'Accueil','nav-news':'Actualités','nav-guide':'Guide','nav-services':'Services','nav-more':'Plus','nav-map':'Carte',
     'header-title':'Commune de Chetaïbi','header-sub':'Wilaya d\'Annaba — Algérie',
-    'section-news':'Dernières actualités','section-beaches':'Plages','section-tourism':'Sites','section-discover':'Découvrir Chetaïbi','section-quick':'Accès rapide','svc-birth':'Acte de naissance','svc-residence':'Certificat de résidence','svc-family':'Livret de famille','svc-more-services':'Plus','tourism-label':'Site touristique',
+    'section-news':'Dernières actualités','section-latest':'Dernières actualités','see-all':'Voir tout','section-beaches':'Plages','section-tourism':'Sites','section-discover':'Découvrir Chetaïbi','section-quick':'Accès rapide','svc-birth':'Acte de naissance','svc-residence':'Certificat de résidence','svc-family':'Livret de famille','svc-more-services':'Plus','tourism-label':'Site touristique',
     'tab-announcements':'Annonces','tab-activities':'Activités','tab-community':'Communauté','tab-posters':'Affiches',
     'fcat-branches':'Administratif','fcat-education':'Enseignement','fcat-health':'Santé','fcat-public-bodies':'Organismes','fcat-religious':'Religieux','fcat-cultural':'Culturel','fcat-sports':'Sports',
     'sov-tab-services':'Services','sov-tab-apps':'Applications',
