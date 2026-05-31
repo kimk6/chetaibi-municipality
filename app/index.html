@@ -308,33 +308,37 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .hero-scroll::-webkit-scrollbar{display:none;}
 
 /* ══ HERO CARD — Portrait, نظيف ══ */
-/* ══ PLACE CARD 2026 — horizontal ══ */
+/* ══ PLACE CARD 2026 — vertical ══ */
 .hero-scroll{
-  display:flex;flex-direction:column;
-  gap:10px;padding:0 16px 4px;
+  display:flex;flex-direction:row;
+  gap:12px;
+  overflow-x:auto;-webkit-overflow-scrolling:touch;
+  overscroll-behavior-x:contain;scrollbar-width:none;
+  padding:0 16px 4px;
+  scroll-snap-type:x mandatory;
 }
+.hero-scroll::-webkit-scrollbar{display:none;}
 
 .place-card-2026{
-  width:100%;
-  background:var(--card);
+  min-width:152px;max-width:152px;
+  height:220px;
   border-radius:20px;
-  border:1px solid var(--border-light);
-  box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.07);
   overflow:hidden;
-  display:flex;
-  flex-direction:row;
+  flex-shrink:0;
   cursor:pointer;
-  touch-action:manipulation;
-  transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);
-  min-height:100px;
   position:relative;
+  box-shadow:0 2px 8px rgba(0,0,0,.10),0 6px 20px rgba(0,0,0,.13);
+  touch-action:manipulation;
+  scroll-snap-align:start;
+  transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);
+  border:1px solid rgba(0,0,0,0.04);
 }
-.place-card-2026:active{transform:scale(.975);opacity:.85;}
+.place-card-2026:active{transform:scale(.94);opacity:.85;}
 
-/* الصورة على اليسار */
+/* الصورة */
 .place-card-2026-img{
-  width:110px;flex-shrink:0;
-  position:relative;overflow:hidden;
+  position:absolute;inset:0;
+  width:100%;height:100%;
 }
 .place-card-2026-img img{
   width:100%;height:100%;
@@ -344,78 +348,61 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   width:100%;height:100%;
   display:flex;align-items:center;justify-content:center;
 }
-.place-card-2026-img-ph iconify-icon{font-size:2.8rem;pointer-events:none;}
-
-/* المحتوى على اليمين */
-.place-card-2026-body{
-  flex:1;min-width:0;
-  display:flex;flex-direction:column;
-  padding:13px 14px 12px;
-  gap:0;
+.place-card-2026-img-ph iconify-icon{
+  font-size:3rem;pointer-events:none;
+  color:rgba(255,255,255,0.70);
 }
-.place-card-2026-top{
-  display:flex;align-items:center;
-  justify-content:space-between;
-  gap:8px;margin-bottom:5px;
+
+/* التدرج */
+.place-card-2026-grad{
+  position:absolute;inset:0;
+  background:linear-gradient(
+    to top,
+    rgba(0,0,0,0.82) 0%,
+    rgba(0,0,0,0.22) 50%,
+    transparent 75%
+  );
+  pointer-events:none;
+}
+
+/* المحتوى */
+.place-card-2026-body{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:10px 11px 12px;
+  pointer-events:none;
 }
 .place-card-2026-badge{
-  display:inline-flex;align-items:center;gap:4px;
-  padding:2.5px 9px;border-radius:99px;
-  font-size:10px;font-weight:800;
-  flex-shrink:0;
+  display:inline-flex;align-items:center;gap:3px;
+  padding:2.5px 8px;border-radius:99px;
+  font-size:9.5px;font-weight:800;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  margin-bottom:5px;
+  pointer-events:none;
 }
 .place-card-2026-badge iconify-icon{font-size:10px;pointer-events:none;}
-.place-card-2026-map-btn{
-  width:30px;height:30px;border-radius:10px;
-  background:var(--green-xl);border:1px solid rgba(0,135,90,0.18);
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;cursor:pointer;touch-action:manipulation;
-  transition:background var(--dur-fast),transform var(--dur-fast);
-  pointer-events:auto;
-}
-.place-card-2026-map-btn:active{background:var(--green-l);transform:scale(.86);}
-.place-card-2026-map-btn iconify-icon{font-size:15px;color:var(--green);pointer-events:none;}
-[data-theme="dark"] .place-card-2026-map-btn{background:rgba(0,135,90,0.18);border-color:rgba(0,135,90,0.30);}
-[data-theme="dark"] .place-card-2026-map-btn iconify-icon{color:#34d399;}
-
 .place-card-2026-name{
-  font-size:14px;font-weight:900;
-  color:var(--text);letter-spacing:-.2px;
-  line-height:1.3;
+  font-size:13px;font-weight:900;color:#fff;
+  text-shadow:0 1px 5px rgba(0,0,0,0.55);
+  line-height:1.35;letter-spacing:-.15px;
   display:-webkit-box;-webkit-line-clamp:2;
   -webkit-box-orient:vertical;overflow:hidden;
-  margin-bottom:5px;
 }
-.place-card-2026-meta{
-  display:flex;align-items:center;gap:6px;
-  flex-wrap:wrap;
-}
-.place-card-2026-meta-item{
-  display:flex;align-items:center;gap:3px;
-  font-size:11px;font-weight:600;color:var(--muted);
-}
-.place-card-2026-meta-item iconify-icon{font-size:12px;pointer-events:none;flex-shrink:0;}
 
 /* skeleton */
 .sk-hero-card{
-  width:100%;height:100px;
+  min-width:152px;max-width:152px;height:220px;
   border-radius:20px;overflow:hidden;flex-shrink:0;
+  scroll-snap-align:start;
 }
 
-/* DISCOVER PILLS — بدون تغيير */
-.discover-pills{
-  display:flex;gap:8px;
-  padding:0 16px 14px;
-}
+/* DISCOVER PILLS */
+.discover-pills{display:flex;gap:8px;padding:0 16px 14px;}
 .discover-pill{
   display:inline-flex;align-items:center;gap:6px;
-  padding:8px 18px;
-  border-radius:var(--r-full);
+  padding:8px 18px;border-radius:var(--r-full);
   border:1.5px solid var(--border);
-  background:var(--card);
-  color:var(--muted);
-  font-family:var(--font-main);
-  font-size:13px;font-weight:700;
+  background:var(--card);color:var(--muted);
+  font-family:var(--font-main);font-size:13px;font-weight:700;
   cursor:pointer;touch-action:manipulation;
   box-shadow:var(--elev-1);
   transition:background var(--dur-mid) var(--ease-std),color var(--dur-mid) var(--ease-std),border-color var(--dur-mid) var(--ease-std),box-shadow var(--dur-mid),transform var(--dur-fast) var(--ease-spring);
@@ -432,16 +419,33 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 [data-theme="dark"] .discover-pill.active{background:var(--green-m);border-color:transparent;color:#fff;}
 .discover-panel.hidden{display:none !important;}
 
-/* place-card القديمة — للتوافق */
-.place-card{min-width:158px;max-width:158px;border-radius:20px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.07),0 6px 20px rgba(0,0,0,.11);flex-shrink:0;cursor:pointer;position:relative;height:212px;touch-action:manipulation;transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);}
-.place-card:active{transform:scale(.93);opacity:.82;}
-.place-card img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;border-radius:20px;}
-.place-card-badge{position:absolute;top:8px;right:8px;display:inline-flex;align-items:center;gap:3px;padding:3px 8px 3px 6px;border-radius:99px;font-size:10px;font-weight:800;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:2;pointer-events:none;}
-.place-card-badge iconify-icon{font-size:11px;pointer-events:none;flex-shrink:0;}
-.place-card-grad{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.78) 0%,rgba(0,0,0,.06) 55%,transparent 80%);pointer-events:none;border-radius:20px;}
-.place-card-body{position:absolute;bottom:0;left:0;right:0;padding:10px 11px;pointer-events:none;}
-.place-card-name{font-size:12px;font-weight:900;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.5);line-height:1.3;}
-.place-card-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
+/* أزرار modal المشاركة والمسافة */
+.modal-action-row{
+  display:flex;gap:10px;
+  margin-top:14px;margin-bottom:4px;
+}
+.modal-action-btn{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:7px;
+  padding:11px 10px;border-radius:14px;
+  font-family:var(--font-main);font-size:12.5px;font-weight:800;
+  cursor:pointer;touch-action:manipulation;border:none;
+  transition:opacity var(--dur-fast),transform var(--dur-fast);
+}
+.modal-action-btn:active{opacity:.75;transform:scale(.96);}
+.modal-action-btn iconify-icon{font-size:16px;pointer-events:none;flex-shrink:0;}
+.modal-action-btn.share{
+  background:var(--surface);color:var(--text);
+  border:1.5px solid var(--border-light);
+}
+.modal-action-btn.directions{
+  background:linear-gradient(135deg,var(--green-dark),var(--green));
+  color:#fff;
+  box-shadow:0 2px 10px rgba(0,135,90,0.28);
+}
+[data-theme="dark"] .modal-action-btn.share{background:var(--surface-2);border-color:rgba(255,255,255,0.08);}
+
+/* place-card قديمة للتوافق */
+.place-card{display:none;}
 /* ANNOUNCE CARDS */
 .announce-card{background:var(--card);border-radius:var(--r-lg);border:1px solid var(--border-light);overflow:hidden;box-shadow:var(--elev-2);cursor:pointer;margin:0 16px 12px;touch-action:manipulation;transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);}
 .announce-card:active{transform:scale(.975);opacity:.82;}
@@ -1986,6 +1990,16 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
       <div class="modal-name" id="mb-name"></div>
       <div class="modal-desc" id="mb-desc"></div>
       <div class="modal-meta" id="mb-meta"></div>
+      <div class="modal-action-row" id="mb-action-row" style="display:none;">
+        <button class="modal-action-btn share" id="mb-share-btn">
+          <iconify-icon icon="ph:share-network-fill"></iconify-icon>
+          <span data-i18n="btn-share">مشاركة</span>
+        </button>
+        <button class="modal-action-btn directions" id="mb-directions-btn">
+          <iconify-icon icon="ph:navigation-fill"></iconify-icon>
+          <span data-i18n="btn-directions">احسب المسافة</span>
+        </button>
+      </div>
       <div id="mb-map-btn-wrap"></div>
       <div id="mb-album"></div>
     </div>
@@ -2006,6 +2020,16 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         <div class="modal-name" id="mt-name"></div>
         <div class="modal-desc" id="mt-desc"></div>
         <div class="modal-meta" id="mt-meta"></div>
+        <div class="modal-action-row" id="mt-action-row" style="display:none;">
+          <button class="modal-action-btn share" id="mt-share-btn">
+            <iconify-icon icon="ph:share-network-fill"></iconify-icon>
+            <span data-i18n="btn-share">مشاركة</span>
+          </button>
+          <button class="modal-action-btn directions" id="mt-directions-btn">
+            <iconify-icon icon="ph:navigation-fill"></iconify-icon>
+            <span data-i18n="btn-directions">احسب المسافة</span>
+          </button>
+        </div>
         <div id="mt-map-btn-wrap"></div>
         <div id="mt-album"></div>
       </div>
@@ -2587,7 +2611,11 @@ function locateUser(){
 }
 /* ══ SKELETON ══ */
 function skNewsCards(n){var h='';for(var i=0;i<n;i++){h+='<div class="sk-news-card"><div class="sk sk-news-img"></div><div class="sk-news-body"><div class="sk sk-line w-full"></div><div class="sk sk-line w-3q"></div><div class="sk sk-line w-half" style="margin-top:4px"></div></div><div class="sk-news-footer"><div class="sk sk-line w-1q" style="height:10px"></div><div class="sk sk-btn"></div></div></div>';}return h;}
-function skPlaceCards(n){var h='';for(var i=0;i<n;i++){h+='<div class="sk sk-hero-card"></div>';}return h;}
+function skPlaceCards(n){
+  var h='';
+  for(var i=0;i<n;i++)h+='<div class="sk sk-hero-card"></div>';
+  return h;
+}
 function skFacCards(n){var h='';for(var i=0;i<n;i++){h+='<div class="sk-fac-card"><div class="sk sk-fac-img"></div><div class="sk-fac-body"><div class="sk sk-line w-1q" style="height:10px;margin-bottom:6px"></div><div class="sk sk-line w-full" style="height:13px;margin-bottom:6px"></div><div class="sk sk-line w-3q" style="height:10px"></div></div></div>';}return h;}
 function skAnnounceCards(n){var h='';for(var i=0;i<n;i++){h+='<div class="sk-announce-card"><div class="sk sk-announce-img"></div><div class="sk-announce-body"><div class="sk sk-line w-full" style="height:13px;margin-bottom:8px"></div><div class="sk sk-line w-3q" style="height:13px;margin-bottom:8px"></div><div class="sk sk-line w-half" style="height:11px"></div></div></div>';}return h;}
 function skArchiveCards(n){var h='<div style="display:flex;flex-direction:column;gap:16px;">';for(var i=0;i<n;i++){h+='<div class="sk-archive-card"><div class="sk-archive-grid"><div class="sk sk-archive-cell"></div><div class="sk sk-archive-cell"></div></div><div class="sk sk-archive-title"></div></div>';}return h+'</div>';}
@@ -3108,49 +3136,37 @@ async function loadHNews(){/* تُغذَّى من loadHLatestNews */}
 async function loadHBeaches(){var el=document.getElementById('h-beaches');el.innerHTML=skPlaceCards(4);try{var d=await api('/api/beaches');el.innerHTML=(d.data||[]).slice(0,8).map(b=>placeCard(b,'beach')).join('');}catch(e){el.innerHTML='';}}
 async function loadHTourism(){var el=document.getElementById('h-tourism');el.innerHTML=skPlaceCards(4);try{var d=await api('/api/tourism');el.innerHTML=(d.data||[]).slice(0,8).map(t=>placeCard(t,'tourism')).join('');}catch(e){el.innerHTML='';}}
 function placeCard(item,type){
-  var n=_f(item,'name')||item.name||'';
+  var name=_f(item,'name')||item.name||'';
   var isBeach=type==='beach';
   var dataAttr=isBeach?'data-beach-id="'+item.id+'"':'data-tour-id="'+item.id+'"';
-  var mapFilter=isBeach?'beach':'tour';
 
-  /* صورة أو placeholder */
-  var imgHtml=item.image_url
-    ?'<img src="'+item.image_url+'" alt="'+n+'" loading="lazy" decoding="async">'
-    :'<div class="place-card-2026-img-ph" style="background:'+(isBeach?'linear-gradient(160deg,#0284c7,#0ea5e9)':'linear-gradient(160deg,var(--green-dark),var(--green))')+'"><iconify-icon icon="'+(isBeach?'ph:waves-fill':'ph:sun-horizon-fill')+'" style="color:rgba(255,255,255,.70);pointer-events:none;"></iconify-icon></div>';
+  var visual=item.image_url
+    ?'<img src="'+item.image_url+'" alt="'+name+'" loading="lazy" decoding="async">'
+    :'<div class="place-card-2026-img-ph" style="background:'
+      +(isBeach?'linear-gradient(160deg,#0369a1,#0ea5e9)':'linear-gradient(160deg,#065f46,#059669)')
+      +'"><iconify-icon icon="'+(isBeach?'ph:waves-fill':'ph:sun-horizon-fill')+'"></iconify-icon></div>';
 
-  /* بادج */
   var badge='';
   if(isBeach){
     var st=item.shore_type||item.beach_type||item.type||item.custom_label||'';
     var isRocky=st==='صخري'||st==='rocky'||st==='rocheux';
     var isSandy=st==='رملي'||st==='sandy'||st==='sableux';
     if(isRocky)
-      badge='<span class="place-card-2026-badge" style="background:rgba(120,113,108,0.10);color:#78716c;border:1px solid rgba(120,113,108,0.20);"><iconify-icon icon="ph:mountains-fill" style="pointer-events:none;"></iconify-icon>'+t('rocky')+'</span>';
+      badge='<div class="place-card-2026-badge" style="background:rgba(0,0,0,0.45);color:#fff;"><iconify-icon icon="ph:mountains-fill"></iconify-icon>'+t('rocky')+'</div>';
     else if(isSandy)
-      badge='<span class="place-card-2026-badge" style="background:rgba(245,158,11,0.10);color:#b45309;border:1px solid rgba(245,158,11,0.20);"><iconify-icon icon="ph:sun-fill" style="pointer-events:none;"></iconify-icon>'+t('sandy')+'</span>';
-    else
-      badge='<span class="place-card-2026-badge" style="background:rgba(2,119,189,0.10);color:#0284c7;border:1px solid rgba(2,119,189,0.18);"><iconify-icon icon="ph:waves-fill" style="pointer-events:none;"></iconify-icon>'+(st||t('section-beaches'))+'</span>';
+      badge='<div class="place-card-2026-badge" style="background:rgba(0,0,0,0.45);color:#fff;"><iconify-icon icon="ph:sun-fill"></iconify-icon>'+t('sandy')+'</div>';
+    else if(st)
+      badge='<div class="place-card-2026-badge" style="background:rgba(0,0,0,0.45);color:#fff;">'+st+'</div>';
   } else {
-    badge='<span class="place-card-2026-badge" style="background:var(--green-xl);color:var(--green-m);border:1px solid rgba(0,135,90,0.18);"><iconify-icon icon="ph:map-pin-fill" style="pointer-events:none;"></iconify-icon>'+t('tourism-label')+'</span>';
+    badge='<div class="place-card-2026-badge" style="background:rgba(0,0,0,0.45);color:#fff;"><iconify-icon icon="ph:map-pin-fill"></iconify-icon>'+t('tourism-label')+'</div>';
   }
 
-  /* معلومات إضافية */
-  var meta='';
-  var loc=item.location||item.region||item.area||'';
-  if(loc) meta+='<div class="place-card-2026-meta-item"><iconify-icon icon="ph:map-pin-simple-fill" style="color:var(--muted-2);pointer-events:none;"></iconify-icon><span>'+loc+'</span></div>';
-  if(isBeach&&item.length) meta+='<div class="place-card-2026-meta-item"><iconify-icon icon="ph:ruler-fill" style="color:var(--muted-2);pointer-events:none;"></iconify-icon><span>'+item.length+'</span></div>';
-
-  /* زر الخريطة */
-  var mapBtn='<button class="place-card-2026-map-btn" onclick="event.stopPropagation();haptic(\'light\');switchTabWithFilter(\'map\',\''+mapFilter+'\');" aria-label="الخريطة">'
-    +'<iconify-icon icon="ph:map-pin-bold" style="pointer-events:none;"></iconify-icon>'
-    +'</button>';
-
   return '<div class="place-card-2026" '+dataAttr+'>'
-    +'<div class="place-card-2026-img">'+imgHtml+'</div>'
+    +'<div class="place-card-2026-img">'+visual+'</div>'
+    +'<div class="place-card-2026-grad"></div>'
     +'<div class="place-card-2026-body">'
-    +'<div class="place-card-2026-top">'+badge+mapBtn+'</div>'
-    +'<div class="place-card-2026-name">'+n+'</div>'
-    +(meta?'<div class="place-card-2026-meta">'+meta+'</div>':'')
+    +badge
+    +'<div class="place-card-2026-name">'+name+'</div>'
     +'</div>'
     +'</div>';
 }
@@ -3339,6 +3355,16 @@ async function openBeachModal(id){
     if(b.season)m+='<span class="modal-chip">'+b.season+'</span>';
     document.getElementById('mb-meta').innerHTML=m;
     _makeMapBtn(b.lat,b.lng,b.name||'','mb-map-btn-wrap');
+    /* أزرار المشاركة والمسافة */
+    var mbRow=document.getElementById('mb-action-row');
+    var mbShare=document.getElementById('mb-share-btn');
+    var mbDir=document.getElementById('mb-directions-btn');
+    if(mbRow)mbRow.style.display='flex';
+    if(mbShare){mbShare.onclick=function(){_sharePlace(_f(b,'name')||b.name||'',b.lat,b.lng);};}
+    if(mbDir&&b.lat&&b.lng){
+      mbDir.style.display='';
+      mbDir.onclick=function(){_directionsPlace(b.lat,b.lng,_f(b,'name')||b.name||'');};
+    }else if(mbDir){mbDir.style.display='none';}
     album('mb-album',b.albums);
     om('m-beach');
   }catch(e){}
@@ -3369,6 +3395,13 @@ async function openTourismModal(id){
       if(t.distance_info)m+='<span class="modal-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>'+t.distance_info+'</span>';
       document.getElementById('mt-meta').innerHTML=m;
       _makeMapBtn(t.lat,t.lng,t.name||'','mt-map-btn-wrap');
+      var mtRow=document.getElementById('mt-action-row');
+      var mtShare=document.getElementById('mt-share-btn');
+      var mtDir=document.getElementById('mt-directions-btn');
+      if(mtRow)mtRow.style.display='flex';
+      if(mtShare)mtShare.onclick=function(){_sharePlace(_f(t,'name')||t.name||'',t.lat,t.lng);};
+      if(mtDir&&t.lat&&t.lng){mtDir.style.display='';mtDir.onclick=function(){_directionsPlace(t.lat,t.lng,_f(t,'name')||t.name||'');};}
+      else if(mtDir)mtDir.style.display='none';
       album('mt-album',albums);
     }
     om('m-tour');
@@ -3429,6 +3462,24 @@ function showOnMap(lat,lng,name){
       },400);
     }else if(tries>30){clearInterval(waitMap);}
   },100);
+}
+function _sharePlace(name,lat,lng){
+  haptic('light');
+  var url=(lat&&lng)?'https://www.google.com/maps?q='+lat+','+lng:'';
+  var txt=name+(url?' — '+url:'');
+  if(navigator.share){
+    navigator.share({title:name,text:txt,url:url||window.location.href}).catch(function(){});
+  } else if(navigator.clipboard){
+    navigator.clipboard.writeText(txt).then(function(){
+      var btn=document.querySelector('.modal-action-btn.share');
+      if(btn){var orig=btn.innerHTML;btn.innerHTML='<iconify-icon icon="ph:check-bold"></iconify-icon><span>تم النسخ</span>';setTimeout(function(){btn.innerHTML=orig;},1800);}
+    });
+  }
+}
+function _directionsPlace(lat,lng,name){
+  haptic('light');
+  var url='https://www.google.com/maps/dir/?api=1&destination='+lat+','+lng+'&destination_place_name='+encodeURIComponent(name);
+  window.open(url,'_blank');
 }
 function _makeMapBtn(lat,lng,name,wrapId){
   var wrap=document.getElementById(wrapId);
@@ -3687,7 +3738,7 @@ var _I18N={
   ar:{
     'nav-home':'الرئيسية','nav-news':'الأخبار','nav-guide':'الدليل','nav-services':'الخدمات','nav-more':'المزيد','nav-map':'الخريطة',
     'header-title':'بلدية شطايبي','header-sub':'ولاية عنابة – الجزائر',
-    'section-news':'آخر المستجدات','section-latest':'آخر المستجدات','see-all':'عرض الكل','section-beaches':'الشواطئ','section-tourism':'المعالم','section-discover':'اكتشف شطايبي','section-quick':'وصول سريع','svc-birth':'شهادة الميلاد','svc-residence':'شهادة الإقامة','svc-family':'دفتر العائلة','svc-more-services':'المزيد','tourism-label':'معلم سياحي',
+    'section-news':'آخر المستجدات','section-latest':'آخر المستجدات','see-all':'عرض الكل','section-beaches':'الشواطئ','section-tourism':'المعالم','section-discover':'اكتشف شطايبي','section-quick':'وصول سريع','svc-birth':'شهادة الميلاد','svc-residence':'شهادة الإقامة','svc-family':'دفتر العائلة','svc-more-services':'المزيد','btn-share':'مشاركة','btn-directions':'احسب المسافة','tourism-label':'معلم سياحي',
     'tab-announcements':'إعلانات','tab-activities':'نشاطات','tab-community':'مجتمع','tab-posters':'الملصقات',
     'fcat-branches':'الإدارية','fcat-education':'التعليم','fcat-health':'الصحة','fcat-public-bodies':'الهيئات','fcat-religious':'الدينية','fcat-cultural':'الثقافية','fcat-sports':'الرياضية',
     'sov-tab-services':'خدمات','sov-tab-apps':'تطبيقات',
@@ -3756,7 +3807,7 @@ var _I18N={
   fr:{
     'nav-home':'Accueil','nav-news':'Actualités','nav-guide':'Guide','nav-services':'Services','nav-more':'Plus','nav-map':'Carte',
     'header-title':'Commune de Chetaïbi','header-sub':'Wilaya d\'Annaba — Algérie',
-    'section-news':'Dernières actualités','section-latest':'Dernières actualités','see-all':'Voir tout','section-beaches':'Plages','section-tourism':'Sites','section-discover':'Découvrir Chetaïbi','section-quick':'Accès rapide','svc-birth':'Acte de naissance','svc-residence':'Certificat de résidence','svc-family':'Livret de famille','svc-more-services':'Plus','tourism-label':'Site touristique',
+    'section-news':'Dernières actualités','section-latest':'Dernières actualités','see-all':'Voir tout','section-beaches':'Plages','section-tourism':'Sites','section-discover':'Découvrir Chetaïbi','section-quick':'Accès rapide','svc-birth':'Acte de naissance','svc-residence':'Certificat de résidence','svc-family':'Livret de famille','svc-more-services':'Plus','btn-share':'Partager','btn-directions':'Itinéraire','tourism-label':'Site touristique',
     'tab-announcements':'Annonces','tab-activities':'Activités','tab-community':'Communauté','tab-posters':'Affiches',
     'fcat-branches':'Administratif','fcat-education':'Enseignement','fcat-health':'Santé','fcat-public-bodies':'Organismes','fcat-religious':'Religieux','fcat-cultural':'Culturel','fcat-sports':'Sports',
     'sov-tab-services':'Services','sov-tab-apps':'Applications',
