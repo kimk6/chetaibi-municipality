@@ -530,6 +530,27 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .mayor-home-btn:active { background: var(--green-l); transform: scale(0.96); }
 .mayor-home-btn iconify-icon { font-size: 13px; pointer-events: none; color: var(--green); flex-shrink: 0; }
 .mayor-home-btn-arrow { font-size: 12px; color: var(--green-m); pointer-events: none; flex-shrink: 0; }
+/* ══ DISCOVER TABS ══ */
+.discover-tabs{display:flex;gap:8px;padding:0 16px 12px;}
+.discover-tab{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 16px;border-radius:99px;
+  border:1.5px solid var(--border);
+  background:var(--card);color:var(--muted);
+  font-family:var(--font-main);font-size:12.5px;font-weight:700;
+  cursor:pointer;touch-action:manipulation;
+  transition:background var(--dur-mid),color var(--dur-mid),border-color var(--dur-mid),box-shadow var(--dur-mid),transform var(--dur-fast);
+  white-space:nowrap;
+}
+.discover-tab iconify-icon{font-size:14px;pointer-events:none;flex-shrink:0;}
+.discover-tab.active{
+  background:linear-gradient(135deg,var(--green-dark),var(--green));
+  color:#fff;border-color:transparent;
+  box-shadow:0 2px 10px rgba(0,135,90,0.28);
+}
+.discover-tab:active:not(.active){transform:scale(.95);opacity:.7;}
+.discover-tab:active.active{transform:scale(.97);}
+.discover-panel.hidden{display:none;}
 /* LOAD MORE BTN */
 .load-more-wrap{display:flex;justify-content:center;padding:14px 0 6px;}
 .load-more-btn{display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-full);padding:8px 20px;font-family:var(--font-main);font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;touch-action:manipulation;transition:background var(--dur-fast),transform var(--dur-fast);}
@@ -1089,36 +1110,31 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </div>
           </div>
 
-          <div class="section">
-            <div class="section-header">
-              <span class="section-title">
-                <iconify-icon icon="lucide:waves" style="color:var(--sky);pointer-events:none"></iconify-icon>
-                <span data-i18n="section-beaches">شواطئ شطايبي</span>
-              </span>
-              <!-- ✅ تعديل 4: "تصفح" → "الخريطة" مع أيقونة map-pin أخضر -->
-              <button class="see-all-arrow-btn" id="btn-see-beaches"><span data-i18n="nav-map">الخريطة</span>
-                <iconify-icon icon="lucide:map" style="font-size:16px;color:var(--green);pointer-events:none;"></iconify-icon>
-              </button>
-            </div>
-            <div class="h-scroll" id="h-beaches">
-              <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
-            </div>
-          </div>
-
           <div class="section" style="padding-bottom:8px">
             <div class="section-header">
               <span class="section-title">
-                <iconify-icon icon="lucide:sun" style="color:var(--amber);pointer-events:none"></iconify-icon>
-                <span data-i18n="section-tourism">معالم سياحية</span>
+                <iconify-icon icon="ph:compass-rose-fill" style="color:var(--green);pointer-events:none"></iconify-icon>
+                <span data-i18n="section-discover">اكتشف شطايبي</span>
               </span>
-              <!-- ✅ تعديل 4: "تصفح" → "الخريطة" مع أيقونة map-pin أخضر -->
-              <button class="see-all-arrow-btn" id="btn-see-tourism"><span data-i18n="nav-map">الخريطة</span>
-                <iconify-icon icon="lucide:map" style="font-size:16px;color:var(--green);pointer-events:none;"></iconify-icon>
+              <button class="see-all-arrow-btn" id="btn-see-discover">
+                <span data-i18n="nav-map">الخريطة</span>
+                <iconify-icon icon="ph:map-pin-fill" style="font-size:14px;pointer-events:none;"></iconify-icon>
               </button>
             </div>
-            <div class="h-scroll" id="h-tourism">
-              <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
+            <!-- تبويبان -->
+            <div class="discover-tabs">
+              <button class="discover-tab active" id="dtab-beaches" onclick="switchDiscoverTab('beaches')">
+                <iconify-icon icon="ph:waves-fill" style="pointer-events:none"></iconify-icon>
+                <span data-i18n="section-beaches">الشواطئ</span>
+              </button>
+              <button class="discover-tab" id="dtab-tourism" onclick="switchDiscoverTab('tourism')">
+                <iconify-icon icon="ph:sun-horizon-fill" style="pointer-events:none"></iconify-icon>
+                <span data-i18n="section-tourism">المعالم السياحية</span>
+              </button>
             </div>
+            <!-- المحتوى -->
+            <div class="h-scroll discover-panel" id="h-beaches"><div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div></div>
+            <div class="h-scroll discover-panel hidden" id="h-tourism"></div>
           </div>
 
         </div>
@@ -2041,7 +2057,18 @@ function switchTab(t){
   if(t==='archive')loadArchiveTab(archTab);
   if(t==='services'&&!_svcLoaded){_svcLoaded=true;loadServices('service');}
 }
-function switchTabWithFilter(tab,filterType){pendingMapFilter=filterType;switchTab(tab);}
+function switchDiscoverTab(tab){
+  haptic('light');
+  var tabs=['beaches','tourism'];
+  tabs.forEach(function(t){
+    var btn=document.getElementById('dtab-'+t);
+    var panel=document.getElementById('h-'+t);
+    if(btn)btn.classList.toggle('active',t===tab);
+    if(panel)panel.classList.toggle('hidden',t!==tab);
+  });
+  _curDiscoverTab=tab;
+}
+var _curDiscoverTab='beaches';
 function loadCurrentGuideTab(){
   var facList=document.getElementById('fac-list');
   var m=FM[facCat];if(!m)return;
@@ -3193,10 +3220,11 @@ function initEventDelegation(){
     setTimeout(function(){var btn=document.getElementById('news-btn-activity');if(btn)filterNews('activity',btn);},350);
   });
 
-  var btnBeaches=document.getElementById('btn-see-beaches');
-  if(btnBeaches) btnBeaches.addEventListener('click',function(){haptic('light');switchTabWithFilter('map','beach');});
-  var btnTourism=document.getElementById('btn-see-tourism');
-  if(btnTourism) btnTourism.addEventListener('click',function(){haptic('light');switchTabWithFilter('map','tour');});
+  var btnDiscover=document.getElementById('btn-see-discover');
+  if(btnDiscover) btnDiscover.addEventListener('click',function(){
+    haptic('light');
+    switchTabWithFilter('map',_curDiscoverTab==='beaches'?'beach':'tour');
+  });
 
   function safeBtn(id,fn){var el=document.getElementById(id);if(el)el.addEventListener('click',fn);}
   safeBtn('news-btn-official',function(){filterNews('official',this);});
@@ -3321,7 +3349,7 @@ var _I18N={
   ar:{
     'nav-home':'الرئيسية','nav-news':'الأخبار','nav-guide':'الدليل','nav-services':'الخدمات','nav-more':'المزيد','nav-map':'الخريطة',
     'header-title':'بلدية شطايبي','header-sub':'ولاية عنابة – الجزائر',
-    'section-news':'آخر المستجدات','section-beaches':'شواطئ شطايبي','section-tourism':'معالم سياحية',
+    'section-news':'آخر المستجدات','section-beaches':'الشواطئ','section-tourism':'المعالم السياحية','section-discover':'اكتشف شطايبي',
     'tab-announcements':'إعلانات','tab-activities':'نشاطات','tab-community':'مجتمع','tab-posters':'الملصقات',
     'fcat-branches':'الإدارية','fcat-education':'التعليم','fcat-health':'الصحة','fcat-public-bodies':'الهيئات','fcat-religious':'الدينية','fcat-cultural':'الثقافية','fcat-sports':'الرياضية',
     'sov-tab-services':'خدمات','sov-tab-apps':'تطبيقات',
@@ -3390,7 +3418,7 @@ var _I18N={
   fr:{
     'nav-home':'Accueil','nav-news':'Actualités','nav-guide':'Guide','nav-services':'Services','nav-more':'Plus','nav-map':'Carte',
     'header-title':'Commune de Chetaïbi','header-sub':'Wilaya d\'Annaba — Algérie',
-    'section-news':'Dernières actualités','section-beaches':'Plages de Chetaïbi','section-tourism':'Sites touristiques',
+    'section-news':'Dernières actualités','section-beaches':'Plages','section-tourism':'Sites touristiques','section-discover':'Découvrir Chetaïbi',
     'tab-announcements':'Annonces','tab-activities':'Activités','tab-community':'Communauté','tab-posters':'Affiches',
     'fcat-branches':'Administratif','fcat-education':'Enseignement','fcat-health':'Santé','fcat-public-bodies':'Organismes','fcat-religious':'Religieux','fcat-cultural':'Culturel','fcat-sports':'Sports',
     'sov-tab-services':'Services','sov-tab-apps':'Applications',
