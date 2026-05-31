@@ -739,14 +739,27 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .mayor-home-btn:active { background: var(--green-l); transform: scale(0.96); }
 .mayor-home-btn iconify-icon { font-size: 13px; pointer-events: none; color: var(--green); flex-shrink: 0; }
 .mayor-home-btn-arrow { font-size: 12px; color: var(--green-m); pointer-events: none; flex-shrink: 0; }
+/* ══ HOME LATEST NEWS — horizontal cards ══ */
+.hnews-list{display:flex;flex-direction:column;gap:0;margin:0 16px;border-radius:20px;overflow:hidden;border:1px solid var(--border-light);box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.07);}
+.hnews-card{display:flex;flex-direction:row;align-items:stretch;gap:0;background:var(--card);cursor:pointer;touch-action:manipulation;transition:background var(--dur-fast);border-bottom:1px solid var(--border-light);overflow:hidden;min-height:84px;}
+.hnews-card:last-child{border-bottom:none;}
+.hnews-card:active{background:var(--surface);}
+.hnews-card-img{width:90px;height:90px;object-fit:cover;display:block;pointer-events:none;flex-shrink:0;}
+.hnews-card-img-ph{width:90px;height:90px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.hnews-card-body{flex:1;min-width:0;padding:11px 14px;display:flex;flex-direction:column;justify-content:center;gap:3px;}
+.hnews-card-title{font-size:13px;font-weight:800;color:var(--text);line-height:1.4;letter-spacing:-.15px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.hnews-card-desc{font-size:11.5px;color:var(--muted);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.hnews-card-date{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted-2);font-weight:600;margin-top:3px;}
+.hnews-card-date iconify-icon{font-size:11px;pointer-events:none;flex-shrink:0;}
+
 /* ══ HOME STATS STRIP ══ */
 .home-stats-strip{
   display:flex;align-items:center;
-  margin:0 16px 4px;
+  margin:12px 16px;
   background:var(--card);
   border-radius:20px;
   border:1px solid var(--border-light);
-  box-shadow:var(--elev-2);
+  box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.07);
   overflow:hidden;
 }
 .home-stat-item{
@@ -920,7 +933,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 #lb-prev.hidden,#lb-next.hidden{opacity:0;pointer-events:none;}
 #lb-counter{position:absolute;bottom:calc(var(--safe-b) + 16px);left:50%;transform:translateX(-50%);color:rgba(255,255,255,.7);font-size:12px;font-weight:700;font-family:var(--font-main);background:rgba(0,0,0,.38);padding:4px 14px;border-radius:var(--r-full);pointer-events:none;display:none;backdrop-filter:blur(8px);}
 /* WEATHER / SEA UNIFIED */
-.weather-sea-section{padding:0 16px 6px;}
+.weather-sea-section{padding:0;}
 .weather-sea-unified-card{background:var(--card);border-radius:20px;box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.07);border:1px solid var(--border-light);overflow:hidden;}
 .ws-tabs,.ws-panel{overflow:hidden;}
 .ws-tabs{display:flex;border-bottom:1px solid var(--border-light);background:var(--card);}
@@ -1291,98 +1304,101 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     <div class="screen" id="screen-home">
       <div class="scroll-area" id="scroll-home">
         <div class="ptr-indicator" id="ptr-home"><iconify-icon icon="lucide:refresh-cw"></iconify-icon></div>
-        <div class="content-block">
+        <div class="content-block" style="padding-bottom:28px;">
 
-          <!-- الإعلان الرسمي الأخير -->
-          <div class="section" style="padding-top:16px;padding-bottom:0;">
+          <!-- ① الإعلان الرسمي -->
+          <div style="padding:16px 16px 0;">
             <div id="h-official-single"></div>
           </div>
 
-          <!-- آخر المستجدات (نشاطات + مجتمع) -->
-          <div class="section" style="padding-top:14px;padding-bottom:0;">
-            <div class="section-header">
-              <span class="section-title">
-                <iconify-icon icon="ph:sparkle-fill" style="color:var(--green);pointer-events:none;"></iconify-icon>
-                <span data-i18n="section-latest">آخر المستجدات</span>
-              </span>
-              <button class="see-all-arrow-btn" onclick="haptic('light');switchTab('news');setTimeout(function(){var btn=document.getElementById('news-btn-activity');if(btn)filterNews('activity',btn);},350);">
-                <span data-i18n="see-all">عرض الكل</span>
-                <iconify-icon icon="ph:arrow-left-bold" style="font-size:12px;pointer-events:none;"></iconify-icon>
-              </button>
+          <!-- ② شريط الإحصائيات -->
+          <div class="home-stats-strip">
+            <div class="home-stat-item">
+              <div class="home-stat-icon" style="background:var(--green-xl);">
+                <iconify-icon icon="ph:users-three-fill" style="color:var(--green);font-size:18px;pointer-events:none;"></iconify-icon>
+              </div>
+              <div class="home-stat-val">8,767</div>
+              <div class="home-stat-lbl">ساكن</div>
             </div>
-            <div class="h-scroll" id="h-latest-news" style="padding-top:2px;">
-              <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
+            <div class="home-stat-divider"></div>
+            <div class="home-stat-item">
+              <div class="home-stat-icon" style="background:rgba(2,119,189,0.10);">
+                <iconify-icon icon="ph:map-trifold-fill" style="color:var(--sky);font-size:18px;pointer-events:none;"></iconify-icon>
+              </div>
+              <div class="home-stat-val">134</div>
+              <div class="home-stat-lbl">كم²</div>
+            </div>
+            <div class="home-stat-divider"></div>
+            <div class="home-stat-item">
+              <div class="home-stat-icon" style="background:rgba(245,158,11,0.10);">
+                <iconify-icon icon="ph:waves-fill" style="color:var(--amber);font-size:18px;pointer-events:none;"></iconify-icon>
+              </div>
+              <div class="home-stat-val">12</div>
+              <div class="home-stat-lbl">كم ساحل</div>
             </div>
           </div>
 
-          <!-- بطاقة الطقس والبحر الموحدة -->
-          <div class="section" style="padding-top:8px;padding-bottom:4px">
-            <div class="weather-sea-section">
-              <div class="weather-sea-unified-card">
-                <!-- تبويبان علويان -->
-                <div class="ws-tabs">
-                  <button class="ws-tab active" id="ws-tab-weather" onclick="switchWsTab('weather')">
-                    <iconify-icon icon="lucide:sun" style="font-size:14px;pointer-events:none"></iconify-icon>
-                    <span data-i18n="ws-tab-weather">حالة الطقس</span>
-                  </button>
-                  <button class="ws-tab" id="ws-tab-sea" onclick="switchWsTab('sea')">
-                    <iconify-icon icon="lucide:waves" style="font-size:14px;pointer-events:none"></iconify-icon>
-                    <span data-i18n="ws-tab-sea">حالة البحر</span>
-                  </button>
-                </div>
-                <!-- محتوى الطقس -->
-                <div class="ws-panel" id="ws-panel-weather">
-
-                  <div id="weather-day-tabs" style="display:flex;gap:6px;padding:0 2px 10px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;"></div>
-                  <div class="wcard-main">
-                    <div class="wcard-primary">
-                      <span class="wcard-emoji" id="pwa-weather-icon">☀️</span>
-                      <div>
-                        <div class="wcard-temp" id="pwa-weather-temp">--°</div>
-                        <div class="wcard-desc" id="pwa-weather-desc" data-i18n="loading">جاري التحميل</div>
-                      </div>
+          <!-- ③ بطاقة الطقس والبحر -->
+          <div style="padding:0 16px;">
+            <div class="weather-sea-unified-card">
+              <div class="ws-tabs">
+                <button class="ws-tab active" id="ws-tab-weather" onclick="switchWsTab('weather')">
+                  <iconify-icon icon="lucide:sun" style="font-size:14px;pointer-events:none"></iconify-icon>
+                  <span data-i18n="ws-tab-weather">حالة الطقس</span>
+                </button>
+                <button class="ws-tab" id="ws-tab-sea" onclick="switchWsTab('sea')">
+                  <iconify-icon icon="lucide:waves" style="font-size:14px;pointer-events:none"></iconify-icon>
+                  <span data-i18n="ws-tab-sea">حالة البحر</span>
+                </button>
+              </div>
+              <div class="ws-panel" id="ws-panel-weather">
+                <div id="weather-day-tabs" style="display:flex;gap:6px;padding:0 2px 10px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;"></div>
+                <div class="wcard-main">
+                  <div class="wcard-primary">
+                    <span class="wcard-emoji" id="pwa-weather-icon">☀️</span>
+                    <div>
+                      <div class="wcard-temp" id="pwa-weather-temp">--°</div>
+                      <div class="wcard-desc" id="pwa-weather-desc" data-i18n="loading">جاري التحميل</div>
                     </div>
-                    <div class="wcard-stats">
-                      <div class="wcard-stat">
-                        <iconify-icon icon="lucide:droplets" style="color:#60a5fa"></iconify-icon>
-                        <span id="pwa-weather-hum">--%</span>
-                      </div>
-                      <div class="wcard-stat">
-                        <iconify-icon icon="lucide:wind" style="color:#34d399"></iconify-icon>
-                        <span id="pwa-weather-wind">-- كم/س</span>
-                      </div>
-                      <div class="wcard-stat">
-                        <iconify-icon icon="lucide:thermometer" style="color:#f87171"></iconify-icon>
-                        <span id="pwa-weather-max">--</span> / <span id="pwa-weather-min">--</span>
-                      </div>
+                  </div>
+                  <div class="wcard-stats">
+                    <div class="wcard-stat">
+                      <iconify-icon icon="lucide:droplets" style="color:#60a5fa"></iconify-icon>
+                      <span id="pwa-weather-hum">--%</span>
+                    </div>
+                    <div class="wcard-stat">
+                      <iconify-icon icon="lucide:wind" style="color:#34d399"></iconify-icon>
+                      <span id="pwa-weather-wind">-- كم/س</span>
+                    </div>
+                    <div class="wcard-stat">
+                      <iconify-icon icon="lucide:thermometer" style="color:#f87171"></iconify-icon>
+                      <span id="pwa-weather-max">--</span> / <span id="pwa-weather-min">--</span>
                     </div>
                   </div>
                 </div>
-                <!-- محتوى البحر -->
-                <div class="ws-panel hidden" id="ws-panel-sea">
-
-                  <div id="sea-day-tabs" style="display:flex;gap:6px;padding:0 2px 10px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;"></div>
-                  <div class="wcard-main">
-                    <div class="wcard-primary">
-                      <span class="wcard-emoji" id="pwa-sea-icon">🌊</span>
-                      <div>
-                        <div class="wcard-sea-state" id="pwa-sea-state">--</div>
-                        <div class="wcard-desc" id="pwa-sea-desc" data-i18n="loading">جاري التحميل</div>
-                      </div>
+              </div>
+              <div class="ws-panel hidden" id="ws-panel-sea">
+                <div id="sea-day-tabs" style="display:flex;gap:6px;padding:0 2px 10px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;"></div>
+                <div class="wcard-main">
+                  <div class="wcard-primary">
+                    <span class="wcard-emoji" id="pwa-sea-icon">🌊</span>
+                    <div>
+                      <div class="wcard-sea-state" id="pwa-sea-state">--</div>
+                      <div class="wcard-desc" id="pwa-sea-desc" data-i18n="loading">جاري التحميل</div>
                     </div>
-                    <div class="wcard-stats">
-                      <div class="wcard-stat">
-                        <iconify-icon icon="lucide:arrow-up" style="color:#60a5fa"></iconify-icon>
-                        <span>ارتفاع الموج: </span><span id="pwa-sea-wave">-- م</span>
-                      </div>
-                      <div class="wcard-stat">
-                        <iconify-icon icon="lucide:thermometer" style="color:#2dd4bf"></iconify-icon>
-                        <span>الماء: </span><span id="pwa-sea-water-temp">19°C</span>
-                      </div>
-                      <div class="wcard-stat">
-                        <iconify-icon icon="lucide:compass" style="color:#818cf8"></iconify-icon>
-                        <span id="pwa-sea-dir">--</span>
-                      </div>
+                  </div>
+                  <div class="wcard-stats">
+                    <div class="wcard-stat">
+                      <iconify-icon icon="lucide:arrow-up" style="color:#60a5fa"></iconify-icon>
+                      <span>ارتفاع الموج: </span><span id="pwa-sea-wave">-- م</span>
+                    </div>
+                    <div class="wcard-stat">
+                      <iconify-icon icon="lucide:thermometer" style="color:#2dd4bf"></iconify-icon>
+                      <span>الماء: </span><span id="pwa-sea-water-temp">19°C</span>
+                    </div>
+                    <div class="wcard-stat">
+                      <iconify-icon icon="lucide:compass" style="color:#818cf8"></iconify-icon>
+                      <span id="pwa-sea-dir">--</span>
                     </div>
                   </div>
                 </div>
@@ -1390,15 +1406,36 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </div>
           </div>
 
-          <div class="section" style="padding-bottom:4px;">
-            <div class="section-header" style="margin-bottom:12px;">
+          <!-- ④ آخر المستجدات -->
+          <div style="padding:20px 0 0;">
+            <div class="section-header" style="padding:0 16px;margin-bottom:12px;">
+              <span class="section-title">
+                <iconify-icon icon="ph:newspaper-fill" style="color:var(--green);pointer-events:none;"></iconify-icon>
+                <span data-i18n="section-latest">آخر المستجدات</span>
+              </span>
+              <button class="see-all-arrow-btn" id="btn-see-all-news">
+                <span data-i18n="see-all">عرض الكل</span>
+                <iconify-icon icon="ph:arrow-left-bold" style="font-size:12px;pointer-events:none;"></iconify-icon>
+              </button>
+            </div>
+            <div id="h-latest-news">
+              <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
+            </div>
+          </div>
+
+          <!-- ⑤ اكتشف شطايبي -->
+          <div style="padding:20px 0 0;">
+            <div class="section-header" style="padding:0 16px;margin-bottom:12px;">
               <span class="section-title">
                 <iconify-icon icon="ph:compass-rose-fill" style="color:var(--green);pointer-events:none"></iconify-icon>
                 <span data-i18n="section-discover">اكتشف شطايبي</span>
               </span>
+              <button class="discover-tab-map" id="btn-see-discover">
+                <iconify-icon icon="ph:map-pin-fill" style="pointer-events:none;font-size:13px;"></iconify-icon>
+                <span data-i18n="nav-map">الخريطة</span>
+              </button>
             </div>
-            <!-- Pill Chips — طافية بدون بطاقة حاوية -->
-            <div class="discover-pills">
+            <div class="discover-pills" style="padding:0 16px 12px;">
               <button class="discover-pill active" data-tab="beaches" id="dtab-beaches" onclick="switchDiscoverTab('beaches')">
                 <iconify-icon icon="ph:waves-fill" style="pointer-events:none;"></iconify-icon>
                 <span data-i18n="section-beaches">الشواطئ</span>
@@ -1408,7 +1445,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 <span data-i18n="section-tourism">المعالم</span>
               </button>
             </div>
-            <!-- Hero Cards — full bleed بدون padding جانبي للبطاقة الأولى -->
             <div class="hero-scroll discover-panel" id="h-beaches">
               <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
             </div>
@@ -3093,33 +3129,33 @@ async function loadHOfficial(){
 async function loadHLatestNews(){
   var el=document.getElementById('h-latest-news');
   if(!el)return;
+  el.innerHTML='<div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>';
   try{
     var d=allNews.length?{data:allNews}:await api('/api/news');
     if(d.data)allNews=d.data;
-    var items=(d.data||[]).filter(function(n){return n.category==='activity'||n.category==='social';}).slice(0,8);
+    var items=(d.data||[]).filter(function(n){return n.category!=='official';}).slice(0,6);
     if(!items.length){el.innerHTML='';return;}
-    el.innerHTML=items.map(function(n){
+    el.innerHTML='<div class="hnews-list">'+items.map(function(n){
       var title=_f(n,'title')||'';
       var content=_f(n,'content')||'';
-      var desc=content.length>85?content.slice(0,85)+'…':content;
+      var desc=content.length>70?content.slice(0,70)+'…':content;
+      var catIcon={'activity':'ph:clipboard-text-fill','social':'ph:users-fill','poster':'ph:image-fill'}[n.category]||'ph:newspaper-fill';
+      var catColor={'activity':'var(--green)','social':'#0284c7','poster':'var(--amber)'}[n.category]||'var(--green)';
+      var catBg={'activity':'var(--green-xl)','social':'rgba(2,119,189,0.10)','poster':'rgba(245,158,11,0.10)'}[n.category]||'var(--green-xl)';
       var imgH=n.image_url
-        ?'<img class="news-card-img" src="'+n.image_url+'" alt="" loading="lazy" decoding="async">'
-        :'<div class="news-card-img-ph"><iconify-icon icon="lucide:clipboard-list" style="pointer-events:none;"></iconify-icon></div>';
-      var dateHtml=n.date?'<div class="card-date"><iconify-icon icon="lucide:calendar"></iconify-icon>'+n.date+'</div>':'<div></div>';
-      return '<div class="news-card fade-in" data-news-id="'+n.id+'">'
+        ?'<img class="hnews-card-img" src="'+n.image_url+'" alt="" loading="lazy" decoding="async">'
+        :'<div class="hnews-card-img-ph" style="background:'+catBg+'"><iconify-icon icon="'+catIcon+'" style="color:'+catColor+';font-size:22px;pointer-events:none;"></iconify-icon></div>';
+      return '<div class="hnews-card fade-in" data-news-id="'+n.id+'">'
         +imgH
-        +'<div class="news-card-content">'
-        +(title?'<div class="news-card-title">'+title+'</div>':'')
-        +(desc?'<div class="news-card-excerpt">'+desc+'</div>':'')
-        +'</div>'
-        +'<div class="news-card-footer">'+dateHtml
-        +'<button class="read-more" data-news-id="'+n.id+'">'+t('read-more')+'<iconify-icon icon="lucide:chevron-left"></iconify-icon></button>'
+        +'<div class="hnews-card-body">'
+        +(title?'<div class="hnews-card-title">'+title+'</div>':'')
+        +(desc?'<div class="hnews-card-desc">'+desc+'</div>':'')
+        +(n.date?'<div class="hnews-card-date"><iconify-icon icon="ph:calendar-blank" style="pointer-events:none;"></iconify-icon>'+n.date+'</div>':'')
         +'</div>'
         +'</div>';
-    }).join('');
-    el.querySelectorAll('.news-card,.read-more').forEach(function(card){
-      card.addEventListener('click',function(e){
-        e.stopPropagation();
+    }).join('')+'</div>';
+    el.querySelectorAll('.hnews-card').forEach(function(card){
+      card.addEventListener('click',function(){
         var id=parseInt(card.getAttribute('data-news-id'));
         haptic('light');openNewsModal(id);
       });
@@ -3606,6 +3642,8 @@ function initEventDelegation(){
     setTimeout(function(){var btn=document.getElementById('news-btn-activity');if(btn)filterNews('activity',btn);},350);
   });
 
+  var btnAllNews=document.getElementById('btn-see-all-news');
+  if(btnAllNews)btnAllNews.addEventListener('click',function(){haptic('light');switchTab('news');});
   var btnDiscover=document.getElementById('btn-see-discover');
   if(btnDiscover) btnDiscover.addEventListener('click',function(){
     haptic('light');
