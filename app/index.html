@@ -898,7 +898,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   overflow:hidden;position:relative;
   box-sizing:border-box;
   transition:transform .12s ease,box-shadow .12s ease;
-  min-height:110px;
+  min-height:90px;
 }
 .ann-card:active{transform:scale(.985);box-shadow:0 1px 3px rgba(0,0,0,.04);}
 
@@ -926,29 +926,30 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .ann-card-body{
   flex:1;min-width:0;
   display:flex;flex-direction:column;
-  padding:14px 14px 12px;
+  padding:12px 12px 0;
   gap:0;
 }
 .ann-card-meta{
-  display:flex;align-items:center;gap:6px;
-  margin-bottom:8px;
+  display:none;
+}
+.ann-card-excerpt{
+  font-size:13px;color:var(--text);
+  line-height:1.65;font-weight:500;
+  display:-webkit-box;-webkit-line-clamp:3;
+  -webkit-box-orient:vertical;overflow:hidden;
+  flex:1;
+}
+.ann-card-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:10px;
+  padding:8px 0 10px;
+  border-top:1px solid var(--border-light);
 }
 .ann-card-date{
   display:flex;align-items:center;gap:4px;
   font-size:10.5px;font-weight:600;color:var(--muted);
 }
 .ann-card-date iconify-icon{font-size:12px;pointer-events:none;}
-.ann-card-excerpt{
-  font-size:13px;color:var(--text);
-  line-height:1.72;font-weight:500;
-  display:-webkit-box;-webkit-line-clamp:3;
-  -webkit-box-orient:vertical;overflow:hidden;
-  flex:1;
-}
-.ann-card-footer{
-  display:flex;align-items:center;justify-content:flex-end;
-  margin-top:10px;
-}
 .ann-card-btn{
   display:inline-flex;align-items:center;gap:5px;
   border-radius:99px;padding:5px 13px;
@@ -1211,16 +1212,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 
           <!-- الإعلان الرسمي الأخير -->
           <div class="section" style="padding-top:16px;padding-bottom:0;">
-            <div class="section-header" style="margin-bottom:10px;">
-              <span class="section-title">
-                <iconify-icon icon="ph:megaphone-fill" style="color:var(--green);pointer-events:none;"></iconify-icon>
-                <span data-i18n="tab-announcements">إعلانات</span>
-              </span>
-              <button class="see-all-arrow-btn" onclick="haptic('light');switchTab('news');setTimeout(function(){var btn=document.getElementById('news-btn-official');if(btn)filterNews('official',btn);},350);">
-                <span data-i18n="see-all">عرض الكل</span>
-                <iconify-icon icon="ph:arrow-left-bold" style="font-size:12px;pointer-events:none;"></iconify-icon>
-              </button>
-            </div>
             <div id="h-official-single"></div>
           </div>
 
@@ -1238,33 +1229,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </div>
             <div class="h-scroll" id="h-latest-news" style="padding-top:2px;">
               <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
-            </div>
-          </div>
-
-          <!-- شريط الإحصائيات السريعة -->
-          <div class="home-stats-strip" style="margin-top:10px;">
-            <div class="home-stat-item">
-              <div class="home-stat-icon" style="background:var(--green-xl);">
-                <iconify-icon icon="ph:users-three-fill" style="color:var(--green);font-size:18px;pointer-events:none;"></iconify-icon>
-              </div>
-              <div class="home-stat-val">8,767</div>
-              <div class="home-stat-lbl" data-i18n="stat-pop">ساكن</div>
-            </div>
-            <div class="home-stat-divider"></div>
-            <div class="home-stat-item">
-              <div class="home-stat-icon" style="background:rgba(2,119,189,0.10);">
-                <iconify-icon icon="ph:map-trifold-fill" style="color:var(--sky);font-size:18px;pointer-events:none;"></iconify-icon>
-              </div>
-              <div class="home-stat-val">134</div>
-              <div class="home-stat-lbl">كم²</div>
-            </div>
-            <div class="home-stat-divider"></div>
-            <div class="home-stat-item">
-              <div class="home-stat-icon" style="background:rgba(245,158,11,0.10);">
-                <iconify-icon icon="ph:waves-fill" style="color:var(--amber);font-size:18px;pointer-events:none;"></iconify-icon>
-              </div>
-              <div class="home-stat-val">12</div>
-              <div class="home-stat-lbl">كم ساحل</div>
             </div>
           </div>
 
@@ -2566,18 +2530,18 @@ function _annLabelColor(label){
 
 function _buildAnnCard(n,c){
   var lbl=n.custom_label||'إعلان';
+  var excerpt=(_f(n,'content')||'').substring(0,120);
   var dateHtml=n.date
     ?'<div class="ann-card-date"><iconify-icon icon="ph:calendar-blank" style="pointer-events:none"></iconify-icon>'+n.date+'</div>'
     :'';
-  var excerpt=(_f(n,'content')||'').substring(0,140);
   return '<div class="ann-card-side" style="background:'+c.bg+'">'
     +'<div class="ann-card-side-icon"><iconify-icon icon="'+c.icon+'"></iconify-icon></div>'
     +'<div class="ann-card-side-label">'+lbl+'</div>'
     +'</div>'
     +'<div class="ann-card-body">'
-    +'<div class="ann-card-meta">'+dateHtml+'</div>'
     +'<div class="ann-card-excerpt">'+excerpt+'</div>'
     +'<div class="ann-card-footer">'
+    +dateHtml
     +'<button class="ann-card-btn" data-news-id="'+n.id+'" style="background:'+c.btnBg+';color:'+c.btnColor+'">'+t('read-more')+' <iconify-icon icon="ph:arrow-left-bold"></iconify-icon></button>'
     +'</div>'
     +'</div>';
