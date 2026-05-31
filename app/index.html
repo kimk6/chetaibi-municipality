@@ -235,61 +235,74 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 }
 .hero-scroll::-webkit-scrollbar{display:none;}
 
-/* Hero Card — بطاقة كبيرة */
+/* Hero Card — بطاقة انغمارية كاملة */
 .hero-card{
-  min-width:78vw;max-width:300px;
-  height:200px;border-radius:22px;
+  min-width:82vw;max-width:320px;
+  height:220px;border-radius:24px;
   overflow:hidden;flex-shrink:0;
   cursor:pointer;position:relative;
-  box-shadow:0 2px 8px rgba(0,0,0,.10),0 8px 24px rgba(0,0,0,.14);
+  box-shadow:0 4px 12px rgba(0,0,0,.14),0 12px 32px rgba(0,0,0,.18);
   touch-action:manipulation;
   scroll-snap-align:start;
-  transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);
+  transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid),box-shadow var(--dur-mid);
 }
-.hero-card:active{transform:scale(.95);opacity:.88;}
-.hero-card img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
+.hero-card:active{transform:scale(.96);opacity:.88;box-shadow:0 2px 8px rgba(0,0,0,.12);}
+.hero-card img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;transition:transform .4s ease;}
+.hero-card:active img{transform:scale(1.03);}
 .hero-card-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
 .hero-card-grad{
   position:absolute;inset:0;
-  background:linear-gradient(0deg,rgba(0,0,0,.82) 0%,rgba(0,0,0,.10) 50%,transparent 75%);
+  background:linear-gradient(
+    to top,
+    rgba(0,0,0,.88) 0%,
+    rgba(0,0,0,.40) 40%,
+    rgba(0,0,0,.10) 65%,
+    transparent 100%
+  );
   pointer-events:none;
 }
 .hero-card-body{
   position:absolute;bottom:0;left:0;right:0;
-  padding:14px 14px 14px;
+  padding:16px 16px 16px;
   display:flex;align-items:flex-end;justify-content:space-between;
   pointer-events:none;
 }
-.hero-card-info{display:flex;flex-direction:column;gap:4px;flex:1;min-width:0;}
+.hero-card-info{display:flex;flex-direction:column;gap:5px;flex:1;min-width:0;}
 .hero-card-badge{
   display:inline-flex;align-items:center;gap:4px;
-  padding:3px 9px;border-radius:99px;
+  padding:3px 10px;border-radius:99px;
   font-size:10px;font-weight:800;
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  width:fit-content;margin-bottom:2px;
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  width:fit-content;
 }
 .hero-card-badge iconify-icon{font-size:11px;pointer-events:none;flex-shrink:0;}
 .hero-card-name{
-  font-size:15px;font-weight:900;color:#fff;
-  text-shadow:0 1px 6px rgba(0,0,0,.5);
-  line-height:1.3;letter-spacing:-.2px;
+  font-size:16px;font-weight:900;color:#fff;
+  text-shadow:0 2px 8px rgba(0,0,0,.6);
+  line-height:1.25;letter-spacing:-.3px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.hero-card-sub{
+  font-size:11.5px;font-weight:600;color:rgba(255,255,255,.75);
+  text-shadow:0 1px 4px rgba(0,0,0,.5);
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
 }
 .hero-card-map-btn{
-  width:36px;height:36px;border-radius:50%;
-  background:rgba(255,255,255,0.22);
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  border:1.5px solid rgba(255,255,255,0.30);
+  width:40px;height:40px;border-radius:50%;
+  background:rgba(255,255,255,0.20);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1.5px solid rgba(255,255,255,0.35);
   display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;margin-right:8px;cursor:pointer;
+  flex-shrink:0;margin-right:10px;cursor:pointer;
   pointer-events:auto;
   transition:background var(--dur-fast),transform var(--dur-fast);
+  box-shadow:0 2px 8px rgba(0,0,0,.20);
 }
-.hero-card-map-btn:active{background:rgba(255,255,255,0.38);transform:scale(.88);}
-.hero-card-map-btn iconify-icon{font-size:16px;color:#fff;pointer-events:none;}
+.hero-card-map-btn:active{background:rgba(255,255,255,0.42);transform:scale(.86);}
+.hero-card-map-btn iconify-icon{font-size:18px;color:#fff;pointer-events:none;}
 
 /* skeleton hero */
-.sk-hero-card{min-width:78vw;max-width:300px;height:200px;border-radius:22px;overflow:hidden;flex-shrink:0;scroll-snap-align:start;}
+.sk-hero-card{min-width:82vw;max-width:320px;height:220px;border-radius:24px;overflow:hidden;flex-shrink:0;scroll-snap-align:start;}
 
 /* place-card (للاستخدامات الأخرى) */
 .place-card{min-width:158px;max-width:158px;border-radius:20px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.07),0 6px 20px rgba(0,0,0,.11);flex-shrink:0;cursor:pointer;position:relative;height:212px;touch-action:manipulation;transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);}
@@ -663,46 +676,54 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .discover-map-btn iconify-icon{pointer-events:none;flex-shrink:0;}
 [data-theme="dark"] .discover-map-btn{background:rgba(21,101,192,0.14);border-color:rgba(21,101,192,0.28);color:#60A5FA;}
 
-/* ══ DISCOVER WS-CARD — wrapper card ══ */
-.discover-ws-card{
-  margin:0 16px;
-  background:var(--card);
-  border-radius:20px;
-  border:1px solid var(--border-light);
-  box-shadow:var(--elev-2);
-  overflow:hidden;
+/* ══ DISCOVER PILL CHIPS — طافية خارج أي بطاقة ══ */
+.discover-pills{
+  display:flex;gap:8px;
+  padding:0 16px 14px;
 }
-
-/* ══ DISCOVER WS-TABS — same pattern as weather ══ */
-.discover-ws-tabs{
-  display:flex;
-  border-bottom:1px solid var(--border-light);
+.discover-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 18px;border-radius:99px;
+  border:1.5px solid var(--border);
   background:var(--card);
-}
-.discover-ws-tab{
-  flex:1;display:flex;align-items:center;justify-content:center;gap:6px;
-  padding:11px 8px;border:none;background:transparent;
+  color:var(--muted);
   font-family:var(--font-main);font-size:13px;font-weight:700;
-  color:var(--muted-2);cursor:pointer;touch-action:manipulation;
-  position:relative;transition:color var(--dur-mid);
+  cursor:pointer;touch-action:manipulation;
+  transition:background var(--dur-mid) var(--ease-std),
+             color var(--dur-mid) var(--ease-std),
+             border-color var(--dur-mid) var(--ease-std),
+             box-shadow var(--dur-mid) var(--ease-std),
+             transform var(--dur-fast) var(--ease-spring);
+  box-shadow:var(--elev-1);
 }
-.discover-ws-tab::after{
-  content:'';position:absolute;bottom:0;left:16px;right:16px;
-  height:3px;background:linear-gradient(90deg,var(--green-dark),var(--green));
-  border-radius:3px 3px 0 0;
-  transform:scaleX(0);transition:transform var(--dur-mid) var(--ease-spring);
+.discover-pill iconify-icon{font-size:15px;pointer-events:none;flex-shrink:0;}
+/* الشواطئ نشط */
+.discover-pill.active[data-tab="beaches"]{
+  background:linear-gradient(135deg,#0369a1,#0ea5e9);
+  color:#fff;border-color:transparent;
+  box-shadow:0 3px 12px rgba(14,165,233,.35);
 }
-.discover-ws-tab.active{color:var(--green);}
-.discover-ws-tab.active::after{transform:scaleX(1);}
-#dtab-tourism.active{color:#b45309;}
-#dtab-tourism.active::after{background:linear-gradient(90deg,#92400e,#b45309);}
-.discover-ws-tab iconify-icon{font-size:14px;pointer-events:none;}
-.discover-ws-tab:active{transform:scale(.95);}
+/* المعالم نشط */
+.discover-pill.active[data-tab="tourism"]{
+  background:linear-gradient(135deg,#92400e,#d97706);
+  color:#fff;border-color:transparent;
+  box-shadow:0 3px 12px rgba(217,119,6,.32);
+}
+.discover-pill:active:not(.active){transform:scale(.95);opacity:.75;}
+.discover-pill:active.active{transform:scale(.97);}
 
-[data-theme="dark"] .discover-ws-card{background:#1C1E24;border-color:#2A2D38;}
-[data-theme="dark"] .discover-ws-tabs{background:#1C1E24;border-bottom-color:#2A2D38;}
+[data-theme="dark"] .discover-pill{background:var(--surface-3);border-color:var(--border);color:var(--muted);}
+
+/* ══ HERO SCROLL — full bleed ══ */
+.hero-scroll{
+  display:flex;gap:12px;
+  overflow-x:auto;-webkit-overflow-scrolling:touch;
+  overscroll-behavior-x:contain;scrollbar-width:none;
+  padding:0 16px 20px;
+  scroll-snap-type:x mandatory;
+}
+.hero-scroll::-webkit-scrollbar{display:none;}
 .discover-panel.hidden{display:none;}
-/* LOAD MORE BTN */
 .load-more-wrap{display:flex;justify-content:center;padding:14px 0 6px;}
 .load-more-btn{display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-full);padding:8px 20px;font-family:var(--font-main);font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;touch-action:manipulation;transition:background var(--dur-fast),transform var(--dur-fast);}
 .load-more-btn:active{background:var(--surface-2);transform:scale(.96);}
@@ -1307,34 +1328,33 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </div>
           </div>
 
-          <div class="section" style="padding-bottom:12px;">
-            <div class="section-header" style="margin-bottom:10px;">
+          <div class="section" style="padding-bottom:4px;">
+            <div class="section-header" style="margin-bottom:12px;">
               <span class="section-title">
                 <iconify-icon icon="ph:compass-rose-fill" style="color:var(--green);pointer-events:none"></iconify-icon>
                 <span data-i18n="section-discover">اكتشف شطايبي</span>
               </span>
-              <!-- زر الخريطة -->
               <button class="discover-map-btn" id="btn-see-discover">
                 <iconify-icon icon="ph:map-trifold-fill" style="pointer-events:none;font-size:15px;"></iconify-icon>
                 <span data-i18n="nav-map">الخريطة</span>
               </button>
             </div>
-            <!-- تبويبات بأسلوب ws-tabs -->
-            <div class="discover-ws-card">
-              <div class="discover-ws-tabs">
-                <button class="discover-ws-tab active" id="dtab-beaches" onclick="switchDiscoverTab('beaches')">
-                  <iconify-icon icon="ph:waves-fill" style="pointer-events:none;font-size:14px;"></iconify-icon>
-                  <span data-i18n="section-beaches">الشواطئ</span>
-                </button>
-                <button class="discover-ws-tab" id="dtab-tourism" onclick="switchDiscoverTab('tourism')">
-                  <iconify-icon icon="ph:sun-horizon-fill" style="pointer-events:none;font-size:14px;"></iconify-icon>
-                  <span data-i18n="section-tourism">المعالم</span>
-                </button>
-              </div>
-              <!-- Hero Cards -->
-              <div class="hero-scroll discover-panel" id="h-beaches" style="padding:12px 14px 16px;"><div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div></div>
-              <div class="hero-scroll discover-panel hidden" id="h-tourism" style="padding:12px 14px 16px;"></div>
+            <!-- Pill Chips — طافية بدون بطاقة حاوية -->
+            <div class="discover-pills">
+              <button class="discover-pill active" data-tab="beaches" id="dtab-beaches" onclick="switchDiscoverTab('beaches')">
+                <iconify-icon icon="ph:waves-fill" style="pointer-events:none;"></iconify-icon>
+                <span data-i18n="section-beaches">الشواطئ</span>
+              </button>
+              <button class="discover-pill" data-tab="tourism" id="dtab-tourism" onclick="switchDiscoverTab('tourism')">
+                <iconify-icon icon="ph:sun-horizon-fill" style="pointer-events:none;"></iconify-icon>
+                <span data-i18n="section-tourism">المعالم</span>
+              </button>
             </div>
+            <!-- Hero Cards — full bleed بدون padding جانبي للبطاقة الأولى -->
+            <div class="hero-scroll discover-panel" id="h-beaches">
+              <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
+            </div>
+            <div class="hero-scroll discover-panel hidden" id="h-tourism"></div>
           </div>
 
         </div>
@@ -2259,11 +2279,11 @@ function switchTab(t){
 }
 function switchDiscoverTab(tab){
   haptic('light');
-  var tabs=['beaches','tourism'];
-  tabs.forEach(function(t){
-    var btn=document.getElementById('dtab-'+t);
+  document.querySelectorAll('.discover-pill').forEach(function(p){
+    p.classList.toggle('active',p.getAttribute('data-tab')===tab);
+  });
+  ['beaches','tourism'].forEach(function(t){
     var panel=document.getElementById('h-'+t);
-    if(btn)btn.classList.toggle('active',t===tab);
     if(panel)panel.classList.toggle('hidden',t!==tab);
   });
   _curDiscoverTab=tab;
@@ -2286,7 +2306,7 @@ function initSwipe(scrollAreaId,getNext){
   var isArchive=(scrollAreaId==='scroll-archive');
   el.addEventListener('touchstart',function(e){
     if(isArchive){startX=e.touches[0].clientX;startY=e.touches[0].clientY;tracking=true;return;}
-    if(e.target.closest('.seg-bar-wrap')||e.target.closest('.archive-card')||e.target.closest('.weather-card')||e.target.closest('.sea-card')||e.target.closest('.weather-sea-unified-card')||e.target.closest('#weather-day-tabs')||e.target.closest('#sea-day-tabs')||e.target.closest('.discover-ws-tabs')){tracking=false;return;}
+    if(e.target.closest('.seg-bar-wrap')||e.target.closest('.archive-card')||e.target.closest('.weather-card')||e.target.closest('.sea-card')||e.target.closest('.weather-sea-unified-card')||e.target.closest('#weather-day-tabs')||e.target.closest('#sea-day-tabs')||e.target.closest('.discover-pills')){tracking=false;return;}
     /* إيقاف swipe الصفحة الرئيسية فوق الكاروسيل لإتاحة سحبه */
     if(scrollAreaId==='scroll-home'&&e.target.closest('#ann-carousel-outer')){tracking=false;return;}
     /* تجاهل السحب فوق بطاقات h-scroll فقط، لكن السماح على padding المنطقة */
@@ -3052,13 +3072,15 @@ function placeCard(item,type){
   }
   /* زر الخريطة المدمج */
   var mapBtn='<button class="hero-card-map-btn" data-map-filter="'+mapFilter+'" onclick="event.stopPropagation();haptic(\'light\');switchTabWithFilter(\'map\',\''+mapFilter+'\');">'
-    +'<iconify-icon icon="ph:map-pin-bold" style="pointer-events:none"></iconify-icon>'
+    +'<iconify-icon icon="ph:map-trifold-fill" style="pointer-events:none"></iconify-icon>'
     +'</button>';
+  var desc=_f(item,'description')||_f(item,'location')||'';
+  var subHtml=desc?'<div class="hero-card-sub">'+desc.substring(0,40)+'</div>':'';
   return '<div class="hero-card" '+dataAttr+'>'
     +imgH
     +'<div class="hero-card-grad"></div>'
     +'<div class="hero-card-body">'
-    +'<div class="hero-card-info">'+badgeHtml+'<div class="hero-card-name">'+n+'</div></div>'
+    +'<div class="hero-card-info">'+badgeHtml+'<div class="hero-card-name">'+n+'</div>'+subHtml+'</div>'
     +mapBtn
     +'</div>'
     +'</div>';
@@ -3916,12 +3938,12 @@ window.addEventListener('load',function(){
           haptic('light');
         },{passive:true});
       }
-      /* swipe على discover-ws-tabs للتبديل بين الشواطئ والمعالم */
-      var discoverTabs=document.querySelector('.discover-ws-tabs');
-      if(discoverTabs){
+      /* swipe على discover-pills للتبديل بين الشواطئ والمعالم */
+      var discoverPills=document.querySelector('.discover-pills');
+      if(discoverPills){
         var dsx=0,dsy=0;
-        discoverTabs.addEventListener('touchstart',function(e){dsx=e.touches[0].clientX;dsy=e.touches[0].clientY;},{passive:true});
-        discoverTabs.addEventListener('touchend',function(e){
+        discoverPills.addEventListener('touchstart',function(e){dsx=e.touches[0].clientX;dsy=e.touches[0].clientY;},{passive:true});
+        discoverPills.addEventListener('touchend',function(e){
           var dx=e.changedTouches[0].clientX-dsx;
           var dy=e.changedTouches[0].clientY-dsy;
           if(Math.abs(dx)<44||Math.abs(dx)<Math.abs(dy)*1.3)return;
