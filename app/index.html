@@ -2481,6 +2481,7 @@ function selectMapFilter(type,el){
   closeMapCard();setTimeout(closeFilterMenu,120);
 }
 function applyMapFilterSilent(type){var el=document.querySelector('.mf-item[data-type="'+type+'"]');if(el)selectMapFilter(type,el);}
+function switchTabWithFilter(tab,filterType){pendingMapFilter=filterType;switchTab(tab);}
 /* ══ LOCATE ══ */
 function locateUser(){
   if(!navigator.geolocation){alert('تحديد الموقع غير مدعوم');return;}
