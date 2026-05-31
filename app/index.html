@@ -3397,7 +3397,7 @@ function initEventDelegation(){
     var readMore=t.closest('.read-more');if(readMore){e.stopPropagation();var id=readMore.getAttribute('data-news-id');if(id)openNewsModal(id);return;}
     var annCardOld=t.closest('.announce-card');if(annCardOld&&!t.closest('.read-more')){var id=annCardOld.getAttribute('data-news-id');if(id)openNewsModal(id);return;}
     var posterCard=t.closest('.poster-card');if(posterCard){var lb=posterCard.getAttribute('data-lb');if(lb)openLightbox(lb);return;}
-    var placeCard=t.closest('.place-card');if(placeCard){var bid=placeCard.getAttribute('data-beach-id');var tid=placeCard.getAttribute('data-tour-id');if(bid)openBeachModal(bid);else if(tid)openTourismModal(tid);return;}
+    var placeCard=t.closest('.place-card,.hero-card');if(placeCard){var bid=placeCard.getAttribute('data-beach-id');var tid=placeCard.getAttribute('data-tour-id');if(bid)openBeachModal(bid);else if(tid)openTourismModal(tid);return;}
     var facCard=t.closest('.fac-card');if(facCard){var fid=facCard.getAttribute('data-fac-id');var ftab=facCard.getAttribute('data-fac-tab');if(fid)openFacModal(fid,ftab||'admin-branches');return;}
     var archCell=t.closest('.archive-cell,.archive-single');if(archCell){var lb=archCell.getAttribute('data-lb');if(lb)openLightbox(lb);return;}
     var lbEl=t.closest('[data-lb]');if(lbEl&&!lbEl.closest('#lightbox')){var lb=lbEl.getAttribute('data-lb');if(lb){openLightbox(lb);return;}}
@@ -3407,7 +3407,7 @@ function initEventDelegation(){
   /* haptic على كل البطاقات */
   document.addEventListener('touchstart',function(e){
     var t=e.target;
-    if(t.closest('.place-card,.announce-card,.fac-card,.mayor-home-card,.archive-card,.svc-card,.ann-card'))haptic('light');
+    if(t.closest('.place-card,.announce-card,.fac-card,.mayor-home-card,.archive-card,.svc-card,.ann-card,.hero-card'))haptic('light');
   },{passive:true});
   document.getElementById('nav-news').addEventListener('click',function(){haptic('tab');switchTab('news');});
   document.getElementById('nav-guide').addEventListener('click',function(){haptic('tab');switchTab('guide');});
