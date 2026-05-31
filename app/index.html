@@ -308,45 +308,101 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .hero-scroll::-webkit-scrollbar{display:none;}
 
 /* ══ HERO CARD — Portrait, نظيف ══ */
-.hero-card{
-  min-width:48vw;max-width:200px;
-  height:256px;
-  border-radius:var(--r-xl);
-  overflow:hidden;flex-shrink:0;
-  cursor:pointer;position:relative;
-  box-shadow:0 2px 8px rgba(0,0,0,.12),0 6px 22px rgba(0,0,0,.16);
+/* ══ PLACE CARD 2026 — horizontal ══ */
+.hero-scroll{
+  display:flex;flex-direction:column;
+  gap:10px;padding:0 16px 4px;
+}
+
+.place-card-2026{
+  width:100%;
+  background:var(--card);
+  border-radius:20px;
+  border:1px solid var(--border-light);
+  box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.07);
+  overflow:hidden;
+  display:flex;
+  flex-direction:row;
+  cursor:pointer;
   touch-action:manipulation;
-  scroll-snap-align:start;
-  transition:transform var(--dur-mid) var(--ease-spring),box-shadow var(--dur-mid);
+  transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);
+  min-height:100px;
+  position:relative;
 }
-.hero-card:active{transform:scale(.96);box-shadow:0 1px 4px rgba(0,0,0,.10);}
-.hero-card img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
-.hero-card-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
-.hero-card-grad{
-  position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(0,0,0,.78) 0%,rgba(0,0,0,.18) 48%,transparent 75%);
-  pointer-events:none;
+.place-card-2026:active{transform:scale(.975);opacity:.85;}
+
+/* الصورة على اليسار */
+.place-card-2026-img{
+  width:110px;flex-shrink:0;
+  position:relative;overflow:hidden;
 }
-.hero-card-body{
-  position:absolute;bottom:0;left:0;right:0;
-  padding:14px 14px 16px;
-  pointer-events:none;
+.place-card-2026-img img{
+  width:100%;height:100%;
+  object-fit:cover;display:block;pointer-events:none;
 }
-.hero-card-info{display:flex;flex-direction:column;}
-.hero-card-badge{display:none;}
-.hero-card-sub{display:none;}
-.hero-card-map-btn{display:none;}
-.hero-card-name{
-  font-size:13.5px;font-weight:900;color:#fff;
-  text-shadow:0 1px 6px rgba(0,0,0,.55);
-  line-height:1.3;letter-spacing:-.2px;
+.place-card-2026-img-ph{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+}
+.place-card-2026-img-ph iconify-icon{font-size:2.8rem;pointer-events:none;}
+
+/* المحتوى على اليمين */
+.place-card-2026-body{
+  flex:1;min-width:0;
+  display:flex;flex-direction:column;
+  padding:13px 14px 12px;
+  gap:0;
+}
+.place-card-2026-top{
+  display:flex;align-items:center;
+  justify-content:space-between;
+  gap:8px;margin-bottom:5px;
+}
+.place-card-2026-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:2.5px 9px;border-radius:99px;
+  font-size:10px;font-weight:800;
+  flex-shrink:0;
+}
+.place-card-2026-badge iconify-icon{font-size:10px;pointer-events:none;}
+.place-card-2026-map-btn{
+  width:30px;height:30px;border-radius:10px;
+  background:var(--green-xl);border:1px solid rgba(0,135,90,0.18);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;cursor:pointer;touch-action:manipulation;
+  transition:background var(--dur-fast),transform var(--dur-fast);
+  pointer-events:auto;
+}
+.place-card-2026-map-btn:active{background:var(--green-l);transform:scale(.86);}
+.place-card-2026-map-btn iconify-icon{font-size:15px;color:var(--green);pointer-events:none;}
+[data-theme="dark"] .place-card-2026-map-btn{background:rgba(0,135,90,0.18);border-color:rgba(0,135,90,0.30);}
+[data-theme="dark"] .place-card-2026-map-btn iconify-icon{color:#34d399;}
+
+.place-card-2026-name{
+  font-size:14px;font-weight:900;
+  color:var(--text);letter-spacing:-.2px;
+  line-height:1.3;
   display:-webkit-box;-webkit-line-clamp:2;
   -webkit-box-orient:vertical;overflow:hidden;
+  margin-bottom:5px;
 }
-/* skeleton hero */
-.sk-hero-card{min-width:48vw;max-width:200px;height:256px;border-radius:var(--r-xl);overflow:hidden;flex-shrink:0;scroll-snap-align:start;}
+.place-card-2026-meta{
+  display:flex;align-items:center;gap:6px;
+  flex-wrap:wrap;
+}
+.place-card-2026-meta-item{
+  display:flex;align-items:center;gap:3px;
+  font-size:11px;font-weight:600;color:var(--muted);
+}
+.place-card-2026-meta-item iconify-icon{font-size:12px;pointer-events:none;flex-shrink:0;}
 
-/* ══ DISCOVER PILLS ══ */
+/* skeleton */
+.sk-hero-card{
+  width:100%;height:100px;
+  border-radius:20px;overflow:hidden;flex-shrink:0;
+}
+
+/* DISCOVER PILLS — بدون تغيير */
 .discover-pills{
   display:flex;gap:8px;
   padding:0 16px 14px;
@@ -366,8 +422,9 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 }
 .discover-pill iconify-icon{font-size:15px;pointer-events:none;flex-shrink:0;}
 .discover-pill.active{
-  background:var(--green);color:#fff;border-color:transparent;
-  box-shadow:0 2px 12px rgba(0,135,90,.25);
+  background:linear-gradient(135deg,var(--green-dark),var(--green));
+  color:#fff;border-color:transparent;
+  box-shadow:0 2px 12px rgba(0,135,90,.28);
 }
 .discover-pill:active:not(.active){transform:scale(.94);opacity:.7;}
 .discover-pill:active.active{transform:scale(.97);}
@@ -375,7 +432,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 [data-theme="dark"] .discover-pill.active{background:var(--green-m);border-color:transparent;color:#fff;}
 .discover-panel.hidden{display:none !important;}
 
-
+/* place-card القديمة — للتوافق */
 .place-card{min-width:158px;max-width:158px;border-radius:20px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.07),0 6px 20px rgba(0,0,0,.11);flex-shrink:0;cursor:pointer;position:relative;height:212px;touch-action:manipulation;transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);}
 .place-card:active{transform:scale(.93);opacity:.82;}
 .place-card img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;border-radius:20px;}
@@ -3052,35 +3109,48 @@ async function loadHBeaches(){var el=document.getElementById('h-beaches');el.inn
 async function loadHTourism(){var el=document.getElementById('h-tourism');el.innerHTML=skPlaceCards(4);try{var d=await api('/api/tourism');el.innerHTML=(d.data||[]).slice(0,8).map(t=>placeCard(t,'tourism')).join('');}catch(e){el.innerHTML='';}}
 function placeCard(item,type){
   var n=_f(item,'name')||item.name||'';
-  var dataAttr=type==='beach'?'data-beach-id="'+item.id+'"':'data-tour-id="'+item.id+'"';
-  var mapFilter=type==='beach'?'beach':'tour';
-  /* placeholder */
-  var ph=type==='beach'
-    ?'<div class="hero-card-ph" style="background:linear-gradient(160deg,#0284c7,#0ea5e9,#38bdf8)"><iconify-icon icon="ph:waves-fill" style="color:rgba(255,255,255,.75);font-size:3.2rem;pointer-events:none"></iconify-icon></div>'
-    :'<div class="hero-card-ph" style="background:linear-gradient(160deg,var(--green-dark),var(--green),#34d399)"><iconify-icon icon="ph:sun-horizon-fill" style="color:rgba(255,255,255,.75);font-size:3.2rem;pointer-events:none"></iconify-icon></div>';
-  var imgH=item.image_url?'<img src="'+item.image_url+'" alt="'+n+'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;">':ph;
-  /* بادج نوع الشاطئ */
-  var badgeHtml='';
-  if(type==='beach'){
+  var isBeach=type==='beach';
+  var dataAttr=isBeach?'data-beach-id="'+item.id+'"':'data-tour-id="'+item.id+'"';
+  var mapFilter=isBeach?'beach':'tour';
+
+  /* صورة أو placeholder */
+  var imgHtml=item.image_url
+    ?'<img src="'+item.image_url+'" alt="'+n+'" loading="lazy" decoding="async">'
+    :'<div class="place-card-2026-img-ph" style="background:'+(isBeach?'linear-gradient(160deg,#0284c7,#0ea5e9)':'linear-gradient(160deg,var(--green-dark),var(--green))')+'"><iconify-icon icon="'+(isBeach?'ph:waves-fill':'ph:sun-horizon-fill')+'" style="color:rgba(255,255,255,.70);pointer-events:none;"></iconify-icon></div>';
+
+  /* بادج */
+  var badge='';
+  if(isBeach){
     var st=item.shore_type||item.beach_type||item.type||item.custom_label||'';
-    var isRocky2=st==='صخري'||st==='rocky'||st==='rocheux';
-    var isSandy2=st==='رملي'||st==='sandy'||st==='sableux';
-    if(isRocky2)
-      badgeHtml='<div class="hero-card-badge" style="background:rgba(120,113,108,0.78);color:#fff"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>'+t('rocky')+'</div>';
-    else if(isSandy2)
-      badgeHtml='<div class="hero-card-badge" style="background:rgba(245,158,11,0.82);color:#fff"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>'+t('sandy')+'</div>';
-    else if(st)
-      badgeHtml='<div class="hero-card-badge" style="background:rgba(14,165,233,0.82);color:#fff"><iconify-icon icon="ph:waves-fill" style="font-size:10px;pointer-events:none"></iconify-icon>'+st+'</div>';
+    var isRocky=st==='صخري'||st==='rocky'||st==='rocheux';
+    var isSandy=st==='رملي'||st==='sandy'||st==='sableux';
+    if(isRocky)
+      badge='<span class="place-card-2026-badge" style="background:rgba(120,113,108,0.10);color:#78716c;border:1px solid rgba(120,113,108,0.20);"><iconify-icon icon="ph:mountains-fill" style="pointer-events:none;"></iconify-icon>'+t('rocky')+'</span>';
+    else if(isSandy)
+      badge='<span class="place-card-2026-badge" style="background:rgba(245,158,11,0.10);color:#b45309;border:1px solid rgba(245,158,11,0.20);"><iconify-icon icon="ph:sun-fill" style="pointer-events:none;"></iconify-icon>'+t('sandy')+'</span>';
+    else
+      badge='<span class="place-card-2026-badge" style="background:rgba(2,119,189,0.10);color:#0284c7;border:1px solid rgba(2,119,189,0.18);"><iconify-icon icon="ph:waves-fill" style="pointer-events:none;"></iconify-icon>'+(st||t('section-beaches'))+'</span>';
   } else {
-    badgeHtml='<div class="hero-card-badge" style="background:rgba(0,0,0,0.42);color:#fff"><iconify-icon icon="ph:map-pin-fill" style="font-size:10px;pointer-events:none"></iconify-icon>'+t('tourism-label')+'</div>';
+    badge='<span class="place-card-2026-badge" style="background:var(--green-xl);color:var(--green-m);border:1px solid rgba(0,135,90,0.18);"><iconify-icon icon="ph:map-pin-fill" style="pointer-events:none;"></iconify-icon>'+t('tourism-label')+'</span>';
   }
-  /* زر الخريطة المدمج — محذوف */
-  var desc=_f(item,'description')||_f(item,'location')||'';
-  return '<div class="hero-card" '+dataAttr+'>'
-    +imgH
-    +'<div class="hero-card-grad"></div>'
-    +'<div class="hero-card-body">'
-    +'<div class="hero-card-info"><div class="hero-card-name">'+n+'</div></div>'
+
+  /* معلومات إضافية */
+  var meta='';
+  var loc=item.location||item.region||item.area||'';
+  if(loc) meta+='<div class="place-card-2026-meta-item"><iconify-icon icon="ph:map-pin-simple-fill" style="color:var(--muted-2);pointer-events:none;"></iconify-icon><span>'+loc+'</span></div>';
+  if(isBeach&&item.length) meta+='<div class="place-card-2026-meta-item"><iconify-icon icon="ph:ruler-fill" style="color:var(--muted-2);pointer-events:none;"></iconify-icon><span>'+item.length+'</span></div>';
+
+  /* زر الخريطة */
+  var mapBtn='<button class="place-card-2026-map-btn" onclick="event.stopPropagation();haptic(\'light\');switchTabWithFilter(\'map\',\''+mapFilter+'\');" aria-label="الخريطة">'
+    +'<iconify-icon icon="ph:map-pin-bold" style="pointer-events:none;"></iconify-icon>'
+    +'</button>';
+
+  return '<div class="place-card-2026" '+dataAttr+'>'
+    +'<div class="place-card-2026-img">'+imgHtml+'</div>'
+    +'<div class="place-card-2026-body">'
+    +'<div class="place-card-2026-top">'+badge+mapBtn+'</div>'
+    +'<div class="place-card-2026-name">'+n+'</div>'
+    +(meta?'<div class="place-card-2026-meta">'+meta+'</div>':'')
     +'</div>'
     +'</div>';
 }
@@ -3455,7 +3525,7 @@ function initEventDelegation(){
     var readMore=t.closest('.read-more');if(readMore){e.stopPropagation();var id=readMore.getAttribute('data-news-id');if(id)openNewsModal(id);return;}
     var annCardOld=t.closest('.announce-card');if(annCardOld&&!t.closest('.read-more')){var id=annCardOld.getAttribute('data-news-id');if(id)openNewsModal(id);return;}
     var posterCard=t.closest('.poster-card');if(posterCard){var lb=posterCard.getAttribute('data-lb');if(lb)openLightbox(lb);return;}
-    var placeCard=t.closest('.place-card,.hero-card');if(placeCard){var bid=placeCard.getAttribute('data-beach-id');var tid=placeCard.getAttribute('data-tour-id');if(bid)openBeachModal(bid);else if(tid)openTourismModal(tid);return;}
+    var placeCard=t.closest('.place-card,.hero-card,.place-card-2026');if(placeCard){var bid=placeCard.getAttribute('data-beach-id');var tid=placeCard.getAttribute('data-tour-id');if(bid)openBeachModal(bid);else if(tid)openTourismModal(tid);return;}
     var facCard=t.closest('.fac-card');if(facCard){var fid=facCard.getAttribute('data-fac-id');var ftab=facCard.getAttribute('data-fac-tab');if(fid)openFacModal(fid,ftab||'admin-branches');return;}
     var archCell=t.closest('.archive-cell,.archive-single');if(archCell){var lb=archCell.getAttribute('data-lb');if(lb)openLightbox(lb);return;}
     var lbEl=t.closest('[data-lb]');if(lbEl&&!lbEl.closest('#lightbox')){var lb=lbEl.getAttribute('data-lb');if(lb){openLightbox(lb);return;}}
