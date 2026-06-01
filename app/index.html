@@ -610,10 +610,10 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 #lb-prev.hidden,#lb-next.hidden{opacity:0;pointer-events:none;}
 #lb-counter{position:absolute;bottom:calc(var(--safe-b) + 16px);left:50%;transform:translateX(-50%);color:rgba(255,255,255,.7);font-size:12px;font-weight:700;font-family:var(--font-main);background:rgba(0,0,0,.38);padding:4px 14px;border-radius:var(--r-full);pointer-events:none;display:none;backdrop-filter:blur(8px);}
 /* WEATHER / SEA UNIFIED */
-.weather-sea-section{padding:0 16px 6px;}
-.weather-sea-unified-card{background:var(--card);border-radius:var(--r-xl);box-shadow:var(--elev-3);border:1px solid var(--border-light);overflow:hidden;}.ws-tabs,.ws-panel{overflow:hidden;}
-.ws-tabs{display:flex;border-bottom:none;background:transparent;padding:0 4px;}
-.ws-tab{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:12px 8px;border:none;background:transparent;font-family:var(--font-main);font-size:13px;font-weight:700;color:var(--muted-2);cursor:pointer;touch-action:manipulation;position:relative;transition:color var(--dur-mid);}
+.weather-sea-section{padding:0;display:flex;flex-direction:column;}
+.weather-sea-unified-card{background:var(--card);border-radius:var(--r-xl);box-shadow:var(--elev-3);border:1px solid var(--border-light);overflow:hidden;}.ws-panel{overflow:hidden;}
+.ws-tabs{display:flex;border-bottom:none;background:transparent;padding:0 4px;position:relative;z-index:1;}
+.ws-tab{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:12px 8px;border:none;background:transparent !important;font-family:var(--font-main);font-size:13px;font-weight:700;color:var(--muted-2);cursor:pointer;touch-action:manipulation;position:relative;transition:color var(--dur-mid);box-shadow:none !important;outline:none;}
 .ws-tab::after{content:'';position:absolute;bottom:0;left:20%;right:20%;height:2.5px;background:linear-gradient(90deg,var(--green-dark),var(--green));border-radius:2px 2px 0 0;transform:scaleX(0);transition:transform var(--dur-mid) var(--ease-spring);}
 .ws-tab.active{color:var(--green);}
 .ws-tab.active::after{transform:scaleX(1);}
@@ -622,8 +622,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .ws-tab iconify-icon{font-size:14px;pointer-events:none;}
 .ws-panel{padding:16px;transition:background .25s;}
 .ws-panel.hidden{display:none;}
-#ws-panel-weather{background:rgba(0,135,90,0.04);}
-#ws-panel-sea{background:rgba(21,101,192,0.04);}
+#ws-panel-weather{background:transparent;}
+#ws-panel-sea{background:transparent;}
 .wcard-header{display:flex;align-items:center;gap:11px;margin-bottom:13px;}
 .wcard-icon-wrap{width:42px;height:42px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .25s;}
 .wcard-title{font-size:13px;font-weight:900;color:var(--text);letter-spacing:-.15px;}
@@ -963,18 +963,18 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           <!-- بطاقة الطقس والبحر الموحدة -->
           <div class="section" style="padding-bottom:4px">
             <div class="weather-sea-section">
+              <!-- التبويبان خارج البطاقة -->
+              <div class="ws-tabs">
+                <button class="ws-tab active" id="ws-tab-weather" onclick="switchWsTab('weather')">
+                  <iconify-icon icon="lucide:sun" style="font-size:14px;pointer-events:none"></iconify-icon>
+                  <span data-i18n="ws-tab-weather">حالة الطقس</span>
+                </button>
+                <button class="ws-tab" id="ws-tab-sea" onclick="switchWsTab('sea')">
+                  <iconify-icon icon="lucide:waves" style="font-size:14px;pointer-events:none"></iconify-icon>
+                  <span data-i18n="ws-tab-sea">حالة البحر</span>
+                </button>
+              </div>
               <div class="weather-sea-unified-card">
-                <!-- تبويبان علويان -->
-                <div class="ws-tabs">
-                  <button class="ws-tab active" id="ws-tab-weather" onclick="switchWsTab('weather')">
-                    <iconify-icon icon="lucide:sun" style="font-size:14px;pointer-events:none"></iconify-icon>
-                    <span data-i18n="ws-tab-weather">حالة الطقس</span>
-                  </button>
-                  <button class="ws-tab" id="ws-tab-sea" onclick="switchWsTab('sea')">
-                    <iconify-icon icon="lucide:waves" style="font-size:14px;pointer-events:none"></iconify-icon>
-                    <span data-i18n="ws-tab-sea">حالة البحر</span>
-                  </button>
-                </div>
                 <!-- محتوى الطقس -->
                 <div class="ws-panel" id="ws-panel-weather">
 
