@@ -612,13 +612,13 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 /* WEATHER / SEA UNIFIED */
 .weather-sea-section{padding:0 16px 6px;}
 .weather-sea-unified-card{background:var(--card);border-radius:var(--r-xl);box-shadow:var(--elev-3);border:1px solid var(--border-light);overflow:hidden;}.ws-tabs,.ws-panel{overflow:hidden;}
-.ws-tabs{display:flex;border-bottom:1px solid var(--border-light);background:var(--card);}
-.ws-tab{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:11px 8px;border:none;background:transparent;font-family:var(--font-main);font-size:13px;font-weight:700;color:var(--muted-2);cursor:pointer;touch-action:manipulation;position:relative;transition:color var(--dur-mid);}
-.ws-tab::after{content:'';position:absolute;bottom:0;left:16px;right:16px;height:2.5px;background:var(--green);border-radius:2px 2px 0 0;transform:scaleX(0);transition:transform var(--dur-mid) var(--ease-spring);}
+.ws-tabs{display:flex;border-bottom:none;background:transparent;padding:0 4px;}
+.ws-tab{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:12px 8px;border:none;background:transparent;font-family:var(--font-main);font-size:13px;font-weight:700;color:var(--muted-2);cursor:pointer;touch-action:manipulation;position:relative;transition:color var(--dur-mid);}
+.ws-tab::after{content:'';position:absolute;bottom:0;left:20%;right:20%;height:2.5px;background:linear-gradient(90deg,var(--green-dark),var(--green));border-radius:2px 2px 0 0;transform:scaleX(0);transition:transform var(--dur-mid) var(--ease-spring);}
 .ws-tab.active{color:var(--green);}
 .ws-tab.active::after{transform:scaleX(1);}
 #ws-tab-sea.active{color:#1565C0;}
-#ws-tab-sea.active::after{background:#1565C0;}
+#ws-tab-sea.active::after{background:linear-gradient(90deg,#1565C0,#1976D2);}
 .ws-tab iconify-icon{font-size:14px;pointer-events:none;}
 .ws-panel{padding:16px;transition:background .25s;}
 .ws-panel.hidden{display:none;}
@@ -806,7 +806,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 [data-theme="dark"] .seg-btn.active{background:var(--green);color:#fff;border-color:var(--green);}
 
 /* ── Weather ── */
-[data-theme="dark"] .ws-tabs{background:#1C1E24;}
 [data-theme="dark"] .ws-tab{color:#5C5F6B;background:transparent;}
 [data-theme="dark"] .ws-tab.active{background:#111318;color:var(--green);}
 [data-theme="dark"] #ws-panel-weather{background:rgba(0,135,90,0.06);}
