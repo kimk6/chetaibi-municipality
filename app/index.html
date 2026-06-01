@@ -664,32 +664,31 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   width:100%;background:var(--card);
   border-radius:20px;
   border:1px solid var(--border-light);
-  box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.06);
+  box-shadow:var(--elev-3);
   display:flex;flex-direction:row;
   cursor:pointer;direction:rtl;
   overflow:hidden;position:relative;
   box-sizing:border-box;
   transition:transform .12s ease,box-shadow .12s ease;
-  min-height:110px;
+  min-height:90px;
 }
 .ann-card:active{transform:scale(.985);box-shadow:0 1px 3px rgba(0,0,0,.04);}
 
-/* الشريط اللوني الجانبي — عريض وبارز */
+/* الشريط اللوني الجانبي */
 .ann-card-side{
-  width:72px;flex-shrink:0;
+  width:68px;flex-shrink:0;
   display:flex;flex-direction:column;
   align-items:center;justify-content:center;
-  gap:8px;padding:16px 0;
+  gap:6px;padding:12px 0;
   position:relative;
 }
 .ann-card-side-icon{
-  width:44px;height:44px;border-radius:14px;
-  background:rgba(255,255,255,0.22);
+  width:42px;height:42px;
   display:flex;align-items:center;justify-content:center;
 }
-.ann-card-side-icon iconify-icon{font-size:22px;pointer-events:none;color:#fff;}
+.ann-card-side-icon iconify-icon{font-size:28px;pointer-events:none;color:#fff;}
 .ann-card-side-label{
-  font-size:9.5px;font-weight:900;color:rgba(255,255,255,0.90);
+  font-size:10px;font-weight:900;color:rgba(255,255,255,0.92);
   letter-spacing:.03em;text-align:center;line-height:1.2;
   padding:0 4px;
 }
@@ -698,32 +697,33 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .ann-card-body{
   flex:1;min-width:0;
   display:flex;flex-direction:column;
-  padding:14px 14px 12px;
+  padding:11px 14px 10px;
   gap:0;
 }
-.ann-card-meta{
-  display:flex;align-items:center;gap:6px;
-  margin-bottom:8px;
-}
+.ann-card-meta{display:none;}
 .ann-card-date{
   display:flex;align-items:center;gap:4px;
   font-size:10.5px;font-weight:600;color:var(--muted);
 }
 .ann-card-date iconify-icon{font-size:12px;pointer-events:none;}
 .ann-card-excerpt{
-  font-size:13px;color:var(--text);
-  line-height:1.72;font-weight:500;
+  font-size:12.5px;color:var(--text);
+  line-height:1.65;font-weight:500;
   display:-webkit-box;-webkit-line-clamp:3;
   -webkit-box-orient:vertical;overflow:hidden;
   flex:1;
 }
+.ann-card-divider{
+  height:1px;background:var(--border-light);
+  margin:8px 0 0;
+}
 .ann-card-footer{
-  display:flex;align-items:center;justify-content:flex-end;
-  margin-top:10px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:8px;
 }
 .ann-card-btn{
   display:inline-flex;align-items:center;gap:5px;
-  border-radius:99px;padding:5px 13px;
+  border-radius:99px;padding:4px 12px;
   font-family:var(--font-main);font-size:11px;font-weight:800;
   cursor:pointer;touch-action:manipulation;
   white-space:nowrap;border:none;
@@ -2221,10 +2221,11 @@ function _buildAnnCard(n,c){
     +'<div class="ann-card-side-label">'+lbl+'</div>'
     +'</div>'
     +'<div class="ann-card-body">'
-    +'<div class="ann-card-meta">'+dateHtml+'</div>'
     +'<div class="ann-card-excerpt">'+excerpt+'</div>'
+    +'<div class="ann-card-divider"></div>'
     +'<div class="ann-card-footer">'
     +'<button class="ann-card-btn" data-news-id="'+n.id+'" style="background:'+c.btnBg+';color:'+c.btnColor+'">'+t('read-more')+' <iconify-icon icon="ph:arrow-left-bold"></iconify-icon></button>'
+    +dateHtml
     +'</div>'
     +'</div>';
 }
