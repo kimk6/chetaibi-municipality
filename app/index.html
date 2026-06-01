@@ -718,7 +718,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   margin:8px 0 0;
 }
 .ann-card-footer{
-  display:flex;align-items:center;justify-content:space-between;
+  display:flex;align-items:center;justify-content:flex-start;
   padding-top:8px;
 }
 .ann-card-btn{
@@ -729,8 +729,11 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   white-space:nowrap;border:none;
   transition:opacity .1s;
 }
-.ann-card-btn:active{opacity:.65;}
-.ann-card-btn iconify-icon{font-size:11px;pointer-events:none;}
+.ann-card-footer-sep{
+  width:1px;height:14px;
+  background:var(--border-light);
+  flex-shrink:0;margin:0 6px;
+}
 
 /* إلغاء كل الـ classes القديمة غير المستخدمة */
 .ann-card-inner,.ann-card-accent,.ann-card-body-wrap,
@@ -2224,8 +2227,9 @@ function _buildAnnCard(n,c){
     +'<div class="ann-card-excerpt">'+excerpt+'</div>'
     +'<div class="ann-card-divider"></div>'
     +'<div class="ann-card-footer">'
-    +'<button class="ann-card-btn" data-news-id="'+n.id+'" style="background:'+c.btnBg+';color:'+c.btnColor+'">'+t('read-more')+' <iconify-icon icon="ph:arrow-left-bold"></iconify-icon></button>'
     +dateHtml
+    +'<div class="ann-card-footer-sep"></div>'
+    +'<button class="ann-card-btn" data-news-id="'+n.id+'" style="background:'+c.btnBg+';color:'+c.btnColor+'">'+t('read-more')+' <iconify-icon icon="ph:arrow-left-bold"></iconify-icon></button>'
     +'</div>'
     +'</div>';
 }
