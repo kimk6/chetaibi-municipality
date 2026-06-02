@@ -3086,24 +3086,9 @@ function initEventDelegation(){
   },{passive:true});
   document.getElementById('nav-news').addEventListener('click',function(){haptic('tab');switchTab('news');});
   document.getElementById('nav-guide').addEventListener('click',function(){haptic('tab');switchTab('guide');});
-  var _navArchive=document.getElementById('nav-archive');if(_navArchive)_navArchive.addEventListener('click',function(){haptic('tab');switchTab('archive');});
   var _navSvc=document.getElementById('nav-services');if(_navSvc)_navSvc.addEventListener('click',function(){haptic('tab');switchTab('services');});
   var _hdrSearch=document.getElementById('hdr-search-btn');if(_hdrSearch)_hdrSearch.addEventListener('click',function(){Search.open();});
   document.getElementById('hdr-notif-btn').addEventListener('click',function(){haptic('light');});
-
-  /* زر الكل - إعلانات (محذوف من UI لكن نتحقق منه) */
-  var btnOfficial=document.getElementById('btn-see-news-official');
-  if(btnOfficial) btnOfficial.addEventListener('click',function(){
-    haptic('light');switchTab('news');
-    setTimeout(function(){var btn=document.getElementById('news-btn-official');if(btn)filterNews('official',btn);},350);
-  });
-
-  /* زر الكل - آخر المستجدات */
-  var btnAll=document.getElementById('btn-see-news-all');
-  if(btnAll) btnAll.addEventListener('click',function(){
-    haptic('light');switchTab('news');
-    setTimeout(function(){var btn=document.getElementById('news-btn-activity');if(btn)filterNews('activity',btn);},350);
-  });
 
   var btnBeaches=document.getElementById('btn-see-beaches');
   if(btnBeaches) btnBeaches.addEventListener('click',function(){haptic('light');switchTabWithFilter('map','beach');});
