@@ -670,25 +670,25 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   overflow:hidden;position:relative;
   box-sizing:border-box;
   transition:transform .12s ease,box-shadow .12s ease;
-  min-height:90px;
+  min-height:74px;
 }
 .ann-card:active{transform:scale(.985);box-shadow:0 1px 3px rgba(0,0,0,.04);}
 
 /* الشريط اللوني الجانبي */
 .ann-card-side{
-  width:68px;flex-shrink:0;
+  width:58px;flex-shrink:0;
   display:flex;flex-direction:column;
   align-items:center;justify-content:center;
-  gap:6px;padding:12px 0;
+  gap:4px;padding:8px 0;
   position:relative;
 }
 .ann-card-side-icon{
-  width:42px;height:42px;
+  width:34px;height:34px;
   display:flex;align-items:center;justify-content:center;
 }
-.ann-card-side-icon iconify-icon{font-size:28px;pointer-events:none;color:#fff;}
+.ann-card-side-icon iconify-icon{font-size:22px;pointer-events:none;color:#fff;}
 .ann-card-side-label{
-  font-size:10px;font-weight:900;color:rgba(255,255,255,0.92);
+  font-size:9.5px;font-weight:900;color:rgba(255,255,255,0.92);
   letter-spacing:.03em;text-align:center;line-height:1.2;
   padding:0 4px;
 }
@@ -697,7 +697,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .ann-card-body{
   flex:1;min-width:0;
   display:flex;flex-direction:column;
-  padding:11px 14px 10px;
+  padding:8px 12px 8px;
   gap:0;
 }
 .ann-card-meta{display:none;}
@@ -715,12 +715,12 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 }
 .ann-card-divider{
   height:1px;background:var(--border-light);
-  margin:8px 0 0;
+  margin:5px 0 0;
 }
 .ann-card-footer{
   display:flex;align-items:center;justify-content:space-between;
   flex-direction:row-reverse;
-  padding-top:8px;
+  padding-top:5px;
 }
 .ann-card-btn{
   display:inline-flex;align-items:center;gap:5px;
@@ -922,11 +922,11 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .ws-tab:active,.seg-btn:active{transform:scale(.95);}
 /* ══ DISCOVER CHETAIBI BUTTONS ══ */
 .discover-btn{
-  flex:1;display:flex;flex-direction:column;align-items:center;gap:9px;
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;
   background:var(--card);
   border:1px solid var(--border-light);
   border-radius:var(--r-lg);
-  padding:14px 8px 13px;
+  padding:10px 8px 9px;
   cursor:pointer;touch-action:manipulation;
   font-family:var(--font-main);
   box-shadow:var(--elev-2);
@@ -940,7 +940,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 }
 .discover-btn:active{transform:scale(.93);opacity:.85;box-shadow:var(--elev-1);}
 .discover-btn-icon{
-  width:46px;height:46px;
+  width:38px;height:38px;
   border-radius:var(--r-md);
   display:flex;align-items:center;justify-content:center;
   flex-shrink:0;
@@ -1008,19 +1008,19 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             <div style="display:flex;gap:10px;padding:0 16px 6px;">
               <button class="discover-btn" onclick="switchTab('map');haptic('mid')">
                 <div class="discover-btn-icon" style="background:rgba(21,101,192,0.10);">
-                  <iconify-icon icon="lucide:map" style="color:#1565C0;font-size:22px;pointer-events:none;"></iconify-icon>
+                  <iconify-icon icon="lucide:map" style="color:#1565C0;font-size:18px;pointer-events:none;"></iconify-icon>
                 </div>
                 <span class="discover-btn-label" data-i18n="nav-map">الخريطة التفاعلية</span>
               </button>
               <button class="discover-btn" onclick="switchTab('guide');haptic('mid')">
                 <div class="discover-btn-icon" style="background:rgba(0,135,90,0.10);">
-                  <iconify-icon icon="lucide:map-pin" style="color:var(--green);font-size:22px;pointer-events:none;"></iconify-icon>
+                  <iconify-icon icon="lucide:map-pin" style="color:var(--green);font-size:18px;pointer-events:none;"></iconify-icon>
                 </div>
                 <span class="discover-btn-label" data-i18n="nav-guide">الدليل الشامل</span>
               </button>
               <button class="discover-btn" onclick="switchTab('archive');haptic('mid')">
                 <div class="discover-btn-icon" style="background:rgba(245,127,23,0.10);">
-                  <iconify-icon icon="lucide:scroll-text" style="color:var(--amber);font-size:22px;pointer-events:none;"></iconify-icon>
+                  <iconify-icon icon="lucide:scroll-text" style="color:var(--amber);font-size:18px;pointer-events:none;"></iconify-icon>
                 </div>
                 <span class="discover-btn-label">الأرشيف</span>
               </button>
