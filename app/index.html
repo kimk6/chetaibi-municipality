@@ -956,8 +956,32 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 [data-theme="dark"] .discover-btn{background:var(--card);border-color:var(--border);box-shadow:0 2px 12px rgba(0,0,0,.4);}
 [data-theme="dark"] .discover-btn::after{background:radial-gradient(ellipse at 50% 0%,rgba(0,135,90,0.06) 0%,transparent 70%);}
 
+/* ══ HOME NEWS CARDS (آخر المستجدات) ══ */
+.hn-card{
+  min-width:min(220px,65vw);max-width:260px;
+  background:var(--card);border-radius:var(--r-lg);overflow:hidden;
+  box-shadow:var(--elev-card);flex-shrink:0;
+  border:1px solid var(--border-light);cursor:pointer;
+  display:flex;flex-direction:column;touch-action:manipulation;
+  transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);
+}
+.hn-card:active{transform:scale(.96);opacity:.85;}
+.hn-card-img{width:100%;height:132px;object-fit:cover;display:block;flex-shrink:0;pointer-events:none;}
+.hn-card-img-ph{display:flex;align-items:center;justify-content:center;}
+.hn-card-body{padding:10px 12px 0;flex:1;display:flex;flex-direction:column;gap:6px;}
+.hn-card-title{
+  font-size:13px;font-weight:800;color:var(--text);
+  line-height:1.45;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  letter-spacing:-.15px;
+}
+.hn-card-footer{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:8px 0 10px;border-top:1px solid var(--border-light);
+  margin-top:auto;min-height:40px;
+}
+
 </style>
-</head>
 <body>
 <a href="#screen-container" style="position:absolute;top:-40px;left:0;background:var(--green);color:#fff;padding:8px 16px;border-radius:0 0 8px 8px;font-size:13px;font-weight:700;z-index:9999;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-40px'">انتقل للمحتوى الرئيسي</a>
 <div id="app">
@@ -1048,6 +1072,23 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               <div class="h-scroll" id="h-tourism">
                 <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
               </div>
+            </div>
+          </div>
+
+          <!-- آخر المستجدات -->
+          <div class="section" id="home-news-section" style="padding-bottom:4px">
+            <div class="section-header">
+              <div class="section-title">
+                <iconify-icon icon="lucide:newspaper"></iconify-icon>
+                <span data-i18n="section-news">آخر المستجدات</span>
+              </div>
+              <button class="see-all-arrow-btn" onclick="switchTab('news');haptic('light')">
+                <span data-i18n="btn-all">الكل</span>
+                <iconify-icon icon="lucide:chevron-left"></iconify-icon>
+              </button>
+            </div>
+            <div class="h-scroll" id="h-home-news">
+              <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
             </div>
           </div>
 
@@ -2457,7 +2498,7 @@ async function syncMayorToSheet(){
     if(iconEl) iconEl.style.display = 'none';
   }
 }
-async function loadHome(){loadHOfficial();loadMayorHome();loadHBeaches();loadHTourism();fetchPWAWeather();fetchPWASea();}
+async function loadHome(){loadHOfficial();loadMayorHome();loadHBeaches();loadHTourism();loadHHomeNews();fetchPWAWeather();fetchPWASea();}
 var PWA_LAT=37.0850,PWA_LON=7.2550;
 /* _debugWeather removed in production */
 /* _debugSea removed in production */
@@ -2743,6 +2784,35 @@ async function loadHOfficial(){
 }
 
 async function loadHNews(){/* تُغذَّى من loadHOfficial */}
+async function loadHHomeNews(){
+  var el=document.getElementById('h-home-news');
+  if(!el)return;
+  el.innerHTML=skNewsCards(3);
+  try{
+    var src=allNews.length?allNews:((await api('/api/news')).data||[]);
+    if(!allNews.length)allNews=src;
+    var items=src.filter(function(n){return n.category==='activity'||n.category==='social';}).slice(0,6);
+    if(!items.length){el.innerHTML='';var sec=document.getElementById('home-news-section');if(sec)sec.style.display='none';return;}
+    var NS_=NS||{};
+    el.innerHTML=items.map(function(n){
+      var s=(NS_[n.category])||NS_.official||{grad:'linear-gradient(135deg,#00875A,#005C3D)'};
+      var img=n.image_url
+        ?'<img class="hn-card-img" src="'+n.image_url+'" alt="" loading="lazy" decoding="async">'
+        :'<div class="hn-card-img hn-card-img-ph" style="background:'+s.grad+'"><iconify-icon icon="lucide:newspaper" style="color:rgba(255,255,255,.7);font-size:1.8rem;pointer-events:none"></iconify-icon></div>';
+      var title=_f(n,'title')||'';
+      return '<div class="hn-card" data-news-id="'+n.id+'">'
+        +img
+        +'<div class="hn-card-body">'
+        +(title?'<div class="hn-card-title">'+title+'</div>':'')
+        +'<div class="hn-card-footer">'
+        +'<span class="card-date"><iconify-icon icon="lucide:calendar-days"></iconify-icon>'+(n.date||'')+'</span>'
+        +'<button class="read-more" data-news-id="'+n.id+'">'+t('read-more')+'<iconify-icon icon="lucide:chevron-left"></iconify-icon></button>'
+        +'</div>'
+        +'</div>'
+        +'</div>';
+    }).join('');
+  }catch(e){var el2=document.getElementById('h-home-news');if(el2)el2.innerHTML='';}
+}
 async function loadHBeaches(){var el=document.getElementById('h-beaches');el.innerHTML=skPlaceCards(4);try{var d=await api('/api/beaches');el.innerHTML=(d.data||[]).slice(0,8).map(b=>placeCard(b,'beach')).join('');}catch(e){el.innerHTML='';}}
 async function loadHTourism(){var el=document.getElementById('h-tourism');el.innerHTML=skPlaceCards(4);try{var d=await api('/api/tourism');el.innerHTML=(d.data||[]).slice(0,8).map(t=>placeCard(t,'tourism')).join('');}catch(e){el.innerHTML='';}}
 function placeCard(item,type){
