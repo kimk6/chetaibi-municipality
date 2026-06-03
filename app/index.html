@@ -1027,30 +1027,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </div>
           </div>
 
-          <!-- قسم الشواطئ والمعالم السياحية -->
-          <div class="section" style="padding-bottom:8px" id="places-section">
-            <div id="places-tabs-row" style="display:flex;justify-content:center;gap:8px;padding:4px 18px 12px;touch-action:pan-y;">
-              <button class="ws-tab active" id="place-tab-beaches" onclick="switchPlaceTab('beaches')" style="flex:1;">
-                <iconify-icon icon="lucide:waves" style="font-size:14px;pointer-events:none;color:inherit"></iconify-icon>
-                <span data-i18n="section-beaches">شواطئ شطايبي</span>
-              </button>
-              <button class="ws-tab" id="place-tab-tourism" onclick="switchPlaceTab('tourism')" style="flex:1;">
-                <iconify-icon icon="lucide:sun" style="font-size:14px;pointer-events:none;color:inherit"></iconify-icon>
-                <span data-i18n="section-tourism">معالم سياحية</span>
-              </button>
-            </div>
-            <div id="place-panel-beaches">
-              <div class="h-scroll" id="h-beaches">
-                <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
-              </div>
-            </div>
-            <div id="place-panel-tourism" style="display:none;">
-              <div class="h-scroll" id="h-tourism">
-                <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
-              </div>
-            </div>
-          </div>
-
           <!-- بطاقة الطقس والبحر الموحدة -->
           <div class="section" style="padding-bottom:4px">
             <div class="weather-sea-section">
@@ -1122,6 +1098,33 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- قسم الشواطئ والمعالم السياحية -->
+          <div class="section" style="padding-bottom:8px" id="places-section">
+            <div style="padding:4px 18px 10px;text-align:center;">
+              <span style="font-size:15px;font-weight:900;color:var(--text);letter-spacing:-.3px;">السياحة في شطايبي</span>
+            </div>
+            <div id="places-tabs-row" style="display:flex;justify-content:center;gap:8px;padding:0 18px 12px;touch-action:pan-y;">
+              <button class="ws-tab active" id="place-tab-beaches" onclick="switchPlaceTab('beaches')" style="flex:1;">
+                <iconify-icon icon="lucide:waves" style="font-size:14px;pointer-events:none;color:inherit"></iconify-icon>
+                <span data-i18n="section-beaches">شواطئ شطايبي</span>
+              </button>
+              <button class="ws-tab" id="place-tab-tourism" onclick="switchPlaceTab('tourism')" style="flex:1;">
+                <iconify-icon icon="lucide:sun" style="font-size:14px;pointer-events:none;color:inherit"></iconify-icon>
+                <span data-i18n="section-tourism">معالم سياحية</span>
+              </button>
+            </div>
+            <div id="place-panel-beaches">
+              <div class="h-scroll" id="h-beaches">
+                <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
+              </div>
+            </div>
+            <div id="place-panel-tourism" style="display:none;">
+              <div class="h-scroll" id="h-tourism">
+                <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
               </div>
             </div>
           </div>
