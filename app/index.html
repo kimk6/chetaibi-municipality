@@ -156,16 +156,23 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   display:flex;align-items:center;gap:0;
   white-space:nowrap;
   animation:ticker-scroll 28s linear infinite;
+  animation-play-state:paused;
   will-change:transform;
 }
-.ann-ticker-track:hover{animation-play-state:paused;}
+.ann-ticker-track.ready{animation-play-state:running;}
+.ann-ticker-track:hover{animation-play-state:paused !important;}
 .ann-ticker-item{
   display:inline-flex;align-items:center;gap:6px;
   font-size:12px;font-weight:700;color:var(--text);
   padding:0 32px 0 0;cursor:pointer;
   transition:color .15s;
+  white-space:nowrap;
+  overflow:visible;
+  -webkit-line-clamp:unset;
+  -webkit-box-orient:unset;
 }
 .ann-ticker-item:active{color:var(--green);}
+.ann-ticker-item span:last-child{white-space:nowrap;display:inline;overflow:visible;}
 .ann-ticker-icon{
   display:inline-flex;align-items:center;justify-content:center;
   width:20px;height:20px;border-radius:50%;
@@ -2971,7 +2978,6 @@ async function loadAnnTicker(){
     if(!allNews.length)allNews=src;
     var items=src.filter(function(n){return n.category==='official';}).slice(0,10);
     if(!items.length){var t2=document.getElementById('ann-ticker');if(t2)t2.style.display='none';return;}
-    /* أيقونة حسب نوع الإعلان */
     var iconMap={
       'استشارة':'ph:file-text-fill',
       'دعوة':'ph:envelope-open-fill',
@@ -2994,17 +3000,23 @@ async function loadAnnTicker(){
       var lbl=n.custom_label||'إعلان';
       var ico=iconMap[lbl]||'ph:megaphone-simple-fill';
       var col=colorMap[lbl]||'var(--green)';
-      var title=_f(n,'title')||(_f(n,'content')||'').substring(0,70)||lbl;
+      var title=_f(n,'title')||(_f(n,'content')||'').substring(0,80)||lbl;
       return '<span class="ann-ticker-item" data-news-id="'+n.id+'">'
         +'<span class="ann-ticker-icon" style="background:'+col+'"><iconify-icon icon="'+ico+'" style="pointer-events:none"></iconify-icon></span>'
-        +'<span>'+title+'</span>'
+        +'<span style="white-space:nowrap;display:inline;">'+title+'</span>'
         +'</span>'
         +'<span class="ann-ticker-sep"></span>';
     };
+    /* نسختان لضمان التكرار السلس بلا انقطاع */
     var html=items.map(makeItem).join('');
     track.innerHTML=html+html;
-    var dur=Math.max(20,items.length*6);
+    /* سرعة متناسبة مع عدد الإعلانات */
+    var dur=Math.max(20,items.length*7);
     track.style.animationDuration=dur+'s';
+    /* تشغيل الحركة بعد تحميل البيانات كاملاً */
+    requestAnimationFrame(function(){
+      track.classList.add('ready');
+    });
     track.querySelectorAll('.ann-ticker-item').forEach(function(el){
       el.addEventListener('click',function(){
         var id=parseInt(this.getAttribute('data-news-id'));
