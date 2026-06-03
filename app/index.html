@@ -920,6 +920,54 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 }
 .nav-btn:active .nav-icon-wrap{transform:scale(.88);}
 .ws-tab:active,.seg-btn:active{transform:scale(.95);}
+/* ══ DISCOVER CHETAIBI BUTTONS ══ */
+.discover-title{
+  font-size:15px;font-weight:900;color:var(--text);
+  letter-spacing:-.3px;line-height:1;
+  position:relative;
+}
+.discover-title::before,.discover-title::after{
+  content:'';display:inline-block;
+  width:22px;height:2px;
+  background:linear-gradient(90deg,transparent,var(--green));
+  border-radius:2px;vertical-align:middle;
+}
+.discover-title::before{margin-left:10px;background:linear-gradient(270deg,transparent,var(--green));}
+.discover-title::after{margin-right:10px;}
+.discover-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:9px;
+  background:var(--card);
+  border:1px solid var(--border-light);
+  border-radius:var(--r-lg);
+  padding:14px 8px 13px;
+  cursor:pointer;touch-action:manipulation;
+  font-family:var(--font-main);
+  box-shadow:var(--elev-2);
+  transition:transform var(--dur-fast) var(--ease-spring),opacity var(--dur-fast),box-shadow var(--dur-fast);
+  position:relative;overflow:hidden;
+}
+.discover-btn::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(0,135,90,0.04) 0%,transparent 70%);
+  pointer-events:none;
+}
+.discover-btn:active{transform:scale(.93);opacity:.85;box-shadow:var(--elev-1);}
+.discover-btn-icon{
+  width:46px;height:46px;
+  border-radius:var(--r-md);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  transition:transform var(--dur-fast) var(--ease-spring);
+}
+.discover-btn:active .discover-btn-icon{transform:scale(.92);}
+.discover-btn-label{
+  font-size:11px;font-weight:800;color:var(--text);
+  text-align:center;line-height:1.35;
+  letter-spacing:-.1px;
+  pointer-events:none;
+}
+[data-theme="dark"] .discover-btn{background:var(--card);border-color:var(--border);box-shadow:0 2px 12px rgba(0,0,0,.4);}
+[data-theme="dark"] .discover-btn::after{background:radial-gradient(ellipse at 50% 0%,rgba(0,135,90,0.06) 0%,transparent 70%);}
 
 </style>
 </head>
@@ -962,9 +1010,36 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             <div id="h-official-single"></div>
           </div>
 
+          <!-- اكتشف شطايبي -->
+          <div class="section" style="padding:0 0 4px;">
+            <div style="padding:16px 18px 12px;display:flex;align-items:center;justify-content:center;">
+              <span class="discover-title">اكتشف شطايبي</span>
+            </div>
+            <div style="display:flex;gap:10px;padding:0 16px 6px;">
+              <button class="discover-btn" onclick="switchTab('map');haptic('mid')">
+                <div class="discover-btn-icon" style="background:rgba(21,101,192,0.10);">
+                  <iconify-icon icon="lucide:map" style="color:#1565C0;font-size:22px;pointer-events:none;"></iconify-icon>
+                </div>
+                <span class="discover-btn-label" data-i18n="nav-map">الخريطة التفاعلية</span>
+              </button>
+              <button class="discover-btn" onclick="switchTab('guide');haptic('mid')">
+                <div class="discover-btn-icon" style="background:rgba(0,135,90,0.10);">
+                  <iconify-icon icon="lucide:book-open" style="color:var(--green);font-size:22px;pointer-events:none;"></iconify-icon>
+                </div>
+                <span class="discover-btn-label" data-i18n="nav-guide">الدليل الشامل</span>
+              </button>
+              <button class="discover-btn" onclick="switchTab('archive');haptic('mid')">
+                <div class="discover-btn-icon" style="background:rgba(245,127,23,0.10);">
+                  <iconify-icon icon="lucide:landmark" style="color:var(--amber);font-size:22px;pointer-events:none;"></iconify-icon>
+                </div>
+                <span class="discover-btn-label" data-i18n="nav-archive">تاريخ شطايبي</span>
+              </button>
+            </div>
+          </div>
+
           <!-- قسم الشواطئ والمعالم السياحية -->
           <div class="section" style="padding-bottom:8px" id="places-section">
-            <div style="display:flex;justify-content:center;gap:8px;padding:0 18px 12px;">
+            <div id="places-tabs-row" style="display:flex;justify-content:center;gap:8px;padding:4px 18px 12px;touch-action:pan-y;">
               <button class="ws-tab active" id="place-tab-beaches" onclick="switchPlaceTab('beaches')" style="flex:1;">
                 <iconify-icon icon="lucide:waves" style="font-size:14px;pointer-events:none;color:inherit"></iconify-icon>
                 <span data-i18n="section-beaches">شواطئ شطايبي</span>
@@ -3506,8 +3581,8 @@ window.addEventListener('load',function(){
   /* swipe تبويبات الطقس والبحر */
   try{
     (function(){
-      /* swipe على places-section للتبديل بين الشواطئ والمعالم */
-      var placesSec=document.getElementById('places-section');
+      /* swipe على صف أزرار تبويبات الشواطئ/المعالم فقط */
+      var placesSec=document.getElementById('places-tabs-row');
       if(placesSec){
         var psx=0,psy=0;
         placesSec.addEventListener('touchstart',function(e){psx=e.touches[0].clientX;psy=e.touches[0].clientY;},{passive:true});
