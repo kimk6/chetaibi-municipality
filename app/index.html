@@ -1798,7 +1798,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 </div>
 
 <!-- FORECAST MODAL -->
-<div class="modal-overlay" id="m-forecast" role="dialog" aria-modal="true" onclick="closeForecastModal()">
+<div class="modal-overlay" id="m-forecast" role="dialog" aria-modal="true" onclick="cm('m-forecast')">
   <div class="modal-sheet forecast-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
     <div class="forecast-modal-header">
@@ -1806,7 +1806,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         <iconify-icon icon="lucide:cloud-sun" style="color:var(--green);font-size:20px;pointer-events:none"></iconify-icon>
         <span>توقعات الأيام القادمة</span>
       </div>
-      <button class="forecast-close-btn" onclick="closeForecastModal()">
+      <button class="forecast-close-btn" onclick="cm('m-forecast')">
         <iconify-icon icon="lucide:x" style="pointer-events:none"></iconify-icon>
       </button>
     </div>
@@ -2696,16 +2696,12 @@ async function fetchPWASea(){
 }
 /* ══ FORECAST MODAL ══ */
 function openForecastModal(){
-  var mo=_g('m-forecast');if(!mo)return;
   renderFcWeather();
   renderFcSea();
-  mo.classList.add('active');
-  document.body.style.overflow='hidden';
+  om('m-forecast');
 }
 function closeForecastModal(){
-  var mo=_g('m-forecast');if(!mo)return;
-  mo.classList.remove('active');
-  document.body.style.overflow='';
+  cm('m-forecast');
 }
 function switchFcTab(tab){
   var tw=_g('fc-tab-weather'),ts=_g('fc-tab-sea');
