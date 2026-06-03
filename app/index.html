@@ -921,19 +921,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .nav-btn:active .nav-icon-wrap{transform:scale(.88);}
 .ws-tab:active,.seg-btn:active{transform:scale(.95);}
 /* ══ DISCOVER CHETAIBI BUTTONS ══ */
-.discover-title{
-  font-size:15px;font-weight:900;color:var(--text);
-  letter-spacing:-.3px;line-height:1;
-  position:relative;
-}
-.discover-title::before,.discover-title::after{
-  content:'';display:inline-block;
-  width:22px;height:2px;
-  background:linear-gradient(90deg,transparent,var(--green));
-  border-radius:2px;vertical-align:middle;
-}
-.discover-title::before{margin-left:10px;background:linear-gradient(270deg,transparent,var(--green));}
-.discover-title::after{margin-right:10px;}
 .discover-btn{
   flex:1;display:flex;flex-direction:column;align-items:center;gap:9px;
   background:var(--card);
@@ -1010,10 +997,13 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             <div id="h-official-single"></div>
           </div>
 
-          <!-- اكتشف شطايبي -->
+          <!-- ترحيب + اكتشف شطايبي -->
           <div class="section" style="padding:0 0 4px;">
-            <div style="padding:16px 18px 12px;display:flex;align-items:center;justify-content:center;">
-              <span class="discover-title">اكتشف شطايبي</span>
+            <div style="padding:18px 18px 14px;display:flex;flex-direction:column;align-items:center;gap:5px;">
+              <div style="font-size:18px;font-weight:900;color:var(--text);letter-spacing:-.4px;line-height:1.3;text-align:center;">
+                مرحباً بكم في <span style="color:var(--green);">شطايبي</span>
+              </div>
+              <div id="welcome-tagline" style="font-size:12.5px;font-weight:500;color:var(--muted);text-align:center;line-height:1.6;min-height:20px;"></div>
             </div>
             <div style="display:flex;gap:10px;padding:0 16px 6px;">
               <button class="discover-btn" onclick="switchTab('map');haptic('mid')">
@@ -1024,15 +1014,15 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               </button>
               <button class="discover-btn" onclick="switchTab('guide');haptic('mid')">
                 <div class="discover-btn-icon" style="background:rgba(0,135,90,0.10);">
-                  <iconify-icon icon="lucide:book-open" style="color:var(--green);font-size:22px;pointer-events:none;"></iconify-icon>
+                  <iconify-icon icon="lucide:map-pin" style="color:var(--green);font-size:22px;pointer-events:none;"></iconify-icon>
                 </div>
                 <span class="discover-btn-label" data-i18n="nav-guide">الدليل الشامل</span>
               </button>
               <button class="discover-btn" onclick="switchTab('archive');haptic('mid')">
                 <div class="discover-btn-icon" style="background:rgba(245,127,23,0.10);">
-                  <iconify-icon icon="lucide:landmark" style="color:var(--amber);font-size:22px;pointer-events:none;"></iconify-icon>
+                  <iconify-icon icon="lucide:scroll-text" style="color:var(--amber);font-size:22px;pointer-events:none;"></iconify-icon>
                 </div>
-                <span class="discover-btn-label" data-i18n="nav-archive">تاريخ شطايبي</span>
+                <span class="discover-btn-label">الأرشيف</span>
               </button>
             </div>
           </div>
@@ -2049,7 +2039,7 @@ function initSwipe(scrollAreaId,getNext){
   var isArchive=(scrollAreaId==='scroll-archive');
   el.addEventListener('touchstart',function(e){
     if(isArchive){startX=e.touches[0].clientX;startY=e.touches[0].clientY;tracking=true;return;}
-    if(e.target.closest('.seg-bar-wrap')||e.target.closest('.archive-card')||e.target.closest('.weather-card')||e.target.closest('.sea-card')||e.target.closest('.weather-sea-unified-card')||e.target.closest('#weather-day-tabs')||e.target.closest('#sea-day-tabs')){tracking=false;return;}
+    if(e.target.closest('.seg-bar-wrap')||e.target.closest('.archive-card')||e.target.closest('.weather-card')||e.target.closest('.sea-card')||e.target.closest('.weather-sea-unified-card')||e.target.closest('#weather-day-tabs')||e.target.closest('#sea-day-tabs')||e.target.closest('#places-tabs-row')){tracking=false;return;}
     /* إيقاف swipe الصفحة الرئيسية فوق الكاروسيل لإتاحة سحبه */
     if(scrollAreaId==='scroll-home'&&e.target.closest('#ann-carousel-outer')){tracking=false;return;}
     /* تجاهل السحب فوق بطاقات h-scroll فقط، لكن السماح على padding المنطقة */
@@ -3574,6 +3564,21 @@ window.addEventListener('load',function(){
       haptic('mid');MoreSheet.open();
     }
   });}catch(e){}
+  /* تأثير الكتابة — مرة واحدة فقط عند أول تشغيل */
+  try{(function(){
+    var el=document.getElementById('welcome-tagline');
+    if(!el)return;
+    var text='جوهرة الساحل الشرقي الجزائري، حيث تمتزج الطبيعة بالتاريخ';
+    var i=0;
+    function type(){
+      if(i<=text.length){
+        el.textContent=text.slice(0,i);
+        i++;
+        setTimeout(type, i<10?0:38);
+      }
+    }
+    setTimeout(type,600);
+  })();}catch(e){}
   ['home','news','guide','archive','map','services'].forEach(function(id){
     var scrollEl=document.querySelector('#screen-'+id+' .scroll-area');
     if(scrollEl)scrollEl.addEventListener('scroll',onScrollAreaScroll,{passive:true});
