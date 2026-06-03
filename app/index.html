@@ -1037,35 +1037,26 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </div>
           </div>
 
-          <div class="section">
-            <div class="section-header">
-              <span class="section-title">
-                <iconify-icon icon="lucide:waves" style="color:var(--sky);pointer-events:none"></iconify-icon>
-                <span data-i18n="section-beaches">شواطئ شطايبي</span>
-              </span>
-              <!-- ✅ تعديل 4: "تصفح" → "الخريطة" مع أيقونة map-pin أخضر -->
-              <button class="see-all-arrow-btn" id="btn-see-beaches"><span data-i18n="nav-map">الخريطة</span>
-                <iconify-icon icon="lucide:map" style="font-size:16px;color:var(--green);pointer-events:none;"></iconify-icon>
-              </button>
-            </div>
-            <div class="h-scroll" id="h-beaches">
-              <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
-            </div>
-          </div>
-
           <div class="section" style="padding-bottom:8px">
-            <div class="section-header">
-              <span class="section-title">
-                <iconify-icon icon="lucide:sun" style="color:var(--amber);pointer-events:none"></iconify-icon>
+            <div style="display:flex;justify-content:center;gap:8px;padding:0 18px 12px;">
+              <button class="ws-tab active" id="place-tab-beaches" onclick="switchPlaceTab('beaches')" style="flex:1;">
+                <iconify-icon icon="lucide:waves" style="font-size:14px;pointer-events:none;color:inherit"></iconify-icon>
+                <span data-i18n="section-beaches">شواطئ شطايبي</span>
+              </button>
+              <button class="ws-tab" id="place-tab-tourism" onclick="switchPlaceTab('tourism')" style="flex:1;">
+                <iconify-icon icon="lucide:sun" style="font-size:14px;pointer-events:none;color:inherit"></iconify-icon>
                 <span data-i18n="section-tourism">معالم سياحية</span>
-              </span>
-              <!-- ✅ تعديل 4: "تصفح" → "الخريطة" مع أيقونة map-pin أخضر -->
-              <button class="see-all-arrow-btn" id="btn-see-tourism"><span data-i18n="nav-map">الخريطة</span>
-                <iconify-icon icon="lucide:map" style="font-size:16px;color:var(--green);pointer-events:none;"></iconify-icon>
               </button>
             </div>
-            <div class="h-scroll" id="h-tourism">
-              <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
+            <div id="place-panel-beaches">
+              <div class="h-scroll" id="h-beaches">
+                <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
+              </div>
+            </div>
+            <div id="place-panel-tourism" style="display:none;">
+              <div class="h-scroll" id="h-tourism">
+                <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
+              </div>
             </div>
           </div>
 
@@ -1898,6 +1889,15 @@ function switchWsTab(tab){
     var panel=document.getElementById('ws-panel-'+t);
     if(btn) btn.classList.toggle('active', t===tab);
     if(panel) panel.classList.toggle('hidden', t!==tab);
+  });
+}
+function switchPlaceTab(tab){
+  var tabs=['beaches','tourism'];
+  tabs.forEach(function(t){
+    var btn=document.getElementById('place-tab-'+t);
+    var panel=document.getElementById('place-panel-'+t);
+    if(btn) btn.classList.toggle('active', t===tab);
+    if(panel) panel.style.display=(t===tab)?'':'none';
   });
 }
 /* ══════════════════════════════════════════
