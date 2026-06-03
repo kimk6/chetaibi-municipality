@@ -151,9 +151,9 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   border-bottom:1px solid rgba(0,135,90,0.13);
   display:flex;align-items:center;
 }
-.ann-ticker-track-wrap{flex:1;overflow:hidden;display:flex;align-items:center;height:100%;}
+.ann-ticker-track-wrap{flex:1;overflow:hidden;display:flex;align-items:center;height:100%;direction:ltr;}
 .ann-ticker-track{
-  display:flex;align-items:center;gap:0;
+  display:inline-flex;align-items:center;gap:0;
   white-space:nowrap;
   animation:ticker-scroll 28s linear infinite;
   animation-play-state:paused;
@@ -162,25 +162,21 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .ann-ticker-track.ready{animation-play-state:running;}
 .ann-ticker-track:hover{animation-play-state:paused !important;}
 .ann-ticker-item{
-  display:inline-flex;align-items:center;gap:6px;
+  display:inline-flex;align-items:center;gap:7px;
   font-size:12px;font-weight:700;color:var(--text);
-  padding:0 32px 0 0;cursor:pointer;
+  padding:0 36px 0 0;cursor:pointer;
   transition:color .15s;
   white-space:nowrap;
-  overflow:visible;
-  -webkit-line-clamp:unset;
-  -webkit-box-orient:unset;
+  flex-shrink:0;
 }
 .ann-ticker-item:active{color:var(--green);}
-.ann-ticker-item span:last-child{white-space:nowrap;display:inline;overflow:visible;}
 .ann-ticker-icon{
   display:inline-flex;align-items:center;justify-content:center;
-  width:20px;height:20px;border-radius:50%;
-  background:var(--green);color:#fff;flex-shrink:0;font-size:11px;
+  flex-shrink:0;font-size:16px;line-height:1;
 }
 .ann-ticker-sep{
   display:inline-block;width:5px;height:5px;border-radius:50%;
-  background:rgba(0,135,90,0.3);margin-left:32px;flex-shrink:0;
+  background:rgba(0,135,90,0.35);margin-right:36px;flex-shrink:0;
 }
 @keyframes ticker-scroll{
   0%{transform:translateX(0);}
@@ -1093,7 +1089,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             <div class="ann-ticker-track-wrap">
               <div class="ann-ticker-track" id="ann-ticker-track">
                 <span class="ann-ticker-item">
-                  <span class="ann-ticker-icon"><iconify-icon icon="ph:megaphone-simple-fill" style="pointer-events:none"></iconify-icon></span>
+                  <span class="ann-ticker-icon" style="color:var(--green)"><iconify-icon icon="ph:megaphone-simple-fill" style="pointer-events:none"></iconify-icon></span>
                   <span>جاري التحميل...</span>
                 </span>
               </div>
@@ -3002,8 +2998,8 @@ async function loadAnnTicker(){
       var col=colorMap[lbl]||'var(--green)';
       var title=_f(n,'title')||(_f(n,'content')||'').substring(0,80)||lbl;
       return '<span class="ann-ticker-item" data-news-id="'+n.id+'">'
-        +'<span class="ann-ticker-icon" style="background:'+col+'"><iconify-icon icon="'+ico+'" style="pointer-events:none"></iconify-icon></span>'
-        +'<span style="white-space:nowrap;display:inline;">'+title+'</span>'
+        +'<span class="ann-ticker-icon" style="color:'+col+'"><iconify-icon icon="'+ico+'" style="pointer-events:none"></iconify-icon></span>'
+        +'<span style="white-space:nowrap;">'+title+'</span>'
         +'</span>'
         +'<span class="ann-ticker-sep"></span>';
     };
