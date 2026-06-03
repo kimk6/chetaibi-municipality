@@ -1001,7 +1001,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           <div class="section" style="padding:0 0 4px;">
             <div style="padding:18px 18px 14px;display:flex;flex-direction:column;align-items:center;gap:5px;">
               <div style="font-size:18px;font-weight:900;color:var(--text);letter-spacing:-.4px;line-height:1.3;text-align:center;">
-                مرحباً بكم في <span style="color:var(--green);">شطايبي</span>
+                اكتشف <span style="color:var(--green);">شطايبي</span>
               </div>
               <div id="welcome-tagline" style="font-size:12.5px;font-weight:500;color:var(--muted);text-align:center;line-height:1.6;min-height:20px;"></div>
             </div>
@@ -1024,6 +1024,30 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 </div>
                 <span class="discover-btn-label">الأرشيف</span>
               </button>
+            </div>
+          </div>
+
+          <!-- قسم الشواطئ والمعالم السياحية -->
+          <div class="section" style="padding-bottom:8px" id="places-section">
+            <div id="places-tabs-row" style="display:flex;justify-content:center;gap:8px;padding:0 18px 12px;touch-action:pan-y;">
+              <button class="ws-tab active" id="place-tab-beaches" onclick="switchPlaceTab('beaches')" style="flex:1;">
+                <iconify-icon icon="lucide:waves" style="font-size:14px;pointer-events:none;color:inherit"></iconify-icon>
+                <span data-i18n="section-beaches">شواطئ شطايبي</span>
+              </button>
+              <button class="ws-tab" id="place-tab-tourism" onclick="switchPlaceTab('tourism')" style="flex:1;">
+                <iconify-icon icon="lucide:sun" style="font-size:14px;pointer-events:none;color:inherit"></iconify-icon>
+                <span data-i18n="section-tourism">معالم سياحية</span>
+              </button>
+            </div>
+            <div id="place-panel-beaches">
+              <div class="h-scroll" id="h-beaches">
+                <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
+              </div>
+            </div>
+            <div id="place-panel-tourism" style="display:none;">
+              <div class="h-scroll" id="h-tourism">
+                <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
+              </div>
             </div>
           </div>
 
@@ -1098,33 +1122,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- قسم الشواطئ والمعالم السياحية -->
-          <div class="section" style="padding-bottom:8px" id="places-section">
-            <div style="padding:4px 18px 10px;text-align:center;">
-              <span style="font-size:15px;font-weight:900;color:var(--text);letter-spacing:-.3px;">السياحة في شطايبي</span>
-            </div>
-            <div id="places-tabs-row" style="display:flex;justify-content:center;gap:8px;padding:0 18px 12px;touch-action:pan-y;">
-              <button class="ws-tab active" id="place-tab-beaches" onclick="switchPlaceTab('beaches')" style="flex:1;">
-                <iconify-icon icon="lucide:waves" style="font-size:14px;pointer-events:none;color:inherit"></iconify-icon>
-                <span data-i18n="section-beaches">شواطئ شطايبي</span>
-              </button>
-              <button class="ws-tab" id="place-tab-tourism" onclick="switchPlaceTab('tourism')" style="flex:1;">
-                <iconify-icon icon="lucide:sun" style="font-size:14px;pointer-events:none;color:inherit"></iconify-icon>
-                <span data-i18n="section-tourism">معالم سياحية</span>
-              </button>
-            </div>
-            <div id="place-panel-beaches">
-              <div class="h-scroll" id="h-beaches">
-                <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
-              </div>
-            </div>
-            <div id="place-panel-tourism" style="display:none;">
-              <div class="h-scroll" id="h-tourism">
-                <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
               </div>
             </div>
           </div>
@@ -3571,7 +3568,7 @@ window.addEventListener('load',function(){
   try{(function(){
     var el=document.getElementById('welcome-tagline');
     if(!el)return;
-    var text='جوهرة الساحل الشرقي الجزائري، حيث تمتزج الطبيعة بالتاريخ';
+    var text='جوهرة الساحل الشرقي، حيث تلتقي الطبيعة بالتاريخ';
     var i=0;
     function type(){
       if(i<=text.length){
