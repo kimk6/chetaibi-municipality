@@ -1004,11 +1004,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
   letter-spacing:-.15px;
 }
-.hn-card-footer{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:8px 0 10px;border-top:1px solid var(--border-light);
-  margin-top:auto;min-height:40px;
-}
+.hn-ann-card{min-width:min(260px,72vw);max-width:300px;flex-shrink:0;margin:0;width:auto;}
 </style>
 <body>
 <a href="#screen-container" style="position:absolute;top:-40px;left:0;background:var(--green);color:#fff;padding:8px 16px;border-radius:0 0 8px 8px;font-size:13px;font-weight:700;z-index:9999;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-40px'">انتقل للمحتوى الرئيسي</a>
@@ -2928,6 +2924,28 @@ async function loadHHomeNews(){
     if(!items.length){el.innerHTML='';var sec=document.getElementById('home-news-section');if(sec)sec.style.display='none';return;}
     var NS_=NS||{};
     el.innerHTML=items.map(function(n){
+      /* بطاقة الإعلانات — نفس تصميم ann-card لكن بعرض ثابت للـ h-scroll */
+      if(n.category==='official'){
+        var c=_annLabelColor(n.custom_label||'');
+        var excerpt=(_f(n,'content')||'').substring(0,100);
+        var dateHtml=n.date?'<div class="ann-card-date"><iconify-icon icon="ph:calendar-blank" style="pointer-events:none"></iconify-icon>'+n.date+'</div>':'';
+        return '<div class="ann-card hn-ann-card" data-news-id="'+n.id+'"'
+          +' style="border-color:'+c.border+';box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px '+c.shadow+';">'
+          +'<div class="ann-card-side" style="background:'+c.bg+'">'
+          +'<div class="ann-card-side-icon"><iconify-icon icon="'+c.icon+'"></iconify-icon></div>'
+          +'<div class="ann-card-side-label">'+(n.custom_label||'إعلان')+'</div>'
+          +'</div>'
+          +'<div class="ann-card-body">'
+          +'<div class="ann-card-excerpt">'+excerpt+'</div>'
+          +'<div class="ann-card-divider"></div>'
+          +'<div class="ann-card-footer">'
+          +'<button class="ann-card-btn" data-news-id="'+n.id+'" style="background:'+c.btnBg+';color:'+c.btnColor+'">'+t('read-more')+' <iconify-icon icon="ph:arrow-left-bold"></iconify-icon></button>'
+          +dateHtml
+          +'</div>'
+          +'</div>'
+          +'</div>';
+      }
+      /* بطاقة عادية للنشاطات والمجتمع */
       var s=(NS_[n.category])||NS_.official||{grad:'linear-gradient(135deg,#00875A,#005C3D)'};
       var img=n.image_url
         ?'<img class="hn-card-img" src="'+n.image_url+'" alt="" loading="lazy" decoding="async">'
