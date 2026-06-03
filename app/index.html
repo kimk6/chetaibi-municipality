@@ -2924,7 +2924,7 @@ async function loadHHomeNews(){
   try{
     var src=allNews.length?allNews:((await api('/api/news')).data||[]);
     if(!allNews.length)allNews=src;
-    var items=src.filter(function(n){return n.category==='activity'||n.category==='social'||n.category==='poster';}).slice(0,6);
+    var items=src.filter(function(n){return n.category==='activity'||n.category==='social'||n.category==='official';}).slice(0,6);
     if(!items.length){el.innerHTML='';var sec=document.getElementById('home-news-section');if(sec)sec.style.display='none';return;}
     var NS_=NS||{};
     el.innerHTML=items.map(function(n){
