@@ -3011,8 +3011,8 @@ async function loadAnnTicker(){
     var fullText=_f(n,'title')||(_f(n,'content')||'');
     var words=fullText.trim().split(/\s+/);
     var shortText=words.slice(0,12).join(' ');
-    var readMoreBtn='<span class="ann-ticker-readmore" data-news-id="'+n.id+'" style="color:'+col+'"> ... <span style="color:'+col+';font-weight:800;">اقرأ المزيد</span> <iconify-icon icon="lucide:chevron-left" style="pointer-events:none;font-size:11px;vertical-align:middle"></iconify-icon></span>';
-    var fullItem=shortText+readMoreBtn;
+    var readMoreBtn='<span class="ann-ticker-readmore" data-news-id="'+n.id+'" style="color:'+col+'">اقرأ المزيد <iconify-icon icon="lucide:chevron-left" style="pointer-events:none;font-size:11px;vertical-align:middle"></iconify-icon></span>';
+    var fullItem=shortText+' ... '+readMoreBtn;
 
     /* تحديث الـ label */
     var labelEl=document.getElementById('ann-ticker-label');
