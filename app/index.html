@@ -3005,7 +3005,7 @@ async function loadAnnTicker(){
     var fullText=_f(n,'title')||(_f(n,'content')||'');
     var words=fullText.trim().split(/\s+/);
     var shortText=words.slice(0,12).join(' ');
-    var readMore='<span style="color:'+col+';font-size:12.5px;font-weight:800;white-space:nowrap"> اقرأ المزيد ‹</span>';
+    var readMore='<span style="color:'+col+';font-size:12.5px;font-weight:800;white-space:nowrap"> اقرأ المزيد ›</span>';
     var fullItem='<span class="ann-ticker-text-inner" data-news-id="'+n.id+'" style="cursor:pointer">'+shortText+' ...'+readMore+'</span>';
 
     /* تحديث الـ label */
@@ -3044,7 +3044,7 @@ async function loadHHomeNews(){
   try{
     var src=allNews.length?allNews:((await api('/api/news')).data||[]);
     if(!allNews.length)allNews=src;
-    var items=src.filter(function(n){return n.category==='activity'||n.category==='social'||n.category==='official';}).slice(0,6);
+    var items=src.filter(function(n){return n.category==='activity'||n.category==='social';}).slice(0,6);
     if(!items.length){el.innerHTML='';var sec=document.getElementById('home-news-section');if(sec)sec.style.display='none';return;}
     var NS_=NS||{};
     el.innerHTML=items.map(function(n){
