@@ -184,21 +184,17 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   100%{transform:translateX(-50%);}
 }
 .ann-ticker-readmore{
-  display:inline-flex;align-items:center;gap:3px;
-  padding:0 10px 0 12px;height:100%;flex-shrink:0;
-  background:none;border:none;border-right:1px solid rgba(0,135,90,0.18);
-  font-family:var(--font-main);font-size:11px;font-weight:800;
-  color:var(--green);cursor:pointer;white-space:nowrap;
-  touch-action:manipulation;
-  transition:opacity .15s;
+  display:inline-flex;align-items:center;gap:2px;
+  background:none;border:none;padding:0;margin:0;
+  font-family:var(--font-main);font-size:12.5px;font-weight:800;
+  cursor:pointer;white-space:nowrap;
+  touch-action:manipulation;vertical-align:middle;
 }
-.ann-ticker-readmore:active{opacity:.6;}
 [data-theme="dark"] .ann-ticker{
   background:linear-gradient(135deg,rgba(0,175,120,0.09),rgba(0,175,120,0.03));
   border-color:rgba(0,175,120,0.18);
 }
 [data-theme="dark"] .ann-ticker-label{border-left-color:rgba(0,175,120,0.22);}
-[data-theme="dark"] .ann-ticker-readmore{border-right-color:rgba(0,175,120,0.22);}
 /* ══════════════════════════════════════════
    SCREEN CONTAINER
 ══════════════════════════════════════════ */
@@ -3011,10 +3007,12 @@ async function loadAnnTicker(){
     var ico=iconMap[lbl]||'ph:megaphone-simple-fill';
     var col=colorMap[lbl]||'var(--green)';
 
-    /* نص مقطوع: 12 كلمة فقط ثم ... */
+    /* نص مقطوع: 12 كلمة ثم ... ثم زر اقرأ المزيد داخل النص المتحرك */
     var fullText=_f(n,'title')||(_f(n,'content')||'');
     var words=fullText.trim().split(/\s+/);
-    var shortText=words.slice(0,12).join(' ')+(words.length>12?' ...':'');
+    var shortText=words.slice(0,12).join(' ');
+    var readMoreBtn='<span class="ann-ticker-readmore" data-news-id="'+n.id+'" style="color:'+col+'"> ... <span style="color:'+col+';font-weight:800;">اقرأ المزيد</span> <iconify-icon icon="lucide:chevron-left" style="pointer-events:none;font-size:11px;vertical-align:middle"></iconify-icon></span>';
+    var fullItem=shortText+readMoreBtn;
 
     /* تحديث الـ label */
     var labelEl=document.getElementById('ann-ticker-label');
@@ -3022,26 +3020,24 @@ async function loadAnnTicker(){
       labelEl.innerHTML='<iconify-icon icon="'+ico+'" style="color:'+col+';pointer-events:none"></iconify-icon><span style="color:'+col+'">'+lbl+'</span>';
     }
 
-    /* تحديث النص — نسختان للتكرار السلس */
+    /* نسختان للتكرار السلس */
     var track=document.getElementById('ann-ticker-track');
-    var textEl=document.getElementById('ann-ticker-text');
-    if(track&&textEl){
-      /* نضع النص مرتين داخل الـ track */
+    if(track){
+      var spacing='<span style="display:inline-block;width:80px;flex-shrink:0"></span>';
       track.innerHTML=
-        '<span class="ann-ticker-text" style="padding-left:80px">'+shortText+'</span>'
-       +'<span class="ann-ticker-text" style="padding-left:80px">'+shortText+'</span>';
-      /* سرعة مناسبة لطول النص */
-      var dur=Math.max(10,words.slice(0,12).join(' ').length*0.22);
+        '<span class="ann-ticker-text">'+fullItem+'</span>'+spacing
+       +'<span class="ann-ticker-text">'+fullItem+'</span>'+spacing;
+      var dur=Math.max(10,shortText.length*0.22);
       track.style.animationDuration=dur+'s';
       requestAnimationFrame(function(){track.classList.add('ready');});
+      track.querySelectorAll('.ann-ticker-readmore').forEach(function(el){
+        el.addEventListener('click',function(){openNewsModal(n.id);});
+      });
     }
 
-    /* زر اقرأ المزيد */
+    /* إخفاء الزر المنفصل */
     var btn=document.getElementById('ann-ticker-readmore');
-    if(btn){
-      btn.style.display='inline-flex';
-      btn.onclick=function(){openNewsModal(n.id);};
-    }
+    if(btn)btn.style.display='none';
   }catch(e){}
 }
 async function loadHNews(){/* تُغذَّى من loadHOfficial */}
