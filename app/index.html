@@ -1105,9 +1105,21 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </button>
           </div>
 
-          <!-- بطاقة الإعلان الأخير -->
-          <div class="section" style="padding-top:20px">
-            <div id="h-official-single"></div>
+          <!-- آخر المستجدات -->
+          <div class="section" id="home-news-section" style="padding-top:20px;padding-bottom:4px">
+            <div class="section-header">
+              <div class="section-title">
+                <iconify-icon icon="lucide:newspaper"></iconify-icon>
+                <span data-i18n="section-news">آخر المستجدات</span>
+              </div>
+              <button class="see-all-arrow-btn" onclick="switchTab('news');haptic('light')">
+                <span data-i18n="btn-all">الكل</span>
+                <iconify-icon icon="lucide:chevron-left"></iconify-icon>
+              </button>
+            </div>
+            <div class="h-scroll" id="h-home-news">
+              <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
+            </div>
           </div>
 
           <!-- ترحيب + اكتشف شطايبي -->
@@ -1161,23 +1173,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               <div class="h-scroll" id="h-tourism">
                 <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
               </div>
-            </div>
-          </div>
-
-          <!-- آخر المستجدات -->
-          <div class="section" id="home-news-section" style="padding-bottom:4px">
-            <div class="section-header">
-              <div class="section-title">
-                <iconify-icon icon="lucide:newspaper"></iconify-icon>
-                <span data-i18n="section-news">آخر المستجدات</span>
-              </div>
-              <button class="see-all-arrow-btn" onclick="switchTab('news');haptic('light')">
-                <span data-i18n="btn-all">الكل</span>
-                <iconify-icon icon="lucide:chevron-left"></iconify-icon>
-              </button>
-            </div>
-            <div class="h-scroll" id="h-home-news">
-              <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
             </div>
           </div>
 
@@ -3010,7 +3005,7 @@ async function loadAnnTicker(){
     var fullText=_f(n,'title')||(_f(n,'content')||'');
     var words=fullText.trim().split(/\s+/);
     var shortText=words.slice(0,12).join(' ');
-    var readMore='<span style="color:'+col+';font-weight:800;white-space:nowrap"> اقرأ المزيد <iconify-icon icon="lucide:chevron-left" style="pointer-events:none;font-size:11px;vertical-align:middle"></iconify-icon></span>';
+    var readMore='<span style="color:'+col+';font-size:12.5px;font-weight:600;white-space:nowrap"> اقرأ المزيد <iconify-icon icon="lucide:chevron-left" style="pointer-events:none;font-size:12px;vertical-align:middle"></iconify-icon></span>';
     var fullItem='<span class="ann-ticker-text-inner" data-news-id="'+n.id+'" style="cursor:pointer">'+shortText+' ...'+readMore+'</span>';
 
     /* تحديث الـ label */
