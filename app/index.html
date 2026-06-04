@@ -163,7 +163,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .ann-ticker-track-wrap{
   flex:1;overflow:hidden;height:100%;
   display:flex;align-items:center;
-  direction:ltr;
 }
 .ann-ticker-track{
   display:inline-flex;align-items:center;
@@ -177,11 +176,11 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .ann-ticker-text{
   display:inline;font-size:12.5px;font-weight:600;
   color:var(--text);white-space:nowrap;
-  padding-left:60px;
+  padding-right:60px;
 }
 @keyframes ticker-scroll{
   0%{transform:translateX(0);}
-  100%{transform:translateX(-50%);}
+  100%{transform:translateX(50%);}
 }
 .ann-ticker-readmore{
   display:inline-flex;align-items:center;gap:2px;
@@ -3011,8 +3010,8 @@ async function loadAnnTicker(){
     var fullText=_f(n,'title')||(_f(n,'content')||'');
     var words=fullText.trim().split(/\s+/);
     var shortText=words.slice(0,12).join(' ');
-    var readMoreBtn='<span class="ann-ticker-readmore" data-news-id="'+n.id+'" style="color:'+col+'">اقرأ المزيد <iconify-icon icon="lucide:chevron-left" style="pointer-events:none;font-size:11px;vertical-align:middle"></iconify-icon></span>';
-    var fullItem=shortText+' ... '+readMoreBtn;
+    var readMoreBtn='';
+    var fullItem='<span class="ann-ticker-text-inner" data-news-id="'+n.id+'" style="cursor:pointer">'+shortText+' ...</span>';
 
     /* تحديث الـ label */
     var labelEl=document.getElementById('ann-ticker-label');
@@ -3029,8 +3028,10 @@ async function loadAnnTicker(){
        +'<span class="ann-ticker-text">'+fullItem+'</span>'+spacing;
       var dur=Math.max(10,shortText.length*0.22);
       track.style.animationDuration=dur+'s';
+      /* ابدأ من الطرف الأيسر (خارج الشاشة) ثم تحرك لليمين */
+      track.style.transform='translateX(0)';
       requestAnimationFrame(function(){track.classList.add('ready');});
-      track.querySelectorAll('.ann-ticker-readmore').forEach(function(el){
+      track.querySelectorAll('.ann-ticker-text-inner').forEach(function(el){
         el.addEventListener('click',function(){openNewsModal(n.id);});
       });
     }
