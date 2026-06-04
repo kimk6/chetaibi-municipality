@@ -1181,7 +1181,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             <div class="section-header" style="margin-bottom:10px">
               <div class="section-title">
                 <iconify-icon icon="lucide:cloud-sun"></iconify-icon>
-                <span>أحوال الطقس في شطايبي</span>
+                <span>أحوال الطقس اليوم</span>
               </div>
               <button class="see-all-arrow-btn" id="ws-forecast-btn" onclick="openForecastModal();haptic('light')">
                 <span>الأيام القادمة</span>
@@ -3004,7 +3004,7 @@ async function loadAnnTicker(){
     /* نص مقطوع: 12 كلمة ثم ... ثم زر اقرأ المزيد داخل النص المتحرك */
     var fullText=_f(n,'title')||(_f(n,'content')||'');
     var words=fullText.trim().split(/\s+/);
-    var shortText=words.slice(0,12).join(' ');
+    var shortText=words.slice(0,15).join(' ');
     var readMore='<span style="color:'+col+';font-size:12.5px;font-weight:800;white-space:nowrap"> اقرأ المزيد ›</span>';
     var fullItem='<span class="ann-ticker-text-inner" data-news-id="'+n.id+'" style="cursor:pointer">'+shortText+' ...'+readMore+'</span>';
 
@@ -3480,6 +3480,7 @@ function initEventDelegation(){
     var annCardBtn=t.closest('.ann-card-btn');if(annCardBtn){e.stopPropagation();var id=annCardBtn.getAttribute('data-news-id');if(id)openNewsModal(id);return;}
     var annCard=t.closest('.ann-card');if(annCard){var id=annCard.getAttribute('data-news-id');if(id)openNewsModal(id);return;}
     var newsCard=t.closest('.news-card');if(newsCard){var id=newsCard.getAttribute('data-news-id');if(id)openNewsModal(id);return;}
+    var hnCard=t.closest('.hn-card');if(hnCard){var id=hnCard.getAttribute('data-news-id');if(id)openNewsModal(parseInt(id));return;}
     var readMore=t.closest('.read-more');if(readMore){e.stopPropagation();var id=readMore.getAttribute('data-news-id');if(id)openNewsModal(id);return;}
     var annCardOld=t.closest('.announce-card');if(annCardOld&&!t.closest('.read-more')){var id=annCardOld.getAttribute('data-news-id');if(id)openNewsModal(id);return;}
     var posterCard=t.closest('.poster-card');if(posterCard){var lb=posterCard.getAttribute('data-lb');if(lb)openLightbox(lb);return;}
