@@ -144,48 +144,61 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .hdr-btn.notif-btn:active{background:var(--green-l);}
 /* ══ ANN TICKER ══ */
 .ann-ticker{
-  overflow:hidden;height:36px;
+  display:flex;align-items:center;gap:0;
+  height:38px;overflow:hidden;
   margin:0 0 4px;
   background:linear-gradient(135deg,rgba(0,135,90,0.07),rgba(0,135,90,0.03));
   border-top:1px solid rgba(0,135,90,0.13);
   border-bottom:1px solid rgba(0,135,90,0.13);
-  display:flex;align-items:center;
+  flex-shrink:0;
 }
-.ann-ticker-track-wrap{flex:1;overflow:hidden;display:flex;align-items:center;height:100%;direction:ltr;}
-.ann-ticker-track{
-  display:inline-flex;align-items:center;gap:0;
+.ann-ticker-label{
+  display:flex;align-items:center;gap:5px;
+  padding:0 10px 0 12px;height:100%;flex-shrink:0;
+  font-size:11px;font-weight:800;color:var(--green);letter-spacing:.2px;
+  border-left:1px solid rgba(0,135,90,0.18);
   white-space:nowrap;
-  animation:ticker-scroll 28s linear infinite;
+}
+.ann-ticker-label iconify-icon{font-size:14px;pointer-events:none;flex-shrink:0;}
+.ann-ticker-track-wrap{
+  flex:1;overflow:hidden;height:100%;
+  display:flex;align-items:center;
+  direction:ltr;
+}
+.ann-ticker-track{
+  display:inline-flex;align-items:center;
+  white-space:nowrap;
+  animation:ticker-scroll 18s linear infinite;
   animation-play-state:paused;
   will-change:transform;
 }
 .ann-ticker-track.ready{animation-play-state:running;}
 .ann-ticker-track:hover{animation-play-state:paused !important;}
-.ann-ticker-item{
-  display:inline-flex;align-items:center;gap:7px;
-  font-size:12px;font-weight:700;color:var(--text);
-  padding:0 36px 0 0;cursor:pointer;
-  transition:color .15s;
-  white-space:nowrap;
-  flex-shrink:0;
-}
-.ann-ticker-item:active{color:var(--green);}
-.ann-ticker-icon{
-  display:inline-flex;align-items:center;justify-content:center;
-  flex-shrink:0;font-size:16px;line-height:1;
-}
-.ann-ticker-sep{
-  display:inline-block;width:5px;height:5px;border-radius:50%;
-  background:rgba(0,135,90,0.35);margin-right:36px;flex-shrink:0;
+.ann-ticker-text{
+  display:inline;font-size:12.5px;font-weight:600;
+  color:var(--text);white-space:nowrap;
+  padding-left:60px;
 }
 @keyframes ticker-scroll{
   0%{transform:translateX(0);}
   100%{transform:translateX(-50%);}
 }
+.ann-ticker-readmore{
+  display:inline-flex;align-items:center;gap:3px;
+  padding:0 10px 0 12px;height:100%;flex-shrink:0;
+  background:none;border:none;border-right:1px solid rgba(0,135,90,0.18);
+  font-family:var(--font-main);font-size:11px;font-weight:800;
+  color:var(--green);cursor:pointer;white-space:nowrap;
+  touch-action:manipulation;
+  transition:opacity .15s;
+}
+.ann-ticker-readmore:active{opacity:.6;}
 [data-theme="dark"] .ann-ticker{
   background:linear-gradient(135deg,rgba(0,175,120,0.09),rgba(0,175,120,0.03));
   border-color:rgba(0,175,120,0.18);
 }
+[data-theme="dark"] .ann-ticker-label{border-left-color:rgba(0,175,120,0.22);}
+[data-theme="dark"] .ann-ticker-readmore{border-right-color:rgba(0,175,120,0.22);}
 /* ══════════════════════════════════════════
    SCREEN CONTAINER
 ══════════════════════════════════════════ */
@@ -1086,14 +1099,15 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 
           <!-- شريط الإعلانات المتحرك -->
           <div id="ann-ticker" class="ann-ticker">
+            <div class="ann-ticker-label" id="ann-ticker-label"></div>
             <div class="ann-ticker-track-wrap">
               <div class="ann-ticker-track" id="ann-ticker-track">
-                <span class="ann-ticker-item">
-                  <span class="ann-ticker-icon" style="color:var(--green)"><iconify-icon icon="ph:megaphone-simple-fill" style="pointer-events:none"></iconify-icon></span>
-                  <span>جاري التحميل...</span>
-                </span>
+                <span class="ann-ticker-text" id="ann-ticker-text">جاري التحميل...</span>
               </div>
             </div>
+            <button class="ann-ticker-readmore" id="ann-ticker-readmore" style="display:none">
+              اقرأ المزيد <iconify-icon icon="lucide:chevron-left" style="pointer-events:none;font-size:12px"></iconify-icon>
+            </button>
           </div>
 
           <!-- بطاقة الإعلان الأخير -->
@@ -2972,8 +2986,10 @@ async function loadAnnTicker(){
   try{
     var src=allNews.length?allNews:((await api('/api/news')).data||[]);
     if(!allNews.length)allNews=src;
-    var items=src.filter(function(n){return n.category==='official';}).slice(0,10);
-    if(!items.length){var t2=document.getElementById('ann-ticker');if(t2)t2.style.display='none';return;}
+    /* آخر إعلان فقط */
+    var n=src.find(function(x){return x.category==='official';});
+    if(!n){var t2=document.getElementById('ann-ticker');if(t2)t2.style.display='none';return;}
+
     var iconMap={
       'استشارة':'ph:file-text-fill',
       'دعوة':'ph:envelope-open-fill',
@@ -2990,35 +3006,42 @@ async function loadAnnTicker(){
       'تنبيه':'#dc2626',
       'خبر':'var(--green)'
     };
+
+    var lbl=n.custom_label||'إعلان';
+    var ico=iconMap[lbl]||'ph:megaphone-simple-fill';
+    var col=colorMap[lbl]||'var(--green)';
+
+    /* نص مقطوع: 12 كلمة فقط ثم ... */
+    var fullText=_f(n,'title')||(_f(n,'content')||'');
+    var words=fullText.trim().split(/\s+/);
+    var shortText=words.slice(0,12).join(' ')+(words.length>12?' ...':'');
+
+    /* تحديث الـ label */
+    var labelEl=document.getElementById('ann-ticker-label');
+    if(labelEl){
+      labelEl.innerHTML='<iconify-icon icon="'+ico+'" style="color:'+col+';pointer-events:none"></iconify-icon><span style="color:'+col+'">'+lbl+'</span>';
+    }
+
+    /* تحديث النص — نسختان للتكرار السلس */
     var track=document.getElementById('ann-ticker-track');
-    if(!track)return;
-    var makeItem=function(n){
-      var lbl=n.custom_label||'إعلان';
-      var ico=iconMap[lbl]||'ph:megaphone-simple-fill';
-      var col=colorMap[lbl]||'var(--green)';
-      var title=_f(n,'title')||(_f(n,'content')||'').substring(0,80)||lbl;
-      return '<span class="ann-ticker-item" data-news-id="'+n.id+'">'
-        +'<span class="ann-ticker-icon" style="color:'+col+'"><iconify-icon icon="'+ico+'" style="pointer-events:none"></iconify-icon></span>'
-        +'<span style="white-space:nowrap;">'+title+'</span>'
-        +'</span>'
-        +'<span class="ann-ticker-sep"></span>';
-    };
-    /* نسختان لضمان التكرار السلس بلا انقطاع */
-    var html=items.map(makeItem).join('');
-    track.innerHTML=html+html;
-    /* سرعة متناسبة مع عدد الإعلانات */
-    var dur=Math.max(20,items.length*7);
-    track.style.animationDuration=dur+'s';
-    /* تشغيل الحركة بعد تحميل البيانات كاملاً */
-    requestAnimationFrame(function(){
-      track.classList.add('ready');
-    });
-    track.querySelectorAll('.ann-ticker-item').forEach(function(el){
-      el.addEventListener('click',function(){
-        var id=parseInt(this.getAttribute('data-news-id'));
-        if(id)openNewsModal(id);
-      });
-    });
+    var textEl=document.getElementById('ann-ticker-text');
+    if(track&&textEl){
+      /* نضع النص مرتين داخل الـ track */
+      track.innerHTML=
+        '<span class="ann-ticker-text" style="padding-left:80px">'+shortText+'</span>'
+       +'<span class="ann-ticker-text" style="padding-left:80px">'+shortText+'</span>';
+      /* سرعة مناسبة لطول النص */
+      var dur=Math.max(10,words.slice(0,12).join(' ').length*0.22);
+      track.style.animationDuration=dur+'s';
+      requestAnimationFrame(function(){track.classList.add('ready');});
+    }
+
+    /* زر اقرأ المزيد */
+    var btn=document.getElementById('ann-ticker-readmore');
+    if(btn){
+      btn.style.display='inline-flex';
+      btn.onclick=function(){openNewsModal(n.id);};
+    }
   }catch(e){}
 }
 async function loadHNews(){/* تُغذَّى من loadHOfficial */}
