@@ -1201,26 +1201,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               </div>
               <div id="welcome-tagline" style="font-size:12.5px;font-weight:500;color:var(--muted);text-align:center;line-height:1.6;min-height:20px;"></div>
             </div>
-            <div style="display:flex;gap:10px;padding:0 16px 6px;">
-              <button class="discover-btn" onclick="switchTab('map');haptic('mid')">
-                <div class="discover-btn-icon" style="background:rgba(21,101,192,0.10);">
-                  <iconify-icon icon="lucide:map" style="color:#1565C0;font-size:18px;pointer-events:none;"></iconify-icon>
-                </div>
-                <span class="discover-btn-label" data-i18n="nav-map">الخريطة التفاعلية</span>
-              </button>
-              <button class="discover-btn" onclick="switchTab('guide');haptic('mid')">
-                <div class="discover-btn-icon" style="background:rgba(0,135,90,0.10);">
-                  <iconify-icon icon="lucide:map-pin" style="color:var(--green);font-size:18px;pointer-events:none;"></iconify-icon>
-                </div>
-                <span class="discover-btn-label" data-i18n="nav-guide">الدليل الشامل</span>
-              </button>
-              <button class="discover-btn" onclick="switchTab('archive');haptic('mid')">
-                <div class="discover-btn-icon" style="background:rgba(245,127,23,0.10);">
-                  <iconify-icon icon="lucide:scroll-text" style="color:var(--amber);font-size:18px;pointer-events:none;"></iconify-icon>
-                </div>
-                <span class="discover-btn-label">الأرشيف</span>
-              </button>
-            </div>
           </div>
 
           <!-- قسم الشواطئ والمعالم السياحية -->
@@ -1244,6 +1224,30 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               <div class="h-scroll" id="h-tourism">
                 <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
               </div>
+            </div>
+          </div>
+
+          <!-- بطاقات الاكتشاف -->
+          <div class="section" style="padding:12px 0 6px;">
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:0 16px 6px;">
+              <button onclick="switchTab('map');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:9px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:16px 10px 14px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.94)';this.style.opacity='.8'" ontouchend="this.style.transform='';this.style.opacity=''">
+                <div style="width:46px;height:46px;border-radius:var(--r-md);background:rgba(21,101,192,0.10);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <iconify-icon icon="lucide:map" style="color:#1565C0;font-size:22px;pointer-events:none;"></iconify-icon>
+                </div>
+                <span style="font-size:12px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;" data-i18n="nav-map">الخريطة التفاعلية</span>
+              </button>
+              <button onclick="switchTab('guide');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:9px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:16px 10px 14px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.94)';this.style.opacity='.8'" ontouchend="this.style.transform='';this.style.opacity=''">
+                <div style="width:46px;height:46px;border-radius:var(--r-md);background:rgba(0,135,90,0.10);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <iconify-icon icon="lucide:map-pin" style="color:var(--green);font-size:22px;pointer-events:none;"></iconify-icon>
+                </div>
+                <span style="font-size:12px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;" data-i18n="nav-guide">الدليل الشامل</span>
+              </button>
+              <button onclick="switchTab('archive');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:9px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:16px 10px 14px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.94)';this.style.opacity='.8'" ontouchend="this.style.transform='';this.style.opacity=''">
+                <div style="width:46px;height:46px;border-radius:var(--r-md);background:rgba(245,127,23,0.10);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <iconify-icon icon="lucide:scroll-text" style="color:var(--amber);font-size:22px;pointer-events:none;"></iconify-icon>
+                </div>
+                <span style="font-size:12px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;">الأرشيف</span>
+              </button>
             </div>
           </div>
 
