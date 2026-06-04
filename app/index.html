@@ -2648,11 +2648,6 @@ function renderWeatherDay(i){
   _wIdx=i;
   var d=_wDays[i];if(!d)return;
   var w=_WM[d.code]||{d:'🌡️',n:'🌙',ar:'متغير',fr:'Variable'};
-  var hi=_g('pwa-weather-header-icon'),hb=_g('pwa-weather-icon-bg');
-  var isDark=document.documentElement.getAttribute('data-theme')==='dark';
-  if(i===0&&hi&&hb){if(d.isDay){hi.setAttribute('icon','lucide:sun');hi.style.color='#f59e0b';hb.style.background=isDark?'rgba(245,158,11,0.15)':'#fef3c7';}
-  else{hi.setAttribute('icon','lucide:moon');hi.style.color='#818cf8';hb.style.background=isDark?'rgba(129,140,248,0.15)':'#ede9fe';}}
-  else if(hi&&hb){hi.setAttribute('icon','lucide:calendar-days');hi.style.color='#60a5fa';hb.style.background=isDark?'rgba(96,165,250,0.15)':'#dbeafe';}
   if(_g('pwa-weather-icon'))_g('pwa-weather-icon').textContent=d.isDay?w.d:w.n;
   if(_g('pwa-weather-temp'))_g('pwa-weather-temp').textContent=Math.round(d.temp)+'°';
   if(_g('pwa-weather-desc'))_g('pwa-weather-desc').textContent=_curLang==='fr'?(w.fr||w.ar):w.ar;
@@ -2944,37 +2939,12 @@ function _annCarInitDrag(vp){
 }
 
 async function loadHOfficial(){
-  /* بطاقة واحدة للآخر إعلان */
-  var el=document.getElementById('h-official-single');
-  if(!el)return;
-  /* skeleton */
-  el.innerHTML='<div class="sk-ann-card" style="margin:0 16px"></div>';
+  /* تحميل allNews فقط إذا لم تكن محملة */
+  if(allNews.length)return;
   try{
     var d=await api('/api/news');
     if(d.data)allNews=d.data;
-    var items=(d.data||[]).filter(function(n){return n.category==='official';});
-    if(!items.length){el.innerHTML='';return;}
-    var n=items[0];
-    var c=_annLabelColor(n.custom_label||'');
-    var annHtml=_buildAnnCard(n,c);
-    el.innerHTML='<div class="ann-card" '
-      +'style="margin:0 16px;width:auto;border-color:'+c.border+';box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px '+c.shadow+';" '
-      +'data-news-id="'+n.id+'">'
-      +annHtml
-      +'</div>';
-    /* ربط حدث الضغط */
-    var card=el.querySelector('.ann-card');
-    if(card)card.addEventListener('click',function(){
-      haptic('light');
-      openNewsModal(parseInt(card.getAttribute('data-news-id')));
-    });
-    var btn=el.querySelector('.ann-card-btn');
-    if(btn)btn.addEventListener('click',function(e){
-      e.stopPropagation();
-      haptic('light');
-      openNewsModal(parseInt(btn.getAttribute('data-news-id')));
-    });
-  }catch(e){el.innerHTML='';}
+  }catch(e){}
 }
 
 async function loadAnnTicker(){
