@@ -1097,8 +1097,19 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         <div class="ptr-indicator" id="ptr-home"><iconify-icon icon="lucide:refresh-cw"></iconify-icon></div>
         <div class="content-block">
 
+          <!-- ترحيب شخصي -->
+          <div style="padding:18px 18px 4px;display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div id="home-greeting" style="font-size:20px;font-weight:900;color:var(--text);letter-spacing:-.5px;line-height:1.2;">أهلاً بك 👋</div>
+              <div id="home-date" style="font-size:12px;font-weight:600;color:var(--muted);margin-top:3px;"></div>
+            </div>
+            <div style="width:44px;height:44px;border-radius:var(--r-full);background:rgba(0,135,90,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <iconify-icon icon="lucide:building-2" style="color:var(--green);font-size:22px;"></iconify-icon>
+            </div>
+          </div>
+
           <!-- شريط الإعلانات المتحرك -->
-          <div id="ann-ticker" class="ann-ticker">
+          <div id="ann-ticker" class="ann-ticker" style="margin-top:10px;">
             <div class="ann-ticker-label" id="ann-ticker-label"></div>
             <div class="ann-ticker-track-wrap">
               <div class="ann-ticker-track" id="ann-ticker-track">
@@ -1108,23 +1119,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             <button class="ann-ticker-readmore" id="ann-ticker-readmore" style="display:none">
               اقرأ المزيد <iconify-icon icon="lucide:chevron-left" style="pointer-events:none;font-size:12px"></iconify-icon>
             </button>
-          </div>
-
-          <!-- آخر المستجدات -->
-          <div class="section" id="home-news-section" style="padding-top:14px;padding-bottom:4px">
-            <div class="section-header">
-              <div class="section-title">
-                <iconify-icon icon="lucide:newspaper"></iconify-icon>
-                <span data-i18n="section-news">آخر المستجدات</span>
-              </div>
-              <button class="see-all-arrow-btn" onclick="switchTab('news');haptic('light')">
-                <span data-i18n="btn-all">الكل</span>
-                <iconify-icon icon="lucide:chevron-left"></iconify-icon>
-              </button>
-            </div>
-            <div class="h-scroll" id="h-home-news">
-              <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
-            </div>
           </div>
 
           <!-- بطاقة الطقس والبحر الموحدة -->
@@ -1224,42 +1218,44 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </div>
           </div>
 
-          <!-- ترحيب + اكتشف شطايبي -->
-          <div class="section" style="padding:0 0 4px;">
-            <div style="padding:18px 18px 14px;display:flex;flex-direction:column;align-items:center;gap:5px;">
-              <div style="font-size:18px;font-weight:900;color:var(--text);letter-spacing:-.4px;line-height:1.3;text-align:center;">
-                اكتشف <span style="color:var(--green);">شطايبي</span>
-              </div>
-              <div id="welcome-tagline" style="font-size:12.5px;font-weight:500;color:var(--muted);text-align:center;line-height:1.6;min-height:20px;"></div>
-            </div>
-          </div>
-
-          <!-- بطاقات الاكتشاف -->
-          <div class="section" style="padding:0 0 6px;">
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:0 16px 6px;">
-              <button onclick="switchTab('map');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:9px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:16px 10px 14px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.94)';this.style.opacity='.8'" ontouchend="this.style.transform='';this.style.opacity=''">
-                <div style="width:46px;height:46px;border-radius:var(--r-md);background:rgba(21,101,192,0.10);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                  <iconify-icon icon="lucide:map" style="color:#1565C0;font-size:22px;pointer-events:none;"></iconify-icon>
+          <!-- تنقل سريع -->
+          <div style="padding:14px 16px 4px;">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+              <button onclick="switchTab('map');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:13px 6px 11px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.93)';this.style.opacity='.75'" ontouchend="this.style.transform='';this.style.opacity=''">
+                <div style="width:38px;height:38px;border-radius:var(--r-md);background:rgba(21,101,192,0.10);display:flex;align-items:center;justify-content:center;">
+                  <iconify-icon icon="lucide:map" style="color:#1565C0;font-size:19px;pointer-events:none;"></iconify-icon>
                 </div>
-                <span style="font-size:12px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;" data-i18n="nav-map">الخريطة التفاعلية</span>
+                <span style="font-size:11px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;">الخريطة</span>
               </button>
-              <button onclick="switchTab('guide');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:9px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:16px 10px 14px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.94)';this.style.opacity='.8'" ontouchend="this.style.transform='';this.style.opacity=''">
-                <div style="width:46px;height:46px;border-radius:var(--r-md);background:rgba(0,135,90,0.10);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                  <iconify-icon icon="lucide:map-pin" style="color:var(--green);font-size:22px;pointer-events:none;"></iconify-icon>
+              <button onclick="switchTab('guide');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:13px 6px 11px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.93)';this.style.opacity='.75'" ontouchend="this.style.transform='';this.style.opacity=''">
+                <div style="width:38px;height:38px;border-radius:var(--r-md);background:rgba(0,135,90,0.10);display:flex;align-items:center;justify-content:center;">
+                  <iconify-icon icon="lucide:map-pin" style="color:var(--green);font-size:19px;pointer-events:none;"></iconify-icon>
                 </div>
-                <span style="font-size:12px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;" data-i18n="nav-guide">الدليل الشامل</span>
+                <span style="font-size:11px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;">الدليل</span>
               </button>
-              <button onclick="switchTab('archive');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:9px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:16px 10px 14px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.94)';this.style.opacity='.8'" ontouchend="this.style.transform='';this.style.opacity=''">
-                <div style="width:46px;height:46px;border-radius:var(--r-md);background:rgba(245,127,23,0.10);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                  <iconify-icon icon="lucide:scroll-text" style="color:var(--amber);font-size:22px;pointer-events:none;"></iconify-icon>
+              <button onclick="switchTab('archive');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:13px 6px 11px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.93)';this.style.opacity='.75'" ontouchend="this.style.transform='';this.style.opacity=''">
+                <div style="width:38px;height:38px;border-radius:var(--r-md);background:rgba(245,127,23,0.10);display:flex;align-items:center;justify-content:center;">
+                  <iconify-icon icon="lucide:scroll-text" style="color:var(--amber);font-size:19px;pointer-events:none;"></iconify-icon>
                 </div>
-                <span style="font-size:12px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;">الأرشيف</span>
+                <span style="font-size:11px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;">الأرشيف</span>
+              </button>
+              <button onclick="switchTab('news');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:13px 6px 11px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.93)';this.style.opacity='.75'" ontouchend="this.style.transform='';this.style.opacity=''">
+                <div style="width:38px;height:38px;border-radius:var(--r-md);background:rgba(124,58,237,0.10);display:flex;align-items:center;justify-content:center;">
+                  <iconify-icon icon="lucide:newspaper" style="color:#7c3aed;font-size:19px;pointer-events:none;"></iconify-icon>
+                </div>
+                <span style="font-size:11px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;">الأخبار</span>
               </button>
             </div>
           </div>
 
           <!-- قسم الشواطئ والمعالم السياحية -->
-          <div class="section" style="padding-bottom:8px" id="places-section">
+          <div class="section" style="padding-top:14px;padding-bottom:8px" id="places-section">
+            <div class="section-header">
+              <div class="section-title">
+                <iconify-icon icon="lucide:compass"></iconify-icon>
+                <span>اكتشف شطايبي</span>
+              </div>
+            </div>
             <div id="places-tabs-row" style="display:flex;justify-content:center;gap:8px;padding:0 18px 12px;touch-action:pan-y;">
               <button class="ws-tab active" id="place-tab-beaches" onclick="switchPlaceTab('beaches')" style="flex:1;">
                 <iconify-icon icon="lucide:waves" style="font-size:14px;pointer-events:none;color:inherit"></iconify-icon>
@@ -1282,7 +1278,24 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </div>
           </div>
 
-        </div>
+          <!-- آخر المستجدات -->
+          <div class="section" id="home-news-section" style="padding-top:4px;padding-bottom:16px">
+            <div class="section-header">
+              <div class="section-title">
+                <iconify-icon icon="lucide:newspaper"></iconify-icon>
+                <span data-i18n="section-news">آخر المستجدات</span>
+              </div>
+              <button class="see-all-arrow-btn" onclick="switchTab('news');haptic('light')">
+                <span data-i18n="btn-all">الكل</span>
+                <iconify-icon icon="lucide:chevron-left"></iconify-icon>
+              </button>
+            </div>
+            <div class="h-scroll" id="h-home-news">
+              <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
+            </div>
+          </div>
+
+                </div>
       </div>
     </div>
 
@@ -3904,20 +3917,17 @@ window.addEventListener('load',function(){
       haptic('mid');MoreSheet.open();
     }
   });}catch(e){}
-  /* تأثير الكتابة — مرة واحدة فقط عند أول تشغيل */
+  /* تحية الترحيب حسب الوقت + التاريخ */
   try{(function(){
-    var el=document.getElementById('welcome-tagline');
-    if(!el)return;
-    var text='جوهرة الساحل الشرقي، حيث تلتقي الطبيعة بالتاريخ';
-    var i=0;
-    function type(){
-      if(i<=text.length){
-        el.textContent=text.slice(0,i);
-        i++;
-        setTimeout(type, i<10?0:38);
-      }
-    }
-    setTimeout(type,600);
+    var h=new Date().getHours();
+    var greeting=h<5?'طاب ليلك 🌙':h<12?'صباح الخير ☀️':h<17?'مساء الخير 🌤️':h<21?'مساء النور 🌆':'طاب مساؤك 🌙';
+    var greetEl=document.getElementById('home-greeting');
+    if(greetEl)greetEl.textContent=greeting;
+    var days=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+    var months=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+    var now=new Date();
+    var dateEl=document.getElementById('home-date');
+    if(dateEl)dateEl.textContent=days[now.getDay()]+' '+now.getDate()+' '+months[now.getMonth()]+' '+now.getFullYear();
   })();}catch(e){}
   ['home','news','guide','archive','map','services'].forEach(function(id){
     var scrollEl=document.querySelector('#screen-'+id+' .scroll-area');
