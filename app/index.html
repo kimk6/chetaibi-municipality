@@ -1097,17 +1097,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         <div class="ptr-indicator" id="ptr-home"><iconify-icon icon="lucide:refresh-cw"></iconify-icon></div>
         <div class="content-block">
 
-          <!-- ترحيب شخصي -->
-          <div style="padding:18px 18px 4px;display:flex;align-items:center;justify-content:space-between;">
-            <div>
-              <div id="home-greeting" style="font-size:20px;font-weight:900;color:var(--text);letter-spacing:-.5px;line-height:1.2;">أهلاً بك 👋</div>
-              <div id="home-date" style="font-size:12px;font-weight:600;color:var(--muted);margin-top:3px;"></div>
-            </div>
-            <div style="width:44px;height:44px;border-radius:var(--r-full);background:rgba(0,135,90,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-              <iconify-icon icon="lucide:building-2" style="color:var(--green);font-size:22px;"></iconify-icon>
-            </div>
-          </div>
-
           <!-- شريط الإعلانات المتحرك -->
           <div id="ann-ticker" class="ann-ticker" style="margin-top:10px;">
             <div class="ann-ticker-label" id="ann-ticker-label"></div>
@@ -3917,18 +3906,6 @@ window.addEventListener('load',function(){
       haptic('mid');MoreSheet.open();
     }
   });}catch(e){}
-  /* تحية الترحيب حسب الوقت + التاريخ */
-  try{(function(){
-    var h=new Date().getHours();
-    var greeting=h<5?'طاب ليلك 🌙':h<12?'صباح الخير ☀️':h<17?'مساء الخير 🌤️':h<21?'مساء النور 🌆':'طاب مساؤك 🌙';
-    var greetEl=document.getElementById('home-greeting');
-    if(greetEl)greetEl.textContent=greeting;
-    var days=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
-    var months=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
-    var now=new Date();
-    var dateEl=document.getElementById('home-date');
-    if(dateEl)dateEl.textContent=days[now.getDay()]+' '+now.getDate()+' '+months[now.getMonth()]+' '+now.getFullYear();
-  })();}catch(e){}
   ['home','news','guide','archive','map','services'].forEach(function(id){
     var scrollEl=document.querySelector('#screen-'+id+' .scroll-area');
     if(scrollEl)scrollEl.addEventListener('scroll',onScrollAreaScroll,{passive:true});
