@@ -669,6 +669,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .ws-tab::after{display:none;}
 .ws-tab.active{background:var(--green);color:#fff;border-color:var(--green);box-shadow:0 2px 8px rgba(0,135,90,.22);}
 #ws-tab-sea.active{background:#1565C0;border-color:#1565C0;box-shadow:0 2px 8px rgba(21,101,192,.22);}
+#ws-forecast-btn{border-color:var(--border);color:var(--muted);background:var(--surface);}
+#ws-forecast-btn:active{background:rgba(0,135,90,.08);color:var(--green);border-color:var(--green);}
 .ws-tab:active:not(.active){opacity:.6;transform:scale(.95);}
 .ws-tab:active.active{transform:scale(.97);}
 .ws-tab iconify-icon{font-size:13px;pointer-events:none;}
@@ -1129,19 +1131,15 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 
           <!-- بطاقة الطقس والبحر الموحدة -->
           <div class="section" style="padding-bottom:4px">
-            <div class="section-header" style="margin-bottom:10px">
-              <div class="section-title">
+            <div class="section-header" style="margin-bottom:10px;justify-content:center;">
+              <div class="section-title" style="justify-content:center;">
                 <iconify-icon icon="lucide:cloud-sun"></iconify-icon>
-                <span>أحوال الطقس اليوم</span>
+                <span>الطقس اليوم في <span style="color:var(--green);font-weight:900;">شطايبي</span></span>
               </div>
-              <button class="see-all-arrow-btn" id="ws-forecast-btn" onclick="openForecastModal();haptic('light')">
-                <span>الأيام القادمة</span>
-                <iconify-icon icon="lucide:chevron-left"></iconify-icon>
-              </button>
             </div>
             <div class="weather-sea-section">
               <div class="weather-sea-unified-card">
-                <!-- تبويبان علويان -->
+                <!-- تبويبات مع زر الأيام القادمة -->
                 <div class="ws-tabs">
                   <button class="ws-tab active" id="ws-tab-weather" onclick="switchWsTab('weather')">
                     <iconify-icon icon="lucide:sun" style="font-size:14px;pointer-events:none"></iconify-icon>
@@ -1150,6 +1148,10 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                   <button class="ws-tab" id="ws-tab-sea" onclick="switchWsTab('sea')">
                     <iconify-icon icon="lucide:waves" style="font-size:14px;pointer-events:none"></iconify-icon>
                     <span data-i18n="ws-tab-sea">حالة البحر</span>
+                  </button>
+                  <button class="ws-tab" id="ws-forecast-btn" onclick="openForecastModal();haptic('light')">
+                    <iconify-icon icon="lucide:calendar-days" style="font-size:14px;pointer-events:none"></iconify-icon>
+                    <span>الأيام القادمة</span>
                   </button>
                 </div>
                 <!-- محتوى الطقس -->
@@ -3660,7 +3662,7 @@ var _I18N={
     /* ── طقس ── */
     'weather-wind-label':'كم/س','weather-humidity-label':'رطوبة','weather-feels':'يشعر كـ',
     'weather-max':'أعلى','weather-min':'أدنى','weather-today':'شطايبي — اليوم',
-    'ws-tab-weather':'أحوال الطقس','ws-tab-sea':'أحوال البحر',
+    'ws-tab-weather':'حالة الطقس','ws-tab-sea':'حالة البحر',
     /* ── بحر ── */
     'sea-wave-label':'ارتفاع الموج','sea-wave-unit':'م',
     'sea-temp-label':'حرارة الماء','sea-dir-label':'الاتجاه',
