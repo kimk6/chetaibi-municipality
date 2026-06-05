@@ -146,7 +146,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .ann-ticker{
   display:flex;align-items:center;gap:0;
   height:38px;overflow:hidden;
-  margin:0 0 4px;
+  margin:0 0 0px;
   background:linear-gradient(135deg,rgba(0,135,90,0.07),rgba(0,135,90,0.03));
   border-top:1px solid rgba(0,135,90,0.13);
   border-bottom:1px solid rgba(0,135,90,0.13);
@@ -222,8 +222,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 /* ══════════════════════════════════════════
    SECTIONS
 ══════════════════════════════════════════ */
-.section{padding:8px 0 2px;}
-.section-header{display:flex;align-items:center;justify-content:space-between;padding:0 18px;margin-bottom:6px;}
+.section{padding:8px 0 0;}
+.section-header{display:flex;align-items:center;justify-content:space-between;padding:0 16px;margin-bottom:8px;}
 .section-title{font-size:15px;font-weight:900;color:var(--text);display:flex;align-items:center;gap:8px;letter-spacing:-.3px;position:relative;}
 .section-title::after{display:none;}
 .section-title iconify-icon{font-size:17px;flex-shrink:0;color:var(--green);}
@@ -240,7 +240,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .seg-btn:active:not(.active){opacity:.6;transform:scale(.95);}
 .seg-btn:active.active{transform:scale(.97);}
 /* H-SCROLL */
-.h-scroll{display:flex;gap:12px;overflow-x:auto;padding:8px 18px 22px;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;}
+.h-scroll{display:flex;gap:12px;overflow-x:auto;padding:4px 16px 12px;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;}
 /* NEWS CARDS */
 .news-card{min-width:min(244px,70vw);max-width:284px;background:var(--card);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--elev-card);flex-shrink:0;border:1px solid var(--border-light);cursor:pointer;display:flex;flex-direction:column;touch-action:manipulation;transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);}
 .news-card:active{transform:scale(.96);opacity:.85;}
@@ -662,7 +662,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 #lb-prev.hidden,#lb-next.hidden{opacity:0;pointer-events:none;}
 #lb-counter{position:absolute;bottom:calc(var(--safe-b) + 16px);left:50%;transform:translateX(-50%);color:rgba(255,255,255,.7);font-size:12px;font-weight:700;font-family:var(--font-main);background:rgba(0,0,0,.38);padding:4px 14px;border-radius:var(--r-full);pointer-events:none;display:none;backdrop-filter:blur(8px);}
 /* WEATHER / SEA UNIFIED */
-.weather-sea-section{padding:0 16px 4px;}
+.weather-sea-section{padding:0 16px 0;}
 .weather-sea-unified-card{background:var(--card);border-radius:var(--r-xl);box-shadow:var(--elev-3);border:1px solid var(--border-light);overflow:hidden;}.ws-tabs,.ws-panel{overflow:hidden;}
 .ws-tabs{display:flex;gap:8px;padding:6px 10px;background:var(--card);border-bottom:1px solid var(--border-light);}
 .ws-tab{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:0 10px;height:34px;border-radius:var(--r-full);border:1.5px solid var(--border);background:var(--card);font-family:var(--font-main);font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;touch-action:manipulation;position:relative;transition:background var(--dur-mid) var(--ease-std),color var(--dur-mid) var(--ease-std),border-color var(--dur-mid) var(--ease-std),transform var(--dur-fast) var(--ease-spring);white-space:nowrap;}
@@ -674,7 +674,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .ws-tab:active:not(.active){opacity:.6;transform:scale(.95);}
 .ws-tab:active.active{transform:scale(.97);}
 .ws-tab iconify-icon{font-size:13px;pointer-events:none;}
-.ws-panel{padding:12px 16px;transition:background .25s;}
+.ws-panel{padding:10px 14px;transition:background .25s;}
 .ws-panel.hidden{display:none;}
 #ws-panel-weather{background:rgba(0,135,90,0.04);}
 #ws-panel-sea{background:rgba(21,101,192,0.04);}
@@ -692,7 +692,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .wcard-stat{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);font-weight:600;}
 .wcard-stat iconify-icon{font-size:13px;pointer-events:none;flex-shrink:0;}
 /* OFFICIAL ANN CAROUSEL — بطاقة واحدة ثابتة */
-.ann-carousel-outer{position:relative;padding:6px 16px 14px;}
+.ann-carousel-outer{position:relative;padding:4px 16px 8px;}
 .ann-carousel-viewport{border-radius:var(--r-xl);}
 .ann-carousel-strip{/* single card */}
 .ann-carousel-strip .loading{width:100%;text-align:center;padding:20px;}
@@ -1113,7 +1113,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           </div>
 
           <!-- آخر المستجدات -->
-          <div class="section" id="home-news-section" style="padding-top:6px;padding-bottom:2px">
+          <div class="section" id="home-news-section">
             <div class="section-header">
               <div class="section-title">
                 <iconify-icon icon="lucide:newspaper"></iconify-icon>
@@ -1130,8 +1130,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           </div>
 
           <!-- بطاقة الطقس والبحر الموحدة -->
-          <div class="section" style="padding-bottom:4px">
-            <div class="section-header" style="margin-bottom:6px;justify-content:center;">
+          <div class="section">
+            <div class="section-header" style="justify-content:center;">
               <div class="section-title" style="justify-content:center;">
                 <iconify-icon icon="lucide:cloud-sun"></iconify-icon>
                 <span>أحوال الطقس في <span style="color:var(--green);font-weight:900;">شطايبي</span></span>
@@ -1213,8 +1213,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           </div>
 
           <!-- ترحيب + اكتشف شطايبي -->
-          <div class="section" style="padding:0 0 0px;">
-            <div style="padding:8px 18px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;">
+          <div class="section">
+            <div style="padding:4px 16px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;">
               <div style="font-size:18px;font-weight:900;color:var(--text);letter-spacing:-.4px;line-height:1.3;text-align:center;">
                 اكتشف <span style="color:var(--green);">شطايبي</span>
               </div>
@@ -1223,32 +1223,32 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           </div>
 
           <!-- بطاقات الاكتشاف -->
-          <div class="section" style="padding:0 0 2px;">
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:0 16px 2px;">
-              <button onclick="switchTab('map');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:12px 10px 10px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.94)';this.style.opacity='.8'" ontouchend="this.style.transform='';this.style.opacity=''">
-                <div style="width:46px;height:46px;border-radius:var(--r-md);background:rgba(21,101,192,0.10);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                  <iconify-icon icon="lucide:map" style="color:#1565C0;font-size:22px;pointer-events:none;"></iconify-icon>
+          <div class="section">
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:0 16px 0;">
+              <button onclick="switchTab('map');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:14px 8px 12px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.94)';this.style.opacity='.8'" ontouchend="this.style.transform='';this.style.opacity=''">
+                <div style="width:42px;height:42px;border-radius:var(--r-md);background:rgba(21,101,192,0.10);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <iconify-icon icon="lucide:map" style="color:#1565C0;font-size:20px;pointer-events:none;"></iconify-icon>
                 </div>
-                <span style="font-size:12px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;" data-i18n="nav-map">الخريطة التفاعلية</span>
+                <span style="font-size:11.5px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;" data-i18n="nav-map">الخريطة التفاعلية</span>
               </button>
-              <button onclick="switchTab('guide');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:12px 10px 10px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.94)';this.style.opacity='.8'" ontouchend="this.style.transform='';this.style.opacity=''">
-                <div style="width:46px;height:46px;border-radius:var(--r-md);background:rgba(0,135,90,0.10);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                  <iconify-icon icon="lucide:map-pin" style="color:var(--green);font-size:22px;pointer-events:none;"></iconify-icon>
+              <button onclick="switchTab('guide');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:14px 8px 12px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.94)';this.style.opacity='.8'" ontouchend="this.style.transform='';this.style.opacity=''">
+                <div style="width:42px;height:42px;border-radius:var(--r-md);background:rgba(0,135,90,0.10);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <iconify-icon icon="lucide:map-pin" style="color:var(--green);font-size:20px;pointer-events:none;"></iconify-icon>
                 </div>
-                <span style="font-size:12px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;" data-i18n="nav-guide">الدليل الشامل</span>
+                <span style="font-size:11.5px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;" data-i18n="nav-guide">الدليل الشامل</span>
               </button>
-              <button onclick="switchTab('archive');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:12px 10px 10px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.94)';this.style.opacity='.8'" ontouchend="this.style.transform='';this.style.opacity=''">
-                <div style="width:46px;height:46px;border-radius:var(--r-md);background:rgba(245,127,23,0.10);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                  <iconify-icon icon="lucide:scroll-text" style="color:var(--amber);font-size:22px;pointer-events:none;"></iconify-icon>
+              <button onclick="switchTab('archive');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:14px 8px 12px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.94)';this.style.opacity='.8'" ontouchend="this.style.transform='';this.style.opacity=''">
+                <div style="width:42px;height:42px;border-radius:var(--r-md);background:rgba(245,127,23,0.10);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <iconify-icon icon="lucide:scroll-text" style="color:var(--amber);font-size:20px;pointer-events:none;"></iconify-icon>
                 </div>
-                <span style="font-size:12px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;">الأرشيف</span>
+                <span style="font-size:11.5px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;">الأرشيف</span>
               </button>
             </div>
           </div>
 
           <!-- قسم الشواطئ والمعالم السياحية -->
-          <div class="section" style="padding-bottom:6px" id="places-section">
-            <div id="places-tabs-row" style="display:flex;justify-content:center;gap:8px;padding:0 18px 8px;touch-action:pan-y;">
+          <div class="section" id="places-section">
+            <div id="places-tabs-row" style="display:flex;justify-content:center;gap:8px;padding:0 16px 8px;touch-action:pan-y;">
               <button class="ws-tab active" id="place-tab-beaches" onclick="switchPlaceTab('beaches')" style="flex:1;">
                 <iconify-icon icon="lucide:waves" style="font-size:14px;pointer-events:none;color:inherit"></iconify-icon>
                 <span data-i18n="section-beaches">شواطئ شطايبي</span>
