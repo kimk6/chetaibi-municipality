@@ -1151,69 +1151,73 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 <!-- محتوى الطقس -->
                 <div class="ws-panel" id="ws-panel-weather">
                   <div id="weather-day-tabs" style="display:none"></div>
-                  <div class="wcard-main">
-                    <div class="wcard-primary">
-                      <span class="wcard-emoji" id="pwa-weather-icon">☀️</span>
+                  <!-- صف علوي: أيقونة + درجة الحرارة يمين، الزر يسار -->
+                  <div style="display:flex;align-items:flex-start;justify-content:space-between;">
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <span id="pwa-weather-icon" style="font-size:46px;line-height:1;">☀️</span>
                       <div>
-                        <div class="wcard-temp" id="pwa-weather-temp">--°</div>
-                        <div class="wcard-desc" id="pwa-weather-desc" data-i18n="loading">جاري التحميل</div>
+                        <div id="pwa-weather-temp" style="font-size:38px;font-weight:900;color:var(--text);line-height:1;letter-spacing:-2px;">--°</div>
+                        <div id="pwa-weather-desc" style="font-size:12px;color:var(--muted);font-weight:600;margin-top:3px;" data-i18n="loading">جاري التحميل</div>
                       </div>
                     </div>
-                    <div class="wcard-stats">
-                      <div class="wcard-stat">
-                        <iconify-icon icon="lucide:droplets" style="color:#60a5fa"></iconify-icon>
-                        <span id="pwa-weather-hum">--%</span>
-                      </div>
-                      <div class="wcard-stat">
-                        <iconify-icon icon="lucide:wind" style="color:#34d399"></iconify-icon>
-                        <span id="pwa-weather-wind">-- كم/س</span>
-                      </div>
-                      <div class="wcard-stat">
-                        <iconify-icon icon="lucide:thermometer" style="color:#f87171"></iconify-icon>
-                        <span id="pwa-weather-max">--</span> / <span id="pwa-weather-min">--</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div style="display:flex;justify-content:flex-end;margin-top:10px;">
-                    <button id="ws-forecast-btn" onclick="openForecastModal();haptic('light')" style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px 4px 8px;background:rgba(0,135,90,0.12);border:none;border-radius:var(--r-full);font-family:var(--font-main);font-size:11px;font-weight:700;color:var(--green);cursor:pointer;touch-action:manipulation;transition:background var(--dur-fast),transform var(--dur-fast);" ontouchstart="this.style.background='rgba(0,135,90,0.22)';this.style.transform='scale(.95)'" ontouchend="this.style.background='rgba(0,135,90,0.12)';this.style.transform=''">
-                      <iconify-icon icon="lucide:calendar-days" style="font-size:11px;pointer-events:none;"></iconify-icon>
+                    <button id="ws-forecast-btn" onclick="openForecastModal();haptic('light')" style="display:inline-flex;align-items:center;gap:4px;padding:5px 10px 5px 8px;background:rgba(0,135,90,0.1);border:none;border-radius:var(--r-full);font-family:var(--font-main);font-size:11px;font-weight:700;color:var(--green);cursor:pointer;touch-action:manipulation;flex-shrink:0;margin-top:2px;transition:background var(--dur-fast),transform var(--dur-fast);" ontouchstart="this.style.background='rgba(0,135,90,0.2)';this.style.transform='scale(.94)'" ontouchend="this.style.background='rgba(0,135,90,0.1)';this.style.transform=''">
+                      <iconify-icon icon="lucide:calendar-days" style="font-size:12px;pointer-events:none;"></iconify-icon>
                       <span>الأيام القادمة</span>
-                      <iconify-icon icon="lucide:chevron-left" style="font-size:10px;pointer-events:none;opacity:.6;"></iconify-icon>
                     </button>
+                  </div>
+                  <!-- صف سفلي: الإحصائيات الثلاثة أفقياً -->
+                  <div style="display:flex;gap:0;margin-top:12px;background:rgba(0,0,0,0.04);border-radius:var(--r-md);overflow:hidden;">
+                    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;">
+                      <iconify-icon icon="lucide:droplets" style="color:#60a5fa;font-size:15px;"></iconify-icon>
+                      <span id="pwa-weather-hum" style="font-size:12px;font-weight:800;color:var(--text);">--%</span>
+                      <span style="font-size:10px;color:var(--muted);font-weight:600;">رطوبة</span>
+                    </div>
+                    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;border-right:1px solid rgba(0,0,0,0.06);border-left:1px solid rgba(0,0,0,0.06);">
+                      <iconify-icon icon="lucide:wind" style="color:#34d399;font-size:15px;"></iconify-icon>
+                      <span id="pwa-weather-wind" style="font-size:12px;font-weight:800;color:var(--text);">-- كم/س</span>
+                      <span style="font-size:10px;color:var(--muted);font-weight:600;">رياح</span>
+                    </div>
+                    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;">
+                      <iconify-icon icon="lucide:thermometer" style="color:#f87171;font-size:15px;"></iconify-icon>
+                      <span style="font-size:12px;font-weight:800;color:var(--text);"><span id="pwa-weather-max">--</span>/<span id="pwa-weather-min">--</span></span>
+                      <span style="font-size:10px;color:var(--muted);font-weight:600;">عظمى/صغرى</span>
+                    </div>
                   </div>
                 </div>
                 <!-- محتوى البحر -->
                 <div class="ws-panel hidden" id="ws-panel-sea">
                   <div id="sea-day-tabs" style="display:none"></div>
-                  <div class="wcard-main">
-                    <div class="wcard-primary">
-                      <span class="wcard-emoji" id="pwa-sea-icon">🌊</span>
+                  <!-- صف علوي: أيقونة + حالة البحر يمين، الزر يسار -->
+                  <div style="display:flex;align-items:flex-start;justify-content:space-between;">
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <span id="pwa-sea-icon" style="font-size:46px;line-height:1;">🌊</span>
                       <div>
-                        <div class="wcard-sea-state" id="pwa-sea-state">--</div>
-                        <div class="wcard-desc" id="pwa-sea-desc" data-i18n="loading">جاري التحميل</div>
+                        <div id="pwa-sea-state" style="font-size:24px;font-weight:900;color:var(--text);line-height:1.1;">--</div>
+                        <div id="pwa-sea-desc" style="font-size:12px;color:var(--muted);font-weight:600;margin-top:3px;" data-i18n="loading">جاري التحميل</div>
                       </div>
                     </div>
-                    <div class="wcard-stats">
-                      <div class="wcard-stat">
-                        <iconify-icon icon="lucide:arrow-up" style="color:#60a5fa"></iconify-icon>
-                        <span>ارتفاع الموج: </span><span id="pwa-sea-wave">-- م</span>
-                      </div>
-                      <div class="wcard-stat">
-                        <iconify-icon icon="lucide:thermometer" style="color:#2dd4bf"></iconify-icon>
-                        <span>الماء: </span><span id="pwa-sea-water-temp">19°C</span>
-                      </div>
-                      <div class="wcard-stat">
-                        <iconify-icon icon="lucide:compass" style="color:#818cf8"></iconify-icon>
-                        <span id="pwa-sea-dir">--</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div style="display:flex;justify-content:flex-end;margin-top:10px;">
-                    <button onclick="openForecastModal();haptic('light')" style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px 4px 8px;background:rgba(21,101,192,0.12);border:none;border-radius:var(--r-full);font-family:var(--font-main);font-size:11px;font-weight:700;color:#1565C0;cursor:pointer;touch-action:manipulation;transition:background var(--dur-fast),transform var(--dur-fast);" ontouchstart="this.style.background='rgba(21,101,192,0.22)';this.style.transform='scale(.95)'" ontouchend="this.style.background='rgba(21,101,192,0.12)';this.style.transform=''">
-                      <iconify-icon icon="lucide:calendar-days" style="font-size:11px;pointer-events:none;"></iconify-icon>
+                    <button onclick="openForecastModal();haptic('light')" style="display:inline-flex;align-items:center;gap:4px;padding:5px 10px 5px 8px;background:rgba(21,101,192,0.1);border:none;border-radius:var(--r-full);font-family:var(--font-main);font-size:11px;font-weight:700;color:#1565C0;cursor:pointer;touch-action:manipulation;flex-shrink:0;margin-top:2px;transition:background var(--dur-fast),transform var(--dur-fast);" ontouchstart="this.style.background='rgba(21,101,192,0.2)';this.style.transform='scale(.94)'" ontouchend="this.style.background='rgba(21,101,192,0.1)';this.style.transform=''">
+                      <iconify-icon icon="lucide:calendar-days" style="font-size:12px;pointer-events:none;"></iconify-icon>
                       <span>الأيام القادمة</span>
-                      <iconify-icon icon="lucide:chevron-left" style="font-size:10px;pointer-events:none;opacity:.6;"></iconify-icon>
                     </button>
+                  </div>
+                  <!-- صف سفلي: الإحصائيات الثلاثة أفقياً -->
+                  <div style="display:flex;gap:0;margin-top:12px;background:rgba(0,0,0,0.04);border-radius:var(--r-md);overflow:hidden;">
+                    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;">
+                      <iconify-icon icon="lucide:arrow-up" style="color:#60a5fa;font-size:15px;"></iconify-icon>
+                      <span id="pwa-sea-wave" style="font-size:12px;font-weight:800;color:var(--text);">-- م</span>
+                      <span style="font-size:10px;color:var(--muted);font-weight:600;">ارتفاع الموج</span>
+                    </div>
+                    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;border-right:1px solid rgba(0,0,0,0.06);border-left:1px solid rgba(0,0,0,0.06);">
+                      <iconify-icon icon="lucide:thermometer" style="color:#2dd4bf;font-size:15px;"></iconify-icon>
+                      <span id="pwa-sea-water-temp" style="font-size:12px;font-weight:800;color:var(--text);">19°C</span>
+                      <span style="font-size:10px;color:var(--muted);font-weight:600;">حرارة الماء</span>
+                    </div>
+                    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;">
+                      <iconify-icon icon="lucide:compass" style="color:#818cf8;font-size:15px;"></iconify-icon>
+                      <span id="pwa-sea-dir" style="font-size:12px;font-weight:800;color:var(--text);">--</span>
+                      <span style="font-size:10px;color:var(--muted);font-weight:600;">الاتجاه</span>
+                    </div>
                   </div>
                 </div>
               </div>
