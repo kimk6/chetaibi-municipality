@@ -1117,10 +1117,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 <!-- رأس البطاقة: ترحيب + تاريخ -->
                 <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 14px 0;">
                   <div id="home-greeting" style="font-size:14px;font-weight:900;color:var(--text);letter-spacing:-.3px;"></div>
-                  <div style="display:flex;align-items:center;gap:5px;background:rgba(0,135,90,0.07);border-radius:var(--r-full);padding:3px 9px 3px 7px;">
-                    <iconify-icon icon="lucide:calendar" style="color:var(--green);font-size:11px;flex-shrink:0;"></iconify-icon>
-                    <span id="home-date" style="font-size:11px;font-weight:700;color:var(--green);"></span>
-                  </div>
+                  <div id="home-date" style="font-size:11px;font-weight:700;color:var(--muted);"></div>
                 </div>
                 <!-- تبويبات -->
                 <div class="ws-tabs" style="justify-content:center;">
@@ -3912,14 +3909,14 @@ window.addEventListener('load',function(){
   });}catch(e){}
   try{(function(){
     var h=new Date().getHours();
-    var g=h<5?'هدأ الليل 🌙':h<6?'فجر جديد 🌅':h<12?'صباح النور ☀️':h<14?'نهار مشمس 🌤️':h<17?'بعد الظهيرة 🌿':h<20?'مساء الخير 🌆':'دفء الليل 🌙';
+    var g=h<5?'طاب ليلك 🌙':h<6?'صباح الفجر 🌅':h<12?'صباح الخير ☀️':h<14?'نهارك سعيد 🌤️':h<17?'مساء الخير 🌿':h<20?'مساء النور 🌆':'تصبح على خير 🌙';
     var ge=document.getElementById('home-greeting');
     if(ge)ge.textContent=g;
     var now=new Date();
     var days=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
-    var months=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+    var months=['جانفي','فيفري','مارس','أفريل','ماي','جوان','جويلية','أوت','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
     var de=document.getElementById('home-date');
-    if(de)de.textContent=days[now.getDay()]+' '+now.getDate()+' '+months[now.getMonth()];
+    if(de)de.textContent=days[now.getDay()]+'، '+String(now.getDate()).padStart(2,'0')+' '+months[now.getMonth()]+' '+now.getFullYear();
   })();}catch(e){}
   ['home','news','guide','archive','map','services'].forEach(function(id){
     var scrollEl=document.querySelector('#screen-'+id+' .scroll-area');
