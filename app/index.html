@@ -222,8 +222,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 /* ══════════════════════════════════════════
    SECTIONS
 ══════════════════════════════════════════ */
-.section{padding:12px 0 4px;}
-.section-header{display:flex;align-items:center;justify-content:space-between;padding:0 18px;margin-bottom:10px;}
+.section{padding:8px 0 2px;}
+.section-header{display:flex;align-items:center;justify-content:space-between;padding:0 18px;margin-bottom:6px;}
 .section-title{font-size:15px;font-weight:900;color:var(--text);display:flex;align-items:center;gap:8px;letter-spacing:-.3px;position:relative;}
 .section-title::after{display:none;}
 .section-title iconify-icon{font-size:17px;flex-shrink:0;color:var(--green);}
@@ -662,9 +662,9 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 #lb-prev.hidden,#lb-next.hidden{opacity:0;pointer-events:none;}
 #lb-counter{position:absolute;bottom:calc(var(--safe-b) + 16px);left:50%;transform:translateX(-50%);color:rgba(255,255,255,.7);font-size:12px;font-weight:700;font-family:var(--font-main);background:rgba(0,0,0,.38);padding:4px 14px;border-radius:var(--r-full);pointer-events:none;display:none;backdrop-filter:blur(8px);}
 /* WEATHER / SEA UNIFIED */
-.weather-sea-section{padding:0 16px 6px;}
+.weather-sea-section{padding:0 16px 4px;}
 .weather-sea-unified-card{background:var(--card);border-radius:var(--r-xl);box-shadow:var(--elev-3);border:1px solid var(--border-light);overflow:hidden;}.ws-tabs,.ws-panel{overflow:hidden;}
-.ws-tabs{display:flex;gap:8px;padding:8px 10px;background:var(--card);border-bottom:1px solid var(--border-light);}
+.ws-tabs{display:flex;gap:8px;padding:6px 10px;background:var(--card);border-bottom:1px solid var(--border-light);}
 .ws-tab{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:0 10px;height:34px;border-radius:var(--r-full);border:1.5px solid var(--border);background:var(--card);font-family:var(--font-main);font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;touch-action:manipulation;position:relative;transition:background var(--dur-mid) var(--ease-std),color var(--dur-mid) var(--ease-std),border-color var(--dur-mid) var(--ease-std),transform var(--dur-fast) var(--ease-spring);white-space:nowrap;}
 .ws-tab::after{display:none;}
 .ws-tab.active{background:var(--green);color:#fff;border-color:var(--green);box-shadow:0 2px 8px rgba(0,135,90,.22);}
@@ -1113,7 +1113,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           </div>
 
           <!-- آخر المستجدات -->
-          <div class="section" id="home-news-section" style="padding-top:10px;padding-bottom:4px">
+          <div class="section" id="home-news-section" style="padding-top:6px;padding-bottom:2px">
             <div class="section-header">
               <div class="section-title">
                 <iconify-icon icon="lucide:newspaper"></iconify-icon>
@@ -1131,7 +1131,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 
           <!-- بطاقة الطقس والبحر الموحدة -->
           <div class="section" style="padding-bottom:4px">
-            <div class="section-header" style="margin-bottom:8px;justify-content:center;">
+            <div class="section-header" style="margin-bottom:6px;justify-content:center;">
               <div class="section-title" style="justify-content:center;">
                 <iconify-icon icon="lucide:cloud-sun"></iconify-icon>
                 <span>أحوال الطقس في <span style="color:var(--green);font-weight:900;">شطايبي</span></span>
@@ -1213,8 +1213,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           </div>
 
           <!-- ترحيب + اكتشف شطايبي -->
-          <div class="section" style="padding:0 0 2px;">
-            <div style="padding:12px 18px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;">
+          <div class="section" style="padding:0 0 0px;">
+            <div style="padding:8px 18px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;">
               <div style="font-size:18px;font-weight:900;color:var(--text);letter-spacing:-.4px;line-height:1.3;text-align:center;">
                 اكتشف <span style="color:var(--green);">شطايبي</span>
               </div>
@@ -1223,21 +1223,21 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           </div>
 
           <!-- بطاقات الاكتشاف -->
-          <div class="section" style="padding:0 0 4px;">
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:0 16px 4px;">
-              <button onclick="switchTab('map');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:9px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:16px 10px 14px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.94)';this.style.opacity='.8'" ontouchend="this.style.transform='';this.style.opacity=''">
+          <div class="section" style="padding:0 0 2px;">
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:0 16px 2px;">
+              <button onclick="switchTab('map');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:12px 10px 10px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.94)';this.style.opacity='.8'" ontouchend="this.style.transform='';this.style.opacity=''">
                 <div style="width:46px;height:46px;border-radius:var(--r-md);background:rgba(21,101,192,0.10);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                   <iconify-icon icon="lucide:map" style="color:#1565C0;font-size:22px;pointer-events:none;"></iconify-icon>
                 </div>
                 <span style="font-size:12px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;" data-i18n="nav-map">الخريطة التفاعلية</span>
               </button>
-              <button onclick="switchTab('guide');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:9px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:16px 10px 14px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.94)';this.style.opacity='.8'" ontouchend="this.style.transform='';this.style.opacity=''">
+              <button onclick="switchTab('guide');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:12px 10px 10px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.94)';this.style.opacity='.8'" ontouchend="this.style.transform='';this.style.opacity=''">
                 <div style="width:46px;height:46px;border-radius:var(--r-md);background:rgba(0,135,90,0.10);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                   <iconify-icon icon="lucide:map-pin" style="color:var(--green);font-size:22px;pointer-events:none;"></iconify-icon>
                 </div>
                 <span style="font-size:12px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;" data-i18n="nav-guide">الدليل الشامل</span>
               </button>
-              <button onclick="switchTab('archive');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:9px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:16px 10px 14px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.94)';this.style.opacity='.8'" ontouchend="this.style.transform='';this.style.opacity=''">
+              <button onclick="switchTab('archive');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:12px 10px 10px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.94)';this.style.opacity='.8'" ontouchend="this.style.transform='';this.style.opacity=''">
                 <div style="width:46px;height:46px;border-radius:var(--r-md);background:rgba(245,127,23,0.10);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                   <iconify-icon icon="lucide:scroll-text" style="color:var(--amber);font-size:22px;pointer-events:none;"></iconify-icon>
                 </div>
@@ -1248,7 +1248,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 
           <!-- قسم الشواطئ والمعالم السياحية -->
           <div class="section" style="padding-bottom:6px" id="places-section">
-            <div id="places-tabs-row" style="display:flex;justify-content:center;gap:8px;padding:0 18px 10px;touch-action:pan-y;">
+            <div id="places-tabs-row" style="display:flex;justify-content:center;gap:8px;padding:0 18px 8px;touch-action:pan-y;">
               <button class="ws-tab active" id="place-tab-beaches" onclick="switchPlaceTab('beaches')" style="flex:1;">
                 <iconify-icon icon="lucide:waves" style="font-size:14px;pointer-events:none;color:inherit"></iconify-icon>
                 <span data-i18n="section-beaches">شواطئ شطايبي</span>
@@ -3662,7 +3662,7 @@ var _I18N={
     /* ── طقس ── */
     'weather-wind-label':'كم/س','weather-humidity-label':'رطوبة','weather-feels':'يشعر كـ',
     'weather-max':'أعلى','weather-min':'أدنى','weather-today':'شطايبي — اليوم',
-    'ws-tab-weather':'حالة الطقس','ws-tab-sea':'حالة البحر',
+    'ws-tab-weather':'الطقس','ws-tab-sea':'البحر',
     /* ── بحر ── */
     'sea-wave-label':'ارتفاع الموج','sea-wave-unit':'م',
     'sea-temp-label':'حرارة الماء','sea-dir-label':'الاتجاه',
@@ -3731,7 +3731,7 @@ var _I18N={
     /* ── طقس ── */
     'weather-wind-label':'km/h','weather-humidity-label':'Humidité','weather-feels':'Ressenti',
     'weather-max':'Max','weather-min':'Min','weather-today':'Chetaïbi — Aujourd\'hui',
-    'ws-tab-weather':'Météo','ws-tab-sea':'État de la mer',
+    'ws-tab-weather':'Météo','ws-tab-sea':'Mer',
     /* ── بحر ── */
     'sea-wave-label':'Hauteur vagues','sea-wave-unit':'m',
     'sea-temp-label':'Temp. eau','sea-dir-label':'Direction',
