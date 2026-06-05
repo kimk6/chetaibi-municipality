@@ -1098,7 +1098,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         <div class="content-block">
 
           <!-- شريط الإعلانات المتحرك -->
-          <div id="ann-ticker" class="ann-ticker" style="margin-top:10px;">
+          <div id="ann-ticker" class="ann-ticker">
             <div class="ann-ticker-label" id="ann-ticker-label"></div>
             <div class="ann-ticker-track-wrap">
               <div class="ann-ticker-track" id="ann-ticker-track">
@@ -1114,15 +1114,12 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           <div class="section" style="padding-bottom:4px">
             <div class="weather-sea-section">
               <div class="weather-sea-unified-card">
-                <!-- رأس البطاقة: ترحيب + عنوان -->
-                <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px 0;">
-                  <div>
-                    <div id="home-greeting" style="font-size:14px;font-weight:900;color:var(--text);letter-spacing:-.3px;line-height:1.2;"></div>
-                    <div id="home-date" style="font-size:10.5px;font-weight:600;color:var(--muted);margin-top:1px;"></div>
-                  </div>
-                  <div style="display:flex;align-items:center;gap:5px;">
-                    <iconify-icon icon="lucide:cloud-sun" style="color:var(--green);font-size:14px;"></iconify-icon>
-                    <span style="font-size:12px;font-weight:800;color:var(--green);">الطقس في شطايبي</span>
+                <!-- رأس البطاقة: ترحيب + تاريخ -->
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 14px 0;">
+                  <div id="home-greeting" style="font-size:14px;font-weight:900;color:var(--text);letter-spacing:-.3px;"></div>
+                  <div style="display:flex;align-items:center;gap:5px;background:rgba(0,135,90,0.07);border-radius:var(--r-full);padding:3px 9px 3px 7px;">
+                    <iconify-icon icon="lucide:calendar" style="color:var(--green);font-size:11px;flex-shrink:0;"></iconify-icon>
+                    <span id="home-date" style="font-size:11px;font-weight:700;color:var(--green);"></span>
                   </div>
                 </div>
                 <!-- تبويبات -->
@@ -1151,6 +1148,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                     <button id="ws-forecast-btn" onclick="openForecastModal();haptic('light')" style="display:inline-flex;align-items:center;gap:4px;padding:5px 10px 5px 8px;background:rgba(0,135,90,0.1);border:none;border-radius:var(--r-full);font-family:var(--font-main);font-size:11px;font-weight:700;color:var(--green);cursor:pointer;touch-action:manipulation;flex-shrink:0;margin-top:2px;transition:background var(--dur-fast),transform var(--dur-fast);" ontouchstart="this.style.background='rgba(0,135,90,0.2)';this.style.transform='scale(.94)'" ontouchend="this.style.background='rgba(0,135,90,0.1)';this.style.transform=''">
                       <iconify-icon icon="lucide:calendar-days" style="font-size:12px;pointer-events:none;"></iconify-icon>
                       <span>الأيام القادمة</span>
+                      <iconify-icon icon="lucide:chevron-left" style="font-size:11px;pointer-events:none;opacity:.7;"></iconify-icon>
                     </button>
                   </div>
                   <!-- صف سفلي: الإحصائيات الثلاثة أفقياً -->
@@ -1187,6 +1185,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                     <button onclick="openForecastModal();haptic('light')" style="display:inline-flex;align-items:center;gap:4px;padding:5px 10px 5px 8px;background:rgba(21,101,192,0.1);border:none;border-radius:var(--r-full);font-family:var(--font-main);font-size:11px;font-weight:700;color:#1565C0;cursor:pointer;touch-action:manipulation;flex-shrink:0;margin-top:2px;transition:background var(--dur-fast),transform var(--dur-fast);" ontouchstart="this.style.background='rgba(21,101,192,0.2)';this.style.transform='scale(.94)'" ontouchend="this.style.background='rgba(21,101,192,0.1)';this.style.transform=''">
                       <iconify-icon icon="lucide:calendar-days" style="font-size:12px;pointer-events:none;"></iconify-icon>
                       <span>الأيام القادمة</span>
+                      <iconify-icon icon="lucide:chevron-left" style="font-size:11px;pointer-events:none;opacity:.7;"></iconify-icon>
                     </button>
                   </div>
                   <!-- صف سفلي: الإحصائيات الثلاثة أفقياً -->
@@ -3913,7 +3912,7 @@ window.addEventListener('load',function(){
   });}catch(e){}
   try{(function(){
     var h=new Date().getHours();
-    var g=h<5?'طاب ليلك 🌙':h<12?'صباح الخير ☀️':h<17?'مساء الخير 🌤️':h<21?'مساء النور 🌆':'طاب مساؤك 🌙';
+    var g=h<5?'هدأ الليل 🌙':h<6?'فجر جديد 🌅':h<12?'صباح النور ☀️':h<14?'نهار مشمس 🌤️':h<17?'بعد الظهيرة 🌿':h<20?'مساء الخير 🌆':'دفء الليل 🌙';
     var ge=document.getElementById('home-greeting');
     if(ge)ge.textContent=g;
     var now=new Date();
