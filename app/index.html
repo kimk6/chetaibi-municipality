@@ -1236,11 +1236,11 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 </div>
                 <span style="font-size:11px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;">الدليل</span>
               </button>
-              <button onclick="switchTab('archive');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:13px 6px 11px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.93)';this.style.opacity='.75'" ontouchend="this.style.transform='';this.style.opacity=''">
-                <div style="width:38px;height:38px;border-radius:var(--r-md);background:rgba(245,127,23,0.10);display:flex;align-items:center;justify-content:center;">
-                  <iconify-icon icon="lucide:scroll-text" style="color:var(--amber);font-size:19px;pointer-events:none;"></iconify-icon>
+              <button onclick="openAboutScreen();haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:13px 6px 11px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.93)';this.style.opacity='.75'" ontouchend="this.style.transform='';this.style.opacity=''">
+                <div style="width:38px;height:38px;border-radius:var(--r-md);background:rgba(0,135,90,0.10);display:flex;align-items:center;justify-content:center;">
+                  <iconify-icon icon="lucide:landmark" style="color:var(--green);font-size:19px;pointer-events:none;"></iconify-icon>
                 </div>
-                <span style="font-size:11px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;">الأرشيف</span>
+                <span style="font-size:11px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;">البلدية</span>
               </button>
               <button onclick="switchTab('news');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:13px 6px 11px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.93)';this.style.opacity='.75'" ontouchend="this.style.transform='';this.style.opacity=''">
                 <div style="width:38px;height:38px;border-radius:var(--r-md);background:rgba(124,58,237,0.10);display:flex;align-items:center;justify-content:center;">
@@ -3147,14 +3147,13 @@ async function loadNewsScreen(){
 }
 /* badge counts على تبويبات الأخبار */
 function _updateNewsBadges(data){
-  var cats=['official','activity','social','poster'];
-  /* badge المجموع على زر الكل */
   var allBtn=document.getElementById('news-btn-all');
   if(allBtn){
     var old=allBtn.querySelector('.tab-badge');if(old)old.remove();
     var total=(data||[]).length;
     if(total>0){var b=document.createElement('span');b.className='tab-badge';b.textContent=total>99?'99+':total;allBtn.style.position='relative';allBtn.appendChild(b);}
   }
+  var cats=['official','activity','social','poster'];
   cats.forEach(function(cat){
     var btn=document.getElementById('news-btn-'+cat);if(!btn)return;
     var old=btn.querySelector('.tab-badge');if(old)old.remove();
