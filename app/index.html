@@ -645,10 +645,12 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .map-popup-close{position:absolute;top:10px;left:12px;width:30px;height:30px;border-radius:50%;background:rgba(0,0,0,.07);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;color:var(--muted-2);pointer-events:auto;transition:background var(--dur-fast),color var(--dur-fast);z-index:3;}
 .map-popup-close:active{background:rgba(0,0,0,.16);color:var(--text-2);}
 /* زر عرض في الخريطة داخل الـ modals */
-.modal-map-btn{display:inline-flex;align-items:center;gap:5px;background:var(--blue-l);border:none;border-radius:var(--r-full);padding:6px 14px;font-family:var(--font-main);font-size:12px;font-weight:800;color:var(--blue);cursor:pointer;touch-action:manipulation;margin-top:14px;transition:background var(--dur-fast),transform var(--dur-fast);}
-.modal-map-btn-wrap{display:flex;justify-content:center;}
+.modal-map-btn{display:inline-flex;align-items:center;gap:5px;background:var(--blue-l);border:none;border-radius:var(--r-full);padding:6px 14px;font-family:var(--font-main);font-size:12px;font-weight:800;color:var(--blue);cursor:pointer;touch-action:manipulation;transition:background var(--dur-fast),transform var(--dur-fast);}
+.modal-share-btn{display:inline-flex;align-items:center;gap:5px;background:var(--green-xl);border:none;border-radius:var(--r-full);padding:6px 14px;font-family:var(--font-main);font-size:12px;font-weight:800;color:var(--green);cursor:pointer;touch-action:manipulation;transition:background var(--dur-fast),transform var(--dur-fast);}
+.modal-map-btn-wrap{display:flex;justify-content:center;gap:10px;margin-top:14px;}
 .modal-map-btn:active{background:#BBDEFB;transform:scale(.94);}
-.modal-map-btn iconify-icon{font-size:14px;pointer-events:none;flex-shrink:0;}
+.modal-share-btn:active{background:var(--green-l);transform:scale(.94);}
+.modal-map-btn iconify-icon,.modal-share-btn iconify-icon{font-size:14px;pointer-events:none;flex-shrink:0;}
 /* LIGHTBOX */
 #lightbox{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.96);display:none;align-items:center;justify-content:center;padding:20px;overscroll-behavior:none;}
 #lightbox.open{display:flex;}
@@ -3370,7 +3372,14 @@ function _makeMapBtn(lat,lng,name,wrapId){
   var wrap=document.getElementById(wrapId);
   if(!wrap)return;
   if(lat&&lng){
-    wrap.innerHTML='<div class="modal-map-btn-wrap"><button class="modal-map-btn" onclick="showOnMap('+lat+','+lng+',\''+name.replace(/'/g,'')+'\')">'
+    var safeName=name.replace(/'/g,'');
+    var shareUrl=encodeURIComponent(window.location.origin+'?place='+encodeURIComponent(safeName));
+    var shareText=encodeURIComponent('اكتشف '+name+' في شطايبي');
+    wrap.innerHTML='<div class="modal-map-btn-wrap">'
+      +'<button class="modal-share-btn" onclick="if(navigator.share){navigator.share({title:\''+safeName+'\',text:\''+safeName+' — شطايبي\',url:window.location.href})}else{navigator.clipboard&&navigator.clipboard.writeText(window.location.href);haptic(\'light\')}">'
+      +'<iconify-icon icon="lucide:share-2"></iconify-icon>مشاركة'
+      +'</button>'
+      +'<button class="modal-map-btn" onclick="showOnMap('+lat+','+lng+',\''+safeName+'\')">'
       +'<iconify-icon icon="lucide:map"></iconify-icon>'+t('show-map')
       +'<iconify-icon icon="lucide:chevron-left" style="font-size:13px;pointer-events:none"></iconify-icon>'
       +'</button></div>';
