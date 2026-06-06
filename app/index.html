@@ -229,9 +229,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .section-title iconify-icon{font-size:17px;flex-shrink:0;color:var(--green);}
 .see-all-arrow-btn{border:none;background:var(--green-xl);cursor:pointer;padding:5px 11px 5px 9px;display:flex;align-items:center;justify-content:center;touch-action:manipulation;transition:background var(--dur-fast),transform var(--dur-fast);flex-shrink:0;border-radius:var(--r-full);gap:3px;font-family:var(--font-main);font-size:11.5px;font-weight:800;color:var(--green);}
 .see-all-arrow-btn:active{background:var(--green-l);transform:scale(.94);}
-/* STANDALONE SECTION — surface break بدون فراغ زائد */
-.section-standalone{padding:14px 0 20px;background:var(--surface);margin-top:2px;border-top:1.5px solid var(--border-light);}
-[data-theme="dark"] .section-standalone{background:var(--surface-2);}
 /* SEG BAR */
 .seg-bar-wrap{background:var(--card);border-bottom:1px solid var(--border-light);}
 .seg-bar{display:flex;gap:7px;overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;padding:9px 16px;}
@@ -243,10 +240,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .seg-btn:active:not(.active){opacity:.6;transform:scale(.95);}
 .seg-btn:active.active{transform:scale(.97);}
 /* H-SCROLL */
-.h-scroll{display:flex;gap:12px;overflow-x:auto;padding:6px 18px 14px;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;}
-.h-scroll-wrap{position:relative;}
-.h-scroll-wrap::after{content:'';position:absolute;top:0;left:0;bottom:14px;width:28px;background:linear-gradient(to right,var(--surface,#F5F7FA),transparent);pointer-events:none;z-index:2;}
-[data-theme="dark"] .h-scroll-wrap::after{background:linear-gradient(to right,var(--surface,#111318),transparent);}
+.h-scroll{display:flex;gap:12px;overflow-x:auto;padding:8px 18px 22px;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;}
 /* NEWS CARDS */
 .news-card{min-width:min(244px,70vw);max-width:284px;background:var(--card);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--elev-card);flex-shrink:0;border:1px solid var(--border-light);cursor:pointer;display:flex;flex-direction:column;touch-action:manipulation;transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);}
 .news-card:active{transform:scale(.96);opacity:.85;}
@@ -1204,7 +1198,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           </div>
 
           <!-- تنقل سريع -->
-          <div style="padding:14px 16px 4px;">
+          <div style="padding:14px 16px 0;">
             <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
               <button onclick="switchTab('map');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:13px 6px 11px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.93)';this.style.opacity='.75'" ontouchend="this.style.transform='';this.style.opacity=''">
                 <div style="width:38px;height:38px;border-radius:var(--r-md);background:rgba(21,101,192,0.10);display:flex;align-items:center;justify-content:center;">
@@ -1234,8 +1228,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           </div>
 
           <!-- قسم الشواطئ والمعالم السياحية -->
-          <div class="section" style="padding-top:8px;padding-bottom:0" id="places-section">
-            <div id="places-tabs-row" style="display:flex;justify-content:center;gap:8px;padding:0 18px 10px;touch-action:pan-y;">
+          <div class="section" style="padding-top:18px;padding-bottom:8px" id="places-section">
+            <div id="places-tabs-row" style="display:flex;justify-content:center;gap:8px;padding:0 18px 12px;touch-action:pan-y;">
               <button class="ws-tab active" id="place-tab-beaches" onclick="switchPlaceTab('beaches')" style="flex:1;">
                 <iconify-icon icon="lucide:waves" style="font-size:14px;pointer-events:none;color:inherit"></iconify-icon>
                 <span data-i18n="section-beaches">شواطئ شطايبي</span>
@@ -1257,9 +1251,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </div>
           </div>
 
-
-          <!-- آخر المستجدات — قسم مستقل -->
-          <div class="section-standalone" id="home-news-section">
+          <!-- آخر المستجدات -->
+          <div class="section" id="home-news-section" style="padding-top:16px;padding-bottom:24px;background:var(--surface-2);border-top:1px solid var(--border);">
             <div class="section-header" style="margin-bottom:10px;">
               <div class="section-title">
                 <iconify-icon icon="lucide:newspaper"></iconify-icon>
