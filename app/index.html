@@ -2646,7 +2646,7 @@ var PWA_LAT=37.0850,PWA_LON=7.2550;
 /* _debugSea removed in production */
 /* ══ WEATHER + SEA — 5 days ══ */
 var _wDays=[],_sDays=[],_wIdx=0,_sIdx=0;
-var _WM={0:{d:'☀️',n:'🌕',ar:'الجو صافٍ',fr:'Ciel dégagé'},1:{d:'🌤️',n:'🌙',ar:'غائم خفيف',fr:'Légèrement nuageux'},2:{d:'⛅',n:'🌥️',ar:'غائم جزئياً',fr:'Partiellement nuageux'},3:{d:'☁️',n:'☁️',ar:'غائم',fr:'Nuageux'},45:{d:'🌫️',n:'🌫️',ar:'ضبابي',fr:'Brouillard'},48:{d:'🌫️',n:'🌫️',ar:'ضبابي',fr:'Brouillard'},51:{d:'🌦️',n:'🌧️',ar:'رذاذ',fr:'Bruine'},53:{d:'🌦️',n:'🌧️',ar:'رذاذ',fr:'Bruine'},61:{d:'🌧️',n:'🌧️',ar:'ممطر',fr:'Pluvieux'},63:{d:'🌧️',n:'🌧️',ar:'مطر',fr:'Pluie'},65:{d:'🌧️',n:'🌧️',ar:'مطر غزير',fr:'Forte pluie'},80:{d:'🌦️',n:'🌧️',ar:'زخات',fr:'Averses'},81:{d:'🌧️',n:'🌧️',ar:'زخات',fr:'Averses'},95:{d:'⛈️',n:'⛈️',ar:'عاصفة'}};
+var _WM={0:{d:'☀️',n:'🌕',ar:'صافٍ تماماً',fr:'Ciel dégagé'},1:{d:'🌤️',n:'🌙',ar:'صافٍ مع غيوم خفيفة',fr:'Légèrement nuageux'},2:{d:'⛅',n:'🌥️',ar:'غائم جزئياً',fr:'Partiellement nuageux'},3:{d:'☁️',n:'☁️',ar:'غائم بالكامل',fr:'Couvert'},45:{d:'🌫️',n:'🌫️',ar:'ضبابي',fr:'Brouillard'},48:{d:'🌫️',n:'🌫️',ar:'ضباب كثيف',fr:'Brouillard givrant'},51:{d:'🌦️',n:'🌧️',ar:'رذاذ خفيف',fr:'Bruine légère'},53:{d:'🌦️',n:'🌧️',ar:'رذاذ متوسط',fr:'Bruine modérée'},55:{d:'🌧️',n:'🌧️',ar:'رذاذ كثيف',fr:'Bruine dense'},61:{d:'🌧️',n:'🌧️',ar:'أمطار خفيفة',fr:'Pluie légère'},63:{d:'🌧️',n:'🌧️',ar:'أمطار معتدلة',fr:'Pluie modérée'},65:{d:'🌧️',n:'🌧️',ar:'أمطار غزيرة',fr:'Pluie forte'},71:{d:'🌨️',n:'🌨️',ar:'ثلج خفيف',fr:'Neige légère'},73:{d:'🌨️',n:'🌨️',ar:'ثلج معتدل',fr:'Neige modérée'},75:{d:'❄️',n:'❄️',ar:'ثلج كثيف',fr:'Neige forte'},80:{d:'🌦️',n:'🌧️',ar:'زخات خفيفة',fr:'Averses légères'},81:{d:'🌧️',n:'🌧️',ar:'زخات معتدلة',fr:'Averses modérées'},82:{d:'🌧️',n:'🌧️',ar:'زخات عنيفة',fr:'Averses fortes'},95:{d:'⛈️',n:'⛈️',ar:'عاصفة رعدية',fr:'Orage'},96:{d:'⛈️',n:'⛈️',ar:'عاصفة مع برَد',fr:'Orage avec grêle'},99:{d:'⛈️',n:'⛈️',ar:'عاصفة شديدة',fr:'Orage violent'}};
 var _DN=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
 function _getDN(i){var days=t('day-names');return Array.isArray(days)?days[i]:_DN[i];}
 function _getToday(){return t('today')||'اليوم';}
@@ -2711,12 +2711,12 @@ async function fetchPWAWeather(){
 }
 function _seaLabel(v,isDay){
   var tips=t('sea-tips')||{};var states=t('sea-states')||{};
-  if(v<0.3)return{si:'🌊',st:states.calm||'هادئ جداً',sd:isDay?(tips.calm_day||'مناسب للسباحة'):(tips.calm_night||'مناسب للصيد الليلي')};
+  if(v<0.3)return{si:'🌊',st:states.calm||'هادئ جداً',sd:isDay?(tips.calm_day||'مناسب للسباحة والغطس'):(tips.calm_night||'مناسب للصيد الليلي')};
   if(v<0.6)return{si:'🎣',st:states.calm||'هادئ',sd:isDay?(tips.calm_day||'مناسب للسباحة والصيد'):(tips.calm_night||'مناسب للصيد الليلي')};
-  if(v<1.0)return{si:'🎣',st:states.mostly_calm||'هادئ نسبياً',sd:tips.mostly_calm_day||'مناسب للصيد'};
-  if(v<1.5)return{si:'⚠️',st:states.moderate||'معتدل',sd:isDay?(tips.moderate_day||'حذر عند الخروج'):(tips.moderate_night||'حذر')};
-  if(v<2.5)return{si:'⚠️',st:states.rough||'مضطرب',sd:tips.rough||'يُنصح بالحذر'};
-  return{si:'🔴',st:states.stormy||'عاصف',sd:tips.stormy||'يُمنع الخروج'};
+  if(v<1.0)return{si:'🎣',st:states.mostly_calm||'هادئ نسبياً',sd:isDay?(tips.mostly_calm_day||'مناسب للصيد والتجديف'):(tips.mostly_calm_night||'مناسب للصيد الليلي')};
+  if(v<1.5)return{si:'⚠️',st:states.moderate||'معتدل',sd:isDay?(tips.moderate_day||'توخ الحذر عند الاقتراب'):(tips.moderate_night||'حذر للصيادين')};
+  if(v<2.5)return{si:'⚠️',st:states.rough||'مضطرب',sd:tips.rough||'يُنصح بعدم الاقتراب'};
+  return{si:'🔴',st:states.stormy||'عاصف',sd:tips.stormy||'يُمنع الخروج للبحر'};
 }
 function renderSeaDay(i){
   _sIdx=i;
@@ -3671,7 +3671,7 @@ var _I18N={
     'sea-wave-label':'ارتفاع الموج','sea-wave-unit':'م',
     'sea-temp-label':'حرارة الماء','sea-dir-label':'الاتجاه',
     'sea-states':{'calm':'هادئ','mostly_calm':'هادئ نسبياً','moderate':'معتدل','rough':'مضطرب','stormy':'عاصف'},
-    'sea-tips':{'calm_day':'البحر هادئ — مناسب للسباحة','calm_night':'البحر هادئ — مناسب للصيد','mostly_calm_day':'هادئ نسبياً — مناسب','mostly_calm_night':'هادئ — مناسب للصيد','moderate_day':'معتدل — توخ الحذر','moderate_night':'معتدل — حذر للصيادين','rough':'مضطرب — يُنصح بالحذر','stormy':'عاصف — يُمنع الخروج'},
+    'sea-tips':{'calm_day':'مناسب للسباحة والغطس','calm_night':'مناسب للصيد الليلي','mostly_calm_day':'مناسب للصيد والتجديف','mostly_calm_night':'مناسب للصيد الليلي','moderate_day':'توخ الحذر عند الاقتراب','moderate_night':'حذر للصيادين','rough':'يُنصح بعدم الاقتراب','stormy':'يُمنع الخروج للبحر'},
     'sea-daytime':'للسياح والسباحين','sea-nighttime':'للصيادين الليليين',
     /* ── خدمات ── */
     'svc-docs-title':'الوثائق المطلوبة','svc-forms-title':'الاستمارات',
@@ -3740,7 +3740,7 @@ var _I18N={
     'sea-wave-label':'Hauteur vagues','sea-wave-unit':'m',
     'sea-temp-label':'Temp. eau','sea-dir-label':'Direction',
     'sea-states':{'calm':'Calme','mostly_calm':'Assez calme','moderate':'Modéré','rough':'Agité','stormy':'Tempétueux'},
-    'sea-tips':{'calm_day':'Mer calme — Baignade possible','calm_night':'Mer calme — Pêche possible','mostly_calm_day':'Assez calme — Baignade possible','mostly_calm_night':'Assez calme — Pêche possible','moderate_day':'Modérée — Prudence','moderate_night':'Modérée — Prudence pêcheurs','rough':'Agitée — Prudence recommandée','stormy':'Tempétueuse — Interdit'},
+    'sea-tips':{'calm_day':'Baignade et plongée possibles','calm_night':'Pêche de nuit possible','mostly_calm_day':'Pêche et navigation possibles','mostly_calm_night':'Pêche de nuit possible','moderate_day':'Prudence recommandée','moderate_night':'Prudence pour les pêcheurs','rough':'Ne pas s\'approcher','stormy':'Accès interdit'},
     'sea-daytime':'Touristes et baigneurs','sea-nighttime':'Pêcheurs nocturnes',
     /* ── خدمات ── */
     'svc-docs-title':'Documents requis','svc-forms-title':'Formulaires',
