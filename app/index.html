@@ -146,7 +146,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .ann-ticker{
   display:flex;align-items:center;gap:0;
   height:38px;overflow:hidden;
-  margin:0 0 4px;
+  margin:0 0 0;
   background:linear-gradient(135deg,rgba(0,135,90,0.07),rgba(0,135,90,0.03));
   border-top:1px solid rgba(0,135,90,0.13);
   border-bottom:1px solid rgba(0,135,90,0.13);
@@ -222,8 +222,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 /* ══════════════════════════════════════════
    SECTIONS
 ══════════════════════════════════════════ */
-.section{padding:20px 0 6px;}
-.section-header{display:flex;align-items:center;justify-content:space-between;padding:0 18px;margin-bottom:14px;}
+.section{padding:16px 0 4px;}
+.section-header{display:flex;align-items:center;justify-content:space-between;padding:0 18px;margin-bottom:10px;}
 .section-title{font-size:15px;font-weight:900;color:var(--text);display:flex;align-items:center;gap:8px;letter-spacing:-.3px;position:relative;}
 .section-title::after{display:none;}
 .section-title iconify-icon{font-size:17px;flex-shrink:0;color:var(--green);}
@@ -240,7 +240,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .seg-btn:active:not(.active){opacity:.6;transform:scale(.95);}
 .seg-btn:active.active{transform:scale(.97);}
 /* H-SCROLL */
-.h-scroll{display:flex;gap:12px;overflow-x:auto;padding:8px 18px 22px;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;}
+.h-scroll{display:flex;gap:12px;overflow-x:auto;padding:6px 18px 16px;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;}
 /* NEWS CARDS */
 .news-card{min-width:min(244px,70vw);max-width:284px;background:var(--card);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--elev-card);flex-shrink:0;border:1px solid var(--border-light);cursor:pointer;display:flex;flex-direction:column;touch-action:manipulation;transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);}
 .news-card:active{transform:scale(.96);opacity:.85;}
@@ -1111,7 +1111,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           </div>
 
           <!-- بطاقة الطقس والبحر الموحدة -->
-          <div class="section" style="padding-bottom:4px">
+          <div class="section" style="padding-top:14px;padding-bottom:4px">
             <div class="weather-sea-section">
               <div class="weather-sea-unified-card">
                 <!-- رأس البطاقة: ترحيب + تاريخ -->
@@ -1198,7 +1198,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           </div>
 
           <!-- تنقل سريع -->
-          <div style="padding:14px 16px 4px;">
+          <div style="padding:16px 16px 4px;">
             <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
               <button onclick="switchTab('map');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:13px 6px 11px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.93)';this.style.opacity='.75'" ontouchend="this.style.transform='';this.style.opacity=''">
                 <div style="width:38px;height:38px;border-radius:var(--r-md);background:rgba(21,101,192,0.10);display:flex;align-items:center;justify-content:center;">
@@ -1228,8 +1228,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           </div>
 
           <!-- قسم الشواطئ والمعالم السياحية -->
-          <div class="section" style="padding-top:8px;padding-bottom:8px" id="places-section">
-            <div id="places-tabs-row" style="display:flex;justify-content:center;gap:8px;padding:0 18px 12px;touch-action:pan-y;">
+          <div class="section" style="padding-top:16px;padding-bottom:4px" id="places-section">
+            <div id="places-tabs-row" style="display:flex;justify-content:center;gap:8px;padding:0 18px 10px;touch-action:pan-y;">
               <button class="ws-tab active" id="place-tab-beaches" onclick="switchPlaceTab('beaches')" style="flex:1;">
                 <iconify-icon icon="lucide:waves" style="font-size:14px;pointer-events:none;color:inherit"></iconify-icon>
                 <span data-i18n="section-beaches">شواطئ شطايبي</span>
@@ -1252,8 +1252,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           </div>
 
           <!-- آخر المستجدات -->
-          <div style="margin:4px 18px 0;height:1px;background:var(--border-light);border-radius:1px;"></div>
-          <div class="section" id="home-news-section" style="padding-top:14px;padding-bottom:20px">
+          <div class="section" id="home-news-section" style="padding-top:16px;padding-bottom:24px">
             <div class="section-header">
               <div class="section-title">
                 <iconify-icon icon="lucide:newspaper"></iconify-icon>
