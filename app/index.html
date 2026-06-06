@@ -1155,7 +1155,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                           <iconify-icon icon="lucide:wind" style="color:#34d399;font-size:14px;"></iconify-icon>
                         </div>
                       </div>
-                      <button id="ws-forecast-btn" onclick="openForecastModal();haptic('light')" style="display:inline-flex;align-items:center;gap:3px;padding:4px 9px 4px 7px;background:rgba(0,135,90,0.1);border:none;border-radius:var(--r-full);font-family:var(--font-main);font-size:10.5px;font-weight:700;color:var(--green);cursor:pointer;touch-action:manipulation;white-space:nowrap;transition:background var(--dur-fast),transform var(--dur-fast);" ontouchstart="this.style.background='rgba(0,135,90,0.2)';this.style.transform='scale(.94)'" ontouchend="this.style.background='rgba(0,135,90,0.1)';this.style.transform=''">
+                      <button id="ws-forecast-btn" onclick="openForecastModal();haptic('light')" style="display:inline-flex;align-items:center;gap:5px;padding:6px 12px 6px 10px;background:var(--green);border:none;border-radius:var(--r-full);font-family:var(--font-main);font-size:11px;font-weight:800;color:#fff;cursor:pointer;touch-action:manipulation;white-space:nowrap;box-shadow:0 2px 8px rgba(0,135,90,0.25);transition:opacity var(--dur-fast),transform var(--dur-fast);" ontouchstart="this.style.opacity='.8';this.style.transform='scale(.94)'" ontouchend="this.style.opacity='';this.style.transform=''">
                         <iconify-icon icon="lucide:calendar-days" style="font-size:12px;pointer-events:none;"></iconify-icon>
                         <span>توقعات 7 أيام ›</span>
                       </button>
@@ -1186,7 +1186,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                           <iconify-icon icon="lucide:compass" style="color:#818cf8;font-size:14px;"></iconify-icon>
                         </div>
                       </div>
-                      <button onclick="openForecastModal();haptic('light')" style="display:inline-flex;align-items:center;gap:3px;padding:4px 9px 4px 7px;background:rgba(21,101,192,0.1);border:none;border-radius:var(--r-full);font-family:var(--font-main);font-size:10.5px;font-weight:700;color:#1565C0;cursor:pointer;touch-action:manipulation;white-space:nowrap;transition:background var(--dur-fast),transform var(--dur-fast);" ontouchstart="this.style.background='rgba(21,101,192,0.2)';this.style.transform='scale(.94)'" ontouchend="this.style.background='rgba(21,101,192,0.1)';this.style.transform=''">
+                      <button onclick="openForecastModal();haptic('light')" style="display:inline-flex;align-items:center;gap:5px;padding:6px 12px 6px 10px;background:#1565C0;border:none;border-radius:var(--r-full);font-family:var(--font-main);font-size:11px;font-weight:800;color:#fff;cursor:pointer;touch-action:manipulation;white-space:nowrap;box-shadow:0 2px 8px rgba(21,101,192,0.25);transition:opacity var(--dur-fast),transform var(--dur-fast);" ontouchstart="this.style.opacity='.8';this.style.transform='scale(.94)'" ontouchend="this.style.opacity='';this.style.transform=''">
                         <iconify-icon icon="lucide:calendar-days" style="font-size:12px;pointer-events:none;"></iconify-icon>
                         <span>توقعات 7 أيام ›</span>
                       </button>
@@ -2679,7 +2679,7 @@ async function fetchPWAWeather(){
     var times=dl.time||[];
     if(!times.length)throw new Error('no data');
     _wDays=[];
-    for(var i=0;i<Math.min(5,times.length);i++){
+    for(var i=0;i<Math.min(7,times.length);i++){
       var dt=new Date(times[i]+'T12:00:00');var h=i===0?now.getHours():12;
       var tmax=dl.temperature_2m_max?dl.temperature_2m_max[i]:null;
       var tmin=dl.temperature_2m_min?dl.temperature_2m_min[i]:null;
@@ -2747,7 +2747,7 @@ async function fetchPWASea(){
       ?['N','NE','E','SE','S','SO','O','NO']
       :['شمال','شمال شرق','شرق','جنوب شرق','جنوب','جنوب غرب','غرب','شمال غرب'];var now=new Date();
     _sDays=[];
-    for(var i=0;i<Math.min(5,dl.time.length);i++){
+    for(var i=0;i<Math.min(7,dl.time.length);i++){
       var dt=new Date(dl.time[i]+'T12:00:00');var h=i===0?now.getHours():12;
       var wv=i===0?parseFloat(cu.wave_height.toFixed(2)):parseFloat(((dl.wave_height_max&&dl.wave_height_max[i])||0).toFixed(2));
       var dv=i===0?cu.wave_direction:(dl.wave_direction_dominant?dl.wave_direction_dominant[i]:null);
