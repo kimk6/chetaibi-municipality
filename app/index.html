@@ -672,7 +672,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .ws-tab:active:not(.active){opacity:.6;transform:scale(.95);}
 .ws-tab:active.active{transform:scale(.97);}
 .ws-tab iconify-icon{font-size:13px;pointer-events:none;}
-.ws-panel{padding:12px 16px;transition:background .25s;height:90px!important;box-sizing:border-box;overflow:hidden;}
+.ws-panel{padding:12px 16px;transition:background .25s;}
 .ws-panel.hidden{display:none;}
 #ws-panel-weather{background:rgba(0,135,90,0.04);}
 #ws-panel-sea{background:rgba(21,101,192,0.04);}
@@ -1139,7 +1139,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                   <div style="display:flex;align-items:center;justify-content:space-between;">
                     <!-- يمين: أيقونة + درجة + وصف -->
                     <div style="display:flex;align-items:center;gap:12px;">
-                      <span id="pwa-weather-icon" style="font-size:40px;line-height:1;">☀️</span>
+                      <span id="pwa-weather-icon" style="font-size:48px;line-height:1;">☀️</span>
                       <div>
                         <div id="pwa-weather-temp" style="font-size:40px;font-weight:900;color:var(--text);line-height:1;letter-spacing:-2px;">--°</div>
                         <div id="pwa-weather-desc" style="font-size:12px;color:var(--muted);font-weight:600;margin-top:4px;" data-i18n="loading">جاري التحميل</div>
@@ -1164,9 +1164,9 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                   <div style="display:flex;align-items:center;justify-content:space-between;">
                     <!-- يمين: أيقونة + حالة + وصف -->
                     <div style="display:flex;align-items:center;gap:12px;">
-                      <span id="pwa-sea-icon" style="font-size:40px;line-height:1;">🌊</span>
+                      <span id="pwa-sea-icon" style="font-size:48px;line-height:1;">🌊</span>
                       <div>
-                        <div id="pwa-sea-state" style="font-size:22px;font-weight:900;color:var(--text);line-height:1;white-space:nowrap;">--</div>
+                        <div id="pwa-sea-state" style="font-size:26px;font-weight:900;color:var(--text);line-height:1;">--</div>
                         <div id="pwa-sea-desc" style="font-size:12px;color:var(--muted);font-weight:600;margin-top:4px;" data-i18n="loading">جاري التحميل</div>
                       </div>
                     </div>
@@ -2655,7 +2655,7 @@ function renderWeatherDay(i){
 }
 async function fetchPWAWeather(){
   try{
-    var r=await fetch('https://historical-forecast-api.open-meteo.com/v1/forecast?latitude='+PWA_LAT+'&longitude='+PWA_LON+'&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code,is_day&daily=temperature_2m_max,temperature_2m_min,wind_speed_10m_max,precipitation_probability_max,weather_code&timezone=Africa%2FAlgiers&forecast_days=7');
+    var r=await fetch('https://api.open-meteo.com/v1/forecast?latitude='+PWA_LAT+'&longitude='+PWA_LON+'&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code,is_day&daily=temperature_2m_max,temperature_2m_min,wind_speed_10m_max,precipitation_probability_max,weather_code&timezone=Africa%2FAlgiers&forecast_days=7&models=ecmwf_ifs025');
     if(!r.ok)throw new Error('HTTP '+r.status);
     var d=await r.json();
     if(d.error)throw new Error(d.reason||'API error');
@@ -2721,7 +2721,7 @@ function renderSeaDay(i){
 }
 async function fetchPWASea(){
   try{
-    var r=await fetch('https://marine-api.open-meteo.com/v1/marine?latitude='+PWA_LAT+'&longitude='+PWA_LON+'&current=wave_height,wave_direction,sea_surface_temperature&daily=wave_height_max,wave_direction_dominant,sea_surface_temperature_max&timezone=Africa%2FAlgiers&forecast_days=7');
+    var r=await fetch('https://marine-api.open-meteo.com/v1/marine?latitude='+PWA_LAT+'&longitude='+PWA_LON+'&current=wave_height,wave_direction,sea_surface_temperature&daily=wave_height_max,wave_direction_dominant,sea_surface_temperature_max&timezone=Africa%2FAlgiers&forecast_days=7&models=ecmwf_wam025');
     if(!r.ok)throw new Error('HTTP '+r.status);
     var d=await r.json();
     if(d.error)throw new Error(d.reason||'API error');
