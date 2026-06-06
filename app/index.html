@@ -229,6 +229,9 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .section-title iconify-icon{font-size:17px;flex-shrink:0;color:var(--green);}
 .see-all-arrow-btn{border:none;background:var(--green-xl);cursor:pointer;padding:5px 11px 5px 9px;display:flex;align-items:center;justify-content:center;touch-action:manipulation;transition:background var(--dur-fast),transform var(--dur-fast);flex-shrink:0;border-radius:var(--r-full);gap:3px;font-family:var(--font-main);font-size:11.5px;font-weight:800;color:var(--green);}
 .see-all-arrow-btn:active{background:var(--green-l);transform:scale(.94);}
+/* STANDALONE SECTION — surface break بدون فراغ زائد */
+.section-standalone{padding:14px 0 20px;background:var(--surface);margin-top:2px;border-top:1.5px solid var(--border-light);}
+[data-theme="dark"] .section-standalone{background:var(--surface-2);}
 /* SEG BAR */
 .seg-bar-wrap{background:var(--card);border-bottom:1px solid var(--border-light);}
 .seg-bar{display:flex;gap:7px;overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;padding:9px 16px;}
@@ -240,7 +243,10 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .seg-btn:active:not(.active){opacity:.6;transform:scale(.95);}
 .seg-btn:active.active{transform:scale(.97);}
 /* H-SCROLL */
-.h-scroll{display:flex;gap:12px;overflow-x:auto;padding:8px 18px 22px;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;}
+.h-scroll{display:flex;gap:12px;overflow-x:auto;padding:6px 18px 14px;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;}
+.h-scroll-wrap{position:relative;}
+.h-scroll-wrap::after{content:'';position:absolute;top:0;left:0;bottom:14px;width:28px;background:linear-gradient(to right,var(--surface,#F5F7FA),transparent);pointer-events:none;z-index:2;}
+[data-theme="dark"] .h-scroll-wrap::after{background:linear-gradient(to right,var(--surface,#111318),transparent);}
 /* NEWS CARDS */
 .news-card{min-width:min(244px,70vw);max-width:284px;background:var(--card);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--elev-card);flex-shrink:0;border:1px solid var(--border-light);cursor:pointer;display:flex;flex-direction:column;touch-action:manipulation;transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);}
 .news-card:active{transform:scale(.96);opacity:.85;}
@@ -1240,20 +1246,21 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
               </button>
             </div>
             <div id="place-panel-beaches">
-              <div class="h-scroll" id="h-beaches" style="padding-bottom:12px;">
+              <div class="h-scroll" id="h-beaches">
                 <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
               </div>
             </div>
             <div id="place-panel-tourism" style="display:none;">
-              <div class="h-scroll" id="h-tourism" style="padding-bottom:12px;">
+              <div class="h-scroll" id="h-tourism">
                 <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
               </div>
             </div>
           </div>
 
-          <!-- آخر المستجدات -->
-          <div class="section" id="home-news-section" style="padding-top:16px;padding-bottom:20px;border-top:1px solid var(--border-light);">
-            <div class="section-header">
+
+          <!-- آخر المستجدات — قسم مستقل -->
+          <div class="section-standalone" id="home-news-section">
+            <div class="section-header" style="margin-bottom:10px;">
               <div class="section-title">
                 <iconify-icon icon="lucide:newspaper"></iconify-icon>
                 <span data-i18n="section-news">آخر المستجدات</span>
