@@ -201,7 +201,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .screen{position:absolute;inset:0;overflow:hidden;will-change:transform,opacity;}
 .screen.hidden{display:none;pointer-events:none;}
 .scroll-area{position:absolute;inset:0;overflow-y:auto;overflow-x:clip;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;padding-top:var(--header-h);}
-.content-block{background:var(--surface);min-height:100%;position:relative;padding-bottom:20px;}
+.content-block{background:var(--surface);min-height:100%;position:relative;padding-bottom:0;}
 #screen-map .scroll-area{overflow:hidden;padding-top:0 !important;}
 #app-map{position:absolute;inset:0;width:100%;height:100%;}
 /* ══════════════════════════════════════════
@@ -1198,7 +1198,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           </div>
 
           <!-- تنقل سريع -->
-          <div style="padding:14px 16px 4px;">
+          <div style="padding:14px 16px 0;">
             <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
               <button onclick="switchTab('map');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:13px 6px 11px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.93)';this.style.opacity='.75'" ontouchend="this.style.transform='';this.style.opacity=''">
                 <div style="width:38px;height:38px;border-radius:var(--r-md);background:rgba(21,101,192,0.10);display:flex;align-items:center;justify-content:center;">
@@ -1228,7 +1228,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           </div>
 
           <!-- قسم الشواطئ والمعالم السياحية -->
-          <div class="section" style="padding-top:8px;padding-bottom:8px" id="places-section">
+          <div class="section" style="padding-top:20px;padding-bottom:8px" id="places-section">
             <div id="places-tabs-row" style="display:flex;justify-content:center;gap:8px;padding:0 18px 12px;touch-action:pan-y;">
               <button class="ws-tab active" id="place-tab-beaches" onclick="switchPlaceTab('beaches')" style="flex:1;">
                 <iconify-icon icon="lucide:waves" style="font-size:14px;pointer-events:none;color:inherit"></iconify-icon>
@@ -1252,9 +1252,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           </div>
 
           <!-- آخر المستجدات -->
-          <div style="margin:4px 18px 0;height:1px;background:var(--border-light);border-radius:1px;"></div>
-          <div class="section" id="home-news-section" style="padding-top:14px;padding-bottom:20px">
-            <div class="section-header">
+          <div class="section" id="home-news-section" style="padding-top:16px;padding-bottom:calc(24px + var(--safe-b));background:var(--surface-2);border-top:1px solid var(--border);">
+            <div class="section-header" style="margin-bottom:10px;">
               <div class="section-title">
                 <iconify-icon icon="lucide:newspaper"></iconify-icon>
                 <span data-i18n="section-news">آخر المستجدات</span>
