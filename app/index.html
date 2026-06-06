@@ -1119,7 +1119,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                   <div id="home-greeting" style="font-size:14px;font-weight:900;color:var(--text);letter-spacing:-.3px;"></div>
                   <button id="ws-forecast-btn" onclick="openForecastModal();haptic('light')" style="display:inline-flex;align-items:center;gap:4px;background:none;border:none;font-family:var(--font-main);font-size:12px;font-weight:700;color:var(--green);cursor:pointer;touch-action:manipulation;white-space:nowrap;padding:0;transition:opacity var(--dur-fast);" ontouchstart="this.style.opacity='.5'" ontouchend="this.style.opacity='1'">
                     <iconify-icon icon="lucide:calendar-days" style="font-size:13px;pointer-events:none;"></iconify-icon>
-                    <span>الأيام القادمة ›</span>
+                    <span>الطقس هذا الأسبوع ›</span>
                   </button>
                 </div>
                 <!-- تبويبات -->
@@ -3961,21 +3961,21 @@ window.addEventListener('load',function(){
         },{passive:true});
       }
 
-      /* طقس: تجاوز آخر يوم يميناً → البحر، تجاوز أول يوم يساراً → لا شيء */
+      /* طقس: السحب يتنقل بين الأيام فقط */
       addPanelSwipe('ws-panel-weather',
         function(){return _wIdx;},
         function(i){renderWeatherDay(i);},
         function(){return _wDays.length||1;},
-        function(){switchWsTab('sea');},   /* آخر يوم → البحر */
-        null                               /* أول يوم ← لا شيء */
+        null,
+        null
       );
-      /* بحر: تجاوز أول يوم يساراً → الطقس */
+      /* بحر: السحب يتنقل بين الأيام فقط */
       addPanelSwipe('ws-panel-sea',
         function(){return _sIdx;},
         function(i){renderSeaDay(i);},
         function(){return _sDays.length||1;},
-        null,                              /* آخر يوم → لا شيء */
-        function(){switchWsTab('weather');} /* أول يوم ← الطقس */
+        null,
+        null
       );
     })();
   }catch(e){}
