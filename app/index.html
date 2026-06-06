@@ -2713,12 +2713,12 @@ function _seaLabel(v,isDay){
   var tips=t('sea-tips')||{};var states=t('sea-states')||{};
   var m=new Date().getMonth(); // 0=يناير
   var isSummer=(m>=3&&m<=8); // أبريل-سبتمبر موسم السباحة
-  if(v<0.3)return{si:'🌊',st:states.calm||'هادئ جداً',sd:isDay?(isSummer?(tips.calm_day||'مناسب للسباحة'):''):(tips.calm_night||'مناسب للصيد')};
-  if(v<0.6)return{si:'🎣',st:states.calm||'هادئ',sd:isDay?(isSummer?(tips.calm_day||'مناسب للسباحة'):(tips.mostly_calm_day||'مناسب للسباحة')):(tips.calm_night||'مناسب للصيد')};
-  if(v<1.0)return{si:'🎣',st:states.mostly_calm||'هادئ نسبياً',sd:isDay?(isSummer?(tips.mostly_calm_day||'مناسب للسباحة'):''):(tips.mostly_calm_night||'مناسب للصيد')};
+  if(v<0.3)return{si:isDay?(isSummer?'🏊':'🌊'):'🌊',st:states.calm||'هادئ جداً',sd:isDay?(isSummer?(tips.calm_day||'مناسب للسباحة'):''):(tips.calm_night||'مناسب للصيد')};
+  if(v<0.6)return{si:isDay?(isSummer?'🏊':'🌊'):'🎣',st:states.calm||'هادئ',sd:isDay?(isSummer?(tips.calm_day||'مناسب للسباحة'):''):(tips.calm_night||'مناسب للصيد')};
+  if(v<1.0)return{si:isDay?(isSummer?'🏊':'🌊'):'🎣',st:states.mostly_calm||'هادئ نسبياً',sd:isDay?(isSummer?(tips.mostly_calm_day||'مناسب للسباحة'):''):(tips.mostly_calm_night||'مناسب للصيد')};
   if(v<1.5)return{si:'⚠️',st:states.moderate||'معتدل',sd:isDay?(tips.moderate_day||'توخ الحذر'):(tips.moderate_night||'حذر للصيادين')};
   if(v<2.5)return{si:'⚠️',st:states.rough||'مضطرب',sd:tips.rough||'يُنصح بعدم الاقتراب'};
-  return{si:'🔴',st:states.stormy||'عاصف',sd:tips.stormy||'يُمنع الخروج للبحر'};
+  return{si:'⛈️',st:states.stormy||'عاصف',sd:tips.stormy||'يُمنع الخروج للبحر'};
 }
 function renderSeaDay(i){
   _sIdx=i;
