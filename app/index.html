@@ -2713,10 +2713,10 @@ function _seaLabel(v,isDay){
   var tips=t('sea-tips')||{};var states=t('sea-states')||{};
   var m=new Date().getMonth(); // 0=يناير
   var isSummer=(m>=3&&m<=8); // أبريل-سبتمبر موسم السباحة
-  if(v<0.3)return{si:'🌊',st:states.calm||'هادئ جداً',sd:isDay?(isSummer?(tips.calm_day||'مناسب للسباحة والغطس'):''):(tips.calm_night||'مناسب للصيد الليلي')};
-  if(v<0.6)return{si:'🎣',st:states.calm||'هادئ',sd:isDay?(isSummer?(tips.calm_day||'مناسب للسباحة والصيد'):(tips.mostly_calm_day||'مناسب للصيد والتجديف')):(tips.calm_night||'مناسب للصيد الليلي')};
-  if(v<1.0)return{si:'🎣',st:states.mostly_calm||'هادئ نسبياً',sd:isDay?(tips.mostly_calm_day||'مناسب للصيد والتجديف'):(tips.mostly_calm_night||'مناسب للصيد الليلي')};
-  if(v<1.5)return{si:'⚠️',st:states.moderate||'معتدل',sd:isDay?(tips.moderate_day||'توخ الحذر عند الاقتراب'):(tips.moderate_night||'حذر للصيادين')};
+  if(v<0.3)return{si:'🌊',st:states.calm||'هادئ جداً',sd:isDay?(isSummer?(tips.calm_day||'مناسب للسباحة'):''):(tips.calm_night||'مناسب للصيد')};
+  if(v<0.6)return{si:'🎣',st:states.calm||'هادئ',sd:isDay?(isSummer?(tips.calm_day||'مناسب للسباحة'):(tips.mostly_calm_day||'مناسب للسباحة')):(tips.calm_night||'مناسب للصيد')};
+  if(v<1.0)return{si:'🎣',st:states.mostly_calm||'هادئ نسبياً',sd:isDay?(isSummer?(tips.mostly_calm_day||'مناسب للسباحة'):''):(tips.mostly_calm_night||'مناسب للصيد')};
+  if(v<1.5)return{si:'⚠️',st:states.moderate||'معتدل',sd:isDay?(tips.moderate_day||'توخ الحذر'):(tips.moderate_night||'حذر للصيادين')};
   if(v<2.5)return{si:'⚠️',st:states.rough||'مضطرب',sd:tips.rough||'يُنصح بعدم الاقتراب'};
   return{si:'🔴',st:states.stormy||'عاصف',sd:tips.stormy||'يُمنع الخروج للبحر'};
 }
@@ -3673,7 +3673,7 @@ var _I18N={
     'sea-wave-label':'ارتفاع الموج','sea-wave-unit':'م',
     'sea-temp-label':'حرارة الماء','sea-dir-label':'الاتجاه',
     'sea-states':{'calm':'هادئ','mostly_calm':'هادئ نسبياً','moderate':'معتدل','rough':'مضطرب','stormy':'عاصف'},
-    'sea-tips':{'calm_day':'مناسب للسباحة والغطس','calm_night':'مناسب للصيد الليلي','mostly_calm_day':'مناسب للصيد والتجديف','mostly_calm_night':'مناسب للصيد الليلي','moderate_day':'توخ الحذر عند الاقتراب','moderate_night':'حذر للصيادين','rough':'يُنصح بعدم الاقتراب','stormy':'يُمنع الخروج للبحر'},
+    'sea-tips':{'calm_day':'مناسب للسباحة','calm_night':'مناسب للصيد','mostly_calm_day':'مناسب للسباحة','mostly_calm_night':'مناسب للصيد','moderate_day':'توخ الحذر','moderate_night':'حذر للصيادين','rough':'يُنصح بعدم الاقتراب','stormy':'يُمنع الخروج للبحر'},
     'sea-daytime':'للسياح والسباحين','sea-nighttime':'للصيادين الليليين',
     /* ── خدمات ── */
     'svc-docs-title':'الوثائق المطلوبة','svc-forms-title':'الاستمارات',
