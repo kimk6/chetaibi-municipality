@@ -683,6 +683,17 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   background:rgba(0,135,90,0.55);
   border-color:rgba(52,211,153,0.45);
 }
+/* chip الكلمة الدلالية للأخبار */
+.modal-img-chip.chip-category{
+  background:rgba(255,255,255,0.22);
+  border-color:rgba(255,255,255,0.38);
+  font-weight:800;
+}
+/* chip التاريخ — داكن أكثر للتمييز */
+.modal-img-chip.chip-date{
+  background:rgba(0,0,0,0.38);
+  border-color:rgba(255,255,255,0.18);
+}
 /* LIGHTBOX */
 #lightbox{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.96);display:none;align-items:center;justify-content:center;padding:20px;overscroll-behavior:none;}
 #lightbox.open{display:flex;}
@@ -1303,8 +1314,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         <div class="content-block">
           <div class="seg-bar-wrap">
             <div class="seg-bar">
-              <button class="seg-btn active" data-cat="all" id="news-btn-all"><iconify-icon icon="lucide:layout-grid"></iconify-icon><span>الكل</span></button>
-              <button class="seg-btn" data-cat="official" id="news-btn-official"><iconify-icon icon="lucide:megaphone"></iconify-icon><span data-i18n="tab-announcements">إعلانات</span></button>
+              <button class="seg-btn active" data-cat="official" id="news-btn-official"><iconify-icon icon="lucide:megaphone"></iconify-icon><span data-i18n="tab-announcements">إعلانات</span></button>
               <button class="seg-btn" data-cat="activity" id="news-btn-activity"><iconify-icon icon="lucide:clipboard-list"></iconify-icon><span data-i18n="tab-activities">نشاطات</span></button>
               <button class="seg-btn" data-cat="social" id="news-btn-social"><iconify-icon icon="lucide:handshake"></iconify-icon><span data-i18n="tab-community">مجتمع</span></button>
               <button class="seg-btn" data-cat="poster" id="news-btn-poster"><iconify-icon icon="lucide:image"></iconify-icon><span data-i18n="tab-posters">الملصقات</span></button>
@@ -1809,12 +1819,13 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     <div class="modal-drag"></div>
     <div id="mn-announce-view" style="display:none;position:relative"><div id="mn-announce-album"></div></div>
     <div id="mn-normal-view">
-      <div style="position:relative"><img id="mn-img" class="modal-img" src="" style="display:none" decoding="async"></div>
+      <div class="modal-img-wrap" id="mn-img-wrap" style="display:none">
+        <img id="mn-img" class="modal-img" src="" decoding="async" style="display:block">
+        <div class="modal-img-chips" id="mn-chips"></div>
+      </div>
       <div class="modal-body">
-        <div id="mn-badge" class="modal-badge" style="display:none"></div>
         <div class="modal-name" id="mn-name"></div>
         <div class="modal-desc" id="mn-desc"></div>
-        <div class="modal-meta" id="mn-meta"></div>
         <div id="mn-album"></div>
       </div>
     </div>
@@ -2029,7 +2040,7 @@ function _f(obj,field){
 var curTab='home',mapDone=false,_svcLoaded=false,allNews=[],facCat='admin-branches';
 var newsScreenLoaded=false,_mayorLoaded=false,_mayorsList=[];
 var TAB_ORDER=['home','news','guide','services','archive'];
-var NEWS_CATS=['all','official','activity','social','poster'];
+var NEWS_CATS=['official','activity','social','poster'];
 var GUIDE_TABS=['admin-branches','education','health','public-bodies','religious','cultural','sports'];
 var mapLayers={beach:[],tour:[],fac:[]};
 var activeMapFilter='all';
@@ -3136,10 +3147,10 @@ async function loadNewsScreen(){
   try{
     var d=await api('/api/news');allNews=d.data||[];
     var activeBtn=document.querySelector('#screen-news .seg-btn.active');
-    var activeCat=activeBtn?activeBtn.getAttribute('data-cat'):'all';
+    var activeCat=activeBtn?activeBtn.getAttribute('data-cat'):'official';
     newsScreenLoaded=true;
     _updateNewsBadges(allNews);
-    renderNews(activeCat==='all'?allNews:allNews.filter(function(n){return n.category===activeCat;}));
+    renderNews(allNews.filter(function(n){return n.category===activeCat;}));
   }catch(e){
     el.innerHTML=makeEmpty('lucide:wifi-off',t('error-load'),t('check-connection'),'↻ '+t('loading'),'loadNewsScreen()');
     showToastError();
@@ -3147,12 +3158,6 @@ async function loadNewsScreen(){
 }
 /* badge counts على تبويبات الأخبار */
 function _updateNewsBadges(data){
-  var allBtn=document.getElementById('news-btn-all');
-  if(allBtn){
-    var old=allBtn.querySelector('.tab-badge');if(old)old.remove();
-    var total=(data||[]).length;
-    if(total>0){var b=document.createElement('span');b.className='tab-badge';b.textContent=total>99?'99+':total;allBtn.style.position='relative';allBtn.appendChild(b);}
-  }
   var cats=['official','activity','social','poster'];
   cats.forEach(function(cat){
     var btn=document.getElementById('news-btn-'+cat);if(!btn)return;
@@ -3170,7 +3175,7 @@ function filterNews(cat,btn){
   document.querySelectorAll('#screen-news .seg-btn').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');
   if(!newsScreenLoaded)return;
-  renderNews(cat==='all'?allNews:allNews.filter(n=>n.category===cat));
+  renderNews(allNews.filter(n=>n.category===cat));
 }
 function renderNews(items,startIdx){
   var el=document.getElementById('news-list');
@@ -3289,13 +3294,23 @@ async function openNewsModal(id){
   }else{
     document.getElementById('mn-announce-view').style.display='none';
     document.getElementById('mn-normal-view').style.display='block';
+    /* ── الصورة ── */
+    var imgWrap=document.getElementById('mn-img-wrap');
     var imgEl=document.getElementById('mn-img');
-    if(n.image_url){imgEl.src=n.image_url;imgEl.style.display='block';}else imgEl.style.display='none';
-    var badgeEl=document.getElementById('mn-badge');
-    if(n.custom_label){badgeEl.textContent=n.custom_label;badgeEl.style.cssText='background:rgba(5,150,105,.1);color:var(--green);display:inline-block';}else badgeEl.style.display='none';
+    if(n.image_url){imgEl.src=n.image_url;imgWrap.style.display='block';}
+    else imgWrap.style.display='none';
+    /* ── chips داخل الصورة ── */
+    var chips='';
+    var catMap={activity:{icon:'lucide:clipboard-list',label:'نشاط بلدي'},social:{icon:'lucide:handshake',label:'ركن المجتمع'}};
+    var catInfo=catMap[n.category]||null;
+    var labelText=n.custom_label||(catInfo?catInfo.label:null);
+    var labelIcon=catInfo?catInfo.icon:'lucide:tag';
+    if(labelText)chips+='<span class="modal-img-chip chip-category"><iconify-icon icon="'+labelIcon+'" style="pointer-events:none"></iconify-icon>'+labelText+'</span>';
+    if(n.date)chips+='<span class="modal-img-chip chip-date"><iconify-icon icon="lucide:calendar-days" style="pointer-events:none"></iconify-icon>'+n.date+'</span>';
+    document.getElementById('mn-chips').innerHTML=chips;
+    /* ── النص ── */
     document.getElementById('mn-name').textContent=_f(n,'title')||'';
     document.getElementById('mn-desc').textContent=_f(n,'content')||'';
-    document.getElementById('mn-meta').innerHTML=n.date?'<span class="modal-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>'+n.date+'</span>':'';
     album('mn-album',albums);
   }
   om('m-news');
@@ -3547,7 +3562,6 @@ function initEventDelegation(){
   if(btnTourism) btnTourism.addEventListener('click',function(){haptic('light');switchTabWithFilter('map','tour');});
 
   function safeBtn(id,fn){var el=document.getElementById(id);if(el)el.addEventListener('click',fn);}
-  safeBtn('news-btn-all',function(){filterNews('all',this);});
   safeBtn('news-btn-official',function(){filterNews('official',this);});
   safeBtn('news-btn-activity',function(){filterNews('activity',this);});
   safeBtn('news-btn-social',function(){filterNews('social',this);});
