@@ -3890,12 +3890,12 @@ window.addEventListener('load',function(){
   });}catch(e){}
   try{(function(){
     var h=new Date().getHours();
-    var greetSVG=h>=6&&h<20
-      ?'<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-right:5px;vertical-align:middle;opacity:.75"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/><line x1="4.22" y1="19.78" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.78" y2="4.22"/></svg>'
-      :'<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-right:5px;vertical-align:middle;opacity:.75"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
-    var greetText=h<6?'طاب ليلك':h<12?'صباح الخير':h<14?'نهارك سعيد':h<19?'مساء الخير':'تصبح على خير';
+    var _svgSun='<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:4px;opacity:.7"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/><line x1="4.22" y1="19.78" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.78" y2="4.22"/></svg>';
+    var _svgMoon='<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:4px;opacity:.7"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+    var _ico=h>=6&&h<20?_svgSun:_svgMoon;
+    var g=h<5?'طاب ليلك':h<6?'صباح الفجر':h<12?'صباح الخير':h<14?'نهارك سعيد':h<17?'مساء الخير':h<20?'مساء النور':'تصبح على خير';
     var ge=document.getElementById('home-greeting');
-    if(ge)ge.innerHTML='<span style="display:inline-flex;align-items:center;">'+greetSVG+greetText+'</span>';
+    if(ge)ge.innerHTML='<span style="display:inline-flex;align-items:center;gap:5px;">'+g+_ico+'</span>';
   })();}catch(e){}
   ['home','news','guide','archive','map','services'].forEach(function(id){
     var scrollEl=document.querySelector('#screen-'+id+' .scroll-area');
