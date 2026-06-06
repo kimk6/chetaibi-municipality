@@ -672,7 +672,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .ws-tab:active:not(.active){opacity:.6;transform:scale(.95);}
 .ws-tab:active.active{transform:scale(.97);}
 .ws-tab iconify-icon{font-size:13px;pointer-events:none;}
-.ws-panel{padding:12px 16px;transition:background .25s;}
+.ws-panel{padding:10px 14px;transition:background .25s;}
 .ws-panel.hidden{display:none;}
 #ws-panel-weather{background:rgba(0,135,90,0.04);}
 #ws-panel-sea{background:rgba(21,101,192,0.04);}
@@ -1114,10 +1114,13 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           <div class="section" style="padding-bottom:4px">
             <div class="weather-sea-section">
               <div class="weather-sea-unified-card">
-                <!-- رأس البطاقة: ترحيب + تاريخ -->
-                <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 14px 0;">
+                <!-- رأس البطاقة: ترحيب + زر الأيام القادمة -->
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 14px 0;">
                   <div id="home-greeting" style="font-size:14px;font-weight:900;color:var(--text);letter-spacing:-.3px;"></div>
-                  <div id="home-date" style="font-size:11px;font-weight:700;color:var(--muted);"></div>
+                  <button id="ws-forecast-btn" onclick="openForecastModal();haptic('light')" style="display:inline-flex;align-items:center;gap:4px;background:none;border:none;font-family:var(--font-main);font-size:12px;font-weight:700;color:var(--green);cursor:pointer;touch-action:manipulation;white-space:nowrap;padding:0;transition:opacity var(--dur-fast);" ontouchstart="this.style.opacity='.5'" ontouchend="this.style.opacity='1'">
+                    <iconify-icon icon="lucide:calendar-days" style="font-size:13px;pointer-events:none;"></iconify-icon>
+                    <span>الأيام القادمة ›</span>
+                  </button>
                 </div>
                 <!-- تبويبات -->
                 <div class="ws-tabs" style="justify-content:center;">
@@ -1136,14 +1139,14 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                   <div style="display:flex;align-items:center;justify-content:space-between;">
                     <!-- يمين: أيقونة + درجة + وصف -->
                     <div style="display:flex;align-items:center;gap:12px;">
-                      <span id="pwa-weather-icon" style="font-size:48px;line-height:1;">☀️</span>
+                      <span id="pwa-weather-icon" style="font-size:42px;line-height:1;">☀️</span>
                       <div>
-                        <div id="pwa-weather-temp" style="font-size:40px;font-weight:900;color:var(--text);line-height:1;letter-spacing:-2px;">--°</div>
+                        <div id="pwa-weather-temp" style="font-size:36px;font-weight:900;color:var(--text);line-height:1;letter-spacing:-2px;">--°</div>
                         <div id="pwa-weather-desc" style="font-size:12px;color:var(--muted);font-weight:600;margin-top:4px;" data-i18n="loading">جاري التحميل</div>
                       </div>
                     </div>
-                    <!-- يسار: إحصائيتان + زر -->
-                    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+                    <!-- يسار: إحصائيتان -->
+                    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
                       <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-end;">
                         <div style="display:flex;align-items:center;gap:5px;">
                           <span style="font-size:12px;font-weight:700;color:var(--text);" id="pwa-weather-hum">--%</span>
@@ -1154,10 +1157,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                           <iconify-icon icon="lucide:wind" style="color:#34d399;font-size:14px;"></iconify-icon>
                         </div>
                       </div>
-                      <button id="ws-forecast-btn" onclick="openForecastModal();haptic('light')" style="display:inline-flex;align-items:center;gap:4px;background:none;border:none;font-family:var(--font-main);font-size:12px;font-weight:700;color:var(--green);cursor:pointer;touch-action:manipulation;white-space:nowrap;padding:0;transition:opacity var(--dur-fast);" ontouchstart="this.style.opacity='.5'" ontouchend="this.style.opacity='1'">
-                        <iconify-icon icon="lucide:calendar-days" style="font-size:13px;pointer-events:none;"></iconify-icon>
-                        <span>الأيام القادمة ›</span>
-                      </button>
                     </div>
                   </div>
                 </div>
@@ -1167,7 +1166,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                   <div style="display:flex;align-items:center;justify-content:space-between;">
                     <!-- يمين: أيقونة + حالة + وصف -->
                     <div style="display:flex;align-items:center;gap:12px;">
-                      <span id="pwa-sea-icon" style="font-size:48px;line-height:1;">🌊</span>
+                      <span id="pwa-sea-icon" style="font-size:42px;line-height:1;">🌊</span>
                       <div>
                         <div id="pwa-sea-state" style="font-size:26px;font-weight:900;color:var(--text);line-height:1;">--</div>
                         <div id="pwa-sea-desc" style="font-size:12px;color:var(--muted);font-weight:600;margin-top:4px;" data-i18n="loading">جاري التحميل</div>
@@ -3896,11 +3895,6 @@ window.addEventListener('load',function(){
     var g=h<5?'طاب ليلك 🌙':h<6?'صباح الفجر 🌅':h<12?'صباح الخير ☀️':h<14?'نهارك سعيد 🌤️':h<17?'مساء الخير 🌿':h<20?'مساء النور 🌆':'تصبح على خير 🌙';
     var ge=document.getElementById('home-greeting');
     if(ge)ge.textContent=g;
-    var now=new Date();
-    var days=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
-    var months=['جانفي','فيفري','مارس','أفريل','ماي','جوان','جويلية','أوت','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
-    var de=document.getElementById('home-date');
-    if(de)de.textContent=days[now.getDay()]+'، '+String(now.getDate()).padStart(2,'0')+' '+months[now.getMonth()]+' '+now.getFullYear();
   })();}catch(e){}
   ['home','news','guide','archive','map','services'].forEach(function(id){
     var scrollEl=document.querySelector('#screen-'+id+' .scroll-area');
