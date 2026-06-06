@@ -1142,22 +1142,16 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                         <div id="pwa-weather-desc" style="font-size:12px;color:var(--muted);font-weight:600;margin-top:4px;" data-i18n="loading">جاري التحميل</div>
                       </div>
                     </div>
-                    <!-- يسار: إحصائيتان + زر -->
-                    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
-                      <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-end;">
-                        <div style="display:flex;align-items:center;gap:5px;">
-                          <span style="font-size:12px;font-weight:700;color:var(--text);" id="pwa-weather-hum">--%</span>
-                          <iconify-icon icon="lucide:droplets" style="color:#60a5fa;font-size:14px;"></iconify-icon>
-                        </div>
-                        <div style="display:flex;align-items:center;gap:5px;">
-                          <span style="font-size:12px;font-weight:700;color:var(--text);" id="pwa-weather-wind">-- كم/س</span>
-                          <iconify-icon icon="lucide:wind" style="color:#34d399;font-size:14px;"></iconify-icon>
-                        </div>
+                    <!-- يسار: إحصائيتان -->
+                    <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-end;">
+                      <div style="display:flex;align-items:center;gap:5px;">
+                        <span style="font-size:12px;font-weight:700;color:var(--text);" id="pwa-weather-hum">--%</span>
+                        <iconify-icon icon="lucide:droplets" style="color:#60a5fa;font-size:14px;"></iconify-icon>
                       </div>
-                      <button id="ws-forecast-btn" onclick="openForecastModal();haptic('light')" style="display:inline-flex;align-items:center;gap:4px;background:none;border:none;font-family:var(--font-main);font-size:12px;font-weight:700;color:var(--green);cursor:pointer;touch-action:manipulation;white-space:nowrap;padding:0;transition:opacity var(--dur-fast);" ontouchstart="this.style.opacity='.5'" ontouchend="this.style.opacity='1'">
-                        <iconify-icon icon="lucide:calendar-days" style="font-size:13px;pointer-events:none;"></iconify-icon>
-                        <span>الأيام القادمة ›</span>
-                      </button>
+                      <div style="display:flex;align-items:center;gap:5px;">
+                        <span style="font-size:12px;font-weight:700;color:var(--text);" id="pwa-weather-wind">-- كم/س</span>
+                        <iconify-icon icon="lucide:wind" style="color:#34d399;font-size:14px;"></iconify-icon>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1175,14 +1169,14 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                     </div>
                     <!-- يسار: إحصائيتان -->
                     <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-end;">
-                        <div style="display:flex;align-items:center;gap:5px;">
-                          <span style="font-size:12px;font-weight:700;color:var(--text);" id="pwa-sea-wave">-- م</span>
-                          <iconify-icon icon="lucide:arrow-up" style="color:#60a5fa;font-size:14px;"></iconify-icon>
-                        </div>
-                        <div style="display:flex;align-items:center;gap:5px;">
-                          <span style="font-size:12px;font-weight:700;color:var(--text);" id="pwa-sea-dir">--</span>
-                          <iconify-icon icon="lucide:compass" style="color:#818cf8;font-size:14px;"></iconify-icon>
-                        </div>
+                      <div style="display:flex;align-items:center;gap:5px;">
+                        <span style="font-size:12px;font-weight:700;color:var(--text);" id="pwa-sea-wave">-- م</span>
+                        <iconify-icon icon="lucide:arrow-up" style="color:#60a5fa;font-size:14px;"></iconify-icon>
+                      </div>
+                      <div style="display:flex;align-items:center;gap:5px;">
+                        <span style="font-size:12px;font-weight:700;color:var(--text);" id="pwa-sea-dir">--</span>
+                        <iconify-icon icon="lucide:compass" style="color:#818cf8;font-size:14px;"></iconify-icon>
+                      </div>
                     </div>
                   </div>
                 </div>
