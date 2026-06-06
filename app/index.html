@@ -1144,7 +1144,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                       </div>
                     </div>
                     <!-- يسار: إحصائيتان + زر -->
-                    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+                    <div style="display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;gap:8px;">
                       <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-end;">
                         <div style="display:flex;align-items:center;gap:5px;">
                           <span style="font-size:12px;font-weight:700;color:var(--text);" id="pwa-weather-hum">--%</span>
@@ -1155,9 +1155,9 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                           <iconify-icon icon="lucide:wind" style="color:#34d399;font-size:14px;"></iconify-icon>
                         </div>
                       </div>
-                      <button id="ws-forecast-btn" onclick="openForecastModal();haptic('light')" style="display:inline-flex;align-items:center;gap:5px;padding:6px 12px 6px 10px;background:var(--green);border:none;border-radius:var(--r-full);font-family:var(--font-main);font-size:11px;font-weight:800;color:#fff;cursor:pointer;touch-action:manipulation;white-space:nowrap;box-shadow:0 2px 8px rgba(0,135,90,0.25);transition:opacity var(--dur-fast),transform var(--dur-fast);" ontouchstart="this.style.opacity='.8';this.style.transform='scale(.94)'" ontouchend="this.style.opacity='';this.style.transform=''">
+                      <button id="ws-forecast-btn" onclick="openForecastModal();haptic('light')" style="display:inline-flex;align-items:center;gap:3px;background:none;border:none;font-family:var(--font-main);font-size:10.5px;font-weight:600;color:var(--muted);cursor:pointer;touch-action:manipulation;white-space:nowrap;padding:0;transition:color var(--dur-fast);" ontouchstart="this.style.color='var(--green)'" ontouchend="this.style.color='var(--muted)'">
                         <iconify-icon icon="lucide:calendar-days" style="font-size:12px;pointer-events:none;"></iconify-icon>
-                        <span>توقعات 7 أيام ›</span>
+                        <span>عرض توقعات 7 أيام ›</span>
                       </button>
                     </div>
                   </div>
@@ -1186,9 +1186,9 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                           <iconify-icon icon="lucide:compass" style="color:#818cf8;font-size:14px;"></iconify-icon>
                         </div>
                       </div>
-                      <button onclick="openForecastModal();haptic('light')" style="display:inline-flex;align-items:center;gap:5px;padding:6px 12px 6px 10px;background:#1565C0;border:none;border-radius:var(--r-full);font-family:var(--font-main);font-size:11px;font-weight:800;color:#fff;cursor:pointer;touch-action:manipulation;white-space:nowrap;box-shadow:0 2px 8px rgba(21,101,192,0.25);transition:opacity var(--dur-fast),transform var(--dur-fast);" ontouchstart="this.style.opacity='.8';this.style.transform='scale(.94)'" ontouchend="this.style.opacity='';this.style.transform=''">
+                      <button onclick="openForecastModal();haptic('light')" style="display:inline-flex;align-items:center;gap:3px;background:none;border:none;font-family:var(--font-main);font-size:10.5px;font-weight:600;color:var(--muted);cursor:pointer;touch-action:manipulation;white-space:nowrap;padding:0;transition:color var(--dur-fast);" ontouchstart="this.style.color='#1565C0'" ontouchend="this.style.color='var(--muted)'">
                         <iconify-icon icon="lucide:calendar-days" style="font-size:12px;pointer-events:none;"></iconify-icon>
-                        <span>توقعات 7 أيام ›</span>
+                        <span>عرض توقعات 7 أيام ›</span>
                       </button>
                     </div>
                   </div>
