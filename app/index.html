@@ -1236,11 +1236,11 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 </div>
                 <span style="font-size:11px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;">الدليل</span>
               </button>
-              <button onclick="openAboutScreen();haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:13px 6px 11px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.93)';this.style.opacity='.75'" ontouchend="this.style.transform='';this.style.opacity=''">
-                <div style="width:38px;height:38px;border-radius:var(--r-md);background:rgba(0,135,90,0.10);display:flex;align-items:center;justify-content:center;">
-                  <iconify-icon icon="lucide:landmark" style="color:var(--green);font-size:19px;pointer-events:none;"></iconify-icon>
+              <button onclick="switchTab('archive');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:13px 6px 11px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.93)';this.style.opacity='.75'" ontouchend="this.style.transform='';this.style.opacity=''">
+                <div style="width:38px;height:38px;border-radius:var(--r-md);background:rgba(245,127,23,0.10);display:flex;align-items:center;justify-content:center;">
+                  <iconify-icon icon="lucide:scroll-text" style="color:var(--amber);font-size:19px;pointer-events:none;"></iconify-icon>
                 </div>
-                <span style="font-size:11px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;">البلدية</span>
+                <span style="font-size:11px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;">الأرشيف</span>
               </button>
               <button onclick="switchTab('news');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:13px 6px 11px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.93)';this.style.opacity='.75'" ontouchend="this.style.transform='';this.style.opacity=''">
                 <div style="width:38px;height:38px;border-radius:var(--r-md);background:rgba(124,58,237,0.10);display:flex;align-items:center;justify-content:center;">
@@ -1303,7 +1303,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         <div class="content-block">
           <div class="seg-bar-wrap">
             <div class="seg-bar">
-              <button class="seg-btn active" data-cat="official" id="news-btn-official"><iconify-icon icon="lucide:megaphone"></iconify-icon><span data-i18n="tab-announcements">إعلانات</span></button>
+              <button class="seg-btn active" data-cat="all" id="news-btn-all"><iconify-icon icon="lucide:layout-grid"></iconify-icon><span>الكل</span></button>
+              <button class="seg-btn" data-cat="official" id="news-btn-official"><iconify-icon icon="lucide:megaphone"></iconify-icon><span data-i18n="tab-announcements">إعلانات</span></button>
               <button class="seg-btn" data-cat="activity" id="news-btn-activity"><iconify-icon icon="lucide:clipboard-list"></iconify-icon><span data-i18n="tab-activities">نشاطات</span></button>
               <button class="seg-btn" data-cat="social" id="news-btn-social"><iconify-icon icon="lucide:handshake"></iconify-icon><span data-i18n="tab-community">مجتمع</span></button>
               <button class="seg-btn" data-cat="poster" id="news-btn-poster"><iconify-icon icon="lucide:image"></iconify-icon><span data-i18n="tab-posters">الملصقات</span></button>
@@ -2028,7 +2029,7 @@ function _f(obj,field){
 var curTab='home',mapDone=false,_svcLoaded=false,allNews=[],facCat='admin-branches';
 var newsScreenLoaded=false,_mayorLoaded=false,_mayorsList=[];
 var TAB_ORDER=['home','news','guide','services','archive'];
-var NEWS_CATS=['official','activity','social','poster'];
+var NEWS_CATS=['all','official','activity','social','poster'];
 var GUIDE_TABS=['admin-branches','education','health','public-bodies','religious','cultural','sports'];
 var mapLayers={beach:[],tour:[],fac:[]};
 var activeMapFilter='all';
@@ -3135,10 +3136,10 @@ async function loadNewsScreen(){
   try{
     var d=await api('/api/news');allNews=d.data||[];
     var activeBtn=document.querySelector('#screen-news .seg-btn.active');
-    var activeCat=activeBtn?activeBtn.getAttribute('data-cat'):'official';
+    var activeCat=activeBtn?activeBtn.getAttribute('data-cat'):'all';
     newsScreenLoaded=true;
     _updateNewsBadges(allNews);
-    renderNews(allNews.filter(function(n){return n.category===activeCat;}));
+    renderNews(activeCat==='all'?allNews:allNews.filter(function(n){return n.category===activeCat;}));
   }catch(e){
     el.innerHTML=makeEmpty('lucide:wifi-off',t('error-load'),t('check-connection'),'↻ '+t('loading'),'loadNewsScreen()');
     showToastError();
@@ -3147,6 +3148,13 @@ async function loadNewsScreen(){
 /* badge counts على تبويبات الأخبار */
 function _updateNewsBadges(data){
   var cats=['official','activity','social','poster'];
+  /* badge المجموع على زر الكل */
+  var allBtn=document.getElementById('news-btn-all');
+  if(allBtn){
+    var old=allBtn.querySelector('.tab-badge');if(old)old.remove();
+    var total=(data||[]).length;
+    if(total>0){var b=document.createElement('span');b.className='tab-badge';b.textContent=total>99?'99+':total;allBtn.style.position='relative';allBtn.appendChild(b);}
+  }
   cats.forEach(function(cat){
     var btn=document.getElementById('news-btn-'+cat);if(!btn)return;
     var old=btn.querySelector('.tab-badge');if(old)old.remove();
@@ -3163,7 +3171,7 @@ function filterNews(cat,btn){
   document.querySelectorAll('#screen-news .seg-btn').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');
   if(!newsScreenLoaded)return;
-  renderNews(allNews.filter(n=>n.category===cat));
+  renderNews(cat==='all'?allNews:allNews.filter(n=>n.category===cat));
 }
 function renderNews(items,startIdx){
   var el=document.getElementById('news-list');
@@ -3540,6 +3548,7 @@ function initEventDelegation(){
   if(btnTourism) btnTourism.addEventListener('click',function(){haptic('light');switchTabWithFilter('map','tour');});
 
   function safeBtn(id,fn){var el=document.getElementById(id);if(el)el.addEventListener('click',fn);}
+  safeBtn('news-btn-all',function(){filterNews('all',this);});
   safeBtn('news-btn-official',function(){filterNews('official',this);});
   safeBtn('news-btn-activity',function(){filterNews('activity',this);});
   safeBtn('news-btn-social',function(){filterNews('social',this);});
