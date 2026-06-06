@@ -2206,7 +2206,7 @@ function initSwipe(scrollAreaId,getNext){
   var isArchive=(scrollAreaId==='scroll-archive');
   el.addEventListener('touchstart',function(e){
     if(isArchive){startX=e.touches[0].clientX;startY=e.touches[0].clientY;tracking=true;return;}
-    if(e.target.closest('.seg-bar-wrap')||e.target.closest('.archive-card')||e.target.closest('.weather-card')||e.target.closest('.sea-card')||e.target.closest('.weather-sea-unified-card')||e.target.closest('#weather-day-tabs')||e.target.closest('#sea-day-tabs')||e.target.closest('#places-tabs-row')){tracking=false;return;}
+    if(e.target.closest('.seg-bar-wrap')||e.target.closest('.archive-card')||e.target.closest('.weather-card')||e.target.closest('.sea-card')||e.target.closest('.weather-sea-unified-card')||e.target.closest('#weather-day-tabs')||e.target.closest('#sea-day-tabs')||e.target.closest('#places-tabs-row')||e.target.closest('.h-scroll')){tracking=false;return;}
     /* إيقاف swipe الصفحة الرئيسية فوق الكاروسيل لإتاحة سحبه */
     if(scrollAreaId==='scroll-home'&&e.target.closest('#ann-carousel-outer')){tracking=false;return;}
     /* تجاهل السحب فوق بطاقات h-scroll فقط، لكن السماح على padding المنطقة */
