@@ -645,12 +645,44 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .map-popup-close{position:absolute;top:10px;left:12px;width:30px;height:30px;border-radius:50%;background:rgba(0,0,0,.07);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;color:var(--muted-2);pointer-events:auto;transition:background var(--dur-fast),color var(--dur-fast);z-index:3;}
 .map-popup-close:active{background:rgba(0,0,0,.16);color:var(--text-2);}
 /* زر عرض في الخريطة داخل الـ modals */
-.modal-map-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;flex:1;background:var(--green);border:none;border-radius:var(--r-full);padding:9px 14px;font-family:var(--font-main);font-size:12px;font-weight:800;color:#fff;cursor:pointer;touch-action:manipulation;transition:background var(--dur-fast),transform var(--dur-fast);}
-.modal-share-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;flex:1;background:var(--surface-3);border:none;border-radius:var(--r-full);padding:9px 14px;font-family:var(--font-main);font-size:12px;font-weight:800;color:var(--text);cursor:pointer;touch-action:manipulation;transition:background var(--dur-fast),transform var(--dur-fast);}
+.modal-map-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;flex:1;background:var(--green);border:none;border-radius:var(--r-full);padding:10px 14px;font-family:var(--font-main);font-size:12.5px;font-weight:800;color:#fff;cursor:pointer;touch-action:manipulation;transition:background var(--dur-fast),transform var(--dur-fast);}
+.modal-share-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;flex:1;background:var(--surface-2);border:1.5px solid var(--border);border-radius:var(--r-full);padding:10px 14px;font-family:var(--font-main);font-size:12.5px;font-weight:800;color:var(--text-2);cursor:pointer;touch-action:manipulation;transition:background var(--dur-fast),transform var(--dur-fast);}
+/* الخريطة أولاً ← المشاركة ثانياً */
 .modal-map-btn-wrap{display:flex;justify-content:center;gap:10px;margin-top:14px;}
 .modal-map-btn:active{background:var(--green-d,#045a40);transform:scale(.94);}
-.modal-share-btn:active{background:var(--border);transform:scale(.94);}
+.modal-share-btn:active{background:var(--surface-3);transform:scale(.94);}
 .modal-map-btn iconify-icon,.modal-share-btn iconify-icon{font-size:15px;pointer-events:none;flex-shrink:0;}
+/* فاصل معرض الصور */
+.modal-album-sep{display:flex;align-items:center;gap:10px;margin:18px 0 14px;}
+.modal-album-sep::before,.modal-album-sep::after{content:'';flex:1;height:1px;background:var(--border-light);}
+.modal-album-sep-label{font-size:11px;font-weight:800;color:var(--muted-2);letter-spacing:.4px;white-space:nowrap;display:flex;align-items:center;gap:5px;}
+.modal-album-sep-label iconify-icon{font-size:13px;color:var(--muted-3);pointer-events:none;}
+/* chips داخل الصورة */
+.modal-img-wrap{position:relative;overflow:hidden;}
+.modal-img-chips{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:32px 12px 12px;
+  background:linear-gradient(to top,rgba(0,0,0,.62) 0%,rgba(0,0,0,.18) 60%,transparent 100%);
+  display:flex;flex-wrap:wrap;gap:6px;
+  pointer-events:none;
+}
+.modal-img-chip{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:4px 10px;
+  background:rgba(255,255,255,0.18);
+  border:1px solid rgba(255,255,255,0.28);
+  border-radius:var(--r-full);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  font-size:11px;font-weight:700;color:#fff;
+  letter-spacing:.1px;line-height:1;
+  pointer-events:none;
+}
+.modal-img-chip iconify-icon{font-size:12px;pointer-events:none;flex-shrink:0;}
+/* chip خاصة بالإشراف — لون أخضر */
+.modal-img-chip.chip-supervised{
+  background:rgba(0,135,90,0.55);
+  border-color:rgba(52,211,153,0.45);
+}
 /* LIGHTBOX */
 #lightbox{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.96);display:none;align-items:center;justify-content:center;padding:20px;overscroll-behavior:none;}
 #lightbox.open{display:flex;}
@@ -1791,11 +1823,13 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 <div class="modal-overlay" id="m-beach" role="dialog" aria-modal="true" aria-label="تفاصيل الشاطئ">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
-    <img id="mb-img" class="modal-img" src="" style="display:none" decoding="async">
+    <div class="modal-img-wrap" id="mb-img-wrap" style="display:none">
+      <img id="mb-img" class="modal-img" src="" decoding="async" style="display:block">
+      <div class="modal-img-chips" id="mb-chips"></div>
+    </div>
     <div class="modal-body">
       <div class="modal-name" id="mb-name"></div>
       <div class="modal-desc" id="mb-desc"></div>
-      <div class="modal-meta" id="mb-meta"></div>
       <div id="mb-map-btn-wrap"></div>
       <div id="mb-album"></div>
     </div>
@@ -1810,12 +1844,14 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
       <div id="mt-sticker-album"></div>
     </div>
     <div id="mt-normal-view">
-      <div style="position:relative"><img id="mt-img" class="modal-img" src="" style="display:none" decoding="async"></div>
+      <div class="modal-img-wrap" id="mt-img-wrap" style="display:none">
+        <img id="mt-img" class="modal-img" src="" decoding="async" style="display:block">
+        <div class="modal-img-chips" id="mt-chips"></div>
+      </div>
       <div class="modal-body">
         <div id="mt-badge" class="modal-badge" style="display:none"></div>
         <div class="modal-name" id="mt-name"></div>
         <div class="modal-desc" id="mt-desc"></div>
-        <div class="modal-meta" id="mt-meta"></div>
         <div id="mt-map-btn-wrap"></div>
         <div id="mt-album"></div>
       </div>
@@ -3212,7 +3248,7 @@ function album(elId,albums){
   var el=document.getElementById(elId);var a=Array.isArray(albums)?albums:[];
   if(!a.length){el.innerHTML='';return;}
   var urls=a.map(function(x){return x.image_url;});
-  el.innerHTML='<div class="album-title"><iconify-icon icon="lucide:images" style="color:var(--green);pointer-events:none"></iconify-icon>'+(t('gallery-label')||'معرض الصور')+' ('+a.length+')</div><div class="album-grid">'+a.map(x=>'<img src="'+x.image_url+'" alt="" loading="lazy" data-lb="'+x.image_url+'" decoding="async">').join('')+'</div>';
+  el.innerHTML='<div class="modal-album-sep"><span class="modal-album-sep-label"><iconify-icon icon="lucide:images"></iconify-icon>'+(t('gallery-label')||'معرض الصور')+'</span></div><div class="album-grid">'+a.map(x=>'<img src="'+x.image_url+'" alt="" loading="lazy" data-lb="'+x.image_url+'" decoding="async">').join('')+'</div>';
   el.querySelectorAll('.album-grid img[data-lb]').forEach(function(img){
     img.addEventListener('click',function(e){e.stopPropagation();openLightbox(this.getAttribute('data-lb'),urls);});
   });
@@ -3262,20 +3298,28 @@ async function openBeachModal(id){
   try{
     delete C['/api/beaches?id='+id];
     var d=await api('/api/beaches?id='+id);var b=d.data;if(!b)return;
+    var imgWrap=document.getElementById('mb-img-wrap');
     var img=document.getElementById('mb-img');
-    if(b.image_url){img.src=b.image_url;img.style.display='block';}else img.style.display='none';
+    if(b.image_url){
+      img.src=b.image_url;
+      imgWrap.style.display='block';
+    }else{
+      imgWrap.style.display='none';
+    }
     document.getElementById('mb-name').textContent=_f(b,'name')||'';
     document.getElementById('mb-desc').textContent=_f(b,'description')||'';
-    var m='';
+    /* ── chips داخل الصورة ── */
+    var chips='';
     var shoreType=b.shore_type||b.beach_type||b.type||b.custom_label||'';
     var isRocky=shoreType==='صخري'||shoreType==='rocky'||shoreType==='rocheux';
     var isSandy=shoreType==='رملي'||shoreType==='sandy'||shoreType==='sableux';
-    if(isRocky)m+='<span class="modal-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#78716c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>'+t('rocky')+'</span>';
-    else if(isSandy)m+='<span class="modal-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>'+t('sandy')+'</span>';
-    else if(shoreType)m+='<span class="modal-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2"/><path d="M2 12c.6.5 1.2 1 2.5 1C7 13 7 11 9.5 11c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2"/></svg>'+shoreType+'</span>';
-    if(b.is_supervised)m+='<span class="modal-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>'+t('supervised')+'</span>';
-    if(b.season)m+='<span class="modal-chip">'+b.season+'</span>';
-    document.getElementById('mb-meta').innerHTML=m;
+    if(isRocky)chips+='<span class="modal-img-chip"><iconify-icon icon="lucide:mountain" style="pointer-events:none"></iconify-icon>'+t('rocky')+'</span>';
+    else if(isSandy)chips+='<span class="modal-img-chip"><iconify-icon icon="lucide:sun" style="pointer-events:none"></iconify-icon>'+t('sandy')+'</span>';
+    else if(shoreType)chips+='<span class="modal-img-chip">'+shoreType+'</span>';
+    if(b.is_supervised)chips+='<span class="modal-img-chip chip-supervised"><iconify-icon icon="lucide:shield-check" style="pointer-events:none"></iconify-icon>'+t('supervised')+'</span>';
+    if(b.season)chips+='<span class="modal-img-chip"><iconify-icon icon="lucide:calendar" style="pointer-events:none"></iconify-icon>'+b.season+'</span>';
+    var chipsEl=document.getElementById('mb-chips');
+    if(chipsEl)chipsEl.innerHTML=chips;
     _makeMapBtn(b.lat,b.lng,b.name||'','mb-map-btn-wrap');
     album('mb-album',b.albums);
     om('m-beach');
@@ -3296,16 +3340,20 @@ async function openTourismModal(id){
     }else{
       document.getElementById('mt-sticker-view').style.display='none';
       document.getElementById('mt-normal-view').style.display='block';
+      var imgWrap=document.getElementById('mt-img-wrap');
       var imgEl=document.getElementById('mt-img');
-      if(t.image_url){imgEl.src=t.image_url;imgEl.style.display='block';}else imgEl.style.display='none';
+      if(t.image_url){imgEl.src=t.image_url;imgWrap.style.display='block';}else imgWrap.style.display='none';
       var badgeEl=document.getElementById('mt-badge');
       if(t.badge_text){badgeEl.textContent=t.badge_text;badgeEl.style.display='inline-block';}else badgeEl.style.display='none';
       document.getElementById('mt-name').textContent=_f(t,'name')||'';
       document.getElementById('mt-desc').textContent=_f(t,'description')||'';
-      var m='';
-      if(t.rating)m+='<span class="modal-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>'+t.rating+'/5</span>';
-      if(t.distance_info)m+='<span class="modal-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>'+t.distance_info+'</span>';
-      document.getElementById('mt-meta').innerHTML=m;
+      /* ── chips داخل الصورة ── */
+      var chips='';
+      if(t.rating)chips+='<span class="modal-img-chip"><iconify-icon icon="lucide:star" style="pointer-events:none;color:#fbbf24"></iconify-icon>'+t.rating+'/5</span>';
+      if(t.distance_info)chips+='<span class="modal-img-chip"><iconify-icon icon="lucide:map-pin" style="pointer-events:none"></iconify-icon>'+t.distance_info+'</span>';
+      if(t.badge_text&&t.badge_text!=='ملصق')chips+='<span class="modal-img-chip">'+t.badge_text+'</span>';
+      var chipsEl=document.getElementById('mt-chips');
+      if(chipsEl)chipsEl.innerHTML=chips;
       _makeMapBtn(t.lat,t.lng,t.name||'','mt-map-btn-wrap');
       album('mt-album',albums);
     }
@@ -3373,14 +3421,12 @@ function _makeMapBtn(lat,lng,name,wrapId){
   if(!wrap)return;
   if(lat&&lng){
     var safeName=name.replace(/'/g,'');
-    var shareUrl=encodeURIComponent(window.location.origin+'?place='+encodeURIComponent(safeName));
-    var shareText=encodeURIComponent('اكتشف '+name+' في شطايبي');
     wrap.innerHTML='<div class="modal-map-btn-wrap">'
+      +'<button class="modal-map-btn" onclick="showOnMap('+lat+','+lng+',\''+safeName+'\')">'
+      +'<iconify-icon icon="lucide:map"></iconify-icon>عرض على الخريطة'
+      +'</button>'
       +'<button class="modal-share-btn" onclick="if(navigator.share){navigator.share({title:\''+safeName+'\',text:\''+safeName+' — شطايبي\',url:window.location.href})}else{navigator.clipboard&&navigator.clipboard.writeText(window.location.href);haptic(\'light\')}">'
       +'<iconify-icon icon="lucide:share-2"></iconify-icon>مشاركة'
-      +'</button>'
-      +'<button class="modal-map-btn" onclick="showOnMap('+lat+','+lng+',\''+safeName+'\')">'
-      +'<iconify-icon icon="lucide:map"></iconify-icon>الخريطة'
       +'</button></div>';
   }else{
     wrap.innerHTML='';
