@@ -2630,7 +2630,7 @@ var PWA_LAT=37.0850,PWA_LON=7.2550;
 /* _debugSea removed in production */
 /* ══ WEATHER + SEA — 5 days ══ */
 var _wDays=[],_sDays=[],_wIdx=0,_sIdx=0;
-var _WM={0:{d:'☀️',n:'🌕',ar:'سماء صافية تماماً',fr:'Ciel dégagé'},1:{d:'🌤️',n:'🌙',ar:'صافٍ غالباً',fr:'Principalement dégagé'},2:{d:'⛅',n:'🌥️',ar:'غائم جزئياً',fr:'Partiellement nuageux'},3:{d:'☁️',n:'☁️',ar:'غائم بالكامل',fr:'Couvert'},45:{d:'🌫️',n:'🌫️',ar:'ضبابي',fr:'Brouillard'},48:{d:'🌫️',n:'🌫️',ar:'ضباب كثيف',fr:'Brouillard givrant'},51:{d:'🌦️',n:'🌧️',ar:'رذاذ خفيف',fr:'Bruine légère'},53:{d:'🌦️',n:'🌧️',ar:'رذاذ متوسط',fr:'Bruine modérée'},55:{d:'🌧️',n:'🌧️',ar:'رذاذ كثيف',fr:'Bruine dense'},61:{d:'🌧️',n:'🌧️',ar:'أمطار خفيفة',fr:'Pluie légère'},63:{d:'🌧️',n:'🌧️',ar:'أمطار معتدلة',fr:'Pluie modérée'},65:{d:'🌧️',n:'🌧️',ar:'أمطار غزيرة',fr:'Pluie forte'},71:{d:'🌨️',n:'🌨️',ar:'ثلج خفيف',fr:'Neige légère'},73:{d:'🌨️',n:'🌨️',ar:'ثلج معتدل',fr:'Neige modérée'},75:{d:'❄️',n:'❄️',ar:'ثلج كثيف',fr:'Neige forte'},80:{d:'🌦️',n:'🌧️',ar:'زخات خفيفة',fr:'Averses légères'},81:{d:'🌧️',n:'🌧️',ar:'زخات معتدلة',fr:'Averses modérées'},82:{d:'🌧️',n:'🌧️',ar:'زخات عنيفة',fr:'Averses fortes'},95:{d:'⛈️',n:'⛈️',ar:'عاصفة رعدية',fr:'Orage'},96:{d:'⛈️',n:'⛈️',ar:'عاصفة مع برَد',fr:'Orage avec grêle'},99:{d:'⛈️',n:'⛈️',ar:'عاصفة شديدة',fr:'Orage violent'}};
+var _WM={0:{d:'☀️',n:'🌕',ar:'صافٍ تماماً',fr:'Ciel dégagé'},1:{d:'🌤️',n:'🌙',ar:'صافٍ مع غيوم خفيفة',fr:'Légèrement nuageux'},2:{d:'⛅',n:'🌥️',ar:'غائم جزئياً',fr:'Partiellement nuageux'},3:{d:'☁️',n:'☁️',ar:'غائم بالكامل',fr:'Couvert'},45:{d:'🌫️',n:'🌫️',ar:'ضبابي',fr:'Brouillard'},48:{d:'🌫️',n:'🌫️',ar:'ضباب كثيف',fr:'Brouillard givrant'},51:{d:'🌦️',n:'🌧️',ar:'رذاذ خفيف',fr:'Bruine légère'},53:{d:'🌦️',n:'🌧️',ar:'رذاذ متوسط',fr:'Bruine modérée'},55:{d:'🌧️',n:'🌧️',ar:'رذاذ كثيف',fr:'Bruine dense'},61:{d:'🌧️',n:'🌧️',ar:'أمطار خفيفة',fr:'Pluie légère'},63:{d:'🌧️',n:'🌧️',ar:'أمطار معتدلة',fr:'Pluie modérée'},65:{d:'🌧️',n:'🌧️',ar:'أمطار غزيرة',fr:'Pluie forte'},71:{d:'🌨️',n:'🌨️',ar:'ثلج خفيف',fr:'Neige légère'},73:{d:'🌨️',n:'🌨️',ar:'ثلج معتدل',fr:'Neige modérée'},75:{d:'❄️',n:'❄️',ar:'ثلج كثيف',fr:'Neige forte'},80:{d:'🌦️',n:'🌧️',ar:'زخات خفيفة',fr:'Averses légères'},81:{d:'🌧️',n:'🌧️',ar:'زخات معتدلة',fr:'Averses modérées'},82:{d:'🌧️',n:'🌧️',ar:'زخات عنيفة',fr:'Averses fortes'},95:{d:'⛈️',n:'⛈️',ar:'عاصفة رعدية',fr:'Orage'},96:{d:'⛈️',n:'⛈️',ar:'عاصفة مع برَد',fr:'Orage avec grêle'},99:{d:'⛈️',n:'⛈️',ar:'عاصفة شديدة',fr:'Orage violent'}};
 var _DN=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
 function _getDN(i){var days=t('day-names');return Array.isArray(days)?days[i]:_DN[i];}
 function _getToday(){return t('today')||'اليوم';}
@@ -2655,11 +2655,17 @@ function renderWeatherDay(i){
 }
 async function fetchPWAWeather(){
   try{
-    var r=await fetch('https://api.open-meteo.com/v1/forecast?latitude='+PWA_LAT+'&longitude='+PWA_LON+'&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code,is_day&daily=temperature_2m_max,temperature_2m_min,wind_speed_10m_max,precipitation_probability_max,weather_code&timezone=Africa%2FAlgiers&forecast_days=7&models=ecmwf_ifs025');
+    var r=await fetch('https://api.open-meteo.com/v1/forecast?latitude='+PWA_LAT+'&longitude='+PWA_LON+'&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code,is_day&hourly=weather_code&daily=temperature_2m_max,temperature_2m_min,wind_speed_10m_max,precipitation_probability_max,weather_code&timezone=Africa%2FAlgiers&forecast_days=7&models=best_match');
     if(!r.ok)throw new Error('HTTP '+r.status);
     var d=await r.json();
     if(d.error)throw new Error(d.reason||'API error');
     var cu=d.current||{};var dl=d.daily||{};var now=new Date();
+    /* أخذ weather_code للساعة الحالية من hourly لأنه أدق من current */
+    var hourlyTimes=d.hourly&&d.hourly.time?d.hourly.time:[];
+    var hourlyCode=d.hourly&&d.hourly.weather_code?d.hourly.weather_code:[];
+    var nowHourStr=now.toISOString().slice(0,13);
+    var hIdx=hourlyTimes.findIndex(function(t){return t.startsWith(nowHourStr);});
+    var currentCode=hIdx>=0?hourlyCode[hIdx]:(cu.weather_code!=null?cu.weather_code:0);
     var times=dl.time||[];
     if(!times.length)throw new Error('no data');
     _wDays=[];
@@ -2673,7 +2679,7 @@ async function fetchPWAWeather(){
         label:i===0?_getToday():_getDN(dt.getDay()),
         temp:i===0?curTemp:(tmax!=null&&tmin!=null?(tmax+tmin)/2:20),
         tmax:tmax!=null?tmax:20,tmin:tmin!=null?tmin:15,
-        code:i===0?(cu.weather_code!=null?cu.weather_code:dayCode):dayCode,
+        code:i===0?currentCode:dayCode,
         hum:i===0?(cu.relative_humidity_2m!=null?cu.relative_humidity_2m:0):(dl.precipitation_probability_max&&dl.precipitation_probability_max[i]!=null?dl.precipitation_probability_max[i]:0),
         wind:i===0?(cu.wind_speed_10m!=null?cu.wind_speed_10m:0):(dl.wind_speed_10m_max&&dl.wind_speed_10m_max[i]!=null?dl.wind_speed_10m_max[i]:0),
         isDay:(h>=6&&h<20)
@@ -2721,7 +2727,7 @@ function renderSeaDay(i){
 }
 async function fetchPWASea(){
   try{
-    var r=await fetch('https://marine-api.open-meteo.com/v1/marine?latitude='+PWA_LAT+'&longitude='+PWA_LON+'&current=wave_height,wave_direction,sea_surface_temperature&daily=wave_height_max,wave_direction_dominant,sea_surface_temperature_max&timezone=Africa%2FAlgiers&forecast_days=7&models=ecmwf_wam025');
+    var r=await fetch('https://marine-api.open-meteo.com/v1/marine?latitude='+PWA_LAT+'&longitude='+PWA_LON+'&current=wave_height,wave_direction,sea_surface_temperature&daily=wave_height_max,wave_direction_dominant,sea_surface_temperature_max&timezone=Africa%2FAlgiers&forecast_days=7');
     if(!r.ok)throw new Error('HTTP '+r.status);
     var d=await r.json();
     if(d.error)throw new Error(d.reason||'API error');
