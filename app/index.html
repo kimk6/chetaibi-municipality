@@ -3157,23 +3157,36 @@ async function loadNewsScreen(){
 }
 /* badge counts على تبويبات الأخبار */
 function _updateNewsBadges(data){
+  /* ── آخر id شاهده المستخدم — المقالات الجديدة فقط ── */
+  var lastSeenId=parseInt(localStorage.getItem('news-last-seen-id')||'0',10);
+  var isNew=function(n){return (n.id||0)>lastSeenId;};
+  /* زر الكل */
   var allBtn=document.getElementById('news-btn-all');
   if(allBtn){
     var old=allBtn.querySelector('.tab-badge');if(old)old.remove();
-    var total=(data||[]).length;
-    if(total>0){var b=document.createElement('span');b.className='tab-badge';b.textContent=total>99?'99+':total;allBtn.style.position='relative';allBtn.appendChild(b);}
+    var newTotal=(data||[]).filter(isNew).length;
+    if(newTotal>0){var b=document.createElement('span');b.className='tab-badge';b.textContent=newTotal>99?'99+':newTotal;allBtn.style.position='relative';allBtn.appendChild(b);}
   }
-  var cats=['official','activity','social','poster'];
-  cats.forEach(function(cat){
+  /* بقية التصنيفات */
+  ['official','activity','social','poster'].forEach(function(cat){
     var btn=document.getElementById('news-btn-'+cat);if(!btn)return;
     var old=btn.querySelector('.tab-badge');if(old)old.remove();
-    var count=(data||[]).filter(function(n){return n.category===cat;}).length;
+    var count=(data||[]).filter(function(n){return n.category===cat&&isNew(n);}).length;
     if(count>0){
       var b=document.createElement('span');
       b.className='tab-badge';b.textContent=count>99?'99+':count;
       btn.style.position='relative';btn.appendChild(b);
     }
   });
+  /* حفظ أعلى id مشاهَد بعد تأخير قصير (يمنح المستخدم وقتاً لرؤية الأرقام) */
+  var maxId=Math.max.apply(null,(data||[]).map(function(n){return n.id||0;}));
+  if(maxId>lastSeenId){
+    setTimeout(function(){
+      localStorage.setItem('news-last-seen-id',maxId);
+      /* إخفاء الأرقام بعد الحفظ */
+      document.querySelectorAll('#screen-news .seg-btn .tab-badge').forEach(function(b){b.remove();});
+    }, 8000); /* 8 ثوان — وقت كافٍ لرؤية الجديد */
+  }
 }
 function filterNews(cat,btn){
   haptic('light');
