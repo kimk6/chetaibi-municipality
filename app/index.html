@@ -683,17 +683,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   background:rgba(0,135,90,0.55);
   border-color:rgba(52,211,153,0.45);
 }
-/* chip الكلمة الدلالية للأخبار */
-.modal-img-chip.chip-category{
-  background:rgba(255,255,255,0.22);
-  border-color:rgba(255,255,255,0.38);
-  font-weight:800;
-}
-/* chip التاريخ — داكن أكثر للتمييز */
-.modal-img-chip.chip-date{
-  background:rgba(0,0,0,0.38);
-  border-color:rgba(255,255,255,0.18);
-}
 /* LIGHTBOX */
 #lightbox{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.96);display:none;align-items:center;justify-content:center;padding:20px;overscroll-behavior:none;}
 #lightbox.open{display:flex;}
@@ -1236,8 +1225,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           <div style="padding:20px 16px 20px;">
             <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
               <button onclick="switchTab('map');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:13px 6px 11px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.93)';this.style.opacity='.75'" ontouchend="this.style.transform='';this.style.opacity=''">
-                <div style="width:38px;height:38px;border-radius:var(--r-md);background:rgba(21,101,192,0.10);display:flex;align-items:center;justify-content:center;">
-                  <iconify-icon icon="lucide:map" style="color:#1565C0;font-size:19px;pointer-events:none;"></iconify-icon>
+                <div style="width:38px;height:38px;border-radius:var(--r-md);background:rgba(0,135,90,0.10);display:flex;align-items:center;justify-content:center;">
+                  <iconify-icon icon="lucide:map" style="color:var(--green);font-size:19px;pointer-events:none;"></iconify-icon>
                 </div>
                 <span style="font-size:11px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;">الخريطة</span>
               </button>
@@ -1254,8 +1243,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 <span style="font-size:11px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;">البلدية</span>
               </button>
               <button onclick="switchTab('news');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:13px 6px 11px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.93)';this.style.opacity='.75'" ontouchend="this.style.transform='';this.style.opacity=''">
-                <div style="width:38px;height:38px;border-radius:var(--r-md);background:rgba(124,58,237,0.10);display:flex;align-items:center;justify-content:center;">
-                  <iconify-icon icon="lucide:newspaper" style="color:#7c3aed;font-size:19px;pointer-events:none;"></iconify-icon>
+                <div style="width:38px;height:38px;border-radius:var(--r-md);background:rgba(0,135,90,0.10);display:flex;align-items:center;justify-content:center;">
+                  <iconify-icon icon="lucide:newspaper" style="color:var(--green);font-size:19px;pointer-events:none;"></iconify-icon>
                 </div>
                 <span style="font-size:11px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;">الأخبار</span>
               </button>
@@ -1462,7 +1451,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 </div>
                 <div style="padding:14px 16px;">
                   <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;">
-                    <div style="width:26px;height:26px;border-radius:8px;background:rgba(21,101,192,0.10);display:flex;align-items:center;justify-content:center;">
+                    <div style="width:26px;height:26px;border-radius:8px;background:rgba(0,135,90,0.10);display:flex;align-items:center;justify-content:center;">
                       <iconify-icon icon="lucide:users" style="font-size:13px;color:var(--blue);pointer-events:none;"></iconify-icon>
                     </div>
                     <span style="font-size:10.5px;color:var(--muted);font-weight:600;">عدد السكان</span>
@@ -1819,13 +1808,12 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     <div class="modal-drag"></div>
     <div id="mn-announce-view" style="display:none;position:relative"><div id="mn-announce-album"></div></div>
     <div id="mn-normal-view">
-      <div class="modal-img-wrap" id="mn-img-wrap" style="display:none">
-        <img id="mn-img" class="modal-img" src="" decoding="async" style="display:block">
-        <div class="modal-img-chips" id="mn-chips"></div>
-      </div>
+      <div style="position:relative"><img id="mn-img" class="modal-img" src="" style="display:none" decoding="async"></div>
       <div class="modal-body">
+        <div id="mn-badge" class="modal-badge" style="display:none"></div>
         <div class="modal-name" id="mn-name"></div>
         <div class="modal-desc" id="mn-desc"></div>
+        <div class="modal-meta" id="mn-meta"></div>
         <div id="mn-album"></div>
       </div>
     </div>
@@ -3294,23 +3282,13 @@ async function openNewsModal(id){
   }else{
     document.getElementById('mn-announce-view').style.display='none';
     document.getElementById('mn-normal-view').style.display='block';
-    /* ── الصورة ── */
-    var imgWrap=document.getElementById('mn-img-wrap');
     var imgEl=document.getElementById('mn-img');
-    if(n.image_url){imgEl.src=n.image_url;imgWrap.style.display='block';}
-    else imgWrap.style.display='none';
-    /* ── chips داخل الصورة ── */
-    var chips='';
-    var catMap={activity:{icon:'lucide:clipboard-list',label:'نشاط بلدي'},social:{icon:'lucide:handshake',label:'ركن المجتمع'}};
-    var catInfo=catMap[n.category]||null;
-    var labelText=n.custom_label||(catInfo?catInfo.label:null);
-    var labelIcon=catInfo?catInfo.icon:'lucide:tag';
-    if(labelText)chips+='<span class="modal-img-chip chip-category"><iconify-icon icon="'+labelIcon+'" style="pointer-events:none"></iconify-icon>'+labelText+'</span>';
-    if(n.date)chips+='<span class="modal-img-chip chip-date"><iconify-icon icon="lucide:calendar-days" style="pointer-events:none"></iconify-icon>'+n.date+'</span>';
-    document.getElementById('mn-chips').innerHTML=chips;
-    /* ── النص ── */
+    if(n.image_url){imgEl.src=n.image_url;imgEl.style.display='block';}else imgEl.style.display='none';
+    var badgeEl=document.getElementById('mn-badge');
+    if(n.custom_label){badgeEl.textContent=n.custom_label;badgeEl.style.cssText='background:rgba(5,150,105,.1);color:var(--green);display:inline-block';}else badgeEl.style.display='none';
     document.getElementById('mn-name').textContent=_f(n,'title')||'';
     document.getElementById('mn-desc').textContent=_f(n,'content')||'';
+    document.getElementById('mn-meta').innerHTML=n.date?'<span class="modal-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>'+n.date+'</span>':'';
     album('mn-album',albums);
   }
   om('m-news');
