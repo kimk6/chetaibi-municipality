@@ -3235,8 +3235,23 @@ function renderNews(items,startIdx){
         +_buildAnnCard(n,c)
         +'</div>';
     }
-    var imgW=n.image_url?'<div class="announce-img-wrap"><img src="'+n.image_url+'" alt="" loading="lazy" decoding="async"></div>':'<div class="announce-img-wrap" style="background:'+s.grad+';height:90px"><iconify-icon icon="lucide:clipboard-list" style="color:rgba(255,255,255,.65);font-size:2.2rem;pointer-events:none"></iconify-icon></div>';
-    var badgeHtml='<span class="news-badge" style="'+s.bs+'">'+lbl+'</span>';
+    var imgW;
+    if((n.category==='activity'||n.category==='social')&&n.image_url){
+      var chipIcon2=n.category==='activity'?'lucide:clipboard-list':'lucide:handshake';
+      var chipLabel2=lbl;
+      var chipOverlay=chipLabel2
+        ?'<div style="position:absolute;bottom:0;left:0;right:0;padding:24px 10px 8px;background:linear-gradient(to top,rgba(0,0,0,.58) 0%,transparent 100%);pointer-events:none;">'
+          +'<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.28);border-radius:99px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font-size:10.5px;font-weight:700;color:#fff;pointer-events:none;">'
+          +'<iconify-icon icon="'+chipIcon2+'" style="font-size:11px;pointer-events:none;flex-shrink:0;"></iconify-icon>'+chipLabel2+'</span>'
+          +'</div>'
+        :'';
+      imgW='<div class="announce-img-wrap" style="position:relative;overflow:hidden;"><img src="'+n.image_url+'" alt="" loading="lazy" decoding="async">'+chipOverlay+'</div>';
+    }else if(n.image_url){
+      imgW='<div class="announce-img-wrap"><img src="'+n.image_url+'" alt="" loading="lazy" decoding="async"></div>';
+    }else{
+      imgW='<div class="announce-img-wrap" style="background:'+s.grad+';height:90px"><iconify-icon icon="lucide:clipboard-list" style="color:rgba(255,255,255,.65);font-size:2.2rem;pointer-events:none"></iconify-icon></div>';
+    }
+    var badgeHtml=(n.category!=='activity'&&n.category!=='social')?'<span class="news-badge" style="'+s.bs+'">'+lbl+'</span>':'';
     var headerRow=(badgeHtml||pin)?'<div style="display:flex;align-items:center;gap:7px;margin-bottom:7px">'+badgeHtml+pin+'</div>':'';
     var titleHtml=(n.category==='activity'||n.category==='social')&&_f(n,'title')?'<div style="font-size:14px;font-weight:800;color:var(--text);line-height:1.45;margin-bottom:6px">'+_f(n,'title')+'</div>':'';
     return '<div class="announce-card fade-in" data-news-id="'+n.id+'">'+imgW+'<div class="announce-body">'+headerRow+titleHtml+'<div style="font-size:13.5px;color:var(--muted);line-height:1.7">'+desc+'</div><div class="announce-footer">'+makeDateBadge(n.date)+'<button class="read-more" data-news-id="'+n.id+'">'+t('read-more')+'<iconify-icon icon="lucide:chevron-left"></iconify-icon></button></div></div></div>';
