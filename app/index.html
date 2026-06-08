@@ -2530,10 +2530,31 @@ function makeNewsCard(n,showTitle){
   /* بطاقة عادية لباقي التصنيفات */
   var excerpt=(_f(n,'content')||'').substring(0,90)+'...';
   var icon=n.category==='official'?'lucide:megaphone':'lucide:newspaper';
-  var img=n.image_url?'<img class="news-card-img" src="'+n.image_url+'" alt="" loading="lazy" decoding="async">':'<div class="news-card-img-ph" style="background:'+s.grad+'"><iconify-icon icon="'+icon+'" style="color:rgba(255,255,255,.75);font-size:2rem;pointer-events:none"></iconify-icon></div>';
   var ntitle2=_f(n,'title');
   var titleHtml=showTitle&&ntitle2?'<div class="news-card-title">'+ntitle2+'</div>':'';
-  return '<div class="news-card" data-news-id="'+n.id+'">'+img+titleHtml+'<div class="news-card-body"><div class="news-card-excerpt">'+excerpt+'</div></div><div class="news-card-footer">'+makeDateBadge(n.date)+'<button class="read-more" data-news-id="'+n.id+'">'+t('read-more')+'<iconify-icon icon="lucide:chevron-left"></iconify-icon></button></div></div>';
+  /* chips داخل الصورة لـ activity و social فقط */
+  var imgHtml;
+  if((n.category==='activity'||n.category==='social')&&n.image_url){
+    var chipMap={activity:{icon:'lucide:clipboard-list',label:'نشاط بلدي'},social:{icon:'lucide:handshake',label:'ركن المجتمع'}};
+    var ci=chipMap[n.category];
+    var chipLabel=n.custom_label||(ci?ci.label:'');
+    var chipIcon=ci?ci.icon:'lucide:tag';
+    var chipHtml=chipLabel
+      ?'<div style="position:absolute;bottom:0;left:0;right:0;padding:24px 10px 8px;background:linear-gradient(to top,rgba(0,0,0,.58) 0%,transparent 100%);pointer-events:none;">'
+        +'<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.28);border-radius:99px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font-size:10.5px;font-weight:700;color:#fff;letter-spacing:.1px;pointer-events:none;">'
+        +'<iconify-icon icon="'+chipIcon+'" style="font-size:11px;pointer-events:none;flex-shrink:0;"></iconify-icon>'+chipLabel+'</span>'
+        +'</div>'
+      :'';
+    imgHtml='<div style="position:relative;overflow:hidden;">'
+      +'<img class="news-card-img" src="'+n.image_url+'" alt="" loading="lazy" decoding="async">'
+      +chipHtml
+      +'</div>';
+  }else{
+    imgHtml=n.image_url
+      ?'<img class="news-card-img" src="'+n.image_url+'" alt="" loading="lazy" decoding="async">'
+      :'<div class="news-card-img-ph" style="background:'+s.grad+'"><iconify-icon icon="'+icon+'" style="color:rgba(255,255,255,.75);font-size:2rem;pointer-events:none"></iconify-icon></div>';
+  }
+  return '<div class="news-card" data-news-id="'+n.id+'">'+imgHtml+titleHtml+'<div class="news-card-body"><div class="news-card-excerpt">'+excerpt+'</div></div><div class="news-card-footer">'+makeDateBadge(n.date)+'<button class="read-more" data-news-id="'+n.id+'">'+t('read-more')+'<iconify-icon icon="lucide:chevron-left"></iconify-icon></button></div></div>';
 }
 /* ══ ARCHIVE ══ */
 function switchArchTab(tab,btn){
