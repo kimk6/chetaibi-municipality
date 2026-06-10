@@ -1426,46 +1426,37 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
     <!-- ABOUT -->
     <div class="screen hidden" id="screen-about">
       <div class="scroll-area" id="scroll-about">
-        <div style="padding:20px 16px 36px;">
+        <div style="padding-bottom:36px;">
 
-          <!-- 3 بطاقات إحصائية بنفس تصميم التصفح السريع -->
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+          <!-- ══ 3 بطاقات معلومات البلدية ══ -->
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:16px 16px 0;">
 
             <!-- المساحة -->
-            <button style="display:flex;flex-direction:column;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:14px 8px 12px;cursor:default;touch-action:manipulation;box-shadow:var(--elev-card);font-family:var(--font-main);">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:16px 8px 14px;box-shadow:var(--elev-card);">
               <div style="width:44px;height:44px;border-radius:var(--r-md);background:rgba(0,135,90,0.10);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                <iconify-icon icon="lucide:land-plot" style="color:var(--green);font-size:22px;pointer-events:none;"></iconify-icon>
+                <iconify-icon icon="lucide:land-plot" style="color:var(--green);font-size:20px;pointer-events:none;"></iconify-icon>
               </div>
-              <div style="text-align:center;">
-                <div style="font-size:15px;font-weight:900;color:var(--text);letter-spacing:-.3px;line-height:1.2;">134</div>
-                <div style="font-size:9.5px;font-weight:700;color:var(--muted);margin-top:1px;">كم²</div>
-              </div>
-              <span style="font-size:11px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;">المساحة</span>
-            </button>
+              <div style="font-size:18px;font-weight:900;color:var(--text);line-height:1;letter-spacing:-0.5px;">134</div>
+              <div style="font-size:10px;font-weight:700;color:var(--muted);text-align:center;line-height:1.3;">كم² <br>المساحة</div>
+            </div>
 
             <!-- عدد السكان -->
-            <button style="display:flex;flex-direction:column;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:14px 8px 12px;cursor:default;touch-action:manipulation;box-shadow:var(--elev-card);font-family:var(--font-main);">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:16px 8px 14px;box-shadow:var(--elev-card);">
               <div style="width:44px;height:44px;border-radius:var(--r-md);background:rgba(21,101,192,0.10);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                <iconify-icon icon="lucide:users" style="color:#1565C0;font-size:22px;pointer-events:none;"></iconify-icon>
+                <iconify-icon icon="lucide:users" style="color:#1565C0;font-size:20px;pointer-events:none;"></iconify-icon>
               </div>
-              <div style="text-align:center;">
-                <div style="font-size:13px;font-weight:900;color:var(--text);letter-spacing:-.3px;line-height:1.2;">8,767</div>
-                <div style="font-size:9.5px;font-weight:700;color:var(--muted);margin-top:1px;">نسمة</div>
-              </div>
-              <span style="font-size:11px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;">عدد السكان</span>
-            </button>
+              <div style="font-size:15px;font-weight:900;color:var(--text);line-height:1;letter-spacing:-0.5px;">8,767</div>
+              <div style="font-size:10px;font-weight:700;color:var(--muted);text-align:center;line-height:1.3;">ساكن <br>السكان</div>
+            </div>
 
             <!-- الرمز البريدي -->
-            <button style="display:flex;flex-direction:column;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:14px 8px 12px;cursor:default;touch-action:manipulation;box-shadow:var(--elev-card);font-family:var(--font-main);">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:16px 8px 14px;box-shadow:var(--elev-card);">
               <div style="width:44px;height:44px;border-radius:var(--r-md);background:rgba(245,127,23,0.10);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                <iconify-icon icon="lucide:mail" style="color:var(--amber);font-size:22px;pointer-events:none;"></iconify-icon>
+                <iconify-icon icon="lucide:mail-open" style="color:var(--amber);font-size:20px;pointer-events:none;"></iconify-icon>
               </div>
-              <div style="text-align:center;">
-                <div style="font-size:14px;font-weight:900;color:var(--text);letter-spacing:-.3px;line-height:1.2;">23014</div>
-                <div style="font-size:9.5px;font-weight:700;color:transparent;margin-top:1px;">—</div>
-              </div>
-              <span style="font-size:11px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;">الرمز البريدي</span>
-            </button>
+              <div style="font-size:18px;font-weight:900;color:var(--text);line-height:1;letter-spacing:-0.5px;">23014</div>
+              <div style="font-size:10px;font-weight:700;color:var(--muted);text-align:center;line-height:1.3;">ر.ب <br>الرمز البريدي</div>
+            </div>
 
           </div>
 
