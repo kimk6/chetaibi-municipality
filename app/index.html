@@ -1230,6 +1230,35 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </div>
           </div>
 
+          <!-- تنقل سريع -->
+          <div style="padding:20px 16px 20px;">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+              <button onclick="switchTab('news');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:13px 6px 11px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.93)';this.style.opacity='.75'" ontouchend="this.style.transform='';this.style.opacity=''">
+                <div style="width:38px;height:38px;border-radius:var(--r-md);background:rgba(0,135,90,0.10);display:flex;align-items:center;justify-content:center;">
+                  <iconify-icon icon="lucide:newspaper" style="color:var(--green);font-size:19px;pointer-events:none;"></iconify-icon>
+                </div>
+                <span style="font-size:11px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;">الأخبار</span>
+              </button>
+              <button onclick="openAboutScreen();haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:13px 6px 11px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.93)';this.style.opacity='.75'" ontouchend="this.style.transform='';this.style.opacity=''">
+                <div style="width:38px;height:38px;border-radius:var(--r-md);background:rgba(0,135,90,0.10);display:flex;align-items:center;justify-content:center;">
+                  <iconify-icon icon="lucide:landmark" style="color:var(--green);font-size:19px;pointer-events:none;"></iconify-icon>
+                </div>
+                <span style="font-size:11px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;">البلدية</span>
+              </button>
+              <button onclick="switchTab('map');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:13px 6px 11px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.93)';this.style.opacity='.75'" ontouchend="this.style.transform='';this.style.opacity=''">
+                <div style="width:38px;height:38px;border-radius:var(--r-md);background:rgba(0,135,90,0.10);display:flex;align-items:center;justify-content:center;">
+                  <iconify-icon icon="lucide:map" style="color:var(--green);font-size:19px;pointer-events:none;"></iconify-icon>
+                </div>
+                <span style="font-size:11px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;">الخريطة</span>
+              </button>
+              <button onclick="switchTab('guide');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:13px 6px 11px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-card);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.93)';this.style.opacity='.75'" ontouchend="this.style.transform='';this.style.opacity=''">
+                <div style="width:38px;height:38px;border-radius:var(--r-md);background:rgba(0,135,90,0.10);display:flex;align-items:center;justify-content:center;">
+                  <iconify-icon icon="lucide:map-pin" style="color:var(--green);font-size:19px;pointer-events:none;"></iconify-icon>
+                </div>
+                <span style="font-size:11px;font-weight:800;color:var(--text);text-align:center;line-height:1.3;">الدليل</span>
+              </button>
+            </div>
+          </div>
 
           <!-- قسم الشواطئ والمعالم السياحية -->
           <div class="section" style="padding-top:10px;padding-bottom:8px" id="places-section">
