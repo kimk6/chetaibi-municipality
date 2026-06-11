@@ -1284,23 +1284,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </div>
           </div>
 
-          <!-- آخر المستجدات -->
-          <div class="section" id="home-news-section" style="padding-top:16px;padding-bottom:calc(24px + var(--safe-b));background:var(--surface-2);border-top:1px solid var(--border);">
-            <div class="section-header" style="margin-bottom:10px;">
-              <div class="section-title">
-                <iconify-icon icon="lucide:newspaper"></iconify-icon>
-                <span data-i18n="section-news">آخر المستجدات</span>
-              </div>
-              <button class="see-all-arrow-btn" onclick="switchTab('news');haptic('light')" style="background:none;padding:4px 2px;">
-                <span data-i18n="btn-all">الكل</span>
-                <iconify-icon icon="lucide:chevron-left"></iconify-icon>
-              </button>
-            </div>
-            <div class="h-scroll" id="h-home-news">
-              <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
-            </div>
-          </div>
-
                 </div>
       </div>
     </div>
@@ -1482,6 +1465,23 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                   </button>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <!-- آخر المستجدات -->
+          <div class="section" id="home-news-section" style="padding-top:16px;padding-bottom:calc(24px + var(--safe-b));background:var(--surface-2);border-top:1px solid var(--border);margin-top:12px;">
+            <div class="section-header" style="margin-bottom:10px;">
+              <div class="section-title">
+                <iconify-icon icon="lucide:newspaper"></iconify-icon>
+                <span data-i18n="section-news">آخر المستجدات</span>
+              </div>
+              <button class="see-all-arrow-btn" onclick="switchTab('news');haptic('light')" style="background:none;padding:4px 2px;">
+                <span data-i18n="btn-all">الكل</span>
+                <iconify-icon icon="lucide:chevron-left"></iconify-icon>
+              </button>
+            </div>
+            <div class="h-scroll" id="h-home-news">
+              <div class="loading"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
             </div>
           </div>
 
@@ -1921,6 +1921,7 @@ function openAboutScreen(){
   curTab='about';
   resetHeaderState();
   resetScroll('screen-about');
+  loadHHomeNews();
   /* إخفاء أزرار nav */
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
 }
@@ -2544,7 +2545,7 @@ async function syncMayorToSheet(){
     if(aIcon) aIcon.style.display = 'none';
   }
 }
-async function loadHome(){loadHOfficial();loadMayorHome();loadHBeaches();loadHTourism();loadHHomeNews();loadAnnTicker();fetchPWAWeather();fetchPWASea();}
+async function loadHome(){loadHOfficial();loadMayorHome();loadHBeaches();loadHTourism();loadAnnTicker();fetchPWAWeather();fetchPWASea();}
 var PWA_LAT=37.0850,PWA_LON=7.2550;
 /* _debugWeather removed in production */
 /* _debugSea removed in production */
