@@ -1460,6 +1460,31 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 
           </div>
 
+          <!-- ══ بطاقة رئيس المجلس ══ -->
+          <div style="padding:12px 16px 0;">
+            <div class="mayor-home-card" id="about-mayor-card">
+              <div class="mayor-home-inner">
+                <div class="mayor-home-top">
+                  <div class="mayor-home-photo-ring">
+                    <div class="mayor-home-photo-inner" id="about-mayor-photo-wrap">
+                      <iconify-icon id="about-mayor-icon" icon="lucide:user" style="font-size:30px;color:var(--green);pointer-events:none"></iconify-icon>
+                      <img id="about-mayor-photo" src="" alt="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;" decoding="async">
+                    </div>
+                  </div>
+                  <div class="mayor-home-info">
+                    <div class="mayor-home-role" data-i18n="mayor-role">رئيس المجلس الشعبي البلدي</div>
+                    <div class="mayor-home-name" id="about-mayor-name">جاري التحميل...</div>
+                  </div>
+                  <button class="mayor-home-btn" id="about-prev-mayors-btn">
+                    <iconify-icon icon="lucide:users" style="font-size:14px;pointer-events:none;"></iconify-icon>
+                    <span data-i18n="mayor-prev-btn">الرؤساء السابقون</span>
+                    <iconify-icon class="mayor-home-btn-arrow" icon="lucide:chevron-left" style="pointer-events:none;"></iconify-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -1514,29 +1539,6 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 <div id="more-sheet-overlay">
   <div id="more-sheet">
     <div class="more-sheet-drag"></div>
-
-    <!-- بطاقة الرئيس داخل الـ overlay -->
-    <div class="mayor-home-card" id="ms-mayor-card" style="margin:4px 16px 12px;">
-      <div class="mayor-home-inner">
-        <div class="mayor-home-top">
-          <div class="mayor-home-photo-ring">
-            <div class="mayor-home-photo-inner" id="ms-mayor-photo-wrap">
-              <iconify-icon id="ms-mayor-icon" icon="lucide:user" style="font-size:30px;color:var(--green);pointer-events:none"></iconify-icon>
-              <img id="ms-mayor-photo" src="" alt="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;" decoding="async">
-            </div>
-          </div>
-          <div class="mayor-home-info">
-            <div class="mayor-home-role" data-i18n="mayor-role">رئيس المجلس الشعبي البلدي</div>
-            <div class="mayor-home-name" id="ms-mayor-name">جاري التحميل...</div>
-          </div>
-          <button class="mayor-home-btn" id="ms-prev-mayors-btn">
-            <iconify-icon icon="lucide:users" style="font-size:14px;pointer-events:none;"></iconify-icon>
-            <span data-i18n="mayor-prev-btn">الرؤساء السابقون</span>
-            <iconify-icon class="mayor-home-btn-arrow" icon="lucide:chevron-left" style="pointer-events:none;"></iconify-icon>
-          </button>
-        </div>
-      </div>
-    </div>
 
     <div style="margin:10px 16px 0;background:var(--card);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--elev-2);border:1px solid var(--border-light)">
       <div class="more-item" id="ms-item-map">
@@ -2178,6 +2180,8 @@ var MoreSheet=(function(){
   function bindItems(){
     var pp=document.getElementById('ms-prev-mayors-btn');
     if(pp)pp.addEventListener('click',function(e){e.stopPropagation();haptic('light');close();setTimeout(openPrevMayorsModal,60);});
+    var ap=document.getElementById('about-prev-mayors-btn');
+    if(ap)ap.addEventListener('click',function(e){e.stopPropagation();haptic('light');openPrevMayorsModal();});
     var ig=document.getElementById('ms-item-guide');
     if(ig)ig.addEventListener('click',function(){haptic('light');close();setTimeout(function(){switchTab('guide');},60);});
     var ia=document.getElementById('ms-item-archive');
@@ -2528,6 +2532,16 @@ async function syncMayorToSheet(){
     photoEl.src = m.image_url;
     photoEl.style.display = 'block';
     if(iconEl) iconEl.style.display = 'none';
+  }
+  /* بطاقة صفحة عن البلدية */
+  var aName = document.getElementById('about-mayor-name');
+  var aPhoto = document.getElementById('about-mayor-photo');
+  var aIcon = document.getElementById('about-mayor-icon');
+  if(aName) aName.textContent = (_curLang==='fr'?'M. ':'السيد ') + (_f(m,'name')||m.name||'--');
+  if(m.image_url && aPhoto){
+    aPhoto.src = m.image_url;
+    aPhoto.style.display = 'block';
+    if(aIcon) aIcon.style.display = 'none';
   }
 }
 async function loadHome(){loadHOfficial();loadMayorHome();loadHBeaches();loadHTourism();loadHHomeNews();loadAnnTicker();fetchPWAWeather();fetchPWASea();}
