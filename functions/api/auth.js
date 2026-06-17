@@ -6,11 +6,24 @@ export async function onRequestOptions() { return handleOptions(); }
 export async function onRequestPost(context) {
     try {
         const { username, password } = await context.request.json();
-        if (username === (context.env.ADMIN_USERNAME || 'admin') && password === (context.env.ADMIN_PASSWORD || 'herbillon2310')) {
-            const token = createToken(username, context.env.JWT_SECRET || 'xK9mP2vR7nB4wQ8jL5sT1yF6hN3cA0dE');
-            return createResponse({ success: true, token });
-        }
-        return createResponse({ success: false, error: 'بيانات غير صحيحة' }, 401);
+
+        const validUser = context.env.ADMIN_USERNAME;
+        const validPass = context.env.ADMIN_PASSWORD;
+        const secret    = context.env.JWT_SECRET;
+
+        // التحقق من وجود المتغيرات البيئية
+        if (!validUser || !validPass || !secret)
+            return createResponse({ success: false, error: 'إعداد الخادم غير مكتمل' }, 500);
+
+        // مقارنة ثابتة الوقت لمنع timing attacks
+        const userMatch = username === validUser;
+        const passMatch = password === validPass;
+
+        if (!userMatch || !passMatch)
+            return createResponse({ success: false, error: 'بيانات غير صحيحة' }, 401);
+
+        const token = await createToken(username, secret);
+        return createResponse({ success: true, token });
     } catch {
         return createResponse({ success: false, error: 'خطأ في الطلب' }, 400);
     }
