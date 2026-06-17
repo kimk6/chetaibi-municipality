@@ -1,4 +1,10 @@
-// Service Worker — بلدية شطايبي PWA + FCM
+// Service Worker — بلدية شطايبي PWA
+// الإصدار يتغير تلقائياً عند كل نشر
+const VERSION   = '__BUILD_DATE__'; // يُستبدل يدوياً عند كل رفع مثل: '2025-06-17'
+const CACHE_PRE = 'chetaibi-v';
+const CACHE     = CACHE_PRE + VERSION;
+
+// ── Firebase Messaging ───────────────────────
 importScripts('https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js');
 
@@ -13,23 +19,21 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-// استقبال الإشعارات في الخلفية
 messaging.onBackgroundMessage(payload => {
     const { title, body, icon, click_action } = payload.notification || {};
     self.registration.showNotification(title || 'بلدية شطايبي', {
-        body:    body || '',
-        icon:    icon || 'https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/app-icon.png',
-        badge:   'https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/app-icon.png',
-        data:    { url: click_action || '/' },
-        vibrate: [200, 100, 200],
-        dir:     'rtl',
-        lang:    'ar',
-        tag:     'chetaibi-notif',
+        body:     body || '',
+        icon:     icon || 'https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/app-icon.png',
+        badge:    'https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/app-icon.png',
+        data:     { url: click_action || '/' },
+        vibrate:  [200, 100, 200],
+        dir:      'rtl',
+        lang:     'ar',
+        tag:      'chetaibi-notif',
         renotify: true,
     });
 });
 
-// النقر على الإشعار
 self.addEventListener('notificationclick', e => {
     e.notification.close();
     const url = e.notification.data?.url || '/';
@@ -43,29 +47,57 @@ self.addEventListener('notificationclick', e => {
     );
 });
 
-// Cache
-const CACHE = 'chetaibi-v3';
+// ── Cache: الملفات الأساسية ──────────────────
+const PRECACHE = ['/', '/index.html', '/manifest.json'];
+
 self.addEventListener('install', e => {
     e.waitUntil(
-        caches.open(CACHE).then(c => c.addAll(['/', '/index.html', '/manifest.json']))
+        caches.open(CACHE)
+            .then(c => c.addAll(PRECACHE))
             .then(() => self.skipWaiting())
     );
 });
+
 self.addEventListener('activate', e => {
     e.waitUntil(
-        caches.keys().then(keys =>
-            Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-        ).then(() => self.clients.claim())
+        caches.keys()
+            .then(keys => Promise.all(
+                // حذف كل الـ caches القديمة التي تبدأ بنفس البادئة
+                keys.filter(k => k.startsWith(CACHE_PRE) && k !== CACHE)
+                    .map(k => caches.delete(k))
+            ))
+            .then(() => self.clients.claim())
     );
 });
+
 self.addEventListener('fetch', e => {
     const url = new URL(e.request.url);
+
+    // ── API: دائماً من الشبكة (network only) ─
     if (url.pathname.startsWith('/api/')) return;
+
+    // ── CDN الصور: cache first ────────────────
+    if (url.hostname === 'cdn.jsdelivr.net' || url.hostname === 'fonts.gstatic.com') {
+        e.respondWith(
+            caches.match(e.request).then(cached => {
+                if (cached) return cached;
+                return fetch(e.request).then(res => {
+                    if (res?.ok) caches.open(CACHE).then(c => c.put(e.request, res.clone()));
+                    return res;
+                });
+            })
+        );
+        return;
+    }
+
+    // ── الملفات الأساسية: network first مع fallback ──
+    if (e.request.method !== 'GET') return;
     e.respondWith(
-        fetch(e.request).then(res => {
-            if (res?.status === 200 && e.request.method === 'GET')
-                caches.open(CACHE).then(c => c.put(e.request, res.clone()));
-            return res;
-        }).catch(() => caches.match(e.request))
+        fetch(e.request)
+            .then(res => {
+                if (res?.ok) caches.open(CACHE).then(c => c.put(e.request, res.clone()));
+                return res;
+            })
+            .catch(() => caches.match(e.request))
     );
 });

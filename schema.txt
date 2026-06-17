@@ -1,0 +1,120 @@
+-- schema.sql — بلدية شطايبي
+-- يمكن تشغيل هذا الملف كاملاً على قاعدة بيانات جديدة
+
+-- ══ جدول الأخبار ══
+CREATE TABLE IF NOT EXISTS news (
+    id             INTEGER PRIMARY KEY AUTOINCREMENT,
+    title          TEXT    NOT NULL DEFAULT '',
+    category       TEXT    NOT NULL DEFAULT 'official',
+    content        TEXT    NOT NULL DEFAULT '',
+    image_url      TEXT    DEFAULT '',
+    image_url_fr   TEXT    DEFAULT '',
+    album_urls     TEXT    DEFAULT '[]',
+    date           TEXT    NOT NULL,
+    is_pinned      INTEGER DEFAULT 0,
+    custom_label   TEXT    DEFAULT '',
+    custom_label_fr TEXT   DEFAULT '',
+    title_fr       TEXT    DEFAULT '',
+    content_fr     TEXT    DEFAULT '',
+    created_at     DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ══ جدول الخدمات ══
+CREATE TABLE IF NOT EXISTS services (
+    id             INTEGER PRIMARY KEY AUTOINCREMENT,
+    service_name   TEXT    NOT NULL,
+    service_name_fr TEXT   DEFAULT '',
+    required_docs  TEXT    DEFAULT '',
+    required_docs_fr TEXT  DEFAULT '',
+    pdf_link       TEXT    DEFAULT '',
+    color          TEXT    DEFAULT 'blue',
+    icon           TEXT    DEFAULT 'file-text'
+);
+
+-- ══ جدول الأرشيف ══
+CREATE TABLE IF NOT EXISTS archives (
+    id             INTEGER PRIMARY KEY AUTOINCREMENT,
+    title          TEXT    NOT NULL DEFAULT '',
+    title_fr       TEXT    DEFAULT '',
+    description    TEXT    DEFAULT '',
+    description_fr TEXT    DEFAULT '',
+    year           TEXT    DEFAULT '',
+    image_old_url  TEXT    DEFAULT '',
+    image_new_url  TEXT    DEFAULT ''
+);
+
+-- ══ جدول السياحة ══
+CREATE TABLE IF NOT EXISTS tourism (
+    id             INTEGER PRIMARY KEY AUTOINCREMENT,
+    name           TEXT    NOT NULL,
+    name_fr        TEXT    DEFAULT '',
+    subtitle       TEXT    DEFAULT '',
+    subtitle_fr    TEXT    DEFAULT '',
+    description    TEXT    DEFAULT '',
+    description_fr TEXT    DEFAULT '',
+    image_url      TEXT    DEFAULT '',
+    album_urls     TEXT    DEFAULT '[]',
+    rating         TEXT    DEFAULT '4.5',
+    distance_info  TEXT    DEFAULT '',
+    badge_text     TEXT    DEFAULT '',
+    badge_text_fr  TEXT    DEFAULT '',
+    badge_color    TEXT    DEFAULT 'emerald',
+    lat            REAL    DEFAULT NULL,
+    lng            REAL    DEFAULT NULL
+);
+
+-- ══ جدول الشواطئ ══
+CREATE TABLE IF NOT EXISTS beaches (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    name            TEXT    NOT NULL,
+    name_fr         TEXT    DEFAULT '',
+    description     TEXT    DEFAULT '',
+    description_fr  TEXT    DEFAULT '',
+    image_url       TEXT    DEFAULT '',
+    album_urls      TEXT    DEFAULT '[]',
+    is_supervised   INTEGER DEFAULT 1,
+    season          TEXT    DEFAULT 'صيف',
+    lat             REAL    DEFAULT NULL,
+    lng             REAL    DEFAULT NULL
+);
+
+-- ══ جدول ألبومات الشواطئ ══
+CREATE TABLE IF NOT EXISTS beach_albums (
+    id       INTEGER PRIMARY KEY AUTOINCREMENT,
+    beach_id INTEGER NOT NULL REFERENCES beaches(id) ON DELETE CASCADE,
+    image_url TEXT   NOT NULL,
+    caption  TEXT    DEFAULT ''
+);
+
+-- ══ جدول الرؤساء ══
+CREATE TABLE IF NOT EXISTS mayors (
+    id        INTEGER PRIMARY KEY AUTOINCREMENT,
+    name      TEXT    NOT NULL,
+    name_fr   TEXT    DEFAULT '',
+    period    TEXT    NOT NULL DEFAULT '',
+    period_fr TEXT    DEFAULT '',
+    image_url TEXT    DEFAULT '',
+    is_dec    INTEGER DEFAULT 0
+);
+
+-- ══ جدول المرافق (دليل شطايبي) ══
+CREATE TABLE IF NOT EXISTS facilities (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    name        TEXT    NOT NULL,
+    name_fr     TEXT    DEFAULT '',
+    category    TEXT    NOT NULL DEFAULT 'admin-branches',
+    description TEXT    DEFAULT '',
+    description_fr TEXT DEFAULT '',
+    address     TEXT    DEFAULT '',
+    phone       TEXT    DEFAULT '',
+    hours       TEXT    DEFAULT '',
+    image_url   TEXT    DEFAULT '',
+    lat         REAL    DEFAULT NULL,
+    lng         REAL    DEFAULT NULL
+);
+
+-- ══ فهارس لتحسين الأداء ══
+CREATE INDEX IF NOT EXISTS idx_news_category  ON news(category);
+CREATE INDEX IF NOT EXISTS idx_news_pinned    ON news(is_pinned DESC, id DESC);
+CREATE INDEX IF NOT EXISTS idx_facilities_cat ON facilities(category);
+CREATE INDEX IF NOT EXISTS idx_beach_albums   ON beach_albums(beach_id);

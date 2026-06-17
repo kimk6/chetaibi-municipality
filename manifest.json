@@ -1,16 +1,17 @@
 {
   "name": "بلدية شطايبي",
   "short_name": "شطايبي",
-  "description": "البوابة الإلكترونية الرسمية لبلدية شطايبي",
+  "description": "البوابة الإلكترونية الرسمية لبلدية شطايبي — ولاية عنابة، الجزائر",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait",
   "background_color": "#ffffff",
-  "theme_color": "#ffffff",
+  "theme_color": "#00875A",
   "lang": "ar",
   "dir": "rtl",
+  "categories": ["government", "utilities"],
   "icons": [
     {
       "src": "https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/new_192_any.png",
@@ -37,6 +38,16 @@
       "purpose": "maskable"
     }
   ],
-  "categories": ["government", "utilities"],
-  "screenshots": []
+  "shortcuts": [
+    {
+      "name": "الأخبار",
+      "url": "/?tab=news",
+      "icons": [{ "src": "https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/new_192_any.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "الشواطئ",
+      "url": "/?tab=map&filter=beach",
+      "icons": [{ "src": "https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/new_192_any.png", "sizes": "192x192" }]
+    }
+  ]
 }
