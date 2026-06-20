@@ -708,7 +708,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .weather-sea-unified-card{background:var(--card);border-radius:var(--r-xl);box-shadow:var(--elev-4);border:1px solid var(--border-light);overflow:hidden;}.ws-tabs,.ws-panel{overflow:hidden;}
 
 /* ══ Hero Weather Card ══ */
-.wh-card{position:relative;border-radius:var(--r-2xl);overflow:hidden;box-shadow:var(--elev-4);min-height:178px;isolation:isolate;}
+.wh-card{position:relative;border-radius:var(--r-2xl);overflow:hidden;box-shadow:var(--elev-4);isolation:isolate;}
 .wh-bg{position:absolute;inset:0;z-index:0;transition:background 600ms var(--ease-std);}
 .wh-bg::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 88% -10%,rgba(255,255,255,.22) 0%,transparent 55%);pointer-events:none;}
 .wh-bg-sunny{background:linear-gradient(135deg,#FF8A3D 0%,#FFB347 45%,#FFC85C 100%);}
@@ -721,29 +721,34 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .wh-bg-sea-day{background:linear-gradient(135deg,#0277BD 0%,#0288D1 45%,#29B6F6 100%);}
 .wh-bg-sea-night{background:linear-gradient(135deg,#0D2847 0%,#143A5F 50%,#1B4A75 100%);}
 .wh-icon-deco{position:absolute;top:-18px;left:-14px;font-size:148px;line-height:1;opacity:.16;pointer-events:none;z-index:1;filter:blur(.3px);transform:rotate(-8deg);}
-.wh-content{position:relative;z-index:2;padding:16px 18px 18px;color:#fff;}
-.wh-top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
-.wh-greeting{font-size:14px;font-weight:800;color:rgba(255,255,255,.92);letter-spacing:-.2px;}
-.wh-forecast-btn{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.18);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.28);border-radius:var(--r-full);padding:6px 12px;font-family:var(--font-main);font-size:11.5px;font-weight:800;color:#fff;cursor:pointer;touch-action:manipulation;white-space:nowrap;transition:opacity var(--dur-fast),transform var(--dur-fast);}
+.wh-content{position:relative;z-index:2;padding:14px 18px 16px;color:#fff;}
+.wh-top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.wh-subtabs-inline{display:flex;gap:5px;background:rgba(0,0,0,.14);border-radius:var(--r-full);padding:3px;}
+.wh-subtab-inline{display:inline-flex;align-items:center;gap:4px;border:none;background:transparent;border-radius:var(--r-full);padding:6px 13px;font-family:var(--font-main);font-size:11.5px;font-weight:800;color:rgba(255,255,255,.65);cursor:pointer;touch-action:manipulation;transition:background var(--dur-mid) var(--ease-std),color var(--dur-mid) var(--ease-std);white-space:nowrap;}
+.wh-subtab-inline.active{background:rgba(255,255,255,.92);color:#1A2236;}
+.wh-subtab-inline:active{opacity:.7;}
+.wh-subtab-inline iconify-icon{font-size:13px;pointer-events:none;}
+.wh-greeting{font-size:13.5px;font-weight:800;color:rgba(255,255,255,.85);letter-spacing:-.2px;margin-bottom:10px;}
+.wh-forecast-btn{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.18);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.28);border-radius:var(--r-full);padding:6px 12px;font-family:var(--font-main);font-size:11.5px;font-weight:800;color:#fff;cursor:pointer;touch-action:manipulation;white-space:nowrap;transition:opacity var(--dur-fast),transform var(--dur-fast);flex-shrink:0;}
 .wh-forecast-btn:active{opacity:.65;transform:scale(.95);}
 .wh-forecast-btn iconify-icon{font-size:13px;pointer-events:none;}
 .wh-main-row{display:flex;align-items:flex-end;justify-content:space-between;}
+.wh-main-row.hidden{display:none;}
 .wh-temp-block{display:flex;align-items:center;gap:12px;}
-.wh-emoji{font-size:46px;line-height:1;filter:drop-shadow(0 3px 8px rgba(0,0,0,.18));}
-.wh-temp{font-size:42px;font-weight:900;line-height:1;letter-spacing:-2px;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.12);}
+.wh-emoji{font-size:44px;line-height:1;filter:drop-shadow(0 3px 8px rgba(0,0,0,.18));}
+.wh-temp{font-size:40px;font-weight:900;line-height:1;letter-spacing:-2px;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.12);}
 .wh-desc{font-size:12.5px;font-weight:700;color:rgba(255,255,255,.88);margin-top:3px;}
 .wh-stats{display:flex;flex-direction:column;gap:7px;align-items:flex-end;}
 .wh-stat-pill{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.16);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:var(--r-full);padding:4px 10px;}
 .wh-stat-pill span{font-size:12px;font-weight:800;color:#fff;}
 .wh-stat-pill iconify-icon{font-size:13px;color:rgba(255,255,255,.85);}
 
-/* ══ Tabs row below Hero ══ */
-.wh-subtabs{display:flex;gap:8px;padding:10px 0 0;}
-.wh-subtab{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;height:38px;border-radius:var(--r-full);border:1.5px solid var(--border);background:var(--card);font-family:var(--font-main);font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;touch-action:manipulation;transition:background var(--dur-mid) var(--ease-std),color var(--dur-mid) var(--ease-std),border-color var(--dur-mid) var(--ease-std),transform var(--dur-fast) var(--ease-spring);box-shadow:var(--elev-1);}
-.wh-subtab.active{background:var(--green);color:#fff;border-color:var(--green);box-shadow:0 3px 10px var(--green-glow);}
-.wh-subtab.sea-active{background:#1565C0;border-color:#1565C0;box-shadow:0 3px 10px rgba(21,101,192,.28);}
-.wh-subtab:active{transform:scale(.95);}
-.wh-subtab iconify-icon{font-size:13px;pointer-events:none;}
+/* ══ شريط الأيام داخل البطاقة ══ */
+.wh-days-strip{position:relative;z-index:2;display:flex;gap:6px;overflow-x:auto;padding:0 14px 14px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.wh-days-strip::-webkit-scrollbar{display:none;}
+.wh-days-strip button{flex-shrink:0;border:1.5px solid rgba(255,255,255,.3);border-radius:var(--r-full);padding:5px 14px;font-family:var(--font-main);font-size:11.5px;font-weight:700;background:rgba(255,255,255,.14);color:rgba(255,255,255,.92);cursor:pointer;touch-action:manipulation;white-space:nowrap;transition:background var(--dur-mid),border-color var(--dur-mid),transform var(--dur-fast) var(--ease-spring);}
+.wh-days-strip button.day-active{background:#fff;color:var(--text);border-color:#fff;font-weight:800;}
+.wh-days-strip button:active{transform:scale(.93);}
 .ws-tabs{display:flex;gap:8px;padding:12px 12px;background:var(--card);border-bottom:1px solid var(--border-light);}
 .ws-tab{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:0 10px;height:36px;border-radius:var(--r-full);border:1.5px solid var(--border);background:var(--card);font-family:var(--font-main);font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;touch-action:manipulation;position:relative;transition:background var(--dur-mid) var(--ease-std),color var(--dur-mid) var(--ease-std),border-color var(--dur-mid) var(--ease-std),transform var(--dur-fast) var(--ease-spring);white-space:nowrap;}
 .ws-tab::after{display:none;}
@@ -1192,12 +1197,22 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                 <span class="wh-icon-deco" id="wh-icon-deco">☀️</span>
                 <div class="wh-content">
                   <div class="wh-top-row">
-                    <div class="wh-greeting" id="home-greeting"></div>
+                    <div class="wh-subtabs-inline">
+                      <button class="wh-subtab-inline active" id="ws-tab-weather" onclick="switchWsTab('weather')">
+                        <iconify-icon icon="lucide:sun"></iconify-icon>
+                        <span data-i18n="ws-tab-weather">الطقس</span>
+                      </button>
+                      <button class="wh-subtab-inline" id="ws-tab-sea" onclick="switchWsTab('sea')">
+                        <iconify-icon icon="lucide:waves"></iconify-icon>
+                        <span data-i18n="ws-tab-sea">البحر</span>
+                      </button>
+                    </div>
                     <button class="wh-forecast-btn" id="ws-forecast-btn" onclick="openForecastModal();haptic('light')">
                       <iconify-icon icon="lucide:calendar-days"></iconify-icon>
                       <span>7 أيام ›</span>
                     </button>
                   </div>
+                  <div class="wh-greeting" id="home-greeting"></div>
                   <div class="wh-main-row" id="wh-weather-row">
                     <div class="wh-temp-block">
                       <span class="wh-emoji" id="pwa-weather-icon">☀️</span>
@@ -1225,19 +1240,9 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                     </div>
                   </div>
                 </div>
+                <div class="wh-days-strip" id="weather-day-tabs"></div>
+                <div class="wh-days-strip" id="sea-day-tabs" style="display:none"></div>
               </div>
-              <div class="wh-subtabs">
-                <button class="wh-subtab active" id="ws-tab-weather" onclick="switchWsTab('weather')">
-                  <iconify-icon icon="lucide:sun"></iconify-icon>
-                  <span data-i18n="ws-tab-weather">حالة الطقس</span>
-                </button>
-                <button class="wh-subtab" id="ws-tab-sea" onclick="switchWsTab('sea')">
-                  <iconify-icon icon="lucide:waves"></iconify-icon>
-                  <span data-i18n="ws-tab-sea">حالة البحر</span>
-                </button>
-              </div>
-              <div id="weather-day-tabs" style="display:none"></div>
-              <div id="sea-day-tabs" style="display:none"></div>
             </div>
           </div>
 
@@ -2577,8 +2582,8 @@ var _DN=['الأحد','الاثنين','الثلاثاء','الأربعاء','ا
 function _getDN(i){var days=t('day-names');return Array.isArray(days)?days[i]:_DN[i];}
 function _getToday(){return t('today')||'اليوم';}
 var _TS='flex-shrink:0;border:1.5px solid var(--border-light);border-radius:99px;padding:4px 12px;font-size:11px;font-family:var(--font-main);background:var(--surface);color:var(--text);cursor:pointer;white-space:nowrap;touch-action:manipulation;transition:background .15s,color .15s,border-color .15s;';
-var _TS_W='flex-shrink:0;border:1.5px solid rgba(5,150,105,0.3);border-radius:99px;padding:4px 12px;font-size:11px;font-family:var(--font-main);background:var(--green-xl);color:var(--green);cursor:pointer;white-space:nowrap;touch-action:manipulation;font-weight:700;transition:background .15s,color .15s,border-color .15s;';
-var _TS_S='flex-shrink:0;border:1.5px solid rgba(59,131,246,0.3);border-radius:99px;padding:4px 12px;font-size:11px;font-family:var(--font-main);background:#eff6ff;color:#3b83f6;cursor:pointer;white-space:nowrap;touch-action:manipulation;font-weight:700;transition:background .15s,color .15s,border-color .15s;';
+var _TS_W='';
+var _TS_S='';
 function _g(id){return document.getElementById(id);}
 function _whBgClass(code,isDay){
   if(code===0) return isDay?'wh-bg-sunny':'wh-bg-sunny-night';
@@ -2608,7 +2613,7 @@ function renderWeatherDay(i){
     if(deco)deco.textContent=icon;
   }
   var tabs=_g('weather-day-tabs');if(!tabs)return;
-  tabs.querySelectorAll('button').forEach(function(b,j){b.style.background=j===i?'var(--green)':'var(--green-xl)';b.style.color=j===i?'#fff':'var(--green)';b.style.borderColor=j===i?'var(--green)':'rgba(5,150,105,0.3)';b.style.fontWeight=j===i?'800':'700';});
+  tabs.querySelectorAll('button').forEach(function(b,j){b.classList.toggle('day-active', j===i);});
 }
 async function fetchPWAWeather(){
   try{
@@ -2643,7 +2648,7 @@ async function fetchPWAWeather(){
       });
     }
     var tabs=_g('weather-day-tabs');
-    if(tabs)tabs.innerHTML=_wDays.map(function(day,i){return '<button style="'+_TS_W+'" onclick="renderWeatherDay('+i+')">'+day.label+'</button>';}).join('');
+    if(tabs)tabs.innerHTML=_wDays.map(function(day,i){return '<button onclick="renderWeatherDay('+i+')">'+day.label+'</button>';}).join('');
     renderWeatherDay(0);
   }catch(e){
     console.error('fetchPWAWeather error:',e);
@@ -2689,7 +2694,7 @@ function renderSeaDay(i){
     if(deco)deco.textContent=lb.si;
   }
   var tabs=_g('sea-day-tabs');if(!tabs)return;
-  tabs.querySelectorAll('button').forEach(function(b,j){b.style.background=j===i?'#3b83f6':'#eff6ff';b.style.color=j===i?'#fff':'#3b83f6';b.style.borderColor=j===i?'#3b83f6':'rgba(59,131,246,0.3)';b.style.fontWeight=j===i?'800':'700';});
+  tabs.querySelectorAll('button').forEach(function(b,j){b.classList.toggle('day-active', j===i);});
 }
 async function fetchPWASea(){
   try{
@@ -2711,7 +2716,7 @@ async function fetchPWASea(){
       _sDays.push({label:i===0?_getToday():_getDN(dt.getDay()),wave:wv,dir:dv!=null?dirs[Math.round(dv/45)%8]:'--',sst:sst,isDay:(h>=6&&h<20)});
     }
     var tabs=_g('sea-day-tabs');
-    if(tabs)tabs.innerHTML=_sDays.map(function(day,i){return '<button style="'+_TS_S+'" onclick="renderSeaDay('+i+')">'+day.label+'</button>';}).join('');
+    if(tabs)tabs.innerHTML=_sDays.map(function(day,i){return '<button onclick="renderSeaDay('+i+')">'+day.label+'</button>';}).join('');
     renderSeaDay(0);
   }catch(e){
     console.error('fetchPWASea error:',e);
