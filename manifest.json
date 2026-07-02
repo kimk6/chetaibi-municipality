@@ -5,13 +5,19 @@
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "display_override": ["standalone", "minimal-ui"],
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
   "orientation": "portrait",
   "background_color": "#ffffff",
-  "theme_color": "#00875A",
+  "theme_color": "#147D82",
   "lang": "ar",
   "dir": "rtl",
-  "categories": ["government", "utilities"],
+  "categories": [
+    "government",
+    "utilities"
+  ],
   "icons": [
     {
       "src": "https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/new_192_any.png",
@@ -42,12 +48,32 @@
     {
       "name": "الأخبار",
       "url": "/?tab=news",
-      "icons": [{ "src": "https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/new_192_any.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/new_192_any.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "الشواطئ",
       "url": "/?tab=map&filter=beach",
-      "icons": [{ "src": "https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/new_192_any.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/new_192_any.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "الإبلاغ عن مشكلة",
+      "url": "/?action=complaint",
+      "icons": [
+        {
+          "src": "https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/new_192_any.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }

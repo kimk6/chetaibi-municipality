@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#1A1F2B" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#147D82" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B2B2E" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="mobile-web-app-capable" content="yes">
@@ -325,6 +325,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 #more-sheet{position:absolute;bottom:0;left:0;right:0;background:var(--card);border-radius:var(--r-xl) var(--r-xl) 0 0;padding-bottom:calc(var(--safe-b) + 24px);transform:translateY(100%);transition:transform var(--dur-slow) var(--ease-spring);overflow-y:auto;max-height:92dvh;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;box-shadow:var(--elev-modal);}
 #more-sheet-overlay.open #more-sheet{transform:translateY(0);}
 .more-sheet-drag{width:40px;height:4px;background:var(--muted-3);border-radius:var(--r-full);margin:14px auto 10px;}
+.ms-group-label{font-size:11px;font-weight:800;color:var(--muted-2);letter-spacing:.4px;padding:4px 20px 8px;}
 /* ══════════════════════════════════════════
    MAYOR CARD
 ══════════════════════════════════════════ */
@@ -747,6 +748,9 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .wh-forecast-btn iconify-icon{font-size:13px;pointer-events:none;}
 .wh-main-row{display:flex;align-items:flex-end;justify-content:space-between;}
 .wh-main-row.hidden{display:none;}
+.wh-danger-banner{display:flex;align-items:center;gap:7px;background:rgba(214,73,59,.92);backdrop-filter:blur(8px);border-radius:12px 12px 12px 4px;padding:8px 12px;margin-top:10px;font-size:11.5px;font-weight:800;color:#fff;}
+.wh-danger-banner.hidden{display:none;}
+.wh-danger-banner iconify-icon{font-size:15px;flex-shrink:0;}
 .wh-temp-block{display:flex;align-items:center;gap:12px;}
 .wh-emoji{font-size:44px;line-height:1;filter:drop-shadow(0 3px 8px rgba(0,0,0,.18));}
 .wh-temp{font-size:42px;font-family:var(--font-num);font-weight:700;line-height:1;letter-spacing:-1px;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.12);}
@@ -925,9 +929,9 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   --sk-shine:#252B38;
   --green-xl:rgba(20,125,130,0.13);
   --green-l:rgba(20,125,130,0.20);
-  --red-l:rgba(229,57,53,0.13);
+  --red-l:rgba(214,73,59,0.15);
   --blue-l:rgba(21,101,192,0.16);
-  --amber-l:rgba(245,127,23,0.13);
+  --amber-l:rgba(227,169,74,0.15);
   --purple-l:rgba(106,27,154,0.16);
   --sky-l:rgba(2,119,189,0.13);
 }
@@ -1154,6 +1158,24 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   padding:7px 0 9px;flex-shrink:0;
 }
 .hn-ann-card{min-width:min(260px,72vw);max-width:300px;flex-shrink:0;margin:0;width:auto;}
+/* ══ RIPPLE — لمسة أندرويد حقيقية ══ */
+.ripple-host{position:relative;overflow:hidden;}
+.ripple-ink{position:absolute;border-radius:50%;background:rgba(255,255,255,.45);transform:scale(0);animation:ripple-anim .5s cubic-bezier(.4,0,.2,1) forwards;pointer-events:none;z-index:50;}
+.ripple-ink.ripple-dark{background:rgba(11,43,46,.15);}
+@keyframes ripple-anim{to{transform:scale(2.6);opacity:0;}}
+/* ══ FAB — بلاغ سريع ══ */
+#report-fab{position:fixed;left:18px;bottom:calc(var(--nav-h) + var(--safe-b) + 22px);width:56px;height:56px;border-radius:18px 18px 18px 6px;background:var(--terracotta);color:#fff;border:none;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 10px 24px rgba(190,91,52,.45);z-index:90;cursor:pointer;touch-action:manipulation;transition:transform var(--dur-fast) var(--ease-spring);}
+#report-fab:active{transform:scale(.9);}
+#report-fab iconify-icon{pointer-events:none;}
+.cx-chip{border:1.5px solid var(--border);background:var(--surface);border-radius:var(--r-full);padding:8px 14px;font-family:var(--font-main);font-size:12.5px;font-weight:700;color:var(--text-2);cursor:pointer;touch-action:manipulation;transition:all var(--dur-fast);}
+.cx-chip.active{background:var(--terracotta);border-color:var(--terracotta);color:#fff;}
+.ec-row{display:flex;align-items:center;gap:12px;padding:11px 13px;background:var(--surface);border-radius:14px 14px 14px 4px;text-decoration:none;touch-action:manipulation;}
+.ec-row:active{opacity:.7;}
+.ec-ic{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.ec-txt{flex:1;display:flex;flex-direction:column;gap:2px;}
+.ec-txt b{font-size:13.5px;color:var(--text);font-weight:800;}
+.ec-txt small{font-size:11px;color:var(--muted);font-weight:600;}
+.ec-call{color:var(--green);font-size:18px;flex-shrink:0;}
 </style>
 <body>
 <a href="#screen-container" style="position:absolute;top:-40px;left:0;background:var(--green);color:#fff;padding:8px 16px;border-radius:0 0 8px 8px;font-size:13px;font-weight:700;z-index:9999;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-40px'">انتقل للمحتوى الرئيسي</a>
@@ -1255,6 +1277,10 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
                       <div class="wh-stat-pill"><span id="pwa-sea-wave">-- م</span><iconify-icon icon="lucide:arrow-up"></iconify-icon></div>
                       <div class="wh-stat-pill"><span id="pwa-sea-dir">--</span><iconify-icon icon="lucide:compass"></iconify-icon></div>
                     </div>
+                  </div>
+                  <div class="wh-danger-banner hidden" id="sea-danger-banner">
+                    <iconify-icon icon="lucide:triangle-alert"></iconify-icon>
+                    <span data-i18n="sea-danger-text">تحذير: أمواج مرتفعة — تجنّب السباحة اليوم</span>
                   </div>
                 </div>
                 <div class="wh-days-strip" id="weather-day-tabs"></div>
@@ -1524,6 +1550,11 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 
   </main><!-- end screen-container -->
 
+  <!-- FAB: بلاغ سريع -->
+  <button id="report-fab" onclick="openComplaintSheet();haptic('mid')" aria-label="الإبلاغ عن مشكلة">
+    <iconify-icon icon="lucide:megaphone" style="font-size:24px"></iconify-icon>
+  </button>
+
   <!-- BOTTOM NAV -->
   <nav id="bottom-nav" role="tablist" aria-label="التنقل الرئيسي">
     <button class="nav-btn active" id="nav-home" aria-label="الرئيسية" aria-current="page" role="tab">
@@ -1573,7 +1604,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   <div id="more-sheet">
     <div class="more-sheet-drag"></div>
 
-    <div style="margin:10px 16px 0;background:var(--card);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--elev-2);border:1px solid var(--border-light)">
+    <div class="ms-group-label">استكشف شطايبي</div>
+    <div style="margin:0 16px 14px;background:var(--card);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--elev-2);border:1px solid var(--border-light)">
       <div class="more-item" id="ms-item-map">
         <div class="more-icon" style="background:var(--blue-l)"><iconify-icon icon="lucide:map" style="color:var(--blue);font-size:20px;pointer-events:none"></iconify-icon></div>
         <div style="flex:1"><div class="more-item-title" data-i18n="ms-map-title">الخريطة التفاعلية</div><div class="more-item-sub" data-i18n="ms-map-sub">مرافق وشواطئ ومعالم شطايبي</div></div>
@@ -1589,6 +1621,24 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
         <div style="flex:1"><div class="more-item-title" data-i18n="ms-about-title">عن بلدية شطايبي</div><div class="more-item-sub" data-i18n="ms-about-sub">تعرّف على البلدية ومهامها</div></div>
         <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
       </div>
+    </div>
+
+    <div class="ms-group-label">خدمات المواطن</div>
+    <div style="margin:0 16px 14px;background:var(--card);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--elev-2);border:1px solid var(--border-light)">
+      <div class="more-item" id="ms-item-complaint" onclick="MoreSheet.close();setTimeout(function(){openComplaintSheet();},60)">
+        <div class="more-icon" style="background:var(--terracotta-l)"><iconify-icon icon="lucide:megaphone" style="color:var(--terracotta);font-size:20px;pointer-events:none"></iconify-icon></div>
+        <div style="flex:1"><div class="more-item-title">الإبلاغ عن مشكلة</div><div class="more-item-sub">أرسل بلاغاً لمصالح البلدية</div></div>
+        <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
+      </div>
+      <div class="more-item" id="ms-item-emergency" onclick="om('m-emergency')">
+        <div class="more-icon" style="background:var(--red-l)"><iconify-icon icon="lucide:phone-call" style="color:var(--red);font-size:20px;pointer-events:none"></iconify-icon></div>
+        <div style="flex:1"><div class="more-item-title">أرقام الطوارئ</div><div class="more-item-sub">إسعاف، حماية مدنية، درك ومزيد</div></div>
+        <iconify-icon icon="lucide:chevron-left" style="color:var(--muted);font-size:18px;pointer-events:none"></iconify-icon>
+      </div>
+    </div>
+
+    <div class="ms-group-label">قانوني</div>
+    <div style="margin:0 16px 14px;background:var(--card);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--elev-2);border:1px solid var(--border-light)">
       <div class="more-item" id="ms-item-privacy" onclick="om('m-privacy')">
         <div class="more-icon" style="background:var(--blue-l)"><iconify-icon icon="lucide:shield-check" style="color:var(--blue);font-size:20px;pointer-events:none"></iconify-icon></div>
         <div style="flex:1"><div class="more-item-title" data-i18n="ms-privacy-title">سياسة الخصوصية</div><div class="more-item-sub" data-i18n="ms-privacy-sub">كيف نحمي بياناتك</div></div>
@@ -1683,10 +1733,84 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
   </div>
 </div>
 
+<!-- modal: أرقام الطوارئ -->
+<div class="modal-overlay" id="m-emergency" onclick="cm('m-emergency')" role="dialog" aria-modal="true" style="z-index:10000;">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-drag"></div>
+    <div class="modal-body">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border-light)">
+        <div style="width:40px;height:40px;border-radius:14px 14px 14px 4px;background:var(--red-l);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <iconify-icon icon="lucide:phone-call" style="color:var(--red);font-size:20px;pointer-events:none"></iconify-icon>
+        </div>
+        <div>
+          <div style="font-size:16px;font-weight:900;color:var(--text)">أرقام الطوارئ</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">تعمل هذه القائمة بدون اتصال بالإنترنت</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <a href="tel:14" class="ec-row"><span class="ec-ic" style="background:var(--red-l);color:var(--red)"><iconify-icon icon="lucide:siren"></iconify-icon></span><span class="ec-txt"><b>الحماية المدنية</b><small>إسعاف وإطفاء — 14</small></span><iconify-icon icon="lucide:phone" class="ec-call"></iconify-icon></a>
+        <a href="tel:1548" class="ec-row"><span class="ec-ic" style="background:var(--green-l);color:var(--green)"><iconify-icon icon="lucide:ambulance"></iconify-icon></span><span class="ec-txt"><b>سامو (الإسعاف الطبي)</b><small>SAMU — 1548</small></span><iconify-icon icon="lucide:phone" class="ec-call"></iconify-icon></a>
+        <a href="tel:1055" class="ec-row"><span class="ec-ic" style="background:var(--blue-l);color:var(--blue)"><iconify-icon icon="lucide:shield"></iconify-icon></span><span class="ec-txt"><b>الدرك الوطني</b><small>1055</small></span><iconify-icon icon="lucide:phone" class="ec-call"></iconify-icon></a>
+        <a href="tel:17" class="ec-row"><span class="ec-ic" style="background:var(--blue-l);color:var(--blue)"><iconify-icon icon="lucide:shield-alert"></iconify-icon></span><span class="ec-txt"><b>الشرطة</b><small>17</small></span><iconify-icon icon="lucide:phone" class="ec-call"></iconify-icon></a>
+        <a href="tel:+21338xxxxxx" class="ec-row"><span class="ec-ic" style="background:var(--terracotta-l);color:var(--terracotta)"><iconify-icon icon="lucide:building-2"></iconify-icon></span><span class="ec-txt"><b>مقر بلدية شطايبي</b><small>الاستقبال</small></span><iconify-icon icon="lucide:phone" class="ec-call"></iconify-icon></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal: بلاغ عن مشكلة -->
+<div class="modal-overlay" id="m-complaint" onclick="cm('m-complaint')" role="dialog" aria-modal="true" style="z-index:10000;">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-drag"></div>
+    <div class="modal-body">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border-light)">
+        <div style="width:40px;height:40px;border-radius:14px 14px 14px 4px;background:var(--terracotta-l);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <iconify-icon icon="lucide:megaphone" style="color:var(--terracotta);font-size:20px;pointer-events:none"></iconify-icon>
+        </div>
+        <div>
+          <div style="font-size:16px;font-weight:900;color:var(--text)">الإبلاغ عن مشكلة</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">تصل بلاغاتكم مباشرة لمصالح البلدية</div>
+        </div>
+      </div>
+
+      <div id="complaint-form-view">
+        <div style="font-size:12.5px;font-weight:800;color:var(--text-2);margin-bottom:8px">نوع المشكلة</div>
+        <div id="complaint-type-chips" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px">
+          <button class="cx-chip active" data-val="إنارة عمومية" onclick="selectComplaintType(this)">💡 إنارة عمومية</button>
+          <button class="cx-chip" data-val="نفايات وتنظيف" onclick="selectComplaintType(this)">🗑️ نفايات وتنظيف</button>
+          <button class="cx-chip" data-val="طرقات وأرصفة" onclick="selectComplaintType(this)">🛣️ طرقات وأرصفة</button>
+          <button class="cx-chip" data-val="مياه وصرف صحي" onclick="selectComplaintType(this)">🚰 مياه وصرف صحي</button>
+          <button class="cx-chip" data-val="أخرى" onclick="selectComplaintType(this)">📌 أخرى</button>
+        </div>
+
+        <div style="font-size:12.5px;font-weight:800;color:var(--text-2);margin-bottom:8px">وصف المشكلة</div>
+        <textarea id="complaint-desc" rows="4" maxlength="500" placeholder="اشرح المشكلة بالتفصيل ومكانها..." style="width:100%;border:1.5px solid var(--border);border-radius:14px 14px 14px 4px;padding:11px 13px;font-family:var(--font-main);font-size:13.5px;color:var(--text);resize:none;background:var(--surface);"></textarea>
+
+        <div style="font-size:12.5px;font-weight:800;color:var(--text-2);margin:14px 0 8px">رقم الهاتف (اختياري)</div>
+        <input id="complaint-phone" type="tel" placeholder="0770 00 00 00" style="width:100%;border:1.5px solid var(--border);border-radius:var(--r-full);padding:11px 16px;font-family:var(--font-main);font-size:13.5px;color:var(--text);background:var(--surface);" dir="ltr">
+
+        <button id="complaint-submit-btn" onclick="submitComplaint()" style="width:100%;margin-top:20px;background:var(--terracotta);color:#fff;border:none;border-radius:16px 16px 16px 6px;padding:14px;font-family:var(--font-main);font-size:14.5px;font-weight:800;cursor:pointer;touch-action:manipulation;display:flex;align-items:center;justify-content:center;gap:8px;">
+          <iconify-icon icon="lucide:send"></iconify-icon> إرسال البلاغ
+        </button>
+      </div>
+
+      <div id="complaint-success-view" style="display:none;text-align:center;padding:20px 0 10px;">
+        <div style="width:64px;height:64px;border-radius:50%;background:var(--green-l);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+          <iconify-icon icon="lucide:check-check" style="color:var(--green);font-size:30px"></iconify-icon>
+        </div>
+        <div style="font-size:15px;font-weight:900;color:var(--text);margin-bottom:6px">تم استلام بلاغك</div>
+        <div style="font-size:12.5px;color:var(--muted);line-height:1.7">ستتم معالجته من طرف مصالح البلدية المختصة في أقرب وقت</div>
+        <button onclick="cm('m-complaint')" style="margin-top:18px;background:var(--surface-2);border:1.5px solid var(--border);border-radius:var(--r-full);padding:10px 24px;font-family:var(--font-main);font-size:13px;font-weight:800;color:var(--text-2);cursor:pointer;">إغلاق</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- MODALS -->
 <div class="modal-overlay" id="m-news" role="dialog" aria-modal="true" aria-label="تفاصيل الخبر">
   <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-drag"></div>
+
     <div id="mn-announce-view" style="display:none;position:relative"><div id="mn-announce-album"></div></div>
     <div id="mn-normal-view">
       <div class="modal-img-wrap" id="mn-img-wrap" style="display:none">
@@ -1849,6 +1973,69 @@ document.addEventListener('touchstart',function(e){
   if(e.target.tagName==='IMG'&&!e.target.closest('.album-grid')&&!e.target.closest('#mn-announce-album')&&!e.target.closest('#mt-sticker-album')&&!e.target.closest('#lightbox')){e.preventDefault();}
 },{passive:false});
 document.addEventListener('touchmove',function(e){if(e.touches.length>1)e.preventDefault();},{passive:false});
+/* ══ RIPPLE — تفويض أحداث عام، لا يلمس أي onclick موجود ══ */
+(function(){
+  var SEL='.nav-btn,.news-card,.place-card,.ann-card,.wh-subtab-inline,.ws-tab,.more-item,.forecast-tab,button,.read-more,#report-fab';
+  document.addEventListener('touchstart',function(e){
+    var host=e.target.closest(SEL);
+    if(!host)return;
+    var cs=getComputedStyle(host);
+    if(cs.position==='static')host.style.position='relative';
+    host.classList.add('ripple-host');
+    var r=host.getBoundingClientRect();
+    var touch=e.touches[0];
+    var size=Math.max(r.width,r.height)*1.3;
+    var ink=document.createElement('span');
+    ink.className='ripple-ink'+(host.tagName==='BUTTON'&&cs.backgroundColor==='rgba(0, 0, 0, 0)'?' ripple-dark':'');
+    if(host.classList.contains('news-card')||host.classList.contains('more-item')||host.classList.contains('ann-card'))ink.className+=' ripple-dark';
+    ink.style.width=ink.style.height=size+'px';
+    ink.style.left=(touch.clientX-r.left-size/2)+'px';
+    ink.style.top=(touch.clientY-r.top-size/2)+'px';
+    host.appendChild(ink);
+    setTimeout(function(){ink.remove();},520);
+  },{passive:true});
+})();
+var _complaintType='إنارة عمومية';
+function openComplaintSheet(){
+  document.getElementById('complaint-form-view').style.display='';
+  document.getElementById('complaint-success-view').style.display='none';
+  document.getElementById('complaint-desc').value='';
+  document.getElementById('complaint-phone').value='';
+  om('m-complaint');
+}
+function selectComplaintType(btn){
+  document.querySelectorAll('#complaint-type-chips .cx-chip').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  _complaintType=btn.getAttribute('data-val');
+  haptic('light');
+}
+async function submitComplaint(){
+  var desc=document.getElementById('complaint-desc').value.trim();
+  var phone=document.getElementById('complaint-phone').value.trim();
+  if(!desc){showToastError('يرجى وصف المشكلة أولاً');haptic('heavy');return;}
+  var btn=document.getElementById('complaint-submit-btn');
+  var oldHtml=btn.innerHTML;
+  btn.innerHTML='<iconify-icon icon="lucide:loader-2" style="animation:spin 1s linear infinite"></iconify-icon> جارٍ الإرسال...';
+  btn.disabled=true;
+  try{
+    var r=await fetch('/api/complaints',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({type:_complaintType,description:desc,contact_phone:phone})
+    });
+    var d=await r.json();
+    if(!r.ok||!d.success)throw new Error(d.error||'فشل الإرسال');
+    document.getElementById('complaint-form-view').style.display='none';
+    document.getElementById('complaint-success-view').style.display='';
+    haptic('success');
+  }catch(e){
+    showToastError('تعذّر إرسال البلاغ، حاول لاحقاً');
+    haptic('heavy');
+  }finally{
+    btn.innerHTML=oldHtml;
+    btn.disabled=false;
+  }
+}
 /* ══ TOAST SYSTEM ══ */
 var _toastTimers=[];
 function showToast(msg,opts){
@@ -2701,6 +2888,8 @@ function renderSeaDay(i){
   if(_g('pwa-sea-water-temp'))_g('pwa-sea-water-temp').textContent=d.sst?d.sst.toFixed(1)+'°C':'--';
   var sub=_g('sea-subtitle');
   if(sub)sub.textContent=d.isDay?t('sea-daytime'):t('sea-nighttime');
+  var dBanner=_g('sea-danger-banner');
+  if(dBanner)dBanner.classList.toggle('hidden', d.wave<1.5);
   /* تحديث خلفية الـ Hero فقط عندما يكون تبويب البحر نشطاً */
   if(_wsActiveTab==='sea'){
     var bg=_g('wh-bg'),deco=_g('wh-icon-deco');
@@ -3644,8 +3833,8 @@ function setTheme(theme){
   /* theme-color */
   var tmLight=document.querySelector('meta[name="theme-color"][media*="light"]');
   var tmDark=document.querySelector('meta[name="theme-color"][media*="dark"]');
-  if(tmLight)tmLight.content=theme==='dark'?'#1A1F2B':'#ffffff';
-  if(tmDark)tmDark.content='#1A1F2B';
+  if(tmLight)tmLight.content=theme==='dark'?'#0B2B2E':'#147D82';
+  if(tmDark)tmDark.content='#0B2B2E';
   haptic('light');
 }
 
