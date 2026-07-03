@@ -64,16 +64,6 @@
           "sizes": "192x192"
         }
       ]
-    },
-    {
-      "name": "الإبلاغ عن مشكلة",
-      "url": "/?action=complaint",
-      "icons": [
-        {
-          "src": "https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/new_192_any.png",
-          "sizes": "192x192"
-        }
-      ]
     }
   ]
 }
