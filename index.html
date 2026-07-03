@@ -214,6 +214,10 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 #bottom-nav::before{content:'';position:absolute;top:-1px;left:16px;right:16px;height:9px;background-image:radial-gradient(circle at 9px 0,transparent 8px,var(--text) 8.5px);background-size:18px 9px;background-repeat:repeat-x;}
 .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;border:none;background:none;cursor:pointer;font-family:var(--font-main);font-size:10px;font-weight:700;color:rgba(255,255,255,.5);padding:0 2px;position:relative;touch-action:manipulation;transition:color var(--dur-mid) var(--ease-std);}
 .nav-icon-wrap{position:relative;width:44px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:14px 14px 14px 4px;transition:background var(--dur-mid) var(--ease-std),transform var(--dur-fast) var(--ease-spring);flex-shrink:0;}
+.nav-btn-raised{overflow:visible;}
+.nav-btn-raised .nav-icon-wrap{width:56px;height:56px;border-radius:50%;background:var(--terracotta)!important;margin-top:-30px;border:5px solid var(--surface);box-shadow:0 10px 22px rgba(190,91,52,.5);}
+.nav-btn-raised iconify-icon{font-size:26px!important;}
+.nav-btn-raised span{opacity:0;}
 .nav-btn.active .nav-icon-wrap{background:var(--terracotta);}
 .nav-btn:active .nav-icon-wrap{transform:scale(.84);}
 .nav-btn iconify-icon{font-size:22px;display:block;pointer-events:none;}
@@ -246,6 +250,8 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .seg-btn:active.active{transform:scale(.97);}
 /* H-SCROLL */
 .h-scroll{display:flex;gap:12px;overflow-x:auto;padding:8px 18px 18px;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;}
+.h-scroll .place-card:first-child{width:196px;min-width:196px;max-width:196px;height:256px;}
+.h-scroll .place-card:first-child .place-card-name{font-size:14.5px;}
 /* NEWS CARDS */
 .news-card{min-width:min(244px,70vw);max-width:284px;background:var(--card);border-radius:24px 24px 24px 6px;overflow:hidden;box-shadow:0 8px 20px rgba(14,79,82,.12);flex-shrink:0;border:1px solid var(--border-light);cursor:pointer;display:flex;flex-direction:column;touch-action:manipulation;transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);}
 .news-card:active{transform:scale(.96);opacity:.85;}
@@ -718,11 +724,11 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 #lb-prev.hidden,#lb-next.hidden{opacity:0;pointer-events:none;}
 #lb-counter{position:absolute;bottom:calc(var(--safe-b) + 16px);left:50%;transform:translateX(-50%);color:rgba(255,255,255,.7);font-size:12px;font-weight:700;font-family:var(--font-main);background:rgba(0,0,0,.38);padding:4px 14px;border-radius:var(--r-full);pointer-events:none;display:none;backdrop-filter:blur(8px);}
 /* WEATHER / SEA UNIFIED */
-.weather-sea-section{padding:0 16px 6px;}
+.weather-sea-section{padding:0;}
 .weather-sea-unified-card{background:var(--card);border-radius:var(--r-xl);box-shadow:var(--elev-4);border:1px solid var(--border-light);overflow:hidden;}.ws-tabs,.ws-panel{overflow:hidden;}
 
 /* ══ Hero Weather Card ══ */
-.wh-card{position:relative;border-radius:30px 30px 30px 8px;overflow:hidden;box-shadow:0 16px 36px rgba(14,79,82,.28);isolation:isolate;}
+.wh-card{position:relative;border-radius:0 0 34px 34px;overflow:hidden;box-shadow:0 12px 30px rgba(14,79,82,.24);isolation:isolate;}
 .wh-bg{position:absolute;inset:0;z-index:0;transition:background 600ms var(--ease-std);}
 .wh-bg::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 88% -10%,rgba(255,255,255,.22) 0%,transparent 55%);pointer-events:none;}
 .wh-bg::after{content:'';position:absolute;left:0;right:0;bottom:34%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55) 30%,rgba(255,255,255,.55) 70%,transparent);z-index:1;pointer-events:none;}
@@ -742,14 +748,14 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
 .wh-danger-banner{display:flex;align-items:center;gap:7px;background:rgba(214,73,59,.92);backdrop-filter:blur(8px);border-radius:12px 12px 12px 4px;padding:8px 12px;margin-top:10px;font-size:11.5px;font-weight:800;color:#fff;}
 .wh-danger-banner.hidden{display:none;}
 .wh-danger-banner iconify-icon{font-size:15px;flex-shrink:0;}
-.wh-content{position:relative;z-index:2;padding:14px 18px 16px;color:#fff;}
+.wh-content{position:relative;z-index:2;padding:18px 22px 34px;color:#fff;}
 .wh-top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
 .wh-subtabs-inline{display:flex;gap:5px;background:rgba(0,0,0,.14);border-radius:var(--r-full);padding:3px;}
 .wh-subtab-inline{display:inline-flex;align-items:center;gap:4px;border:none;background:transparent;border-radius:var(--r-full);padding:6px 13px;font-family:var(--font-main);font-size:11.5px;font-weight:800;color:rgba(255,255,255,.65);cursor:pointer;touch-action:manipulation;transition:background var(--dur-mid) var(--ease-std),color var(--dur-mid) var(--ease-std);white-space:nowrap;}
 .wh-subtab-inline.active{background:rgba(255,255,255,.92);color:#1A2236;}
 .wh-subtab-inline:active{opacity:.7;}
 .wh-subtab-inline iconify-icon{font-size:13px;pointer-events:none;}
-.wh-greeting{font-size:19px;font-family:var(--font-display);font-weight:400;color:#fff;letter-spacing:.3px;margin-bottom:10px;text-shadow:0 2px 8px rgba(0,0,0,.15);}
+.wh-greeting{font-size:25px;font-family:var(--font-display);font-weight:400;color:#fff;letter-spacing:.3px;margin-bottom:12px;text-shadow:0 3px 10px rgba(0,0,0,.18);}
 .wh-forecast-btn{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.18);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.28);border-radius:var(--r-full);padding:6px 12px;font-family:var(--font-main);font-size:11.5px;font-weight:800;color:#fff;cursor:pointer;touch-action:manipulation;white-space:nowrap;transition:opacity var(--dur-fast),transform var(--dur-fast);flex-shrink:0;}
 .wh-forecast-btn:active{opacity:.65;transform:scale(.95);}
 .wh-forecast-btn iconify-icon{font-size:13px;pointer-events:none;}
@@ -1216,7 +1222,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
           </div>
 
           <!-- بطاقة الطقس Hero -->
-          <div class="section" style="padding-bottom:4px">
+          <div class="section" style="padding:0 0 4px">
             <div class="weather-sea-section">
               <div class="wh-card">
                 <div class="wh-bg wh-bg-sunny" id="wh-bg"></div>
@@ -1280,38 +1286,38 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
             </div>
           </div>
 
-          <!-- تنقل سريع -->
-          <div style="padding:16px 16px 16px;">
-            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
-              <button onclick="switchTab('news');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-xl);padding:16px 6px 13px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-2);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.92)';this.style.opacity='.7'" ontouchend="this.style.transform='';this.style.opacity=''">
-                <div style="width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#147D82,#4FC3BE);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(20,125,130,.35);">
+          <!-- تنقل سريع: دكّة عائمة تتداخل مع الهيرو -->
+          <div style="margin:-30px 16px 0;position:relative;z-index:5;">
+            <div style="background:var(--card);border-radius:26px;box-shadow:0 16px 36px rgba(14,79,82,.22);padding:16px 6px;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;">
+              <button onclick="switchTab('news');haptic('mid')" class="ripple-host" style="display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:none;padding:6px 2px;cursor:pointer;touch-action:manipulation;font-family:var(--font-main);border-radius:16px;">
+                <div style="width:42px;height:42px;border-radius:16px 8px 16px 8px;background:linear-gradient(135deg,#147D82,#4FC3BE);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(20,125,130,.35);">
                   <iconify-icon icon="ph:newspaper-fill" style="color:#fff;font-size:20px;pointer-events:none;"></iconify-icon>
                 </div>
-                <span style="font-size:11px;font-weight:800;color:var(--text-2);text-align:center;line-height:1.2;">الأخبار</span>
+                <span style="font-size:10.5px;font-weight:800;color:var(--text-2);text-align:center;line-height:1.2;">الأخبار</span>
               </button>
-              <button onclick="switchTab('archive');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-xl);padding:16px 6px 13px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-2);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.92)';this.style.opacity='.7'" ontouchend="this.style.transform='';this.style.opacity=''">
-                <div style="width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#BE5B34,#E3A94A);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(190,91,52,.35);">
+              <button onclick="switchTab('archive');haptic('mid')" class="ripple-host" style="display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:none;padding:6px 2px;cursor:pointer;touch-action:manipulation;font-family:var(--font-main);border-radius:16px;">
+                <div style="width:42px;height:42px;border-radius:8px 16px 8px 16px;background:linear-gradient(135deg,#BE5B34,#E3A94A);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(190,91,52,.35);">
                   <iconify-icon icon="ph:scroll-fill" style="color:#fff;font-size:20px;pointer-events:none;"></iconify-icon>
                 </div>
-                <span style="font-size:11px;font-weight:800;color:var(--text-2);text-align:center;line-height:1.2;">الأرشيف</span>
+                <span style="font-size:10.5px;font-weight:800;color:var(--text-2);text-align:center;line-height:1.2;">الأرشيف</span>
               </button>
-              <button onclick="switchTab('map');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-xl);padding:16px 6px 13px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-2);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.92)';this.style.opacity='.7'" ontouchend="this.style.transform='';this.style.opacity=''">
-                <div style="width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#F57F17,#ffca28);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(245,127,23,.35);">
+              <button onclick="switchTab('map');haptic('mid')" class="ripple-host" style="display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:none;padding:6px 2px;cursor:pointer;touch-action:manipulation;font-family:var(--font-main);border-radius:16px;">
+                <div style="width:42px;height:42px;border-radius:16px 8px 16px 8px;background:linear-gradient(135deg,#F57F17,#ffca28);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(245,127,23,.35);">
                   <iconify-icon icon="ph:map-trifold-fill" style="color:#fff;font-size:20px;pointer-events:none;"></iconify-icon>
                 </div>
-                <span style="font-size:11px;font-weight:800;color:var(--text-2);text-align:center;line-height:1.2;">الخريطة</span>
+                <span style="font-size:10.5px;font-weight:800;color:var(--text-2);text-align:center;line-height:1.2;">الخريطة</span>
               </button>
-              <button onclick="switchTab('guide');haptic('mid')" style="display:flex;flex-direction:column;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border-light);border-radius:var(--r-xl);padding:16px 6px 13px;cursor:pointer;touch-action:manipulation;box-shadow:var(--elev-2);transition:transform var(--dur-mid) var(--ease-spring),opacity var(--dur-mid);font-family:var(--font-main);" ontouchstart="this.style.transform='scale(.92)';this.style.opacity='.7'" ontouchend="this.style.transform='';this.style.opacity=''">
-                <div style="width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#6A1B9A,#ab47bc);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(106,27,154,.35);">
+              <button onclick="switchTab('guide');haptic('mid')" class="ripple-host" style="display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:none;padding:6px 2px;cursor:pointer;touch-action:manipulation;font-family:var(--font-main);border-radius:16px;">
+                <div style="width:42px;height:42px;border-radius:8px 16px 8px 16px;background:linear-gradient(135deg,#6A1B9A,#ab47bc);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(106,27,154,.35);">
                   <iconify-icon icon="ph:map-pin-fill" style="color:#fff;font-size:20px;pointer-events:none;"></iconify-icon>
                 </div>
-                <span style="font-size:11px;font-weight:800;color:var(--text-2);text-align:center;line-height:1.2;">الدليل</span>
+                <span style="font-size:10.5px;font-weight:800;color:var(--text-2);text-align:center;line-height:1.2;">الدليل</span>
               </button>
             </div>
           </div>
 
           <!-- قسم الشواطئ والمعالم السياحية -->
-          <div class="section" style="padding-top:10px;padding-bottom:8px" id="places-section">
+          <div class="section" style="padding:22px 0 8px;margin-top:6px;background:var(--surface-2);border-radius:32px 32px 0 0;" id="places-section">
             <div id="places-tabs-row" style="display:flex;justify-content:center;gap:8px;padding:0 18px 12px;touch-action:pan-y;">
               <button class="ws-tab active" id="place-tab-beaches" onclick="switchPlaceTab('beaches')" style="flex:1;">
                 <iconify-icon icon="lucide:waves" style="font-size:14px;pointer-events:none;color:inherit"></iconify-icon>
@@ -1557,7 +1563,7 @@ img.clickable{pointer-events:auto !important;cursor:pointer;}
       </div>
       <span data-i18n="nav-news">الأخبار</span>
     </button>
-    <button class="nav-btn" id="nav-guide" aria-label="الدليل" role="tab">
+    <button class="nav-btn nav-btn-raised" id="nav-guide" aria-label="الدليل" role="tab">
       <div class="nav-icon-wrap">
         <iconify-icon class="icon-off" icon="ph:map-pin" style="font-size:24px"></iconify-icon>
         <iconify-icon class="icon-on" icon="ph:map-pin-fill" style="font-size:24px"></iconify-icon>
