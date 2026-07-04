@@ -78,14 +78,11 @@ a{text-decoration:none;color:inherit;}
 .weather-icon{font-size:44px;margin-bottom:6px;}
 
 /* ═══════════ سلايدر قبل/بعد (الأرشيف) ═══════════ */
-.ba-wrap{position:absolute;inset:0;overflow:hidden;}
-.ba-old,.ba-new{position:absolute;inset:0;background-size:cover;background-position:center;}
-.ba-new{clip-path:inset(0 0 0 var(--ba-pos,50%));}
-.ba-handle{position:absolute;top:0;bottom:0;right:calc(var(--ba-pos,50%) - 1px);width:2px;background:#fff;z-index:5;}
-.ba-handle .grip{position:absolute;top:50%;right:50%;transform:translate(50%,-50%);width:38px;height:38px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;color:var(--ink);font-size:16px;box-shadow:0 4px 14px rgba(0,0,0,.4);}
-.ba-tag{position:absolute;top:calc(112px + var(--safe-t));z-index:4;font-family:'Outfit',sans-serif;font-size:10px;font-weight:800;background:rgba(0,0,0,.45);color:#fff;padding:4px 10px;border-radius:999px;backdrop-filter:blur(6px);}
-.ba-tag.old{right:14px;}
-.ba-tag.new{left:14px;}
+.ba-wrap{position:absolute;inset:0;overflow:hidden;display:flex;flex-direction:column;}
+.ba-half{position:relative;flex:1;overflow:hidden;}
+.ba-half img{width:100%;height:100%;object-fit:cover;display:block;}
+.ba-divider{height:3px;background:linear-gradient(90deg,transparent,#fff,transparent);flex-shrink:0;position:relative;z-index:5;}
+.ba-tag{position:absolute;z-index:4;font-family:'Outfit',sans-serif;font-size:10px;font-weight:800;background:rgba(0,0,0,.5);color:#fff;padding:4px 10px;border-radius:999px;backdrop-filter:blur(6px);top:10px;right:10px;}
 
 /* ═══════════ حالة تحميل / خطأ ═══════════ */
 #loadingView,#errorView{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:var(--ink);z-index:50;color:#fff;text-align:center;padding:0 30px;}
@@ -110,6 +107,8 @@ a{text-decoration:none;color:inherit;}
 .list-item .t{flex:1;}
 .list-item .t b{display:block;font-size:13.5px;color:var(--ink);font-weight:800;}
 .list-item .t span{font-size:11px;color:var(--muted);font-weight:600;}
+.guide-group-label{font-size:12px;font-weight:800;color:var(--sea);letter-spacing:.2px;padding:14px 0 6px;}
+.guide-group-label:first-child{padding-top:0;}
 
 /* ═══════════ نافذة "حول/تواصل" ═══════════ */
 .info-sheet .sheet-list{padding:0 20px 26px;}
@@ -176,6 +175,8 @@ a{text-decoration:none;color:inherit;}
       <button id="langArBtn" onclick="setLang('ar')">العربية</button>
       <button id="langFrBtn" onclick="setLang('fr')">Français</button>
     </div>
+    <div class="info-row" style="cursor:pointer" onclick="closeSheet('infoSheet');setTimeout(function(){openSheet('guideSheet')},280)"><span class="ic"><iconify-icon icon="lucide:building-2"></iconify-icon></span><span><b>دليل شطايبي</b><span>مرافق وخدمات البلدية</span></span></div>
+    <div class="info-row" style="cursor:pointer" onclick="closeSheet('infoSheet');setTimeout(function(){openSheet('councilSheet')},280)"><span class="ic"><iconify-icon icon="lucide:landmark"></iconify-icon></span><span><b>المجلس البلدي</b><span>رؤساء بلدية شطايبي عبر التاريخ</span></span></div>
     <a href="tel:+21338xxxxxx" class="info-row"><span class="ic"><iconify-icon icon="lucide:phone-call"></iconify-icon></span><span><b>مقر بلدية شطايبي</b><span>هاتف الاستقبال</span></span></a>
     <a href="mailto:apc.chetaibi.officiel@gmail.com" class="info-row"><span class="ic"><iconify-icon icon="lucide:mail"></iconify-icon></span><span><b>البريد الإلكتروني</b><span>apc.chetaibi.officiel@gmail.com</span></span></a>
     <div class="info-row" style="cursor:pointer" onclick="document.getElementById('privacyBox').classList.toggle('hidden')"><span class="ic"><iconify-icon icon="lucide:shield-check"></iconify-icon></span><span><b>سياسة الخصوصية</b><span>اضغط للعرض</span></span></div>
@@ -184,6 +185,22 @@ a{text-decoration:none;color:inherit;}
     </div>
     <div style="text-align:center;color:var(--muted-2);font-size:10.5px;margin-top:16px;font-family:'Outfit',sans-serif;">شطايبي · عنابة · الجزائر</div>
   </div>
+</div>
+
+<!-- دليل شطايبي: مرافق البلدية -->
+<div class="sheet-overlay" id="guideSheetOverlay" onclick="closeSheet('guideSheet')"></div>
+<div class="sheet" id="guideSheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-head"><h3>دليل شطايبي</h3><button class="circle-btn" style="background:var(--foam-2);color:var(--ink)" onclick="closeSheet('guideSheet')"><iconify-icon icon="lucide:x"></iconify-icon></button></div>
+  <div class="sheet-list" id="guideList"></div>
+</div>
+
+<!-- المجلس البلدي: رؤساء البلدية -->
+<div class="sheet-overlay" id="councilSheetOverlay" onclick="closeSheet('councilSheet')"></div>
+<div class="sheet" id="councilSheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-head"><h3>المجلس البلدي</h3><button class="circle-btn" style="background:var(--foam-2);color:var(--ink)" onclick="closeSheet('councilSheet')"><iconify-icon icon="lucide:x"></iconify-icon></button></div>
+  <div class="sheet-list" id="councilList"></div>
 </div>
 
 <script>
@@ -218,10 +235,14 @@ async function boot(){
       fetch('/api/beaches').then(r=>r.json()),
       fetch('/api/tourism').then(r=>r.json()),
       fetch('/api/archives').then(r=>r.json()),
+      fetch('/api/facilities').then(r=>r.json()).catch(function(){return {success:false,data:[]};}),
+      fetch('/api/mayors').then(r=>r.json()).catch(function(){return {success:false,data:[]};}),
     ]);
     var beaches = (res[0].success ? res[0].data : []).map(function(x){return Object.assign({},x,{_type:'beach'});});
     var tourism = (res[1].success ? res[1].data : []).map(function(x){return Object.assign({},x,{_type:'landmark'});});
     var archives = (res[2].success ? res[2].data : []).map(function(x){return Object.assign({},x,{_type:'history'});});
+    STATE.facilities = res[3].success ? res[3].data : [];
+    STATE.mayors = res[4].success ? res[4].data : [];
 
     STATE.items = [].concat(beaches, tourism, archives);
 
@@ -268,6 +289,8 @@ function renderApp(){
   renderCategories();
   renderFeed();
   renderList('');
+  renderGuide();
+  renderCouncil();
   updateLangUI();
 }
 
@@ -317,12 +340,10 @@ function renderSlide(item){
 
   var bgHtml;
   if(item._type==='history' && item.image_old_url && item.image_new_url){
-    bgHtml = '<div class="ba-wrap" data-id="'+id+'">'
-      + '<div class="ba-old" style="background-image:url(\''+item.image_old_url+'\')"></div>'
-      + '<div class="ba-new" style="background-image:url(\''+item.image_new_url+'\')"></div>'
-      + '<span class="ba-tag old">'+ (STATE.curLang==='fr'?'Avant':'قديم') +'</span>'
-      + '<span class="ba-tag new">'+ (STATE.curLang==='fr'?'Après':'حديث') +'</span>'
-      + '<div class="ba-handle"><div class="grip"><iconify-icon icon="lucide:move-horizontal"></iconify-icon></div></div>'
+    bgHtml = '<div class="ba-wrap">'
+      + '<div class="ba-half"><span class="ba-tag">'+ (STATE.curLang==='fr'?'Avant':'قديم') +'</span><img src="'+item.image_old_url+'" loading="lazy"></div>'
+      + '<div class="ba-divider"></div>'
+      + '<div class="ba-half"><span class="ba-tag">'+ (STATE.curLang==='fr'?'Après':'حديث') +'</span><img src="'+item.image_new_url+'" loading="lazy"></div>'
       + '</div>';
   } else {
     bgHtml = '<div class="bg" style="background-image:url(\''+(item.image_url||'')+'\')"></div>';
@@ -377,7 +398,53 @@ function findItemByDomId(id){
   return STATE.items.find(function(x){return x._type===type && String(x.id)===realId;});
 }
 
-/* ── القفز لفئة معينة ── */
+/* ── دليل شطايبي: مرافق حسب التصنيف (معلومات بلدية ثانوية) ── */
+var FAC_CATEGORIES = [
+  ['branches','🏛️','فروع إدارية','Antennes admin.'],
+  ['public_bodies','🏢','الهيئات العمومية','Organismes publics'],
+  ['public','🏢','خدمات عمومية','Services publics'],
+  ['health','🏥','مرافق صحية','Santé'],
+  ['education','🎓','التعليم والتكوين','Éducation'],
+  ['training','📚','تكوين','Formation'],
+  ['religious','🕌','دينية','Religieux'],
+  ['cultural','🎭','ثقافية','Culturel'],
+  ['sports','⚽','رياضية','Sport'],
+  ['assoc','🤝','جمعيات','Associations'],
+];
+function renderGuide(){
+  var wrap = document.getElementById('guideList');
+  if(!wrap) return;
+  var list = STATE.facilities || [];
+  if(!list.length){ wrap.innerHTML = '<div style="text-align:center;color:var(--muted);padding:30px 0;font-size:13px;">'+t('emptyList')+'</div>'; return; }
+  var byCat = {};
+  list.forEach(function(f){ (byCat[f.category] = byCat[f.category] || []).push(f); });
+  wrap.innerHTML = FAC_CATEGORIES.filter(function(c){return byCat[c[0]] && byCat[c[0]].length;}).map(function(c){
+    var items = byCat[c[0]];
+    var label = STATE.curLang==='fr' ? c[3] : c[2];
+    return '<div class="guide-group-label">'+c[1]+' '+label+'</div>'
+      + items.map(function(f){
+          var name = _f(f,'name');
+          var sub = _f(f,'sub_type');
+          var img = f.image_url || '';
+          return '<div class="list-item"><img src="'+img+'" loading="lazy"><div class="t"><b>'+name+'</b>'+(sub?'<span>'+sub+'</span>':'')+'</div></div>';
+        }).join('');
+  }).join('');
+}
+
+/* ── المجلس البلدي: رؤساء البلدية (معلومات بلدية ثانوية) ── */
+function renderCouncil(){
+  var wrap = document.getElementById('councilList');
+  if(!wrap) return;
+  var list = STATE.mayors || [];
+  if(!list.length){ wrap.innerHTML = '<div style="text-align:center;color:var(--muted);padding:30px 0;font-size:13px;">'+t('emptyList')+'</div>'; return; }
+  wrap.innerHTML = list.map(function(m){
+    var name = _f(m,'name');
+    var period = _f(m,'period');
+    var img = m.image_url || '';
+    return '<div class="list-item"'+(m.is_dec?' style="opacity:.72"':'')+'><img src="'+img+'" loading="lazy"><div class="t"><b>'+name+(m.is_dec?' 🕊️':'')+'</b><span>'+period+'</span></div></div>';
+  }).join('');
+}
+
 function jumpToCategory(cat){
   STATE.activeCat = cat;
   renderCategories();
@@ -407,20 +474,6 @@ function shareCurrentSlide(){
   else { navigator.clipboard.writeText(shareData.url); }
 }
 
-/* ── سلايدر قبل/بعد (سحب باللمس أو الفأرة) ── */
-document.addEventListener('pointerdown', function(e){
-  var wrap = e.target.closest('.ba-wrap');
-  if(!wrap) return;
-  var move = function(ev){
-    var r = wrap.getBoundingClientRect();
-    var x = (ev.clientX!==undefined?ev.clientX:ev.touches[0].clientX) - r.left;
-    var pct = Math.max(6, Math.min(94, (x/r.width)*100));
-    wrap.style.setProperty('--ba-pos', pct+'%');
-  };
-  move(e);
-  document.addEventListener('pointermove', move);
-  document.addEventListener('pointerup', function up(){ document.removeEventListener('pointermove', move); document.removeEventListener('pointerup', up); }, {once:true});
-});
 
 /* ── لوحة القائمة/البحث ── */
 function renderList(query){
