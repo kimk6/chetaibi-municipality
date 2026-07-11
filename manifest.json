@@ -10,8 +10,8 @@
     "minimal-ui"
   ],
   "orientation": "portrait",
-  "background_color": "#14161C",
-  "theme_color": "#14161C",
+  "background_color": "#FFFFFF",
+  "theme_color": "#0F6B42",
   "lang": "ar",
   "dir": "rtl",
   "icons": [
