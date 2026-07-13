@@ -185,7 +185,7 @@ a{text-decoration:none;color:inherit;}
       <div class="quick-grid">
         <div class="quick-item" onclick="switchScreen('explore');setExploreTab('beach')"><div class="qi" style="background:var(--pastel1);color:var(--p1-i)"><iconify-icon icon="lucide:waves"></iconify-icon></div><span>الشواطئ</span></div>
         <div class="quick-item" onclick="switchScreen('explore');setExploreTab('landmark')"><div class="qi" style="background:var(--pastel2);color:var(--p2-i)"><iconify-icon icon="lucide:landmark"></iconify-icon></div><span>معالم</span></div>
-        <div class="quick-item" onclick="switchScreen('guide')"><div class="qi" style="background:var(--pastel5);color:var(--p5-i)"><iconify-icon icon="lucide:map-pin"></iconify-icon></div><span>الدليل</span></div>
+        <div class="quick-item" onclick="switchScreen('map')"><div class="qi" style="background:var(--pastel5);color:var(--p5-i)"><iconify-icon icon="lucide:map"></iconify-icon></div><span>الخريطة</span></div>
         <div class="quick-item" onclick="openArchiveFromHome()"><div class="qi" style="background:var(--pastel4);color:var(--p4-i)"><iconify-icon icon="lucide:scroll-text"></iconify-icon></div><span>الأرشيف</span></div>
       </div>
 
@@ -207,13 +207,6 @@ a{text-decoration:none;color:inherit;}
         <div class="txt"><b>تاريخ شطايبي</b><span>من تاكاتوا الرومانية إلى اليوم</span></div>
       </div>
 
-      <div class="section-head"><h2>خدمات البلدية</h2><a onclick="switchScreen('more')">عرض الكل ‹</a></div>
-      <div class="quick-grid" style="grid-template-columns:repeat(4,1fr)">
-        <div class="quick-item" onclick="switchScreen('more');scrollToServices()"><div class="qi" style="background:var(--pastel1);color:var(--p1-i)"><iconify-icon icon="lucide:file-text"></iconify-icon></div><span>الخدمات</span></div>
-        <div class="quick-item" onclick="switchScreen('more');openMunicipalitySheet()"><div class="qi" style="background:var(--pastel4);color:var(--p4-i)"><iconify-icon icon="lucide:users"></iconify-icon></div><span>المجلس البلدي</span></div>
-        <div class="quick-item" onclick="switchScreen('more');scrollToNews()"><div class="qi" style="background:var(--pastel3);color:var(--p3-i)"><iconify-icon icon="lucide:newspaper"></iconify-icon></div><span>الأخبار</span></div>
-        <div class="quick-item" onclick="switchScreen('more');openSheet('contactSheet')"><div class="qi" style="background:var(--pastel5);color:var(--p5-i)"><iconify-icon icon="lucide:phone-call"></iconify-icon></div><span>اتصل بنا</span></div>
-      </div>
       <div style="height:calc(20px + var(--nav-h) + var(--safe-b))"></div>
     </div>
   </div>
@@ -221,11 +214,9 @@ a{text-decoration:none;color:inherit;}
   <!-- ═══ الدليل (مرافق + خريطة) ═══ -->
   <div class="screen" id="screen-guide">
     <div class="page-head"><button class="round-btn" onclick="goBack()"><iconify-icon icon="lucide:arrow-right"></iconify-icon></button><h1>الدليل</h1>
-      <button class="round-btn" onclick="toggleGuideView()"><iconify-icon icon="lucide:map" id="guideToggleIcon"></iconify-icon></button>
     </div>
     <div class="chip-row" id="guideChips"></div>
     <div class="screen-scroll" id="guideListView"><div class="list-pad" id="guideListPad"></div></div>
-    <div id="guideMapView" class="hidden" style="position:relative;flex:1;min-height:0;"><div id="mapView"></div></div>
   </div>
 
   <!-- ═══ استكشف (شواطئ + معالم) ═══ -->
@@ -233,6 +224,13 @@ a{text-decoration:none;color:inherit;}
     <div class="page-head"><button class="round-btn" onclick="goBack()"><iconify-icon icon="lucide:arrow-right"></iconify-icon></button><h1>استكشف شطايبي</h1></div>
     <div class="chip-row" id="exploreChips"></div>
     <div class="screen-scroll"><div class="list-pad"><div id="exploreGrid" class="grid-2"></div></div></div>
+  </div>
+
+  <!-- ═══ الخريطة (شواطئ + معالم + مرافق معاً) ═══ -->
+  <div class="screen" id="screen-map">
+    <div class="page-head"><button class="round-btn" onclick="goBack()"><iconify-icon icon="lucide:arrow-right"></iconify-icon></button><h1>خريطة شطايبي</h1></div>
+    <div class="chip-row" id="mapChips"></div>
+    <div style="position:relative;flex:1;min-height:0;"><div id="mapView"></div></div>
   </div>
 
   <!-- ═══ المفضلة ═══ -->
@@ -392,6 +390,7 @@ async function boot(){
 function renderAll(){
   renderHomeDest(); renderExploreScreen(); renderGuideScreen();
   renderNewsList(); renderServicesList(); renderArchiveList(); renderFavorites();
+  renderMapChips();
   updateLangUI();
 }
 
@@ -448,7 +447,6 @@ function renderHomeDest(){
 }
 function openArchiveFromHome(){ switchScreen('more'); setTimeout(scrollToArchive, 60); }
 function scrollToNews(){ setTimeout(function(){var el=document.getElementById('newsAnchor'); if(el) el.scrollIntoView();},80); }
-function scrollToServices(){ setTimeout(function(){var el=document.getElementById('servicesAnchor'); if(el) el.scrollIntoView();},80); }
 function scrollToArchive(){ var el=document.getElementById('archiveAnchor'); if(el) el.scrollIntoView(); }
 
 /* ══ استكشف (شواطئ+معالم) ══ */
@@ -510,26 +508,39 @@ function openFacilityDetail(id){
     + (f.lat&&f.lng?'<a class="cta-btn" href="https://www.google.com/maps/dir/?api=1&destination='+f.lat+','+f.lng+'" target="_blank" rel="noopener"><iconify-icon icon="lucide:navigation"></iconify-icon>'+t('directions')+'</a>':'');
   openSheet('detailSheet');
 }
-function toggleGuideView(){
-  var listV=document.getElementById('guideListView'), mapV=document.getElementById('guideMapView');
-  var showMap = listV.classList.contains('hidden')===false;
-  listV.classList.toggle('hidden', showMap);
-  mapV.classList.toggle('hidden', !showMap);
-  document.getElementById('guideToggleIcon').setAttribute('icon', showMap?'lucide:list':'lucide:map');
-  if(showMap) setTimeout(initOrRefreshMap,50);
+/* ══ الخريطة الشاملة (شواطئ + معالم + مرافق معاً) ══ */
+var _mapFilter = 'all';
+function renderMapChips(){
+  var chips = document.getElementById('mapChips');
+  var opts = [['all',t('all')],['beach',t('beach')],['landmark',t('landmark')],['facility','مرافق']];
+  chips.innerHTML = opts.map(function(o){
+    return '<button class="chip'+(_mapFilter===o[0]?' active':'')+'" onclick="setMapFilter(\''+o[0]+'\')">'+o[1]+'</button>';
+  }).join('');
 }
+function setMapFilter(f){ _mapFilter=f; haptic(6); renderMapChips(); initOrRefreshMap(); }
 function initOrRefreshMap(){
   if(!STATE.map){
     STATE.map = L.map('mapView',{zoomControl:false,attributionControl:false}).setView([LAT,LON],13);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{maxZoom:19}).addTo(STATE.map);
   }
+  if(!document.getElementById('mapChips').innerHTML) renderMapChips();
   STATE.mapMarkers.forEach(function(m){STATE.map.removeLayer(m);}); STATE.mapMarkers=[];
-  var all=[].concat((STATE.facilities||[]).map(function(x){return Object.assign({},x,{_c:x.category});}));
-  all.forEach(function(p){
+
+  var pts = [];
+  if(_mapFilter==='all' || _mapFilter==='beach') pts = pts.concat((STATE.beaches||[]).map(function(x){return Object.assign({},x,{_c:'beach',_type:'beach'});}));
+  if(_mapFilter==='all' || _mapFilter==='landmark') pts = pts.concat((STATE.tourism||[]).map(function(x){return Object.assign({},x,{_c:'tourism',_type:'landmark'});}));
+  if(_mapFilter==='all' || _mapFilter==='facility') pts = pts.concat((STATE.facilities||[]).map(function(x){return Object.assign({},x,{_c:x.category,_type:'facility'});}));
+
+  pts.forEach(function(p){
     if(!p.lat||!p.lng) return;
     var color = MAP_COLORS[p._c]||MAP_COLORS.default;
     var icon = L.divIcon({html:'<div style="width:16px;height:16px;border-radius:50%;background:'+color+';border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.3)"></div>',className:'',iconSize:[16,16]});
-    STATE.mapMarkers.push(L.marker([p.lat,p.lng],{icon:icon}).addTo(STATE.map));
+    var m = L.marker([p.lat,p.lng],{icon:icon}).addTo(STATE.map);
+    m.on('click', function(){
+      if(p._type==='facility') openFacilityDetail(p.id);
+      else openPlaceDetail(p._type, p.id);
+    });
+    STATE.mapMarkers.push(m);
   });
   setTimeout(function(){if(STATE.map) STATE.map.invalidateSize();},100);
 }
@@ -660,13 +671,14 @@ function switchScreen(name){
     }
   }
   _currentScreen = name;
-  ['home','guide','explore','favorites','more'].forEach(function(s){
+  ['home','guide','explore','map','favorites','more'].forEach(function(s){
     var el=document.getElementById('screen-'+s); if(el) el.classList.toggle('show', s===name);
   });
   ['home','guide','favorites','more'].forEach(function(s){
     var b=document.getElementById('nav-'+s); if(b) b.classList.toggle('active', s===name);
   });
   haptic();
+  if(name==='map') setTimeout(initOrRefreshMap, 80);
 }
 function goBack(){ history.back(); }
 
@@ -698,7 +710,7 @@ window.addEventListener('popstate', function(){
   }
   if(_currentScreen !== 'home'){
     _currentScreen = 'home';
-    ['home','guide','explore','favorites','more'].forEach(function(s){
+    ['home','guide','explore','map','favorites','more'].forEach(function(s){
       var el=document.getElementById('screen-'+s); if(el) el.classList.toggle('show', s==='home');
     });
     ['home','guide','favorites','more'].forEach(function(s){
