@@ -152,6 +152,13 @@ a{text-decoration:none;color:inherit;}
 
 #mapView{position:absolute;inset:0;}
 .empty-state{text-align:center;color:var(--muted);padding:40px 20px;font-size:13px;}
+.toast{position:fixed;bottom:calc(90px + var(--nav-h) + var(--safe-b));left:50%;transform:translateX(-50%) translateY(10px);background:var(--ink);color:#fff;padding:10px 20px;border-radius:999px;font-size:12.5px;font-weight:700;z-index:200;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.25);}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+/* ══ RIPPLE — لمسة أندرويد حقيقية ══ */
+.ripple-host{position:relative;overflow:hidden;}
+.ripple-ink{position:absolute;border-radius:50%;background:rgba(255,255,255,.5);transform:scale(0);animation:ripple-anim .5s cubic-bezier(.4,0,.2,1) forwards;pointer-events:none;z-index:5;}
+.ripple-ink.ripple-dark{background:rgba(18,38,28,.14);}
+@keyframes ripple-anim{to{transform:scale(2.6);opacity:0;}}
 </style>
 </head>
 <body>
@@ -175,7 +182,7 @@ a{text-decoration:none;color:inherit;}
       <div class="hero">
         <img id="heroImg" src="" alt="">
         <div class="hero-top">
-          <div class="icon-round"><iconify-icon icon="lucide:bell"></iconify-icon></div>
+          <div class="icon-round" aria-label="التنبيهات"><iconify-icon icon="lucide:bell"></iconify-icon></div>
           <div class="pill-loc"><iconify-icon icon="lucide:map-pin"></iconify-icon> شطايبي</div>
         </div>
         <div class="hero-title-wrap"><h1>اكتشف شطايبي</h1><p>وجهتك السياحية على ساحل البحر المتوسط</p></div>
@@ -213,7 +220,7 @@ a{text-decoration:none;color:inherit;}
 
   <!-- ═══ الدليل (مرافق + خريطة) ═══ -->
   <div class="screen" id="screen-guide">
-    <div class="page-head"><button class="round-btn" onclick="goBack()"><iconify-icon icon="lucide:arrow-right"></iconify-icon></button><h1>الدليل</h1>
+    <div class="page-head"><button class="round-btn" onclick="goBack()" aria-label="رجوع"><iconify-icon icon="lucide:arrow-right"></iconify-icon></button><h1>الدليل</h1>
     </div>
     <div class="chip-row" id="guideChips"></div>
     <div class="screen-scroll" id="guideListView"><div class="list-pad" id="guideListPad"></div></div>
@@ -221,27 +228,27 @@ a{text-decoration:none;color:inherit;}
 
   <!-- ═══ استكشف (شواطئ + معالم) ═══ -->
   <div class="screen" id="screen-explore">
-    <div class="page-head"><button class="round-btn" onclick="goBack()"><iconify-icon icon="lucide:arrow-right"></iconify-icon></button><h1>استكشف شطايبي</h1></div>
+    <div class="page-head"><button class="round-btn" onclick="goBack()" aria-label="رجوع"><iconify-icon icon="lucide:arrow-right"></iconify-icon></button><h1>استكشف شطايبي</h1></div>
     <div class="chip-row" id="exploreChips"></div>
     <div class="screen-scroll"><div class="list-pad"><div id="exploreGrid" class="grid-2"></div></div></div>
   </div>
 
   <!-- ═══ الخريطة (شواطئ + معالم + مرافق معاً) ═══ -->
   <div class="screen" id="screen-map">
-    <div class="page-head"><button class="round-btn" onclick="goBack()"><iconify-icon icon="lucide:arrow-right"></iconify-icon></button><h1>خريطة شطايبي</h1></div>
+    <div class="page-head"><button class="round-btn" onclick="goBack()" aria-label="رجوع"><iconify-icon icon="lucide:arrow-right"></iconify-icon></button><h1>خريطة شطايبي</h1></div>
     <div class="chip-row" id="mapChips"></div>
     <div style="position:relative;flex:1;min-height:0;"><div id="mapView"></div></div>
   </div>
 
   <!-- ═══ المفضلة ═══ -->
   <div class="screen" id="screen-favorites">
-    <div class="page-head"><button class="round-btn" onclick="goBack()"><iconify-icon icon="lucide:arrow-right"></iconify-icon></button><h1>المفضلة</h1></div>
+    <div class="page-head"><button class="round-btn" onclick="goBack()" aria-label="رجوع"><iconify-icon icon="lucide:arrow-right"></iconify-icon></button><h1>المفضلة</h1></div>
     <div class="screen-scroll"><div class="list-pad" id="favoritesBody"></div></div>
   </div>
 
   <!-- ═══ المزيد ═══ -->
   <div class="screen" id="screen-more">
-    <div class="page-head"><button class="round-btn" onclick="goBack()"><iconify-icon icon="lucide:arrow-right"></iconify-icon></button><h1>المزيد</h1></div>
+    <div class="page-head"><button class="round-btn" onclick="goBack()" aria-label="رجوع"><iconify-icon icon="lucide:arrow-right"></iconify-icon></button><h1>المزيد</h1></div>
     <div class="screen-scroll">
       <div class="list-pad">
         <div class="section-head" style="padding:0 0 10px"><h2>الأخبار</h2></div>
@@ -328,7 +335,7 @@ a{text-decoration:none;color:inherit;}
 <script>
 var LAT=37.067184, LON=7.380564;
 var STATE = { curLang: localStorage.getItem('chetaibi_lang')||'ar', exploreTab:'beach', guideCat:'all', servicesTab:'service',
-  favorites: JSON.parse(localStorage.getItem('chetaibi_favs')||'[]'), map:null, mapMarkers:[] };
+  favorites: (function(){ try{ return JSON.parse(localStorage.getItem('chetaibi_favs')||'[]'); }catch(e){ return []; } })(), map:null, mapMarkers:[] };
 
 var MAP_COLORS = { beach:'#2E7BC4', tourism:'#0F6B42', branches:'#16a34a', education:'#2563eb', health:'#ef4444', religious:'#f59e0b', sports:'#f97316', cultural:'#a855f7', public:'#64748b', training:'#0891b2', assoc:'#7c3aed', default:'#6b7280' };
 var FAC_CATEGORIES = [
@@ -554,6 +561,7 @@ function toggleFav(type,id,btn){
   if(btn) btn.classList.toggle('active', idx===-1);
   renderFavorites();
   haptic(idx===-1?14:8);
+  showToast(idx===-1?'أُضيف للمفضلة ❤️':'أُزيل من المفضلة');
 }
 function renderFavorites(){
   var wrap = document.getElementById('favoritesBody');
@@ -639,19 +647,41 @@ function renderSearch(q){
   var pool=[].concat(
     (STATE.beaches||[]).map(function(x){return {item:x,type:'beach',label:t('beach')};}),
     (STATE.tourism||[]).map(function(x){return {item:x,type:'landmark',label:t('landmark')};}),
-    (STATE.facilities||[]).map(function(x){return {item:x,type:'facility',label:'مرفق'};})
+    (STATE.facilities||[]).map(function(x){return {item:x,type:'facility',label:'مرفق'};}),
+    (STATE.news||[]).map(function(x){return {item:x,type:'news',label:'خبر'};}),
+    TIMELINE_ERAS.map(function(x){return {item:x,type:'era',label:'من التاريخ'};})
   );
-  var results = pool.filter(function(p){return _f(p.item,'name').toLowerCase().indexOf(q)!==-1;});
+  function titleOf(r){
+    if(r.type==='news') return _f(r.item,'title');
+    if(r.type==='era') return STATE.curLang==='fr'?r.item.title_fr:r.item.title_ar;
+    return _f(r.item,'name');
+  }
+  var results = pool.filter(function(p){return titleOf(p).toLowerCase().indexOf(q)!==-1;});
   if(!results.length){ wrap.innerHTML='<div class="empty-state">'+t('emptyList')+'</div>'; return; }
   wrap.innerHTML = results.map(function(r){
-    var action = r.type==='facility' ? ('openFacilityDetail('+r.item.id+')') : ('openPlaceDetail(\''+r.type+'\','+r.item.id+')');
-    return '<div class="list-card" onclick="'+action+';closeSheet(\'searchSheet\')"><img src="'+(r.item.image_url||'')+'" loading="lazy"><div class="t"><b>'+_f(r.item,'name')+'</b><span>'+r.label+'</span></div></div>';
+    var action;
+    if(r.type==='facility') action = 'openFacilityDetail('+r.item.id+')';
+    else if(r.type==='news') action = 'openNewsDetail('+r.item.id+')';
+    else if(r.type==='era') action = "switchScreen('more');setTimeout(scrollToArchive,300)";
+    else action = "openPlaceDetail('"+r.type+"',"+r.item.id+")";
+    var img = r.item.image_url || '';
+    return '<div class="list-card" onclick="'+action+';closeSheet(\'searchSheet\')"><img src="'+img+'" loading="lazy"><div class="t"><b>'+titleOf(r)+'</b><span>'+r.label+'</span></div></div>';
   }).join('');
 }
 
 /* ══ التنقل ══ */
 /* ══ اهتزاز خفيف عند التفاعلات الأساسية ══ */
 function haptic(ms){ if(navigator.vibrate){ try{ navigator.vibrate(ms||8); }catch(e){} } }
+
+/* ══ تأكيد بصري خفيف (Toast) ══ */
+var _toastTimer=null, _toastEl=null;
+function showToast(msg){
+  if(!_toastEl){ _toastEl=document.createElement('div'); _toastEl.className='toast'; document.body.appendChild(_toastEl); }
+  _toastEl.textContent = msg;
+  _toastEl.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(function(){ _toastEl.classList.remove('show'); }, 1700);
+}
 
 /* ══ التنقل + مزامنة زر الرجوع الفعلي بالهاتف ══
    القاعدة: الرئيسية = المستوى الأساسي. أي شاشة أخرى = مستوى واحد فوقها.
@@ -731,6 +761,36 @@ function updateLangUI(){
 }
 
 if('serviceWorker' in navigator){ window.addEventListener('load', function(){ navigator.serviceWorker.register('/sw.js').catch(function(){}); }); }
+/* ══ إخفاء أي صورة مكسورة بأناقة (يغطي كل صور التطبيق دفعة واحدة) ══ */
+document.addEventListener('error', function(e){
+  if(e.target && e.target.tagName==='IMG'){ e.target.style.visibility='hidden'; }
+}, true);
+
+/* ══ RIPPLE — تفويض أحداث عام، لا يلمس أي onclick موجود ══ */
+(function(){
+  var SEL = '.quick-item,.dest-card,.place-tile,.list-card,.chip,.nav-tab,.era-card,.mini-card,.promo-card,.search-float,.round-btn,.icon-round';
+  var LIGHT_INK = ['dest-card','place-tile','era-card','promo-card'];
+  document.addEventListener('touchstart', function(e){
+    var host = e.target.closest(SEL);
+    if(!host) return;
+    var cs = getComputedStyle(host);
+    if(cs.position==='static') host.style.position='relative';
+    host.classList.add('ripple-host');
+    var r = host.getBoundingClientRect();
+    var touch = e.touches[0];
+    var size = Math.max(r.width, r.height) * 1.3;
+    var ink = document.createElement('span');
+    var isMidNav = host.classList.contains('nav-tab') && host.classList.contains('mid');
+    var useLight = isMidNav || LIGHT_INK.some(function(c){ return host.classList.contains(c); });
+    ink.className = 'ripple-ink' + (useLight ? '' : ' ripple-dark');
+    ink.style.width = ink.style.height = size + 'px';
+    ink.style.left = (touch.clientX - r.left - size/2) + 'px';
+    ink.style.top = (touch.clientY - r.top - size/2) + 'px';
+    host.appendChild(ink);
+    setTimeout(function(){ ink.remove(); }, 520);
+  }, {passive:true});
+})();
+
 boot();
 </script>
 </body>
