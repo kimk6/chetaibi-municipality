@@ -65,6 +65,8 @@ a{text-decoration:none;color:inherit;}
 .hero-title-wrap p{position:relative;color:#fff;font-size:12px;opacity:.9;margin-top:4px;}
 .search-float{margin:-24px 18px 0;position:relative;z-index:5;background:#fff;border-radius:18px;box-shadow:0 10px 28px rgba(0,0,0,.12);padding:13px 18px;display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12.5px;transition:transform .12s,opacity .12s;}
 .search-float:active{transform:scale(.98);opacity:.85;}
+.search-float input{flex:1;border:none;background:none;outline:none;font-size:12.5px;font-family:'Cairo',sans-serif;color:var(--ink);}
+.search-float input::placeholder{color:var(--muted);}
 .quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:20px 14px 6px;}
 .quick-item{display:flex;flex-direction:column;align-items:center;gap:8px;transition:transform .12s,opacity .12s;}
 .quick-item:active{transform:scale(.92);opacity:.75;}
@@ -187,7 +189,15 @@ a{text-decoration:none;color:inherit;}
         <img id="heroImg" src="" alt="">
         <div class="hero-title-wrap"><h1>اكتشف شطايبي</h1><p>وجهتك السياحية على ساحل البحر المتوسط</p></div>
       </div>
-      <div class="search-float" onclick="openSheet('searchSheet')"><iconify-icon icon="lucide:search" style="color:var(--green)"></iconify-icon> ابحث عن أماكن، معالم...</div>
+      <div class="search-float">
+        <iconify-icon icon="lucide:search" style="color:var(--green)"></iconify-icon>
+        <input type="text" id="searchInput" placeholder="ابحث عن أماكن، معالم..." oninput="renderSearch(this.value)" onfocus="onSearchFocus()">
+        <button id="searchClearBtn" class="hidden" onclick="clearSearchInline()" aria-label="إغلاق البحث" style="color:var(--muted);font-size:16px;flex-shrink:0"><iconify-icon icon="lucide:x"></iconify-icon></button>
+      </div>
+      <div id="searchInlinePanel" class="hidden">
+        <div class="chip-row" id="searchChips" style="background:none;border:none;padding:10px 0 4px"></div>
+        <div id="searchResults" style="padding:2px 0 6px"></div>
+      </div>
 
       <div class="quick-grid">
         <div class="quick-item" onclick="switchScreen('explore');setExploreTab('beach')"><div class="qi" style="background:var(--pastel1);color:var(--p1-i)"><iconify-icon icon="lucide:waves"></iconify-icon></div><span>الشواطئ</span></div>
@@ -289,14 +299,6 @@ a{text-decoration:none;color:inherit;}
     <button class="nav-tab" id="nav-favorites" onclick="switchScreen('favorites')"><iconify-icon icon="lucide:heart"></iconify-icon>المفضلة</button>
     <button class="nav-tab" id="nav-more" onclick="switchScreen('more')"><iconify-icon icon="lucide:more-horizontal"></iconify-icon>المزيد</button>
   </div>
-</div>
-
-<!-- شيت: بحث -->
-<div class="sheet-overlay" id="searchSheetOverlay" onclick="closeSheet('searchSheet')"></div>
-<div class="sheet" id="searchSheet">
-  <div class="sheet-handle"></div>
-  <div style="padding:8px 20px 12px"><div style="background:var(--bg-2);border-radius:999px;display:flex;align-items:center;gap:8px;padding:11px 16px"><iconify-icon icon="lucide:search" style="color:var(--muted)"></iconify-icon><input type="text" id="searchInput" placeholder="ابحث في شطايبي..." oninput="renderSearch(this.value)" style="flex:1;border:none;background:none;color:var(--ink);font-size:13.5px;font-family:'Cairo',sans-serif;outline:none;"></div></div>
-  <div class="sheet-body" id="searchResults"></div>
 </div>
 
 <!-- شيت: تفاصيل موحّد -->
@@ -640,32 +642,74 @@ function openMunicipalitySheet(){
 }
 
 /* ══ البحث ══ */
-function renderSearch(q){
-  q=(q||'').trim().toLowerCase();
-  var wrap=document.getElementById('searchResults');
-  if(!q){ wrap.innerHTML=''; return; }
-  var pool=[].concat(
+var _searchCategory = null;
+var SEARCH_CATS = [['beach',t('beach')],['landmark',t('landmark')],['facility','مرافق'],['news','أخبار'],['era','تاريخ']];
+
+function onSearchFocus(){
+  document.getElementById('searchInlinePanel').classList.remove('hidden');
+  document.getElementById('searchClearBtn').classList.remove('hidden');
+  renderSearch(document.getElementById('searchInput').value);
+}
+function clearSearchInline(){
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchInput').blur();
+  document.getElementById('searchClearBtn').classList.add('hidden');
+  document.getElementById('searchInlinePanel').classList.add('hidden');
+  _searchCategory = null;
+  haptic(6);
+}
+function setSearchCategory(cat){
+  _searchCategory = (_searchCategory===cat) ? null : cat;
+  document.getElementById('searchInput').value = '';
+  haptic(6);
+  renderSearch('');
+}
+function searchPool(){
+  return [].concat(
     (STATE.beaches||[]).map(function(x){return {item:x,type:'beach',label:t('beach')};}),
     (STATE.tourism||[]).map(function(x){return {item:x,type:'landmark',label:t('landmark')};}),
     (STATE.facilities||[]).map(function(x){return {item:x,type:'facility',label:'مرفق'};}),
     (STATE.news||[]).map(function(x){return {item:x,type:'news',label:'خبر'};}),
     TIMELINE_ERAS.map(function(x){return {item:x,type:'era',label:'من التاريخ'};})
   );
-  function titleOf(r){
-    if(r.type==='news') return _f(r.item,'title');
-    if(r.type==='era') return STATE.curLang==='fr'?r.item.title_fr:r.item.title_ar;
-    return _f(r.item,'name');
+}
+function searchTitleOf(r){
+  if(r.type==='news') return _f(r.item,'title');
+  if(r.type==='era') return STATE.curLang==='fr'?r.item.title_fr:r.item.title_ar;
+  return _f(r.item,'name');
+}
+function searchActionOf(r){
+  if(r.type==='facility') return 'openFacilityDetail('+r.item.id+')';
+  if(r.type==='news') return 'openNewsDetail('+r.item.id+')';
+  if(r.type==='era') return "switchScreen('more');setTimeout(scrollToArchive,300)";
+  return "openPlaceDetail('"+r.type+"',"+r.item.id+")";
+}
+function renderSearchChips(){
+  var chips = document.getElementById('searchChips');
+  chips.innerHTML = SEARCH_CATS.map(function(c){
+    return '<button class="chip'+(_searchCategory===c[0]?' active':'')+'" onclick="setSearchCategory(\''+c[0]+'\')">'+c[1]+'</button>';
+  }).join('');
+}
+function renderSearch(q){
+  q=(q||'').trim().toLowerCase();
+  if(q) _searchCategory = null; // الكتابة تلغي فلتر الفئة وتبحث بكل شيء
+  renderSearchChips();
+  var wrap=document.getElementById('searchResults');
+  var pool = searchPool();
+
+  var results;
+  if(_searchCategory){
+    results = pool.filter(function(p){ return p.type===_searchCategory; });
+  } else if(q){
+    results = pool.filter(function(p){ return searchTitleOf(p).toLowerCase().indexOf(q)!==-1; });
+  } else {
+    wrap.innerHTML = '<div class="empty-state">اختر فئة للتصفح، أو اكتب للبحث مباشرة</div>';
+    return;
   }
-  var results = pool.filter(function(p){return titleOf(p).toLowerCase().indexOf(q)!==-1;});
   if(!results.length){ wrap.innerHTML='<div class="empty-state">'+t('emptyList')+'</div>'; return; }
   wrap.innerHTML = results.map(function(r){
-    var action;
-    if(r.type==='facility') action = 'openFacilityDetail('+r.item.id+')';
-    else if(r.type==='news') action = 'openNewsDetail('+r.item.id+')';
-    else if(r.type==='era') action = "switchScreen('more');setTimeout(scrollToArchive,300)";
-    else action = "openPlaceDetail('"+r.type+"',"+r.item.id+")";
     var img = r.item.image_url || '';
-    return '<div class="list-card" onclick="'+action+';closeSheet(\'searchSheet\')"><img src="'+img+'" loading="lazy"><div class="t"><b>'+titleOf(r)+'</b><span>'+r.label+'</span></div></div>';
+    return '<div class="list-card" onclick="'+searchActionOf(r)+'"><img src="'+img+'" loading="lazy"><div class="t"><b>'+searchTitleOf(r)+'</b><span>'+r.label+'</span></div></div>';
   }).join('');
 }
 
