@@ -90,6 +90,7 @@ a{text-decoration:none;color:inherit;}
 .weather-mini .icon{font-size:26px;float:left;}
 .weather-mini .t{font-family:'Outfit',sans-serif;font-weight:800;font-size:26px;color:var(--ink);}
 .weather-mini .d{font-size:10.5px;color:var(--muted);margin-top:2px;}
+.weather-mini .d2{font-size:9.5px;color:var(--muted);opacity:.8;margin-top:3px;}
 .news-mini b{font-size:11.5px;font-weight:800;color:var(--ink);display:block;line-height:1.4;}
 .date-badge{display:inline-block;background:var(--green-l);color:var(--green);font-size:9.5px;font-weight:800;padding:3px 9px;border-radius:999px;margin-top:6px;}
 .promo-card{margin:8px 18px 4px;height:120px;border-radius:20px;position:relative;overflow:hidden;background:var(--green-d);}
@@ -214,6 +215,7 @@ a{text-decoration:none;color:inherit;}
           <div class="icon" id="homeWIcon">☀️</div>
           <div class="t" id="homeWTemp">--°</div>
           <div class="d" id="homeWDesc">جارٍ التحميل...</div>
+          <div class="d2" id="homeWExtra"></div>
         </div>
         <div class="mini-card news-mini" id="homeNewsMini" onclick="switchScreen('more');scrollToNews()"></div>
       </div>
@@ -360,6 +362,42 @@ var TIMELINE_ERAS = [
     text_ar:'استعادت هويتها الوطنية عام 1962، تخليداً للشهيد "عمار شطايبي". صُنف خليجها 2006 من أجمل الخلجان بالعالم.',
     text_fr:'Identité retrouvée en 1962, nommée en hommage au martyr Ammar Chetaibi. Baie classée en 2006.' },
 ];
+/* ══ تفسير دقيق لرموز الطقس الرسمية (WMO) — يغطي كل الحالات: ضباب/رذاذ/مطر/ثلج/عواصف رعدية ══ */
+var WMO_CODES = {
+  0:{icon:'☀️',night:'🌙',ar:'صافٍ',fr:'Ciel dégagé'},
+  1:{icon:'🌤️',night:'🌙',ar:'صافٍ غالباً',fr:'Plutôt dégagé'},
+  2:{icon:'⛅',night:'☁️',ar:'غائم جزئياً',fr:'Partiellement nuageux'},
+  3:{icon:'☁️',night:'☁️',ar:'غائم',fr:'Nuageux'},
+  45:{icon:'🌫️',night:'🌫️',ar:'ضباب',fr:'Brouillard'},
+  48:{icon:'🌫️',night:'🌫️',ar:'ضباب متجمد',fr:'Brouillard givrant'},
+  51:{icon:'🌦️',night:'🌦️',ar:'رذاذ خفيف',fr:'Bruine légère'},
+  53:{icon:'🌦️',night:'🌦️',ar:'رذاذ متوسط',fr:'Bruine modérée'},
+  55:{icon:'🌧️',night:'🌧️',ar:'رذاذ كثيف',fr:'Bruine dense'},
+  56:{icon:'🌧️',night:'🌧️',ar:'رذاذ متجمد خفيف',fr:'Bruine verglaçante légère'},
+  57:{icon:'🌧️',night:'🌧️',ar:'رذاذ متجمد كثيف',fr:'Bruine verglaçante dense'},
+  61:{icon:'🌦️',night:'🌦️',ar:'مطر خفيف',fr:'Pluie légère'},
+  63:{icon:'🌧️',night:'🌧️',ar:'مطر متوسط',fr:'Pluie modérée'},
+  65:{icon:'🌧️',night:'🌧️',ar:'مطر غزير',fr:'Pluie forte'},
+  66:{icon:'🌧️',night:'🌧️',ar:'مطر متجمد خفيف',fr:'Pluie verglaçante légère'},
+  67:{icon:'🌧️',night:'🌧️',ar:'مطر متجمد غزير',fr:'Pluie verglaçante forte'},
+  71:{icon:'🌨️',night:'🌨️',ar:'ثلج خفيف',fr:'Neige légère'},
+  73:{icon:'🌨️',night:'🌨️',ar:'ثلج متوسط',fr:'Neige modérée'},
+  75:{icon:'❄️',night:'❄️',ar:'ثلج كثيف',fr:'Neige forte'},
+  77:{icon:'❄️',night:'❄️',ar:'حبيبات ثلجية',fr:'Grains de neige'},
+  80:{icon:'🌦️',night:'🌦️',ar:'زخات مطر خفيفة',fr:'Averses légères'},
+  81:{icon:'🌧️',night:'🌧️',ar:'زخات مطر متوسطة',fr:'Averses modérées'},
+  82:{icon:'⛈️',night:'⛈️',ar:'زخات مطر غزيرة',fr:'Averses violentes'},
+  85:{icon:'🌨️',night:'🌨️',ar:'زخات ثلجية خفيفة',fr:'Averses de neige légères'},
+  86:{icon:'❄️',night:'❄️',ar:'زخات ثلجية كثيفة',fr:'Averses de neige fortes'},
+  95:{icon:'⛈️',night:'⛈️',ar:'عاصفة رعدية',fr:'Orage'},
+  96:{icon:'⛈️',night:'⛈️',ar:'عاصفة رعدية مع برَد خفيف',fr:'Orage avec grêle légère'},
+  99:{icon:'⛈️',night:'⛈️',ar:'عاصفة رعدية مع برَد كثيف',fr:'Orage avec grêle forte'}
+};
+function getWeatherInfo(code, isDay){
+  var w = WMO_CODES[code] !== undefined ? WMO_CODES[code] : WMO_CODES[0];
+  return { icon: (isDay ? w.icon : w.night), text: (STATE.curLang==='fr' ? w.fr : w.ar) };
+}
+
 var STR = {
   ar:{ directions:'احصل على الاتجاهات', emptyList:'لا يوجد محتوى بعد', all:'الكل', services:'خدمات', apps:'تطبيقات', official:'رسمي', beach:'الشواطئ', landmark:'المعالم' },
   fr:{ directions:'Itinéraire', emptyList:'Aucun contenu', all:'Tout', services:'Services', apps:'Applications', official:'Officiel', beach:'Plages', landmark:'Sites' }
@@ -409,10 +447,11 @@ async function loadWeatherAndSea(){
     var wr = await fetch('https://historical-forecast-api.open-meteo.com/v1/forecast?latitude='+LAT+'&longitude='+LON+'&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code,is_day&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=Africa%2FAlgiers&forecast_days=7&wind_speed_unit=kmh');
     STATE.weather = await wr.json();
     var w = STATE.weather;
-    var sunny = w.current.weather_code<=2;
-    document.getElementById('homeWIcon').textContent = w.current.is_day ? (sunny?'☀️':'⛅') : '🌙';
+    var info = getWeatherInfo(w.current.weather_code, w.current.is_day);
+    document.getElementById('homeWIcon').textContent = info.icon;
     document.getElementById('homeWTemp').textContent = Math.round(w.current.temperature_2m)+'°';
-    document.getElementById('homeWDesc').textContent = (sunny?'صافٍ':'غائم')+' · '+Math.round(w.current.wind_speed_10m)+' كم/س';
+    document.getElementById('homeWDesc').textContent = info.text;
+    document.getElementById('homeWExtra').textContent = 'رطوبة '+Math.round(w.current.relative_humidity_2m)+'% · رياح '+Math.round(w.current.wind_speed_10m)+' كم/س';
   }catch(e){ document.getElementById('homeWDesc').textContent='تعذّر التحميل'; }
   try{
     var sr = await fetch('https://marine-api.open-meteo.com/v1/marine?latitude='+LAT+'&longitude='+LON+'&current=wave_height,wave_period&daily=wave_height_max&timezone=Africa%2FAlgiers&forecast_days=7');
@@ -422,8 +461,14 @@ async function loadWeatherAndSea(){
 function openWeatherSheet(){
   var w=STATE.weather, s=STATE.sea, wrap=document.getElementById('weatherSheetBody');
   if(!w){ wrap.innerHTML='<div class="empty-state">'+t('emptyList')+'</div>'; openSheet('weatherSheet'); return; }
-  var html = '<h2>الطقس والبحر</h2><div class="stat-row" style="margin-top:12px">'
-    + '<div class="stat-box"><b>'+Math.round(w.current.temperature_2m)+'°</b><span>الحرارة</span></div>'
+  var curInfo = getWeatherInfo(w.current.weather_code, w.current.is_day);
+  var html = '<h2>الطقس والبحر</h2>'
+    + '<div style="display:flex;align-items:center;gap:10px;margin:6px 0 14px">'
+    + '  <span style="font-size:30px">'+curInfo.icon+'</span>'
+    + '  <div><div style="font-size:20px;font-weight:800">'+Math.round(w.current.temperature_2m)+'°</div>'
+    + '  <div style="font-size:12px;color:var(--muted);font-weight:700">'+curInfo.text+'</div></div>'
+    + '</div>'
+    + '<div class="stat-row">'
     + '<div class="stat-box"><b>'+Math.round(w.current.relative_humidity_2m)+'%</b><span>الرطوبة</span></div>'
     + '<div class="stat-box"><b>'+Math.round(w.current.wind_speed_10m)+'</b><span>كم/س رياح</span></div></div>';
   if(s&&s.current){
@@ -435,7 +480,8 @@ function openWeatherSheet(){
   if(w.daily){
     html += '<div style="font-size:13px;font-weight:800;margin-bottom:8px">توقعات ٧ أيام</div><div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px">' + w.daily.time.map(function(d,i){
       var day = new Date(d).toLocaleDateString(STATE.curLang==='fr'?'fr-FR':'ar',{weekday:'short'});
-      return '<div style="flex-shrink:0;width:60px;background:var(--bg-2);border-radius:14px;padding:9px 4px;text-align:center;"><div style="font-size:10px;color:var(--muted);font-weight:700">'+day+'</div><div style="font-size:15px;margin:5px 0">'+(w.daily.weather_code[i]<=2?'☀️':'⛅')+'</div><div style="font-size:11px;font-weight:800">'+Math.round(w.daily.temperature_2m_max[i])+'°</div></div>';
+      var dInfo = getWeatherInfo(w.daily.weather_code[i], 1);
+      return '<div style="flex-shrink:0;width:60px;background:var(--bg-2);border-radius:14px;padding:9px 4px;text-align:center;"><div style="font-size:10px;color:var(--muted);font-weight:700">'+day+'</div><div style="font-size:15px;margin:5px 0" title="'+dInfo.text+'">'+dInfo.icon+'</div><div style="font-size:11px;font-weight:800">'+Math.round(w.daily.temperature_2m_max[i])+'°</div><div style="font-size:9.5px;color:var(--muted)">'+Math.round(w.daily.temperature_2m_min[i])+'°</div></div>';
     }).join('') + '</div>';
   }
   wrap.innerHTML = html;
@@ -451,8 +497,10 @@ function renderHomeDest(){
     var fav = isFav(p._type,p.id);
     return '<div class="dest-card"><img src="'+(p.image_url||'')+'" loading="lazy" onclick="openPlaceDetail(\''+p._type+'\','+p.id+')"><div class="heart'+(fav?' active':'')+'" onclick="event.stopPropagation();toggleFav(\''+p._type+'\','+p.id+',this)"><iconify-icon icon="lucide:heart"></iconify-icon></div><div class="ov"></div><div class="txt" onclick="openPlaceDetail(\''+p._type+'\','+p.id+')"><b>'+_f(p,'name')+'</b></div></div>';
   }).join('');
-  var news = (STATE.news||[])[0];
-  document.getElementById('homeNewsMini').innerHTML = news ? ('<b>'+_f(news,'title')+'</b><div class="date-badge">'+(news.date||'جديد')+'</div>') : '<b>لا توجد أخبار بعد</b>';
+  var announcement = (STATE.news||[]).find(function(n){ return n.category==='official'; });
+  document.getElementById('homeNewsMini').innerHTML = announcement
+    ? ('<b>'+_f(announcement,'title')+'</b><div class="date-badge">'+(_f(announcement,'custom_label')||'إعلان')+'</div>')
+    : '<b>لا توجد إعلانات حالياً</b>';
 }
 function openArchiveFromHome(){ switchScreen('more'); setTimeout(scrollToArchive, 60); }
 function scrollToNews(){ setTimeout(function(){var el=document.getElementById('newsAnchor'); if(el) el.scrollIntoView();},80); }
