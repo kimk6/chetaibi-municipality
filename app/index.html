@@ -498,8 +498,9 @@ function renderHomeDest(){
     return '<div class="dest-card"><img src="'+(p.image_url||'')+'" loading="lazy" onclick="openPlaceDetail(\''+p._type+'\','+p.id+')"><div class="heart'+(fav?' active':'')+'" onclick="event.stopPropagation();toggleFav(\''+p._type+'\','+p.id+',this)"><iconify-icon icon="lucide:heart"></iconify-icon></div><div class="ov"></div><div class="txt" onclick="openPlaceDetail(\''+p._type+'\','+p.id+')"><b>'+_f(p,'name')+'</b></div></div>';
   }).join('');
   var announcement = (STATE.news||[]).find(function(n){ return n.category==='official'; });
+  var annTitle = announcement ? (_f(announcement,'title') || _f(announcement,'content').slice(0,60) || 'إعلان جديد') : '';
   document.getElementById('homeNewsMini').innerHTML = announcement
-    ? ('<b>'+_f(announcement,'title')+'</b><div class="date-badge">'+(_f(announcement,'custom_label')||'إعلان')+'</div>')
+    ? ('<b>'+annTitle+'</b><div class="date-badge">'+(_f(announcement,'custom_label')||'إعلان')+'</div>')
     : '<b>لا توجد إعلانات حالياً</b>';
 }
 function openArchiveFromHome(){ switchScreen('more'); setTimeout(scrollToArchive, 60); }
