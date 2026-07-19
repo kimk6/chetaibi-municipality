@@ -87,6 +87,7 @@ a{text-decoration:none;color:inherit;}
 .weather-sea-card{display:flex;align-items:stretch;background:#fff;border:1px solid var(--border);border-radius:18px;margin:4px 18px;padding:16px 6px;transition:transform .12s,opacity .12s;}
 .weather-sea-card:active{transform:scale(.98);opacity:.85;}
 .ws-panel{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;}
+.ws-title{font-size:10px;color:var(--muted);font-weight:800;letter-spacing:.3px;margin-bottom:6px;}
 .ws-divider{width:1px;background:var(--border);margin:2px 0;}
 .ws-icon{font-size:26px;margin-bottom:4px;}
 .ws-main{font-family:'Outfit',sans-serif;font-weight:800;font-size:22px;color:var(--ink);}
@@ -211,6 +212,7 @@ a{text-decoration:none;color:inherit;}
 
       <div class="weather-sea-card" onclick="openWeatherSheet()">
         <div class="ws-panel">
+          <div class="ws-title">الطقس</div>
           <div class="ws-icon" id="homeWIcon">☀️</div>
           <div class="ws-main" id="homeWTemp">--°</div>
           <div class="ws-label" id="homeWDesc">جارٍ التحميل...</div>
@@ -218,9 +220,10 @@ a{text-decoration:none;color:inherit;}
         </div>
         <div class="ws-divider"></div>
         <div class="ws-panel">
+          <div class="ws-title">حالة البحر</div>
           <div class="ws-icon" id="homeSeaIcon">🌊</div>
-          <div class="ws-main" id="homeSeaWave">-- م</div>
-          <div class="ws-label" id="homeSeaStatus">جارٍ التحميل...</div>
+          <div class="ws-main" id="homeSeaStatus">--</div>
+          <div class="ws-label" id="homeSeaWave">-- م</div>
           <div class="ws-sub" id="homeSeaExtra"></div>
         </div>
       </div>
