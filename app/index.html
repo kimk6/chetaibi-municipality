@@ -84,17 +84,14 @@ a{text-decoration:none;color:inherit;}
 .dest-card .ov{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.75) 0%,transparent 55%);}
 .dest-card .txt{position:absolute;bottom:10px;right:10px;left:10px;z-index:2;color:#fff;}
 .dest-card .txt b{font-size:12.5px;font-weight:800;display:block;}
-.row-2{display:flex;gap:12px;padding:4px 18px 4px;}
-.mini-card{flex:1;background:#fff;border:1px solid var(--border);border-radius:18px;padding:14px;transition:transform .12s,opacity .12s;}
-.mini-card:active{transform:scale(.97);opacity:.82;}
-.weather-mini .icon{font-size:26px;float:left;}
-.weather-mini .t{font-family:'Outfit',sans-serif;font-weight:800;font-size:26px;color:var(--ink);}
-.weather-mini .d{font-size:10.5px;color:var(--muted);margin-top:2px;}
-.weather-mini .d2{font-size:9.5px;color:var(--muted);opacity:.8;margin-top:3px;}
-.news-mini{display:flex;flex-direction:column;align-items:center;}
-.announce-head{display:flex;align-items:center;justify-content:center;gap:6px;font-size:11.5px;font-weight:800;color:var(--green);padding-bottom:9px;margin-bottom:9px;border-bottom:1px solid var(--border);width:100%;}
-.announce-head iconify-icon{font-size:14px;}
-.announce-body{font-size:11.5px;font-weight:700;color:var(--ink);line-height:1.55;text-align:center;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;}
+.weather-sea-card{display:flex;align-items:stretch;background:#fff;border:1px solid var(--border);border-radius:18px;margin:4px 18px;padding:16px 6px;transition:transform .12s,opacity .12s;}
+.weather-sea-card:active{transform:scale(.98);opacity:.85;}
+.ws-panel{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;}
+.ws-divider{width:1px;background:var(--border);margin:2px 0;}
+.ws-icon{font-size:26px;margin-bottom:4px;}
+.ws-main{font-family:'Outfit',sans-serif;font-weight:800;font-size:22px;color:var(--ink);}
+.ws-label{font-size:11px;color:var(--text-2);font-weight:700;margin-top:3px;}
+.ws-sub{font-size:9.5px;color:var(--muted);margin-top:3px;}
 .promo-card{margin:8px 18px 4px;height:120px;border-radius:20px;position:relative;overflow:hidden;background:var(--green-d);}
 .promo-card img{width:100%;height:100%;object-fit:cover;}
 .promo-card .ov{position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,78,48,.9) 45%,rgba(10,78,48,.2) 100%);}
@@ -212,14 +209,20 @@ a{text-decoration:none;color:inherit;}
       <div class="section-head"><h2>أبرز الوجهات</h2><a onclick="switchScreen('explore')">عرض الكل ‹</a></div>
       <div class="dest-row" id="homeDestRow"></div>
 
-      <div class="row-2">
-        <div class="mini-card weather-mini" onclick="openWeatherSheet()">
-          <div class="icon" id="homeWIcon">☀️</div>
-          <div class="t" id="homeWTemp">--°</div>
-          <div class="d" id="homeWDesc">جارٍ التحميل...</div>
-          <div class="d2" id="homeWExtra"></div>
+      <div class="weather-sea-card" onclick="openWeatherSheet()">
+        <div class="ws-panel">
+          <div class="ws-icon" id="homeWIcon">☀️</div>
+          <div class="ws-main" id="homeWTemp">--°</div>
+          <div class="ws-label" id="homeWDesc">جارٍ التحميل...</div>
+          <div class="ws-sub" id="homeWExtra"></div>
         </div>
-        <div class="mini-card news-mini" id="homeNewsMini" onclick="switchScreen('more');scrollToNews()"></div>
+        <div class="ws-divider"></div>
+        <div class="ws-panel">
+          <div class="ws-icon" id="homeSeaIcon">🌊</div>
+          <div class="ws-main" id="homeSeaWave">-- م</div>
+          <div class="ws-label" id="homeSeaStatus">جارٍ التحميل...</div>
+          <div class="ws-sub" id="homeSeaExtra"></div>
+        </div>
       </div>
 
       <div class="promo-card" onclick="openArchiveFromHome()">
@@ -461,9 +464,16 @@ async function loadWeatherAndSea(){
     document.getElementById('homeWExtra').textContent = 'رطوبة '+Math.round(w.current.relative_humidity_2m)+'% · رياح '+Math.round(w.current.wind_speed_10m)+' كم/س';
   }catch(e){ document.getElementById('homeWDesc').textContent='تعذّر التحميل'; }
   try{
-    var sr = await fetch('https://marine-api.open-meteo.com/v1/marine?latitude='+LAT+'&longitude='+LON+'&current=wave_height,wave_period&daily=wave_height_max&timezone=Africa%2FAlgiers&forecast_days=7');
+    var sr = await fetch('https://marine-api.open-meteo.com/v1/marine?latitude='+LAT+'&longitude='+LON+'&current=wave_height,wave_period,sea_surface_temperature&daily=wave_height_max&timezone=Africa%2FAlgiers&forecast_days=7');
     STATE.sea = await sr.json();
-  }catch(e){}
+    var sc = STATE.sea.current;
+    var wave = sc.wave_height;
+    var seaStatus = wave==null ? '--' : (wave<0.5 ? 'هادئ' : (wave<1.2 ? 'معتدل' : 'مرتفع — تجنّب السباحة'));
+    document.getElementById('homeSeaIcon').textContent = wave!=null && wave>=1.2 ? '🌊⚠️' : '🌊';
+    document.getElementById('homeSeaWave').textContent = (wave!=null?wave.toFixed(1):'--')+' م';
+    document.getElementById('homeSeaStatus').textContent = seaStatus;
+    document.getElementById('homeSeaExtra').textContent = (sc.sea_surface_temperature!=null?'حرارة الماء '+Math.round(sc.sea_surface_temperature)+'°':'')+(sc.wave_period!=null?' · فترة '+Math.round(sc.wave_period)+'ث':'');
+  }catch(e){ document.getElementById('homeSeaStatus').textContent='تعذّر التحميل'; }
 }
 function openWeatherSheet(){
   var w=STATE.weather, s=STATE.sea, wrap=document.getElementById('weatherSheetBody');
@@ -504,15 +514,8 @@ function renderHomeDest(){
     var fav = isFav(p._type,p.id);
     return '<div class="dest-card"><img src="'+(p.image_url||'')+'" loading="lazy" onclick="openPlaceDetail(\''+p._type+'\','+p.id+')"><div class="heart'+(fav?' active':'')+'" onclick="event.stopPropagation();toggleFav(\''+p._type+'\','+p.id+',this)"><iconify-icon icon="lucide:heart"></iconify-icon></div><div class="ov"></div><div class="txt" onclick="openPlaceDetail(\''+p._type+'\','+p.id+')"><b>'+_f(p,'name')+'</b></div></div>';
   }).join('');
-  var announcement = (STATE.news||[]).find(function(n){ return n.category==='official'; });
-  var annTitle = announcement ? (_f(announcement,'title') || _f(announcement,'content').slice(0,60) || 'إعلان جديد') : 'لا توجد إعلانات حالياً';
-  var annLabel = announcement ? (_f(announcement,'custom_label')||'إعلان') : 'إعلان';
-  document.getElementById('homeNewsMini').innerHTML =
-    '<div class="announce-head"><iconify-icon icon="lucide:megaphone"></iconify-icon>'+annLabel+'</div>'
-    + '<div class="announce-body">'+annTitle+'</div>';
 }
 function openArchiveFromHome(){ switchScreen('more'); setTimeout(scrollToArchive, 60); }
-function scrollToNews(){ setTimeout(function(){var el=document.getElementById('newsAnchor'); if(el) el.scrollIntoView();},80); }
 function scrollToArchive(){ var el=document.getElementById('archiveAnchor'); if(el) el.scrollIntoView(); }
 
 /* ══ استكشف (شواطئ+معالم) ══ */
