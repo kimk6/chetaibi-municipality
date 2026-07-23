@@ -84,15 +84,18 @@ a{text-decoration:none;color:inherit;}
 .dest-card .ov{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.75) 0%,transparent 55%);}
 .dest-card .txt{position:absolute;bottom:10px;right:10px;left:10px;z-index:2;color:#fff;}
 .dest-card .txt b{font-size:12.5px;font-weight:800;display:block;}
-.weather-sea-card{display:flex;align-items:stretch;background:#fff;border:1px solid var(--border);border-radius:18px;margin:4px 18px;padding:16px 6px;transition:transform .12s,opacity .12s;}
-.weather-sea-card:active{transform:scale(.98);opacity:.85;}
-.ws-panel{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;}
-.ws-title{font-size:10px;color:var(--muted);font-weight:800;letter-spacing:.3px;margin-bottom:6px;}
-.ws-divider{width:1px;background:var(--border);margin:2px 0;}
-.ws-icon{font-size:26px;margin-bottom:4px;}
-.ws-main{font-family:'Outfit',sans-serif;font-weight:800;font-size:22px;color:var(--ink);}
-.ws-label{font-size:11px;color:var(--text-2);font-weight:700;margin-top:3px;}
-.ws-sub{font-size:9.5px;color:var(--muted);margin-top:3px;}
+.weather-sea-card{background:#fff;border:1px solid var(--border);border-radius:18px;margin:4px 18px;overflow:hidden;}
+.ws-tabs{display:flex;gap:6px;padding:10px 10px 0;}
+.ws-tab{flex:1;background:var(--bg-2);color:var(--text-2);border-radius:12px;padding:9px 8px;font-size:12px;font-weight:800;text-align:center;transition:transform .12s,opacity .12s;}
+.ws-tab:active{transform:scale(.96);opacity:.8;}
+.ws-tab.active{background:var(--green);color:#fff;}
+.ws-body{padding:14px 16px 16px;transition:transform .12s,opacity .12s;}
+.ws-body:active{opacity:.85;}
+.ws-main-row{display:flex;align-items:center;gap:12px;}
+.ws-icon-big{font-size:34px;flex-shrink:0;}
+.ws-main-txt{flex:1;min-width:0;}
+.ws-temp-big{font-family:'Outfit',sans-serif;font-weight:800;font-size:28px;color:var(--ink);line-height:1;}
+.ws-desc{font-size:12px;color:var(--text-2);font-weight:700;margin-top:4px;}
 .promo-card{margin:8px 18px 4px;height:120px;border-radius:20px;position:relative;overflow:hidden;background:var(--green-d);}
 .promo-card img{width:100%;height:100%;object-fit:cover;}
 .promo-card .ov{position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,78,48,.9) 45%,rgba(10,78,48,.2) 100%);}
@@ -209,21 +212,38 @@ a{text-decoration:none;color:inherit;}
       <div class="section-head"><h2>أبرز الوجهات</h2><a onclick="switchScreen('explore')">عرض الكل ‹</a></div>
       <div class="dest-row" id="homeDestRow"></div>
 
-      <div class="weather-sea-card" onclick="openWeatherSheet()">
-        <div class="ws-panel">
-          <div class="ws-title">الطقس</div>
-          <div class="ws-icon" id="homeWIcon">☀️</div>
-          <div class="ws-main" id="homeWTemp">--°</div>
-          <div class="ws-label" id="homeWDesc">جارٍ التحميل...</div>
-          <div class="ws-sub" id="homeWExtra"></div>
+      <div class="weather-sea-card">
+        <div class="ws-tabs">
+          <button class="ws-tab active" id="wsTabWeather" onclick="event.stopPropagation();setWsTab('weather')">☀️ الطقس</button>
+          <button class="ws-tab" id="wsTabSea" onclick="event.stopPropagation();setWsTab('sea')">🌊 حالة البحر</button>
         </div>
-        <div class="ws-divider"></div>
-        <div class="ws-panel">
-          <div class="ws-title">حالة البحر</div>
-          <div class="ws-icon" id="homeSeaIcon">🌊</div>
-          <div class="ws-main" id="homeSeaStatus">--</div>
-          <div class="ws-label" id="homeSeaWave">-- م</div>
-          <div class="ws-sub" id="homeSeaExtra"></div>
+        <div class="ws-body" onclick="openWeatherSheet()">
+          <div class="ws-content" id="wsContentWeather">
+            <div class="ws-main-row">
+              <div class="ws-icon-big" id="homeWIcon">☀️</div>
+              <div class="ws-main-txt">
+                <div class="ws-temp-big" id="homeWTemp">--°</div>
+                <div class="ws-desc" id="homeWDesc">جارٍ التحميل...</div>
+              </div>
+            </div>
+            <div class="stat-row" style="margin:12px 0 0">
+              <div class="stat-box"><b id="homeWHumidity">--%</b><span>الرطوبة</span></div>
+              <div class="stat-box"><b id="homeWWind">-- كم/س</b><span>الرياح</span></div>
+            </div>
+          </div>
+          <div class="ws-content hidden" id="wsContentSea">
+            <div class="ws-main-row">
+              <div class="ws-icon-big" id="homeSeaIcon">🌊</div>
+              <div class="ws-main-txt">
+                <div class="ws-temp-big" id="homeSeaStatus">--</div>
+                <div class="ws-desc" id="homeSeaWave">-- م</div>
+              </div>
+            </div>
+            <div class="stat-row" style="margin:12px 0 0">
+              <div class="stat-box"><b id="homeSeaTemp">--°</b><span>حرارة الماء</span></div>
+              <div class="stat-box"><b id="homeSeaPeriod">-- ث</b><span>فترة الموج</span></div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -466,7 +486,8 @@ async function loadWeatherAndSea(){
     document.getElementById('homeWIcon').textContent = info.icon;
     document.getElementById('homeWTemp').textContent = Math.round(w.current.temperature_2m)+'°';
     document.getElementById('homeWDesc').textContent = info.text;
-    document.getElementById('homeWExtra').textContent = 'رطوبة '+Math.round(w.current.relative_humidity_2m)+'% · رياح '+Math.round(w.current.wind_speed_10m)+' كم/س';
+    document.getElementById('homeWHumidity').textContent = Math.round(w.current.relative_humidity_2m)+'%';
+    document.getElementById('homeWWind').textContent = Math.round(w.current.wind_speed_10m)+' كم/س';
   }catch(e){ document.getElementById('homeWDesc').textContent='تعذّر التحميل'; }
   try{
     var sr = await fetch('https://marine-api.open-meteo.com/v1/marine?latitude='+LAT+'&longitude='+LON+'&current=wave_height,wave_period,sea_surface_temperature&daily=wave_height_max&timezone=Africa%2FAlgiers&forecast_days=7');
@@ -477,8 +498,16 @@ async function loadWeatherAndSea(){
     document.getElementById('homeSeaIcon').textContent = wave!=null && wave>=1.2 ? '🌊⚠️' : '🌊';
     document.getElementById('homeSeaWave').textContent = (wave!=null?wave.toFixed(1):'--')+' م';
     document.getElementById('homeSeaStatus').textContent = seaStatus;
-    document.getElementById('homeSeaExtra').textContent = (sc.sea_surface_temperature!=null?'حرارة الماء '+Math.round(sc.sea_surface_temperature)+'°':'')+(sc.wave_period!=null?' · فترة '+Math.round(sc.wave_period)+'ث':'');
+    document.getElementById('homeSeaTemp').textContent = sc.sea_surface_temperature!=null ? Math.round(sc.sea_surface_temperature)+'°' : '--°';
+    document.getElementById('homeSeaPeriod').textContent = sc.wave_period!=null ? Math.round(sc.wave_period)+' ث' : '-- ث';
   }catch(e){ document.getElementById('homeSeaStatus').textContent='تعذّر التحميل'; }
+}
+function setWsTab(tab){
+  document.getElementById('wsTabWeather').classList.toggle('active', tab==='weather');
+  document.getElementById('wsTabSea').classList.toggle('active', tab==='sea');
+  document.getElementById('wsContentWeather').classList.toggle('hidden', tab!=='weather');
+  document.getElementById('wsContentSea').classList.toggle('hidden', tab!=='sea');
+  haptic(6);
 }
 function openWeatherSheet(){
   var w=STATE.weather, s=STATE.sea, wrap=document.getElementById('weatherSheetBody');
