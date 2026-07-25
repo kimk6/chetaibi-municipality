@@ -92,10 +92,23 @@ a{text-decoration:none;color:inherit;}
 .ws-body{padding:14px 16px 16px;transition:transform .12s,opacity .12s;}
 .ws-body:active{opacity:.85;}
 .ws-main-row{display:flex;align-items:center;gap:12px;}
+.ws-hero{display:flex;align-items:center;gap:10px;flex:1.1;min-width:0;}
 .ws-icon-big{font-size:34px;flex-shrink:0;}
 .ws-main-txt{flex:1;min-width:0;}
-.ws-temp-big{font-family:'Outfit',sans-serif;font-weight:800;font-size:28px;color:var(--ink);line-height:1;}
-.ws-desc{font-size:12px;color:var(--text-2);font-weight:700;margin-top:4px;}
+.ws-temp-big{font-family:'Outfit',sans-serif;font-weight:800;font-size:26px;color:var(--ink);line-height:1;}
+.ws-desc{font-size:11.5px;color:var(--text-2);font-weight:700;margin-top:4px;}
+.ws-vdiv{width:1px;align-self:stretch;background:var(--border);}
+.ws-meta{flex:1;display:flex;flex-direction:column;gap:6px;padding-right:2px;}
+.ws-meta-row{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--text-2);}
+.ws-meta-row iconify-icon{font-size:14px;color:var(--green);flex-shrink:0;}
+.ws-stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
+.ws-stat{display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;}
+.ws-stat iconify-icon{font-size:16px;color:var(--green);}
+.ws-stat b{font-family:'Outfit',sans-serif;font-size:12.5px;color:var(--ink);}
+.ws-stat span{font-size:8.5px;color:var(--muted);font-weight:700;}
+.ws-minmax{display:flex;justify-content:space-around;margin-top:12px;background:var(--bg-2);border-radius:12px;padding:9px;font-size:11.5px;font-weight:700;color:var(--text-2);}
+.ws-minmax b{font-family:'Outfit',sans-serif;color:var(--ink);}
+.ws-minmax iconify-icon{font-size:12px;vertical-align:-1px;}
 .promo-card{margin:8px 18px 4px;height:120px;border-radius:20px;position:relative;overflow:hidden;background:var(--green-d);}
 .promo-card img{width:100%;height:100%;object-fit:cover;}
 .promo-card .ov{position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,78,48,.9) 45%,rgba(10,78,48,.2) 100%);}
@@ -217,31 +230,54 @@ a{text-decoration:none;color:inherit;}
           <button class="ws-tab active" id="wsTabWeather" onclick="event.stopPropagation();setWsTab('weather')">☀️ الطقس</button>
           <button class="ws-tab" id="wsTabSea" onclick="event.stopPropagation();setWsTab('sea')">🌊 حالة البحر</button>
         </div>
-        <div class="ws-body" onclick="openWeatherSheet()">
-          <div class="ws-content" id="wsContentWeather">
+        <div class="ws-body">
+          <div class="ws-content" id="wsContentWeather" onclick="openWeatherSheet()">
             <div class="ws-main-row">
-              <div class="ws-icon-big" id="homeWIcon">☀️</div>
-              <div class="ws-main-txt">
-                <div class="ws-temp-big" id="homeWTemp">--°</div>
-                <div class="ws-desc" id="homeWDesc">جارٍ التحميل...</div>
+              <div class="ws-hero">
+                <div class="ws-icon-big" id="homeWIcon">☀️</div>
+                <div class="ws-main-txt">
+                  <div class="ws-temp-big" id="homeWTemp">--°</div>
+                  <div class="ws-desc" id="homeWDesc">جارٍ التحميل...</div>
+                </div>
+              </div>
+              <div class="ws-vdiv"></div>
+              <div class="ws-meta">
+                <div class="ws-meta-row"><iconify-icon icon="lucide:sunrise"></iconify-icon><span id="homeWSunrise">--:--</span></div>
+                <div class="ws-meta-row"><iconify-icon icon="lucide:sunset"></iconify-icon><span id="homeWSunset">--:--</span></div>
               </div>
             </div>
-            <div class="stat-row" style="margin:12px 0 0">
-              <div class="stat-box"><b id="homeWHumidity">--%</b><span>الرطوبة</span></div>
-              <div class="stat-box"><b id="homeWWind">-- كم/س</b><span>الرياح</span></div>
+            <div class="ws-stats-grid">
+              <div class="ws-stat"><iconify-icon icon="lucide:droplets"></iconify-icon><b id="homeWHumidity">--%</b><span>الرطوبة</span></div>
+              <div class="ws-stat"><iconify-icon icon="lucide:wind"></iconify-icon><b id="homeWWind">--</b><span id="homeWWindDir">الرياح</span></div>
+              <div class="ws-stat"><iconify-icon icon="lucide:thermometer"></iconify-icon><b id="homeWFeels">--°</b><span>محسوسة</span></div>
+              <div class="ws-stat"><iconify-icon icon="lucide:sun-dim"></iconify-icon><b id="homeWUv">--</b><span id="homeWUvLabel">UV</span></div>
+            </div>
+            <div class="ws-minmax">
+              <span><iconify-icon icon="lucide:arrow-down" style="color:#2E7BC4"></iconify-icon> <b id="homeWMin">--°</b> الصغرى</span>
+              <span><iconify-icon icon="lucide:arrow-up" style="color:#D1477A"></iconify-icon> <b id="homeWMax">--°</b> العظمى</span>
             </div>
           </div>
-          <div class="ws-content hidden" id="wsContentSea">
+          <div class="ws-content hidden" id="wsContentSea" onclick="openWeatherSheet()">
             <div class="ws-main-row">
-              <div class="ws-icon-big" id="homeSeaIcon">🌊</div>
-              <div class="ws-main-txt">
-                <div class="ws-temp-big" id="homeSeaStatus">--</div>
-                <div class="ws-desc" id="homeSeaWave">-- م</div>
+              <div class="ws-hero">
+                <div class="ws-icon-big" id="homeSeaIcon">🌊</div>
+                <div class="ws-main-txt">
+                  <div class="ws-temp-big" id="homeSeaStatus">--</div>
+                  <div class="ws-desc" id="homeSeaWave">-- م</div>
+                </div>
+              </div>
+              <div class="ws-vdiv"></div>
+              <div class="ws-meta">
+                <div class="ws-meta-row"><iconify-icon icon="lucide:compass"></iconify-icon><span id="homeSeaDir">--</span></div>
+                <div class="ws-meta-row"><iconify-icon icon="lucide:thermometer"></iconify-icon><span id="homeSeaTemp">--°</span></div>
               </div>
             </div>
-            <div class="stat-row" style="margin:12px 0 0">
-              <div class="stat-box"><b id="homeSeaTemp">--°</b><span>حرارة الماء</span></div>
-              <div class="stat-box"><b id="homeSeaPeriod">-- ث</b><span>فترة الموج</span></div>
+            <div class="ws-stats-grid" style="grid-template-columns:repeat(2,1fr)">
+              <div class="ws-stat"><iconify-icon icon="lucide:waves"></iconify-icon><b id="homeSeaPeriod">-- ث</b><span>فترة الموج</span></div>
+              <div class="ws-stat"><iconify-icon icon="lucide:ruler"></iconify-icon><b id="homeSeaMaxToday">-- م</b><span>أقصى ارتفاع اليوم</span></div>
+            </div>
+            <div class="ws-minmax" id="homeSeaSwimBar">
+              <span id="homeSeaSwimVerdict">جارٍ التحميل...</span>
             </div>
           </div>
         </div>
@@ -429,6 +465,26 @@ function isDaytimeNow(){
   var h = new Date().getHours();
   return h>=6 && h<19;
 }
+/* تحويل درجة الاتجاه (0-360) لاسم بوصلة عربي — يُستخدم للرياح واتجاه الموج معاً */
+function compassDir(deg){
+  if(deg==null) return '--';
+  var dirs = ['شمالية','شمالية شرقية','شرقية','جنوبية شرقية','جنوبية','جنوبية غربية','غربية','شمالية غربية'];
+  return dirs[Math.round(deg/45)%8];
+}
+/* تصنيف مؤشر الأشعة فوق البنفسجية حسب المقياس العالمي المعتمد */
+function uvLabel(uv){
+  if(uv==null) return '--';
+  if(uv<3) return 'ضعيف';
+  if(uv<6) return 'متوسط';
+  if(uv<8) return 'مرتفع';
+  if(uv<11) return 'مرتفع جداً';
+  return 'شديد';
+}
+function fmtHour(iso){
+  if(!iso) return '--:--';
+  var d = new Date(iso);
+  return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
+}
 
 var STR = {
   ar:{ directions:'احصل على الاتجاهات', emptyList:'لا يوجد محتوى بعد', all:'الكل', services:'خدمات', apps:'تطبيقات', official:'رسمي', beach:'الشواطئ', landmark:'المعالم' },
@@ -476,7 +532,7 @@ function renderAll(){
 /* ══ الطقس + البحر ══ */
 async function loadWeatherAndSea(){
   try{
-    var wUrl = 'https://api.open-meteo.com/v1/forecast?latitude='+LAT+'&longitude='+LON+'&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code,is_day&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=Africa%2FAlgiers&forecast_days=7&wind_speed_unit=kmh';
+    var wUrl = 'https://api.open-meteo.com/v1/forecast?latitude='+LAT+'&longitude='+LON+'&current=temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m,apparent_temperature,uv_index,weather_code,is_day&daily=temperature_2m_max,temperature_2m_min,weather_code,sunrise,sunset&timezone=Africa%2FAlgiers&forecast_days=7&wind_speed_unit=kmh';
     var wr;
     try{ wr = await fetch(wUrl); if(!wr.ok) throw new Error('primary failed'); }
     catch(e){ wr = await fetch(wUrl.replace('https://api.open-meteo.com','https://historical-forecast-api.open-meteo.com')); }
@@ -488,18 +544,37 @@ async function loadWeatherAndSea(){
     document.getElementById('homeWDesc').textContent = info.text;
     document.getElementById('homeWHumidity').textContent = Math.round(w.current.relative_humidity_2m)+'%';
     document.getElementById('homeWWind').textContent = Math.round(w.current.wind_speed_10m)+' كم/س';
+    document.getElementById('homeWWindDir').textContent = compassDir(w.current.wind_direction_10m);
+    document.getElementById('homeWFeels').textContent = Math.round(w.current.apparent_temperature)+'°';
+    document.getElementById('homeWUv').textContent = w.current.uv_index!=null ? Math.round(w.current.uv_index) : '--';
+    document.getElementById('homeWUvLabel').textContent = uvLabel(w.current.uv_index);
+    if(w.daily){
+      document.getElementById('homeWSunrise').textContent = fmtHour(w.daily.sunrise && w.daily.sunrise[0]);
+      document.getElementById('homeWSunset').textContent = fmtHour(w.daily.sunset && w.daily.sunset[0]);
+      document.getElementById('homeWMin').textContent = Math.round(w.daily.temperature_2m_min[0])+'°';
+      document.getElementById('homeWMax').textContent = Math.round(w.daily.temperature_2m_max[0])+'°';
+    }
   }catch(e){ document.getElementById('homeWDesc').textContent='تعذّر التحميل'; }
   try{
-    var sr = await fetch('https://marine-api.open-meteo.com/v1/marine?latitude='+LAT+'&longitude='+LON+'&current=wave_height,wave_period,sea_surface_temperature&daily=wave_height_max&timezone=Africa%2FAlgiers&forecast_days=7');
+    var sr = await fetch('https://marine-api.open-meteo.com/v1/marine?latitude='+LAT+'&longitude='+LON+'&current=wave_height,wave_period,wave_direction,sea_surface_temperature&daily=wave_height_max&timezone=Africa%2FAlgiers&forecast_days=7');
     STATE.sea = await sr.json();
     var sc = STATE.sea.current;
     var wave = sc.wave_height;
-    var seaStatus = wave==null ? '--' : (wave<0.5 ? 'هادئ' : (wave<1.2 ? 'معتدل' : 'مرتفع — تجنّب السباحة'));
-    document.getElementById('homeSeaIcon').textContent = wave!=null && wave>=1.2 ? '🌊⚠️' : '🌊';
+    var isHigh = wave!=null && wave>=1.2;
+    var seaStatus = wave==null ? '--' : (wave<0.5 ? 'هادئ' : (wave<1.2 ? 'معتدل' : 'مرتفع'));
+    document.getElementById('homeSeaIcon').textContent = isHigh ? '🌊⚠️' : '🌊';
     document.getElementById('homeSeaWave').textContent = (wave!=null?wave.toFixed(1):'--')+' م';
     document.getElementById('homeSeaStatus').textContent = seaStatus;
+    document.getElementById('homeSeaDir').textContent = compassDir(sc.wave_direction);
     document.getElementById('homeSeaTemp').textContent = sc.sea_surface_temperature!=null ? Math.round(sc.sea_surface_temperature)+'°' : '--°';
     document.getElementById('homeSeaPeriod').textContent = sc.wave_period!=null ? Math.round(sc.wave_period)+' ث' : '-- ث';
+    if(STATE.sea.daily && STATE.sea.daily.wave_height_max){
+      document.getElementById('homeSeaMaxToday').textContent = STATE.sea.daily.wave_height_max[0].toFixed(1)+' م';
+    }
+    var swimEl = document.getElementById('homeSeaSwimVerdict');
+    swimEl.textContent = isHigh ? '⚠️ غير مناسب للسباحة اليوم' : '✅ مناسب للسباحة اليوم';
+    document.getElementById('homeSeaSwimBar').style.background = isHigh ? '#FCE8E8' : 'var(--bg-2)';
+    swimEl.style.color = isHigh ? '#B91C1C' : 'var(--text-2)';
   }catch(e){ document.getElementById('homeSeaStatus').textContent='تعذّر التحميل'; }
 }
 function setWsTab(tab){
@@ -521,11 +596,19 @@ function openWeatherSheet(){
     + '</div>'
     + '<div class="stat-row">'
     + '<div class="stat-box"><b>'+Math.round(w.current.relative_humidity_2m)+'%</b><span>الرطوبة</span></div>'
-    + '<div class="stat-box"><b>'+Math.round(w.current.wind_speed_10m)+'</b><span>كم/س رياح</span></div></div>';
+    + '<div class="stat-box"><b>'+Math.round(w.current.apparent_temperature)+'°</b><span>محسوسة</span></div>'
+    + '<div class="stat-box"><b>'+(w.current.uv_index!=null?Math.round(w.current.uv_index):'--')+'</b><span>UV '+uvLabel(w.current.uv_index)+'</span></div></div>'
+    + '<div class="stat-row">'
+    + '<div class="stat-box"><b>'+Math.round(w.current.wind_speed_10m)+'</b><span>كم/س '+compassDir(w.current.wind_direction_10m)+'</span></div>';
+  if(w.daily){
+    html += '<div class="stat-box"><b>'+fmtHour(w.daily.sunrise&&w.daily.sunrise[0])+'</b><span>الشروق</span></div>'
+      + '<div class="stat-box"><b>'+fmtHour(w.daily.sunset&&w.daily.sunset[0])+'</b><span>الغروب</span></div></div>';
+  } else { html += '</div>'; }
   if(s&&s.current){
     html += '<div class="stat-row">'
       + '<div class="stat-box"><b>'+(s.current.wave_height!=null?s.current.wave_height.toFixed(1):'--')+' م</b><span>ارتفاع الموج</span></div>'
-      + '<div class="stat-box"><b>'+(s.current.wave_period!=null?Math.round(s.current.wave_period):'--')+' ث</b><span>فترة الموج</span></div></div>';
+      + '<div class="stat-box"><b>'+(s.current.wave_period!=null?Math.round(s.current.wave_period):'--')+' ث</b><span>فترة الموج</span></div>'
+      + '<div class="stat-box"><b>'+(s.current.sea_surface_temperature!=null?Math.round(s.current.sea_surface_temperature)+'°':'--')+'</b><span>حرارة الماء</span></div></div>';
     if(s.current.wave_height>=1.2) html += '<div style="background:#FCE8E8;color:#B91C1C;padding:11px;border-radius:12px;font-size:12px;font-weight:700;margin-bottom:14px;">⚠️ أمواج مرتفعة — تجنّب السباحة اليوم</div>';
   }
   if(w.daily){
