@@ -90,6 +90,9 @@ a{text-decoration:none;color:inherit;}
 .ws-tab:active{transform:scale(.96);opacity:.8;}
 .ws-tab.active{background:var(--green);color:#fff;}
 .ws-body{padding:14px 16px 16px;transition:transform .12s,opacity .12s;}
+.ws-more-hint{display:flex;align-items:center;justify-content:center;gap:4px;padding:9px;background:var(--bg-2);border-top:1px solid var(--border);font-size:11px;font-weight:700;color:var(--green);transition:opacity .12s;}
+.ws-more-hint:active{opacity:.6;}
+.ws-more-hint iconify-icon{font-size:13px;}
 .ws-body:active{opacity:.85;}
 .ws-main-row{display:flex;align-items:center;gap:12px;}
 .ws-hero{display:flex;align-items:center;gap:10px;flex:1.1;min-width:0;}
@@ -157,6 +160,16 @@ a{text-decoration:none;color:inherit;}
 .stat-box{flex:1;background:var(--bg-2);border-radius:14px;padding:9px;text-align:center;}
 .stat-box b{display:block;font-family:'Outfit',sans-serif;font-size:13px;color:var(--green);}
 .stat-box span{font-size:9.5px;color:var(--muted);}
+.fc-title{font-size:13px;font-weight:800;color:var(--ink);margin:6px 0 4px;}
+.fc-list{display:flex;flex-direction:column;}
+.fc-row{display:flex;align-items:center;gap:10px;padding:10px 2px;border-bottom:1px solid var(--border);}
+.fc-row:last-child{border-bottom:none;}
+.fc-day{width:64px;flex-shrink:0;font-size:12px;font-weight:800;color:var(--ink);}
+.fc-icon{width:26px;flex-shrink:0;font-size:19px;text-align:center;}
+.fc-desc{flex:1;min-width:0;font-size:11.5px;color:var(--text-2);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.fc-temps{display:flex;align-items:baseline;gap:8px;flex-shrink:0;}
+.fc-temps b{font-family:'Outfit',sans-serif;font-size:13.5px;color:var(--ink);}
+.fc-temps span{font-family:'Outfit',sans-serif;font-size:12px;color:var(--muted);}
 .cta-btn{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--green);color:#fff;border-radius:999px;padding:14px;font-weight:800;font-size:13.5px;width:100%;}
 .tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
 .tag-chip{background:var(--bg-2);color:var(--text-2);font-size:10.5px;font-weight:700;padding:5px 11px;border-radius:999px;}
@@ -281,6 +294,10 @@ a{text-decoration:none;color:inherit;}
             </div>
           </div>
         </div>
+        <div class="ws-more-hint" onclick="openWeatherSheet()">
+          <span>تفاصيل اليوم وتوقعات ٧ أيام</span>
+          <iconify-icon icon="lucide:chevron-left"></iconify-icon>
+        </div>
       </div>
 
       <div class="promo-card" onclick="openArchiveFromHome()">
@@ -392,7 +409,7 @@ a{text-decoration:none;color:inherit;}
 <div class="sheet" id="contactSheet">
   <div class="sheet-handle"></div>
   <div class="sheet-body">
-    <a href="tel:+21338xxxxxx" class="list-card"><div class="qi"><iconify-icon icon="lucide:phone-call"></iconify-icon></div><div class="t"><b>هاتف المقر</b><span>اضغط للاتصال</span></div></a>
+    <a href="tel:+21338870716" class="list-card"><div class="qi"><iconify-icon icon="lucide:phone-call"></iconify-icon></div><div class="t"><b>هاتف المقر</b><span>038 87 07 16</span></div></a>
     <a href="mailto:apc.chetaibi.officiel@gmail.com" class="list-card"><div class="qi"><iconify-icon icon="lucide:mail"></iconify-icon></div><div class="t"><b>البريد الإلكتروني</b><span>apc.chetaibi.officiel@gmail.com</span></div></a>
   </div>
 </div>
@@ -556,7 +573,7 @@ async function loadWeatherAndSea(){
     }
   }catch(e){ document.getElementById('homeWDesc').textContent='تعذّر التحميل'; }
   try{
-    var sr = await fetch('https://marine-api.open-meteo.com/v1/marine?latitude='+LAT+'&longitude='+LON+'&current=wave_height,wave_period,wave_direction,sea_surface_temperature&daily=wave_height_max&timezone=Africa%2FAlgiers&forecast_days=7');
+    var sr = await fetch('https://marine-api.open-meteo.com/v1/marine?latitude='+LAT+'&longitude='+LON+'&current=wave_height,wave_period,wave_direction,sea_surface_temperature&daily=wave_height_max,wave_direction_dominant,sea_surface_temperature_max&timezone=Africa%2FAlgiers&forecast_days=7');
     STATE.sea = await sr.json();
     var sc = STATE.sea.current;
     var wave = sc.wave_height;
@@ -588,8 +605,8 @@ function openWeatherSheet(){
   var w=STATE.weather, s=STATE.sea, wrap=document.getElementById('weatherSheetBody');
   if(!w){ wrap.innerHTML='<div class="empty-state">'+t('emptyList')+'</div>'; openSheet('weatherSheet'); return; }
   var curInfo = getWeatherInfo(w.current.weather_code, isDaytimeNow());
-  var html = '<h2>الطقس والبحر</h2>'
-    + '<div style="display:flex;align-items:center;gap:10px;margin:6px 0 14px">'
+
+  var weatherHtml = '<div style="display:flex;align-items:center;gap:10px;margin:6px 0 14px">'
     + '  <span style="font-size:30px">'+curInfo.icon+'</span>'
     + '  <div><div style="font-size:20px;font-weight:800">'+Math.round(w.current.temperature_2m)+'°</div>'
     + '  <div style="font-size:12px;color:var(--muted);font-weight:700">'+curInfo.text+'</div></div>'
@@ -601,25 +618,54 @@ function openWeatherSheet(){
     + '<div class="stat-row">'
     + '<div class="stat-box"><b>'+Math.round(w.current.wind_speed_10m)+'</b><span>كم/س '+compassDir(w.current.wind_direction_10m)+'</span></div>';
   if(w.daily){
-    html += '<div class="stat-box"><b>'+fmtHour(w.daily.sunrise&&w.daily.sunrise[0])+'</b><span>الشروق</span></div>'
+    weatherHtml += '<div class="stat-box"><b>'+fmtHour(w.daily.sunrise&&w.daily.sunrise[0])+'</b><span>الشروق</span></div>'
       + '<div class="stat-box"><b>'+fmtHour(w.daily.sunset&&w.daily.sunset[0])+'</b><span>الغروب</span></div></div>';
-  } else { html += '</div>'; }
-  if(s&&s.current){
-    html += '<div class="stat-row">'
-      + '<div class="stat-box"><b>'+(s.current.wave_height!=null?s.current.wave_height.toFixed(1):'--')+' م</b><span>ارتفاع الموج</span></div>'
-      + '<div class="stat-box"><b>'+(s.current.wave_period!=null?Math.round(s.current.wave_period):'--')+' ث</b><span>فترة الموج</span></div>'
-      + '<div class="stat-box"><b>'+(s.current.sea_surface_temperature!=null?Math.round(s.current.sea_surface_temperature)+'°':'--')+'</b><span>حرارة الماء</span></div></div>';
-    if(s.current.wave_height>=1.2) html += '<div style="background:#FCE8E8;color:#B91C1C;padding:11px;border-radius:12px;font-size:12px;font-weight:700;margin-bottom:14px;">⚠️ أمواج مرتفعة — تجنّب السباحة اليوم</div>';
-  }
+  } else { weatherHtml += '</div>'; }
   if(w.daily){
-    html += '<div style="font-size:13px;font-weight:800;margin-bottom:8px">توقعات ٧ أيام</div><div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px">' + w.daily.time.map(function(d,i){
-      var day = new Date(d).toLocaleDateString(STATE.curLang==='fr'?'fr-FR':'ar',{weekday:'short'});
+    weatherHtml += '<div class="fc-title">توقعات ٧ أيام</div><div class="fc-list">' + w.daily.time.map(function(d,i){
+      var day = i===0 ? 'اليوم' : new Date(d).toLocaleDateString(STATE.curLang==='fr'?'fr-FR':'ar',{weekday:'long'});
       var dInfo = getWeatherInfo(w.daily.weather_code[i], 1);
-      return '<div style="flex-shrink:0;width:60px;background:var(--bg-2);border-radius:14px;padding:9px 4px;text-align:center;"><div style="font-size:10px;color:var(--muted);font-weight:700">'+day+'</div><div style="font-size:15px;margin:5px 0" title="'+dInfo.text+'">'+dInfo.icon+'</div><div style="font-size:11px;font-weight:800">'+Math.round(w.daily.temperature_2m_max[i])+'°</div><div style="font-size:9.5px;color:var(--muted)">'+Math.round(w.daily.temperature_2m_min[i])+'°</div></div>';
+      return '<div class="fc-row"><div class="fc-day">'+day+'</div><div class="fc-icon">'+dInfo.icon+'</div><div class="fc-desc">'+dInfo.text+'</div><div class="fc-temps"><b>'+Math.round(w.daily.temperature_2m_max[i])+'°</b><span>'+Math.round(w.daily.temperature_2m_min[i])+'°</span></div></div>';
     }).join('') + '</div>';
   }
-  wrap.innerHTML = html;
+
+  var seaHtml = '';
+  if(s&&s.current){
+    var swHigh = s.current.wave_height>=1.2;
+    seaHtml += '<div class="stat-row">'
+      + '<div class="stat-box"><b>'+(s.current.wave_height!=null?s.current.wave_height.toFixed(1):'--')+' م</b><span>ارتفاع الموج</span></div>'
+      + '<div class="stat-box"><b>'+(s.current.wave_period!=null?Math.round(s.current.wave_period):'--')+' ث</b><span>فترة الموج</span></div>'
+      + '<div class="stat-box"><b>'+(s.current.sea_surface_temperature!=null?Math.round(s.current.sea_surface_temperature)+'°':'--')+'</b><span>حرارة الماء</span></div></div>'
+      + '<div class="stat-row"><div class="stat-box"><b>'+compassDir(s.current.wave_direction)+'</b><span>اتجاه الموج</span></div></div>';
+    if(swHigh) seaHtml += '<div style="background:#FCE8E8;color:#B91C1C;padding:11px;border-radius:12px;font-size:12px;font-weight:700;margin-bottom:14px;">⚠️ أمواج مرتفعة — تجنّب السباحة اليوم</div>';
+  } else {
+    seaHtml += '<div class="empty-state">'+t('emptyList')+'</div>';
+  }
+  if(s&&s.daily&&s.daily.wave_height_max){
+    seaHtml += '<div class="fc-title">توقعات البحر ٧ أيام</div><div class="fc-list">' + s.daily.time.map(function(d,i){
+      var day = i===0 ? 'اليوم' : new Date(d).toLocaleDateString(STATE.curLang==='fr'?'fr-FR':'ar',{weekday:'long'});
+      var wh = s.daily.wave_height_max[i];
+      var status = wh<0.5 ? 'هادئ' : (wh<1.2 ? 'معتدل' : 'مرتفع');
+      var icon = wh>=1.2 ? '🌊⚠️' : '🌊';
+      return '<div class="fc-row"><div class="fc-day">'+day+'</div><div class="fc-icon">'+icon+'</div><div class="fc-desc">'+status+' · '+compassDir(s.daily.wave_direction_dominant?s.daily.wave_direction_dominant[i]:null)+'</div><div class="fc-temps"><b>'+wh.toFixed(1)+' م</b></div></div>';
+    }).join('') + '</div>';
+  }
+
+  wrap.innerHTML = '<h2>الطقس والبحر</h2>'
+    + '<div class="chip-row" style="padding:10px 0;background:none;border:none">'
+    + '<button class="chip active" id="sheetTabWeather" onclick="setSheetWsTab(\'weather\')">☀️ الطقس</button>'
+    + '<button class="chip" id="sheetTabSea" onclick="setSheetWsTab(\'sea\')">🌊 حالة البحر</button>'
+    + '</div>'
+    + '<div id="sheetContentWeather">'+weatherHtml+'</div>'
+    + '<div id="sheetContentSea" class="hidden">'+seaHtml+'</div>';
   openSheet('weatherSheet');
+}
+function setSheetWsTab(tab){
+  document.getElementById('sheetTabWeather').classList.toggle('active', tab==='weather');
+  document.getElementById('sheetTabSea').classList.toggle('active', tab==='sea');
+  document.getElementById('sheetContentWeather').classList.toggle('hidden', tab!=='weather');
+  document.getElementById('sheetContentSea').classList.toggle('hidden', tab!=='sea');
+  haptic(6);
 }
 
 /* ══ الرئيسية: وجهات مميزة ══ */
