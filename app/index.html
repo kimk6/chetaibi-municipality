@@ -836,20 +836,25 @@ function openNewsDetail(id){
   openSheet('detailSheet');
 }
 
-/* ══ شريط الإعلانات الرسمية (الرئيسية) ══ */
+/* ══ شريط الإعلانات الرسمية (الرئيسية) — يعتمد على صورة الألبوم المرفقة، لا الصورة المميزة ══ */
+function _annAttachedImg(n){
+  try{ var a=JSON.parse(n.album_urls||'[]'); return (a&&a[0])||''; }catch(e){ return ''; }
+}
 function renderAnnouncements(){
-  var items = (STATE.news||[]).filter(function(n){return n.category==='official' && _f(n,'image_url');});
+  var items = (STATE.news||[]).filter(function(n){return n.category==='official' && _annAttachedImg(n);});
   var head=document.getElementById('annHead'), row=document.getElementById('annRow');
   if(!items.length){ head.classList.add('hidden'); row.classList.add('hidden'); return; }
   head.classList.remove('hidden'); row.classList.remove('hidden');
   row.innerHTML = items.map(function(n){
-    return '<div class="dest-card" onclick="openAnnouncementSheet('+n.id+')"><img src="'+_f(n,'image_url')+'" loading="lazy"><div class="ov"></div><div class="txt"><b>'+_f(n,'title')+'</b></div></div>';
+    return '<div class="dest-card" onclick="openAnnouncementSheet('+n.id+')"><img src="'+_annAttachedImg(n)+'" loading="lazy"><div class="ov"></div><div class="txt"><b>'+_f(n,'title')+'</b></div></div>';
   }).join('');
 }
 function openAnnouncementSheet(id){
   var n=(STATE.news||[]).find(function(x){return String(x.id)===String(id) && x.category==='official';});
   if(!n) return;
-  document.getElementById('annSheetImg').src = _f(n,'image_url');
+  var img = _annAttachedImg(n);
+  if(!img) return;
+  document.getElementById('annSheetImg').src = img;
   openSheet('annSheet');
 }
 
