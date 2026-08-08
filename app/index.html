@@ -308,9 +308,6 @@ a{text-decoration:none;color:inherit;}
         </div>
       </div>
 
-      <div class="section-head" id="annHead"><h2>الإعلانات</h2><a onclick="switchScreen('municipality')">البلدية ‹</a></div>
-      <div class="dest-row" id="annRow"></div>
-
       <div class="promo-card" onclick="openArchiveFromHome()">
         <img src="https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=600" loading="lazy">
         <div class="ov"></div>
@@ -547,7 +544,7 @@ async function boot(){
 
 function renderAll(){
   renderHomeDest(); renderExploreScreen(); renderGuideScreen();
-  renderNewsList(); renderAnnouncements(); renderServicesList(); renderArchiveList(); renderFavorites();
+  renderNewsList(); renderServicesList(); renderArchiveList(); renderFavorites();
   renderMapChips(); renderMunicipalityScreen();
   updateLangUI();
 }
@@ -824,18 +821,17 @@ function openNewsDetail(id){
   openSheet('detailSheet');
 }
 
-/* ══ شريط الإعلانات الرسمية (الرئيسية) — يعتمد على صورة الألبوم المرفقة، لا الصورة المميزة ══ */
+/* ══ الإعلانات الرسمية (ضمن شاشة البلدية) — تعتمد على صورة الألبوم المرفقة، لا الصورة المميزة ══ */
 function _annAttachedImg(n){
   try{ var a=JSON.parse(n.album_urls||'[]'); return (a&&a[0])||''; }catch(e){ return ''; }
 }
-function renderAnnouncements(){
+function _announcementsHtml(){
   var items = (STATE.news||[]).filter(function(n){return n.category==='official' && _annAttachedImg(n);});
-  var head=document.getElementById('annHead'), row=document.getElementById('annRow');
-  if(!items.length){ head.classList.add('hidden'); row.classList.add('hidden'); return; }
-  head.classList.remove('hidden'); row.classList.remove('hidden');
-  row.innerHTML = items.map(function(n){
-    return '<div class="dest-card" onclick="openAnnouncementSheet('+n.id+')"><img src="'+_annAttachedImg(n)+'" loading="lazy"><div class="ov"></div><div class="txt"><b>'+_f(n,'title')+'</b></div></div>';
-  }).join('');
+  if(!items.length) return '';
+  return '<div class="section-head" style="padding:0 0 10px"><h2>الإعلانات</h2></div>'
+    + '<div class="dest-row" style="margin:0 -18px 18px">' + items.map(function(n){
+      return '<div class="dest-card" onclick="openAnnouncementSheet('+n.id+')"><img src="'+_annAttachedImg(n)+'" loading="lazy"><div class="ov"></div><div class="txt"><b>'+_f(n,'title')+'</b></div></div>';
+    }).join('') + '</div>';
 }
 function openAnnouncementSheet(id){
   var n=(STATE.news||[]).find(function(x){return String(x.id)===String(id) && x.category==='official';});
@@ -886,6 +882,7 @@ function renderArchiveList(){
 function renderMunicipalityScreen(){
   var m=STATE.municipality||{}, mayors=STATE.mayors||[];
   var html = (_f(m,'description')?'<p style="font-size:13px;color:var(--text-2);line-height:1.9;margin-bottom:18px">'+_f(m,'description')+'</p>':'<p style="color:var(--muted);font-size:13px;margin-bottom:18px">لا تتوفر معلومات بعد.</p>')
+    + _announcementsHtml()
     + '<div class="section-head" style="padding:0 0 10px"><h2>اتصل بنا</h2></div>'
     + '<a href="tel:+21338870716" class="list-card"><div class="qi"><iconify-icon icon="lucide:phone-call"></iconify-icon></div><div class="t"><b>هاتف المقر</b><span>038 87 07 16</span></div></a>'
     + '<a href="mailto:apc.chetaibi.officiel@gmail.com" class="list-card"><div class="qi"><iconify-icon icon="lucide:mail"></iconify-icon></div><div class="t"><b>البريد الإلكتروني</b><span>apc.chetaibi.officiel@gmail.com</span></div></a>'
