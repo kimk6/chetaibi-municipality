@@ -89,29 +89,47 @@ a{text-decoration:none;color:inherit;}
 .ws-tab{flex:1;background:var(--bg-2);color:var(--text-2);border-radius:12px;padding:9px 8px;font-size:12px;font-weight:800;text-align:center;transition:transform .12s,opacity .12s;}
 .ws-tab:active{transform:scale(.96);opacity:.8;}
 .ws-tab.active{background:var(--green);color:#fff;}
-.ws-body{padding:14px 16px 16px;transition:transform .12s,opacity .12s;}
-.ws-more-hint{display:flex;align-items:center;justify-content:center;gap:4px;padding:9px;background:var(--bg-2);border-top:1px solid var(--border);font-size:11px;font-weight:700;color:var(--green);transition:opacity .12s;}
-.ws-more-hint:active{opacity:.6;}
-.ws-more-hint iconify-icon{font-size:13px;}
-.ws-body:active{opacity:.85;}
-.ws-main-row{display:flex;align-items:center;gap:12px;}
-.ws-hero{display:flex;align-items:center;gap:10px;flex:1.1;min-width:0;}
-.ws-icon-big{font-size:34px;flex-shrink:0;}
-.ws-main-txt{flex:1;min-width:0;}
-.ws-temp-big{font-family:'Outfit',sans-serif;font-weight:800;font-size:26px;color:var(--ink);line-height:1;}
-.ws-desc{font-size:11.5px;color:var(--text-2);font-weight:700;margin-top:4px;}
-.ws-vdiv{width:1px;align-self:stretch;background:var(--border);}
-.ws-meta{flex:1;display:flex;flex-direction:column;gap:6px;padding-right:2px;}
-.ws-meta-row{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--text-2);}
-.ws-meta-row iconify-icon{font-size:14px;color:var(--green);flex-shrink:0;}
-.ws-stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
-.ws-stat{display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;}
-.ws-stat iconify-icon{font-size:16px;color:var(--green);}
-.ws-stat b{font-family:'Outfit',sans-serif;font-size:12.5px;color:var(--ink);}
-.ws-stat span{font-size:8.5px;color:var(--muted);font-weight:700;}
-.ws-minmax{display:flex;justify-content:space-around;margin-top:12px;background:var(--bg-2);border-radius:12px;padding:9px;font-size:11.5px;font-weight:700;color:var(--text-2);}
-.ws-minmax b{font-family:'Outfit',sans-serif;color:var(--ink);}
-.ws-minmax iconify-icon{font-size:12px;vertical-align:-1px;}
+.ws-body{padding:18px 18px 6px;transition:transform .12s,opacity .12s;}
+.ws-body:active{opacity:.9;}
+/* صف البطل: أيقونة بخلفية متدرجة + درجة حرارة كبيرة .. مقابل العظمى/الصغرى */
+.ws-hero-row{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.ws-hero-left{display:flex;align-items:center;gap:13px;min-width:0;}
+.ws-icon-wrap{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0;background:linear-gradient(150deg,#FFE9B8,#FFC861);box-shadow:0 6px 14px rgba(0,0,0,.08);}
+.ws-icon-wrap.cond-cloud{background:linear-gradient(150deg,#E4EAF2,#C3CEDD);}
+.ws-icon-wrap.cond-rain{background:linear-gradient(150deg,#BEDCF5,#8AB6E3);}
+.ws-icon-wrap.cond-snow{background:linear-gradient(150deg,#EAF3FB,#CFE3F2);}
+.ws-icon-wrap.cond-storm{background:linear-gradient(150deg,#AEB8D6,#7480AC);}
+.ws-icon-wrap.cond-night{background:linear-gradient(150deg,#3E4B72,#232B45);}
+.ws-icon-wrap.cond-sea{background:linear-gradient(150deg,#9FE3E8,#4FADC4);}
+.ws-icon-wrap.cond-warn{background:linear-gradient(150deg,#FFD9A0,#F2A65A);}
+.ws-eyebrow{font-size:10.5px;font-weight:800;color:var(--green);}
+.ws-temp-big{font-family:'Outfit',sans-serif;font-weight:800;font-size:38px;color:var(--ink);line-height:1;margin-top:2px;}
+.ws-desc{font-size:12px;color:var(--text-2);font-weight:700;margin-top:3px;}
+.ws-mm-stack{display:flex;flex-direction:column;gap:9px;flex-shrink:0;}
+.ws-mm-item{display:flex;align-items:center;gap:4px;font-size:13px;font-weight:800;}
+.ws-mm-item iconify-icon{font-size:13px;}
+.ws-mm-item.max{color:#D1477A;}
+.ws-mm-item.min{color:#2E7BC4;}
+.ws-mm-item:not(.max):not(.min){color:var(--text-2);}
+.ws-mm-item:not(.max):not(.min) iconify-icon{color:var(--green);}
+/* صف الإحصاءات: فواصل رفيعة بدل شبكة مزدحمة */
+.ws-stats-row{display:flex;margin-top:18px;padding-top:16px;border-top:1px solid var(--border);}
+.ws-stat{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;}
+.ws-stat:not(:last-child){border-inline-end:1px solid var(--border);}
+.ws-stat iconify-icon{font-size:18px;color:var(--green);}
+.ws-stat b{font-family:'Outfit',sans-serif;font-size:13.5px;color:var(--ink);}
+.ws-stat span{font-size:9.5px;color:var(--muted);font-weight:700;}
+/* صف التذييل: شروق/غروب من جهة، تفاصيل التوقعات من الجهة الأخرى */
+.ws-footer-row{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding:13px 2px;border-top:1px solid var(--border);transition:opacity .12s;}
+.ws-footer-row:active{opacity:.6;}
+.ws-footer-times{display:flex;align-items:center;gap:10px;}
+.ws-footer-item{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;color:var(--text-2);}
+.ws-footer-item iconify-icon{font-size:15px;color:var(--green);}
+.ws-footer-item b{font-family:'Outfit',sans-serif;font-weight:700;color:var(--ink);}
+.ws-footer-div{width:1px;height:13px;background:var(--border);flex-shrink:0;}
+.ws-footer-link{display:flex;align-items:center;gap:2px;font-size:11px;font-weight:800;color:var(--green);flex-shrink:0;}
+.ws-footer-link iconify-icon{font-size:14px;}
+.ws-swim-bar{margin:14px 0 4px;background:var(--bg-2);border-radius:12px;padding:11px;text-align:center;font-size:12px;font-weight:800;color:var(--text-2);}
 .promo-card{margin:8px 18px 4px;height:120px;border-radius:20px;position:relative;overflow:hidden;background:var(--green-d);}
 .promo-card img{width:100%;height:100%;object-fit:cover;}
 .promo-card .ov{position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,78,48,.9) 45%,rgba(10,78,48,.2) 100%);}
@@ -253,58 +271,59 @@ a{text-decoration:none;color:inherit;}
         </div>
         <div class="ws-body">
           <div class="ws-content" id="wsContentWeather" onclick="openWeatherSheet()">
-            <div class="ws-main-row">
-              <div class="ws-hero">
-                <div class="ws-icon-big" id="homeWIcon">☀️</div>
-                <div class="ws-main-txt">
-                  <div class="ws-temp-big" id="homeWTemp">--°</div>
+            <div class="ws-hero-row">
+              <div class="ws-hero-left">
+                <div class="ws-icon-wrap" id="homeWIconWrap"><span id="homeWIcon">☀️</span></div>
+                <div>
+                  <div class="ws-eyebrow">شطايبي الآن</div>
+                  <div class="ws-temp-big"><span id="homeWTemp">--°</span></div>
                   <div class="ws-desc" id="homeWDesc">جارٍ التحميل...</div>
                 </div>
               </div>
-              <div class="ws-vdiv"></div>
-              <div class="ws-meta">
-                <div class="ws-meta-row"><iconify-icon icon="lucide:sunrise"></iconify-icon><span id="homeWSunrise">--:--</span></div>
-                <div class="ws-meta-row"><iconify-icon icon="lucide:sunset"></iconify-icon><span id="homeWSunset">--:--</span></div>
+              <div class="ws-mm-stack">
+                <div class="ws-mm-item max"><iconify-icon icon="lucide:arrow-up"></iconify-icon><b id="homeWMax">--°</b></div>
+                <div class="ws-mm-item min"><iconify-icon icon="lucide:arrow-down"></iconify-icon><b id="homeWMin">--°</b></div>
               </div>
             </div>
-            <div class="ws-stats-grid">
+            <div class="ws-stats-row">
               <div class="ws-stat"><iconify-icon icon="lucide:droplets"></iconify-icon><b id="homeWHumidity">--%</b><span>الرطوبة</span></div>
               <div class="ws-stat"><iconify-icon icon="lucide:wind"></iconify-icon><b id="homeWWind">--</b><span id="homeWWindDir">الرياح</span></div>
               <div class="ws-stat"><iconify-icon icon="lucide:thermometer"></iconify-icon><b id="homeWFeels">--°</b><span>محسوسة</span></div>
               <div class="ws-stat"><iconify-icon icon="lucide:sun-dim"></iconify-icon><b id="homeWUv">--</b><span id="homeWUvLabel">UV</span></div>
             </div>
-            <div class="ws-minmax">
-              <span><iconify-icon icon="lucide:arrow-down" style="color:#2E7BC4"></iconify-icon> <b id="homeWMin">--°</b> الصغرى</span>
-              <span><iconify-icon icon="lucide:arrow-up" style="color:#D1477A"></iconify-icon> <b id="homeWMax">--°</b> العظمى</span>
+            <div class="ws-footer-row">
+              <div class="ws-footer-times">
+                <span class="ws-footer-item"><iconify-icon icon="lucide:sunrise"></iconify-icon><b id="homeWSunrise">--:--</b></span>
+                <span class="ws-footer-div"></span>
+                <span class="ws-footer-item"><iconify-icon icon="lucide:sunset"></iconify-icon><b id="homeWSunset">--:--</b></span>
+              </div>
+              <div class="ws-footer-link"><span>التفاصيل والتوقعات</span><iconify-icon icon="lucide:chevron-left"></iconify-icon></div>
             </div>
           </div>
           <div class="ws-content hidden" id="wsContentSea" onclick="openWeatherSheet()">
-            <div class="ws-main-row">
-              <div class="ws-hero">
-                <div class="ws-icon-big" id="homeSeaIcon">🌊</div>
-                <div class="ws-main-txt">
-                  <div class="ws-temp-big" id="homeSeaStatus">--</div>
-                  <div class="ws-desc" id="homeSeaWave">-- م</div>
+            <div class="ws-hero-row">
+              <div class="ws-hero-left">
+                <div class="ws-icon-wrap cond-sea" id="homeSeaIconWrap"><span id="homeSeaIcon">🌊</span></div>
+                <div>
+                  <div class="ws-eyebrow">حالة البحر الآن</div>
+                  <div class="ws-temp-big" style="font-size:28px"><span id="homeSeaStatus">--</span></div>
+                  <div class="ws-desc">ارتفاع الموج <span id="homeSeaWave">-- م</span></div>
                 </div>
               </div>
-              <div class="ws-vdiv"></div>
-              <div class="ws-meta">
-                <div class="ws-meta-row"><iconify-icon icon="lucide:compass"></iconify-icon><span id="homeSeaDir">--</span></div>
-                <div class="ws-meta-row"><iconify-icon icon="lucide:thermometer"></iconify-icon><span id="homeSeaTemp">--°</span></div>
+              <div class="ws-mm-stack">
+                <div class="ws-mm-item"><iconify-icon icon="lucide:thermometer"></iconify-icon><b id="homeSeaTemp">--°</b></div>
+                <div class="ws-mm-item"><iconify-icon icon="lucide:compass"></iconify-icon><b id="homeSeaDir">--</b></div>
               </div>
             </div>
-            <div class="ws-stats-grid" style="grid-template-columns:repeat(2,1fr)">
+            <div class="ws-stats-row">
               <div class="ws-stat"><iconify-icon icon="lucide:waves"></iconify-icon><b id="homeSeaPeriod">-- ث</b><span>فترة الموج</span></div>
-              <div class="ws-stat"><iconify-icon icon="lucide:ruler"></iconify-icon><b id="homeSeaMaxToday">-- م</b><span>أقصى ارتفاع اليوم</span></div>
+              <div class="ws-stat"><iconify-icon icon="lucide:ruler"></iconify-icon><b id="homeSeaMaxToday">-- م</b><span>أقصى ارتفاع</span></div>
             </div>
-            <div class="ws-minmax" id="homeSeaSwimBar">
-              <span id="homeSeaSwimVerdict">جارٍ التحميل...</span>
+            <div class="ws-swim-bar" id="homeSeaSwimBar"><span id="homeSeaSwimVerdict">جارٍ التحميل...</span></div>
+            <div class="ws-footer-row">
+              <div class="ws-footer-link" style="margin:0 auto"><span>التفاصيل والتوقعات ٧ أيام</span><iconify-icon icon="lucide:chevron-left"></iconify-icon></div>
             </div>
           </div>
-        </div>
-        <div class="ws-more-hint" onclick="openWeatherSheet()">
-          <span>تفاصيل اليوم وتوقعات ٧ أيام</span>
-          <iconify-icon icon="lucide:chevron-left"></iconify-icon>
         </div>
       </div>
 
@@ -480,6 +499,16 @@ function getWeatherInfo(code, isDay){
   var w = WMO_CODES[code] !== undefined ? WMO_CODES[code] : WMO_CODES[0];
   return { icon: (isDay ? w.icon : w.night), text: (STATE.curLang==='fr' ? w.fr : w.ar) };
 }
+/* فئة خلفية أيقونة الطقس المتدرجة — تعكس الحالة الفعلية بدل لون ثابت */
+function wCondClass(code, isDay){
+  if(!isDay) return 'cond-night';
+  if(code===0||code===1) return 'cond-sun';
+  if(code===2||code===3||code===45||code===48) return 'cond-cloud';
+  if((code>=51&&code<=67)||(code>=80&&code<=82)) return 'cond-rain';
+  if(code>=71&&code<=86) return 'cond-snow';
+  if(code>=95) return 'cond-storm';
+  return 'cond-sun';
+}
 /* نحسب النهار/الليل من ساعة الجهاز مباشرة — حقل is_day القادم من واجهة historical-forecast قد يتأخر أحياناً */
 function isDaytimeNow(){
   var h = new Date().getHours();
@@ -588,6 +617,7 @@ async function loadWeatherAndSea(){
     var w = STATE.weather;
     var info = getWeatherInfo(w.current.weather_code, isDaytimeNow());
     document.getElementById('homeWIcon').textContent = info.icon;
+    document.getElementById('homeWIconWrap').className = 'ws-icon-wrap ' + wCondClass(w.current.weather_code, isDaytimeNow());
     document.getElementById('homeWTemp').textContent = Math.round(w.current.temperature_2m)+'°';
     document.getElementById('homeWDesc').textContent = info.text;
     document.getElementById('homeWHumidity').textContent = Math.round(w.current.relative_humidity_2m)+'%';
@@ -611,6 +641,7 @@ async function loadWeatherAndSea(){
     var isHigh = wave!=null && wave>=1.2;
     var seaStatus = wave==null ? '--' : (wave<0.5 ? 'هادئ' : (wave<1.2 ? 'معتدل' : 'مرتفع'));
     document.getElementById('homeSeaIcon').textContent = isHigh ? '🌊⚠️' : '🌊';
+    document.getElementById('homeSeaIconWrap').className = 'ws-icon-wrap ' + (isHigh ? 'cond-warn' : 'cond-sea');
     document.getElementById('homeSeaWave').textContent = (wave!=null?wave.toFixed(1):'--')+' م';
     document.getElementById('homeSeaStatus').textContent = seaStatus;
     document.getElementById('homeSeaDir').textContent = compassDir(sc.wave_direction);
