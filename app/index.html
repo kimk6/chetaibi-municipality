@@ -61,8 +61,8 @@ a{text-decoration:none;color:inherit;}
 .hero img{width:100%;height:100%;object-fit:cover;}
 .hero-title-wrap{position:absolute;bottom:-2px;right:0;left:0;padding:20px 20px 26px;z-index:3;}
 .hero-title-wrap::before{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.55) 0%,transparent 100%);}
-.hero-title-wrap h1{position:relative;color:#fff;font-size:22px;font-weight:800;}
-.hero-title-wrap p{position:relative;color:#fff;font-size:12px;opacity:.9;margin-top:4px;}
+.hero-title-wrap h1{position:relative;color:#fff;font-size:22px;font-weight:800;text-align:center;}
+.hero-title-wrap p{position:relative;color:#fff;font-size:12px;opacity:.9;margin-top:4px;text-align:center;}
 .search-float{margin:-24px 18px 0;position:relative;z-index:5;background:#fff;border-radius:18px;box-shadow:0 10px 28px rgba(0,0,0,.12);padding:13px 18px;display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12.5px;transition:transform .12s,opacity .12s;}
 .search-float:active{transform:scale(.98);opacity:.85;}
 .search-float input{flex:1;border:none;background:none;outline:none;font-size:12.5px;font-family:'Cairo',sans-serif;color:var(--ink);}
@@ -224,7 +224,7 @@ a{text-decoration:none;color:inherit;}
     <div class="screen-scroll">
       <div class="hero">
         <img id="heroImg" src="" alt="">
-        <div class="hero-title-wrap"><h1>اكتشف شطايبي</h1><p>وجهتك السياحية على ساحل البحر المتوسط</p></div>
+        <div class="hero-title-wrap"><h1 id="heroTitle"></h1><p id="heroSubtitle"></p></div>
       </div>
       <div class="search-float">
         <iconify-icon icon="lucide:search" style="color:var(--green)"></iconify-icon>
@@ -536,10 +536,34 @@ async function boot(){
     loadWeatherAndSea();
     document.getElementById('loadingView').style.display='none';
     document.getElementById('app').classList.remove('hidden');
+    playHeroTypewriter();
   }catch(e){
     document.getElementById('loadingView').style.display='none';
     document.getElementById('errorView').style.display='flex';
   }
+}
+
+/* ══ تأثير الكتابة (بدون مؤشر) لعنوان ووصف الهيرو — يعمل من جديد في كل فتح للتطبيق ══ */
+function _typeText(el, text, speed, cb){
+  el.textContent = '';
+  var i = 0;
+  (function step(){
+    if(i < text.length){
+      el.textContent += text.charAt(i);
+      i++;
+      setTimeout(step, speed);
+    } else if(cb){ cb(); }
+  })();
+}
+function playHeroTypewriter(){
+  var titleEl = document.getElementById('heroTitle'), subEl = document.getElementById('heroSubtitle');
+  if(!titleEl || !subEl) return;
+  subEl.textContent = '';
+  _typeText(titleEl, 'اكتشف شطايبي', 60, function(){
+    setTimeout(function(){
+      _typeText(subEl, 'جوهرة الساحل الشرقي الجزائري حيث تمتزج الطبيعة بالتاريخ', 34);
+    }, 280);
+  });
 }
 
 function renderAll(){
