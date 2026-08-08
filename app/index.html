@@ -85,13 +85,13 @@ a{text-decoration:none;color:inherit;}
 .dest-card .txt{position:absolute;bottom:10px;right:10px;left:10px;z-index:2;color:#fff;}
 .dest-card .txt b{font-size:12.5px;font-weight:800;display:block;}
 .weather-sea-card{background:#fff;border:1px solid var(--border);border-radius:18px;margin:4px 18px;overflow:hidden;}
-.ws-tabs{display:flex;gap:6px;padding:10px 10px 0;}
-.ws-tab{flex:1;background:var(--bg-2);color:var(--text-2);border-radius:12px;padding:9px 8px;font-size:12px;font-weight:800;text-align:center;transition:transform .12s,opacity .12s;}
+.ws-tabs{display:flex;gap:5px;padding:8px 8px 0;}
+.ws-tab{flex:1;background:var(--bg-2);color:var(--text-2);border-radius:10px;padding:7px 8px;font-size:11.5px;font-weight:800;text-align:center;transition:transform .12s,opacity .12s;}
 .ws-tab:active{transform:scale(.96);opacity:.8;}
 .ws-tab.active{background:var(--green);color:#fff;}
-.ws-body{padding:18px 18px 6px;transition:transform .12s,opacity .12s;}
+.ws-body{padding:18px 18px 8px;transition:transform .12s,opacity .12s;}
 .ws-body:active{opacity:.9;}
-/* صف البطل: أيقونة بخلفية متدرجة + درجة حرارة كبيرة .. مقابل العظمى/الصغرى */
+/* صف البطل: أيقونة بخلفية متدرجة + درجة حرارة كبيرة .. مقابل العظمى/الصغرى بأسلوب هادئ */
 .ws-hero-row{display:flex;align-items:center;justify-content:space-between;gap:10px;}
 .ws-hero-left{display:flex;align-items:center;gap:13px;min-width:0;}
 .ws-icon-wrap{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0;background:linear-gradient(150deg,#FFE9B8,#FFC861);box-shadow:0 6px 14px rgba(0,0,0,.08);}
@@ -105,31 +105,25 @@ a{text-decoration:none;color:inherit;}
 .ws-eyebrow{font-size:10.5px;font-weight:800;color:var(--green);}
 .ws-temp-big{font-family:'Outfit',sans-serif;font-weight:800;font-size:38px;color:var(--ink);line-height:1;margin-top:2px;}
 .ws-desc{font-size:12px;color:var(--text-2);font-weight:700;margin-top:3px;}
-.ws-mm-stack{display:flex;flex-direction:column;gap:9px;flex-shrink:0;}
-.ws-mm-item{display:flex;align-items:center;gap:4px;font-size:13px;font-weight:800;}
-.ws-mm-item iconify-icon{font-size:13px;}
-.ws-mm-item.max{color:#D1477A;}
-.ws-mm-item.min{color:#2E7BC4;}
-.ws-mm-item:not(.max):not(.min){color:var(--text-2);}
-.ws-mm-item:not(.max):not(.min) iconify-icon{color:var(--green);}
-/* صف الإحصاءات: فواصل رفيعة بدل شبكة مزدحمة */
-.ws-stats-row{display:flex;margin-top:18px;padding-top:16px;border-top:1px solid var(--border);}
+.ws-mm-stack{display:flex;flex-direction:column;gap:10px;flex-shrink:0;text-align:center;}
+.ws-mm-item b{display:block;font-family:'Outfit',sans-serif;font-size:16px;font-weight:800;color:var(--ink);}
+.ws-mm-item span{font-size:9px;color:var(--muted);font-weight:700;}
+/* صف الإحصاءات: مسافات بيضاء بدل خطوط فاصلة */
+.ws-stats-row{display:flex;margin-top:22px;}
 .ws-stat{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;}
-.ws-stat:not(:last-child){border-inline-end:1px solid var(--border);}
 .ws-stat iconify-icon{font-size:18px;color:var(--green);}
 .ws-stat b{font-family:'Outfit',sans-serif;font-size:13.5px;color:var(--ink);}
 .ws-stat span{font-size:9.5px;color:var(--muted);font-weight:700;}
-/* صف التذييل: شروق/غروب من جهة، تفاصيل التوقعات من الجهة الأخرى */
-.ws-footer-row{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding:13px 2px;border-top:1px solid var(--border);transition:opacity .12s;}
+/* صف التذييل: الشروق يمين، التفاصيل بالمنتصف، الغروب يسار */
+.ws-footer-row{display:flex;align-items:center;justify-content:space-between;margin-top:20px;padding-bottom:2px;transition:opacity .12s;}
 .ws-footer-row:active{opacity:.6;}
-.ws-footer-times{display:flex;align-items:center;gap:10px;}
-.ws-footer-item{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;color:var(--text-2);}
+.ws-footer-item{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;color:var(--muted);font-weight:700;flex-shrink:0;}
+.ws-footer-item .row{display:flex;align-items:center;gap:4px;}
 .ws-footer-item iconify-icon{font-size:15px;color:var(--green);}
-.ws-footer-item b{font-family:'Outfit',sans-serif;font-weight:700;color:var(--ink);}
-.ws-footer-div{width:1px;height:13px;background:var(--border);flex-shrink:0;}
-.ws-footer-link{display:flex;align-items:center;gap:2px;font-size:11px;font-weight:800;color:var(--green);flex-shrink:0;}
+.ws-footer-item b{font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:var(--ink);}
+.ws-footer-link{display:flex;align-items:center;gap:2px;font-size:11px;font-weight:800;color:var(--green);flex-shrink:0;background:var(--bg-2);border-radius:20px;padding:8px 12px;}
 .ws-footer-link iconify-icon{font-size:14px;}
-.ws-swim-bar{margin:14px 0 4px;background:var(--bg-2);border-radius:12px;padding:11px;text-align:center;font-size:12px;font-weight:800;color:var(--text-2);}
+.ws-swim-bar{margin:20px 0 4px;background:var(--bg-2);border-radius:12px;padding:11px;text-align:center;font-size:12px;font-weight:800;color:var(--text-2);}
 .promo-card{margin:8px 18px 4px;height:120px;border-radius:20px;position:relative;overflow:hidden;background:var(--green-d);}
 .promo-card img{width:100%;height:100%;object-fit:cover;}
 .promo-card .ov{position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,78,48,.9) 45%,rgba(10,78,48,.2) 100%);}
@@ -281,8 +275,8 @@ a{text-decoration:none;color:inherit;}
                 </div>
               </div>
               <div class="ws-mm-stack">
-                <div class="ws-mm-item max"><iconify-icon icon="lucide:arrow-up"></iconify-icon><b id="homeWMax">--°</b></div>
-                <div class="ws-mm-item min"><iconify-icon icon="lucide:arrow-down"></iconify-icon><b id="homeWMin">--°</b></div>
+                <div class="ws-mm-item"><b id="homeWMax">--°</b><span>العظمى</span></div>
+                <div class="ws-mm-item"><b id="homeWMin">--°</b><span>الصغرى</span></div>
               </div>
             </div>
             <div class="ws-stats-row">
@@ -292,12 +286,9 @@ a{text-decoration:none;color:inherit;}
               <div class="ws-stat"><iconify-icon icon="lucide:sun-dim"></iconify-icon><b id="homeWUv">--</b><span id="homeWUvLabel">UV</span></div>
             </div>
             <div class="ws-footer-row">
-              <div class="ws-footer-times">
-                <span class="ws-footer-item"><iconify-icon icon="lucide:sunrise"></iconify-icon><b id="homeWSunrise">--:--</b></span>
-                <span class="ws-footer-div"></span>
-                <span class="ws-footer-item"><iconify-icon icon="lucide:sunset"></iconify-icon><b id="homeWSunset">--:--</b></span>
-              </div>
+              <div class="ws-footer-item"><div class="row"><iconify-icon icon="lucide:sunrise"></iconify-icon><b id="homeWSunrise">--:--</b></div><span>الشروق</span></div>
               <div class="ws-footer-link"><span>التفاصيل والتوقعات</span><iconify-icon icon="lucide:chevron-left"></iconify-icon></div>
+              <div class="ws-footer-item"><div class="row"><iconify-icon icon="lucide:sunset"></iconify-icon><b id="homeWSunset">--:--</b></div><span>الغروب</span></div>
             </div>
           </div>
           <div class="ws-content hidden" id="wsContentSea" onclick="openWeatherSheet()">
@@ -311,8 +302,8 @@ a{text-decoration:none;color:inherit;}
                 </div>
               </div>
               <div class="ws-mm-stack">
-                <div class="ws-mm-item"><iconify-icon icon="lucide:thermometer"></iconify-icon><b id="homeSeaTemp">--°</b></div>
-                <div class="ws-mm-item"><iconify-icon icon="lucide:compass"></iconify-icon><b id="homeSeaDir">--</b></div>
+                <div class="ws-mm-item"><b id="homeSeaTemp">--°</b><span>حرارة الماء</span></div>
+                <div class="ws-mm-item"><b id="homeSeaDir">--</b><span>الاتجاه</span></div>
               </div>
             </div>
             <div class="ws-stats-row">
@@ -509,10 +500,27 @@ function wCondClass(code, isDay){
   if(code>=95) return 'cond-storm';
   return 'cond-sun';
 }
-/* نحسب النهار/الليل من ساعة الجهاز مباشرة — حقل is_day القادم من واجهة historical-forecast قد يتأخر أحياناً */
+/* احتياط فقط إذا تعذّر الحصول على الشروق/الغروب الفعليين */
 function isDaytimeNow(){
   var h = new Date().getHours();
   return h>=6 && h<19;
+}
+/* الوقت الحالي بتوقيت الجزائر بالدقائق منذ منتصف الليل — يعمل بشكل صحيح مهما كانت منطقة الجهاز الزمنية */
+function algiersMinutesNow(){
+  var s = new Date().toLocaleTimeString('en-GB', {timeZone:'Africa/Algiers', hour:'2-digit', minute:'2-digit', hour12:false});
+  var p = s.split(':'); return (+p[0])*60 + (+p[1]);
+}
+function isoTimeToMinutes(iso){
+  if(!iso) return null;
+  var t = iso.split('T')[1] || iso, p = t.split(':');
+  return (+p[0])*60 + (+p[1]);
+}
+/* نحسب النهار/الليل من شروق وغروب اليوم الفعليين القادمين من نفس بيانات الطقس — دقيق طوال السنة بدل ساعة ثابتة */
+function isDaytimeFromApi(sunriseIso, sunsetIso){
+  var sr = isoTimeToMinutes(sunriseIso), ss = isoTimeToMinutes(sunsetIso);
+  if(sr==null || ss==null) return isDaytimeNow();
+  var now = algiersMinutesNow();
+  return now>=sr && now<ss;
 }
 /* تحويل درجة الاتجاه (0-360) لاسم بوصلة عربي — يُستخدم للرياح واتجاه الموج معاً */
 function compassDir(deg){
@@ -615,9 +623,10 @@ async function loadWeatherAndSea(){
     catch(e){ wr = await fetch(wUrl.replace('https://api.open-meteo.com','https://historical-forecast-api.open-meteo.com')); }
     STATE.weather = await wr.json();
     var w = STATE.weather;
-    var info = getWeatherInfo(w.current.weather_code, isDaytimeNow());
+    var isDay = isDaytimeFromApi(w.daily.sunrise[0], w.daily.sunset[0]);
+    var info = getWeatherInfo(w.current.weather_code, isDay);
     document.getElementById('homeWIcon').textContent = info.icon;
-    document.getElementById('homeWIconWrap').className = 'ws-icon-wrap ' + wCondClass(w.current.weather_code, isDaytimeNow());
+    document.getElementById('homeWIconWrap').className = 'ws-icon-wrap ' + wCondClass(w.current.weather_code, isDay);
     document.getElementById('homeWTemp').textContent = Math.round(w.current.temperature_2m)+'°';
     document.getElementById('homeWDesc').textContent = info.text;
     document.getElementById('homeWHumidity').textContent = Math.round(w.current.relative_humidity_2m)+'%';
@@ -666,7 +675,7 @@ function setWsTab(tab){
 function openWeatherSheet(){
   var w=STATE.weather, s=STATE.sea, wrap=document.getElementById('weatherSheetBody');
   if(!w){ wrap.innerHTML='<div class="empty-state">'+t('emptyList')+'</div>'; openSheet('weatherSheet'); return; }
-  var curInfo = getWeatherInfo(w.current.weather_code, isDaytimeNow());
+  var curInfo = getWeatherInfo(w.current.weather_code, isDaytimeFromApi(w.daily.sunrise[0], w.daily.sunset[0]));
 
   var weatherHtml = '<div style="display:flex;align-items:center;gap:10px;margin:6px 0 14px">'
     + '  <span style="font-size:30px">'+curInfo.icon+'</span>'
