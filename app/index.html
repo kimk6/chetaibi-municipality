@@ -308,7 +308,7 @@ a{text-decoration:none;color:inherit;}
         </div>
       </div>
 
-      <div class="section-head" id="annHead"><h2>الإعلانات</h2></div>
+      <div class="section-head" id="annHead"><h2>الإعلانات</h2><a onclick="switchScreen('municipality')">البلدية ‹</a></div>
       <div class="dest-row" id="annRow"></div>
 
       <div class="promo-card" onclick="openArchiveFromHome()">
@@ -349,6 +349,12 @@ a{text-decoration:none;color:inherit;}
     <div class="screen-scroll"><div class="list-pad" id="favoritesBody"></div></div>
   </div>
 
+  <!-- ═══ البلدية (معلومات + المجلس الشعبي + اتصال) ═══ -->
+  <div class="screen" id="screen-municipality">
+    <div class="page-head"><button class="round-btn" onclick="goBack()" aria-label="رجوع"><iconify-icon icon="lucide:arrow-right"></iconify-icon></button><h1>بلدية شطايبي</h1></div>
+    <div class="screen-scroll"><div class="list-pad" id="municipalityBody"></div></div>
+  </div>
+
   <!-- ═══ المزيد ═══ -->
   <div class="screen" id="screen-more">
     <div class="page-head"><button class="round-btn" onclick="goBack()" aria-label="رجوع"><iconify-icon icon="lucide:arrow-right"></iconify-icon></button><h1>المزيد</h1></div>
@@ -368,8 +374,7 @@ a{text-decoration:none;color:inherit;}
         <div id="archiveList"></div>
 
         <div class="section-head" style="padding:18px 0 10px"><h2>عن البلدية</h2></div>
-        <div class="list-card" onclick="openMunicipalitySheet()"><div class="qi"><iconify-icon icon="lucide:building-2"></iconify-icon></div><div class="t"><b>معلومات البلدية والمجلس</b><span>المقر، المجلس البلدي</span></div><iconify-icon icon="lucide:chevron-left" style="color:var(--muted)"></iconify-icon></div>
-        <div class="list-card" onclick="openSheet('contactSheet')"><div class="qi"><iconify-icon icon="lucide:phone-call"></iconify-icon></div><div class="t"><b>اتصل بنا</b><span>هاتف وبريد إلكتروني</span></div><iconify-icon icon="lucide:chevron-left" style="color:var(--muted)"></iconify-icon></div>
+        <div class="list-card" onclick="switchScreen('municipality')"><div class="qi"><iconify-icon icon="lucide:building-2"></iconify-icon></div><div class="t"><b>البلدية والمجلس والاتصال</b><span>معلومات، المجلس الشعبي، اتصل بنا</span></div><iconify-icon icon="lucide:chevron-left" style="color:var(--muted)"></iconify-icon></div>
 
         <div class="section-head" style="padding:18px 0 10px"><h2>الإعدادات</h2></div>
         <div class="chip-row" style="padding:0 0 12px;background:none;border:none">
@@ -387,8 +392,8 @@ a{text-decoration:none;color:inherit;}
 
   <div id="mainNav">
     <button class="nav-tab active" id="nav-home" onclick="switchScreen('home')"><iconify-icon icon="lucide:home"></iconify-icon>الرئيسية</button>
-    <button class="nav-tab" id="nav-guide" onclick="switchScreen('guide')"><iconify-icon icon="lucide:map-pin"></iconify-icon>الدليل</button>
-    <button class="nav-tab mid" onclick="switchScreen('explore')"><iconify-icon icon="lucide:compass"></iconify-icon></button>
+    <button class="nav-tab" id="nav-municipality" onclick="switchScreen('municipality')"><iconify-icon icon="lucide:building-2"></iconify-icon>البلدية</button>
+    <button class="nav-tab mid" onclick="switchScreen('guide')"><iconify-icon icon="lucide:map-pin"></iconify-icon></button>
     <button class="nav-tab" id="nav-favorites" onclick="switchScreen('favorites')"><iconify-icon icon="lucide:heart"></iconify-icon>المفضلة</button>
     <button class="nav-tab" id="nav-more" onclick="switchScreen('more')"><iconify-icon icon="lucide:more-horizontal"></iconify-icon>المزيد</button>
   </div>
@@ -406,23 +411,6 @@ a{text-decoration:none;color:inherit;}
 <div class="sheet" id="weatherSheet">
   <div class="sheet-handle"></div>
   <div class="sheet-body" id="weatherSheetBody"></div>
-</div>
-
-<!-- شيت: عن البلدية -->
-<div class="sheet-overlay" id="muniSheetOverlay" onclick="closeSheet('muniSheet')"></div>
-<div class="sheet" id="muniSheet">
-  <div class="sheet-handle"></div>
-  <div class="sheet-body" id="muniSheetBody"></div>
-</div>
-
-<!-- شيت: اتصل بنا -->
-<div class="sheet-overlay" id="contactSheetOverlay" onclick="closeSheet('contactSheet')"></div>
-<div class="sheet" id="contactSheet">
-  <div class="sheet-handle"></div>
-  <div class="sheet-body">
-    <a href="tel:+21338870716" class="list-card"><div class="qi"><iconify-icon icon="lucide:phone-call"></iconify-icon></div><div class="t"><b>هاتف المقر</b><span>038 87 07 16</span></div></a>
-    <a href="mailto:apc.chetaibi.officiel@gmail.com" class="list-card"><div class="qi"><iconify-icon icon="lucide:mail"></iconify-icon></div><div class="t"><b>البريد الإلكتروني</b><span>apc.chetaibi.officiel@gmail.com</span></div></a>
-  </div>
 </div>
 
 <!-- شيت: صورة الإعلان الرسمي (عرض الصورة فقط) -->
@@ -560,7 +548,7 @@ async function boot(){
 function renderAll(){
   renderHomeDest(); renderExploreScreen(); renderGuideScreen();
   renderNewsList(); renderAnnouncements(); renderServicesList(); renderArchiveList(); renderFavorites();
-  renderMapChips();
+  renderMapChips(); renderMunicipalityScreen();
   updateLangUI();
 }
 
@@ -894,14 +882,16 @@ function renderArchiveList(){
   wrap.innerHTML = html;
 }
 
-/* ══ عن البلدية ══ */
-function openMunicipalitySheet(){
+/* ══ البلدية (شاشة كاملة: معلومات + المجلس الشعبي البلدي + اتصال) ══ */
+function renderMunicipalityScreen(){
   var m=STATE.municipality||{}, mayors=STATE.mayors||[];
-  var html = '<h2>بلدية شطايبي</h2>' + (_f(m,'description')?'<p>'+_f(m,'description')+'</p>':'<p style="color:var(--muted)">لا تتوفر معلومات بعد.</p>')
-    + '<div style="font-size:13px;font-weight:800;margin:6px 0 10px">المجلس البلدي</div>'
-    + mayors.map(function(mm){return '<div class="list-card"'+(mm.is_dec?' style="opacity:.7"':'')+'><img src="'+(mm.image_url||'')+'" loading="lazy"><div class="t"><b>'+_f(mm,'name')+(mm.is_dec?' 🕊️':'')+'</b><span>'+_f(mm,'period')+'</span></div></div>';}).join('');
-  document.getElementById('muniSheetBody').innerHTML = html;
-  openSheet('muniSheet');
+  var html = (_f(m,'description')?'<p style="font-size:13px;color:var(--text-2);line-height:1.9;margin-bottom:18px">'+_f(m,'description')+'</p>':'<p style="color:var(--muted);font-size:13px;margin-bottom:18px">لا تتوفر معلومات بعد.</p>')
+    + '<div class="section-head" style="padding:0 0 10px"><h2>اتصل بنا</h2></div>'
+    + '<a href="tel:+21338870716" class="list-card"><div class="qi"><iconify-icon icon="lucide:phone-call"></iconify-icon></div><div class="t"><b>هاتف المقر</b><span>038 87 07 16</span></div></a>'
+    + '<a href="mailto:apc.chetaibi.officiel@gmail.com" class="list-card"><div class="qi"><iconify-icon icon="lucide:mail"></iconify-icon></div><div class="t"><b>البريد الإلكتروني</b><span>apc.chetaibi.officiel@gmail.com</span></div></a>'
+    + '<div class="section-head" style="padding:18px 0 10px"><h2>المجلس الشعبي البلدي</h2></div>'
+    + (mayors.length ? mayors.map(function(mm){return '<div class="list-card"'+(mm.is_dec?' style="opacity:.7"':'')+'><img src="'+(mm.image_url||'')+'" loading="lazy"><div class="t"><b>'+_f(mm,'name')+(mm.is_dec?' 🕊️':'')+'</b><span>'+_f(mm,'period')+'</span></div></div>';}).join('') : '<div class="empty-state">'+t('emptyList')+'</div>');
+  document.getElementById('municipalityBody').innerHTML = html;
 }
 
 /* ══ البحث ══ */
@@ -1008,10 +998,10 @@ function switchScreen(name){
     }
   }
   _currentScreen = name;
-  ['home','guide','explore','map','favorites','more'].forEach(function(s){
+  ['home','guide','explore','map','favorites','municipality','more'].forEach(function(s){
     var el=document.getElementById('screen-'+s); if(el) el.classList.toggle('show', s===name);
   });
-  ['home','guide','favorites','more'].forEach(function(s){
+  ['home','municipality','favorites','more'].forEach(function(s){
     var b=document.getElementById('nav-'+s); if(b) b.classList.toggle('active', s===name);
   });
   haptic();
@@ -1047,10 +1037,10 @@ window.addEventListener('popstate', function(){
   }
   if(_currentScreen !== 'home'){
     _currentScreen = 'home';
-    ['home','guide','explore','map','favorites','more'].forEach(function(s){
+    ['home','guide','explore','map','favorites','municipality','more'].forEach(function(s){
       var el=document.getElementById('screen-'+s); if(el) el.classList.toggle('show', s==='home');
     });
-    ['home','guide','favorites','more'].forEach(function(s){
+    ['home','municipality','favorites','more'].forEach(function(s){
       var b=document.getElementById('nav-'+s); if(b) b.classList.toggle('active', s==='home');
     });
   }
