@@ -95,19 +95,24 @@ a{text-decoration:none;color:inherit;}
 .ws-hero-row{display:flex;align-items:center;justify-content:space-between;gap:10px;}
 .ws-hero-left{display:flex;align-items:center;gap:13px;min-width:0;}
 .ws-icon-wrap{width:60px;height:60px;display:flex;align-items:center;justify-content:center;font-size:44px;flex-shrink:0;}
-.ws-eyebrow{display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:800;color:var(--green);}
+.ws-eyebrow{display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:800;color:var(--text-2);}
 .ws-eyebrow iconify-icon{font-size:12px;}
 .ws-temp-big{font-family:'Outfit',sans-serif;font-weight:800;font-size:38px;color:var(--ink);line-height:1;margin-top:2px;}
-.ws-desc{font-size:12px;color:var(--text-2);font-weight:700;margin-top:3px;}
+.ws-desc{font-size:12px;color:var(--ink);opacity:.75;font-weight:700;margin-top:3px;}
 .ws-mm-stack{display:flex;flex-direction:column;gap:10px;flex-shrink:0;text-align:center;}
 .ws-mm-item b{display:block;font-family:'Outfit',sans-serif;font-size:16px;font-weight:800;color:var(--ink);}
 .ws-mm-item.max b{color:#D1477A;}
 .ws-mm-item.min b{color:#2E7BC4;}
+.ws-mm-item.warm b{color:#D1477A;}
 .ws-mm-item span{font-size:9px;color:var(--muted);font-weight:700;}
 /* صف الإحصاءات: مسافات بيضاء بدل خطوط فاصلة */
 .ws-stats-row{display:flex;margin-top:22px;}
 .ws-stat{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;}
 .ws-stat iconify-icon{font-size:18px;color:var(--green);}
+.ws-stat.humidity iconify-icon{color:#2E7BC4;}
+.ws-stat.feels iconify-icon{color:#D1477A;}
+.ws-stat.uv iconify-icon{color:#E0A83C;}
+.ws-stat.sea iconify-icon{color:#2E93A8;}
 .ws-stat b{font-family:'Outfit',sans-serif;font-size:13.5px;color:var(--ink);}
 .ws-stat span{font-size:9.5px;color:var(--muted);font-weight:700;}
 /* صف التذييل: الشروق يمين، التفاصيل بالمنتصف، الغروب يسار */
@@ -115,7 +120,7 @@ a{text-decoration:none;color:inherit;}
 .ws-footer-row:active{opacity:.6;}
 .ws-footer-item{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;color:var(--muted);font-weight:700;flex-shrink:0;}
 .ws-footer-item .row{display:flex;align-items:center;gap:4px;}
-.ws-footer-item iconify-icon{font-size:15px;color:var(--green);}
+.ws-footer-item iconify-icon{font-size:15px;color:#E0A83C;}
 .ws-footer-item b{font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:var(--ink);}
 .ws-footer-link{display:flex;align-items:center;gap:2px;font-size:11px;font-weight:800;color:var(--green);flex-shrink:0;background:var(--bg-2);border-radius:20px;padding:8px 12px;}
 .ws-footer-link iconify-icon{font-size:14px;}
@@ -276,10 +281,10 @@ a{text-decoration:none;color:inherit;}
               </div>
             </div>
             <div class="ws-stats-row">
-              <div class="ws-stat"><iconify-icon icon="lucide:droplets"></iconify-icon><b id="homeWHumidity">--%</b><span>الرطوبة</span></div>
+              <div class="ws-stat humidity"><iconify-icon icon="lucide:droplets"></iconify-icon><b id="homeWHumidity">--%</b><span>الرطوبة</span></div>
               <div class="ws-stat"><iconify-icon icon="lucide:wind"></iconify-icon><b id="homeWWind">--</b><span id="homeWWindDir">الرياح</span></div>
-              <div class="ws-stat"><iconify-icon icon="lucide:thermometer"></iconify-icon><b id="homeWFeels">--°</b><span>محسوسة</span></div>
-              <div class="ws-stat"><iconify-icon icon="lucide:sun-dim"></iconify-icon><b id="homeWUv">--</b><span id="homeWUvLabel">UV</span></div>
+              <div class="ws-stat feels"><iconify-icon icon="lucide:thermometer"></iconify-icon><b id="homeWFeels">--°</b><span>محسوسة</span></div>
+              <div class="ws-stat uv"><iconify-icon icon="lucide:sun-dim"></iconify-icon><b id="homeWUv">--</b><span id="homeWUvLabel">UV</span></div>
             </div>
             <div class="ws-footer-row">
               <div class="ws-footer-item"><div class="row"><iconify-icon icon="lucide:sunrise"></iconify-icon><b id="homeWSunrise">--:--</b></div><span>الشروق</span></div>
@@ -298,13 +303,13 @@ a{text-decoration:none;color:inherit;}
                 </div>
               </div>
               <div class="ws-mm-stack">
-                <div class="ws-mm-item"><b id="homeSeaTemp">--°</b><span>حرارة الماء</span></div>
+                <div class="ws-mm-item warm"><b id="homeSeaTemp">--°</b><span>حرارة الماء</span></div>
                 <div class="ws-mm-item"><b id="homeSeaDir">--</b><span>الاتجاه</span></div>
               </div>
             </div>
             <div class="ws-stats-row">
-              <div class="ws-stat"><iconify-icon icon="lucide:waves"></iconify-icon><b id="homeSeaPeriod">-- ث</b><span>فترة الموج</span></div>
-              <div class="ws-stat"><iconify-icon icon="lucide:ruler"></iconify-icon><b id="homeSeaMaxToday">-- م</b><span>أقصى ارتفاع</span></div>
+              <div class="ws-stat sea"><iconify-icon icon="lucide:waves"></iconify-icon><b id="homeSeaPeriod">-- ث</b><span>فترة الموج</span></div>
+              <div class="ws-stat sea"><iconify-icon icon="lucide:ruler"></iconify-icon><b id="homeSeaMaxToday">-- م</b><span>أقصى ارتفاع</span></div>
             </div>
             <div class="ws-swim-bar" id="homeSeaSwimBar"><span id="homeSeaSwimVerdict">جارٍ التحميل...</span></div>
             <div class="ws-footer-row">
