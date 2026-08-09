@@ -124,7 +124,8 @@ a{text-decoration:none;color:inherit;}
 .ws-footer-item b{font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:var(--ink);}
 .ws-footer-link{display:flex;align-items:center;gap:2px;font-size:11px;font-weight:800;color:var(--green);flex-shrink:0;background:var(--bg-2);border-radius:20px;padding:8px 12px;}
 .ws-footer-link iconify-icon{font-size:14px;}
-.ws-swim-bar{margin:20px 0 4px;background:var(--bg-2);border-radius:12px;padding:11px;text-align:center;font-size:12px;font-weight:800;color:var(--text-2);}
+.ws-swim-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:20px 0 2px;background:var(--bg-2);border-radius:12px;padding:11px 13px;text-align:center;font-size:12px;font-weight:800;color:var(--text-2);}
+.ws-swim-more{font-size:10.5px;font-weight:800;color:var(--green);flex-shrink:0;}
 .promo-card{margin:8px 18px 4px;height:120px;border-radius:20px;position:relative;overflow:hidden;background:var(--green-d);}
 .promo-card img{width:100%;height:100%;object-fit:cover;}
 .promo-card .ov{position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,78,48,.9) 45%,rgba(10,78,48,.2) 100%);}
@@ -311,10 +312,7 @@ a{text-decoration:none;color:inherit;}
               <div class="ws-stat sea"><iconify-icon icon="lucide:waves"></iconify-icon><b id="homeSeaPeriod">-- ث</b><span>فترة الموج</span></div>
               <div class="ws-stat sea"><iconify-icon icon="lucide:ruler"></iconify-icon><b id="homeSeaMaxToday">-- م</b><span>أقصى ارتفاع</span></div>
             </div>
-            <div class="ws-swim-bar" id="homeSeaSwimBar"><span id="homeSeaSwimVerdict">جارٍ التحميل...</span></div>
-            <div class="ws-footer-row">
-              <div class="ws-footer-link" style="margin:0 auto"><span>التفاصيل والتوقعات ٧ أيام</span><iconify-icon icon="lucide:chevron-left"></iconify-icon></div>
-            </div>
+            <div class="ws-swim-bar" id="homeSeaSwimBar"><span id="homeSeaSwimVerdict">جارٍ التحميل...</span><span class="ws-swim-more">التفاصيل ‹</span></div>
           </div>
         </div>
       </div>
