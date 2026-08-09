@@ -89,7 +89,9 @@ a{text-decoration:none;color:inherit;}
 .ws-tab{flex:1;background:var(--bg-2);color:var(--text-2);border-radius:10px;padding:7px 8px;font-size:11.5px;font-weight:800;text-align:center;transition:transform .12s,opacity .12s;}
 .ws-tab:active{transform:scale(.96);opacity:.8;}
 .ws-tab.active{background:var(--green);color:#fff;}
-.ws-body{padding:18px 18px 8px;transition:transform .12s,opacity .12s;}
+.ws-body{padding:18px 18px 8px;display:grid;transition:transform .12s,opacity .12s;}
+.ws-body .ws-content{grid-area:1/1;min-width:0;}
+.ws-body .ws-content.hidden{display:block!important;visibility:hidden!important;pointer-events:none!important;}
 .ws-body:active{opacity:.9;}
 /* صف البطل: أيقونة بخلفية متدرجة + درجة حرارة كبيرة .. مقابل العظمى/الصغرى بأسلوب هادئ */
 .ws-hero-row{display:flex;align-items:center;justify-content:space-between;gap:10px;}
@@ -97,10 +99,10 @@ a{text-decoration:none;color:inherit;}
 .ws-icon-wrap{width:60px;height:60px;display:flex;align-items:center;justify-content:center;font-size:44px;flex-shrink:0;}
 .ws-eyebrow{display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:800;color:var(--text-2);}
 .ws-eyebrow iconify-icon{font-size:12px;}
-.ws-temp-big{font-family:'Outfit',sans-serif;font-weight:800;font-size:38px;color:var(--ink);line-height:1;margin-top:2px;}
+.ws-temp-big{font-family:'Outfit','Cairo',sans-serif;font-weight:800;font-size:38px;color:var(--ink);line-height:1;margin-top:2px;}
 .ws-desc{font-size:12px;color:var(--ink);opacity:.75;font-weight:700;margin-top:3px;}
 .ws-mm-stack{display:flex;flex-direction:column;justify-content:center;gap:9px;flex-shrink:0;text-align:center;background:var(--bg-2);border-radius:14px;padding:10px 15px;}
-.ws-mm-item b{display:block;font-family:'Outfit',sans-serif;font-size:16px;font-weight:800;color:var(--ink);}
+.ws-mm-item b{display:block;font-family:'Outfit','Cairo',sans-serif;font-size:16px;font-weight:800;color:var(--ink);}
 .ws-mm-item.max b{color:#D1477A;}
 .ws-mm-item.min b{color:#2E7BC4;}
 .ws-mm-item.warm b{color:#D1477A;}
@@ -113,7 +115,7 @@ a{text-decoration:none;color:inherit;}
 .ws-stat.feels iconify-icon{color:#D1477A;}
 .ws-stat.uv iconify-icon{color:#E0A83C;}
 .ws-stat.sea iconify-icon{color:#2E93A8;}
-.ws-stat b{font-family:'Outfit',sans-serif;font-size:13.5px;color:var(--ink);}
+.ws-stat b{font-family:'Outfit','Cairo',sans-serif;font-size:13.5px;color:var(--ink);}
 .ws-stat span{font-size:9.5px;color:var(--muted);font-weight:700;}
 /* صف التذييل: الشروق يمين، التفاصيل بالمنتصف، الغروب يسار */
 .ws-footer-row{display:flex;align-items:center;justify-content:space-between;margin-top:20px;padding-bottom:2px;transition:opacity .12s;}
@@ -121,11 +123,15 @@ a{text-decoration:none;color:inherit;}
 .ws-footer-item{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;color:var(--muted);font-weight:700;flex-shrink:0;}
 .ws-footer-item .row{display:flex;align-items:center;gap:4px;}
 .ws-footer-item iconify-icon{font-size:15px;color:#E0A83C;}
-.ws-footer-item b{font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:var(--ink);}
+.ws-footer-item b{font-family:'Outfit','Cairo',sans-serif;font-size:12px;font-weight:700;color:var(--ink);}
 .ws-footer-link{display:flex;align-items:center;gap:2px;font-size:11px;font-weight:800;color:var(--green);flex-shrink:0;background:var(--bg-2);border-radius:20px;padding:8px 12px;}
 .ws-footer-link iconify-icon{font-size:14px;}
-.ws-swim-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:20px 0 2px;background:var(--bg-2);border-radius:12px;padding:11px 13px;text-align:center;font-size:12px;font-weight:800;color:var(--text-2);}
-.ws-swim-more{font-size:10.5px;font-weight:800;color:var(--green);flex-shrink:0;}
+.ws-swim-bar{margin:18px 0 0;background:var(--bg-2);border-radius:12px;padding:12px;text-align:center;font-size:12.5px;font-weight:800;color:var(--text-2);}
+/* مقياس أمان الأمواج: تدرّج هادئ ← معتدل ← مرتفع مع مؤشر للقراءة الحالية */
+.ws-gauge-wrap{margin-top:18px;}
+.ws-gauge-track{position:relative;height:7px;border-radius:6px;background:linear-gradient(to left,#2E9B5C 0%,#2E9B5C 25%,#E0A83C 25%,#E0A83C 60%,#DC4E4E 60%,#DC4E4E 100%);}
+.ws-gauge-marker{position:absolute;top:50%;right:3%;width:13px;height:13px;border-radius:50%;background:#fff;border:3px solid var(--ink);transform:translate(50%,-50%);box-shadow:0 1px 4px rgba(0,0,0,.3);transition:right .5s;}
+.ws-gauge-labels{display:flex;justify-content:space-between;margin-top:7px;font-size:9px;color:var(--muted);font-weight:700;}
 .promo-card{margin:8px 18px 4px;height:120px;border-radius:20px;position:relative;overflow:hidden;background:var(--green-d);}
 .promo-card img{width:100%;height:100%;object-fit:cover;}
 .promo-card .ov{position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,78,48,.9) 45%,rgba(10,78,48,.2) 100%);}
@@ -172,7 +178,7 @@ a{text-decoration:none;color:inherit;}
 .sheet-body p{font-size:13px;color:var(--text-2);line-height:1.85;margin-bottom:14px;}
 .stat-row{display:flex;gap:8px;margin-bottom:14px;}
 .stat-box{flex:1;background:var(--bg-2);border-radius:14px;padding:9px;text-align:center;}
-.stat-box b{display:block;font-family:'Outfit',sans-serif;font-size:13px;color:var(--green);}
+.stat-box b{display:block;font-family:'Outfit','Cairo',sans-serif;font-size:13px;color:var(--green);}
 .stat-box span{font-size:9.5px;color:var(--muted);}
 .fc-title{font-size:13px;font-weight:800;color:var(--ink);margin:6px 0 4px;}
 .fc-list{display:flex;flex-direction:column;}
@@ -182,15 +188,15 @@ a{text-decoration:none;color:inherit;}
 .fc-icon{width:26px;flex-shrink:0;font-size:19px;text-align:center;}
 .fc-desc{flex:1;min-width:0;font-size:11.5px;color:var(--text-2);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .fc-temps{display:flex;align-items:baseline;gap:8px;flex-shrink:0;}
-.fc-temps b{font-family:'Outfit',sans-serif;font-size:13.5px;color:var(--ink);}
-.fc-temps span{font-family:'Outfit',sans-serif;font-size:12px;color:var(--muted);}
+.fc-temps b{font-family:'Outfit','Cairo',sans-serif;font-size:13.5px;color:var(--ink);}
+.fc-temps span{font-family:'Outfit','Cairo',sans-serif;font-size:12px;color:var(--muted);}
 .cta-btn{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--green);color:#fff;border-radius:999px;padding:14px;font-weight:800;font-size:13.5px;width:100%;}
 .tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
 .tag-chip{background:var(--bg-2);color:var(--text-2);font-size:10.5px;font-weight:700;padding:5px 11px;border-radius:999px;}
 
 /* ═══ تاريخ شطايبي ═══ */
 .era-card{border-radius:18px;padding:16px;margin-bottom:12px;color:#fff;position:relative;}
-.era-date{font-family:'Outfit',sans-serif;font-size:10.5px;font-weight:700;opacity:.9;}
+.era-date{font-family:'Outfit','Cairo',sans-serif;font-size:10.5px;font-weight:700;opacity:.9;}
 .era-card h3{font-size:15px;font-weight:800;margin:5px 0 8px;}
 .era-card p{font-size:12px;line-height:1.8;opacity:.95;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
 .era-card p.expanded{-webkit-line-clamp:unset;}
@@ -308,11 +314,18 @@ a{text-decoration:none;color:inherit;}
                 <div class="ws-mm-item"><b id="homeSeaDir">--</b><span>الاتجاه</span></div>
               </div>
             </div>
+            <div class="ws-gauge-wrap hidden" id="homeSeaGauge">
+              <div class="ws-gauge-track"><div class="ws-gauge-marker" id="homeSeaGaugeMarker"></div></div>
+              <div class="ws-gauge-labels"><span>هادئ</span><span>معتدل</span><span>مرتفع</span></div>
+            </div>
             <div class="ws-stats-row">
               <div class="ws-stat sea"><iconify-icon icon="lucide:waves"></iconify-icon><b id="homeSeaPeriod">-- ث</b><span>فترة الموج</span></div>
               <div class="ws-stat sea"><iconify-icon icon="lucide:ruler"></iconify-icon><b id="homeSeaMaxToday">-- م</b><span>أقصى ارتفاع</span></div>
             </div>
-            <div class="ws-swim-bar" id="homeSeaSwimBar"><span id="homeSeaSwimVerdict">جارٍ التحميل...</span><span class="ws-swim-more">التفاصيل ‹</span></div>
+            <div class="ws-swim-bar" id="homeSeaSwimBar"><span id="homeSeaSwimVerdict">جارٍ التحميل...</span></div>
+            <div class="ws-footer-row" style="justify-content:center">
+              <div class="ws-footer-link"><span>التفاصيل والتوقعات ٧ أيام</span><iconify-icon icon="lucide:chevron-left"></iconify-icon></div>
+            </div>
           </div>
         </div>
       </div>
@@ -648,10 +661,21 @@ async function loadWeatherAndSea(){
     if(STATE.sea.daily && STATE.sea.daily.wave_height_max){
       document.getElementById('homeSeaMaxToday').textContent = STATE.sea.daily.wave_height_max[0].toFixed(1)+' م';
     }
-    var swimEl = document.getElementById('homeSeaSwimVerdict');
-    swimEl.textContent = isHigh ? '⚠️ غير مناسب للسباحة اليوم' : '✅ مناسب للسباحة اليوم';
-    document.getElementById('homeSeaSwimBar').style.background = isHigh ? '#FCE8E8' : 'var(--bg-2)';
-    swimEl.style.color = isHigh ? '#B91C1C' : 'var(--text-2)';
+    var swimEl = document.getElementById('homeSeaSwimVerdict'), swimBar = document.getElementById('homeSeaSwimBar');
+    if(wave==null){
+      swimEl.textContent = 'تعذّر تحديد حالة السباحة';
+      swimBar.style.background = 'var(--bg-2)'; swimEl.style.color = 'var(--muted)';
+    } else if(isHigh){
+      swimEl.textContent = '⚠️ غير مناسب للسباحة اليوم';
+      swimBar.style.background = '#FCE8E8'; swimEl.style.color = '#B91C1C';
+    } else {
+      swimEl.textContent = '✅ مناسب للسباحة اليوم';
+      swimBar.style.background = '#E9F7EF'; swimEl.style.color = '#1E8449';
+    }
+    var gaugePct = wave!=null ? Math.max(3, Math.min(100, (wave/2)*100)) : null;
+    var gaugeEl = document.getElementById('homeSeaGauge'), markerEl = document.getElementById('homeSeaGaugeMarker');
+    if(gaugePct!=null){ gaugeEl.classList.remove('hidden'); markerEl.style.left = gaugePct+'%'; }
+    else { gaugeEl.classList.add('hidden'); }
   }catch(e){ document.getElementById('homeSeaStatus').textContent='تعذّر التحميل'; }
 }
 function setWsTab(tab){
