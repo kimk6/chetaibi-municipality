@@ -94,14 +94,7 @@ a{text-decoration:none;color:inherit;}
 /* صف البطل: أيقونة بخلفية متدرجة + درجة حرارة كبيرة .. مقابل العظمى/الصغرى بأسلوب هادئ */
 .ws-hero-row{display:flex;align-items:center;justify-content:space-between;gap:10px;}
 .ws-hero-left{display:flex;align-items:center;gap:13px;min-width:0;}
-.ws-icon-wrap{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0;background:linear-gradient(150deg,#FFE9B8,#FFC861);box-shadow:0 6px 14px rgba(0,0,0,.08);}
-.ws-icon-wrap.cond-cloud{background:linear-gradient(150deg,#E4EAF2,#C3CEDD);}
-.ws-icon-wrap.cond-rain{background:linear-gradient(150deg,#BEDCF5,#8AB6E3);}
-.ws-icon-wrap.cond-snow{background:linear-gradient(150deg,#EAF3FB,#CFE3F2);}
-.ws-icon-wrap.cond-storm{background:linear-gradient(150deg,#AEB8D6,#7480AC);}
-.ws-icon-wrap.cond-night{background:linear-gradient(150deg,#3E4B72,#232B45);}
-.ws-icon-wrap.cond-sea{background:linear-gradient(150deg,#9FE3E8,#4FADC4);}
-.ws-icon-wrap.cond-warn{background:linear-gradient(150deg,#FFD9A0,#F2A65A);}
+.ws-icon-wrap{width:60px;height:60px;display:flex;align-items:center;justify-content:center;font-size:44px;flex-shrink:0;}
 .ws-eyebrow{font-size:10.5px;font-weight:800;color:var(--green);}
 .ws-temp-big{font-family:'Outfit',sans-serif;font-weight:800;font-size:38px;color:var(--ink);line-height:1;margin-top:2px;}
 .ws-desc{font-size:12px;color:var(--text-2);font-weight:700;margin-top:3px;}
@@ -294,7 +287,7 @@ a{text-decoration:none;color:inherit;}
           <div class="ws-content hidden" id="wsContentSea" onclick="openWeatherSheet()">
             <div class="ws-hero-row">
               <div class="ws-hero-left">
-                <div class="ws-icon-wrap cond-sea" id="homeSeaIconWrap"><span id="homeSeaIcon">🌊</span></div>
+                <div class="ws-icon-wrap" id="homeSeaIconWrap"><span id="homeSeaIcon">🌊</span></div>
                 <div>
                   <div class="ws-eyebrow">حالة البحر الآن</div>
                   <div class="ws-temp-big" style="font-size:28px"><span id="homeSeaStatus">--</span></div>
@@ -490,16 +483,6 @@ function getWeatherInfo(code, isDay){
   var w = WMO_CODES[code] !== undefined ? WMO_CODES[code] : WMO_CODES[0];
   return { icon: (isDay ? w.icon : w.night), text: (STATE.curLang==='fr' ? w.fr : w.ar) };
 }
-/* فئة خلفية أيقونة الطقس المتدرجة — تعكس الحالة الفعلية بدل لون ثابت */
-function wCondClass(code, isDay){
-  if(!isDay) return 'cond-night';
-  if(code===0||code===1) return 'cond-sun';
-  if(code===2||code===3||code===45||code===48) return 'cond-cloud';
-  if((code>=51&&code<=67)||(code>=80&&code<=82)) return 'cond-rain';
-  if(code>=71&&code<=86) return 'cond-snow';
-  if(code>=95) return 'cond-storm';
-  return 'cond-sun';
-}
 /* احتياط فقط إذا تعذّر الحصول على الشروق/الغروب الفعليين */
 function isDaytimeNow(){
   var h = new Date().getHours();
@@ -626,7 +609,7 @@ async function loadWeatherAndSea(){
     var isDay = isDaytimeFromApi(w.daily.sunrise[0], w.daily.sunset[0]);
     var info = getWeatherInfo(w.current.weather_code, isDay);
     document.getElementById('homeWIcon').textContent = info.icon;
-    document.getElementById('homeWIconWrap').className = 'ws-icon-wrap ' + wCondClass(w.current.weather_code, isDay);
+    document.getElementById('homeWIconWrap').className = 'ws-icon-wrap';
     document.getElementById('homeWTemp').textContent = Math.round(w.current.temperature_2m)+'°';
     document.getElementById('homeWDesc').textContent = info.text;
     document.getElementById('homeWHumidity').textContent = Math.round(w.current.relative_humidity_2m)+'%';
@@ -650,7 +633,7 @@ async function loadWeatherAndSea(){
     var isHigh = wave!=null && wave>=1.2;
     var seaStatus = wave==null ? '--' : (wave<0.5 ? 'هادئ' : (wave<1.2 ? 'معتدل' : 'مرتفع'));
     document.getElementById('homeSeaIcon').textContent = isHigh ? '🌊⚠️' : '🌊';
-    document.getElementById('homeSeaIconWrap').className = 'ws-icon-wrap ' + (isHigh ? 'cond-warn' : 'cond-sea');
+    document.getElementById('homeSeaIconWrap').className = 'ws-icon-wrap';
     document.getElementById('homeSeaWave').textContent = (wave!=null?wave.toFixed(1):'--')+' م';
     document.getElementById('homeSeaStatus').textContent = seaStatus;
     document.getElementById('homeSeaDir').textContent = compassDir(sc.wave_direction);
