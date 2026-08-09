@@ -103,6 +103,7 @@ a{text-decoration:none;color:inherit;}
 .ws-mm-item b{display:block;font-family:'Outfit',sans-serif;font-size:16px;font-weight:800;color:var(--ink);}
 .ws-mm-item.max b{color:#D1477A;}
 .ws-mm-item.min b{color:#2E7BC4;}
+.ws-mm-item.warm b{color:#D1477A;}
 .ws-mm-item span{font-size:9px;color:var(--muted);font-weight:700;}
 /* صف الإحصاءات: مسافات بيضاء بدل خطوط فاصلة */
 .ws-stats-row{display:flex;margin-top:22px;}
@@ -111,6 +112,7 @@ a{text-decoration:none;color:inherit;}
 .ws-stat.humidity iconify-icon{color:#2E7BC4;}
 .ws-stat.feels iconify-icon{color:#D1477A;}
 .ws-stat.uv iconify-icon{color:#E0A83C;}
+.ws-stat.sea iconify-icon{color:#2E93A8;}
 .ws-stat b{font-family:'Outfit',sans-serif;font-size:13.5px;color:var(--ink);}
 .ws-stat span{font-size:9.5px;color:var(--muted);font-weight:700;}
 /* صف التذييل: الشروق يمين، التفاصيل بالمنتصف، الغروب يسار */
@@ -301,13 +303,13 @@ a{text-decoration:none;color:inherit;}
                 </div>
               </div>
               <div class="ws-mm-stack">
-                <div class="ws-mm-item"><b id="homeSeaTemp">--°</b><span>حرارة الماء</span></div>
+                <div class="ws-mm-item warm"><b id="homeSeaTemp">--°</b><span>حرارة الماء</span></div>
                 <div class="ws-mm-item"><b id="homeSeaDir">--</b><span>الاتجاه</span></div>
               </div>
             </div>
             <div class="ws-stats-row">
-              <div class="ws-stat"><iconify-icon icon="lucide:waves"></iconify-icon><b id="homeSeaPeriod">-- ث</b><span>فترة الموج</span></div>
-              <div class="ws-stat"><iconify-icon icon="lucide:ruler"></iconify-icon><b id="homeSeaMaxToday">-- م</b><span>أقصى ارتفاع</span></div>
+              <div class="ws-stat sea"><iconify-icon icon="lucide:waves"></iconify-icon><b id="homeSeaPeriod">-- ث</b><span>فترة الموج</span></div>
+              <div class="ws-stat sea"><iconify-icon icon="lucide:ruler"></iconify-icon><b id="homeSeaMaxToday">-- م</b><span>أقصى ارتفاع</span></div>
             </div>
             <div class="ws-swim-bar" id="homeSeaSwimBar"><span id="homeSeaSwimVerdict">جارٍ التحميل...</span></div>
             <div class="ws-footer-row">
