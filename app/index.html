@@ -287,12 +287,17 @@ a{text-decoration:none;color:inherit;}
                 <div class="ws-mm-item min"><b id="homeWMin">--°</b><span>الصغرى</span></div>
               </div>
             </div>
+            <div class="ws-gauge-wrap hidden" id="homeWUvGauge">
+              <div class="ws-gauge-track"><div class="ws-gauge-marker" id="homeWUvGaugeMarker"></div></div>
+              <div class="ws-gauge-labels"><span>منخفض</span><span>معتدل</span><span>مرتفع</span></div>
+            </div>
             <div class="ws-stats-row">
               <div class="ws-stat humidity"><iconify-icon icon="lucide:droplets"></iconify-icon><b id="homeWHumidity">--%</b><span>الرطوبة</span></div>
               <div class="ws-stat"><iconify-icon icon="lucide:wind"></iconify-icon><b id="homeWWind">--</b><span id="homeWWindDir">الرياح</span></div>
               <div class="ws-stat feels"><iconify-icon icon="lucide:thermometer"></iconify-icon><b id="homeWFeels">--°</b><span>محسوسة</span></div>
               <div class="ws-stat uv"><iconify-icon icon="lucide:sun-dim"></iconify-icon><b id="homeWUv">--</b><span id="homeWUvLabel">UV</span></div>
             </div>
+            <div class="ws-swim-bar" id="homeWComfortBar"><span id="homeWComfortVerdict">جارٍ التحميل...</span></div>
             <div class="ws-footer-row">
               <div class="ws-footer-item"><div class="row"><iconify-icon icon="lucide:sunrise"></iconify-icon><b id="homeWSunrise">--:--</b></div><span>الشروق</span></div>
               <div class="ws-footer-link"><span>التفاصيل والتوقعات</span><iconify-icon icon="lucide:chevron-left"></iconify-icon></div>
@@ -637,6 +642,25 @@ async function loadWeatherAndSea(){
     document.getElementById('homeWFeels').textContent = Math.round(w.current.apparent_temperature)+'°';
     document.getElementById('homeWUv').textContent = w.current.uv_index!=null ? Math.round(w.current.uv_index) : '--';
     document.getElementById('homeWUvLabel').textContent = uvLabel(w.current.uv_index);
+    var uv = w.current.uv_index, temp = w.current.temperature_2m;
+    var uvGaugePct = uv!=null ? Math.max(3, Math.min(100, (uv/11)*100)) : null;
+    var uvGaugeEl = document.getElementById('homeWUvGauge'), uvMarkerEl = document.getElementById('homeWUvGaugeMarker');
+    if(uvGaugePct!=null){ uvGaugeEl.classList.remove('hidden'); uvMarkerEl.style.right = uvGaugePct+'%'; }
+    else { uvGaugeEl.classList.add('hidden'); }
+    var comfortEl = document.getElementById('homeWComfortVerdict'), comfortBar = document.getElementById('homeWComfortBar');
+    if(temp==null){
+      comfortEl.textContent = 'تعذّر تحديد الحالة';
+      comfortBar.style.background = 'var(--bg-2)'; comfortEl.style.color = 'var(--muted)';
+    } else if(uv!=null && uv>=8){
+      comfortEl.textContent = '🧴 أشعة قوية، يُنصح بالحماية من الشمس';
+      comfortBar.style.background = '#FCE8E8'; comfortEl.style.color = '#B91C1C';
+    } else if(temp>=34){
+      comfortEl.textContent = '🥵 حرارة مرتفعة، تجنّب الذروة والتعرض الطويل';
+      comfortBar.style.background = '#FCE8E8'; comfortEl.style.color = '#B91C1C';
+    } else {
+      comfortEl.textContent = '☀️ طقس مناسب للأنشطة الخارجية';
+      comfortBar.style.background = '#E9F7EF'; comfortEl.style.color = '#1E8449';
+    }
     if(w.daily){
       document.getElementById('homeWSunrise').textContent = fmtHour(w.daily.sunrise && w.daily.sunrise[0]);
       document.getElementById('homeWSunset').textContent = fmtHour(w.daily.sunset && w.daily.sunset[0]);
