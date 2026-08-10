@@ -86,9 +86,9 @@ a{text-decoration:none;color:inherit;}
 .dest-card .txt b{font-size:12.5px;font-weight:800;display:block;}
 .weather-sea-card{position:relative;background:linear-gradient(165deg,#F1FAFA 0%,#fff 50%);border:1px solid var(--border);border-radius:18px;margin:4px 18px;overflow:hidden;box-shadow:0 12px 28px -12px rgba(20,90,100,.18);}
 .ws-tabs{display:flex;gap:5px;padding:8px 8px 0;}
-.ws-tab{flex:1;background:var(--bg-2);color:var(--text-2);border-radius:10px;padding:7px 8px;font-size:11.5px;font-weight:800;text-align:center;transition:transform .12s,opacity .12s;}
+.ws-tab{flex:1;background:var(--bg-2);color:var(--text-2);border:1.5px solid var(--green);border-radius:10px;padding:7px 8px;font-size:11.5px;font-weight:800;text-align:center;transition:transform .12s,opacity .12s;}
 .ws-tab:active{transform:scale(.96);opacity:.8;}
-.ws-tab.active{background:var(--green);color:#fff;}
+.ws-tab.active{background:var(--green);color:#fff;border-color:var(--green);}
 .ws-body{padding:18px 18px 8px;display:grid;transition:transform .12s,opacity .12s;}
 .ws-body .ws-content{grid-area:1/1;min-width:0;}
 .ws-body .ws-content.hidden{display:block!important;visibility:hidden!important;pointer-events:none!important;}
@@ -103,7 +103,7 @@ a{text-decoration:none;color:inherit;}
 @keyframes wsLivePulse{0%,100%{box-shadow:0 0 0 0 rgba(46,155,92,.45);}70%{box-shadow:0 0 0 5px rgba(46,155,92,0);}}
 .ws-temp-big{font-family:'Outfit','Cairo',sans-serif;font-weight:800;font-size:38px;color:var(--ink);line-height:1;margin-top:2px;}
 .ws-desc{font-size:12px;color:var(--ink);opacity:.75;font-weight:700;margin-top:3px;}
-.ws-mm-stack{display:flex;flex-direction:column;justify-content:center;gap:9px;flex-shrink:0;text-align:center;background:var(--bg-2);border-radius:14px;padding:10px 15px;}
+.ws-mm-stack{display:flex;flex-direction:column;justify-content:center;gap:9px;flex-shrink:0;text-align:center;background:#E9F7EF;border-radius:14px;padding:10px 15px;}
 .ws-mm-item b{display:block;font-family:'Outfit','Cairo',sans-serif;font-size:16px;font-weight:800;color:var(--ink);}
 .ws-mm-item.max b{color:#D1477A;}
 .ws-mm-item.min b{color:#2E7BC4;}
