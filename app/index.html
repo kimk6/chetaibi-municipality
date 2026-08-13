@@ -155,6 +155,27 @@ a{text-decoration:none;color:inherit;}
 
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .place-tile{border-radius:18px;overflow:hidden;position:relative;height:150px;background:var(--bg-2);}
+
+/* ═══ شبكة تصنيفات الدليل ═══ */
+.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px 18px calc(20px + var(--nav-h) + var(--safe-b));}
+.cat-tile{background:#fff;border:1px solid var(--border);border-radius:20px;padding:22px 12px 16px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;transition:transform .12s,opacity .12s;}
+.cat-tile:active{transform:scale(.96);opacity:.85;}
+.cat-tile-icon{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.cat-tile-name{font-size:12.5px;font-weight:800;color:var(--ink);line-height:1.35;}
+.cat-tile-count{font-size:10px;color:var(--muted);font-weight:700;}
+
+/* ═══ شيت قائمة مرافق التصنيف (صفحة كاملة تعيد استخدام آلية الشيتات للتنقل الصحيح بزر الرجوع) ═══ */
+.guide-cat-sheet{position:fixed;inset:0;z-index:71;background:var(--bg);display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .2s;}
+.guide-cat-sheet.show{opacity:1;pointer-events:auto;}
+
+/* ═══ بطاقة مرفق محسّنة — أكبر وبأيقونة احتياطية بلون التصنيف ═══ */
+.fac-card{display:flex;align-items:center;gap:13px;background:#fff;border:1px solid var(--border);border-radius:18px;padding:11px;margin-bottom:10px;transition:transform .12s,opacity .12s;}
+.fac-card:active{transform:scale(.98);opacity:.8;}
+.fac-card img,.fac-card .ph{width:60px;height:60px;border-radius:15px;object-fit:cover;flex-shrink:0;background:var(--bg-2);}
+.fac-card .ph{display:flex;align-items:center;justify-content:center;font-size:23px;}
+.fac-card .t{flex:1;min-width:0;}
+.fac-card .t b{font-size:13.5px;font-weight:800;display:block;color:var(--ink);margin-bottom:2px;}
+.fac-card .t span{font-size:11px;color:var(--muted);font-weight:600;}
 .place-tile img{width:100%;height:100%;object-fit:cover;}
 .place-tile .heart{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;font-size:12px;color:#D1477A;z-index:3;transition:transform .12s;}
 .place-tile .heart:active{transform:scale(.8);}
@@ -339,8 +360,7 @@ a{text-decoration:none;color:inherit;}
   <div class="screen" id="screen-guide">
     <div class="page-head"><button class="round-btn" onclick="goBack()" aria-label="رجوع"><iconify-icon icon="lucide:arrow-right"></iconify-icon></button><h1>الدليل</h1>
     </div>
-    <div class="chip-row" id="guideChips"></div>
-    <div class="screen-scroll" id="guideListView"><div class="list-pad" id="guideListPad"></div></div>
+    <div class="screen-scroll"><div class="cat-grid" id="guideGrid"></div></div>
   </div>
 
   <!-- ═══ استكشف (شواطئ + معالم) ═══ -->
@@ -430,11 +450,18 @@ a{text-decoration:none;color:inherit;}
   <img id="annSheetImg" src="" alt="" onclick="event.stopPropagation()">
 </div>
 
+<!-- شيت: قائمة مرافق تصنيف من الدليل -->
+<div class="sheet-overlay" id="guideCatSheetOverlay" onclick="closeSheet('guideCatSheet')"></div>
+<div class="guide-cat-sheet" id="guideCatSheet">
+  <div class="page-head"><button class="round-btn" onclick="closeSheet('guideCatSheet')" aria-label="رجوع"><iconify-icon icon="lucide:arrow-right"></iconify-icon></button><h1 id="guideCatTitle">التصنيف</h1></div>
+  <div class="screen-scroll"><div class="list-pad" id="guideCatList"></div></div>
+</div>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script>
 var LAT=37.067184, LON=7.380564;
-var STATE = { curLang: localStorage.getItem('chetaibi_lang')||'ar', exploreTab:'beach', guideCat:'all', servicesTab:'service',
+var STATE = { curLang: localStorage.getItem('chetaibi_lang')||'ar', exploreTab:'beach', servicesTab:'service',
   favorites: (function(){ try{ return JSON.parse(localStorage.getItem('chetaibi_favs')||'[]'); }catch(e){ return []; } })(), map:null, mapMarkers:[] };
 
 var MAP_COLORS = { beach:'#2E7BC4', tourism:'#0F6B42', branches:'#16a34a', education:'#2563eb', health:'#ef4444', religious:'#f59e0b', sports:'#f97316', cultural:'#a855f7', public:'#64748b', training:'#0891b2', assoc:'#7c3aed', default:'#6b7280' };
@@ -444,6 +471,19 @@ var FAC_CATEGORIES = [
   ['religious','🕌','دينية','Religieux'],['cultural','🎭','ثقافية','Culturel'],
   ['sports','⚽','رياضية','Sport'],['training','📚','تكوين','Formation'],['assoc','🤝','جمعيات','Associations'],
 ];
+/* أيقونات SVG (Lucide) وألوان مميزة لكل تصنيف — بديل احترافي عن الإيموجي */
+var CAT_ICONS = {
+  branches:  {icon:'lucide:building',       bg:'#EAF1FC', fg:'#2E5FA8'},
+  education: {icon:'lucide:graduation-cap', bg:'#F2EEFC', fg:'#6D4FC4'},
+  health:    {icon:'lucide:heart-pulse',    bg:'#FCEAEA', fg:'#D1477A'},
+  public:    {icon:'lucide:building-2',     bg:'#EAF7F5', fg:'#1E8A74'},
+  religious: {icon:'lucide:moon-star',      bg:'#FCF3E3', fg:'#B8842E'},
+  cultural:  {icon:'lucide:palette',        bg:'#FBEAF4', fg:'#B8408A'},
+  sports:    {icon:'lucide:dumbbell',       bg:'#FEF0E3', fg:'#D97B1F'},
+  training:  {icon:'lucide:book-open',      bg:'#EEEEFC', fg:'#5850C4'},
+  assoc:     {icon:'lucide:handshake',      bg:'#E9F7EF', fg:'#1E8449'},
+  _default:  {icon:'lucide:map-pin',        bg:'var(--bg-2)', fg:'var(--green)'}
+};
 var TIMELINE_ERAS = [
   { id:'era1', color:'#C97F1F', date_ar:'القرن 1 — 5 م', date_fr:'I — V siècle', title_ar:'تاكاتوا — Tacatua', title_fr:'Tacatua',
     text_ar:'تأسست كمدينة مرفئية هامة، اشتهرت عالمياً بمناجم "البورفير الأحمر" الفاخر الذي كان يُصدر لتزيين قصور أباطرة روما.',
@@ -802,19 +842,35 @@ function openPlaceDetail(type,id){
 
 /* ══ الدليل ══ */
 function renderGuideScreen(){
-  var chips=document.getElementById('guideChips');
+  var wrap = document.getElementById('guideGrid');
   var present = FAC_CATEGORIES.filter(function(c){return (STATE.facilities||[]).some(function(f){return f.category===c[0];});});
-  chips.innerHTML = '<button class="chip'+(STATE.guideCat==='all'?' active':'')+'" onclick="setGuideCat(\'all\')">'+t('all')+'</button>'
-    + present.map(function(c){var lbl=STATE.curLang==='fr'?c[3]:c[2]; return '<button class="chip'+(STATE.guideCat===c[0]?' active':'')+'" onclick="setGuideCat(\''+c[0]+'\')">'+c[1]+' '+lbl+'</button>';}).join('');
-  var list = STATE.guideCat==='all' ? (STATE.facilities||[]) : (STATE.facilities||[]).filter(function(f){return f.category===STATE.guideCat;});
-  var wrap = document.getElementById('guideListPad');
-  if(!list.length){ wrap.innerHTML='<div class="empty-state">'+t('emptyList')+'</div>'; return; }
-  wrap.innerHTML = list.map(function(f){
-    var conf = FAC_CATEGORIES.find(function(c){return c[0]===f.category;})||['','📍'];
-    return '<div class="list-card" onclick="openFacilityDetail('+f.id+')"><img src="'+(f.image_url||'')+'" loading="lazy"><div class="t"><b>'+conf[1]+' '+_f(f,'name')+'</b><span>'+_f(f,'sub_type')+'</span></div><iconify-icon icon="lucide:chevron-left" style="color:var(--muted)"></iconify-icon></div>';
+  if(!present.length){ wrap.innerHTML='<div class="empty-state">'+t('emptyList')+'</div>'; return; }
+  wrap.innerHTML = present.map(function(c){
+    var lbl = STATE.curLang==='fr'?c[3]:c[2];
+    var count = (STATE.facilities||[]).filter(function(f){return f.category===c[0];}).length;
+    var meta = CAT_ICONS[c[0]] || CAT_ICONS._default;
+    var countTxt = STATE.curLang==='fr' ? (count+(count===1?' lieu':' lieux')) : (count+(count===1?' مرفق':' مرافق'));
+    return '<div class="cat-tile" onclick="openGuideCat(\''+c[0]+'\')">'
+      + '<div class="cat-tile-icon" style="background:'+meta.bg+';color:'+meta.fg+'"><iconify-icon icon="'+meta.icon+'"></iconify-icon></div>'
+      + '<div class="cat-tile-name">'+lbl+'</div>'
+      + '<div class="cat-tile-count">'+countTxt+'</div>'
+      + '</div>';
   }).join('');
 }
-function setGuideCat(c){ STATE.guideCat=c; renderGuideScreen(); haptic(6); }
+function openGuideCat(cat){
+  var conf = FAC_CATEGORIES.find(function(c){return c[0]===cat;});
+  var meta = CAT_ICONS[cat] || CAT_ICONS._default;
+  document.getElementById('guideCatTitle').textContent = conf ? (STATE.curLang==='fr'?conf[3]:conf[2]) : '';
+  var list = (STATE.facilities||[]).filter(function(f){return f.category===cat;});
+  var wrap = document.getElementById('guideCatList');
+  wrap.innerHTML = !list.length ? '<div class="empty-state">'+t('emptyList')+'</div>' : list.map(function(f){
+    var imgHtml = f.image_url
+      ? '<img src="'+f.image_url+'" loading="lazy">'
+      : '<div class="ph" style="background:'+meta.bg+';color:'+meta.fg+'"><iconify-icon icon="'+meta.icon+'"></iconify-icon></div>';
+    return '<div class="fac-card" onclick="openFacilityDetail('+f.id+')">'+imgHtml+'<div class="t"><b>'+_f(f,'name')+'</b><span>'+(_f(f,'sub_type')||'')+'</span></div><iconify-icon icon="lucide:chevron-left" style="color:var(--muted)"></iconify-icon></div>';
+  }).join('');
+  openSheet('guideCatSheet');
+}
 function openFacilityDetail(id){
   var f=(STATE.facilities||[]).find(function(x){return String(x.id)===String(id);});
   if(!f) return;
