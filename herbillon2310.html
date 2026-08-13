@@ -173,7 +173,7 @@
 
         <!-- Tabs -->
         <div class="flex flex-wrap gap-2 mb-8">
-            <button onclick="switchTab('news')" id="tab-news" class="tab-btn active px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1"><span class="iconify" data-icon="lucide:newspaper"></span> الأخبار</button>
+            <button onclick="switchTab('news')" id="tab-news" class="tab-btn active px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1"><span class="iconify" data-icon="lucide:newspaper"></span> الإعلانات</button>
             <button onclick="switchTab('services')" id="tab-services" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1"><span class="iconify" data-icon="lucide:file-text"></span> الخدمات</button>
             <button onclick="switchTab('archives')" id="tab-archives" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1"><span class="iconify" data-icon="lucide:images"></span> الأرشيف</button>
             <button onclick="switchTab('tourism')" id="tab-tourism" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1"><span class="iconify" data-icon="lucide:compass"></span> السياحة</button>
@@ -190,14 +190,14 @@
                 <button onclick="toggleFormPanel('news')" id="btn-open-news"
                         class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-md">
                     <span class="iconify text-lg" data-icon="lucide:plus-circle"></span>
-                    إضافة خبر جديد
+                    إضافة إعلان جديد
                 </button>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div id="form-panel-news" class="form-panel">
                     <h3 class="font-extrabold text-gray-800 mb-4 flex items-center gap-2">
                         <span class="iconify text-emerald-500" data-icon="lucide:plus-circle"></span>
-                        <span id="news-form-title">إضافة خبر جديد</span>
+                        <span id="news-form-title">إضافة إعلان جديد</span>
                     </h3>
                     <input type="hidden" id="news-edit-id" value="">
                     <div class="space-y-3">
@@ -208,12 +208,8 @@
                             <input id="news-title-fr" type="text" placeholder="Titre de l'actualité en français..." class="border-blue-200">
                         </div>
                         <div><label class="text-xs font-bold text-gray-500 mb-1 block">التصنيف</label>
-                            <select id="news-category">
-                                <option value="official">📢 إعلان رسمي</option>
-                                <option value="activity">🏗️ نشاط بلدي</option>
-                                <option value="social">🤝 ركن المجتمع</option>
-                                <option value="poster">🖼️ ملصق إعلاني</option>
-                            </select>
+                            <div class="bg-red-50 border border-red-200 rounded-xl px-3 py-2.5 text-xs font-bold text-red-700 flex items-center gap-1.5">📢 إعلان رسمي</div>
+                            <input type="hidden" id="news-category" value="official">
                         </div>
                         <div><label id="news-content-label" class="text-xs font-bold text-gray-500 mb-1 block">المحتوى (عربي)</label><textarea id="news-content" placeholder="نص الخبر الكامل..." rows="4"></textarea></div>
                         <!-- 🇫🇷 ترجمة فرنسية للمحتوى -->
@@ -241,7 +237,7 @@
                             <label class="text-xs font-bold text-gray-500 mb-2 block">🖼️ الصورة المميزة</label>
 
                             <!-- ✅ خيارات الصور الجاهزة — تظهر فقط للإعلانات الرسمية -->
-                            <div id="news-preset-wrap" class="hidden mb-3">
+                            <div id="news-preset-wrap" class="mb-3">
                                 <p class="text-[11px] text-gray-400 mb-2 font-semibold">اختر نوع الإعلان (صورة جاهزة):</p>
                                 <div class="grid grid-cols-2 gap-2" id="news-preset-grid">
                                     <!-- إعلان -->
@@ -324,7 +320,7 @@
                         </div>
 
                         <!-- 🇫🇷 الصورة المميزة الفرنسية — للإعلانات الرسمية فقط -->
-                        <div id="news-image-fr-wrap" class="hidden border-r-2 border-blue-400 pr-3 bg-blue-50 rounded-lg py-2 px-2">
+                        <div id="news-image-fr-wrap" class="border-r-2 border-blue-400 pr-3 bg-blue-50 rounded-lg py-2 px-2">
                             <label class="text-xs font-bold text-blue-600 mb-2 block">🇫🇷 Bannière — Français <span class="text-gray-400 font-normal">(صورة مميزة للنسخة الفرنسية)</span></label>
                             <div id="news-featured-fr-widget" class="upload-widget p-3 cursor-pointer border-blue-200" onclick="triggerUpload('news-featured-fr-input')">
                                 <div id="news-featured-fr-placeholder" class="flex flex-col items-center gap-1 py-3">
@@ -1215,25 +1211,22 @@ async function deleteMultipleFromGitHub(urls = []) {
 // ═══════════════════════════════
 // NEWS
 // ═══════════════════════════════
-const catLabels={official:'📢 إعلان رسمي',activity:'🏗️ نشاط بلدي',social:'🤝 ركن المجتمع',poster:'🖼️ ملصق إعلاني'};
-const catColors={official:'red',activity:'emerald',social:'purple',poster:'indigo'};
-
 async function loadNews(){
     try {
         const res=await fetch('/api/news',{headers:authHeaders()});
         const d=await res.json(); const list=document.getElementById('news-list');
-        if(!d.success||!d.data?.length){list.innerHTML='<p class="text-gray-400 text-sm text-center py-8">لا توجد أخبار بعد</p>';return;}
-        list.innerHTML=d.data.map(n=>`
+        const items=(d.data||[]).filter(n=>n.category==='official');
+        if(!d.success||!items.length){list.innerHTML='<p class="text-gray-400 text-sm text-center py-8">لا توجد إعلانات بعد</p>';return;}
+        list.innerHTML=items.map(n=>`
             <div class="item-card">
                 <div class="flex items-start gap-3">
                     ${n.image_url?`<img src="${n.image_url}" class="w-16 h-14 object-cover rounded-xl flex-shrink-0">`:'<div class="w-16 h-14 bg-gray-100 rounded-xl flex items-center justify-center flex-shrink-0"><span class="iconify text-gray-300 text-xl" data-icon="lucide:image-off"></span></div>'}
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center gap-2 mb-1 flex-wrap">
-                            <span class="inline-block bg-${catColors[n.category]||'gray'}-100 text-${catColors[n.category]||'gray'}-700 text-[10px] font-bold px-2 py-0.5 rounded-full">${catLabels[n.category]||n.category}</span>
-                            ${n.is_pinned==1?'<span class="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full border border-emerald-200 font-bold">📌</span>':''}
+                            ${n.is_pinned==1?'<span class="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full border border-emerald-200 font-bold">📌 مثبت</span>':''}
                             <span class="text-[10px] text-gray-400">${n.date}</span>
                         </div>
-                        <h4 class="font-bold text-gray-800 text-sm truncate mb-1">${n.title}</h4>
+                        <h4 class="font-bold text-gray-800 text-sm truncate mb-1">${n.title||n.custom_label||'إعلان بدون عنوان'}</h4>
                         <p class="text-xs text-gray-500 line-clamp-2">${(n.content||'').substring(0,90)}...</p>
                     </div>
                     <div class="flex flex-col gap-1 flex-shrink-0">
@@ -1250,7 +1243,7 @@ async function saveNews(){
     const body={
         title:document.getElementById('news-title').value,
         title_fr:document.getElementById('news-title-fr')?.value||'',
-        category:document.getElementById('news-category').value,
+        category:'official',
         content:document.getElementById('news-content').value,
         content_fr:document.getElementById('news-content-fr')?.value||'',
         image_url:    document.getElementById('news-image').value,
@@ -1261,14 +1254,11 @@ async function saveNews(){
         custom_label:    clEl?clEl.value:'',
         custom_label_fr: document.getElementById('news-custom-label-fr')?.value||''
     };
-    const isOfficial = body.category === 'official' || body.category === 'poster';
-    const isOptionalContent = body.category === 'official' || body.category === 'poster';
-    if(!isOptionalContent && !body.content){adminToast('المحتوى مطلوب');return;}
-    if(!isOfficial && !body.title){adminToast('العنوان مطلوب');return;}
+    // العنوان والمحتوى اختياريان دائماً للإعلانات الرسمية
     try {
         const res=await fetch(editId?'/api/news?id='+editId:'/api/news',{method:editId?'PUT':'POST',headers:{...authHeaders(),'Content-Type':'application/json'},body:JSON.stringify(body)});
         const d=await res.json();
-        if(d.success){adminToast(editId?'تم تعديل الخبر':'تم إضافة الخبر');cancelNewsEdit();loadNews();}
+        if(d.success){adminToast(editId?'تم تعديل الإعلان':'تم إضافة الإعلان');cancelNewsEdit();loadNews();}
         else adminToast('خطأ: '+(d.error||''));
     } catch { adminToast('تعذر الحفظ'); }
 }
@@ -1279,7 +1269,6 @@ async function editNews(id){
         document.getElementById('news-edit-id').value=n.id;
         document.getElementById('news-title').value=n.title;
         if(document.getElementById('news-title-fr')) document.getElementById('news-title-fr').value=n.title_fr||'';
-        document.getElementById('news-category').value=n.category;
         document.getElementById('news-content').value=n.content;
         if(document.getElementById('news-content-fr')) document.getElementById('news-content-fr').value=n.content_fr||'';
         document.getElementById('news-date').value=n.date;
@@ -1291,12 +1280,9 @@ async function editNews(id){
             const matchKey = Object.keys(PRESET_IMAGES).find(k=>PRESET_IMAGES[k].ar===n.image_url||PRESET_IMAGES[k].fr===n.image_url);
             if(matchKey){ selectPresetImage(matchKey); }
         }
-        // الصورة الفرنسية — للإعلانات الرسمية فقط
         if(document.getElementById('news-image-fr')){
             document.getElementById('news-image-fr').value=n.image_url_fr||'';
             document.getElementById('news-image-fr-url-manual').value=n.image_url_fr||'';
-            const frWrap=document.getElementById('news-image-fr-wrap');
-            if(frWrap) frWrap.classList.toggle('hidden', n.category!=='official');
             if(n.image_url_fr){
                 document.getElementById('news-featured-fr-placeholder').classList.add('hidden');
                 document.getElementById('news-featured-fr-img').src=n.image_url_fr;
@@ -1317,65 +1303,21 @@ async function editNews(id){
             document.getElementById('news-featured-preview').classList.remove('hidden');
             document.getElementById('news-featured-widget').classList.add('has-image');
         }
-        document.getElementById('news-form-title').textContent='تعديل الخبر';
+        document.getElementById('news-form-title').textContent='تعديل الإعلان';
 
     toggleFormPanel('news', true);        document.getElementById('news-save-btn').textContent='تحديث';
         document.getElementById('news-cancel-btn').classList.remove('hidden');
         window.scrollTo({top:0,behavior:'smooth'});
     } catch {}
 }
-// عنوان الإعلانات الرسمية اختياري
+// العنوان اختياري دائماً — كل الإعلانات الآن من فئة "رسمي"
 document.addEventListener('DOMContentLoaded', function(){
-    const catSel = document.getElementById('news-category');
     const titleInp = document.getElementById('news-title');
-    const titleLabel = titleInp ? titleInp.closest('div')?.querySelector('label') : null;
-    const contentInp = document.getElementById('news-content');
-    const contentLabel = document.getElementById('news-content-label');
-    function updateTitleRequired(){
-        if(!titleInp) return;
-        const isPoster = catSel && catSel.value === 'poster';
-        const isOfficial = catSel && catSel.value === 'official';
-        // إظهار حقل الصورة الفرنسية للإعلانات الرسمية فقط
-        const frImgWrap = document.getElementById('news-image-fr-wrap');
-        if(frImgWrap) frImgWrap.classList.toggle('hidden', !isOfficial);
-        if(isPoster){
-            titleInp.placeholder = 'اختياري للملصقات...';
-            titleInp.removeAttribute('required');
-            if(titleLabel) titleLabel.textContent = 'العنوان (اختياري)';
-            if(contentInp) contentInp.placeholder = 'وصف اختياري للملصق...';
-            if(contentLabel) contentLabel.textContent = 'الوصف (اختياري)';
-        } else if(isOfficial){
-            titleInp.placeholder = 'اختياري للإعلانات الرسمية...';
-            titleInp.removeAttribute('required');
-            if(titleLabel) titleLabel.textContent = 'العنوان (اختياري)';
-            if(contentInp) contentInp.placeholder = 'نص الخبر الكامل...';
-            if(contentLabel) contentLabel.textContent = 'المحتوى';
-        } else {
-            titleInp.placeholder = 'عنوان الخبر...';
-            if(titleLabel) titleLabel.textContent = 'العنوان';
-            if(contentInp) contentInp.placeholder = 'نص الخبر الكامل...';
-            if(contentLabel) contentLabel.textContent = 'المحتوى';
-        }
-    }
-    if(catSel){
-        catSel.addEventListener('change', updateTitleRequired);
-        catSel.addEventListener('change', function(){
-            const isOfficial = catSel.value === 'official';
-            const wrap = document.getElementById('news-preset-wrap');
-            if (wrap) { isOfficial ? wrap.classList.remove('hidden') : wrap.classList.add('hidden'); }
-            if (!isOfficial && typeof clearPresetImage === 'function') clearPresetImage();
-            // FR image wrap
-            const frWrap = document.getElementById('news-image-fr-wrap');
-            if (frWrap) { isOfficial ? frWrap.classList.remove('hidden') : frWrap.classList.add('hidden'); }
-        });
-        updateTitleRequired();
-        // init on load
-        const initOfficial = catSel.value === 'official';
-        const pw = document.getElementById('news-preset-wrap');
-        if(pw && initOfficial) pw.classList.remove('hidden');
-        const fw = document.getElementById('news-image-fr-wrap');
-        if(fw && initOfficial) fw.classList.remove('hidden');
-    }
+    if(!titleInp) return;
+    const titleLabel = titleInp.closest('div')?.querySelector('label');
+    titleInp.placeholder = 'اختياري للإعلانات الرسمية...';
+    titleInp.removeAttribute('required');
+    if(titleLabel) titleLabel.textContent = 'العنوان (اختياري)';
 });
 // ── دوال الصور الجاهزة للإعلانات ──
 const PRESET_IMAGES = {
@@ -1440,7 +1382,7 @@ function cancelNewsEdit(){
     if(clEl3) clEl3.value='';
     if(document.getElementById('news-custom-label-fr')) document.getElementById('news-custom-label-fr').value='';
     newsAlbumUrls=[]; document.getElementById('news-album-urls').value='[]'; renderAlbum();
-    document.getElementById('news-form-title').textContent='إضافة خبر جديد'; toggleFormPanel('news', false);
+    document.getElementById('news-form-title').textContent='إضافة إعلان جديد'; toggleFormPanel('news', false);
     document.getElementById('news-save-btn').textContent='حفظ';
     document.getElementById('news-cancel-btn').classList.add('hidden');
 }
