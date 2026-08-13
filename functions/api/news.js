@@ -37,7 +37,7 @@ export async function onRequestPost(context) {
     } = await context.request.json();
 
     if (!category) return err('category مطلوبة');
-    if (category !== 'poster' && !content) return err('content مطلوب');
+    if (category !== 'poster' && category !== 'official' && !content) return err('content مطلوب');
 
     const { meta } = await context.env.DB.prepare(`
       INSERT INTO news
