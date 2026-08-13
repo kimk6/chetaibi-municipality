@@ -374,10 +374,6 @@ a{text-decoration:none;color:inherit;}
     <div class="page-head"><button class="round-btn" onclick="goBack()" aria-label="رجوع"><iconify-icon icon="lucide:arrow-right"></iconify-icon></button><h1>المزيد</h1></div>
     <div class="screen-scroll">
       <div class="list-pad">
-        <div class="section-head" style="padding:0 0 10px"><h2>الأخبار</h2></div>
-        <div id="newsAnchor"></div>
-        <div id="newsFullList"></div>
-
         <div class="section-head" style="padding:18px 0 10px"><h2>الخدمات الإدارية</h2></div>
         <div class="chip-row" id="servicesChips" style="padding:0 0 12px;background:none;border:none"></div>
         <div id="servicesAnchor"></div>
@@ -606,7 +602,7 @@ function playHeroTypewriter(){
 
 function renderAll(){
   renderHomeDest(); renderExploreScreen(); renderGuideScreen();
-  renderNewsList(); renderServicesList(); renderArchiveList(); renderFavorites();
+  renderServicesList(); renderArchiveList(); renderFavorites();
   renderMapChips(); renderMunicipalityScreen();
   updateLangUI();
 }
@@ -893,21 +889,6 @@ function renderFavorites(){
   }).join('');
 }
 
-/* ══ الأخبار ══ */
-function renderNewsList(){
-  var wrap = document.getElementById('newsFullList');
-  if(!(STATE.news||[]).length){ wrap.innerHTML='<div class="empty-state">'+t('emptyList')+'</div>'; return; }
-  wrap.innerHTML = STATE.news.map(function(n){
-    return '<div class="list-card" onclick="openNewsDetail('+n.id+')"><img src="'+(n.image_url||'')+'" loading="lazy"><div class="t"><b>'+_f(n,'title')+'</b><span>'+(n.date||'')+(n.category==='official'?' · '+t('official'):'')+'</span></div></div>';
-  }).join('');
-}
-function openNewsDetail(id){
-  var n=(STATE.news||[]).find(function(x){return String(x.id)===String(id);});
-  if(!n) return;
-  document.getElementById('detailSheetBody').innerHTML = (n.image_url?'<img class="sheet-img" src="'+n.image_url+'">':'')+'<h2>'+_f(n,'title')+'</h2><div class="sub">'+(n.date||'')+'</div><p>'+_f(n,'content')+'</p>';
-  openSheet('detailSheet');
-}
-
 /* ══ الإعلانات الرسمية (ضمن شاشة البلدية) — تعتمد على صورة الألبوم المرفقة، لا الصورة المميزة ══ */
 function _annAttachedImg(n){
   try{ var a=JSON.parse(n.album_urls||'[]'); return (a&&a[0])||''; }catch(e){ return ''; }
@@ -980,7 +961,7 @@ function renderMunicipalityScreen(){
 
 /* ══ البحث ══ */
 var _searchCategory = null;
-var SEARCH_CATS = [['beach',t('beach')],['landmark',t('landmark')],['facility','مرافق'],['news','أخبار'],['era','تاريخ']];
+var SEARCH_CATS = [['beach',t('beach')],['landmark',t('landmark')],['facility','مرافق'],['news','الإعلانات'],['era','تاريخ']];
 
 function onSearchFocus(){
   document.getElementById('searchInlinePanel').classList.remove('hidden');
@@ -1006,18 +987,18 @@ function searchPool(){
     (STATE.beaches||[]).map(function(x){return {item:x,type:'beach',label:t('beach')};}),
     (STATE.tourism||[]).map(function(x){return {item:x,type:'landmark',label:t('landmark')};}),
     (STATE.facilities||[]).map(function(x){return {item:x,type:'facility',label:'مرفق'};}),
-    (STATE.news||[]).map(function(x){return {item:x,type:'news',label:'خبر'};}),
+    (STATE.news||[]).filter(function(x){return x.category==='official' && _annAttachedImg(x);}).map(function(x){return {item:x,type:'news',label:'إعلان'};}),
     TIMELINE_ERAS.map(function(x){return {item:x,type:'era',label:'من التاريخ'};})
   );
 }
 function searchTitleOf(r){
-  if(r.type==='news') return _f(r.item,'title');
+  if(r.type==='news') return _f(r.item,'title') || r.item.custom_label || 'إعلان رسمي';
   if(r.type==='era') return STATE.curLang==='fr'?r.item.title_fr:r.item.title_ar;
   return _f(r.item,'name');
 }
 function searchActionOf(r){
   if(r.type==='facility') return 'openFacilityDetail('+r.item.id+')';
-  if(r.type==='news') return 'openNewsDetail('+r.item.id+')';
+  if(r.type==='news') return 'openAnnouncementSheet('+r.item.id+')';
   if(r.type==='era') return "switchScreen('more');setTimeout(scrollToArchive,300)";
   return "openPlaceDetail('"+r.type+"',"+r.item.id+")";
 }
