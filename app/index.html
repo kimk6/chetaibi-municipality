@@ -213,17 +213,43 @@ a{text-decoration:none;color:inherit;}
 .tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
 .tag-chip{background:var(--bg-2);color:var(--text-2);font-size:10.5px;font-weight:700;padding:5px 11px;border-radius:999px;}
 
-/* ═══ تاريخ شطايبي ═══ */
-.era-card{border-radius:18px;padding:16px;margin-bottom:12px;color:#fff;position:relative;}
-.era-date{font-family:'Outfit','Cairo',sans-serif;font-size:10.5px;font-weight:700;opacity:.9;}
-.era-card h3{font-size:15px;font-weight:800;margin:5px 0 8px;}
-.era-card p{font-size:12px;line-height:1.8;opacity:.95;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
-.era-card p.expanded{-webkit-line-clamp:unset;}
-.ba-title{font-size:13px;font-weight:800;margin:4px 0 8px;color:var(--ink);}
-.ba-wrap{display:flex;flex-direction:column;border-radius:16px;overflow:hidden;height:210px;margin-bottom:16px;}
-.ba-half{position:relative;flex:1;overflow:hidden;}
-.ba-half img{width:100%;height:100%;object-fit:cover;display:block;}
-.ba-tag{position:absolute;top:8px;right:8px;z-index:2;font-size:9px;font-weight:800;background:rgba(0,0,0,.55);color:#fff;padding:3px 9px;border-radius:999px;}
+/* ═══ شاشة تاريخ شطايبي ═══ */
+.hist-hero{position:relative;height:148px;overflow:hidden;}
+.hist-hero img{width:100%;height:100%;object-fit:cover;}
+.hist-hero .ov{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.6),transparent 65%);}
+.hist-hero .txt{position:absolute;bottom:12px;right:18px;left:18px;color:#fff;font-size:12.5px;font-weight:700;}
+
+/* الخط الزمني */
+.timeline{position:relative;}
+.timeline::before{content:'';position:absolute;top:4px;bottom:4px;right:23px;width:3px;border-radius:3px;background:linear-gradient(180deg,#C97F1F,#0891B2,#DC2626,#16A34A);}
+.tl-item{position:relative;padding-right:56px;margin-bottom:22px;}
+.tl-item:last-child{margin-bottom:0;}
+.tl-node{position:absolute;top:0;right:8px;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;box-shadow:0 0 0 5px var(--bg),0 4px 10px rgba(0,0,0,.18);z-index:2;flex-shrink:0;}
+.tl-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px 16px;}
+.tl-date{font-family:'Outfit','Cairo',sans-serif;font-size:10px;font-weight:800;display:inline-block;padding:3px 11px;border-radius:999px;color:#fff;margin-bottom:8px;}
+.tl-title{font-size:14.5px;font-weight:800;color:var(--ink);margin-bottom:6px;}
+.tl-text{font-size:12.5px;color:var(--text-2);line-height:1.8;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.tl-text.expanded{-webkit-line-clamp:unset;}
+
+/* بين الأمس واليوم — مقارنة بالسحب */
+.ba-card{margin-bottom:22px;}
+.ba-card:last-child{margin-bottom:0;}
+.ba-title2{font-size:13.5px;font-weight:800;color:var(--ink);margin-bottom:3px;}
+.ba-desc{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:10px;}
+.ba-slider{position:relative;border-radius:16px;overflow:hidden;height:210px;background:var(--bg-2);touch-action:pan-y;user-select:none;-webkit-user-select:none;}
+.ba-slider img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;-webkit-user-drag:none;}
+.ba-slider .ba-old{clip-path:inset(0 50% 0 0);}
+.ba-side-label{position:absolute;top:10px;z-index:3;font-size:9.5px;font-weight:800;color:#fff;background:rgba(0,0,0,.5);padding:3px 10px;border-radius:999px;pointer-events:none;}
+.ba-label-old{left:10px;}
+.ba-label-new{right:10px;}
+.ba-handle{position:absolute;top:0;bottom:0;left:50%;z-index:4;pointer-events:none;transform:translateX(-50%);}
+.ba-handle::before{content:'';position:absolute;top:0;bottom:0;right:-1.5px;width:3px;background:#fff;box-shadow:0 0 6px rgba(0,0,0,.4);}
+.ba-grip{position:absolute;top:50%;right:-17px;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--ink);}
+
+/* معرض الصور التاريخية */
+.hist-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.hist-gallery img{width:100%;height:104px;object-fit:cover;border-radius:12px;background:var(--bg-2);transition:transform .12s,opacity .12s;}
+.hist-gallery img:active{transform:scale(.94);opacity:.8;}
 
 #mapView{position:absolute;inset:0;}
 .empty-state{text-align:center;color:var(--muted);padding:40px 20px;font-size:13px;}
@@ -279,7 +305,7 @@ a{text-decoration:none;color:inherit;}
         <div class="quick-item" onclick="switchScreen('explore');setExploreTab('beach')"><div class="qi" style="background:var(--pastel1);color:var(--p1-i)"><iconify-icon icon="lucide:waves"></iconify-icon></div><span>الشواطئ</span></div>
         <div class="quick-item" onclick="switchScreen('explore');setExploreTab('landmark')"><div class="qi" style="background:var(--pastel2);color:var(--p2-i)"><iconify-icon icon="lucide:landmark"></iconify-icon></div><span>معالم</span></div>
         <div class="quick-item" onclick="switchScreen('map')"><div class="qi" style="background:var(--pastel5);color:var(--p5-i)"><iconify-icon icon="lucide:map"></iconify-icon></div><span>الخريطة</span></div>
-        <div class="quick-item" onclick="openArchiveFromHome()"><div class="qi" style="background:var(--pastel4);color:var(--p4-i)"><iconify-icon icon="lucide:scroll-text"></iconify-icon></div><span>الأرشيف</span></div>
+        <div class="quick-item" onclick="switchScreen('history')"><div class="qi" style="background:var(--pastel4);color:var(--p4-i)"><iconify-icon icon="lucide:scroll-text"></iconify-icon></div><span>الأرشيف</span></div>
       </div>
 
       <div class="section-head"><h2>أبرز الوجهات</h2><a onclick="switchScreen('explore')">عرض الكل ‹</a></div>
@@ -346,8 +372,8 @@ a{text-decoration:none;color:inherit;}
         </div>
       </div>
 
-      <div class="promo-card" onclick="openArchiveFromHome()">
-        <img src="https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=600" loading="lazy">
+      <div class="promo-card" onclick="switchScreen('history')">
+        <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/archives.webp" loading="lazy">
         <div class="ov"></div>
         <div class="txt"><b>تاريخ شطايبي</b><span>من تاكاتوا الرومانية إلى اليوم</span></div>
       </div>
@@ -389,6 +415,25 @@ a{text-decoration:none;color:inherit;}
     <div class="screen-scroll"><div class="list-pad" id="municipalityBody"></div></div>
   </div>
 
+  <!-- ═══ تاريخ شطايبي (خط زمني + مقارنات + معرض صور) ═══ -->
+  <div class="screen" id="screen-history">
+    <div class="page-head"><button class="round-btn" onclick="goBack()" aria-label="رجوع"><iconify-icon icon="lucide:arrow-right"></iconify-icon></button><h1>تاريخ شطايبي</h1></div>
+    <div class="screen-scroll">
+      <div class="hist-hero"><img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/archives.webp" loading="lazy"><div class="ov"></div><div class="txt">رحلة عبر عصور شطايبي</div></div>
+      <div class="list-pad">
+        <div class="section-head" style="padding:2px 0 16px"><h2>الخط الزمني عبر العصور</h2></div>
+        <div class="timeline" id="histTimeline"></div>
+
+        <div class="section-head" style="padding:28px 0 4px"><h2>بين الأمس واليوم</h2></div>
+        <p style="font-size:11px;color:var(--muted);font-weight:600;margin-bottom:14px">اسحب المؤشر يميناً ويساراً للمقارنة</p>
+        <div id="histCompare"></div>
+
+        <div class="section-head" style="padding:12px 0 12px"><h2>صور تاريخية متنوعة</h2></div>
+        <div class="hist-gallery" id="histGallery"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- ═══ المزيد ═══ -->
   <div class="screen" id="screen-more">
     <div class="page-head"><button class="round-btn" onclick="goBack()" aria-label="رجوع"><iconify-icon icon="lucide:arrow-right"></iconify-icon></button><h1>المزيد</h1></div>
@@ -400,8 +445,7 @@ a{text-decoration:none;color:inherit;}
         <div id="servicesList"></div>
 
         <div class="section-head" style="padding:18px 0 10px"><h2>الأرشيف والتاريخ</h2></div>
-        <div id="archiveAnchor"></div>
-        <div id="archiveList"></div>
+        <div class="list-card" onclick="switchScreen('history')"><div class="qi"><iconify-icon icon="lucide:scroll-text"></iconify-icon></div><div class="t"><b>تاريخ شطايبي</b><span>الخط الزمني، صور الأمس واليوم، صور تاريخية</span></div><iconify-icon icon="lucide:chevron-left" style="color:var(--muted)"></iconify-icon></div>
 
         <div class="section-head" style="padding:18px 0 10px"><h2>عن البلدية</h2></div>
         <div class="list-card" onclick="switchScreen('municipality')"><div class="qi"><iconify-icon icon="lucide:building-2"></iconify-icon></div><div class="t"><b>البلدية والمجلس والاتصال</b><span>معلومات، المجلس الشعبي، اتصل بنا</span></div><iconify-icon icon="lucide:chevron-left" style="color:var(--muted)"></iconify-icon></div>
@@ -455,6 +499,13 @@ a{text-decoration:none;color:inherit;}
 <div class="guide-cat-sheet" id="guideCatSheet">
   <div class="page-head"><button class="round-btn" onclick="closeSheet('guideCatSheet')" aria-label="رجوع"><iconify-icon icon="lucide:arrow-right"></iconify-icon></button><h1 id="guideCatTitle">التصنيف</h1></div>
   <div class="screen-scroll"><div class="list-pad" id="guideCatList"></div></div>
+</div>
+
+<!-- شيت: عرض صورة تاريخية بملء الشاشة (يعيد استخدام أنماط عارض الصور نفسها) -->
+<div class="sheet-overlay ann-img-overlay" id="histImgSheetOverlay" onclick="closeSheet('histImgSheet')"></div>
+<div class="ann-img-sheet" id="histImgSheet" onclick="closeSheet('histImgSheet')">
+  <button class="ann-img-close" onclick="event.stopPropagation();closeSheet('histImgSheet')" aria-label="إغلاق"><iconify-icon icon="lucide:x"></iconify-icon></button>
+  <img id="histImgSheetImg" src="" alt="" onclick="event.stopPropagation()">
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -642,7 +693,7 @@ function playHeroTypewriter(){
 
 function renderAll(){
   renderHomeDest(); renderExploreScreen(); renderGuideScreen();
-  renderServicesList(); renderArchiveList(); renderFavorites();
+  renderServicesList(); renderHistoryScreen(); renderFavorites();
   renderMapChips(); renderMunicipalityScreen();
   updateLangUI();
 }
@@ -804,8 +855,6 @@ function renderHomeDest(){
     return '<div class="dest-card"><img src="'+(p.image_url||'')+'" loading="lazy" onclick="openPlaceDetail(\''+p._type+'\','+p.id+')"><div class="heart'+(fav?' active':'')+'" onclick="event.stopPropagation();toggleFav(\''+p._type+'\','+p.id+',this)"><iconify-icon icon="lucide:heart"></iconify-icon></div><div class="ov"></div><div class="txt" onclick="openPlaceDetail(\''+p._type+'\','+p.id+')"><b>'+_f(p,'name')+'</b></div></div>';
   }).join('');
 }
-function openArchiveFromHome(){ switchScreen('more'); setTimeout(scrollToArchive, 60); }
-function scrollToArchive(){ var el=document.getElementById('archiveAnchor'); if(el) el.scrollIntoView(); }
 
 /* ══ استكشف (شواطئ+معالم) ══ */
 function renderExploreScreen(){
@@ -987,19 +1036,70 @@ function openServiceDetail(id){
   openSheet('detailSheet');
 }
 
-/* ══ الأرشيف ══ */
-function renderArchiveList(){
-  var wrap = document.getElementById('archiveList');
-  var html = TIMELINE_ERAS.map(function(era){
+/* ══ تاريخ شطايبي (شاشة كاملة) ══ */
+var HIST_ICONS = {era1:'lucide:anchor', era2:'lucide:compass', era3:'lucide:mountain', era4:'lucide:flag'};
+function renderHistoryScreen(){
+  // 1) الخط الزمني عبر العصور
+  var tl = document.getElementById('histTimeline');
+  tl.innerHTML = TIMELINE_ERAS.map(function(era){
     var title=STATE.curLang==='fr'?era.title_fr:era.title_ar, date=STATE.curLang==='fr'?era.date_fr:era.date_ar, text=STATE.curLang==='fr'?era.text_fr:era.text_ar;
-    return '<div class="era-card" style="background:'+era.color+'"><div class="era-date">'+date+'</div><h3>'+title+'</h3><p onclick="this.classList.toggle(\'expanded\')">'+text+'</p></div>';
+    var icon = HIST_ICONS[era.id]||'lucide:circle-dot';
+    return '<div class="tl-item"><div class="tl-node" style="background:'+era.color+'"><iconify-icon icon="'+icon+'"></iconify-icon></div><div class="tl-card"><span class="tl-date" style="background:'+era.color+'">'+date+'</span><div class="tl-title">'+title+'</div><div class="tl-text" onclick="this.classList.toggle(\'expanded\')">'+text+'</div></div></div>';
   }).join('');
-  if((STATE.archives||[]).length){
-    html += STATE.archives.map(function(a){
-      return '<div class="ba-title">'+_f(a,'title')+'</div><div class="ba-wrap"><div class="ba-half"><span class="ba-tag">'+(STATE.curLang==='fr'?'Avant':'قديم')+'</span><img src="'+a.image_old_url+'" loading="lazy"></div><div class="ba-half"><span class="ba-tag">'+(STATE.curLang==='fr'?'Après':'حديث')+'</span><img src="'+a.image_new_url+'" loading="lazy"></div></div>';
+
+  // 2) بين الأمس واليوم — مقارنة بالسحب
+  var cWrap = document.getElementById('histCompare');
+  var archives = STATE.archives||[];
+  if(!archives.length){
+    cWrap.innerHTML = '<div class="empty-state">'+t('emptyList')+'</div>';
+  } else {
+    cWrap.innerHTML = archives.map(function(a){
+      var desc = _f(a,'description');
+      return '<div class="ba-card">'
+        + '<div class="ba-title2">'+_f(a,'title')+(a.year?' · '+a.year:'')+'</div>'
+        + (desc?'<div class="ba-desc">'+desc+'</div>':'')
+        + '<div class="ba-slider">'
+        +   '<img src="'+a.image_new_url+'" loading="lazy">'
+        +   '<div class="ba-old"><img src="'+a.image_old_url+'" loading="lazy"></div>'
+        +   '<span class="ba-side-label ba-label-old">'+(STATE.curLang==='fr'?'Avant':'قديم')+'</span>'
+        +   '<span class="ba-side-label ba-label-new">'+(STATE.curLang==='fr'?'Après':'حديث')+'</span>'
+        +   '<div class="ba-handle"><div class="ba-grip"><iconify-icon icon="lucide:chevrons-left-right"></iconify-icon></div></div>'
+        + '</div></div>';
     }).join('');
+    setTimeout(initBaSliders, 30);
   }
-  wrap.innerHTML = html;
+
+  // 3) صور تاريخية متنوعة (الصور القديمة من كل مقارنات الأرشيف)
+  var gWrap = document.getElementById('histGallery');
+  var photos = archives.filter(function(a){return a.image_old_url;}).map(function(a){return a.image_old_url;});
+  gWrap.innerHTML = !photos.length ? '<div class="empty-state">'+t('emptyList')+'</div>' : photos.map(function(url){
+    return '<img src="'+url+'" loading="lazy" onclick="openHistImg(\''+url.replace(/'/g,"\\'")+'\')">';
+  }).join('');
+}
+function openHistImg(url){
+  document.getElementById('histImgSheetImg').src = url;
+  openSheet('histImgSheet');
+}
+/* مقارنة أمس/اليوم بسحب اللمس أو الفأرة — Pointer Events تدعم الاثنين معاً */
+function initBaSliders(){
+  document.querySelectorAll('.ba-slider').forEach(function(el){
+    var clipEl = el.querySelector('.ba-old');
+    var handle = el.querySelector('.ba-handle');
+    function setPct(pct){
+      pct = Math.max(4, Math.min(96, pct));
+      clipEl.style.clipPath = 'inset(0 '+(100-pct)+'% 0 0)';
+      handle.style.left = pct+'%';
+    }
+    function moveTo(clientX){
+      var rect = el.getBoundingClientRect();
+      setPct(((clientX-rect.left)/rect.width)*100);
+    }
+    el.onpointerdown = function(e){ el._dragging=true; moveTo(e.clientX); try{el.setPointerCapture(e.pointerId);}catch(err){} };
+    el.onpointermove = function(e){ if(el._dragging) moveTo(e.clientX); };
+    el.onpointerup = function(){ el._dragging=false; };
+    el.onpointercancel = function(){ el._dragging=false; };
+    setPct(50);
+  });
 }
 
 /* ══ البلدية (شاشة كاملة: معلومات + المجلس الشعبي البلدي + اتصال) ══ */
@@ -1055,7 +1155,7 @@ function searchTitleOf(r){
 function searchActionOf(r){
   if(r.type==='facility') return 'openFacilityDetail('+r.item.id+')';
   if(r.type==='news') return 'openAnnouncementSheet('+r.item.id+')';
-  if(r.type==='era') return "switchScreen('more');setTimeout(scrollToArchive,300)";
+  if(r.type==='era') return "switchScreen('history')";
   return "openPlaceDetail('"+r.type+"',"+r.item.id+")";
 }
 function renderSearchChips(){
@@ -1119,7 +1219,7 @@ function switchScreen(name){
     }
   }
   _currentScreen = name;
-  ['home','guide','explore','map','favorites','municipality','more'].forEach(function(s){
+  ['home','guide','explore','map','favorites','municipality','history','more'].forEach(function(s){
     var el=document.getElementById('screen-'+s); if(el) el.classList.toggle('show', s===name);
   });
   ['home','municipality','favorites','more'].forEach(function(s){
@@ -1158,7 +1258,7 @@ window.addEventListener('popstate', function(){
   }
   if(_currentScreen !== 'home'){
     _currentScreen = 'home';
-    ['home','guide','explore','map','favorites','municipality','more'].forEach(function(s){
+    ['home','guide','explore','map','favorites','municipality','history','more'].forEach(function(s){
       var el=document.getElementById('screen-'+s); if(el) el.classList.toggle('show', s==='home');
     });
     ['home','municipality','favorites','more'].forEach(function(s){
