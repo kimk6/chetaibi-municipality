@@ -129,13 +129,8 @@ a{text-decoration:none;color:inherit;}
 .ws-footer-link{display:flex;align-items:center;gap:2px;font-size:11px;font-weight:800;color:var(--green);flex-shrink:0;background:var(--bg-2);border-radius:20px;padding:8px 12px;}
 .ws-footer-link iconify-icon{font-size:14px;}
 .ws-swim-bar{margin:18px 0 0;background:var(--bg-2);border-radius:12px;padding:12px;text-align:center;font-size:12.5px;font-weight:800;color:var(--text-2);}
-/* مقياس أمان الأمواج: تدرّج هادئ ← معتدل ← مرتفع مع مؤشر للقراءة الحالية */
 .promo-card{margin:8px 18px 4px;height:120px;border-radius:20px;position:relative;overflow:hidden;background:var(--green-d);}
 .promo-card img{width:100%;height:100%;object-fit:cover;}
-.promo-card .ov{position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,78,48,.9) 45%,rgba(10,78,48,.2) 100%);}
-.promo-card .txt{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 18px;color:#fff;z-index:2;}
-.promo-card .txt b{font-size:13.5px;font-weight:800;}
-.promo-card .txt span{font-size:10.5px;opacity:.85;margin-top:3px;max-width:75%;display:block;}
 
 /* ═══ تبويبات ═══ */
 .chip-row{display:flex;gap:8px;overflow-x:auto;padding:12px 18px;background:#fff;flex-shrink:0;border-bottom:1px solid var(--border);}
@@ -214,10 +209,10 @@ a{text-decoration:none;color:inherit;}
 .tag-chip{background:var(--bg-2);color:var(--text-2);font-size:10.5px;font-weight:700;padding:5px 11px;border-radius:999px;}
 
 /* ═══ شاشة تاريخ شطايبي ═══ */
-.hist-hero{position:relative;height:148px;overflow:hidden;}
-.hist-hero img{width:100%;height:100%;object-fit:cover;}
-.hist-hero .ov{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.6),transparent 65%);}
-.hist-hero .txt{position:absolute;bottom:12px;right:18px;left:18px;color:#fff;font-size:12.5px;font-weight:700;}
+/* شريط عنوان القسم — موسّط بخلفية باهتة، مع نص توضيحي أسفله */
+.hist-banner{text-align:center;background:var(--bg-2);border-radius:14px;padding:14px 18px;margin-bottom:16px;}
+.hist-banner h2{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:4px;}
+.hist-banner p{font-size:11.5px;color:var(--text-2);font-weight:600;line-height:1.6;}
 
 /* الخط الزمني */
 .timeline{position:relative;}
@@ -237,8 +232,10 @@ a{text-decoration:none;color:inherit;}
 .ba-title2{font-size:13.5px;font-weight:800;color:var(--ink);margin-bottom:3px;}
 .ba-desc{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:10px;}
 .ba-slider{position:relative;border-radius:16px;overflow:hidden;height:210px;background:var(--bg-2);touch-action:pan-y;user-select:none;-webkit-user-select:none;}
-.ba-slider img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;-webkit-user-drag:none;}
-.ba-slider .ba-old{clip-path:inset(0 50% 0 0);}
+.ba-slider>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;-webkit-user-drag:none;}
+/* إصلاح: يجب أن يكون لعنصر "القديم" أبعاد حقيقية (وليس فقط طفله) كي يُحسب clip-path بالنسب الصحيحة */
+.ba-old{position:absolute;inset:0;clip-path:inset(0 50% 0 0);}
+.ba-old img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;-webkit-user-drag:none;}
 .ba-side-label{position:absolute;top:10px;z-index:3;font-size:9.5px;font-weight:800;color:#fff;background:rgba(0,0,0,.5);padding:3px 10px;border-radius:999px;pointer-events:none;}
 .ba-label-old{left:10px;}
 .ba-label-new{right:10px;}
@@ -374,8 +371,6 @@ a{text-decoration:none;color:inherit;}
 
       <div class="promo-card" onclick="switchScreen('history')">
         <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/archives.webp" loading="lazy">
-        <div class="ov"></div>
-        <div class="txt"><b>تاريخ شطايبي</b><span>من تاكاتوا الرومانية إلى اليوم</span></div>
       </div>
 
       <div style="height:calc(20px + var(--nav-h) + var(--safe-b))"></div>
@@ -419,16 +414,14 @@ a{text-decoration:none;color:inherit;}
   <div class="screen" id="screen-history">
     <div class="page-head"><button class="round-btn" onclick="goBack()" aria-label="رجوع"><iconify-icon icon="lucide:arrow-right"></iconify-icon></button><h1>تاريخ شطايبي</h1></div>
     <div class="screen-scroll">
-      <div class="hist-hero"><img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/archives.webp" loading="lazy"><div class="ov"></div><div class="txt">رحلة عبر عصور شطايبي</div></div>
       <div class="list-pad">
-        <div class="section-head" style="padding:2px 0 16px"><h2>الخط الزمني عبر العصور</h2></div>
+        <div class="hist-banner"><h2>الخط الزمني عبر العصور</h2><p>رحلة عبر عصور شطايبي المختلفة، من العهد الروماني إلى اليوم</p></div>
         <div class="timeline" id="histTimeline"></div>
 
-        <div class="section-head" style="padding:28px 0 4px"><h2>بين الأمس واليوم</h2></div>
-        <p style="font-size:11px;color:var(--muted);font-weight:600;margin-bottom:14px">اسحب المؤشر يميناً ويساراً للمقارنة</p>
+        <div class="hist-banner" style="margin-top:26px"><h2>بين الأمس واليوم</h2><p>اسحب المؤشر يميناً ويساراً للمقارنة بين الصورتين</p></div>
         <div id="histCompare"></div>
 
-        <div class="section-head" style="padding:12px 0 12px"><h2>صور تاريخية متنوعة</h2></div>
+        <div class="hist-banner" style="margin-top:26px"><h2>صور تاريخية متنوعة</h2><p>لقطات أرشيفية توثّق ذاكرة المنطقة عبر الزمن</p></div>
         <div class="hist-gallery" id="histGallery"></div>
       </div>
     </div>
