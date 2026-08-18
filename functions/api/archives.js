@@ -18,19 +18,18 @@ export async function onRequestGet({ env }) {
 export async function onRequestPost(context) {
   const auth = await withAuth(context); if (auth) return auth;
   try {
-    const { title, description, image_old_url, image_new_url, year, title_fr, description_fr } =
+    const { title, description, image_old_url, image_new_url, title_fr, description_fr } =
       await context.request.json();
 
     if (!title) return err('العنوان مطلوب');
 
     const { meta } = await context.env.DB.prepare(`
       INSERT INTO archives
-        (title, description, image_old_url, image_new_url, year, title_fr, description_fr)
-      VALUES (?,?,?,?,?,?,?)
+        (title, description, image_old_url, image_new_url, title_fr, description_fr)
+      VALUES (?,?,?,?,?,?)
     `).bind(
       title, description || '',
       image_old_url || '', image_new_url || '',
-      year || '',
       title_fr || '', description_fr || '',
     ).run();
 
@@ -45,18 +44,17 @@ export async function onRequestPut(context) {
     const id = getId(context);
     if (!id) return err('id مطلوب');
 
-    const { title, description, image_old_url, image_new_url, year, title_fr, description_fr } =
+    const { title, description, image_old_url, image_new_url, title_fr, description_fr } =
       await context.request.json();
 
     await context.env.DB.prepare(`
       UPDATE archives SET
         title=?, description=?, image_old_url=?, image_new_url=?,
-        year=?, title_fr=?, description_fr=?
+        title_fr=?, description_fr=?
       WHERE id=?
     `).bind(
       title, description || '',
       image_old_url || '', image_new_url || '',
-      year || '',
       title_fr || '', description_fr || '',
       id,
     ).run();
