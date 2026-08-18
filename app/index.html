@@ -370,7 +370,7 @@ a{text-decoration:none;color:inherit;}
       </div>
 
       <div class="promo-card" onclick="switchScreen('history')">
-        <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/archives.webp" loading="lazy">
+        <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/archive.webp" loading="lazy">
       </div>
 
       <div style="height:calc(20px + var(--nav-h) + var(--safe-b))"></div>
@@ -1049,7 +1049,7 @@ function renderHistoryScreen(){
     cWrap.innerHTML = archives.map(function(a){
       var desc = _f(a,'description');
       return '<div class="ba-card">'
-        + '<div class="ba-title2">'+_f(a,'title')+(a.year?' · '+a.year:'')+'</div>'
+        + '<div class="ba-title2">'+_f(a,'title')+'</div>'
         + (desc?'<div class="ba-desc">'+desc+'</div>':'')
         + '<div class="ba-slider">'
         +   '<img src="'+a.image_new_url+'" loading="lazy">'
