@@ -1040,13 +1040,14 @@ function renderHistoryScreen(){
     return '<div class="tl-item"><div class="tl-node" style="background:'+era.color+'"><iconify-icon icon="'+icon+'"></iconify-icon></div><div class="tl-card"><span class="tl-date" style="background:'+era.color+'">'+date+'</span><div class="tl-title">'+title+'</div><div class="tl-text" onclick="this.classList.toggle(\'expanded\')">'+text+'</div></div></div>';
   }).join('');
 
-  // 2) بين الأمس واليوم — مقارنة بالسحب
+  // 2) بين الأمس واليوم — فقط العناصر التي لها الصورتان معاً (قديمة + حديثة)
   var cWrap = document.getElementById('histCompare');
-  var archives = STATE.archives||[];
-  if(!archives.length){
+  var allArchives = STATE.archives||[];
+  var pairs = allArchives.filter(function(a){return a.image_old_url && a.image_new_url;});
+  if(!pairs.length){
     cWrap.innerHTML = '<div class="empty-state">'+t('emptyList')+'</div>';
   } else {
-    cWrap.innerHTML = archives.map(function(a){
+    cWrap.innerHTML = pairs.map(function(a){
       var desc = _f(a,'description');
       return '<div class="ba-card">'
         + '<div class="ba-title2">'+_f(a,'title')+'</div>'
@@ -1062,10 +1063,11 @@ function renderHistoryScreen(){
     setTimeout(initBaSliders, 30);
   }
 
-  // 3) صور تاريخية متنوعة (الصور القديمة من كل مقارنات الأرشيف)
+  // 3) صور تاريخية متنوعة — فقط العناصر ذات صورة قديمة منفردة (بلا صورة حديثة مقابلة)
   var gWrap = document.getElementById('histGallery');
-  var photos = archives.filter(function(a){return a.image_old_url;}).map(function(a){return a.image_old_url;});
-  gWrap.innerHTML = !photos.length ? '<div class="empty-state">'+t('emptyList')+'</div>' : photos.map(function(url){
+  var solo = allArchives.filter(function(a){return a.image_old_url && !a.image_new_url;});
+  gWrap.innerHTML = !solo.length ? '<div class="empty-state">'+t('emptyList')+'</div>' : solo.map(function(a){
+    var url = a.image_old_url;
     return '<img src="'+url+'" loading="lazy" onclick="openHistImg(\''+url.replace(/'/g,"\\'")+'\')">';
   }).join('');
 }

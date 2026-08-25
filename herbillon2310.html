@@ -1080,10 +1080,43 @@ function toggleNewsForm(btn){ toggleFormPanel('news'); }
 function triggerUpload(id){document.getElementById(id).click();}
 function readBase64(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(e.target.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(file);});}
 
+/* ضغط الصورة فعلياً (تصغير الأبعاد + إعادة ترميز webp حقيقي) قبل الرفع.
+   يقلّص حجم حمولة base64 بشكل كبير، وهو السبب الأرجح لفشل "Failed to fetch"
+   عند رفع صور كبيرة (صور الهاتف الحديثة قد تتجاوز 10-15MB قبل الضغط).
+   في حال فشل الضغط لأي سبب (متصفح قديم مثلاً) نستخدم الملف الأصلي كما هو دون توقف الرفع. */
+function compressImage(file, maxDim, quality){
+    return new Promise(function(resolve){
+        try{
+            var img = new Image();
+            var url = URL.createObjectURL(file);
+            img.onload = function(){
+                URL.revokeObjectURL(url);
+                var w = img.naturalWidth, h = img.naturalHeight;
+                if(!w || !h){ resolve(file); return; }
+                if(w > maxDim || h > maxDim){
+                    if(w >= h){ h = Math.round(h * (maxDim / w)); w = maxDim; }
+                    else { w = Math.round(w * (maxDim / h)); h = maxDim; }
+                }
+                var canvas = document.createElement('canvas');
+                canvas.width = w; canvas.height = h;
+                var ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, w, h);
+                canvas.toBlob(function(blob){
+                    if(blob && blob.size > 0 && blob.size < file.size) resolve(blob);
+                    else resolve(file); // الضغط لم يفِد أو غير مدعوم — استخدم الأصلي
+                }, 'image/webp', quality);
+            };
+            img.onerror = function(){ URL.revokeObjectURL(url); resolve(file); };
+            img.src = url;
+        }catch(e){ resolve(file); }
+    });
+}
 async function uploadFile(file, folder){
     if(file.size>25*1024*1024) throw new Error('حجم الملف يتجاوز 25 MB');
-    const base64=await readBase64(file);
-    const resp=await fetch('/api/media',{method:'POST',headers:authHeaders(),body:JSON.stringify({filename:file.name,folder,data:base64,mime:file.type})});
+    const toUpload = await compressImage(file, 1600, 0.82);
+    const base64=await readBase64(toUpload);
+    const actualMime = (toUpload===file) ? file.type : 'image/webp';
+    const resp=await fetch('/api/media',{method:'POST',headers:authHeaders(),body:JSON.stringify({filename:file.name,folder,data:base64,mime:actualMime})});
     const d=await resp.json();
     if(!d.success) throw new Error(d.error||'فشل الرفع');
     return d.data.cdn_url;
