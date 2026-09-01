@@ -209,8 +209,15 @@ a{text-decoration:none;color:inherit;}
 .tag-chip{background:var(--bg-2);color:var(--text-2);font-size:10.5px;font-weight:700;padding:5px 11px;border-radius:999px;}
 
 /* ═══ شاشة تاريخ شطايبي ═══ */
-/* شريط عنوان القسم — موسّط بخلفية باهتة، مع نص توضيحي أسفله */
-.hist-banner{text-align:center;background:var(--bg-2);border-radius:14px;padding:14px 18px;margin-bottom:16px;}
+/* شريط تنقل سريع ثابت بين أقسام صفحة التاريخ */
+.hist-jumpnav{position:sticky;top:0;z-index:5;display:flex;gap:8px;padding:10px 18px;background:var(--bg);border-bottom:1px solid var(--border);}
+.hist-jumpnav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px;border-radius:12px;background:var(--bg-2);font-size:9.5px;font-weight:800;color:var(--text-2);transition:transform .12s,opacity .12s;}
+.hist-jumpnav button:active{transform:scale(.94);opacity:.8;}
+.hist-jumpnav button iconify-icon{font-size:17px;color:var(--green);}
+
+/* شريط عنوان القسم — موسّط بخلفية ملوّنة باهتة، بأيقونة مميزة، مع نص توضيحي أسفله */
+.hist-banner{scroll-margin-top:72px;text-align:center;border-radius:14px;padding:16px 18px;margin-bottom:16px;}
+.hist-banner-icon{width:44px;height:44px;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:21px;margin:0 auto 10px;}
 .hist-banner h2{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:4px;}
 .hist-banner p{font-size:11.5px;color:var(--text-2);font-weight:600;line-height:1.6;}
 
@@ -414,14 +421,28 @@ a{text-decoration:none;color:inherit;}
   <div class="screen" id="screen-history">
     <div class="page-head"><button class="round-btn" onclick="goBack()" aria-label="رجوع"><iconify-icon icon="lucide:arrow-right"></iconify-icon></button><h1>تاريخ شطايبي</h1></div>
     <div class="screen-scroll">
+      <div class="hist-jumpnav">
+        <button onclick="scrollToHistSection('histSecTimeline')"><iconify-icon icon="lucide:history"></iconify-icon><span>الخط الزمني</span></button>
+        <button onclick="scrollToHistSection('histSecCompare')"><iconify-icon icon="lucide:images"></iconify-icon><span>الأمس واليوم</span></button>
+        <button onclick="scrollToHistSection('histSecGallery')"><iconify-icon icon="lucide:camera"></iconify-icon><span>صور تاريخية</span></button>
+      </div>
       <div class="list-pad">
-        <div class="hist-banner"><h2>الخط الزمني عبر العصور</h2><p>رحلة عبر عصور شطايبي المختلفة، من العهد الروماني إلى اليوم</p></div>
+        <div class="hist-banner" id="histSecTimeline" style="background:#FCF3E3">
+          <div class="hist-banner-icon" style="color:#B8842E"><iconify-icon icon="lucide:history"></iconify-icon></div>
+          <h2>الخط الزمني عبر العصور</h2><p>رحلة عبر عصور شطايبي المختلفة، من العهد الروماني إلى اليوم</p>
+        </div>
         <div class="timeline" id="histTimeline"></div>
 
-        <div class="hist-banner" style="margin-top:26px"><h2>بين الأمس واليوم</h2><p>اسحب المؤشر يميناً ويساراً للمقارنة بين الصورتين</p></div>
+        <div class="hist-banner" id="histSecCompare" style="background:#EAF1FC;margin-top:26px">
+          <div class="hist-banner-icon" style="color:#2E5FA8"><iconify-icon icon="lucide:images"></iconify-icon></div>
+          <h2>بين الأمس واليوم</h2><p>اسحب المؤشر يميناً ويساراً للمقارنة بين الصورتين</p>
+        </div>
         <div id="histCompare"></div>
 
-        <div class="hist-banner" style="margin-top:26px"><h2>صور تاريخية متنوعة</h2><p>لقطات أرشيفية توثّق ذاكرة المنطقة عبر الزمن</p></div>
+        <div class="hist-banner" id="histSecGallery" style="background:#FBEAF4;margin-top:26px">
+          <div class="hist-banner-icon" style="color:#B8408A"><iconify-icon icon="lucide:camera"></iconify-icon></div>
+          <h2>صور تاريخية متنوعة</h2><p>لقطات أرشيفية توثّق ذاكرة المنطقة عبر الزمن</p>
+        </div>
         <div class="hist-gallery" id="histGallery"></div>
       </div>
     </div>
@@ -1031,6 +1052,11 @@ function openServiceDetail(id){
 
 /* ══ تاريخ شطايبي (شاشة كاملة) ══ */
 var HIST_ICONS = {era1:'lucide:anchor', era2:'lucide:compass', era3:'lucide:mountain', era4:'lucide:flag'};
+function scrollToHistSection(id){
+  var el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+  haptic(6);
+}
 function renderHistoryScreen(){
   // 1) الخط الزمني عبر العصور
   var tl = document.getElementById('histTimeline');
@@ -1040,13 +1066,14 @@ function renderHistoryScreen(){
     return '<div class="tl-item"><div class="tl-node" style="background:'+era.color+'"><iconify-icon icon="'+icon+'"></iconify-icon></div><div class="tl-card"><span class="tl-date" style="background:'+era.color+'">'+date+'</span><div class="tl-title">'+title+'</div><div class="tl-text" onclick="this.classList.toggle(\'expanded\')">'+text+'</div></div></div>';
   }).join('');
 
-  // 2) بين الأمس واليوم — مقارنة بالسحب
+  // 2) بين الأمس واليوم — فقط العناصر التي لها الصورتان معاً (قديمة + حديثة)
   var cWrap = document.getElementById('histCompare');
-  var archives = STATE.archives||[];
-  if(!archives.length){
+  var allArchives = STATE.archives||[];
+  var pairs = allArchives.filter(function(a){return a.image_old_url && a.image_new_url;});
+  if(!pairs.length){
     cWrap.innerHTML = '<div class="empty-state">'+t('emptyList')+'</div>';
   } else {
-    cWrap.innerHTML = archives.map(function(a){
+    cWrap.innerHTML = pairs.map(function(a){
       var desc = _f(a,'description');
       return '<div class="ba-card">'
         + '<div class="ba-title2">'+_f(a,'title')+'</div>'
@@ -1062,10 +1089,11 @@ function renderHistoryScreen(){
     setTimeout(initBaSliders, 30);
   }
 
-  // 3) صور تاريخية متنوعة (الصور القديمة من كل مقارنات الأرشيف)
+  // 3) صور تاريخية متنوعة — فقط العناصر ذات صورة قديمة منفردة (بلا صورة حديثة مقابلة)
   var gWrap = document.getElementById('histGallery');
-  var photos = archives.filter(function(a){return a.image_old_url;}).map(function(a){return a.image_old_url;});
-  gWrap.innerHTML = !photos.length ? '<div class="empty-state">'+t('emptyList')+'</div>' : photos.map(function(url){
+  var solo = allArchives.filter(function(a){return a.image_old_url && !a.image_new_url;});
+  gWrap.innerHTML = !solo.length ? '<div class="empty-state">'+t('emptyList')+'</div>' : solo.map(function(a){
+    var url = a.image_old_url;
     return '<img src="'+url+'" loading="lazy" onclick="openHistImg(\''+url.replace(/'/g,"\\'")+'\')">';
   }).join('');
 }
