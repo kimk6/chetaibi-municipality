@@ -80,12 +80,12 @@ a{text-decoration:none;color:inherit;}
 .dest-row{display:flex;gap:12px;overflow-x:auto;padding:0 18px 8px;}
 .dest-card{flex-shrink:0;width:134px;height:164px;border-radius:20px;position:relative;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,.1);background:var(--bg-2);}
 .dest-card img{width:100%;height:100%;object-fit:cover;}
-.dest-card .heart{position:absolute;top:10px;right:10px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted);z-index:2;transition:transform .12s;}
+.dest-card .heart{position:absolute;top:10px;right:10px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.95);backdrop-filter:blur(4px);box-shadow:0 3px 8px rgba(0,0,0,.15);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted);z-index:2;transition:transform .12s;}
 .dest-card .heart:active{transform:scale(.8);}
 .dest-card .heart.active{color:#D1477A;background:#FCE8EE;}
 .dest-card .ov{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.75) 0%,transparent 55%);}
 .dest-card .txt{position:absolute;bottom:10px;right:10px;left:10px;z-index:2;color:#fff;}
-.dest-card .txt b{font-size:12.5px;font-weight:800;display:block;}
+.dest-card .txt b{font-size:13.5px;font-weight:800;display:block;}
 .weather-sea-card{position:relative;background:linear-gradient(180deg,#CFE9FA 0%,#F0F8FE 100%);border:1px solid var(--border);border-radius:18px;margin:14px 18px 28px;overflow:hidden;box-shadow:0 12px 28px -12px rgba(20,90,100,.18);}
 .ws-tabs{display:flex;gap:5px;padding:8px 8px 0;}
 .ws-tab{flex:1;background:rgba(255,255,255,.75);color:var(--text-2);border-radius:10px;padding:7px 8px;font-size:11.5px;font-weight:800;text-align:center;transition:transform .12s,opacity .12s;}
@@ -101,7 +101,7 @@ a{text-decoration:none;color:inherit;}
 .ws-icon-wrap{width:60px;height:60px;display:flex;align-items:center;justify-content:center;font-size:44px;flex-shrink:0;}
 .ws-eyebrow{display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:800;color:var(--text-2);}
 .ws-eyebrow iconify-icon{font-size:12px;}
-.ws-live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;animation:wsLivePulse 2s ease-in-out infinite;}
+.ws-live-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;animation:wsLivePulse 2s ease-in-out infinite;box-shadow:0 0 0 3px rgba(15,107,66,.15);}
 @keyframes wsLivePulse{0%,100%{box-shadow:0 0 0 0 rgba(46,155,92,.45);}70%{box-shadow:0 0 0 5px rgba(46,155,92,0);}}
 .ws-temp-big{font-family:'Outfit','Cairo',sans-serif;font-weight:800;font-size:38px;color:var(--ink);line-height:1;margin-top:2px;}
 .ws-desc{font-size:12px;color:var(--ink);opacity:.75;font-weight:700;margin-top:3px;}
@@ -131,7 +131,16 @@ a{text-decoration:none;color:inherit;}
 .ws-footer-link{display:flex;align-items:center;gap:2px;font-size:11px;font-weight:800;color:var(--green);flex-shrink:0;background:rgba(255,255,255,.55);border:1px solid rgba(0,135,90,.18);border-radius:20px;padding:8px 12px;}
 .ws-footer-link iconify-icon{font-size:14px;}
 .ws-swim-bar{margin:18px 0 0;background:rgba(255,255,255,.7);border:1px solid rgba(0,135,90,.14);border-radius:12px;padding:12px;text-align:center;font-size:12.5px;font-weight:800;color:var(--text-2);}
-.promo-card{margin:8px 18px 4px;height:120px;border-radius:20px;position:relative;overflow:hidden;background:var(--green-d);}
+.promo-card{margin:14px 18px 4px;height:128px;border-radius:20px;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--green-d) 0%,var(--green) 60%,#1B8F5A 100%);display:flex;align-items:center;padding:0 20px;box-shadow:0 10px 24px -8px rgba(15,107,66,.35);}
+.promo-card .promo-pattern{position:absolute;inset:0;opacity:.14;pointer-events:none;}
+.promo-card .promo-pattern svg{width:100%;height:100%;}
+.promo-card .promo-icon{width:46px;height:46px;border-radius:14px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1;}
+.promo-card .promo-icon iconify-icon{font-size:23px;color:#fff;}
+.promo-card .promo-txt{margin-right:14px;position:relative;z-index:1;}
+.promo-card .promo-txt b{display:block;font-size:19px;font-weight:800;color:#fff;font-family:var(--font-head);letter-spacing:-.3px;}
+.promo-card .promo-txt span{display:block;font-size:11.5px;color:rgba(255,255,255,.82);margin-top:3px;font-weight:600;}
+.promo-card .promo-arrow{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;z-index:1;}
+.promo-card .promo-arrow iconify-icon{font-size:15px;color:#fff;}
 .promo-card img{width:100%;height:100%;object-fit:cover;}
 
 /* ═══ تبويبات ═══ */
@@ -174,12 +183,12 @@ a{text-decoration:none;color:inherit;}
 .fac-card .t b{font-size:13.5px;font-weight:800;display:block;color:var(--ink);margin-bottom:2px;}
 .fac-card .t span{font-size:11px;color:var(--muted);font-weight:600;}
 .place-tile img{width:100%;height:100%;object-fit:cover;}
-.place-tile .heart{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted);z-index:3;transition:transform .12s;}
+.place-tile .heart{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.95);backdrop-filter:blur(4px);box-shadow:0 3px 8px rgba(0,0,0,.15);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted);z-index:3;transition:transform .12s;}
 .place-tile .heart:active{transform:scale(.8);}
 .place-tile .heart.active{color:#D1477A;background:#FCE8EE;}
 .place-tile .ov{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.8),transparent 55%);}
 .place-tile .txt{position:absolute;bottom:9px;right:9px;left:9px;z-index:2;color:#fff;}
-.place-tile .txt b{font-size:12px;font-weight:800;}
+.place-tile .txt b{font-size:13px;font-weight:800;}
 .place-tile .badge{position:absolute;top:8px;left:8px;z-index:2;font-size:9px;font-weight:800;padding:3px 8px;border-radius:999px;color:#fff;background:var(--green);}
 
 /* ═══ شيت تفاصيل ═══ */
@@ -384,7 +393,29 @@ a{text-decoration:none;color:inherit;}
       </div>
 
       <div class="promo-card" onclick="switchScreen('history')">
-        <img src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/archive.webp" loading="lazy">
+        <div class="promo-pattern">
+          <svg viewBox="0 0 400 128" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" stroke="#fff" stroke-width="1.5">
+              <path d="M20 64 L40 44 L60 64 L40 84 Z"/>
+              <path d="M60 64 L80 44 L100 64 L80 84 Z"/>
+              <path d="M100 64 L120 44 L140 64 L120 84 Z"/>
+              <circle cx="40" cy="64" r="6"/>
+              <circle cx="80" cy="64" r="6"/>
+              <circle cx="120" cy="64" r="6"/>
+            </g>
+            <g fill="none" stroke="#fff" stroke-width="1.5" transform="translate(240,0)">
+              <path d="M20 64 L40 44 L60 64 L40 84 Z"/>
+              <path d="M60 64 L80 44 L100 64 L80 84 Z"/>
+              <path d="M100 64 L120 44 L140 64 L120 84 Z"/>
+              <circle cx="40" cy="64" r="6"/>
+              <circle cx="80" cy="64" r="6"/>
+              <circle cx="120" cy="64" r="6"/>
+            </g>
+          </svg>
+        </div>
+        <div class="promo-icon"><iconify-icon icon="lucide:scroll-text"></iconify-icon></div>
+        <div class="promo-txt"><b>تاريخ شطايبي</b><span>جذور عريقة … وحكاية مدينة أصيلة</span></div>
+        <div class="promo-arrow"><iconify-icon icon="lucide:chevron-left"></iconify-icon></div>
       </div>
 
       <div style="height:calc(20px + var(--nav-h) + var(--safe-b))"></div>
