@@ -251,8 +251,12 @@ a{text-decoration:none;color:inherit;}
 .ba-grip{position:absolute;top:50%;right:-17px;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--ink);}
 
 /* معرض الصور التاريخية */
-.hist-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-.hist-gallery img{width:100%;height:104px;object-fit:cover;border-radius:12px;background:var(--bg-2);transition:transform .12s,opacity .12s;}
+.hist-gallery{display:flex;flex-direction:column;gap:18px;}
+.hist-photo-card{cursor:pointer;}
+.hist-photo-card img{width:100%;height:180px;object-fit:cover;border-radius:14px;background:var(--bg-2);margin-bottom:8px;transition:transform .12s,opacity .12s;display:block;}
+.hist-photo-card img:active{transform:scale(.98);opacity:.85;}
+.hist-photo-title{font-size:13.5px;font-weight:800;color:var(--ink);margin-bottom:3px;}
+.hist-photo-desc{font-size:11.5px;color:var(--text-2);line-height:1.6;}
 .hist-gallery img:active{transform:scale(.94);opacity:.8;}
 
 #mapView{position:absolute;inset:0;}
@@ -1094,7 +1098,12 @@ function renderHistoryScreen(){
   var solo = allArchives.filter(function(a){return a.image_old_url && !a.image_new_url;});
   gWrap.innerHTML = !solo.length ? '<div class="empty-state">'+t('emptyList')+'</div>' : solo.map(function(a){
     var url = a.image_old_url;
-    return '<img src="'+url+'" loading="lazy" onclick="openHistImg(\''+url.replace(/'/g,"\\'")+'\')">';
+    var desc = _f(a,'description');
+    return '<div class="hist-photo-card" onclick="openHistImg(\''+url.replace(/'/g,"\\'")+'\')">'
+      + '<img src="'+url+'" loading="lazy">'
+      + '<div class="hist-photo-title">'+_f(a,'title')+'</div>'
+      + (desc?'<div class="hist-photo-desc">'+desc+'</div>':'')
+      + '</div>';
   }).join('');
 }
 function openHistImg(url){
