@@ -69,12 +69,13 @@ a{text-decoration:none;color:inherit;}
 .search-float:active{transform:scale(.98);opacity:.85;}
 .search-float input{flex:1;border:none;background:none;outline:none;font-size:12.5px;font-family:'Cairo',sans-serif;color:var(--ink);}
 .search-float input::placeholder{color:var(--muted);}
-.quick-grid{display:flex;flex-direction:column;gap:10px;padding:28px 18px 8px;}
-.quick-pill{display:flex;align-items:center;gap:10px;padding:8px 8px 8px 16px;border-radius:999px;transition:transform .12s,opacity .12s;box-shadow:0 2px 10px rgba(0,0,0,.05);}
-.quick-pill:active{transform:scale(.97);opacity:.85;}
-.quick-pill .qp-arrow{font-size:15px;color:var(--ink);flex-shrink:0;}
-.quick-pill .qp-label{flex:1;font-size:15px;font-weight:800;color:var(--ink);text-align:center;}
-.quick-pill .qp-icon{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;flex-shrink:0;box-shadow:inset 0 -3px 6px rgba(0,0,0,.12),inset 0 2px 4px rgba(255,255,255,.25);}
+.quick-grid{display:flex;flex-direction:row;gap:10px;padding:28px 18px 8px;}
+.quick-pill{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;flex:1;padding:18px 10px 16px;border-radius:22px;transition:transform .12s,opacity .12s;}
+.quick-pill:active{transform:scale(.96);opacity:.85;}
+.quick-pill .qp-back-arrow{position:absolute;top:14px;right:14px;font-size:15px;color:var(--ink);opacity:.55;}
+.quick-pill .qp-label{font-size:14.5px;font-weight:800;color:var(--ink);text-align:center;font-family:var(--font-head);}
+.quick-pill .qp-sub{font-size:10.5px;font-weight:600;color:var(--text-2);text-align:center;line-height:1.3;}
+.quick-pill .qp-icon{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;flex-shrink:0;margin-top:4px;box-shadow:inset 0 -3px 6px rgba(0,0,0,.15),inset 0 2px 4px rgba(255,255,255,.3),0 3px 8px rgba(0,0,0,.12);}
 .section-head{display:flex;align-items:center;justify-content:space-between;padding:28px 18px 14px;}
 .section-head h2{font-size:15px;font-weight:800;color:var(--ink);font-family:var(--font-head);}
 .section-head a{font-size:10.5px;color:var(--green);font-weight:700;flex-shrink:0;display:inline-flex;align-items:center;gap:2px;background:var(--green-xl,#E7F5EE);padding:4px 10px;border-radius:999px;}
@@ -87,12 +88,15 @@ a{text-decoration:none;color:inherit;}
 .dest-card .ov{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.75) 0%,transparent 55%);}
 .dest-card .txt{position:absolute;bottom:10px;right:10px;left:10px;z-index:2;color:#fff;}
 .dest-card .txt b{font-size:14.5px;font-weight:800;display:block;}
-.weather-sea-card{position:relative;background:linear-gradient(180deg,#CFE9FA 0%,#F0F8FE 100%);border:1px solid var(--border);border-radius:18px;margin:14px 18px 28px;overflow:hidden;box-shadow:0 12px 28px -12px rgba(20,90,100,.18);}
+.weather-sea-card{position:relative;background:#8ec9e8;border:1px solid var(--border);border-radius:18px;margin:14px 18px 28px;overflow:hidden;box-shadow:0 12px 28px -12px rgba(20,90,100,.18);}
+.weather-sea-card .ws-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
+.weather-sea-card .ws-bg-overlay{position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,rgba(255,255,255,.08) 0%,rgba(255,255,255,.05) 40%,rgba(255,255,255,.35) 100%);}
+.weather-sea-card>*{position:relative;z-index:1;}
 .ws-tabs{display:flex;gap:5px;padding:8px 8px 0;}
-.ws-tab{flex:1;background:rgba(255,255,255,.75);color:var(--text-2);border-radius:10px;padding:7px 8px;font-size:11.5px;font-weight:800;text-align:center;transition:transform .12s,opacity .12s;}
+.ws-tab{flex:1;background:rgba(255,255,255,.55);backdrop-filter:blur(8px);color:var(--text-2);border-radius:10px;padding:7px 8px;font-size:11.5px;font-weight:800;text-align:center;transition:transform .12s,opacity .12s;}
 .ws-tab:active{transform:scale(.96);opacity:.8;}
 .ws-tab.active{background:var(--green);color:#fff;}
-.ws-body{padding:18px 18px 8px;display:grid;transition:transform .12s,opacity .12s;}
+.ws-body{padding:16px 18px 18px;display:grid;transition:transform .12s,opacity .12s;min-height:340px;}
 .ws-body .ws-content{grid-area:1/1;min-width:0;}
 .ws-body .ws-content.hidden{display:block!important;visibility:hidden!important;pointer-events:none!important;}
 .ws-body:active{opacity:.9;}
@@ -100,21 +104,22 @@ a{text-decoration:none;color:inherit;}
 .ws-hero-row{display:flex;align-items:center;justify-content:space-between;gap:10px;}
 .ws-hero-left{display:flex;align-items:center;gap:13px;min-width:0;}
 .ws-icon-wrap{width:60px;height:60px;display:flex;align-items:center;justify-content:center;font-size:44px;flex-shrink:0;}
-.ws-eyebrow{display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:800;color:var(--text-2);}
-.ws-eyebrow iconify-icon{font-size:12px;}
+.ws-eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:var(--ink);background:rgba(255,255,255,.6);backdrop-filter:blur(8px);padding:7px 14px;border-radius:999px;}
+.ws-eyebrow iconify-icon{font-size:15px;color:#1565C0;}
 .ws-live-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;animation:wsLivePulse 2s ease-in-out infinite;box-shadow:0 0 0 3px rgba(15,107,66,.15);}
 @keyframes wsLivePulse{0%,100%{box-shadow:0 0 0 0 rgba(46,155,92,.45);}70%{box-shadow:0 0 0 5px rgba(46,155,92,0);}}
-.ws-temp-big{font-family:'Outfit','Cairo',sans-serif;font-weight:800;font-size:38px;color:var(--ink);line-height:1;margin-top:2px;}
-.ws-desc{font-size:12px;color:var(--ink);opacity:.75;font-weight:700;margin-top:3px;}
-.ws-mm-stack{display:flex;flex-direction:column;justify-content:center;gap:9px;flex-shrink:0;text-align:center;background:rgba(255,255,255,.55);border-radius:14px;padding:10px 15px;}
+.ws-temp-big{font-family:'Outfit','Cairo',sans-serif;font-weight:800;font-size:56px;color:#fff;line-height:1;margin-top:4px;text-shadow:0 2px 12px rgba(0,0,0,.25);}
+.ws-desc{font-size:13.5px;color:#fff;opacity:.95;font-weight:700;margin-top:3px;text-shadow:0 1px 6px rgba(0,0,0,.2);}
+.ws-mm-stack{display:flex;flex-direction:column;justify-content:center;gap:9px;flex-shrink:0;text-align:center;background:rgba(255,255,255,.65);backdrop-filter:blur(8px);border-radius:16px;padding:12px 16px;}
 .ws-mm-item b{display:block;font-family:'Outfit','Cairo',sans-serif;font-size:16px;font-weight:800;color:var(--ink);}
 .ws-mm-item.max b{color:var(--green-d,#1E8449);}
 .ws-mm-item.min b{color:#2E7BC4;}
 .ws-mm-item.warm b{color:var(--green-d,#1E8449);}
 .ws-mm-item span{font-size:9px;color:var(--muted);font-weight:700;}
 /* صف الإحصاءات: مسافات بيضاء بدل خطوط فاصلة */
-.ws-stats-row{display:flex;margin-top:14px;}
-.ws-stat{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;}
+.ws-stats-row{display:flex;margin-top:14px;background:rgba(255,255,255,.65);backdrop-filter:blur(8px);border-radius:16px;padding:14px 8px;}
+.ws-stat{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;position:relative;}
+.ws-stat:not(:last-child)::after{content:'';position:absolute;left:0;top:2px;bottom:2px;width:1px;background:rgba(0,0,0,.1);}
 .ws-stat iconify-icon{font-size:18px;color:var(--text-2);}
 .ws-stat.humidity iconify-icon{color:var(--text-2);}
 .ws-stat.feels iconify-icon{color:var(--text-2);}
@@ -123,13 +128,14 @@ a{text-decoration:none;color:inherit;}
 .ws-stat b{font-family:'Outfit','Cairo',sans-serif;font-size:13.5px;color:var(--ink);}
 .ws-stat span{font-size:9.5px;color:var(--muted);font-weight:700;}
 /* صف التذييل: الشروق يمين، التفاصيل بالمنتصف، الغروب يسار */
-.ws-footer-row{display:flex;align-items:center;justify-content:space-between;margin-top:20px;padding-bottom:2px;transition:opacity .12s;}
+.ws-footer-row{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-bottom:2px;background:rgba(255,255,255,.65);backdrop-filter:blur(8px);border-radius:16px;padding:14px 8px;transition:opacity .12s;}
 .ws-footer-row:active{opacity:.6;}
-.ws-footer-item{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;color:var(--muted);font-weight:700;flex-shrink:0;}
+.ws-footer-item{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;color:var(--muted);font-weight:700;flex-shrink:0;flex:1;position:relative;}
+.ws-footer-item:not(:last-child)::after{content:'';position:absolute;left:0;top:2px;bottom:2px;width:1px;background:rgba(0,0,0,.1);}
 .ws-footer-item .row{display:flex;align-items:center;gap:4px;}
 .ws-footer-item iconify-icon{font-size:15px;color:#E0A83C;}
 .ws-footer-item b{font-family:'Outfit','Cairo',sans-serif;font-size:12px;font-weight:700;color:var(--ink);}
-.ws-footer-link{display:flex;align-items:center;gap:2px;font-size:11px;font-weight:800;color:var(--green);flex-shrink:0;background:rgba(255,255,255,.55);border:1px solid rgba(0,135,90,.18);border-radius:20px;padding:8px 12px;}
+.ws-footer-link{display:flex;align-items:center;gap:2px;font-size:11px;font-weight:800;color:var(--green);flex-shrink:0;background:transparent;border:none;border-radius:20px;padding:0;}
 .ws-footer-link iconify-icon{font-size:14px;}
 .ws-swim-bar{margin:18px 0 0;background:rgba(255,255,255,.7);border:1px solid rgba(0,135,90,.14);border-radius:12px;padding:12px;text-align:center;font-size:12.5px;font-weight:800;color:var(--text-2);}
 .promo-card{margin:14px 18px 4px;height:150px;border-radius:20px;position:relative;overflow:hidden;box-shadow:0 10px 24px -8px rgba(0,0,0,.25);}
@@ -324,19 +330,22 @@ a{text-decoration:none;color:inherit;}
 
       <div class="quick-grid">
         <div class="quick-pill" onclick="switchScreen('map')" style="background:#E3F3E9;">
-          <iconify-icon class="qp-arrow" icon="lucide:chevron-left"></iconify-icon>
+          <iconify-icon class="qp-back-arrow" icon="lucide:chevron-left"></iconify-icon>
+          <div class="qp-icon" style="background:radial-gradient(circle at 32% 28%,#3FAE6A,#1D8449 65%,#166B3A 100%);"><iconify-icon icon="lucide:map"></iconify-icon></div>
           <span class="qp-label">الخريطة</span>
-          <div class="qp-icon" style="background:radial-gradient(circle at 35% 30%,#2FA85C,#1B7A44 70%);"><iconify-icon icon="lucide:map"></iconify-icon></div>
+          <span class="qp-sub">استكشف المنطقة</span>
         </div>
-        <div class="quick-pill" onclick="switchScreen('explore');setExploreTab('landmark')" style="background:#E4EEFB;">
-          <iconify-icon class="qp-arrow" icon="lucide:chevron-left"></iconify-icon>
+        <div class="quick-pill" onclick="switchScreen('explore');setExploreTab('landmark')" style="background:#FBEEDB;">
+          <iconify-icon class="qp-back-arrow" icon="lucide:chevron-left"></iconify-icon>
+          <div class="qp-icon" style="background:radial-gradient(circle at 32% 28%,#F5A93F,#E08A1C 65%,#C9760F 100%);"><iconify-icon icon="lucide:landmark"></iconify-icon></div>
           <span class="qp-label">المعالم</span>
-          <div class="qp-icon" style="background:radial-gradient(circle at 35% 30%,#4A93E8,#2E6FC4 70%);"><iconify-icon icon="lucide:landmark"></iconify-icon></div>
+          <span class="qp-sub">أماكن تستحق الزيارة</span>
         </div>
-        <div class="quick-pill" onclick="switchScreen('explore');setExploreTab('beach')" style="background:#F7EFE0;">
-          <iconify-icon class="qp-arrow" icon="lucide:chevron-left"></iconify-icon>
+        <div class="quick-pill" onclick="switchScreen('explore');setExploreTab('beach')" style="background:#E4EEFB;">
+          <iconify-icon class="qp-back-arrow" icon="lucide:chevron-left"></iconify-icon>
+          <div class="qp-icon" style="background:radial-gradient(circle at 32% 28%,#4A93E8,#2E6FC4 65%,#245AA3 100%);"><iconify-icon icon="lucide:waves"></iconify-icon></div>
           <span class="qp-label">الشواطئ</span>
-          <div class="qp-icon" style="background:radial-gradient(circle at 35% 30%,#3EC6E0,#1E9EBE 70%);"><iconify-icon icon="lucide:waves"></iconify-icon></div>
+          <span class="qp-sub">أفضل الشواطئ القريبة</span>
         </div>
       </div>
 
@@ -344,49 +353,44 @@ a{text-decoration:none;color:inherit;}
       <div class="dest-row" id="homeDestRow"></div>
 
       <div class="weather-sea-card">
+        <img class="ws-bg-img" src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/Archive01.webp" alt="">
+        <div class="ws-bg-overlay"></div>
         <div class="ws-tabs">
-          <button class="ws-tab active" id="wsTabWeather" onclick="event.stopPropagation();setWsTab('weather')">☀️ الطقس</button>
-          <button class="ws-tab" id="wsTabSea" onclick="event.stopPropagation();setWsTab('sea')">🌊 حالة البحر</button>
+          <button class="ws-tab active" id="wsTabWeather" onclick="event.stopPropagation();setWsTab('weather')">☀️ أحوال الطقس</button>
+          <button class="ws-tab" id="wsTabSea" onclick="event.stopPropagation();setWsTab('sea')">🌊 أحوال البحر</button>
         </div>
         <div class="ws-body">
           <div class="ws-content" id="wsContentWeather" onclick="openWeatherSheet()">
-            <div class="ws-hero-row">
-              <div class="ws-hero-left">
-                <div class="ws-icon-wrap" id="homeWIconWrap"><span id="homeWIcon">☀️</span></div>
+            <div class="ws-eyebrow"><iconify-icon icon="lucide:map-pin"></iconify-icon>شطابي الآن</div>
+            <div class="ws-hero-row" style="margin-top:14px;align-items:flex-start;">
+              <div class="ws-hero-left" style="align-items:flex-start;">
                 <div>
-                  <div class="ws-eyebrow"><iconify-icon icon="lucide:map-pin"></iconify-icon>شطايبي الآن<span class="ws-live-dot"></span></div>
                   <div class="ws-temp-big"><span id="homeWTemp">--°</span></div>
                   <div class="ws-desc" id="homeWDesc">جارٍ التحميل...</div>
                 </div>
               </div>
+              <div class="ws-icon-wrap" id="homeWIconWrap" style="margin-right:auto;"><span id="homeWIcon">☀️</span></div>
               <div class="ws-mm-stack">
                 <div class="ws-mm-item max"><b id="homeWMax">--°</b><span>العظمى</span></div>
                 <div class="ws-mm-item min"><b id="homeWMin">--°</b><span>الصغرى</span></div>
               </div>
             </div>
             <div class="ws-stats-row">
+              <div class="ws-footer-item"><div class="row"><iconify-icon icon="lucide:sunrise" style="color:#E0A83C"></iconify-icon></div><b id="homeWSunrise">--:--</b><span>الشروق</span></div>
               <div class="ws-stat humidity"><iconify-icon icon="lucide:droplets"></iconify-icon><b id="homeWHumidity">--%</b><span>الرطوبة</span></div>
               <div class="ws-stat"><iconify-icon icon="lucide:wind"></iconify-icon><b id="homeWWind">--</b><span id="homeWWindDir">الرياح</span></div>
-              <div class="ws-stat feels"><iconify-icon icon="lucide:thermometer"></iconify-icon><b id="homeWFeels">--°</b><span>محسوسة</span></div>
-              <div class="ws-stat uv"><iconify-icon icon="lucide:sun-dim"></iconify-icon><b id="homeWUv">--</b><span id="homeWUvLabel">UV</span></div>
-            </div>
-            <div class="ws-swim-bar" id="homeWComfortBar"><span id="homeWComfortVerdict">جارٍ التحميل...</span></div>
-            <div class="ws-footer-row">
-              <div class="ws-footer-item"><div class="row"><iconify-icon icon="lucide:sunrise"></iconify-icon><b id="homeWSunrise">--:--</b></div><span>الشروق</span></div>
-              <div class="ws-footer-link"><span>التفاصيل والتوقعات</span><iconify-icon icon="lucide:chevron-left"></iconify-icon></div>
-              <div class="ws-footer-item"><div class="row"><iconify-icon icon="lucide:sunset"></iconify-icon><b id="homeWSunset">--:--</b></div><span>الغروب</span></div>
             </div>
           </div>
           <div class="ws-content hidden" id="wsContentSea" onclick="openWeatherSheet()">
-            <div class="ws-hero-row">
-              <div class="ws-hero-left">
-                <div class="ws-icon-wrap" id="homeSeaIconWrap"><span id="homeSeaIcon">🌊</span></div>
+            <div class="ws-eyebrow"><iconify-icon icon="lucide:map-pin"></iconify-icon>حالة البحر الآن</div>
+            <div class="ws-hero-row" style="margin-top:14px;align-items:flex-start;">
+              <div class="ws-hero-left" style="align-items:flex-start;">
                 <div>
-                  <div class="ws-eyebrow"><iconify-icon icon="lucide:map-pin"></iconify-icon>حالة البحر الآن<span class="ws-live-dot"></span></div>
-                  <div class="ws-temp-big" style="font-size:28px"><span id="homeSeaStatus">--</span></div>
+                  <div class="ws-temp-big" style="font-size:40px"><span id="homeSeaStatus">--</span></div>
                   <div class="ws-desc">ارتفاع الموج <span id="homeSeaWave">-- م</span></div>
                 </div>
               </div>
+              <div class="ws-icon-wrap" id="homeSeaIconWrap" style="margin-right:auto;"><span id="homeSeaIcon">🌊</span></div>
               <div class="ws-mm-stack">
                 <div class="ws-mm-item warm"><b id="homeSeaTemp">--°</b><span>حرارة الماء</span></div>
                 <div class="ws-mm-item"><b id="homeSeaDir">--</b><span>الاتجاه</span></div>
@@ -396,10 +400,9 @@ a{text-decoration:none;color:inherit;}
               <div class="ws-stat sea"><iconify-icon icon="lucide:waves"></iconify-icon><b id="homeSeaPeriod">-- ث</b><span>فترة الموج</span></div>
               <div class="ws-stat sea"><iconify-icon icon="lucide:ruler"></iconify-icon><b id="homeSeaMaxToday">-- م</b><span>أقصى ارتفاع</span></div>
             </div>
-            <div class="ws-swim-bar" id="homeSeaSwimBar"><span id="homeSeaSwimVerdict">جارٍ التحميل...</span></div>
-            <div class="ws-footer-row" style="justify-content:center">
-              <div class="ws-footer-link"><span>التفاصيل والتوقعات</span><iconify-icon icon="lucide:chevron-left"></iconify-icon></div>
-            </div>
+          </div>
+          <div class="ws-footer-row" style="justify-content:center;background:transparent;backdrop-filter:none;padding:8px 0 0;" onclick="openWeatherSheet()">
+            <div class="ws-footer-link"><span>التفاصيل والتوقعات</span><iconify-icon icon="lucide:chevron-left"></iconify-icon></div>
           </div>
         </div>
       </div>
