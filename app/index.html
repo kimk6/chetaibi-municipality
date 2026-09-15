@@ -88,37 +88,37 @@ a{text-decoration:none;color:inherit;}
 .dest-card .ov{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.75) 0%,transparent 55%);}
 .dest-card .txt{position:absolute;bottom:10px;right:10px;left:10px;z-index:2;color:#fff;}
 .dest-card .txt b{font-size:14.5px;font-weight:800;display:block;}
-.weather-sea-card{position:relative;background:#8ec9e8;border:1px solid var(--border);border-radius:18px;margin:14px 18px 28px;overflow:hidden;box-shadow:0 12px 28px -12px rgba(20,90,100,.18);}
+.weather-sea-card{position:relative;background:#8ec9e8;border:1px solid var(--border);border-radius:20px;margin:14px 18px 28px;overflow:hidden;box-shadow:0 12px 28px -12px rgba(20,90,100,.18);}
 .weather-sea-card .ws-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
-.weather-sea-card .ws-bg-overlay{position:absolute;inset:0;z-index:0;background:rgba(0,0,0,.32);}
+.weather-sea-card .ws-bg-overlay{position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,rgba(0,0,0,.38) 0%,rgba(0,0,0,.15) 30%,rgba(0,0,0,.1) 60%,rgba(0,0,0,.5) 100%);}
 .weather-sea-card>*{position:relative;z-index:1;}
-.ws-tabs{display:flex;gap:5px;padding:8px 8px 0;}
+.ws-tabs{display:flex;gap:6px;padding:12px 12px 0;}
+.ws-eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:var(--ink);background:rgba(255,255,255,.92);backdrop-filter:blur(10px);padding:7px 14px;border-radius:999px;box-shadow:0 3px 10px rgba(0,0,0,.12);align-self:flex-start;}
+.ws-hero-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-top:16px;}
+.ws-hero-left{display:flex;align-items:center;gap:10px;min-width:0;}
+.ws-icon-wrap{width:52px;height:52px;display:flex;align-items:center;justify-content:center;font-size:40px;flex-shrink:0;filter:drop-shadow(0 3px 8px rgba(0,0,0,.3));}
+.ws-temp-big{font-family:'Outfit','Cairo',sans-serif;font-weight:800;font-size:52px;color:#fff;line-height:1;text-shadow:0 1px 3px rgba(0,0,0,.5),0 4px 16px rgba(0,0,0,.35);}
+.ws-desc{font-size:13px;color:#fff;font-weight:700;margin-top:2px;text-shadow:0 1px 3px rgba(0,0,0,.5),0 2px 8px rgba(0,0,0,.3);}
+.ws-mm-stack{display:flex;flex-direction:row;gap:14px;flex-shrink:0;text-align:center;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-radius:14px;padding:9px 14px;box-shadow:0 3px 10px rgba(0,0,0,.1);}
+.ws-mm-item{display:flex;flex-direction:column;align-items:center;gap:1px;}
+.ws-spacer{flex:1;min-height:16px;}
+.ws-stats-row{display:flex;margin-top:0;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-radius:16px;padding:14px 8px;box-shadow:0 3px 10px rgba(0,0,0,.1);}
+.ws-stat{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;position:relative;}
 .ws-tab{flex:1;background:rgba(255,255,255,.88);backdrop-filter:blur(10px);color:var(--text-2);border-radius:10px;padding:7px 8px;font-size:11.5px;font-weight:800;text-align:center;transition:transform .12s,opacity .12s;}
 .ws-tab:active{transform:scale(.96);opacity:.8;}
 .ws-tab.active{background:var(--green);color:#fff;}
-.ws-body{padding:16px 18px 18px;display:grid;transition:transform .12s,opacity .12s;min-height:340px;}
+.ws-body{padding:16px 16px 16px;display:grid;transition:transform .12s,opacity .12s;min-height:320px;}
 .ws-body .ws-content{grid-area:1/1;min-width:0;}
 .ws-body .ws-content.hidden{display:block!important;visibility:hidden!important;pointer-events:none!important;}
 .ws-body:active{opacity:.9;}
-/* صف البطل: أيقونة بخلفية متدرجة + درجة حرارة كبيرة .. مقابل العظمى/الصغرى بأسلوب هادئ */
-.ws-hero-row{display:flex;align-items:center;justify-content:space-between;gap:10px;}
-.ws-hero-left{display:flex;align-items:center;gap:13px;min-width:0;}
-.ws-icon-wrap{width:60px;height:60px;display:flex;align-items:center;justify-content:center;font-size:44px;flex-shrink:0;}
-.ws-eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:var(--ink);background:rgba(255,255,255,.9);backdrop-filter:blur(10px);padding:7px 14px;border-radius:999px;box-shadow:0 3px 10px rgba(0,0,0,.12);}
 .ws-eyebrow iconify-icon{font-size:15px;color:#1565C0;}
 .ws-live-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;animation:wsLivePulse 2s ease-in-out infinite;box-shadow:0 0 0 3px rgba(15,107,66,.15);}
 @keyframes wsLivePulse{0%,100%{box-shadow:0 0 0 0 rgba(46,155,92,.45);}70%{box-shadow:0 0 0 5px rgba(46,155,92,0);}}
-.ws-temp-big{font-family:'Outfit','Cairo',sans-serif;font-weight:800;font-size:56px;color:#fff;line-height:1;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,.5),0 4px 16px rgba(0,0,0,.35);}
-.ws-desc{font-size:13.5px;color:#fff;opacity:1;font-weight:700;margin-top:3px;text-shadow:0 1px 3px rgba(0,0,0,.5),0 2px 8px rgba(0,0,0,.3);}
-.ws-mm-stack{display:flex;flex-direction:column;justify-content:center;gap:9px;flex-shrink:0;text-align:center;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);border-radius:16px;padding:12px 16px;box-shadow:0 3px 10px rgba(0,0,0,.1);}
 .ws-mm-item b{display:block;font-family:'Outfit','Cairo',sans-serif;font-size:16px;font-weight:800;color:var(--ink);}
 .ws-mm-item.max b{color:var(--green-d,#1E8449);}
 .ws-mm-item.min b{color:#2E7BC4;}
 .ws-mm-item.warm b{color:var(--green-d,#1E8449);}
 .ws-mm-item span{font-size:9px;color:var(--muted);font-weight:700;}
-/* صف الإحصاءات: مسافات بيضاء بدل خطوط فاصلة */
-.ws-stats-row{display:flex;margin-top:14px;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);border-radius:16px;padding:14px 8px;box-shadow:0 3px 10px rgba(0,0,0,.1);}
-.ws-stat{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;position:relative;}
 .ws-stat:not(:last-child)::after{content:'';position:absolute;left:0;top:2px;bottom:2px;width:1px;background:rgba(0,0,0,.1);}
 .ws-stat iconify-icon{font-size:18px;color:var(--text-2);}
 .ws-stat.humidity iconify-icon{color:var(--text-2);}
@@ -127,15 +127,12 @@ a{text-decoration:none;color:inherit;}
 .ws-stat.sea iconify-icon{color:var(--text-2);}
 .ws-stat b{font-family:'Outfit','Cairo',sans-serif;font-size:13.5px;color:var(--ink);}
 .ws-stat span{font-size:9.5px;color:var(--muted);font-weight:700;}
-/* صف التذييل: الشروق يمين، التفاصيل بالمنتصف، الغروب يسار */
-.ws-footer-row{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-bottom:2px;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);border-radius:16px;padding:14px 8px;transition:opacity .12s;box-shadow:0 3px 10px rgba(0,0,0,.1);}
-.ws-footer-row:active{opacity:.6;}
 .ws-footer-item{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;color:var(--muted);font-weight:700;flex-shrink:0;flex:1;position:relative;}
 .ws-footer-item:not(:last-child)::after{content:'';position:absolute;left:0;top:2px;bottom:2px;width:1px;background:rgba(0,0,0,.1);}
 .ws-footer-item .row{display:flex;align-items:center;gap:4px;}
 .ws-footer-item iconify-icon{font-size:15px;color:#E0A83C;}
 .ws-footer-item b{font-family:'Outfit','Cairo',sans-serif;font-size:12px;font-weight:700;color:var(--ink);}
-.ws-footer-link{display:flex;align-items:center;gap:2px;font-size:11px;font-weight:800;color:var(--green);flex-shrink:0;background:transparent;border:none;border-radius:20px;padding:0;}
+.ws-footer-link{display:inline-flex;align-items:center;gap:3px;font-size:12px;font-weight:800;color:var(--green);flex-shrink:0;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border:none;border-radius:999px;padding:9px 16px;box-shadow:0 3px 10px rgba(0,0,0,.12);}
 .ws-footer-link iconify-icon{font-size:14px;}
 .ws-swim-bar{margin:18px 0 0;background:rgba(255,255,255,.7);border:1px solid rgba(0,135,90,.14);border-radius:12px;padding:12px;text-align:center;font-size:12.5px;font-weight:800;color:var(--text-2);}
 .promo-card{margin:14px 18px 4px;height:150px;border-radius:20px;position:relative;overflow:hidden;box-shadow:0 10px 24px -8px rgba(0,0,0,.25);}
@@ -360,49 +357,51 @@ a{text-decoration:none;color:inherit;}
           <button class="ws-tab" id="wsTabSea" onclick="event.stopPropagation();setWsTab('sea')">🌊 أحوال البحر</button>
         </div>
         <div class="ws-body">
-          <div class="ws-content" id="wsContentWeather" onclick="openWeatherSheet()">
+          <div class="ws-content" id="wsContentWeather" onclick="openWeatherSheet()" style="display:flex;flex-direction:column;height:100%;">
             <div class="ws-eyebrow"><iconify-icon icon="lucide:map-pin"></iconify-icon>شطايبي الآن</div>
-            <div class="ws-hero-row" style="margin-top:14px;align-items:flex-start;">
-              <div class="ws-hero-left" style="align-items:flex-start;">
+            <div class="ws-hero-row">
+              <div class="ws-hero-left">
+                <div class="ws-icon-wrap" id="homeWIconWrap"><span id="homeWIcon">☀️</span></div>
                 <div>
                   <div class="ws-temp-big"><span id="homeWTemp">--°</span></div>
                   <div class="ws-desc" id="homeWDesc">جارٍ التحميل...</div>
                 </div>
               </div>
-              <div class="ws-icon-wrap" id="homeWIconWrap" style="margin-right:auto;"><span id="homeWIcon">☀️</span></div>
               <div class="ws-mm-stack">
                 <div class="ws-mm-item max"><b id="homeWMax">--°</b><span>العظمى</span></div>
                 <div class="ws-mm-item min"><b id="homeWMin">--°</b><span>الصغرى</span></div>
               </div>
             </div>
+            <div class="ws-spacer"></div>
             <div class="ws-stats-row">
               <div class="ws-footer-item"><div class="row"><iconify-icon icon="lucide:sunrise" style="color:#E0A83C"></iconify-icon></div><b id="homeWSunrise">--:--</b><span>الشروق</span></div>
               <div class="ws-stat humidity"><iconify-icon icon="lucide:droplets"></iconify-icon><b id="homeWHumidity">--%</b><span>الرطوبة</span></div>
               <div class="ws-stat"><iconify-icon icon="lucide:wind"></iconify-icon><b id="homeWWind">--</b><span id="homeWWindDir">الرياح</span></div>
             </div>
           </div>
-          <div class="ws-content hidden" id="wsContentSea" onclick="openWeatherSheet()">
+          <div class="ws-content hidden" id="wsContentSea" onclick="openWeatherSheet()" style="display:flex;flex-direction:column;height:100%;">
             <div class="ws-eyebrow"><iconify-icon icon="lucide:map-pin"></iconify-icon>حالة البحر الآن</div>
-            <div class="ws-hero-row" style="margin-top:14px;align-items:flex-start;">
-              <div class="ws-hero-left" style="align-items:flex-start;">
+            <div class="ws-hero-row">
+              <div class="ws-hero-left">
+                <div class="ws-icon-wrap" id="homeSeaIconWrap"><span id="homeSeaIcon">🌊</span></div>
                 <div>
-                  <div class="ws-temp-big" style="font-size:40px"><span id="homeSeaStatus">--</span></div>
+                  <div class="ws-temp-big" style="font-size:38px"><span id="homeSeaStatus">--</span></div>
                   <div class="ws-desc">ارتفاع الموج <span id="homeSeaWave">-- م</span></div>
                 </div>
               </div>
-              <div class="ws-icon-wrap" id="homeSeaIconWrap" style="margin-right:auto;"><span id="homeSeaIcon">🌊</span></div>
               <div class="ws-mm-stack">
                 <div class="ws-mm-item warm"><b id="homeSeaTemp">--°</b><span>حرارة الماء</span></div>
                 <div class="ws-mm-item"><b id="homeSeaDir">--</b><span>الاتجاه</span></div>
               </div>
             </div>
+            <div class="ws-spacer"></div>
             <div class="ws-stats-row">
               <div class="ws-stat sea"><iconify-icon icon="lucide:waves"></iconify-icon><b id="homeSeaPeriod">-- ث</b><span>فترة الموج</span></div>
               <div class="ws-stat sea"><iconify-icon icon="lucide:ruler"></iconify-icon><b id="homeSeaMaxToday">-- م</b><span>أقصى ارتفاع</span></div>
             </div>
           </div>
-          <div class="ws-footer-row" style="justify-content:center;background:transparent;backdrop-filter:none;padding:8px 0 0;" onclick="openWeatherSheet()">
-            <div class="ws-footer-link"><span>التفاصيل والتوقعات</span><iconify-icon icon="lucide:chevron-left"></iconify-icon></div>
+          <div style="display:flex;justify-content:center;margin-top:12px;">
+            <div class="ws-footer-link" onclick="event.stopPropagation();openWeatherSheet()"><span>التفاصيل والتوقعات</span><iconify-icon icon="lucide:chevron-left"></iconify-icon></div>
           </div>
         </div>
       </div>
