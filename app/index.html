@@ -70,12 +70,10 @@ a{text-decoration:none;color:inherit;}
 .search-float input{flex:1;border:none;background:none;outline:none;font-size:12.5px;font-family:'Cairo',sans-serif;color:var(--ink);}
 .search-float input::placeholder{color:var(--muted);}
 .quick-grid{display:flex;flex-direction:row;gap:10px;padding:28px 18px 8px;}
-.quick-pill{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;flex:1;padding:18px 10px 16px;border-radius:22px;transition:transform .12s,opacity .12s;}
+.quick-pill{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;flex:1;padding:20px 10px 18px;border-radius:22px;transition:transform .12s,opacity .12s;}
 .quick-pill:active{transform:scale(.96);opacity:.85;}
-.quick-pill .qp-back-arrow{position:absolute;top:14px;right:14px;font-size:15px;color:var(--ink);opacity:.55;}
 .quick-pill .qp-label{font-size:14.5px;font-weight:800;color:var(--ink);text-align:center;font-family:var(--font-head);}
-.quick-pill .qp-sub{font-size:10.5px;font-weight:600;color:var(--text-2);text-align:center;line-height:1.3;}
-.quick-pill .qp-icon{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;flex-shrink:0;margin-top:4px;box-shadow:inset 0 -3px 6px rgba(0,0,0,.15),inset 0 2px 4px rgba(255,255,255,.3),0 3px 8px rgba(0,0,0,.12);}
+.quick-pill .qp-icon{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;}
 .section-head{display:flex;align-items:center;justify-content:space-between;padding:28px 18px 14px;}
 .section-head h2{font-size:15px;font-weight:800;color:var(--ink);font-family:var(--font-head);}
 .section-head a{font-size:10.5px;color:var(--green);font-weight:700;flex-shrink:0;display:inline-flex;align-items:center;gap:2px;background:var(--green-xl,#E7F5EE);padding:4px 10px;border-radius:999px;}
@@ -327,22 +325,16 @@ a{text-decoration:none;color:inherit;}
 
       <div class="quick-grid">
         <div class="quick-pill" onclick="switchScreen('map')" style="background:#E3F3E9;">
-          <iconify-icon class="qp-back-arrow" icon="lucide:chevron-left"></iconify-icon>
-          <div class="qp-icon" style="background:radial-gradient(circle at 32% 28%,#3FAE6A,#1D8449 65%,#166B3A 100%);"><iconify-icon icon="lucide:map"></iconify-icon></div>
+          <div class="qp-icon" style="background:rgba(255,255,255,.65);color:#1D8449;"><iconify-icon icon="lucide:map"></iconify-icon></div>
           <span class="qp-label">الخريطة</span>
-          <span class="qp-sub">استكشف المنطقة</span>
         </div>
         <div class="quick-pill" onclick="switchScreen('explore');setExploreTab('landmark')" style="background:#FBEEDB;">
-          <iconify-icon class="qp-back-arrow" icon="lucide:chevron-left"></iconify-icon>
-          <div class="qp-icon" style="background:radial-gradient(circle at 32% 28%,#F5A93F,#E08A1C 65%,#C9760F 100%);"><iconify-icon icon="lucide:landmark"></iconify-icon></div>
+          <div class="qp-icon" style="background:rgba(255,255,255,.65);color:#E08A1C;"><iconify-icon icon="lucide:landmark"></iconify-icon></div>
           <span class="qp-label">المعالم</span>
-          <span class="qp-sub">أماكن تستحق الزيارة</span>
         </div>
         <div class="quick-pill" onclick="switchScreen('explore');setExploreTab('beach')" style="background:#E4EEFB;">
-          <iconify-icon class="qp-back-arrow" icon="lucide:chevron-left"></iconify-icon>
-          <div class="qp-icon" style="background:radial-gradient(circle at 32% 28%,#4A93E8,#2E6FC4 65%,#245AA3 100%);"><iconify-icon icon="lucide:waves"></iconify-icon></div>
+          <div class="qp-icon" style="background:rgba(255,255,255,.65);color:#2E6FC4;"><iconify-icon icon="lucide:waves"></iconify-icon></div>
           <span class="qp-label">الشواطئ</span>
-          <span class="qp-sub">أفضل الشواطئ القريبة</span>
         </div>
       </div>
 
@@ -350,7 +342,7 @@ a{text-decoration:none;color:inherit;}
       <div class="dest-row" id="homeDestRow"></div>
 
       <div class="weather-sea-card">
-        <img class="ws-bg-img" src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/chetaibi-meteo.webp" alt="">
+        <img class="ws-bg-img" src="https://cdn.jsdelivr.net/gh/kimk6/chetaibi-assets-v1@main/ui/meteo.webp" alt="">
         <div class="ws-bg-overlay"></div>
         <div class="ws-tabs">
           <button class="ws-tab active" id="wsTabWeather" onclick="event.stopPropagation();setWsTab('weather')">☀️ أحوال الطقس</button>
